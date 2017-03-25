@@ -28,7 +28,8 @@ $factory->define(App\Portfolio::class, function(Faker\Generator $faker) {
         'user_id' => function() {
             return factory('App\User')->create()->id;
         },
-        'name' => $faker->words,
-        'currency' => $faker->currencyCode
+        'name' => $faker->sentence,
+        'currency' => $faker->currencyCode,
     ];
 });
+
