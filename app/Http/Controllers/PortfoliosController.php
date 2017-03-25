@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Portfolio;
+use App\User;
 
 class PortfoliosController extends Controller
 {
@@ -14,7 +15,8 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        //
+        $portfolios = Portfolio::all();
+        return view('portfolios.index', compact('portfolios'));
     }
 
     /**
@@ -35,7 +37,9 @@ class PortfoliosController extends Controller
      */
     public function store(Request $request)
     {
-        Portfolio::create($request->all());
+        $user = User::findOrFail(auth()->id());
+        $portfolio = new Portfolio($request->all());
+        $user->portfolios()->save($portfolio);
     }
 
     /**
@@ -46,7 +50,9 @@ class PortfoliosController extends Controller
      */
     public function show($id)
     {
-        //
+        $portfolio = Portfolio::findOrFail($id);
+//        return dd($portfolio);
+        return view('portfolios.show', compact('portfolio'));
     }
 
     /**

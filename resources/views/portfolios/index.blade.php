@@ -1,17 +1,28 @@
-
-@extends('app')
+@extends('layouts.app')
 
 @section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Portfolios</div>
 
-    <h1>Portfolios</h1>
+                    <div class="panel-body">
+                        @foreach($portfolios as $portfolio)
+                            <article>
+                                <h4>
+                                    {{ $portfolio->name }}
+                                </h4>
+                                <div class="body">
+                                    {{ $portfolio->currency }}
+                                </div>
 
-    @foreach($portfolios as $portfolio)
+                            </article>
+                        @endforeach
 
-        <div>
-            <h2>{{ $portfolio->name }}</h2>
-            <p>{{ $portfolio->currency }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-
-    @endforeach
-
-@stop
+    </div>
+@endsection

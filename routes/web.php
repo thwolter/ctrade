@@ -43,3 +43,13 @@ Route::get('portfolios/{id}', 'PortfoliosController@show');
 
 
 Route::resource('/portfolios', 'PortfoliosController');
+Route::get('/user', function() {
+
+    return dd(auth()->id());
+
+});
+
+
+// User auth
+Auth::routes();
+Route::get('/home', 'HomeController@index');

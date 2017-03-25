@@ -1,10 +1,11 @@
-@extends('app')
+@extends('layouts.app')
 
 @section('content')
 
     <form method=post action="/portfolios">
 
         <input type="text" name="name" placeholder="Portfolio Name">
+        <input type="text" name="currency" placeholder="Währung">
 
         {{csrf_field()}}
 
