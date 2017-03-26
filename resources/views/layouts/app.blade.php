@@ -22,6 +22,7 @@
 </head>
 <body>
     <div id="app">
+        <!-- top navigation -->
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -48,6 +49,8 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="blog">Blog</a></li>
+                        <li><a href="about">Über uns</a></li>
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                             <li><a href="{{ route('login') }}">Login</a></li>
@@ -78,10 +81,65 @@
             </div>
         </nav>
 
-        @yield('content')
+        @if (Auth::check())
+
+            <!-- content with sidebar -->
+            <div class="container-fluid">
+                <div class="row content">
+
+                    <!-- sidebsar navigation -->
+                    <nav class="col-sm-3 sidebar hidden-xs">
+
+                        <!-- manage portfolios -->
+                        <div id="sidbar-nav-manage">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><p>Manage Portfolios</p></li>
+                                <li class="active"><a href="#">Portfolio wählen</a></li>
+                                <li><a href="#">Neu anlegen</a></li>
+                                <li><a href="#">Löschen</a></li>
+                            </ul><br>
+                        </div>
+
+                        <!-- analyse portfolios -->
+                        <div id ="sidebar-nav-portfolio">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><p>Portfolio</p></li>
+                                <li><a href="#">Marktwert</a></li>
+                                <li><a href="#">Transaktionen</a></li>
+                                <li><a href="#">Historie</a></li>
+                                <li><a href="#">Limite</a></li>
+                                <li><a href="#">Risiko</a></li>
+                                <li><a href="#">Optimieren</a></li>
+                            </ul><br>
+                        </div>
+
+                        <!-- sidebar foooter -->
+                        <div id="sidebar-nav-others">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">Einstellungen</a></li>
+                                <li><a href="#">Newsletter</a></li>
+                            </ul><br>
+                        </div>
+                    </nav> <!-- end sidebar navigation -->
+
+                    <!-- main content -->
+                    <div class="col-sm-9">
+
+                        @yield('content')
+
+                    </div> <!-- end main content -->
+                </div>
+            </div>
+
+        @else
+            @yield('content')
+
+        @endif
+
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
+
