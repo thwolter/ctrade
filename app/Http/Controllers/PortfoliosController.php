@@ -48,9 +48,9 @@ class PortfoliosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Portfolio $portfolio)
     {
-        $portfolio = Portfolio::findOrFail($id);
+        //$portfolio = Portfolio::findOrFail($id);
 //        return dd($portfolio);
         return view('portfolios.show', compact('portfolio'));
     }
