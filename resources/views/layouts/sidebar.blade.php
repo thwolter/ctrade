@@ -5,7 +5,7 @@
     <div id="sidebar-nav-manage">
         <ul class="nav nav-pills nav-stacked">
             <li><p>Manage Portfolios</p></li>
-            <li class="active"><a href="#">Portfolio wählen</a></li>
+            <li class="active"><a href="{{ route('portfolios.index') }}">Portfolio wählen</a></li>
             <li><a href="{{ route('portfolios.create') }}">Neu anlegen</a></li>
             <li><a href="#">Löschen</a></li>
         </ul><br>

@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
+    <!-- show single portfolio -->
     <div class="panel panel-default">
         <div class="panel-heading">Portfolios</div>
 
@@ -19,3 +20,6 @@
         </div>
     </div>
 @endsection
+
+
+

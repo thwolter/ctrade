@@ -8,6 +8,7 @@ use App\User;
 
 class PortfoliosController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +16,7 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        $portfolios = Portfolio::all();
+        $portfolios = User::findOrFail(auth()->id())->portfolios;
         return view('portfolios.index', compact('portfolios'));
     }
 
