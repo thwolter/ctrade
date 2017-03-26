@@ -9,6 +9,11 @@ use App\User;
 class PortfoliosController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -43,8 +48,7 @@ class PortfoliosController extends Controller
             'currency' => 'required'
         ]);
 
-        $user = User::findOrFail(auth()->id());
-        $user->portfolios()->save(new Portfolio($request->all()));
+        auth()->user()->create(new Portfolio($request->all()));
 
         return redirect('/portfolios');
     }

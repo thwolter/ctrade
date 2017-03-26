@@ -14,13 +14,13 @@
                 @include('layouts.errors')
 
                 <div class="input-group">
-                    <span class="input-group-addon">Name</span>
+                    <label for="name">Name</label>
                     <input type="text" name="name" class="form-control" placeholder="Name">
                 </div>
                 <br>
 
                 <div class="input-group">
-                    <span class="input-group-addon">Währung</span>
+                    <label for="currency">Währung</label>
                     <input type="text" name="currency" class="form-control" placeholder="Währung">
                 </div>
                 <br>

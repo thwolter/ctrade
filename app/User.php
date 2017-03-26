@@ -29,7 +29,12 @@ class User extends Authenticatable
 
     public function portfolios() {
 
-        return $this->hasMany('App\Portfolio');
+        return $this->hasMany(Portfolio::class);
 
+    }
+
+    public function create(Portfolio $portfolio)
+    {
+        $this->portfolios()->save($portfolio);
     }
 }
