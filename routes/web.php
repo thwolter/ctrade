@@ -29,11 +29,12 @@ Route::get('/about', function() {
 
 
 Route::resource('/portfolios', 'PortfoliosController');
-Route::get('/user', function() {
+
+/*Route::get('/user', function() {
 
     return dd(auth()->id());
 
-});
+});*/
 
 
 // User auth

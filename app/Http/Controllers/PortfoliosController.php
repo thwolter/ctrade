@@ -37,9 +37,15 @@ class PortfoliosController extends Controller
      */
     public function store(Request $request)
     {
+        $this -> validate(request(), [
+            'name' => 'required',
+            'currency' => 'required'
+        ]);
+
         $user = User::findOrFail(auth()->id());
-        $portfolio = new Portfolio($request->all());
-        $user->portfolios()->save($portfolio);
+        $user->portfolios()->save(new Portfolio($request->all()));
+
+        return redirect('/portfolios');
     }
 
     /**

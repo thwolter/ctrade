@@ -2,15 +2,39 @@
 
 @section('content')
 
-    <form method=post action="/portfolios">
+    <div class="panel panel-default">
+        <div class="panel-heading">Portfolio erstellen</div>
 
-        <input type="text" name="name" placeholder="Portfolio Name">
-        <input type="text" name="currency" placeholder="Währung">
+        <div class="panel-body">
 
-        {{csrf_field()}}
+            <form method=post action="/portfolios">
 
-        <input type="submit" name="submit">
+                {{csrf_field()}}
 
-    </form>
+                @include('layouts.errors')
+
+                <div class="input-group">
+                    <span class="input-group-addon">Name</span>
+                    <input type="text" name="name" class="form-control" placeholder="Name">
+                </div>
+                <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon">Währung</span>
+                    <input type="text" name="currency" class="form-control" placeholder="Währung">
+                </div>
+                <br>
+
+                <div class="form-group">
+                    <input type="submit" name="submit" class="btn btn-primary">
+                </div>
+
+            </form>
+
+        </div>
+    </div>
 
 @endsection
+
+
+
