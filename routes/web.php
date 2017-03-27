@@ -40,3 +40,4 @@ Route::resource('/portfolios', 'PortfoliosController');
 // User auth
 Auth::routes();
 Route::get('/home', 'HomeController@index');
+

@@ -48,7 +48,7 @@ class PortfoliosController extends Controller
             'currency' => 'required'
         ]);
 
-        auth()->user()->create(new Portfolio($request->all()));
+        auth()->user()->obtain(new Portfolio($request->all()));
 
         return redirect('/portfolios');
     }

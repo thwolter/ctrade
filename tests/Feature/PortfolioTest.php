@@ -3,41 +3,31 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
+use App\User;
 
 class PortfolioTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function Setup()
+    public function setUp()
     {
-        parent::SetUp();
-        $this->portfolio = factory('App\Portfolio')->create();
+        parent::setUp();
         $this->user = factory('App\User')->create();
     }
 
-
-    public function testUserCanSeeAllPortfolios()
+    public function testUserCanSeeOwnPortfolios()
     {
-        $response = $this->get('/portfolios');
-        $response->assertSee($this->portfolio->name);
 
-    }
+        $portfolios = factory('App\Portfolio', 3)->create(['user_id' => $this->user->id]);
 
+        $page = $this->actingAs($this->user)->get('/portfolios');
 
-    public function testUserCanSeeSinglePortfolio()
-    {
-        $portfolio = factory('App\Portfolio')->create();
-
-        $response = $this->get('/portfolios/1');
-        $response->assertSee($this->portfolio->name);
-    }
-
-    public function testUserCanCreatePortfolio()
-    {
+        foreach ($portfolios as $portfolio) {
+            $page->assertSee($portfolio->name);
+        };
 
 
     }

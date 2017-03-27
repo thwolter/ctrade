@@ -33,7 +33,7 @@ class User extends Authenticatable
 
     }
 
-    public function create(Portfolio $portfolio)
+    public function obtain(Portfolio $portfolio)
     {
         $this->portfolios()->save($portfolio);
     }

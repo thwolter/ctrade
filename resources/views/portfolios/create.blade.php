@@ -26,7 +26,7 @@
                 <br>
 
                 <div class="form-group">
-                    <input type="submit" name="submit" class="btn btn-primary">
+                    <button type="submit" name="submit" class="btn btn-primary">Erstellen</button>
                 </div>
 
             </form>
