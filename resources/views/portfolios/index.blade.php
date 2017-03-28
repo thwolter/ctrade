@@ -40,37 +40,16 @@
                 </div>
 
                 <div class="">
-                    <button class="btn btn-primary inline-block-tight pull-right">Öffnen</button>
+                    <a class="btn btn-primary inline-block-tight pull-right"
+                       href="/portfolios/{{ $portfolio->id }}">Öffnen</a>
                 </div>
 
                 <p>
                     {{ $portfolio->currency }}
                 </p>
             </div>
-        </div>
+        </div><!-- end show portfolio -->
 
     @endforeach
 
 @endsection
-
-
-
-
-
-
-<!--
-<!-- show portfolios -->
-<div>
-    <div class="panel panel-portfolio">
-        <section class="">
-
-
-
-
-
-
-
-        </section>
-        <div clearfix></div>
-    </div>
-</div> <!-- end show portfolio -->

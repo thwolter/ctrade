@@ -15,6 +15,21 @@
                     {{ $portfolio->currency }}
                 </div>
 
+
+                <div class="form-group">
+                    <a class="btn btn-primary inline-block-tight pull-right"
+                       href="/portfolios/{{ $portfolio->id }}/edit">Edit</a>
+
+
+                    <form method="post" action="/portfolios/{{ $portfolio->id }}">
+
+                        {{ csrf_field() }}
+
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-default inline-block-tight pull-right">Löschen</button>
+                    </form>
+
+                </div>
             </article>
 
         </div>

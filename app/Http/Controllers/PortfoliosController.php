@@ -78,9 +78,9 @@ class PortfoliosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Portfolio $portfolio)
     {
-        //
+        return view('portfolios.edit', compact('portfolio'));
     }
 
     /**
@@ -92,7 +92,9 @@ class PortfoliosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Portfolio::whereId($id)->update(['name' => $request->name, 'currency'=> $request->currency]);
+
+        return redirect('/portfolios');
     }
 
     /**
@@ -103,6 +105,8 @@ class PortfoliosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Portfolio::whereId($id)->delete($id);
+
+        return redirect('/portfolios');
     }
 }
