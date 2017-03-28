@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @purpose
+ * 
+ * Provides CRUD for 
+ * portfolio with name and currency
+ *  
+ */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -61,8 +69,6 @@ class PortfoliosController extends Controller
      */
     public function show(Portfolio $portfolio)
     {
-        //$portfolio = Portfolio::findOrFail($id);
-//        return dd($portfolio);
         return view('portfolios.show', compact('portfolio'));
     }
 
