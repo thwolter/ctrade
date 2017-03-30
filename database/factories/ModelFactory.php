@@ -23,6 +23,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+
 $factory->define(App\Portfolio::class, function(Faker\Generator $faker) {
     return  [
         'user_id' => function() {
@@ -33,3 +34,24 @@ $factory->define(App\Portfolio::class, function(Faker\Generator $faker) {
     ];
 });
 
+
+
+$factory->define(App\Stock::class, function() {
+    return [
+        'symbol' => 'ALV.DE',
+        'currency' => 'EUR'
+    ];
+});
+
+
+$factory->define(App\Position::class, function() {
+
+    $stock = factory('App\Stock')->create();
+    $portfolio = factory('App\Portfolio')->create();
+
+    return [
+        'portfolio_id' => $portfolio->id,
+        'positionable_id' => $stock->id,
+        'positionable_type' => get_class($stock)
+    ];
+});

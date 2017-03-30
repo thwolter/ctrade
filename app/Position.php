@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Position extends Model
 {
+    public function positionable() {
+        return $this->morphTo();
+    }
+
     public function portfolio() {
-        return $this->belongsTo('App\Portfolio');
+        return $this->hasOne('App\Portfolio');
     }
-
-    public function stock() {
-        return $this->hasOne('App\Stock');
-    }
-
-
 }

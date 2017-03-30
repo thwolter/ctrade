@@ -16,8 +16,8 @@ class CreatePositionsTable extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('portfolio_id')->nullable()->index();
-            $table->integer('itemable_id');
-            $table->integer('itemable_type');
+            $table->integer('positionable_id');
+            $table->string('positionable_type');
             $table->timestamps();
         });
     }

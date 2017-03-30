@@ -15,7 +15,7 @@ class Portfolio extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function position() {
+    public function positions() {
         return $this->hasMany('App\Position');
     }
 
