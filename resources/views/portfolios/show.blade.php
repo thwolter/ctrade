@@ -16,7 +16,10 @@
                 </div>
 
 
-                <div class="form-group">
+                <div class="input-group-btn">
+
+                    <a
+
                     <a class="btn btn-primary inline-block-tight pull-right"
                        href="/portfolios/{{ $portfolio->id }}/edit">Edit</a>
 

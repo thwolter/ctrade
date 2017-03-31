@@ -14,12 +14,9 @@
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
-    <script>
-        window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token(),
-        ]) !!};
-    </script>
+    <script>window.Laravel = {!! json_encode(['csrfToken' => csrf_token(), ]) !!}; </script>
 </head>
+
 <body>
     <div id="app">
         <!-- top navigation -->
