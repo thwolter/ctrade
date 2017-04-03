@@ -17,15 +17,36 @@
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
-            <!-- Left Side Of Navbar -->
-            <ul class="nav navbar-nav">
-                &nbsp;
-            </ul>
+
+        @if (Auth::check())
+
+                <!-- Left Side Of Navbar -->
+                <ul class="nav navbar-nav">
+                    &nbsp;<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            Portfolio <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+
+                            @php($portfolios = auth()->user()->portfolios)
+                            @foreach($portfolios as $portfolio)
+                                <li><a href={{ '/portfolios/'.$portfolio->id }}>{{ $portfolio->name }}</a></li>
+                            @endforeach
+
+                            <hr>
+                            <li><a href="/portfolios/create">Neues Portfolios</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            @endif
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="blog">Blog</a></li>
                 <li><a href="about">Über uns</a></li>
+
                 <!-- Authentication Links -->
                 @if (Auth::guest())
                     <li><a href="{{ route('login') }}">Login</a></li>

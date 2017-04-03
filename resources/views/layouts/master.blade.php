@@ -20,23 +20,14 @@
 <body>
     <div id="app">
         <!-- top navigation -->
-       @include('layouts.mainnav')
+       @include('layouts.navbar')
 
-        <!-- content with sidebar -->
+        <!-- main content -->
         <div class="container">
             <div class="row">
-
-                @if (Auth::check())
-                    <!-- sidebar navigation -->
-                    <div class="col-sm-3">
-                        @include('layouts.sidebar')
-                    </div> <!-- end sidebar navigation -->
-                @endif
-
                 <!-- main content -->
-                <div class="col-sm-9">
+                <div>
                     @yield('content')
-
                 </div> <!-- end main content -->
             </div>
         </div>
