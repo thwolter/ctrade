@@ -2,42 +2,44 @@
 // Layout
 // ------------------------------------------------------
 
-.portfolio-panel {
+.ct-panel {
   @extend .panel;
   @extend .panel-primary;
 }
 
-.portfolio-panel__portfolio-header {
+.ct-panel__ct-header {
   @extend .panel-heading;
 }
 
-.portfolio-panel__portfolio-nav {
+.ct-panel__ct-nav {
 }
 
-.portfolio-panel__portfolio-body {
+.ct-panel__ct-body {
   @extend .panel-body;
 }
 
 
 // ------------------------------------------------------
-// Elements
+// Modules
 // ------------------------------------------------------
 
-.portfolio-header {
+.ct-header {
   .title {
     display: inline;
   }
 
   a {
     padding-left: 10px;
+    color: white;
   }
   icon {
     padding: 0 3px;
+    color: white;
   }
 }
 
 
-.portfolio-nav {
+.ct-nav {
   ul {
     @extend .nav;
     @extend .nav-tabs;
@@ -48,12 +50,22 @@
 }
 
 
-.portfolio-header__key-figures{
+.ct-header__key-figures{
   @extend .pull-right;
 }
 
 
+// ------------------------------------------------------
+// Variants
+// ------------------------------------------------------
 
+.ct-panel--create {
+  @extend .ct-panel;
 
+}
 
+.ct-panel--edit {
+  @extend .ct-panel;
+
+}
 

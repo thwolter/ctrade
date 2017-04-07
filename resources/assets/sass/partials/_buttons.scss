@@ -1,0 +1,9 @@
+.button {
+  @extend .btn;
+  @extend .btn-primary;
+}
+
+.button--right {
+  @extend .button;
+  @extend .pull-right;
+}

@@ -1,7 +1,7 @@
 <!-- portfolio header -->
-<div class="portfolio-panel__portfolio-header">
+<div class="ct-panel__ct-header">
 
-    <header class="portfolio-header">
+    <header class="ct-header">
 
         @if (isset($portfolios))
 
@@ -10,13 +10,13 @@
         @else
 
             <h3 class="title">{{ $portfolio->name }}</h3>
-            <a href="/portfolios/edit/{{ $portfolio->id }}" class="link">
+            <a href="/portfolios/{{ $portfolio->id }}/edit" class="link">
                 <icon class="glyphicon glyphicon-pencil"></icon>Bearbeiten</a>
 
         @endif
 
 
-        <div class="portfolio-header__key-figures">
+        <div class="ct-header__key-figures">
             <div class="key-figure">
                 <label class="label">Aktuell</label>
                 <span class="value">1.200,33</span>

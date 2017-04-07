@@ -2,13 +2,13 @@
 
 @section('content')
 
-    <section class="portfolio-panel">
+    <section class="ct-panel">
 
         @include('portfolios.header')
 
         <!-- sidebar navigation -->
-        <div class="portfolio-panel__portfolio-nav">
-            <nav class="portfolio-nav">
+        <div class="ct-panel__ct-nav">
+            <nav class="ct-nav">
                 <ul>
                     <li><a href="#">Überblick</a></li>
                     <li><a href="#">Transaktionen</a></li>
@@ -20,7 +20,7 @@
         </div>
 
         <!--content-portfolio -->
-        <main class="portfolio-panel__portfolio-body">
+        <main class="ct-panel__ct-body">
 
             @yield('portfolio-container-content')
 

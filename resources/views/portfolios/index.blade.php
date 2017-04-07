@@ -5,11 +5,11 @@
     <!-- show portfolios -->
     @foreach($portfolios as $portfolio)
 
-        <section class="portfolio-panel">
+        <section class="ct-panel">
 
             @include('portfolios.header')
 
-            <div class="portfolio-panel__portfolio-body">
+            <div class="ct-panel__ct-body">
 
                 <!-- summary table -->
                 <div class="summary-table">
