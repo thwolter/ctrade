@@ -11240,7 +11240,7 @@ var app = new Vue({
 /* 11 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: \n@import \"modules/**/*\";\n^\n      File to import not found or unreadable: modules/**/*.\nParent style sheet: stdin\n      in /Applications/XAMPP/xamppfiles/htdocs/ctrade/resources/assets/sass/styles.scss (line 19, column 1)\n    at runLoaders (/Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/webpack/lib/NormalModule.js:192:19)\n    at /Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/loader-runner/lib/LoaderRunner.js:230:18\n    at context.callback (/Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/loader-runner/lib/LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (/Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/sass-loader/lib/loader.js:51:13)\n    at Object.<anonymous> (/Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/sass-loader/node_modules/async/dist/async.js:2234:31)\n    at apply (/Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/sass-loader/node_modules/async/dist/async.js:20:25)\n    at Object.<anonymous> (/Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/sass-loader/node_modules/async/dist/async.js:56:12)\n    at Object.callback (/Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/sass-loader/node_modules/async/dist/async.js:844:16)\n    at options.error (/Applications/XAMPP/xamppfiles/htdocs/ctrade/node_modules/node-sass/lib/index.js:294:32)");
 
 /***/ }),
 /* 12 */

@@ -1,0 +1,12 @@
+.key-figure {
+  display: inline-block;
+
+  .label {
+    color: #f5841d;
+    padding: 0 2px 0 20px;
+  }
+
+  .value{
+    @extend h4;
+  }
+}
