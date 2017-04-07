@@ -2,10 +2,12 @@
 
 @section('content')
 
-    <div class="panel panel-default">
-        <div class="panel-heading">Portfolio erstellen</div>
+    <div class="portfolio-panel is-edit">
+        <div class="portfolio-panel__portfolio-header">
+            <div class="portfolio-header">Portfolio erstellen</div>
 
-        <div class="panel-body">
+        <div class="portfolio-panel__portfolio-body">
+            <div class="portfolio-body">
 
             <form method="post" action="/portfolios/{{ $portfolio->id }}">
 

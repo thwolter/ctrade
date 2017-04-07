@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="panel--default">
+    <div class="edit-panel">
         <div class="panel__header">
             <h3 class="title">Portfolio erstellen</h3>
         </div>

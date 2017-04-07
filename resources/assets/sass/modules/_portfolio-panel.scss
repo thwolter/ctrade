@@ -1,0 +1,59 @@
+// ------------------------------------------------------
+// Layout
+// ------------------------------------------------------
+
+.portfolio-panel {
+  @extend .panel;
+  @extend .panel-primary;
+}
+
+.portfolio-panel__portfolio-header {
+  @extend .panel-heading;
+}
+
+.portfolio-panel__portfolio-nav {
+}
+
+.portfolio-panel__portfolio-body {
+  @extend .panel-body;
+}
+
+
+// ------------------------------------------------------
+// Elements
+// ------------------------------------------------------
+
+.portfolio-header {
+  .title {
+    display: inline;
+  }
+
+  a {
+    padding-left: 10px;
+  }
+  icon {
+    padding: 0 3px;
+  }
+}
+
+
+.portfolio-nav {
+  ul {
+    @extend .nav;
+    @extend .nav-tabs;
+  }
+  li {
+
+  }
+}
+
+
+.portfolio-header__key-figures{
+  @extend .pull-right;
+}
+
+
+
+
+
+

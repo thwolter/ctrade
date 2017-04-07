@@ -1,13 +1,20 @@
 <!-- portfolio header -->
-<div class="portfolio-container__portfolio-header">
+<div class="portfolio-panel__portfolio-header">
 
     <header class="portfolio-header">
-        <a href="/portfolios/{{ $portfolio->id }}">
+
+        @if (isset($portfolios))
+
+            <h3 class="title"><a href="/portfolios/{{ $portfolio->id }}"> {{ $portfolio->name }}</a></h3>
+
+        @else
+
             <h3 class="title">{{ $portfolio->name }}</h3>
-        </a>
-        <a href="/portfolios/edit/{{ $portfolio->id }}" class="link">
-            <icon class="glyphicon glyphicon-pencil"></icon>Bearbeiten
-        </a>
+            <a href="/portfolios/edit/{{ $portfolio->id }}" class="link">
+                <icon class="glyphicon glyphicon-pencil"></icon>Bearbeiten</a>
+
+        @endif
+
 
         <div class="portfolio-header__key-figures">
             <div class="key-figure">
@@ -20,5 +27,6 @@
                 <span class="value">234,43</span>
             </div>
         </div>
+
     </header>
 </div>
