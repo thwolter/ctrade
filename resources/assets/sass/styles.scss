@@ -1,3 +1,5 @@
+$box-background-color: #e2e9f5;
+
 
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
@@ -5,43 +7,80 @@
 // Variables
 @import "variables";
 
-.btn {
-  margin: auto 5px;
-}
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 
-.header-portfolio {
 
+//portfolio-container
+.portfolio-container {
+
+  h2 {
+    display: inline-block;
+    margin: 0px;
+  }
+
+  a {
+    padding-left: 10px;
+  }
+
+  .portfolio-header {
+    height: 51px;
+    line-height: 36px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: $box-background-color;
+  }
+
+  .portfolio-content {
+    display: flex;
+
+  }
+
+  .content-cell {
+    width: 100%;
+
+  }
 }
 
-.navbar-portfolio {
-  width: 150px;
-  float: left;
+
+.nav-portfolio {
+  @extend .navbar-nav;
+  background-color: $box-background-color;
+  margin-right: 20px;
+
+  li {
+    list-style-type: none;
+    padding: 10px;
+  }
+
+  ul {
+    padding: 0px;
+  }
 }
 
-.portfolio-wrapper {
-  margin-top: 20px;
+.value-box {
+  @extend .pull-right;
+  display: inline-block;
+
+  .label {
+    color:black;
+  }
 }
 
-.content-portfolio {
-  background-color: #eee;
-  margin-left: 150px;
-  padding: 10px;
+
+
+
+
+
+
+
+
+.btn {
+  margin: auto 5px;
 }
 
-.header-portfolio .value, .title {
-  font-size: 20px;
-}
 
-.header-portfolio .title {
-  padding-right: 10px;
-}
 
-.header-portfolio .key {
-  font-size: 12px;
-  padding-right: 5px;
-  padding-left: 20px;
-}
+
