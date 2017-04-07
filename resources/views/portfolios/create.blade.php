@@ -2,10 +2,12 @@
 
 @section('content')
 
-    <div class="panel panel-default">
-        <div class="panel-heading">Portfolio erstellen</div>
+    <div class="panel--default">
+        <div class="panel__header">
+            <h3 class="title">Portfolio erstellen</h3>
+        </div>
 
-        <div class="panel-body">
+        <div class="panel__body">
 
             <form method=post action="/portfolios">
 
@@ -13,13 +15,13 @@
 
                 @include('layouts.errors')
 
-                <div class="input-group">
+                <div class="input-group--default">
                     <label for="name">Name</label>
                     <input type="text" name="name" class="form-control" placeholder="Name">
                 </div>
                 <br>
 
-                <div class="input-group">
+                <div class="input-group--default">
                     <label for="currency">Währung</label>
                     <input type="text" name="currency" class="form-control" placeholder="Währung">
                 </div>

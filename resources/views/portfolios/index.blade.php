@@ -5,14 +5,14 @@
     <!-- show portfolios -->
     @foreach($portfolios as $portfolio)
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <a href="/portfolios/{{ $portfolio->id }}">
+        <div class="panel--default">
+            <div class="panel__header">
+                <h3><a href="/portfolios/{{ $portfolio->id }}">
                     {{ $portfolio->name }}
-                </a>
+                    </a></h3>
             </div>
 
-            <div class="panel-body">
+            <div class="panel__body">
 
                 <!-- summary table -->
                 <div class="summary-table">

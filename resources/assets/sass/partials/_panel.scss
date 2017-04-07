@@ -1,0 +1,12 @@
+.panel--default {
+  @extend .panel;
+  @extend .panel-default;
+}
+
+.panel__header {
+  @extend .panel-heading;
+}
+
+.panel__body {
+  @extend .panel-body;
+}
