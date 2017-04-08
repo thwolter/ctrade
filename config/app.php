@@ -180,6 +180,11 @@ return [
 
         Collective\Html\HtmlServiceProvider::class,
 
+        /*
+        * installed packages
+        */
+        HieuLe\Active\ActiveServiceProvider::class,
+
     ],
 
     /*
@@ -230,6 +235,12 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+
+        /*
+         * installed packages
+         */
+
+        'Active' => HieuLe\Active\Facades\Active::class,
 
     ],
 

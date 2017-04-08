@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Portfolio;
+use App\Position;
+use App\Stock;
 
 class PositionsController extends Controller
 {
@@ -11,9 +14,9 @@ class PositionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Portfolio $portfolio)
     {
-        //
+        return view('positions.index', compact('portfolio'));
     }
 
     /**
@@ -21,9 +24,9 @@ class PositionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Portfolio $portfolio)
     {
-
+        return view ('positions.create', compact('portfolio'));
     }
 
     /**
@@ -34,7 +37,20 @@ class PositionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        //$this -> validate(request(), [
+        //    'name' => 'required',
+        //    'currency' => 'required'
+        //]);
+
+        $portfolio = Portfolio::findOrFail(4);
+
+        $stock = Stock::firstOrCreate(['symbol'=>'ALV.DE', 'currency'=>'EUR']);
+
+        $position = new Position;
+
+        $stock->positions()->save($position);
+        $portfolio->positions()->save($position);
     }
 
     /**

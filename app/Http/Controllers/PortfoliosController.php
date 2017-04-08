@@ -109,4 +109,6 @@ class PortfoliosController extends Controller
 
         return redirect('/portfolios');
     }
+
 }
+
