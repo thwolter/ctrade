@@ -29,7 +29,10 @@ Route::get('/about', function() {
 
 
 Route::resource('/portfolios', 'PortfoliosController');
-Route::resource('/portfolio/{portfolio}/positions', 'PositionsController');
+Route::resource('/portfolios/{portfolio}/positions', 'PositionsController',
+    ['except' => ['edit', 'update', 'show', 'destroy']]);
+Route::get('positions/{position}', ['as' => 'positions.show', 'uses' => 'PositionsController@show']);
+Route::delete('positions/{position}', ['as' => 'positions.destroy', 'uses' => 'PositionsController@destroy']);
 
 
 //Route::get('/portfolios/{portfolio}/transactions', ['as' => 'transactions', 'uses' => 'PositionsController@index']);

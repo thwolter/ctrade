@@ -7,7 +7,7 @@
     <form>
 
         <div class="form-group">
-            <a href="/portfolio/{{ $portfolio->id }}/positions/create" class="button--right">Neue Transaktion</a>
+            <a href="/portfolios/{{ $portfolio->id }}/positions/create" class="button--right">Neue Position</a>
         </div>
 
     </form>

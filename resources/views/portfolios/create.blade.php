@@ -9,7 +9,7 @@
 
         <div class="ct-panel__ct-body">
 
-            <form method=post action="/portfolios">
+            <form method="post" action="/portfolios">
 
                 {{csrf_field()}}
 

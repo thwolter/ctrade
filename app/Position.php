@@ -16,6 +16,6 @@ class Position extends Model
     }
 
     public function portfolio() {
-        return $this->hasOne('App\Portfolio');
+        return $this->belongsTo('App\Portfolio');
     }
 }
