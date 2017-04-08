@@ -29,9 +29,20 @@
                 </div>
                 <br>
 
-                <div class="form-group">
+                <div class="button-group">
                     <button type="submit" name="submit" class="button--right">Ändern</button>
                 </div>
+
+            </form>
+
+
+            <!-- form to delete portfolio -->
+            <form method="post" action="/portfolios/{{ $portfolio->id }}">
+
+                {{ csrf_field() }}
+
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" name="delete" class="btn-link text-danger">Portfolio löschen</button>
 
             </form>
 

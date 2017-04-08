@@ -7,3 +7,7 @@
   @extend .button;
   @extend .pull-right;
 }
+
+.text-danger {
+  color: $brand-danger !important;
+}
