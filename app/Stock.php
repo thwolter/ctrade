@@ -9,7 +9,6 @@
 namespace App;
 
 use App\Library\StockData;
-use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Instrument
 {
@@ -18,29 +17,32 @@ class Stock extends Instrument
         'currency'
     ];
 
-    protected $stockData_instance;
+    protected $stockData;
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
+
+    /**
+     * Initialize new StockData Instance with provided 'symbol'
+     *
+     * @param string $value
+     */
+    public function setSymbolAttribute($value) {
+    echo "set attribute";
+        $this->stockData = new StockData($value);
+        $this->attributes['symbol'] = $value;
 
     }
 
 
     /**
-     * Return the value for the requested key from stock quotes
+     * Provide an quotes array of existing of new YahooApi instance
      *
-     * @param string $id
-     * @return string
+     * @return StockData
      */
-    public function quotes($id)
-    {
-        if (is_null($this->stockData_instance))
-            $this->stockData_instance = new StockData($this->symbol);
+    private function stockData() {
 
-        return $this->stockData_instance->quotes($id);
+        if (is_null($this->stockData)) $this->stockData = new StockData($this->symbol);
+        return $this->stockData;
     }
-
 
     /**
      * Return the stock's price from quotes
@@ -49,7 +51,7 @@ class Stock extends Instrument
      */
     public function price()
     {
-        return $this->quotes('LastTradePriceOnly');
+        return $this->stockData()->LastTradePriceOnly;
     }
 
 
@@ -60,7 +62,7 @@ class Stock extends Instrument
      */
     public function currency()
     {
-        return $this->quotes('Currency');
+        return $this->stockData()->Currency;
     }
 
 
@@ -80,8 +82,7 @@ class Stock extends Instrument
      */
     public function name()
     {
-        return $this->quotes('Name');
+        return $this->stockData()->Name;
 
     }
-
 }

@@ -42,4 +42,6 @@ class Position extends Model
     public function total() {
         return 300; //fake value
     }
+
+
 }

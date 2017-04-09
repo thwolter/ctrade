@@ -2,7 +2,8 @@
 
 @section('container-content')
 
-    <p>shows a position with some further information, e.g. current value, risk, etc.</p>
+    <h4>{{ $position->name() }}</h4>
+    <p>aktuell: {{ $position->value() }} {{ $position->currency() }}</p>
 
 
     {!! Form::open(['url' => 'positions/'.$position->id, 'method' => 'delete']) !!}

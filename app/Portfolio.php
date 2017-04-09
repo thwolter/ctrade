@@ -19,5 +19,22 @@ class Portfolio extends Model
         return $this->hasMany('App\Position');
     }
 
+    public function cash() {
+        return 3000; //fake value;
+    }
+
+    public function valueAtRisk() {
+        //
+    }
+
+    public function total() {
+        $total = 0;
+        foreach ($this->positions as $position) {
+            $total = $total + $position->total();
+        }
+        return $total;
+    }
+
+
 }
 

@@ -23,10 +23,13 @@ class StockData
         $this->symbol = $symbol;
     }
 
+
     /**
-     * @return array
+     * Provide a cached version of Yahoo Quotes
+     *
+     * @return mixed
      */
-    public function quotes($id) {
+    public function quotes_array() {
 
         if (Cache::has('quotes'.$this->symbol)) {
             $quotes = Cache::get('quotes'.$this->symbol);
@@ -35,7 +38,19 @@ class StockData
             Cache::put('quotes'.$this->symbol, $quotes, 1);
         }
 
-        return $quotes['query']['results']['quote'][$id];
+        return $quotes['query']['results']['quote'];
 
+    }
+
+    /**
+     * Dynamically retrieve attributes on the model
+     *
+     * @param $key
+     * @return mixed
+     */
+    public function __get($key) {
+
+        if (array_key_exists($key, $this->quotes_array()))
+            return $this->quotes_array()[$key];
     }
 }
