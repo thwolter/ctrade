@@ -25,7 +25,6 @@
         <!-- main content -->
         <div class="container">
             <div class="row">
-                <!-- main content -->
                 <div>
                     @yield('content')
                 </div> <!-- end main content -->

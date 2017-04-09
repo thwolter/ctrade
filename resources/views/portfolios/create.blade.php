@@ -9,29 +9,32 @@
 
         <div class="ct-panel__ct-body">
 
-            <form method="post" action="/portfolios">
+            {!! Form::open(['route' => 'portfolios.store']) !!}
 
-                {{csrf_field()}}
+            @include('layouts.errors')
 
-                @include('layouts.errors')
+            <div class="form-group">
+                {!! Form::label('name', 'Name:') !!}
+                {!! Form::text('name', null, ['class' => 'form-control']) !!}
+            </div>
 
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="">
-                </div>
-                <br>
+            <div class="form-group">
+                {!! Form::label('currency', 'Währung:') !!}
+                {!! Form::text('currency', null, ['class' => 'form-control']) !!}
+            </div>
 
-                <div class="form-group">
-                    <label for="currency">Währung</label>
-                    <input type="text" name="currency" class="form-control" placeholder="">
-                </div>
-                <br>
+            <div class="form-group">
+                {!! Form::label('cash', 'Barbestand:') !!}
+                {!! Form::text('cash', null, ['class' => 'form-control']) !!}
+            </div>
 
-                <div class="form-group">
-                    <button type="submit" name="submit" class="button--right">Portfolio erstellen</button>
-                </div>
+            <div class="form-group">
 
-            </form>
+                {!! Form::submit('Portfolio erstellen', ['class' => 'button--right button--danger']) !!}
+
+            </div>
+
+            {!! Form::close() !!}
 
         </div>
     </div>

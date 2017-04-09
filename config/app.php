@@ -184,6 +184,7 @@ return [
         */
         HieuLe\Active\ActiveServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        PragmaRX\Countries\ServiceProvider::class,
 
     ],
 
@@ -241,6 +242,7 @@ return [
         'Active' => HieuLe\Active\Facades\Active::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Countries'=> PragmaRX\Countries\Facade::class,
 
     ],
 

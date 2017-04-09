@@ -32,8 +32,11 @@ class StockData
     public function quotes_array() {
 
         if (Cache::has('quotes'.$this->symbol)) {
+
             $quotes = Cache::get('quotes'.$this->symbol);
+
         } else {
+
             $quotes = $this->client->getQuotes($this->symbol);
             Cache::put('quotes'.$this->symbol, $quotes, 1);
         }

@@ -29,13 +29,18 @@
 
                         <ul class="dropdown-menu" role="menu">
 
+                            <li><a href="{{ route('portfolios.index') }}">Zeige alle Portfolios</a></li>
+
                             @php($portfolios = auth()->user()->portfolios)
+
+                            <hr class="navbar-separator">
+
                             @foreach($portfolios as $portfolio)
-                                <li><a href={{ '/portfolios/'.$portfolio->id }}>{{ $portfolio->name }}</a></li>
+                                <li><a href="{{ route('portfolios.show', $portfolio->id) }}">{{ $portfolio->name }}</a></li>
                             @endforeach
 
-                            <hr>
-                            <li><a href="/portfolios/create">Neues Portfolios</a></li>
+                            <hr class="navbar-separator">
+                            <li><a href="{{ route('portfolios.create') }}">Neues Portfolios</a></li>
                         </ul>
                     </li>
                 </ul>

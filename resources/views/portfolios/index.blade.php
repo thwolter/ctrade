@@ -2,39 +2,17 @@
 
 @section('content')
 
-    <!-- show portfolios -->
+    <!-- show list of portfolios -->
     @foreach($portfolios as $portfolio)
 
+        <!-- a single portfolio -->
         <section class="ct-panel">
 
             @include('portfolios.header')
 
             <div class="ct-panel__ct-body">
 
-                <!-- summary table -->
-                <div class="summary-table">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>Gesamtwert</td>
-                            <td>130 EUR</td>
-                        </tr>
-                        <tr>
-                            <td>Gewinn</td>
-                            <td>130 EUR</td>
-                        </tr>
-                        <tr>
-                            <td>Risiko</td>
-                            <td>130 EUR</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
 
-                <!-- summary chart -->
-                <div class="summary-chart">
-                    <img src="img/Pie Chart.png" class="img-responsive">
-                </div>
 
                 <div class="">
                     <a class="btn btn-primary inline-block-tight pull-right"
@@ -45,8 +23,10 @@
                     {{ $portfolio->currency }}
                 </p>
             </div>
-        </div><!-- end show portfolio -->
+        </section>
 
     @endforeach
 
 @endsection
+
+

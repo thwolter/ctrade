@@ -28,13 +28,10 @@ class Portfolio extends Model
     }
 
     public function total() {
-        $total = 0;
-        foreach ($this->positions as $position) {
-            $total = $total + $position->total();
-        }
-        return $total;
-    }
 
+        return $this->positions->sum->total();
+
+    }
 
 }
 
