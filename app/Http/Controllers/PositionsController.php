@@ -18,7 +18,8 @@ class PositionsController extends Controller
      */
     public function index(Portfolio $portfolio)
     {
-        return view('positions.index', compact('portfolio'));
+        $positions = $portfolio->positions;
+        return view('positions.index', compact('portfolio', 'positions'));
     }
 
     /**
@@ -48,12 +49,14 @@ class PositionsController extends Controller
 
         $portfolio = Portfolio::findOrFail($request->input('portfolio_id'));
 
-
-        $symbol = $request->get('symbol');
-        $stock = Stock::firstOrCreate(['symbol'=> $symbol, 'currency'=>$currency]);
+        $stock = Stock::firstOrCreate([
+            'symbol'=> $request->get('symbol'),
+            'currency'=>$request->get('symbol') ]);
 
         $stock->positions()->save($position);
         $portfolio->positions()->save($position);
+
+        return redirect(route('positions.index', $portfolio->id));
 
 
 

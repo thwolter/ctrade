@@ -14,11 +14,11 @@ class StockTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->stock = factory('App\Stock');
+        $this->stock = factory('App\Stock')->create();
     }
 
-    public function test_can_create_stock()
+    public function test_price_is_a_number()
     {
-        $this->
+        $this->assertGreaterThan(0, $this->stock->price());
     }
 }

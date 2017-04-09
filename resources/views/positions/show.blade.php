@@ -4,6 +4,7 @@
 
     <p>shows a position with some further information, e.g. current value, risk, etc.</p>
 
+
     {!! Form::open(['url' => 'positions/'.$position->id, 'method' => 'delete']) !!}
 
         <div class="form-group">

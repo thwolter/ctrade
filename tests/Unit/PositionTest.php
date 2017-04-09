@@ -13,7 +13,7 @@ class PositionTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->portfolio->factory('App\Portfolio');
+        //$this->portfolio->factory('App\Portfolio');
     }
 
 

@@ -20,4 +20,7 @@ abstract class Instrument extends Model
     abstract  function price();
 
     abstract function delta();
+
+    abstract function name();
+
 }
