@@ -8,6 +8,7 @@
 
 namespace App;
 
+use App\Library\FxData;
 use App\Library\StockData;
 
 class Stock extends Instrument
@@ -26,7 +27,7 @@ class Stock extends Instrument
      * @param string $value
      */
     public function setSymbolAttribute($value) {
-    echo "set attribute";
+
         $this->stockData = new StockData($value);
         $this->attributes['symbol'] = $value;
 

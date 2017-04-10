@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Library\FxData;
 use Illuminate\Database\Eloquent\Model;
+
 
 class Position extends Model
 {
@@ -40,7 +42,16 @@ class Position extends Model
     }
 
     public function total() {
-        return 300; //fake value
+
+        $portfolio_currency = $this->portfolio->currency;
+
+        $fxRate = 1;
+        if ($portfolio_currency != $this->currency()) {
+
+            $fx = new FxData($this->currency().$this->portfolio->currency);
+            $fxRate = $fx->Rate;
+        }
+        return $this->value() * $fxRate; //fake value
     }
 
 
