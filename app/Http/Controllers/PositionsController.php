@@ -10,6 +10,9 @@ use App\Stock;
 class PositionsController extends Controller
 {
 
+    protected $stock;
+
+
     /**
      * Display a listing of the resource.
      *

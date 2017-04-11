@@ -9,8 +9,6 @@
 
     <hr>
 
-
-
     <table class="table table-striped">
         <thead>
             <tr>
@@ -61,6 +59,14 @@
         </div>
 
     </form>
+
+
+    <!-- Form with method  -->
+    {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'GET']) !!}
+
+        {{ Form::input('search', 'q', null, ['placeholder' => 'Search ...', 'class' => 'form-control'])  }}
+
+    {!! Form::close() !!}
 
 @endsection
 

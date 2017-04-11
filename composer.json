@@ -12,7 +12,8 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.3.0",
         "pragmarx/countries": "^0.1.0",
-        "scheb/yahoo-finance-api": "^1.4"
+        "scheb/yahoo-finance-api": "^1.4",
+        "dirkolbrich/yahoo-finance-query": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

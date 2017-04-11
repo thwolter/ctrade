@@ -9,6 +9,7 @@
 namespace App\Library;
 
 use Illuminate\Support\Facades\Cache;
+use Scheb\YahooFinanceApi\ApiClient;
 
 
 class MarketData
@@ -27,8 +28,9 @@ class MarketData
      */
     public function __construct($symbol) {
 
-        $this->client = new \Scheb\YahooFinanceApi\ApiClient();
+        $this->client = new ApiClient();
         $this->symbol = $symbol;
+
     }
 
 

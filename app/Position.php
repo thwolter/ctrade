@@ -51,8 +51,9 @@ class Position extends Model
             $fx = new FxData($this->currency().$this->portfolio->currency);
             $fxRate = $fx->Rate;
         }
-        return $this->value() * $fxRate; //fake value
+        return $this->value() * $fxRate;
     }
 
 
 }
+

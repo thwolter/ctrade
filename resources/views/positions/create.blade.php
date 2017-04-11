@@ -2,6 +2,7 @@
 
 @section('container-content')
 
+
     <form method="post" action="/portfolios/{{ $portfolio->id }}/positions">
 
         <input type="hidden" name="portfolio_id" value="{{ $portfolio->id }}">
