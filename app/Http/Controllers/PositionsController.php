@@ -57,6 +57,15 @@ class PositionsController extends Controller
             'currency'=>$request->get('symbol') ]);
 
         $stock->positions()->save($position);
+
+        /**
+         * how it should work where param is an Array
+         *
+         * $instrument = \App\Repositories\Instrument\Instrument($request);
+         * $instrument->firstOrCreate($request)->positions()->save($position);
+         *
+         */
+
         $portfolio->positions()->save($position);
 
         return redirect(route('positions.index', $portfolio->id));
