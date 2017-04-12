@@ -57,9 +57,10 @@ class PortfoliosController extends Controller
             'currency' => 'required'
         ]);
 
-        auth()->user()->obtain(new Portfolio($request->all()));
+        $portfolio = new Portfolio($request->all());
+        auth()->user()->portfolios()->save($portfolio);
 
-        return redirect('/portfolios');
+        return redirect(route('portfolios.show', $portfolio->id));
     }
 
     /**
@@ -68,19 +69,21 @@ class PortfoliosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Portfolio $portfolio)
+    public function show($id)
     {
+        $portfolio = Portfolio::findOrFail($id);
         return view('portfolios.show', compact('portfolio'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Portfolio $portfolio)
+    public function edit($id)
     {
+        $portfolio = Portfolio::findOrFail($id);
         return view('portfolios.edit', compact('portfolio'));
     }
 
@@ -95,7 +98,7 @@ class PortfoliosController extends Controller
     {
         Portfolio::whereId($id)->update(['name' => $request->name, 'currency'=> $request->currency]);
 
-        return redirect('/portfolios');
+        return redirect(route('portfolios.show', $id));
     }
 
     /**
@@ -108,7 +111,7 @@ class PortfoliosController extends Controller
     {
         Portfolio::whereId($id)->delete($id);
 
-        return redirect('/portfolios');
+        return redirect(route('portfolios.index'));
     }
 
 

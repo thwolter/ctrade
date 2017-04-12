@@ -3,14 +3,17 @@
 
     <header class="ct-header">
 
+
         @if (isset($portfolios))
 
-            <h3 class="title"><a href="/portfolios/{{ $portfolio->id }}"> {{ $portfolio->name }}</a></h3>
+            <!-- header if portfolio list is shown-->
+            <h3 class="title"><a href="{{ route('portfolios.show', $portfolio->id) }}"> {{ $portfolio->name }}</a></h3>
 
         @else
 
+            <!-- header for a single portfolio -->
             <h3 class="title">{{ $portfolio->name }}</h3>
-            <a href="/portfolios/{{ $portfolio->id }}/edit" class="link">
+            <a href="{{ route('portfolios.edit', $portfolio->id) }}" class="link">
                 <icon class="glyphicon glyphicon-pencil"></icon>Bearbeiten</a>
 
         @endif
