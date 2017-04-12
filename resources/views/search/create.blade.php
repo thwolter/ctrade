@@ -3,10 +3,9 @@
 @section('container-content')
 
     <!-- Form with method  -->
-    {!! Form::open(['route' => ['positions.search', $portfolio->id], 'method' => 'Get']) !!}
+    {!! Form::open(['route' => ['search.index', $portfolio], 'method' => 'Get']) !!}
 
-        <input type="hidden" name="portfolio_id" value="{{ $portfolio}}">
-
+       
         @include('layouts.errors')
 
        <!-- search form input -->
