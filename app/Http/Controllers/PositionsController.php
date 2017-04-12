@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Portfolio;
 use App\Position;
 use App\Stock;
-use DirkOlbrich\YahooFinanceQuery\YahooFinanceQuery;
+
 
 
 class PositionsController extends Controller
@@ -30,12 +30,12 @@ class PositionsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param \App\Portfolio $portfolio
+     * @param int $id portfolio id
      * @return \Illuminate\Http\Response
      */
     public function create(Portfolio $portfolio)
     {
-        return view ('positions.create', compact('portfolio'));
+        return view('search.create', compact('portfolio'));
     }
 
     /**
@@ -71,8 +71,6 @@ class PositionsController extends Controller
         $portfolio->positions()->save($position);
 
         return redirect(route('positions.index', $portfolio->id));
-
-
 
     }
 
@@ -126,22 +124,6 @@ class PositionsController extends Controller
         $position->delete();
 
         return redirect('/portfolios/'.$portfolio_id.'/positions');
-    }
-
-
-    public function search(Request $request, Portfolio $portfolio) {
-
-        $query = new YahooFinanceQuery;
-
-        $string = $request->get('search');
-        $suggest =  $query->symbolSuggest($string)->get();
-
-        return view ('positions.search', compact('portfolio', 'suggest'));
-    }
-
-    public function searchItem($symbol) {
-
-        return $symbol;
     }
 
 }
