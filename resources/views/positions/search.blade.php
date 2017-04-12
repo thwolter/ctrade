@@ -20,7 +20,7 @@
                 <td>{{ ++$count }}</td>
                 <td>{{ $item['typeDisp'] }}</td>
                 <td>{{ $item['symbol'] }}</td>
-                <td><a href="{{ route('positions.searchItem', $item['name']) }}">{{ $item['name'] }}</a></td>
+                <td><a href="{{ route('positions.searchItem', $item['symbol']) }}">{{ $item['name'] }}</a></td>
                 <td>{{ $item['exchDisp'] }}</td>
             </tr>
         @endforeach
