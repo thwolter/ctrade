@@ -52,21 +52,16 @@
             @endforeach
         </tbody>
     </table>
-    <form>
+
+    <!-- Form with method Post -->
+    {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'Get']) !!}
 
         <div class="form-group">
-            <a href="/portfolios/{{ $portfolio->id }}/positions/create" class="button--right">Neue Position</a>
+            {!! Form::submit('Neue Position', ['class' => 'button--right']) !!}
         </div>
 
-    </form>
-
-
-    <!-- Form with method  -->
-    {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'GET']) !!}
-
-        {{ Form::input('search', 'q', null, ['placeholder' => 'Search ...', 'class' => 'form-control'])  }}
-
     {!! Form::close() !!}
+
 
 @endsection
 

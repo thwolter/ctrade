@@ -40,6 +40,7 @@ class PortfoliosController extends Controller
      */
     public function create()
     {
+
         return view('portfolios.create');
     }
 
@@ -109,6 +110,7 @@ class PortfoliosController extends Controller
 
         return redirect('/portfolios');
     }
+
 
 }
 

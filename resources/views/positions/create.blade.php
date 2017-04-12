@@ -2,26 +2,25 @@
 
 @section('container-content')
 
+    <!-- Form with method  -->
+    {!! Form::open(['route' => ['positions.search', $portfolio->id], 'method' => 'Get']) !!}
 
-    <form method="post" action="/portfolios/{{ $portfolio->id }}/positions">
-
-        <input type="hidden" name="portfolio_id" value="{{ $portfolio->id }}">
-
-        {{csrf_field()}}
+        <input type="hidden" name="portfolio_id" value="{{ $portfolio}}">
 
         @include('layouts.errors')
 
-        <div class="form-group">
-            <label for="symbol">Symbol</label>
-            <input type="text" name="symbol" class="form-control" placeholder="">
-        </div>
-        <br>
-
-        <div class="form-group">
-            <button type="submit" name="submit" class="button--right">Position hinzufügen</button>
+       <!-- search form input -->
+       <div class="form-group">
+           {!! Form::label('search', 'Suchen:') !!}
+           {!! Form::text('search', null, ['placeholder' => 'Search ...', 'class' => 'form-control']) !!}
         </div>
 
-    </form>
+        <div class="form-group">
+            {!! Form::submit('Suchen', ['class' => 'button--right']) !!}
+        </div>
+
+
+    {!! Form::close() !!}
 
 
 @endsection

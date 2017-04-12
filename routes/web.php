@@ -29,14 +29,20 @@ Route::get('/about', function() {
 
 
 Route::resource('/portfolios', 'PortfoliosController');
+
+
+/*
+ * Positions resources
+ */
+
 Route::resource('/portfolios/{portfolio}/positions', 'PositionsController',
     ['except' => ['edit', 'update', 'show', 'destroy']]);
+
 Route::get('positions/{position}', ['as' => 'positions.show', 'uses' => 'PositionsController@show']);
 Route::delete('positions/{position}', ['as' => 'positions.destroy', 'uses' => 'PositionsController@destroy']);
+Route::get('portfolios/{portfolio}/positions/search', ['as' => 'positions.search', 'uses' => 'PositionsController@search']);
+Route::get('portfolios/{portfolio}/positions/item', ['as' => 'positions.searchItem', 'uses' => 'PositionsController@searchItem']);
 
-
-//Route::get('/portfolios/{portfolio}/transactions', ['as' => 'transactions', 'uses' => 'PositionsController@index']);
-//Route::get('/portfolios/{portfolio}/transactions', ['as' => 'transactions', 'uses' => 'PositionsController@index']);
 
 
 // User auth

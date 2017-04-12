@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Portfolio;
 use App\Position;
 use App\Stock;
+use DirkOlbrich\YahooFinanceQuery\YahooFinanceQuery;
+
 
 class PositionsController extends Controller
 {
@@ -125,4 +127,21 @@ class PositionsController extends Controller
 
         return redirect('/portfolios/'.$portfolio_id.'/positions');
     }
+
+
+    public function search(Request $request, Portfolio $portfolio) {
+
+        $query = new YahooFinanceQuery;
+
+        $string = $request->get('search');
+        $suggest =  $query->symbolSuggest($string)->get();
+
+        return view ('positions.search', compact('portfolio', 'suggest'));
+    }
+
+    public function searchItem($symbol) {
+
+        return $symbol;
+    }
+
 }
