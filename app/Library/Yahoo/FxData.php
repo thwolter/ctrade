@@ -6,10 +6,10 @@
  * Time: 19:35
  */
 
-namespace App\Library;
+namespace App\Library\Yahoo;
 
 
-class StockData extends MarketData
+class FxData extends MarketData
 {
 
     /**
@@ -20,8 +20,16 @@ class StockData extends MarketData
      */
     public function __get($key) {
 
-        $data = $this->getData('getQuotes')['query']['results']['quote'];
+        $data = $this->getData('getCurrenciesExchangeRate')['query']['results']['rate'];
 
         if (array_key_exists($key, $data)) return $data[$key];
+    }
+
+    public function price($symbol) {
+
+    }
+
+    public function summary($symbol) {
+
     }
 }

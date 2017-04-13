@@ -29,21 +29,15 @@ Route::get('/about', function() {
 
 
 Route::resource('/portfolios', 'PortfoliosController');
+Route::resource('/portfolios/{portfolio}/positions', 'PositionsController');
 
 
 /*
- * Positions resources
+ * Search resources
  */
-
-Route::resource('/portfolios/{portfolio}/positions', 'PositionsController',
-    ['except' => ['edit', 'update', 'show', 'destroy']]);
-
-Route::get('positions/{position}', ['as' => 'positions.show', 'uses' => 'PositionsController@show']);
-Route::delete('positions/{position}', ['as' => 'positions.destroy', 'uses' => 'PositionsController@destroy']);
-Route::get('portfolios/{portfolio}/positions/search', ['as' => 'positions.search', 'uses' => 'PositionsController@search']);
-Route::get('portfolios/{portfolio}/positions/item', ['as' => 'positions.searchItem', 'uses' => 'PositionsController@searchItem']);
-
-
+Route::get('portfolios/{portfolio}/search/index', ['as' => 'search.index', 'uses' => 'SearchController@index']);
+Route::get('portfolios/{portfolio}/search/item', ['as' => 'search.item', 'uses' => 'SearchController@item']);
+Route::get('portfolios/{portfolio}/search/show', ['as' => 'search.show', 'uses' => 'SearchController@show']);
 
 // User auth
 Auth::routes();

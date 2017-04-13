@@ -3,9 +3,8 @@
 @section('container-content')
 
     <!-- Form with method  -->
-    {!! Form::open(['route' => ['search.index', $portfolio], 'method' => 'Get']) !!}
+    {!! Form::open(['route' => ['search.index', $portfolio->id], 'method' => 'Get']) !!}
 
-       
         @include('layouts.errors')
 
        <!-- search form input -->

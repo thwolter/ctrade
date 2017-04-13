@@ -6,17 +6,20 @@
  * The public function 'getData' delivers the cached array from Yahoo Api request.
  */
 
-namespace App\Library;
+namespace App\Library\Yahoo;
 
+use App\Library\Contracts\FinanceInterface;
 use Illuminate\Support\Facades\Cache;
 use Scheb\YahooFinanceApi\ApiClient;
 
 
-class MarketData
+abstract class MarketData implements FinanceInterface
 {
 
     protected $client;
     protected $symbol;
+
+    protected $instrument;
 
     protected $cacheTime = 10;
 
@@ -54,4 +57,17 @@ class MarketData
         return $data;
 
     }
+
+    public function price($symbol) {
+
+        return $this->instrument->price($symbol);
+
+    }
+
+    public function summary($symbol) {
+
+        return $this->instrument->summary($symbol);
+
+    }
+
 }

@@ -8,8 +8,8 @@
 
 namespace App;
 
-use App\Library\FxData;
-use App\Library\StockData;
+use App\Library\Yahoo\FxData;
+use App\Library\Yahoo\StockData;
 
 class Stock extends Instrument
 {

@@ -18,11 +18,12 @@ class PositionsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \App\Portfolio $portfolio
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function index(Portfolio $portfolio)
+    public function index($id)
     {
+        $portfolio = Portfolio::findOrFail($id);
         $positions = $portfolio->positions;
         return view('positions.index', compact('portfolio', 'positions'));
     }
@@ -30,11 +31,12 @@ class PositionsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param int $id portfolio id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function create(Portfolio $portfolio)
+    public function create($id)
     {
+        $portfolio = Portfolio::findOrFail($id);
         return view('search.create', compact('portfolio'));
     }
 
@@ -59,15 +61,6 @@ class PositionsController extends Controller
             'currency'=>$request->get('symbol') ]);
 
         $stock->positions()->save($position);
-
-        /**
-         * how it should work where param is an Array
-         *
-         * $instrument = \App\Repositories\Instrument\Instrument($request);
-         * $instrument->firstOrCreate($request)->positions()->save($position);
-         *
-         */
-
         $portfolio->positions()->save($position);
 
         return redirect(route('positions.index', $portfolio->id));
@@ -81,11 +74,12 @@ class PositionsController extends Controller
      * @return \Illuminate\Http\Response
      *
      */
-    public function show($id)
+    public function show($pid, $id)
     {
         $position = Position::findOrFail($id);
         $portfolio = $position->portfolio;
-        return view('positions.show', compact('position', 'portfolio'));
+
+        return view('positions.show', compact('portfolio', 'position'));
     }
 
     /**

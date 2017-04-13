@@ -38,11 +38,11 @@
 
         <tbody>
             @php( $count = 0)
-            @foreach($positions as $position)
+            @foreach($portfolio->positions as $position)
                 <tr>
                     <td>{{ ++$count }}</td>
                     <td>{{ $position->type() }}</td>
-                    <td><a href="{{ route('positions.show', $position->id) }}">{{ $position->name() }}</a></td>
+                    <td><a href="{{ route('positions.show', [$portfolio->id, $position->id]) }}">{{ $position->name() }}</a></td>
                     <td>{{ $position->quantity() }}</td>
                     <td>{{ $position->value() }}</td>
                     <td>{{ $position->currency() }}</td>

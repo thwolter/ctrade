@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Library\FxData;
+use App\Library\Yahoo\FxData;
 use Illuminate\Database\Eloquent\Model;
 
 
