@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use \App\Library\FxData;
+use \App\Library\Yahoo\FxData;
 
 class FxTest extends TestCase
 {

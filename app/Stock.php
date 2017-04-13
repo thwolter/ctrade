@@ -8,6 +8,7 @@
 
 namespace App;
 
+use App\Library\StockRepository;
 use App\Library\Yahoo\FxData;
 use App\Library\Yahoo\StockData;
 
@@ -20,6 +21,13 @@ class Stock extends Instrument
 
     protected $stockData;
 
+    protected $data;
+
+
+    public function __construct(array $attributes = []) {
+        parent::__construct($attributes);
+        $this->data = new StockRepository($this->symbol);
+    }
 
     /**
      * Initialize new StockData Instance with provided 'symbol'
@@ -30,7 +38,6 @@ class Stock extends Instrument
 
         $this->stockData = new StockData($value);
         $this->attributes['symbol'] = $value;
-
     }
 
 
@@ -52,7 +59,10 @@ class Stock extends Instrument
      */
     public function price()
     {
-        return $this->stockData()->LastTradePriceOnly;
+        $this->data = new StockRepository($this->symbol);
+        return dd($this);
+
+        return $this->data->price();
     }
 
 

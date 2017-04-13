@@ -8,7 +8,7 @@
 
 namespace App\Library;
 
-use App\Library\Yahoo\Repository;
+//use App\Library\Repository;
 
 
 class StockRepository extends Repository
@@ -16,7 +16,7 @@ class StockRepository extends Repository
 
     function instrument() {
 
-        return 'App\Library\Yahoo\StockData';
+        return 'App\Library\Yahoo\StockFinance';
     }
 
 }

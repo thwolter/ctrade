@@ -114,10 +114,9 @@ class PositionsController extends Controller
     public function destroy($id)
     {
         $position = Position::find($id);
-        $portfolio_id = $position->portfolio->id;
         $position->delete();
 
-        return redirect('/portfolios/'.$portfolio_id.'/positions');
+        return redirect(route('positions.index', $position->portfolio->id));
     }
 
 }
