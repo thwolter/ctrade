@@ -177,6 +177,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\InstrumentServiceProvider::class,
 
 
         /*
@@ -185,6 +186,7 @@ return [
         HieuLe\Active\ActiveServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         PragmaRX\Countries\ServiceProvider::class,
+
 
     ],
 

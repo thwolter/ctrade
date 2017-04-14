@@ -8,11 +8,9 @@
 
 namespace App;
 
-use App\Repositories\FinancialRepository as Financial;
-use App\Repositories\Yahoo\FxData;
-use App\Repositories\Yahoo\StockData;
+use Illuminate\Database\Eloquent\Model;
 
-class Stock extends Instrument
+class Stock extends Model
 {
     protected $fillable = ['symbol'];
 }

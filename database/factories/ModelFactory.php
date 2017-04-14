@@ -38,8 +38,7 @@ $factory->define(App\Portfolio::class, function(Faker\Generator $faker) {
 
 $factory->define(App\Stock::class, function() {
     return [
-        'symbol' => 'ALV.DE',
-        'currency' => 'EUR',
+        'symbol' => 'ALV.DE'
     ];
 });
 

@@ -1,24 +1,26 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Thomas
- * Date: 14.04.17
- * Time: 06:42
- */
+
 
 namespace App\Repositories;
 
-use App\Repositories\Contracts\FinanceInterface;
-use App\Repositories\Contracts\RiskInterface;
+
+use App\Repositories\Contracts\InstrumentInterface;
 
 
-class InstrumentRepository implements FinanceInterface, RiskInterface
+class InstrumentRepository implements InstrumentInterface
 {
 
-    protected $model;
-    protected $financial;
-    protected $type;
-    protected $classModel;
+    // can be initialized with short or long names
+    protected $shortKeys = ['E' =>'ETF', 'S' => 'Stock', 'I' => 'Index', 'C' => 'Currency'];
+
+    // standard settings for blades, model, and financial data
+    protected $prefixBlade = 'instruments.';
+    protected $prefixModel = 'App\\';
+    protected $suffixFinancial = "Financial";
+
+    private $financial;
+    private $model;
+    private $type;
 
 
     /**
@@ -26,9 +28,11 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
      *
      * @param string $type - defining instrument type
      */
-    public function __construct($type) {
+    public function __construct($type)
+    {
+        if (array_key_exists($type, $this->shortKeys)) $type = $this->shortKeys[$type];
 
-        $this->map($type);
+        $this->type = strtolower($type);
     }
 
 
@@ -38,53 +42,47 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
      * @param string $type - defining instrument type
      * @return InstrumentRepository
      */
-    static public function make($type) {
-
+    static public function make($type)
+    {
         return new InstrumentRepository($type);
 
     }
 
-
-    /**
-     * Map instrument type to financial class and model class.
-     *
-     * @param string $type
-     */
-    private function map($type) {
-
-        $type = strtoupper(substr($type, 0,1));
-
-        switch($type) {
-            case 'S': //Stock
-                $this->classModel = 'App\Stock';
-                $this->type = 'Stock';
-                break;
-            case 'E': //ETF
-                $this->classModel = 'App\Stock';
-                $this->type = 'Stock';
-                break;
-            case 'I': //Index
-                $this->classModel = 'App\Stock';
-                $this->type = 'Stock';
-                break;
-            case 'C': //Currency
-                $this->classModel = 'App\FX';
-                $this->type = 'Fx';
-                break;
-            default:
-                throw new \Exception("Parameter 'type' must be [S]tock, [E]TF, [I]ndex, of [C]urrency");
-                break;
-        }
+    public function blade()
+    {
+        return $this->prefixBlade.$this->type;
     }
 
-    public function firstOrCreate(array $attributes, array $joining = [], $touch = true) {
 
-        $this->financial = FinancialRepository::make($this->type, $attributes);
-        $this->model = $this->classModel::firstOrCreate($attributes, $joining, $touch);
+    private function modelClass()
+    {
+        return $this->prefixModel.ucfirst($this->type);
+    }
+
+
+    private function financialType()
+    {
+        return ucfirst($this->type);
+    }
+
+
+    public function firstOrCreate(array $attributes, array $joining = [], $touch = true)
+    {
+        $this->financial = FinancialRepository::make($this->financialType(), $attributes);
+        $this->model = $this->modelClass()::firstOrCreate($attributes, $joining, $touch);
+
+        return $this;
+    }
+
+
+    public function with(array $attributes)
+    {
+        $this->financial = FinancialRepository::make($this->financialType(), $attributes);
 
         return $this;
 
     }
+
 
     public function positions()
     {
@@ -95,6 +93,11 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
     public function price()
     {
         return $this->financial->price;
+    }
+
+    public function name()
+    {
+        return $this->financial->name;
     }
 
     public function summary()
