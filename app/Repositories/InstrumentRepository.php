@@ -23,7 +23,8 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
 
     /**
      * InstrumentRepository constructor.
-     * @param $type
+     *
+     * @param string $type - defining instrument type
      */
     public function __construct($type) {
 
@@ -31,6 +32,12 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
     }
 
 
+    /**
+     * Static function to create instance of a InstrumentRepository.
+     *
+     * @param string $type - defining instrument type
+     * @return InstrumentRepository
+     */
     static public function make($type) {
 
         return new InstrumentRepository($type);
@@ -38,12 +45,35 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
     }
 
 
+    /**
+     * Map instrument type to financial class and model class.
+     *
+     * @param string $type
+     */
     private function map($type) {
 
+        $type = strtoupper(substr($type, 0,1));
+
         switch($type) {
-            case 'S':
+            case 'S': //Stock
                 $this->classModel = 'App\Stock';
                 $this->type = 'Stock';
+                break;
+            case 'E': //ETF
+                $this->classModel = 'App\Stock';
+                $this->type = 'Stock';
+                break;
+            case 'I': //Index
+                $this->classModel = 'App\Stock';
+                $this->type = 'Stock';
+                break;
+            case 'C': //Currency
+                $this->classModel = 'App\FX';
+                $this->type = 'Fx';
+                break;
+            default:
+                throw new \Exception("Parameter 'type' must be [S]tock, [E]TF, [I]ndex, of [C]urrency");
+                break;
         }
     }
 

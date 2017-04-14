@@ -9,6 +9,7 @@ use App\Repositories\FinancialRepository;
 
 class FinancialRepositoryTest extends TestCase
 {
+    use DatabaseMigrations;
 
     protected $stock;
     protected $fx;

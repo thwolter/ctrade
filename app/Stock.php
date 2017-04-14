@@ -14,8 +14,5 @@ use App\Repositories\Yahoo\StockData;
 
 class Stock extends Instrument
 {
-    protected $fillable = [
-        'symbol',
-        'currency'
-    ];
+    protected $fillable = ['symbol'];
 }
