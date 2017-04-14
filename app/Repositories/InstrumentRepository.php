@@ -18,11 +18,16 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
     protected $model;
     protected $financial;
     protected $type;
+    protected $classModel;
 
 
+    /**
+     * InstrumentRepository constructor.
+     * @param $type
+     */
     public function __construct($type) {
 
-        $this->makeFromType($type);
+        $this->map($type);
     }
 
 
@@ -33,11 +38,11 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
     }
 
 
-    private function makeFromType($type) {
+    private function map($type) {
 
         switch($type) {
             case 'S':
-                $this->model = 'App\Stock';
+                $this->classModel = 'App\Stock';
                 $this->type = 'Stock';
         }
     }
@@ -45,7 +50,7 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
     public function firstOrCreate(array $attributes, array $joining = [], $touch = true) {
 
         $this->financial = FinancialRepository::make($this->type, $attributes);
-        $this->model::firstOrCreate($attributes, $joining, $touch);
+        $this->model = $this->classModel::firstOrCreate($attributes, $joining, $touch);
 
         return $this;
 
@@ -57,14 +62,13 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
     }
 
 
+    public function price()
+    {
+        return $this->financial->price;
+    }
+
     public function summary()
     {
         // TODO: Implement summary() method.
-    }
-
-
-    public function price()
-    {
-        return $this->financial->price();
     }
 }

@@ -12,6 +12,12 @@ class InstrumentRepositoryTest extends TestCase
 {
     use DatabaseMigrations;
 
+    public function setUp() {
+
+        parent::setUp();
+
+    }
+
     public function test_position_is_created()
     {
         $this->createStock('ALV.DE', 'EUR');
@@ -31,7 +37,10 @@ class InstrumentRepositoryTest extends TestCase
         $position = new Position;
         $instrument->positions()->save($position);
         $portfolio->positions()->save($position);
+
+        return $instrument;
     }
+
 
     public function test_stock_has_price() {
 

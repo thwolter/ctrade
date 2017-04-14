@@ -16,8 +16,7 @@ class FinancialRepository
 
     public function __construct($type, $attributes) {
 
-        $this->attributes = $attributes;
-        $this->makeInstrument($type);
+        $this->makeInstrument($type, $attributes);
     }
 
 
@@ -27,38 +26,20 @@ class FinancialRepository
     }
 
 
-    private function makeInstrument($type) {
+    private function makeInstrument($type, $attributes) {
 
         switch ($type) {
 
-            case 'Stock': $this->instrument = $this->stockFinancial::make($this->attributes); break;
-            case 'Fx':    $this->instrument = $this->fxFinancial::make($this->attributes); break;
+            case 'Stock': $this->instrument = $this->stockFinancial::make($attributes); break;
+            case 'Fx':    $this->instrument = $this->fxFinancial::make($attributes); break;
         }
 
         return $this;
     }
 
 
-    public function price() {
+    public function __get($name) {
 
-        return $this->instrument->price();
-
+        return $this->instrument->$name();
     }
-
-    public function summary() {
-
-        return $this->instrument->summary();
-
-    }
-
-    public function name() {
-
-        return $this->instrument->name();
-    }
-
-    public function currency() {
-
-        return $this->instrument->currency();
-    }
-
 }

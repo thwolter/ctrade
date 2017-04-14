@@ -24,29 +24,30 @@ class FinancialRepositoryTest extends TestCase
     public function test_make_FinancialRepository()
     {
         $stock = FinancialRepository::make('Stock',['symbol' => 'ALV.DE']);
-        $this->assertGreaterThan(0, $this->stock->price());
+        $this->assertInstanceOf('App\Repositories\FinancialRepository', $stock);
     }
+
 
     public function test_stock_price_is_positive_number()
     {
-        $this->assertGreaterThan(0, $this->stock->price());
+        $this->assertGreaterThan(0, $this->stock->price);
     }
 
     public function test_stock_name_starts_with_Allianz()
     {
 
-        $this->assertStringStartsWith('ALLIANZ', $this->stock->name());
+        $this->assertStringStartsWith('ALLIANZ', $this->stock->name);
     }
 
     public function test_fx_price_is_positive_number()
     {
-        $this->assertGreaterThan(0, $this->fx->price());
+        $this->assertGreaterThan(0, $this->fx->price);
     }
 
     public function test_fx_name_starts_with_EURUSD()
     {
 
-        $this->assertStringStartsWith('EURUSD', $this->fx->name());
+        $this->assertStringStartsWith('EURUSD', $this->fx->name);
     }
 
 }
