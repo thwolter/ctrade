@@ -8,9 +8,9 @@
 
 namespace App;
 
-use App\Library\StockRepository;
-use App\Library\Yahoo\FxData;
-use App\Library\Yahoo\StockData;
+use App\Repositories\FinancialRepository as Financial;
+use App\Repositories\Yahoo\FxData;
+use App\Repositories\Yahoo\StockData;
 
 class Stock extends Instrument
 {
@@ -19,37 +19,17 @@ class Stock extends Instrument
         'currency'
     ];
 
-    protected $stockData;
-
-    protected $data;
 
 
     public function __construct(array $attributes = []) {
         parent::__construct($attributes);
-        $this->data = new StockRepository($this->symbol);
-    }
-
-    /**
-     * Initialize new StockData Instance with provided 'symbol'
-     *
-     * @param string $value
-     */
-    public function setSymbolAttribute($value) {
-
-        $this->stockData = new StockData($value);
-        $this->attributes['symbol'] = $value;
+        $this->financial = Financial::make('Stock', $this->symbol);
     }
 
 
-    /**
-     * Provide an quotes array of existing of new YahooApi instance
-     *
-     * @return StockData
-     */
-    private function stockData() {
+    public function model() {
 
-        if (is_null($this->stockData)) $this->stockData = new StockData($this->symbol);
-        return $this->stockData;
+        $this->model = 'App\Stock';
     }
 
     /**
@@ -59,10 +39,9 @@ class Stock extends Instrument
      */
     public function price()
     {
-        $this->data = new StockRepository($this->symbol);
-        return dd($this);
+        $this->financial = Financial::make('Stock', $this->symbol);
 
-        return $this->data->price();
+        return $this->financial->price();
     }
 
 
@@ -73,7 +52,9 @@ class Stock extends Instrument
      */
     public function currency()
     {
-        return $this->stockData()->Currency;
+
+        $this->financial = Financial::make('Stock', $this->symbol);
+        return $this->financial->currency();
     }
 
 
@@ -93,7 +74,7 @@ class Stock extends Instrument
      */
     public function name()
     {
-        return $this->stockData()->Name;
+        return $this->financial->name();
 
     }
 }

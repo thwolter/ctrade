@@ -6,18 +6,18 @@
  * The public function 'getData' delivers the cached array from Yahoo Api request.
  */
 
-namespace App\Library\Yahoo;
+namespace App\Repositories\Yahoo;
 
-use App\Library\Contracts\FinanceInterface;
+
 use Illuminate\Support\Facades\Cache;
 use Scheb\YahooFinanceApi\ApiClient;
+use App\Repositories\Contracts\FinanceInterface;
 
 
-abstract class MarketData implements FinanceInterface
-{
+abstract class BaseFinancial implements FinanceInterface {
+
 
     protected $client;
-    protected $symbol;
 
     protected $instrument;
 
@@ -29,11 +29,9 @@ abstract class MarketData implements FinanceInterface
      *
      * @param $symbol
      */
-    public function __construct($symbol) {
+    public function __construct() {
 
         $this->client = new ApiClient();
-        $this->symbol = $symbol;
-
     }
 
 
@@ -42,32 +40,19 @@ abstract class MarketData implements FinanceInterface
      * @param string $fun
      * @return mixed
      */
-    public function getData($fun) {
+    public function getData($fun, $symbol) {
 
-        if (Cache::has($fun.$this->symbol)) {
+        if (Cache::has($fun.$symbol)) {
 
-            $data = Cache::get($fun.$this->symbol);
+            $data = Cache::get($fun.$symbol);
 
         } else {
 
-            $data = $this->client->$fun($this->symbol);
-            Cache::put($fun.$this->symbol, $data, $this->cacheTime);
+            $data = $this->client->$fun($symbol);
+            Cache::put($fun.$symbol, $data, $this->cacheTime);
         }
 
         return $data;
 
     }
-
-    public function price($symbol) {
-
-        return $this->instrument->price($symbol);
-
-    }
-
-    public function summary($symbol) {
-
-        return $this->instrument->summary($symbol);
-
-    }
-
 }

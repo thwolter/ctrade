@@ -12,15 +12,29 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class Instrument extends Model
 {
+
+    protected $financial;
+
+
     public function positions()
     {
         return $this->morphMany('App\Position', 'positionable');
     }
 
-    abstract  function price();
 
-    abstract function delta();
 
-    abstract function name();
+    public function price() {
+
+        return $this->financial->price();
+    }
+
+
+    public function delta() {}
+
+
+    public function name() {
+
+        return $this->financial->name();
+    }
 
 }

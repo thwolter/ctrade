@@ -10,6 +10,8 @@
         ...
         -->
 
+        <p>{{ $daten->price() }}</p>
+
 
 
     @endsection

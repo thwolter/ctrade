@@ -38,11 +38,14 @@ class InstrumentController extends Controller
         }
     }
 
-    public function show($symbol) {
+    public function show($symbol, $portfolio) {
 
-        $summary = $this->instrument->summary($symbol);
+        //$summary = $this->instrument->summary($symbol);
+        $summary = 'here goes summary';
 
-        return view('instrument.'.$this->blade, compact['summary']);
+        $daten = $this->instrument;
+
+        return view('instruments.'.$this->blade, compact('portfolio', 'daten'));
     }
 
 }

@@ -1,7 +1,7 @@
 @extends('portfolios.show')
 
 @section('container-content')
-{{ dd($suggest) }}
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -20,7 +20,7 @@
                 <td>{{ ++$count }}</td>
                 <td>{{ $item['typeDisp'] }}</td>
                 <td>{{ $item['symbol'] }}</td>
-                <td><a href="{{ route('search.show', $item['symbol'], $item['type']) }}">{{ $item['name'] }}</a></td>
+                <td><a href="{{ route('search.show', [$portfolio->id, $item['type'], $item['symbol']]) }}">{{ $item['name'] }}</a></td>
                 <td>{{ $item['exchDisp'] }}</td>
             </tr>
         @endforeach

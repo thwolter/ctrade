@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Portfolio;
 use DirkOlbrich\YahooFinanceQuery\YahooFinanceQuery;
-use App\Http\Controllers\InstrumentController As Instrument;
+use App\Http\Controllers\InstrumentController;
 
 class SearchController extends Controller
 {
@@ -36,9 +36,12 @@ class SearchController extends Controller
      * @param string $type
      * @return \Illuminate\Http\Response
      */
-    public function show($symbol, $type)
-    {
-        Instrument::make($type)->show($symbol);
+    public function show($id, $type, $symbol) {
+
+        $portfolio = Portfolio::find($id);
+        return InstrumentController::make($type)->show($symbol, $portfolio);
+
+
     }
  
 }

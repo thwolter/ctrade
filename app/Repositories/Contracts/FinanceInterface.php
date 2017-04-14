@@ -6,7 +6,7 @@
  * Time: 09:53
  */
 
-namespace App\Library\Contracts;
+namespace App\Repositories\Contracts;
 
 
 interface FinanceInterface
