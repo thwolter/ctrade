@@ -12,20 +12,31 @@ class InstrumentRepositoryTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function testExample()
+    public function test_position_is_created()
     {
+        $this->createStock('ALV.DE', 'EUR');
+
+        $this->assertDatabaseHas('stocks', ['symbol' => 'ALV.DE']);
+    }
+
+
+    private function createStock($symbol, $currency) {
 
         $portfolio = factory('App\Portfolio')->create();
 
         $instrument = Instrument::make('S')->firstOrCreate([
-            'symbol'=> 'BAS.DE',
-            'currency'=> 'EUR']);
+            'symbol'=> $symbol,
+            'currency'=> $currency]);
 
         $position = new Position;
         $instrument->positions()->save($position);
         $portfolio->positions()->save($position);
-
-        $this->assertDatabaseHas('stocks', 'BAS.DE');
     }
 
+    public function test_stock_has_price() {
+
+        $stock = $this->createStock('BAS.DE', 'EUR');
+
+        $this->assertGreaterThan(0, $stock->price());
+    }
 }

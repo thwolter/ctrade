@@ -11,19 +11,19 @@ class FinancialRepository
     protected $fxFinancial    = 'App\Repositories\Yahoo\FxFinancial';
 
     protected $instrument;
-    protected $symbol;
+    protected $attributes;
 
 
-    public function __construct($type, $symbol) {
+    public function __construct($type, $attributes) {
 
+        $this->attributes = $attributes;
         $this->makeInstrument($type);
-        $this->symbol = $symbol;
     }
 
 
-    static public function make($type, $symbol) {
+    static public function make($type, $attributes) {
 
-        return new FinancialRepository($type, $symbol);
+        return new FinancialRepository($type, $attributes);
     }
 
 
@@ -31,8 +31,8 @@ class FinancialRepository
 
         switch ($type) {
 
-            case 'Stock': $this->instrument = resolve($this->stockFinancial); break;
-            case 'Fx':    $this->instrument = resolve($this->fxFinancial); break;
+            case 'Stock': $this->instrument = $this->stockFinancial::make($this->attributes); break;
+            case 'Fx':    $this->instrument = $this->fxFinancial::make($this->attributes); break;
         }
 
         return $this;
@@ -41,24 +41,24 @@ class FinancialRepository
 
     public function price() {
 
-        return $this->instrument->price($this->symbol);
+        return $this->instrument->price();
 
     }
 
     public function summary() {
 
-        return $this->instrument->summary($this->symbol);
+        return $this->instrument->summary();
 
     }
 
     public function name() {
 
-        return $this->instrument->name($this->symbol);
+        return $this->instrument->name();
     }
 
     public function currency() {
 
-        return $this->instrument->currency($this->symbol);
+        return $this->instrument->currency();
     }
 
 }

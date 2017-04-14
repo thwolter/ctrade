@@ -17,11 +17,14 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
 
     protected $model;
     protected $financial;
+    protected $type;
+
 
     public function __construct($type) {
 
-        $this->model = $this->map($type);
+        $this->makeFromType($type);
     }
+
 
     static public function make($type) {
 
@@ -30,33 +33,38 @@ class InstrumentRepository implements FinanceInterface, RiskInterface
     }
 
 
-    private function map($type) {
+    private function makeFromType($type) {
 
         switch($type) {
-            case 'S': return 'App\Stock';
+            case 'S':
+                $this->model = 'App\Stock';
+                $this->type = 'Stock';
         }
     }
 
     public function firstOrCreate(array $attributes, array $joining = [], $touch = true) {
 
+        $this->financial = FinancialRepository::make($this->type, $attributes);
         $this->model::firstOrCreate($attributes, $joining, $touch);
+
+        return $this;
 
     }
 
     public function positions()
     {
-        return $this->morphMany('App\Position', 'positionable');
+        return $this->model->morphMany('App\Position', 'positionable');
     }
 
 
-    public function summary($symbol)
+    public function summary()
     {
         // TODO: Implement summary() method.
     }
 
 
-    public function price($symbol)
+    public function price()
     {
-        // TODO: Implement price() method.
+        return $this->financial->price();
     }
 }

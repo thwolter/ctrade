@@ -17,8 +17,14 @@ class FinancialRepositoryTest extends TestCase
     {
         parent::setUp();
 
-        $this->stock = new FinancialRepository('Stock','ALV.DE');
-        $this->fx = new FinancialRepository('Fx','EURUSD');
+        $this->stock = new FinancialRepository('Stock',['symbol' => 'ALV.DE']);
+        $this->fx = new FinancialRepository('Fx',['symbol' => 'EURUSD']);
+    }
+
+    public function test_make_FinancialRepository()
+    {
+        $stock = FinancialRepository::make('Stock',['symbol' => 'ALV.DE']);
+        $this->assertGreaterThan(0, $this->stock->price());
     }
 
     public function test_stock_price_is_positive_number()
