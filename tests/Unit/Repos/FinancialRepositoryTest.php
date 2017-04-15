@@ -19,13 +19,20 @@ class FinancialRepositoryTest extends TestCase
         parent::setUp();
 
         $this->stock = new FinancialRepository('Stock',['symbol' => 'ALV.DE']);
-        $this->fx = new FinancialRepository('Fx',['symbol' => 'EURUSD']);
+        $this->fx = new FinancialRepository('Currency',['symbol' => 'EURUSD']);
     }
 
-    public function test_make_FinancialRepository()
+    public function test_make_stock_FinancialRepository()
     {
         $stock = FinancialRepository::make('Stock',['symbol' => 'ALV.DE']);
         $this->assertInstanceOf('App\Repositories\FinancialRepository', $stock);
+    }
+
+    public function test_make_currency_FinancialRepository()
+    {
+        $repo = FinancialRepository::make('Currency',['symbol' => 'EURUSD']);
+        $this->assertInstanceOf('App\Repositories\FinancialRepository', $repo);
+        $this->assertEquals('EUR/USD', $repo->name);
     }
 
 
@@ -45,10 +52,17 @@ class FinancialRepositoryTest extends TestCase
         $this->assertGreaterThan(0, $this->fx->price);
     }
 
-    public function test_fx_name_starts_with_EURUSD()
+    public function test_fx_name_starts_is_EURUSD()
     {
-
-        $this->assertStringStartsWith('EURUSD', $this->fx->name);
+        $this->assertStringStartsWith('EUR/USD', $this->fx->name);
     }
+
+    public function test_fx_EURUSD_currency_is_EUR()
+    {
+        $this->assertEquals('EUR', $this->fx->currency);
+    }
+
+
+
 
 }

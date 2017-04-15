@@ -1,16 +1,21 @@
 <?php
-/**
- * @purpose
- *
- *
- *
- */
+
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Stock extends Model
+use App\Repositories\FinancialRepository;
+
+class Stock extends Instrument
 {
+    protected $blade = 'instruments.stock';
+
     protected $fillable = ['symbol'];
+
+
+
+    public function financial()
+    {
+        return FinancialRepository::make('Stock', $this->attributes);
+    }
 }

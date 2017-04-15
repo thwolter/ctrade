@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Portfolio;
 use DirkOlbrich\YahooFinanceQuery\YahooFinanceQuery;
-use App\Http\Controllers\InstrumentController;
 
 class SearchController extends Controller
 {
@@ -38,8 +37,12 @@ class SearchController extends Controller
      */
     public function show($id, $type, $symbol) {
 
+        //TODO based on instrument type chose correct model and blade
+
         $portfolio = Portfolio::find($id);
-        return InstrumentController::make($type)->show($symbol, $portfolio);
+        $instrument = resolve(mapTypeToModel($type));
+
+        return view($instrument->blade(), compact('portfolio', 'instrument'));
 
 
     }

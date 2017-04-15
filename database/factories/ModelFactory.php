@@ -43,7 +43,7 @@ $factory->define(App\Stock::class, function() {
 });
 
 
-$factory->define(App\Position::class, function() {
+$factory->define(App\Position::class, function(Faker\Generator $faker) {
 
     $stock = factory('App\Stock')->create();
     $portfolio = factory('App\Portfolio')->create();
@@ -51,6 +51,7 @@ $factory->define(App\Position::class, function() {
     return [
         'portfolio_id' => $portfolio->id,
         'positionable_id' => $stock->id,
-        'positionable_type' => get_class($stock)
+        'positionable_type' => get_class($stock),
+        'amount' => $faker->randomDigitNotNull
     ];
 });

@@ -27,6 +27,11 @@ class Portfolio extends Model
         //
     }
 
+    public function currency()
+    {
+        return $this->currency;
+    }
+
     public function total() {
 
         return $this->positions->sum->total();

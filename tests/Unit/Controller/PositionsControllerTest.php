@@ -22,6 +22,6 @@ class PositionsControllerTest extends TestCase
     {
         $position = factory('App\Position')->create();
 
-        $this->stringStartsWith('EUR', $position->instrument->currency());
+        $this->stringStartsWith('EUR', $position->currency());
     }
 }

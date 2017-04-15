@@ -9,12 +9,12 @@
 namespace App\Repositories\Yahoo;
 
 
-class FxFinancial extends BaseFinancial
+class CurrencyFinancial extends BaseFinancial
 {
 
     static public function make($attributes) {
 
-        return new FxFinancial($attributes);
+        return new CurrencyFinancial($attributes);
     }
 
     private function getValue($label, $symbol) {
@@ -30,13 +30,12 @@ class FxFinancial extends BaseFinancial
     public function price()
     {
         return $this->getValue('Rate', $this->symbol);
-
     }
 
 
     public function name() {
 
-        return $this->getValue('id', $this->symbol);
+        return $this->getValue('Name', $this->symbol);
     }
 
     public function symbol()
@@ -46,11 +45,11 @@ class FxFinancial extends BaseFinancial
 
     public function type()
     {
-        return 'C';
+        return 'Currency';
     }
 
     public function currency()
     {
-        return $this->getValue('currency', $this->symbol);
+        return substr($this->symbol, 0, 3);
     }
 }

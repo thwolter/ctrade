@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\InstrumentRepository as Instrument;
 use Illuminate\Http\Request;
 use App\Portfolio;
 use App\Position;
-use App\Stock;
 
 
 
 class PositionsController extends Controller
 {
-
-    protected $stock;
-
 
     /**
      * Display a listing of the resource.
@@ -25,8 +20,7 @@ class PositionsController extends Controller
     public function index($id)
     {
         $portfolio = Portfolio::findOrFail($id);
-        $positions = $portfolio->positions;
-        return view('positions.index', compact('portfolio', 'positions'));
+        return view('positions.index', compact('portfolio'));
     }
 
     /**

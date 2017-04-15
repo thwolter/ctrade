@@ -48,7 +48,7 @@
                     <td>{{ $position->value() }}</td>
                     <td>{{ $position->currency() }}</td>
                     <td>{{ $position->total() }}</td>
-                    <td>{{ $portfolio->currency }}</td>
+                    <td>{{ $portfolio->currency() }}</td>
                 </tr>
             @endforeach
         </tbody>

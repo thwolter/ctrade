@@ -1,10 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Thomas
- * Date: 02.04.17
- * Time: 17:19
- */
+
+
+function mapTypeToModel($type)
+{
+    $config = [
+        'S' => 'Stock',
+        'C' => 'Currency',
+        'I' => 'Index',
+        'E' => 'ETF'
+    ];
+
+    if (array_key_exists($type, $config)) return $config[$type];
+
+//    throw \InvalidArgumentException("Type '".$type."' not defined.");
+}
 
 function set_active($path, $active = 'active') {
 
