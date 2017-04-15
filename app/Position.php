@@ -66,7 +66,8 @@ class Position extends Model
 
             $rate = $repo->price;
         }
-        return $this->price() * $rate;
+
+        return $this->price() * $this->amount() * $rate;
     }
 
 

@@ -26,10 +26,11 @@ class PortfolioTest extends TestCase
 
     public function test_portfolio_total_equals_positions_total_for_one_position()
     {
-        $position = factory('App\Position')->create();
+        $position = factory('App\Position')->create(['currency' => 'EUR']);
         $portfolio = $position->portfolio;
         $this->assertEquals($position->total(), $portfolio->total());
     }
+
 
 
 }

@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Position;
 use App\Stock;
+use App\Portfolio;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -49,10 +50,22 @@ class PositionTest extends TestCase
 
     public function test_position_total_value_is_correct_in_same_currency()
     {
-        $position = new Position(['amount' => 5]);
-        $stock = new Stock(['symbol' => 'ALV.DE']);
-        $stock->positions()->save($stock);
+        $position = $this->makePortfolio('EUR', 5, 'ALV.DE');
 
         $this->assertEquals(5 * $position->price(), $position->total());
     }
+
+
+    public function makePortfolio($currency, $amount, $symbol): Position
+    {
+        $position = new Position(['amount' => $amount]);
+        $stock = Stock::create(['symbol' => $symbol]);
+        $portfolio = factory('App\Portfolio')->create(['currency' => $currency]);
+
+        $stock->positions()->save($position);
+        $portfolio->positions()->save($position);
+        return $position;
+    }
+
+
 }
