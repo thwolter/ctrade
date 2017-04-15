@@ -15,5 +15,11 @@ interface FinanceInterface
 
     public function price();
 
+    public function symbol();
+
+    public function type();
+
+    public function currency();
+
     //public function history($symbol, \DateTime $startDate, \DateTime $endDate);
 }

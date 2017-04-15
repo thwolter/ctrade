@@ -39,6 +39,7 @@
         <tbody>
             @php( $count = 0)
             @foreach($portfolio->positions as $position)
+
                 <tr>
                     <td>{{ ++$count }}</td>
                     <td>{{ $position->type() }}</td>

@@ -3,7 +3,7 @@
     @section('container-content')
 
         <!-- here goes the instrument specific content -->
-        @section('instrument-content')
+        @yield('instrument-content')
 
 
 

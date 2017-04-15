@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Repositories\Contracts\InstrumentInterface as Instrument;
+use App\Repositories\InstrumentRepository as Instrument;
 use App\Position;
 use Psr\Log\InvalidArgumentException;
 use Tests\TestCase;
@@ -48,6 +48,13 @@ class InstrumentRepositoryTest extends TestCase
         $this->assertGreaterThan(0, $stock->price());
     }
 
+    public function test_stock_has_currency() {
+
+        $stock = $this->createStock('BAS.DE');
+
+        $this->assertStringStartsWith('EUR', $stock->currency());
+    }
+
     public function test_stock_blade_equals_instrument_blade()
     {
         $stock = $this->createStock('BAS.DE');
@@ -62,7 +69,7 @@ class InstrumentRepositoryTest extends TestCase
         $this->assertEquals($instrument1->blade(), $instrument2->blade());
     }
 
-    public function test_()
+    public function test_with_function_gives_assigned_stock()
     {
         Instrument::make('Stock')->firstOrCreate(['symbol'=> 'DAI.DE']);
 

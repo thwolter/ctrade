@@ -45,3 +45,8 @@ Route::get('/home', 'HomeController@index');
 Route::get('phpinfo', function() {
     phpinfo();
 });
+
+App::bind(
+    'App\Repositories\Contracts\InstrumentInterface',
+    'App\Repositories\InstrumentRepository'
+);

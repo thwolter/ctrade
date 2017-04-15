@@ -44,4 +44,14 @@ class StockFinancial extends BaseFinancial
 
         return $this->getValue('Currency', $this->symbol);
     }
+
+    public function symbol()
+    {
+        return $this->symbol;
+    }
+
+    public function type()
+    {
+        return 'Stock';
+    }
 }

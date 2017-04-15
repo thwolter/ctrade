@@ -38,4 +38,19 @@ class FxFinancial extends BaseFinancial
 
         return $this->getValue('id', $this->symbol);
     }
+
+    public function symbol()
+    {
+        return $this->symbol;
+    }
+
+    public function type()
+    {
+        return 'C';
+    }
+
+    public function currency()
+    {
+        return $this->getValue('currency', $this->symbol);
+    }
 }

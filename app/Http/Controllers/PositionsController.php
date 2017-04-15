@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\InstrumentRepository as Instrument;
 use Illuminate\Http\Request;
 use App\Portfolio;
 use App\Position;
@@ -49,18 +50,19 @@ class PositionsController extends Controller
     public function store(Request $request)
     {
         $this -> validate(request(), [
-            'symbol' => 'required'
+            'symbol' => 'required',
+            'portfolio_id' => 'required',
+            'type' => 'required'
         ]);
 
         $position = new Position;
 
-        $portfolio = Portfolio::findOrFail($request->input('portfolio_id'));
+        $portfolio = Portfolio::findOrFail($request->get('portfolio_id'));
 
-        $stock = Stock::firstOrCreate([
-            'symbol'=> $request->get('symbol'),
-            'currency'=>$request->get('symbol') ]);
-
-        $stock->positions()->save($position);
+        $instrument = Instrument::make($request->get('type'))
+            ->firstOrCreate(['symbol'=> $request->get('symbol')]);
+//        return dd($instrument);
+        $instrument->positions()->save($position);
         $portfolio->positions()->save($position);
 
         return redirect(route('positions.index', $portfolio->id));

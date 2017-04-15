@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Repositories\Contracts\InstrumentInterface;
 
 
-class InstrumentRepository implements InstrumentInterface
+class InstrumentRepository extends Model implements InstrumentInterface
 {
 
     // can be initialized with short or long names
