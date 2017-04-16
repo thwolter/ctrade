@@ -36,12 +36,6 @@ class StockTest extends TestCase
         $this->assertDatabaseHas('stocks', ['symbol' => 'ALV.DE']);
     }
 
-    public function test_blade_is_defined()
-    {
-        $stock = $this->createStock('ALV.DE');
-
-        $this->assertStringStartsWith('instruments.stock', $stock->blade());
-    }
 
     public function test_stock_has_price() {
 
@@ -60,7 +54,7 @@ class StockTest extends TestCase
     public function test_stock_blade_equals_instrument_blade()
     {
         $stock = $this->createStock('BAS.DE');
-        $this->assertStringStartsWith('instruments.stock', $stock->blade());
+        $this->assertStringStartsWith('instruments.stock', $stock->blade);
     }
 
 }
