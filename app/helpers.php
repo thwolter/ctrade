@@ -3,7 +3,7 @@
 
 function mapToType($type)
 {
-
+    $type = strtoupper(substr($type, 0, 1));
     $config = [
         'S' => 'Stock',
         'C' => 'Currency',

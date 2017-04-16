@@ -18,10 +18,12 @@ class PositionsControllerTest extends TestCase
         $this->user = $this->portfolio->user;
     }
 
-    public function testExample()
+    public function test_position_can_be_stored()
     {
-        $position = factory('App\Position')->create();
+        $response = $this->actingAs($this->user)->get(
+            route('positions.store', ['portfolio_id' => $this->portfolio->id, 'symbol' => 'ALV.DE', 'type'=> 'S'])
+        );
 
-        $this->stringStartsWith('EUR', $position->currency());
+        $response->assertStatus(200);
     }
 }

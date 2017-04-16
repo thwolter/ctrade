@@ -49,13 +49,14 @@ class PositionsController extends Controller
             'type' => 'required'
         ]);
 
-        $position = new Position;
+        $position = new Position(['amount' => $request->get('amount')]);
 
         $portfolio = Portfolio::findOrFail($request->get('portfolio_id'));
 
-        $instrument = Instrument::make($request->get('type'))
-            ->firstOrCreate(['symbol'=> $request->get('symbol')]);
-//        return dd($instrument);
+        $instrument = resolve('App\\'.mapToType($request->get('type')))
+            ::firstOrCreate(['symbol'=> $request->get('symbol')]);
+
+
         $instrument->positions()->save($position);
         $portfolio->positions()->save($position);
 

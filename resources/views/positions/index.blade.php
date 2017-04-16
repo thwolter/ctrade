@@ -44,8 +44,8 @@
                     <td>{{ ++$count }}</td>
                     <td>{{ $position->type() }}</td>
                     <td><a href="{{ route('positions.show', [$portfolio->id, $position->id]) }}">{{ $position->name() }}</a></td>
-                    <td>{{ $position->quantity() }}</td>
-                    <td>{{ $position->value() }}</td>
+                    <td>{{ $position->amount() }}</td>
+                    <td>{{ $position->price() }}</td>
                     <td>{{ $position->currency() }}</td>
                     <td>{{ $position->total() }}</td>
                     <td>{{ $portfolio->currency() }}</td>

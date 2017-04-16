@@ -30,6 +30,7 @@ abstract class Instrument extends Model implements InstrumentInterface
     }
 
 
+
     public function positions()
     {
         return $this->morphMany('App\Position', 'positionable');
