@@ -2,6 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Portfolio;
+use App\Position;
+use App\Repositories\FinancialRepository;
+use App\Stock;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -17,20 +21,27 @@ class PortfolioTest extends TestCase
         $this->assertEquals('EUR', $portfolio->currency());
     }
 
-    public function test_portfolio_has_total_value()
-    {
-        $portfolio = factory('App\Portfolio')->create();
 
-        $this->assertGreaterThan(0, $portfolio->total());
-    }
 
     public function test_portfolio_total_equals_positions_total_for_one_position()
     {
-        $position = factory('App\Position')->create(['currency' => 'EUR']);
-        $portfolio = $position->portfolio;
-        $this->assertEquals($position->total(), $portfolio->total());
+        $portfolio = $this->makePortfolio('EUR', 10, 'ALV.DE');
+
+        $expect = 10 * FinancialRepository::make('Stock', ['symbol'=>'ALV.DE'])->price;
+
+        $this->assertEquals($expect, $portfolio->total());
     }
 
 
+    public function makePortfolio($currency, $amount, $symbol)
+    {
+        $position = new Position(['amount' => $amount]);
+        $stock = Stock::create(['symbol' => $symbol]);
+        $portfolio = factory('App\Portfolio')->create(['currency' => $currency]);
+
+        $stock->positions()->save($position);
+        $portfolio->positions()->save($position);
+        return $position;
+    }
 
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Instrument;
+use App\Repositories\FinancialRepository;
 use Illuminate\Http\Request;
 use App\Portfolio;
 use DirkOlbrich\YahooFinanceQuery\YahooFinanceQuery;
@@ -40,9 +42,12 @@ class SearchController extends Controller
         //TODO based on instrument type chose correct model and blade
 
         $portfolio = Portfolio::find($id);
-        $instrument = resolve(mapTypeToModel($type));
 
-        return view($instrument->blade(), compact('portfolio', 'instrument'));
+        $repo = FinancialRepository::make(mapToType($type),['symbol' => $symbol]);
+
+        $blade = Instrument::blade('App\\'.mapToType($type));
+
+        return view($blade, compact('portfolio', 'repo'));
 
 
     }

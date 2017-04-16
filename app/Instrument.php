@@ -14,12 +14,19 @@ abstract class Instrument extends Model implements InstrumentInterface
     protected $blade;
 
 
+
     abstract public function financial();
 
 
-    public function blade()
+    static public function blade($model)
     {
-        return $this->blade;
+        if (class_exists($model)) {
+
+            $instrument = resolve($model);
+            return $instrument->blade;
+        }
+
+        //TODO: define Exception
     }
 
 

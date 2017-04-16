@@ -8,7 +8,7 @@ use App\Repositories\FinancialRepository;
 
 class Stock extends Instrument
 {
-    protected $blade = 'instruments.stock';
+    public $blade = 'instruments.stock';
 
     protected $fillable = ['symbol'];
 

@@ -1,8 +1,9 @@
 <?php
 
 
-function mapTypeToModel($type)
+function mapToType($type)
 {
+
     $config = [
         'S' => 'Stock',
         'C' => 'Currency',
