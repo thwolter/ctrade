@@ -3,10 +3,10 @@
 @section('container-content')
 
     <h4>{{ $position->name() }}</h4>
-    <p>aktuell: {{ $position->value() }} {{ $position->currency() }}</p>
+    <p>aktuell: {{ $position->value }} {{ $position->currency }}</p>
 
 
-    {!! Form::open(['url' => 'positions/'.$position->id, 'method' => 'delete']) !!}
+    {!! Form::open([route('positions.destroy'), 'method' => 'DELETE']) !!}
 
         <div class="form-group">
 

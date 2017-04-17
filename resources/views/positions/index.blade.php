@@ -43,7 +43,7 @@
                 <tr>
                     <td>{{ ++$count }}</td>
                     <td>{{ $position->type() }}</td>
-                    <td><a href="{{ route('positions.show', [$portfolio->id, $position->id]) }}">{{ $position->name() }}</a></td>
+                    <td><a href="{{ route('positions.show', ['pid' => $portfolio->id, 'id' => $position->id]) }}">{{ $position->name() }}</a></td>
                     <td>{{ $position->amount() }}</td>
                     <td>{{ $position->present()->price() }}</td>
                     <td>{{ $position->currency() }}</td>
