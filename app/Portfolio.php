@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Portfolio extends Model
 {
+
+    use Formatter;
+
     protected $fillable = [
         'name',
-        'currency'
+        'currency',
+        'cash'
     ];
 
     public function user() {
@@ -20,7 +24,7 @@ class Portfolio extends Model
     }
 
     public function cash() {
-        return 3000; //fake value;
+        return $this->cash;
     }
 
     public function valueAtRisk() {
@@ -32,10 +36,9 @@ class Portfolio extends Model
         return $this->currency;
     }
 
-    public function total() {
-
-        return $this->positions->sum->total();
-
+    public function total()
+    {
+        return $this->positions->sum->total() + $this->cash();
     }
 
 }

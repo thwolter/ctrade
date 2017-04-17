@@ -31,6 +31,7 @@ $factory->define(App\Portfolio::class, function(Faker\Generator $faker) {
         },
         'name' => $faker->sentence,
         'currency' => $faker->currencyCode,
+        'cash' => 100 * $faker->randomDigitNotNull
     ];
 });
 

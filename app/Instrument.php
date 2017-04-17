@@ -5,30 +5,27 @@ namespace App;
 
 
 use App\Repositories\Contracts\InstrumentInterface;
+use App\Repositories\FinancialRepository;
+use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 
 abstract class Instrument extends Model implements InstrumentInterface
 {
 
+    use FormAccessible;
+
+
     protected $blade;
 
 
-
+    /**
+     * Kind class has to define the concrete Financial Repository to be injected into the Instrument class
+     *
+     * @return FinancialRepository
+     */
     abstract public function financial();
-
-
-    static public function blade($model)
-    {
-        if (class_exists($model)) {
-
-            $instrument = resolve($model);
-            return $instrument->blade;
-        }
-
-        //TODO: define Exception
-    }
-
 
 
     public function positions()
@@ -40,6 +37,11 @@ abstract class Instrument extends Model implements InstrumentInterface
     public function price()
     {
         return $this->financial()->price;
+    }
+
+    public function formPriceAttribute($value)
+    {
+        return currency_format($value, $this->currency());
     }
 
     public function name()

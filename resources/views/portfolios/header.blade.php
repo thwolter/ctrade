@@ -22,7 +22,7 @@
         <div class="ct-header__key-figures">
             <div class="key-figure">
                 <label class="label">Aktuell</label>
-                <span class="value">1.200,33</span>
+                <span class="value">{{ format_price($portfolio->total()) }}</span>
             </div>
 
             <div class="key-figure">

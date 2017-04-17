@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 class Position extends Model
 {
 
+    use Formatter;
+
     protected $fillable = [
         'positionable_type',
         'positionable_id',

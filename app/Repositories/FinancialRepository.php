@@ -4,17 +4,10 @@ namespace App\Repositories;
 
 
 
-use App\Repositories\Yahoo\Exceptions\InvalidInstrumentType;
-
 class FinancialRepository
 {
 
-    protected $types = [
-        'S' => 'Stock',
-        'C' => 'Currency',
-        'I' => 'Index',
-        'E' => 'ETF',
-    ];
+    use FinancialMapping;
 
     protected $stockFinancial = 'App\Repositories\Yahoo\StockFinancial';
     protected $currencyFinancial    = 'App\Repositories\Yahoo\CurrencyFinancial';
@@ -47,16 +40,6 @@ class FinancialRepository
         }
 
         return $this;
-    }
-
-
-    public function mapType($type)
-    {
-        $type = strtoupper(substr($type, 0, 1));
-
-        if (array_key_exists($type, $this->types)) return $this->types[$type];
-
-        throw new InvalidInstrumentType;
     }
 
 

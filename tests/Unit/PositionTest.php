@@ -22,6 +22,17 @@ class PositionTest extends TestCase
         $this->position = factory('App\Position')->create();
     }
 
+    public function makePortfolio($currency, $amount, $symbol): Position
+    {
+        $position = new Position(['amount' => $amount]);
+        $stock = Stock::create(['symbol' => $symbol]);
+        $portfolio = factory('App\Portfolio')->create(['currency' => $currency]);
+
+        $stock->positions()->save($position);
+        $portfolio->positions()->save($position);
+        return $position;
+    }
+
 
     public function test_positions_stock_has_currency()
     {
@@ -55,17 +66,16 @@ class PositionTest extends TestCase
         $this->assertEquals(5 * $position->price(), $position->total());
     }
 
-
-    public function makePortfolio($currency, $amount, $symbol): Position
+    public function test_method_currency_give_position_currency()
     {
-        $position = new Position(['amount' => $amount]);
-        $stock = Stock::create(['symbol' => $symbol]);
-        $portfolio = factory('App\Portfolio')->create(['currency' => $currency]);
+        $stock = factory('App\Stock')->create(['symbol' => 'YHOO']);
+        $stock->positions()->save(new Position);
 
-        $stock->positions()->save($position);
-        $portfolio->positions()->save($position);
-        return $position;
+        $position = $stock->positions()->first();
+
+        $this->assertEquals('USD', $position->currency());
     }
+
 
 
 }

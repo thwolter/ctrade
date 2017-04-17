@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Repositories\Yahoo\Exceptions\InvalidInstrumentType;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

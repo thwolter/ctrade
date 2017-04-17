@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Repositories\Yahoo\Exceptions;
+namespace App\Repositories\Exceptions;
 
 
 class InvalidInstrumentType extends \Exception

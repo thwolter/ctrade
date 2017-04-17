@@ -54,7 +54,8 @@ class PortfoliosController extends Controller
     {
         $this -> validate(request(), [
             'name' => 'required',
-            'currency' => 'required'
+            'currency' => 'required',
+            'cash' => 'required'
         ]);
 
         $portfolio = new Portfolio($request->all());

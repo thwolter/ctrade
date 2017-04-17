@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\FinancialMapping;
 use Illuminate\Http\Request;
 use App\Portfolio;
 use App\Position;
@@ -10,6 +11,8 @@ use App\Position;
 
 class PositionsController extends Controller
 {
+
+    use FinancialMapping;
 
     /**
      * Display a listing of the resource.
@@ -53,7 +56,7 @@ class PositionsController extends Controller
 
         $portfolio = Portfolio::findOrFail($request->get('portfolio_id'));
 
-        $instrument = resolve('App\\'.mapToType($request->get('type')))
+        $instrument = resolve('App\\'.$this->mapType($request->get('type')))
             ::firstOrCreate(['symbol'=> $request->get('symbol')]);
 
 

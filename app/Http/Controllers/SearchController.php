@@ -39,8 +39,6 @@ class SearchController extends Controller
      */
     public function show($id, $type, $symbol) {
 
-        //TODO based on instrument type chose correct model and blade
-
         $portfolio = Portfolio::find($id);
 
         $repo = FinancialRepository::make($type,['symbol' => $symbol]);

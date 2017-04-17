@@ -2,8 +2,10 @@
 
     @section('instrument-content')
 
-        <p>Name: {{ $repo->name }}</p>
-        <p>Price: {{ $repo->price }}</p>
+
+        <h4>verfügbarer Cash Bestand: {{ $portfolio->cash() }} {{$portfolio->currency()}}</h4>
+        <h4>{{ $repo->name }} {{ $repo->price }} ({{$repo->currency}})</h4>
+
 
         <!-- Form with method POST -->
         {!! Form::open(['route' => ['positions.store', $portfolio->id], 'method' => 'POST']) !!}
