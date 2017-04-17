@@ -2,16 +2,19 @@
 
 namespace App;
 
-use App\Repositories\Contracts\FinanceInterface;
+use App\Presenters\Contracts\PresentableInterface;
+use App\Presenters\Presentable;
 use App\Repositories\FinancialRepository;
 use Illuminate\Database\Eloquent\Model;
 
 
 
-class Position extends Model
+class Position extends Model implements PresentableInterface
 {
 
-    use Formatter;
+    use Presentable;
+
+    protected $presenter = 'App\Presenters\Position';
 
     protected $fillable = [
         'positionable_type',
