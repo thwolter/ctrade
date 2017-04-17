@@ -1,13 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Portfolio extends Model
 {
 
-    use Formatter;
 
     protected $fillable = [
         'name',
@@ -16,11 +15,11 @@ class Portfolio extends Model
     ];
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Entities\User');
     }
 
     public function positions() {
-        return $this->hasMany('App\Position');
+        return $this->hasMany('App\Entities\Position');
     }
 
     public function cash() {

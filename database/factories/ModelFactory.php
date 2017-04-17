@@ -12,7 +12,7 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Entities\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
@@ -24,10 +24,10 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 
-$factory->define(App\Portfolio::class, function(Faker\Generator $faker) {
+$factory->define(App\Entities\Portfolio::class, function(Faker\Generator $faker) {
     return  [
         'user_id' => function() {
-            return factory('App\User')->create()->id;
+            return factory('App\Entities\User')->create()->id;
         },
         'name' => $faker->sentence,
         'currency' => $faker->currencyCode,
@@ -37,17 +37,17 @@ $factory->define(App\Portfolio::class, function(Faker\Generator $faker) {
 
 
 
-$factory->define(App\Stock::class, function() {
+$factory->define(App\Entities\Stock::class, function() {
     return [
         'symbol' => 'ALV.DE'
     ];
 });
 
 
-$factory->define(App\Position::class, function(Faker\Generator $faker) {
+$factory->define(App\Entities\Position::class, function(Faker\Generator $faker) {
 
-    $stock = factory('App\Stock')->create();
-    $portfolio = factory('App\Portfolio')->create();
+    $stock = factory('App\Entities\Stock')->create();
+    $portfolio = factory('App\Entities\Portfolio')->create();
 
     return [
         'portfolio_id' => $portfolio->id,

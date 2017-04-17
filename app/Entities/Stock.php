@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace App\Entities;
 
 
 use App\Repositories\FinancialRepository;

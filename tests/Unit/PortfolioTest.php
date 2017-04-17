@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Portfolio;
-use App\Position;
+use App\Entities\Portfolio;
+use App\Entities\Position;
 use App\Repositories\FinancialRepository;
-use App\Stock;
+use App\Entities\Stock;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -17,7 +17,7 @@ class PortfolioTest extends TestCase
 
     public function test_EUR_portfolio_has_currency_EUR()
     {
-        $portfolio = factory('App\Portfolio')->create(['currency' => 'EUR']);
+        $portfolio = factory('App\Entities\Portfolio')->create(['currency' => 'EUR']);
         $this->assertEquals('EUR', $portfolio->currency());
     }
 
@@ -37,7 +37,7 @@ class PortfolioTest extends TestCase
     {
         $position = new Position(['amount' => $amount]);
         $stock = Stock::create(['symbol' => $symbol]);
-        $portfolio = factory('App\Portfolio')->create(['currency' => $currency]);
+        $portfolio = factory('App\#entities\Portfolio')->create(['currency' => $currency]);
 
         $stock->positions()->save($position);
         $portfolio->positions()->save($position);

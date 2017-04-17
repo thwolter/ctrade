@@ -19,7 +19,7 @@ class SearchControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->portfolio = factory('App\Portfolio')->create();
+        $this->portfolio = factory('App\Entities\Portfolio')->create();
         $this->user = $this->portfolio->user;
     }
 

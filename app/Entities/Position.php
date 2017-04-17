@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
@@ -31,7 +31,7 @@ class Position extends Model implements PresentableInterface
 
     public function portfolio()
     {
-        return $this->belongsTo('App\Portfolio');
+        return $this->belongsTo('App\Entities\Portfolio');
     }
 
 

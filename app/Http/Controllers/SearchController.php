@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\FinancialRepository;
 use Illuminate\Http\Request;
-use App\Portfolio;
+use App\Entities\Portfolio;
 use DirkOlbrich\YahooFinanceQuery\YahooFinanceQuery;
 
 class SearchController extends Controller

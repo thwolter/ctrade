@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace App\Entities;
 
 
 use App\Repositories\Contracts\InstrumentInterface;
@@ -30,7 +30,7 @@ abstract class Instrument extends Model implements InstrumentInterface
 
     public function positions()
     {
-        return $this->morphMany('App\Position', 'positionable');
+        return $this->morphMany('App\Entities\Position', 'positionable');
     }
 
 

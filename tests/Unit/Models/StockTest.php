@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use App\Position;
+use App\Entities\Position;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Stock;
+use App\Entities\Stock;
 
 class StockTest extends TestCase
 {
@@ -17,7 +17,7 @@ class StockTest extends TestCase
 
     private function createStock($symbol)
     {
-        $portfolio = factory('App\Portfolio')->create();
+        $portfolio = factory('App\Entities\Portfolio')->create();
 
         $stock = Stock::firstOrCreate(['symbol'=> $symbol]);
 

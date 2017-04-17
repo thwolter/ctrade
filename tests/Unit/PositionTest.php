@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Position;
-use App\Stock;
-use App\Portfolio;
+use App\Entities\Position;
+use App\Entities\Stock;
+use App\Entities\Portfolio;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,7 +19,7 @@ class PositionTest extends TestCase
     {
         parent::setUp();
 
-        $this->position = factory('App\Position')->create();
+        $this->position = factory('App\Entities\Position')->create();
     }
 
     public function makePortfolio($currency, $amount, $symbol): Position
@@ -68,7 +68,7 @@ class PositionTest extends TestCase
 
     public function test_method_currency_give_position_currency()
     {
-        $stock = factory('App\Stock')->create(['symbol' => 'YHOO']);
+        $stock = factory('App\Entities\Stock')->create(['symbol' => 'YHOO']);
         $stock->positions()->save(new Position);
 
         $position = $stock->positions()->first();

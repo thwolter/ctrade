@@ -11,8 +11,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Portfolio;
-use App\User;
+use App\Entities\Portfolio;
+use App\Entities\User;
 
 class PortfoliosController extends Controller
 {
