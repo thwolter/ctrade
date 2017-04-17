@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Instrument;
 use App\Repositories\FinancialRepository;
 use Illuminate\Http\Request;
 use App\Portfolio;
@@ -10,6 +9,7 @@ use DirkOlbrich\YahooFinanceQuery\YahooFinanceQuery;
 
 class SearchController extends Controller
 {
+
 
     /**
      * Display a listing of the resource.
@@ -43,11 +43,9 @@ class SearchController extends Controller
 
         $portfolio = Portfolio::find($id);
 
-        $repo = FinancialRepository::make(mapToType($type),['symbol' => $symbol]);
+        $repo = FinancialRepository::make($type,['symbol' => $symbol]);
 
-        $blade = Instrument::blade('App\\'.mapToType($type));
-
-        return view($blade, compact('portfolio', 'repo'));
+        return view('positions.create', compact('portfolio', 'repo'));
 
 
     }

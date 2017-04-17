@@ -2,10 +2,13 @@
 
 namespace Tests\Unit;
 
+use App\Repositories\Yahoo\Exceptions\InvalidInstrumentType;
+use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Repositories\FinancialRepository;
+
 
 class FinancialRepositoryTest extends TestCase
 {
@@ -57,11 +60,20 @@ class FinancialRepositoryTest extends TestCase
         $this->assertStringStartsWith('EUR/USD', $this->fx->name);
     }
 
+
+
     public function test_fx_EURUSD_currency_is_EUR()
     {
         $this->assertEquals('EUR', $this->fx->currency);
     }
 
+
+    public function test_an_exceptions_is_thrown_for_incorrect_instrument_type()
+    {
+        new FinancialRepository('z', []);
+
+        $this->expectExceptionCode(InvalidInstrumentType::class);
+    }
 
 
 
