@@ -17,9 +17,7 @@
                 <th>Name</th>
                 <th>Anzahl</th>
                 <th>Preis</th>
-                <th>Währung</th>
                 <th>Gesamt</th>
-                <th>Währung</th>
             </tr>
         </thead>
 
@@ -29,10 +27,8 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th></th>
                 <th>Summe</th>
                 <th>{{ $portfolio->total() }}</th>
-                <th>{{ $portfolio->currency }}</th>
             </tr>
         </tfoot>
 
@@ -46,9 +42,7 @@
                     <td><a href="{{ route('positions.show', ['pid' => $portfolio->id, 'id' => $position->id]) }}">{{ $position->name() }}</a></td>
                     <td>{{ $position->amount() }}</td>
                     <td>{{ $position->present()->price() }}</td>
-                    <td>{{ $position->currency() }}</td>
-                    <td>{{ $position->total() }}</td>
-                    <td>{{ $portfolio->currency() }}</td>
+                    <td>{{ $position->present()->total() }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -14,11 +14,11 @@ use App\Presenters\Exceptions\PresenterException;
 trait Presentable
 {
 
-    protected static $presenterInstance;
+    protected $presenterInstance;
 
 
-
-    public function present() {
+    public function present()
+    {
 
         if (!$this->presenter or !class_exists($this->presenter)) {
 
@@ -26,16 +26,13 @@ trait Presentable
         }
 
 
-        if (!isset(static::$presenterInstance)) {
+        if (!isset($this->presenterInstance)) {
 
-            static::$presenterInstance = new $this->presenter($this);
+            $this->presenterInstance = new $this->presenter($this);
         }
 
 
-        return static::$presenterInstance;
+        return $this->presenterInstance;
 
-
-
-        //return new $this->presenter($this);
     }
 }

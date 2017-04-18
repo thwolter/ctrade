@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Thomas
- * Date: 17.04.17
- * Time: 17:08
- */
+
 
 namespace App\Presenters;
 
@@ -26,12 +21,6 @@ abstract class Presenter
             return $this->$property();
         }
 
-
         return $this->entity->$property();
-    }
-
-    public function priceFormat()
-    {
-        return numfmt_create('de_DE', \NumberFormatter::CURRENCY);
     }
 }
