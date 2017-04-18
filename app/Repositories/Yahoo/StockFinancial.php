@@ -12,45 +12,37 @@ namespace App\Repositories\Yahoo;
 class StockFinancial extends BaseFinancial
 {
 
-    static public function make($attributes) {
-
-        return new StockFinancial($attributes);
-    }
+  
 
     private function getValue($label, $symbol) {
 
         return $this->getData('getQuotes', $symbol)['query']['results']['quote'][$label];
     }
 
-    public function summary()
+
+
+    public function price($symbol)
     {
-        // TODO: Implement summary() method.
+        return $this->getValue('LastTradePriceOnly', $symbol);
     }
 
 
-    public function price()
-    {
-        return $this->getValue('LastTradePriceOnly', $this->symbol);
+
+    public function name($symbol) {
+
+        return $this->getValue('Name', $symbol);
     }
 
 
-    public function name() {
 
-        return $this->getValue('Name', $this->symbol);
+    public function currency($symbol) {
+
+        return $this->getValue('Currency', $symbol);
     }
 
 
-    public function currency() {
 
-        return $this->getValue('Currency', $this->symbol);
-    }
-
-    public function symbol()
-    {
-        return $this->symbol;
-    }
-
-    public function type()
+    public function type($symbol = null)
     {
         return 'Stock';
     }

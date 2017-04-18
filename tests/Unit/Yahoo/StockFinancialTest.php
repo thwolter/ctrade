@@ -16,16 +16,30 @@ class StockFinancialTest extends TestCase
 
         parent::setUp();
 
-        $this->stock = StockFinancial::make(['symbol'=>'ALV.DE']);
+        $this->stock = new StockFinancial;
     }
 
-    public function test_symbol_can_be_read() {
-
-        $this->assertStringStartsWith('ALV.DE', $this->stock->symbol);
-    }
-
+    
     public function test_price_is_positive() {
 
-        $this->assertGreaterThan(0, $this->stock->price());
+        $this->assertGreaterThan(0, $this->stock->price('ALV.DE'));
+    }
+    
+    
+    public function test_name_has_stock_name() {
+        
+        $this->assertStringStartsWith('ALLIANZ', $this->stock->name('ALV.DE'));
+    }
+    
+    public function test_currency_has_stock_currency() {
+        
+        $this->assertEquals('EUR', $this->stock->currency('ALV.DE'));
+    }
+    
+    public function test_type_is_stock() {
+        
+        $this->assertEquals('Stock', $this->stock->type('ALV.DE'));
+        
+        $this->assertEquals('Stock', $this->stock->type());
     }
 }

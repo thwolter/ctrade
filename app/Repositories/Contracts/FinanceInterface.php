@@ -11,15 +11,11 @@ namespace App\Repositories\Contracts;
 
 interface FinanceInterface
 {
-    public function summary();
+    public function price($symbol);
 
-    public function price();
+    public function type($symbol);
 
-    public function symbol();
-
-    public function type();
-
-    public function currency();
+    public function currency($symbol);
 
     //public function history($symbol, \DateTime $startDate, \DateTime $endDate);
 }

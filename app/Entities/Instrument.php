@@ -11,22 +11,31 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
 
-abstract class Instrument extends Model implements InstrumentInterface
+abstract class Instrument extends Model
 {
 
-    use FormAccessible;
+    protected $financial;
+    
+    static protected $financialInstance;
 
-
-    protected $blade;
-
-
-    /**
-     * Kind class has to define the concrete Financial Repository to be injected into the Instrument class
-     *
-     * @return FinancialRepository
-     */
-    abstract public function financial();
-
+ 
+   
+    public function financial()
+    {
+        if (! $this->financial or ! class_exists($this->financial)) {
+            
+            throw new FinancialException();
+        }
+        
+        if (! isset(static::$financialInstance)) {
+            
+            static::$financialInstance = new $this->financial;
+        }
+        
+        return static::$financialInstance;
+        
+    }
+    
 
     public function positions()
     {
@@ -36,36 +45,31 @@ abstract class Instrument extends Model implements InstrumentInterface
 
     public function price()
     {
-        return $this->financial()->price;
+        return $this->financial()->price($this->symbol);
     }
 
-    public function formPriceAttribute($value)
-    {
-        return currency_format($value, $this->currency());
-    }
-
+   
     public function name()
     {
-        return $this->financial()->name;
+        return $this->financial()->name($this->symbol);
     }
 
-    public function summary()
-    {
-        // TODO: Implement summary() method.
-    }
+
 
     public function symbol()
     {
-        return $this->financial()->symbol;
+        return $this->symbol;
     }
+
 
     public function type()
     {
-        return $this->financial()->type;
+        return $this->financial()->type();
     }
+
 
     public function currency()
     {
-        return $this->financial()->currency;
+        return $this->financial()->currency($this->symbol);
     }
 }

@@ -23,31 +23,19 @@ abstract class BaseFinancial implements FinanceInterface {
 
     protected $cacheTime = 10;
 
-    protected $attributes;
-
 
     /**
      * MarketData constructor.
      *
      * @param $symbol
      */
-    public function __construct(Array $attributes) {
+    public function __construct() {
 
         $this->client = new ApiClient();
-        $this->attributes = $attributes;
     }
 
 
-    abstract static public function make($attributes);
-
-
-    public function __get($name)
-    {
-        if (array_key_exists($name, $this->attributes))
-            return $this->attributes[$name];
-    }
-
-
+  
     /**
      * Provide a cached version of Yahoo Quotes
      * @param string $fun

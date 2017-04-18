@@ -4,18 +4,19 @@
 namespace App\Entities;
 
 
-use App\Repositories\FinancialRepository;
+use App\Repositories\Exceptions\FinancialException;
+
+
 
 class Stock extends Instrument
 {
-    public $blade = 'instruments.stock';
-
     protected $fillable = ['symbol'];
 
-
-
-    public function financial()
-    {
-        return FinancialRepository::make('Stock', $this->attributes);
-    }
+    protected $financial = 'App\Repositories\Yahoo\StockFinancial';
+    
+    
+    
+    
+    
+    
 }
