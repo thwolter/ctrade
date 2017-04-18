@@ -3,10 +3,12 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Repositories\Yahoo\Financable;
 
 class Portfolio extends Model
 {
 
+    use Financable;
 
     protected $fillable = [
         'name',
@@ -37,7 +39,7 @@ class Portfolio extends Model
 
     public function total()
     {
-        return $this->positions->sum->total() + $this->cash();
+      return $this->positions->sum->total(true) + $this->cash();
     }
 
 }

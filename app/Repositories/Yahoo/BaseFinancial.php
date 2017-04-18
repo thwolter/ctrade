@@ -21,7 +21,7 @@ abstract class BaseFinancial implements FinanceInterface {
 
     protected $instrument;
 
-    protected $cacheTime = 10;
+    protected $cacheTime = 1;
 
 
     /**

@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Entities\Position;
 use App\Entities\Stock;
 use App\Entities\Portfolio;
+use App\Repositories\Yahoo\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -59,11 +60,21 @@ class PositionTest extends TestCase
         $this->assertGreaterThan(0, $this->position->total());
     }
 
-    public function test_position_total_value_is_correct_in_same_currency()
+    public function test_position_total_value_in_original_currency()
     {
         $position = $this->makePortfolio('EUR', 5, 'ALV.DE');
 
         $this->assertEquals(5 * $position->price(), $position->total());
+    }
+    
+    public function test_position_total_value_in_portfolio_currency()
+    {
+        $position = $this->makePortfolio('CZK', 5, 'ALV.DE');
+        $currency = new CurrencyFinancial;
+        
+        $expect = 5 * $position->price() * $currency->price('EURCZK');
+
+        $this->assertEquals($expect, $position->total(true));
     }
 
     public function test_method_currency_give_position_currency()

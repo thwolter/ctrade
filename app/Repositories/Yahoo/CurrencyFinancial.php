@@ -12,11 +12,7 @@ namespace App\Repositories\Yahoo;
 class CurrencyFinancial extends BaseFinancial
 {
 
-    static public function make($attributes) {
-
-        return new CurrencyFinancial($attributes);
-    }
-
+    
     private function getValue($label, $symbol) {
 
         return $this->getData('getCurrenciesExchangeRate', $symbol)['query']['results']['rate'][$label];

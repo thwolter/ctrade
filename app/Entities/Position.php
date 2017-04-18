@@ -4,17 +4,15 @@ namespace App\Entities;
 
 use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
-use App\Repositories\FinancialRepository;
-use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Yahoo\Financable;
-
+use Illuminate\Database\Eloquent\Model;
 
 
 class Position extends Model implements PresentableInterface
 {
 
     use Financable;
-     
+    
     use Presentable;
 
     protected $presenter = 'App\Presenters\Position';
@@ -65,18 +63,18 @@ class Position extends Model implements PresentableInterface
         return $this->positionable->name();
     }
 
-
-    public function total() {
-
-        $rate = 1;
-        if ($this->portfolio->currency() != $this->currency()) {
-            
-            $this->financial()->price($this->currency().$this->portfolio->currency());
+    
+    public function total($exchange = false) {
+        
+        if ($exchange == true) {
+            $symbol = $this->currency().$this->portfolio->currency();
+            $rate = $this->financial()->price($symbol);
+        } else {
+            $rate = 1;
         }
-
-        return $this->price() * $this->amount() * $rate;
+        
+        return $this->amount() * $this->price() * $rate;
     }
-
 
 }
 
