@@ -26,7 +26,7 @@ class PositionTest extends TestCase
     {
         $position = new Position(['amount' => $amount]);
         $stock = Stock::create(['symbol' => $symbol]);
-        $portfolio = factory('App\Portfolio')->create(['currency' => $currency]);
+        $portfolio = factory('App\Entities\Portfolio')->create(['currency' => $currency]);
 
         $stock->positions()->save($position);
         $portfolio->positions()->save($position);

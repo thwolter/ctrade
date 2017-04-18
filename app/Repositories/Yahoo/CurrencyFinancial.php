@@ -22,34 +22,27 @@ class CurrencyFinancial extends BaseFinancial
         return $this->getData('getCurrenciesExchangeRate', $symbol)['query']['results']['rate'][$label];
     }
 
-    public function summary()
+
+
+    public function price($symbol)
     {
-        // TODO: Implement summary() method.
-    }
-
-    public function price()
-    {
-        return $this->getValue('Rate', $this->symbol);
+        return $this->getValue('Rate', $symbol);
     }
 
 
-    public function name() {
+    public function name($symbol) {
 
-        return $this->getValue('Name', $this->symbol);
+        return $this->getValue('Name', $symbol);
     }
 
-    public function symbol()
-    {
-        return $this->symbol;
-    }
 
-    public function type()
+    public function type($symbol = null)
     {
         return 'Currency';
     }
 
-    public function currency()
+    public function currency($symbol)
     {
-        return substr($this->symbol, 0, 3);
+        return substr($symbol, 3, 3);
     }
 }

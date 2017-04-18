@@ -6,15 +6,20 @@ use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
 use App\Repositories\FinancialRepository;
 use Illuminate\Database\Eloquent\Model;
+use App\Repositories\Yahoo\Financable;
 
 
 
 class Position extends Model implements PresentableInterface
 {
 
+    use Financable;
+     
     use Presentable;
 
     protected $presenter = 'App\Presenters\Position';
+    
+    protected $financial = 'App\Repositories\Yahoo\CurrencyFinancial';
 
     protected $fillable = [
         'positionable_type',
@@ -65,11 +70,8 @@ class Position extends Model implements PresentableInterface
 
         $rate = 1;
         if ($this->portfolio->currency() != $this->currency()) {
-
-            $repo = FinancialRepository::make('Currency',
-                ['symbol' => $this->currency().$this->portfolio->currency()]);
-
-            $rate = $repo->price;
+            
+            $this->financial()->price($this->currency().$this->portfolio->currency());
         }
 
         return $this->price() * $this->amount() * $rate;

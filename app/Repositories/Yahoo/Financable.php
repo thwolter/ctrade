@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Repositories\Yahoo;
+
+
+trait Financable
+{
+    
+    protected static $financialInstance;
+
+
+ 
+    public function financial()
+    {
+        if (! $this->financial or ! class_exists($this->financial)) {
+            
+            throw new FinancialException();
+        }
+        
+        if (! isset(static::$financialInstance)) {
+            
+            static::$financialInstance = new $this->financial;
+        }
+        
+        return static::$financialInstance;
+        
+    }
+}

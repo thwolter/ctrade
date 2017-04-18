@@ -9,6 +9,7 @@ use App\Repositories\FinancialRepository;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use App\Repositories\Yahoo\Financable;
 
 
 abstract class Instrument extends Model
@@ -16,27 +17,9 @@ abstract class Instrument extends Model
 
     protected $financial;
     
-    static protected $financialInstance;
-
- 
-   
-    public function financial()
-    {
-        if (! $this->financial or ! class_exists($this->financial)) {
-            
-            throw new FinancialException();
-        }
-        
-        if (! isset(static::$financialInstance)) {
-            
-            static::$financialInstance = new $this->financial;
-        }
-        
-        return static::$financialInstance;
-        
-    }
+    use Financable;
     
-
+   
     public function positions()
     {
         return $this->morphMany('App\Entities\Position', 'positionable');
