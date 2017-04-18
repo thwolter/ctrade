@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\FinancialRepository;
+use App\Repositories\Yahoo\StockFinancial;
+use App\Repositories\Yahoo\CurrencyFinancial;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use DirkOlbrich\YahooFinanceQuery\YahooFinanceQuery;
@@ -40,10 +41,16 @@ class SearchController extends Controller
     public function show($id, $type, $symbol) {
 
         $portfolio = Portfolio::find($id);
+        
+        $stock = new StockFinancial;
+        $currency = new CurrencyFinancial;
 
-        $repo = FinancialRepository::make($type,['symbol' => $symbol]);
-
-        return view('positions.create', compact('portfolio', 'repo'));
+        return view('positions.create', [
+            'portfolio' => $portfolio, 
+            'stock' => $stock,
+            'currency' => $currency,
+            'symbol' => $symbol
+        ]);
 
 
     }
