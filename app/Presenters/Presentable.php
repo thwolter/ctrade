@@ -33,5 +33,9 @@ trait Presentable
 
 
         return static::$presenterInstance;
+
+
+
+        //return new $this->presenter($this);
     }
 }

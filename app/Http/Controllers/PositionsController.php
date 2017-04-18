@@ -35,7 +35,7 @@ class PositionsController extends Controller
     public function create($id)
     {
         $portfolio = Portfolio::findOrFail($id);
-        return view('search.create', compact('portfolio'));
+        return view('search.index', compact('portfolio'));
     }
 
     /**

@@ -2,6 +2,27 @@
 
 @section('container-content')
 
+    <!-- Form with method  -->
+    {!! Form::open(['route' => ['search.index', $portfolio->id], 'method' => 'Get']) !!}
+
+    @include('layouts.errors')
+
+    <!-- search form input -->
+    <div class="form-group">
+        {!! Form::label('search', 'Suchen:') !!}
+        {!! Form::text('search', null, ['placeholder' => 'Search ...', 'class' => 'form-control']) !!}
+    </div>
+
+    <div class="form-group">
+        {!! Form::submit('Suchen', ['class' => 'button--right']) !!}
+    </div>
+
+
+    {!! Form::close() !!}
+
+
+    @if(isset($suggest))
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -27,6 +48,7 @@
         </tbody>
     </table>
 
+    @endif
 
 @endsection
 
