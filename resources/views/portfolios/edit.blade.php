@@ -4,48 +4,54 @@
 
     <div class="ct-panel">
         <div class="ct-panel__ct-header ct-header">
-            <h3 class="title">Portfolio bearbeiten</h3>
+            <h3 class="title">Portfolio: {{ $portfolio->name }}</h3>
         </div>
 
         <div class="ct-panel__ct-body">
 
-            <form method="post" action="/portfolios/{{ $portfolio->id }}">
+            <!-- Form with method PUT -->
+            {!! Form::open(['route' => ['portfolios.update', $portfolio->id], 'method' => 'PUT']) !!}
 
-                <input type="hidden" name="_method" value="PUT">
+                <div class="form-horizontal">
+                    <fieldset>
 
-                {{ csrf_field() }}
+                        @include('layouts.errors')
 
-                @include('layouts.errors')
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <!-- name form input -->
+                            <div class="form-group">
+                                {!! Form::label('name', 'Name:', ['class' => 'col-md-4 control-label']) !!}
+                                <div class="col-md-4">
+                                    {!! Form::text('name', $portfolio->name, ['class' => 'form-control input-md']) !!}
+                                    <span class="help-block">Den Portfolionamen kannst du jederzeit ändern</span>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" class="form-control" value="{{ $portfolio->name }}">
+                        <!-- currency form input -->
+                        <div class="form-group">
+                            <div class="form-group">
+                                {!! Form::label('currency', 'Währung:', ['class' => 'col-md-4 control-label']) !!}
+                                    <div class="col-md-4">
+                                        {!! Form::text('currency', $portfolio->currency, ['class' => 'form-control input-md']) !!}
+                                        <span class="help-block">Gib eine gültige Währung ein</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <!-- submit button -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="button1id"></label>
+                            <div class="col-md-8">
+                                {!! Form::submit('Abbrechen', ['class' => 'btn btn-inverse']) !!}
+                                {!! Form::submit('Speichern', ['class' => 'btn btn-primary']) !!}
+                            </div>
+                         </div>
+
+                    </fieldset>
                 </div>
-                <br>
-
-                <div class="form-group">
-                    <label for="currency">Währung</label>
-                    <input type="text" name="currency" class="form-control" value="{{ $portfolio->currency }}">
-                </div>
-                <br>
-
-                <div class="button-group">
-                    <button type="submit" name="submit" class="button--right">Ändern</button>
-                </div>
-
-            </form>
-
-
-            <!-- form to delete portfolio -->
-            <form method="post" action="/portfolios/{{ $portfolio->id }}">
-
-                {{ csrf_field() }}
-
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit" name="delete" class="btn-link text-danger">Portfolio löschen</button>
-
-            </form>
-
+            {!! Form::close() !!}
         </div>
     </div>
 

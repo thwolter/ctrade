@@ -2,18 +2,40 @@
 
 @section('container-content')
 
-    <h4>{{ $position->name() }}</h4>
-    <p>aktuell: {{ $position->amount() }} </p>
+    {!! Form::open(['route' => ['positions.update', $portfolio->id, $position->id], 'method' => 'PUT']) !!}
 
+    <div class="form-horizontal">
+        <fieldset>
 
-    {!! Form::open([route('positions.destroy', ['portfolio' => $portfolio->id, 'position' => $position->id]), 'method' => 'DELETE']) !!}
+            <!-- Form Name -->
+            <legend>{{ $position->typeDisp() }} | {{ $position->name() }} ({{ $position->present()->price() }})</legend>
 
-        <div class="form-group">
+            <!-- Text input-->
+            <div class="form-group">
+               <!-- amount form input -->
+               <div class="form-group">
+                   {!! Form::label('amount', 'Neue Stückzahl:', ['class' => 'col-md-4 control-label']) !!}
+                   <div class="col-md-4">
+                       {!! Form::number('amount', $position->amount(), ['class' => 'form-control input-md']) !!}
+                       <span class="help-block">Trage 0 ein, um die Position zu löschen</span>
+                   </div>
+               </div>
+            </div>
 
-            {!! Form::submit('Position löschen', ['class' => 'button--right button--danger']) !!}
+            <!-- Button (Double) -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="button1id"></label>
+                <div class="col-md-8">
+                    {!! Form::submit('Abbrechen', ['class' => 'btn btn-inverse']) !!}
+                    {!! Form::submit('Speichern', ['class' => 'btn btn-primary']) !!}
+                </div>
+            </div>
 
-        </div>
+        </fieldset>
+    </div>
 
     {!! Form::close() !!}
 
 @endsection
+
+

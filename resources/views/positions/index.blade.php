@@ -18,7 +18,7 @@
                 <th class="table-cell-value">Anzahl</th>
                 <th class="table-cell-value">Preis</th>
                 <th class="table-cell-value">Gesamt</th>
-                <th class="table-cell-value">{{ $portfolio->currency }}-Equivalent</th>
+                <th class="table-cell-value">Gesamt ({{ $portfolio->currency }})</th>
             </tr>
         </thead>
 
@@ -28,9 +28,9 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th class="table-cell-value"></th>
                 <th class="table-cell-value">Summe</th>
-                <th class="table-cell-value">{{ $portfolio->present()->total() }}</th>
-                <th class="table-cell-value">{{ $portfolio->present()->total() }}</th>
+                <th class="table-cell-value">{{ $portfolio->present()->total($portfolio->currency) }}</th>
             </tr>
         </tfoot>
 

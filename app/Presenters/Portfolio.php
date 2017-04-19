@@ -11,11 +11,9 @@ class Portfolio extends Presenter
         return $this->priceFormat($this->entity->cash, $this->currency);
     }
 
-    public function total($currency = null)
+    public function total()
     {
-        if (is_null($currency)) $currency = $this->currency;
-        
-        return $this->priceFormat($this->entity->total($currency), $currency);
+        return $this->priceFormat($this->entity->total(), $this->currency);
     }
 
 }

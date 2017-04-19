@@ -101,9 +101,16 @@ class PositionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $portfolio, $id)
     {
-        //
+        $this -> validate(request(), [
+            'amount' => 'required'
+        ]);
+
+        $position = Position::find($id);
+        $position->update(['amount' => $request->get('amount')]);
+
+        return redirect(route('positions.index', $position->portfolio->id));
     }
 
     /**
