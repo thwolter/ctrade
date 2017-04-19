@@ -29,7 +29,7 @@ class PortfolioTest extends TestCase
         $portfolio = $this->makePortfolio('EUR', 10, 'ALV.DE');
 
         $stock = new StockFinancial;
-        $expect = 10 * $stock->price('ALV.DE') + $portfolio->cash();
+        $expect = 10 * $stock->price('ALV.DE');
 
         $this->assertEquals($expect, $portfolio->total());
     }
@@ -42,10 +42,22 @@ class PortfolioTest extends TestCase
         $currency = new CurrencyFinancial;
         $stock = new StockFinancial;
         
+        $expect = 10 * $stock->price('YHOO') * $currency->price('USDCZK');
+
+        $this->assertEquals($expect, $portfolio->total());
+    }
+    
+    public function test_portfolio_value_for_YHOO_and_cash()
+    {
+        $portfolio = $this->makePortfolio('CZK', 10, 'YHOO');
+
+        $currency = new CurrencyFinancial;
+        $stock = new StockFinancial;
+        
         $expect = 10 * $stock->price('YHOO') * $currency->price('USDCZK') 
             + $portfolio->cash();
 
-        $this->assertEquals($expect, $portfolio->total());
+        $this->assertEquals($expect, $portfolio->value());
     }
 
 

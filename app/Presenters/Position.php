@@ -6,25 +6,18 @@ namespace App\Presenters;
 class Position extends Presenter
 {
 
-    protected $priceFormat;
-
-    public function priceFormat()
-    {
-        if (is_null($this->priceFormat)) {
-            $this->priceFormat = new \NumberFormatter( 'de_DE', \NumberFormatter::CURRENCY );
-        }
-        return $this->priceFormat;
-    }
-
-
     public function price()
     {
-        return $this->priceFormat()->formatCurrency($this->entity->price(), $this->currency);
+        return $this->priceFormat($this->entity->price(), $this->currency);
     }
+    
 
-    public function total()
+    public function total($currency = null)
     {
-        return $this->priceFormat()->formatCurrency($this->entity->total(), $this->currency);
+        if (is_null($currency)) {
+            return $this->priceFormat($this->entity->total(), $this->currency);
+        } else {
+            return $this->priceFormat($this->entity->total($currency), $currency);
+        }
     }
-
 }

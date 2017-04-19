@@ -4,7 +4,7 @@
 
     <dl>
         <dt>Barbestand:</dt>
-        <dd>{{ $portfolio->cash() }} {{ $portfolio->currency }}</dd>
+        <dd>{{ $portfolio->present()->cash() }} </dd>
     </dl>
 
     <hr>
@@ -15,9 +15,10 @@
                 <th>Nr.</th>
                 <th>Tpye</th>
                 <th>Name</th>
-                <th>Anzahl</th>
-                <th>Preis</th>
-                <th>Gesamt</th>
+                <th class="table-cell-value">Anzahl</th>
+                <th class="table-cell-value">Preis</th>
+                <th class="table-cell-value">Gesamt</th>
+                <th class="table-cell-value">{{ $portfolio->currency }}-Equivalent</th>
             </tr>
         </thead>
 
@@ -27,8 +28,9 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th>Summe</th>
-                <th>{{ $portfolio->total() }}</th>
+                <th class="table-cell-value">Summe</th>
+                <th class="table-cell-value">{{ $portfolio->present()->total() }}</th>
+                <th class="table-cell-value">{{ $portfolio->present()->total() }}</th>
             </tr>
         </tfoot>
 
@@ -38,11 +40,12 @@
 
                 <tr>
                     <td>{{ ++$count }}</td>
-                    <td>{{ $position->type() }}</td>
+                    <td>{{ $position->typeDisp() }}</td>
                     <td><a href="{{ route('positions.show', ['pid' => $portfolio->id, 'id' => $position->id]) }}">{{ $position->name() }}</a></td>
-                    <td>{{ $position->amount() }}</td>
-                    <td>{{ $position->present()->price() }}</td>
-                    <td>{{ $position->present()->total() }}</td>
+                    <td class="table-cell-value">{{ $position->amount() }}</td>
+                    <td class="table-cell-value">{{ $position->present()->price() }}</td>
+                    <td class="table-cell-value">{{ $position->present()->total() }}</td>
+                    <td class="table-cell-value">{{ $position->present()->total($portfolio->currency) }}</td>
                 </tr>
             @endforeach
         </tbody>

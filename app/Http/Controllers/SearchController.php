@@ -23,10 +23,13 @@ class SearchController extends Controller
     {
         $portfolio = Portfolio::findOrFail($id);
         $query = new YahooFinanceQuery;
-
+        
         $string = $request->get('search');
         $suggest =  $query->symbolSuggest($string)->get();
 
+        $client = new \Scheb\YahooFinanceApi\ApiClient();
+        $suggest = $client->search($string);
+        
         return view ('search.index', compact('portfolio', 'suggest'));
     }
 

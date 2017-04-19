@@ -52,6 +52,11 @@ class Position extends Model implements PresentableInterface
     {
         return get_class($this->positionable);
     }
+    
+    public function typeDisp()
+    {
+        return $this->positionable->typeDisp;
+    }
 
 
     public function amount()
@@ -64,16 +69,17 @@ class Position extends Model implements PresentableInterface
     }
 
     
-    public function total($exchange = false) {
+    public function total($currency = null) {
         
-        if ($exchange == true) {
-            $symbol = $this->currency().$this->portfolio->currency();
-            $rate = $this->financial()->price($symbol);
-        } else {
-            $rate = 1;
-        }
+        return $this->amount() * $this->price() * $this->convert($currency);
+    }
+ 
+    
+    public function convert($currency = null) {
         
-        return $this->amount() * $this->price() * $rate;
+        if (is_null($currency) or $this->curreny == $currency) return 1;
+        
+        return $this->financial()->price($this->currency().$currency);
     }
 
 }

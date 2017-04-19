@@ -59,6 +59,24 @@ class PositionTest extends TestCase
     {
         $this->assertGreaterThan(0, $this->position->total());
     }
+    
+    
+    public function test_convert_USD_into_position_currency() {
+        
+        $financial = new \App\Repositories\Yahoo\CurrencyFinancial;
+        
+        $this->assertEquals($financial->price('EURUSD'), $this->position->convert('USD'));
+    }
+    
+    public function test_total_with_currency_converts_into_this_currency() {
+        
+        $financial = new \App\Repositories\Yahoo\CurrencyFinancial;
+        
+        $rate = $financial->price('EURUSD');
+        
+        $this->assertEquals($this->position->total() * $rate, $this->position->total('USD'));
+        
+    }
 
     public function test_position_total_value_in_original_currency()
     {
@@ -74,7 +92,7 @@ class PositionTest extends TestCase
         
         $expect = 5 * $position->price() * $currency->price('EURCZK');
 
-        $this->assertEquals($expect, $position->total(true));
+        $this->assertEquals($expect, $position->total('CZK'));
     }
 
     public function test_method_currency_give_position_currency()
@@ -87,6 +105,14 @@ class PositionTest extends TestCase
         $this->assertEquals('USD', $position->currency());
     }
 
+    public function test_typeDisp_of_stock_shows_Aktie()
+    {
+        $stock = factory('App\Entities\Stock')->create(['symbol' => 'YHOO']);
+        $stock->positions()->save(new Position);
 
+        $position = $stock->positions()->first();
+        
+        $this->assertEquals('Aktie', $position->typeDisp());
+    }
 
 }

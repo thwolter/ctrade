@@ -78,6 +78,7 @@ class PositionsController extends Controller
     {
         $position = Position::findOrFail($id);
         $portfolio = $position->portfolio;
+        //$instrument = $position->positionable;
 
         return view('positions.show', compact('portfolio', 'position'));
     }

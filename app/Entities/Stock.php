@@ -14,9 +14,6 @@ class Stock extends Instrument
 
     protected $financial = 'App\Repositories\Yahoo\StockFinancial';
     
-    
-    
-    
-    
+    public $typeDisp = 'Aktie';
     
 }
