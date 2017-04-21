@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f5eae5ffec2bb8c7b963fc924d3fff4",
+    "content-hash": "15bdd0aa556d4512ef8f7139b5a10966",
     "packages": [
         {
             "name": "commercie/currency",
@@ -425,6 +425,59 @@
                 }
             ],
             "time": "2015-04-20T18:58:01+00:00"
+        },
+        {
+            "name": "kachkaev/php-r",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kachkaev/php-r.git",
+                "reference": "110582fc51535a89d89638322185b28ca8d69a9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kachkaev/php-r/zipball/110582fc51535a89d89638322185b28ca8d69a9e",
+                "reference": "110582fc51535a89d89638322185b28ca8d69a9e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Kachkaev\\PHPR\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Kachkaev",
+                    "email": "alexander@kachkaev.ru",
+                    "homepage": "http://en.kachkaev.ru/"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/kachkaev/php-r/contributors"
+                }
+            ],
+            "description": "Provides ability to run R scripts from PHP",
+            "homepage": "https://github.com/kachkaev/php-r",
+            "keywords": [
+                "Bridge",
+                "r",
+                "statistical analysis",
+                "stats"
+            ],
+            "time": "2017-03-21 09:44:21"
         },
         {
             "name": "laravel/dusk",
@@ -3832,7 +3885,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dirkolbrich/yahoo-finance-query": 20
+        "dirkolbrich/yahoo-finance-query": 20,
+        "kachkaev/php-r": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

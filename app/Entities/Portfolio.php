@@ -56,5 +56,19 @@ class Portfolio extends Model
     {
         return $this->total() + $this->cash();
     }
+    
+    public function toArray()
+    {
+        return [
+            'meta' => ['name' => $this->name, 'currency' => $this->currency],
+            'cash' => ['amount' => $this->cash, 'currency' => $this->currency],
+            'item' => [type, name, symbol, amount, currency]]
+    }
+    
+    
+    public function toJSON()
+    {
+        
+    }
 }
 

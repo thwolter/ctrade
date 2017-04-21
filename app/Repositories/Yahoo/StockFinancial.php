@@ -13,7 +13,6 @@ class StockFinancial extends BaseFinancial
 {
 
   
-
     private function getValue($label, $symbol) {
 
         return $this->getData('getQuotes', $symbol)['query']['results']['quote'][$label];

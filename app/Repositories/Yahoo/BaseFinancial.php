@@ -12,6 +12,8 @@ namespace App\Repositories\Yahoo;
 use Illuminate\Support\Facades\Cache;
 use Scheb\YahooFinanceApi\ApiClient;
 use App\Repositories\Contracts\FinanceInterface;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 
 abstract class BaseFinancial implements FinanceInterface {
@@ -22,6 +24,10 @@ abstract class BaseFinancial implements FinanceInterface {
     protected $instrument;
 
     protected $cacheTime = 10;
+    
+    protected $period = 250; //period in days 
+    
+    protected $startDate;
 
 
     /**
@@ -54,6 +60,44 @@ abstract class BaseFinancial implements FinanceInterface {
         }
 
         return $data;
-
     }
+    
+    
+    public function startDate($date) {
+        
+        $this->startDate = new Carbon($date);
+        return $this;
+    }
+    
+    public function period($period) {
+        
+        $this->period = $period;
+        return $this;
+    }
+    
+    
+    public function makeHistory($symbol) {
+        
+        $period = (is_null($this->period)) ? 250 : $this->period;
+        
+        $endDate = (is_null($this->startDate)) ? Carbon::today(): $this->startDate;
+        $startDate = $endDate->copy()->addDay(-$period);
+        
+        $directory = 'Histories/'.$endDate->toDateString();
+        $filename  = "{$directory}/{$symbol}_{$period}.json";
+       
+       
+        if (! Storage::disk('local')->exists($filename)) {
+       
+            $data = $this->client->getHistoricalData($symbol, $startDate, $endDate);
+           
+            Storage::makeDirectory($directory);
+            Storage::disk('local')->put($filename, json_encode($data));
+        }
+       
+        return $filename;
+    }
+    
+    
+    
 }
