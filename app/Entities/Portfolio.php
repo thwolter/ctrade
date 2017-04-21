@@ -5,6 +5,8 @@ namespace App\Entities;
 use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Yahoo\Financable;
+use Illuminate\Support\Facades\Storage;
+
 
 class Portfolio extends Model
 {
@@ -59,16 +61,30 @@ class Portfolio extends Model
     
     public function toArray()
     {
-        return [
+        $array = [
             'meta' => ['name' => $this->name, 'currency' => $this->currency],
             'cash' => ['amount' => $this->cash, 'currency' => $this->currency],
-            'item' => [type, name, symbol, amount, currency]]
+            'item' => []
+        ];
+
+        $i = 0;
+        foreach($this->positions as $position) {
+
+            $array['item'][$i++] = $position->toArray();
+
+        }
+
+        return $array;
     }
-    
-    
-    public function toJSON()
+
+
+    public function saveJSON()
     {
-        
+        $filename = uniqid().'.json';
+        Storage::disk('local')->put($filename, json_encode($this->toArray()));
+
+        return $filename;
     }
+
 }
 

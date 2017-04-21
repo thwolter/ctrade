@@ -68,6 +68,10 @@ class Position extends Model implements PresentableInterface
         return $this->positionable->name();
     }
 
+    public function symbol() {
+        return $this->positionable->symbol;
+    }
+
     
     public function total($currency = null) {
         
@@ -82,5 +86,16 @@ class Position extends Model implements PresentableInterface
         return $this->financial()->price($this->currency().$currency);
     }
 
+
+    public function toArray() {
+
+        return [
+            'name' => $this->name(),
+            'type' => implode(array_slice(explode('\\', $this->type()),-1)),
+            'symbol' => $this->symbol(),
+            'currency' => $this->currency(),
+            'amount' => $this->amount
+        ];
+    }
 }
 
