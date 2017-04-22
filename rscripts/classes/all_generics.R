@@ -167,6 +167,12 @@ if(!isGeneric("value"))
 
 
 
+# readJSON ----------------------------------------------------------------
+
+if(!isGeneric("readJSON"))
+  setGeneric("readJSON", function(filename) standardGeneric("readJSON"))
+
+
 # risk.weigths ------------------------------------------------------------
 
 if(!isGeneric("risk.weigths"))

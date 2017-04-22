@@ -23,17 +23,6 @@ class PositionTest extends TestCase
         $this->position = factory('App\Entities\Position')->create();
     }
 
-    public function makePosition($currency, $amount, $symbol)
-    {
-        $position = new Position(['amount' => $amount]);
-        $stock = Stock::create(['symbol' => $symbol]);
-        $portfolio = factory('App\Entities\Portfolio')->create(['currency' => $currency]);
-
-        $stock->positions()->save($position);
-        $portfolio->positions()->save($position);
-        return $position;
-    }
-
 
     public function test_positions_stock_has_currency()
     {
@@ -85,14 +74,14 @@ class PositionTest extends TestCase
 
     public function test_position_total_value_in_original_currency()
     {
-        $position = $this->makePosition('EUR', 5, 'ALV.DE');
+        $position = $this->makePositionWithPortfolio('EUR', 5, 'ALV.DE');
 
         $this->assertEquals(5 * $position->price(), $position->total());
     }
     
     public function test_position_total_value_in_portfolio_currency()
     {
-        $position = $this->makePosition('CZK', 5, 'ALV.DE');
+        $position = $this->makePositionWithPortfolio('CZK', 5, 'ALV.DE');
         $currency = new CurrencyFinancial;
         
         $expect = 5 * $position->price() * $currency->price('EURCZK');
@@ -122,7 +111,7 @@ class PositionTest extends TestCase
 
     public function test_can_create_an_array()
     {
-        $position = $this->makePosition('EUR', 5, 'ALV.DE');
+        $position = $this->makePositionWithPortfolio('EUR', 5, 'ALV.DE');
         $array = $position->toArray();
 
         $this->assertArrayHasKey('name', $array);

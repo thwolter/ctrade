@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Models\Rscript\Rscriptable;
 use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Yahoo\Financable;
@@ -10,15 +11,13 @@ use Illuminate\Support\Facades\Storage;
 
 class Portfolio extends Model
 {
-
     use Financable;
-
     use Presentable;
+    use Rscriptable;
 
-    
     protected $presenter = 'App\Presenters\Portfolio';
-    
     protected $financial = 'App\Repositories\Yahoo\CurrencyFinancial';
+    protected $rscriptable = 'App\Models\Rscript\Portfolio';
     
     protected $fillable = [
         'name',
@@ -76,15 +75,5 @@ class Portfolio extends Model
 
         return $array;
     }
-
-
-    public function saveJSON()
-    {
-        $filename = uniqid().'.json';
-        Storage::disk('local')->put($filename, json_encode($this->toArray()));
-
-        return $filename;
-    }
-
 }
 

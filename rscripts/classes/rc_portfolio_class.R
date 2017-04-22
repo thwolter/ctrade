@@ -383,9 +383,13 @@ setMethod('risk.factors', signature(object = 'rc-portfolio'),
               for (i in 1:length(object)) {
                   w <- c(w, names(risk.weigths(item(object, i))))
               }
+            
               nm <- unique(w)
               nm <- gsub('CURRENCY', currency(object), nm)
-              return(nm)
+              
+              el <- paste(currency(object), currency(object), sep="/")
+              
+              return(nm[nm != el])
           }
 )
 
@@ -429,13 +433,13 @@ setMethod('risk.weigths', signature(object = 'rc-portfolio', item = 'ANY'),
 
 setMethod('loadData', signature(object = 'rc-portfolio', force = 'logical'),
           function(object, force) {
-              
+             
               if (showProgress(object)) {
                   progress <- shiny::Progress$new()
                   on.exit(progress$close())
                   progress$set(message = "loading ...", value = 0)
               }
-              
+          
               rfs <- risk.factors(object)
               for (rf in rfs) {
                 
@@ -578,4 +582,33 @@ setMethod('table.stocks',
               return(df)
           })
 
+
+# readJSON ----------------------------------------------------------------
+
+
+setMethod('readJSON', 
+          signature(filename = 'character'),
+          function(filename) {
+            
+            json <- jsonlite::fromJSON(filename)
+            
+            object = new('rc-portfolio')
+            name(object) <- json$meta$name
+            currency(object) <- json$meta$currency
+            
+            addItem(object) <- cash(json$cash$amount, json$cash$currency)
+            
+            items <- as.data.frame(json$item)
+            for (i in 1:dim(items)[1]) {
+              
+              item <- items[i,]
+              
+              switch(item$type,
+                "Stock" = addItem(object) <- stock(item$amount, item$symbol, item$currency),
+                "Index" = stop("Index not yet implemented")
+              )
+            }
+            
+            return(object)
+          })
 
