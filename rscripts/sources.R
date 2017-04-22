@@ -1,10 +1,4 @@
 library(quantmod)
-library(PortfolioAnalytics)
-library(PerformanceAnalytics)
-library(scrypt)
-library(lubridate)
-library(uuid)
-
 
 source('classes/all_classes.R')
 source('classes/all_generics.R')

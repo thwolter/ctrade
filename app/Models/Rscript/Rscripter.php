@@ -15,6 +15,13 @@ abstract class Rscripter
     protected $rbase;
 
 
+    /**
+     * Constructor to set the entity (e.g. Portfolio) and
+     * to define required path's to be handed over to Rscript
+     *
+     * Rscripter constructor.
+     * @param $entity
+     */
     public function __construct($entity)
     {
         $this->entity = $entity;
@@ -25,16 +32,11 @@ abstract class Rscripter
     }
 
 
-    /*public function __get($property)
-    {
-        if (method_exists($this, $property)) {
-
-            return $this->$property();
-        }
-        return $this->entity->$property();
-    }*/
-
-
+    /**
+     * Saves the portfolio as json file to the file system
+     *
+     * @return string with name of the json file
+     */
     public function saveJSON()
     {
         $filename = 'tmp/'.uniqid() . '.json';
@@ -43,6 +45,12 @@ abstract class Rscripter
         return $filename;
     }
 
+    /**
+     * Transforms array with parameters into a string to be used within exec call of Rscript
+     *
+     * @param array $args representing named parameters
+     * @return string with Rscript arguments
+     */
     public function argsImplode($args) {
 
         $s = null;
@@ -53,18 +61,23 @@ abstract class Rscripter
         return $s;
     }
 
+
+    /**
+     * Calls Rscript with an array of arguments to be provided;
+     * The functions uses the file system to transfer both portfolio data and results
+     *
+     * @param array $args representing required arguments for Rscript
+     * @return array with result from Rscript
+     */
     public function callRscript($args)
     {
         $filename = $this->saveJSON();
         $resfile = 'tmp/'.uniqid() . '.json';
 
-        $callString = sprintf("Rscript --vanilla --verbose %s -b %s -f %s -o %s %s",
+        $callString = sprintf("Rscript --vanilla %s -b %s -f %s -o %s %s",
             $this->rapi, $this->rbase, $this->path.$filename, $this->path.$resfile, $this->argsImplode($args));
 
-        unset($output);
-        exec($callString, $output);
-
-        Storage::disk('local')->put('RscriptError', json_encode($output));
+        exec($callString);
 
         $array = json_decode(Storage::read($resfile), true);
 

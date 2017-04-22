@@ -47,7 +47,7 @@ if (opt$task == "test-in-out") {
 }
 
 
-print(opt); save(file="opt.RData", opt)
+save(file="opt.RData", opt)
 
 if (opt$task == 'risk') 
 {
