@@ -68,24 +68,40 @@ abstract class Rscripter
      *
      * @param array $args representing required arguments for Rscript
      * @return array with result from Rscript
+     *
+     * @throws RscriptException if no output was written or result is with errors
      */
     public function callRscript($args)
     {
+        $fn = 'tmp/'.uniqid();
         $filename = $this->saveJSON();
-        $resfile = 'tmp/'.uniqid() . '.json';
+        $resfile = $fn.'.json';
+        $logfile = $fn.'.log';
 
-        $callString = sprintf("Rscript --vanilla %s -b %s -f %s -o %s %s",
-            $this->rapi, $this->rbase, $this->path.$filename, $this->path.$resfile, $this->argsImplode($args));
+        $callString = sprintf("Rscript --vanilla %s -b %s -f %s -o %s %s 2> %s",
+            $this->rapi, $this->rbase, $this->path.$filename, $this->path.$resfile,
+            $this->argsImplode($args), $this->path.$logfile);
 
         exec($callString);
-
-        $array = json_decode(Storage::read($resfile), true);
-
         Storage::delete($filename);
-        Storage::delete($resfile);
+
+
+        $logtext = Storage::read($logfile);
+        $hasError = stripos($logtext, 'ERROR');
+        Storage::delete($logfile);
+
+
+        if (Storage::disk('local')->exists($resfile)) {
+
+            $array = json_decode(Storage::read($resfile), true);
+            Storage::delete($resfile);
+        }
+
+        if (is_null($array) or $hasError) {
+
+            throw new RscriptException(substr($logtext, $hasError));
+        }
 
         return $array;
     }
-
-
 }

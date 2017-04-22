@@ -38,7 +38,7 @@ if (is.null(opt$file) | (is.null(opt$out))){
     stop("parameter -f (input file) and -o (output file) have to be specified", call.=FALSE)
 }
 
-setwd(opt$base)
+setwd(opt$base) 
 source('sources.R');
 
 if (opt$task == "test-in-out") {
