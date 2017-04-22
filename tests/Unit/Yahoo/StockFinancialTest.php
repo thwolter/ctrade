@@ -45,7 +45,10 @@ class StockFinancialTest extends TestCase
         $this->assertEquals('Stock', $this->stock->type());
     }
     
-    
+    /*
+     * function deactivated as historical values are loaded directly within
+     * R code using quantmod package
+     *
     public function test_makeHistory_saves_jsonfile() {
         
         $today = \Carbon\Carbon::today()->format('Y-m-d');
@@ -61,6 +64,6 @@ class StockFinancialTest extends TestCase
 
         Storage::delete($filename1);
         Storage::delete($filename2);
- 
     }
+    */
 }

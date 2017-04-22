@@ -17,7 +17,7 @@ interface FinanceInterface
 
     public function currency($symbol);
     
-    public function makeHistory($symbol);
+    //public function makeHistory($symbol);
 
     //public function history($symbol, \DateTime $startDate, \DateTime $endDate);
 }

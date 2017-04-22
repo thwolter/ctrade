@@ -75,7 +75,10 @@ abstract class BaseFinancial implements FinanceInterface {
         return $this;
     }
     
-    
+    /*
+     * Perhaps this function will not be required as
+     * directly implemented within R code using quantmod package
+     *
     public function makeHistory($symbol) {
         
         $period = (is_null($this->period)) ? 250 : $this->period;
@@ -97,6 +100,7 @@ abstract class BaseFinancial implements FinanceInterface {
        
         return $filename;
     }
+    */
     
     
     
