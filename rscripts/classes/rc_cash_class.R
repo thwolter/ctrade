@@ -74,7 +74,7 @@ setMethod('value',
           signature(object = 'rc-cash'),
           function(object) {
               fxrate <- price(object, paste('CURRENCY', currency(object), sep='/'))
-              max(-Inf, round(amount(object) * fxrate, 2))
+              max(-Inf, amount(object) * fxrate)
           })
 
 

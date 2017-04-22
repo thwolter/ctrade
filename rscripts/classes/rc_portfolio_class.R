@@ -8,15 +8,10 @@ setMethod('show', signature(object = 'rc-portfolio'),
                   x <- tsdata(object, nm)
                   ifelse(is(x, 'xts'), as.character(index(last(x))), '')
               }
-              #dates <- sapply(names(risk.weigths(object)), foo)
-              #df <- cbind(weigths = risk.weigths(object), data.frame(date = dates))
-              
+
               callNextMethod()
-              #cat(paste('\nComplete  ', is.complete(object)))
               cat('\n\nItems\n')
               show(as.data.frame(object))
-              #cat('\n\nRisk Weights\n')
-              #show(df)
               
           }
 )
@@ -79,22 +74,6 @@ setMethod('length',
 
 
 
-
-# showProgress ------------------------------------------------------------
-
-
-setMethod('showProgress', 
-          signature(object = 'rc-portfolio'),
-          function(object) return(object@showProgress)
-)
-
-setMethod('showProgress<-', 
-          signature(object = 'rc-portfolio', value = 'logical'),
-          function(object, value) {
-              object@showProgress <- value
-              return(object)
-          }
-)
 
 
 
@@ -344,6 +323,10 @@ setMethod('returns',
           signature(object = 'rc-portfolio'),
           function(object, period, ...) {
               rfs <- risk.factors((object))
+            
+              el <- paste(currency(object), currency(object), sep='/')
+              rfs <- rfs[rfs != el]
+              
               args <- lapply(rfs, 
                     function(rf) periodReturn(tsdata(object, rf), period = period, ...))
               returns <- do.call("merge", c(args, fill = 0))
@@ -362,8 +345,8 @@ setMethod('risk',
               
               res <- PerformanceAnalytics::VaR(
                   R = returns(object, period, ...), 
-                  portfolio_method = "component", 
-                  weights = risk.weigths(object))
+                  #portfolio_method = "component", 
+                  weights = risk.weigths(object), ...)
               
               list(
                   MVaR = res$MVaR * sqrt(t),
@@ -387,9 +370,9 @@ setMethod('risk.factors', signature(object = 'rc-portfolio'),
               nm <- unique(w)
               nm <- gsub('CURRENCY', currency(object), nm)
               
-              el <- paste(currency(object), currency(object), sep="/")
+              #el <- paste(currency(object), currency(object), sep="/")
               
-              return(nm[nm != el])
+              return(nm)
           }
 )
 
@@ -405,7 +388,7 @@ setMethod('risk.weigths', signature(object = 'rc-portfolio', item = 'missing'),
                   
                   w <- c(w, risk.weigths(itm))
               }
-              
+             
               nm <- unique(names(w))
               weights <- NULL
               for (i in 1:length(nm)) {
@@ -434,15 +417,9 @@ setMethod('risk.weigths', signature(object = 'rc-portfolio', item = 'ANY'),
 setMethod('loadData', signature(object = 'rc-portfolio', force = 'logical'),
           function(object, force) {
              
-              if (showProgress(object)) {
-                  progress <- shiny::Progress$new()
-                  on.exit(progress$close())
-                  progress$set(message = "loading ...", value = 0)
-              }
-          
               rfs <- risk.factors(object)
               for (rf in rfs) {
-                
+              
                   if (force | is.null(tsdata(object, rf))) {
                       src <- if (length(grep('/', rf))) "oanda" else "yahoo"
                       symbol <- try(getSymbols(rf, env = NULL, src = src))
@@ -452,8 +429,7 @@ setMethod('loadData', signature(object = 'rc-portfolio', force = 'logical'),
                       else
                           tsdata(object, rf) <- symbol
                   }
-                  if (showProgress(object))
-                      progress$inc(1 / length(rfs), detail = rf)
+            
               }
               object <- pushPrices(object)
               return(object)
@@ -470,7 +446,7 @@ setMethod('loadData', signature(object = 'rc-portfolio', force = 'missing'),
 
 setMethod('pushPrices', signature(object = 'rc-portfolio'),
           function(object) {
-              
+            
               for (i in 1:length(object)) {
                   itm <- item(object, i)
                   rfs <- names(risk.weigths(itm))
@@ -480,6 +456,8 @@ setMethod('pushPrices', signature(object = 'rc-portfolio'),
                           x <- last(tsdata(object, nm))
                       else
                           x <- Cl(last(tsdata(object, nm)))
+                      
+                      if (is.null(x)) x <- 1
                       
                       price(itm, rf) <- as.numeric(x)
                       update(object) <- itm
@@ -510,77 +488,6 @@ setMethod('value',
               }))
           })
 
-
-# table.cash --------------------------------------------------------------
-
-
-setMethod('table.cash',
-          signature(object = 'rc-portfolio', fvalue = 'missing', fperc = 'missing'),
-          function(object, fvalue, fperc, compress) {
-              if (!length(object)) return(NULL)
-              df <- NULL
-              
-              for (i in 1:length(object)) {
-                  item <- object@instruments[[i]]
-                  if (is(item, 'rc-cash')) {
-                      df <- rbind(
-                          df,
-                          data.frame(
-                              stringsAsFactors = FALSE,
-                              id = id(item),
-                              Account = name(item),
-                              Amount = sprintf(fvalue, amount(item)),
-                              Currency = currency(item),
-                              Value = sprintf(fvalue, value(item)),
-                              Currency.V = currency(object)
-                          )
-                      )
-                  }
-              }
-              if (compress) {
-                df$Amount <- paste(df$Amount, df$Currency)
-                df$Value <- paste(df$Value, df$Currency.V)
-                df$Currency.V <- df$Currency <- NULL
-              }
-              return(df)
-          })
-
-
-# table.stocks --------------------------------------------------------------
-
-
-setMethod('table.stocks',
-          signature(object = 'rc-portfolio', fvalue = 'missing', fperc = 'missing'),
-          function(object, fvalue, fperc, compress) {
-              if (!length(object)) return(NULL)
-              df <- NULL
-              
-              for (i in 1:length(object)) {
-                  item <- object@instruments[[i]]
-                  if (is(item, 'rc-stock')) {
-                      df <- rbind(
-                          df,
-                          data.frame(
-                              stringsAsFactors = FALSE,
-                              id = id(item),
-                              Symbol = symbol(item),
-                              Name = name(item),
-                              Shares = shares(item),
-                              Price = sprintf(fvalue, price(item, symbol(item))),
-                              Currency = currency(item),
-                              Value = sprintf(fvalue, value(item)),
-                              Currency.V = currency(object)
-                          )
-                      )
-                  }
-              }
-              if (compress) {
-                df$Price <- paste(df$Price, df$Currency)
-                df$Value <- paste(df$Value, df$Currency.V)
-                df$Currency.V <- df$Currency <- NULL
-              }
-              return(df)
-          })
 
 
 # readJSON ----------------------------------------------------------------

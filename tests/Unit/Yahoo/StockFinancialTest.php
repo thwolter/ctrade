@@ -58,6 +58,9 @@ class StockFinancialTest extends TestCase
         
         $this->assertTrue(Storage::disk('local')->exists("Histories/{$today}/ALV.DE_250.json"));
         $this->assertTrue(Storage::disk('local')->exists("Histories/2017-01-01/ALV.DE_20.json"));
+
+        Storage::delete($filename1);
+        Storage::delete($filename2);
  
     }
 }

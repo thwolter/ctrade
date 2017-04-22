@@ -3,16 +3,28 @@ library("optparse")
 option_list = list(
     make_option(c("-b", "--base"), type="character", default=NULL, 
                 help="route path of r-scripts", metavar="character"),
+    
     make_option(c("-f", "--file"), type="character", default=NULL, 
               help="portfolio file as json", metavar="character"),
+    
     make_option(c("-o", "--out"), type="character", default=NULL, 
               help="output file name [default= %default]", metavar="character"),
+    
     make_option(c("--hist"), type="numeric", default=250, 
               help="number of historical days for parameter estimation [default= %default]", metavar="numeric"),
+    
     make_option(c("--conf"), type="numeric", default=0.95, 
               help="confidence level for risk calculation [default= %default]", metavar="numeric"),
+    
     make_option(c("--period"), type="numeric", default=1, 
               help="period for risk calculation [default= %default]", metavar="numeric"),
+    
+    make_option(c("--risk_method"), type="character", default="modified", 
+                help="portfolio method [default= %default]", metavar="character"),
+    
+    make_option(c("--portfolio_method"), type="character", default="component", 
+                help="portfolio method [default= %default]", metavar="character"),
+    
     make_option(c("-t", "--task"), type="character", default="test-in-out", 
               help="task to be performed [default=%default]", metavar="character")
 ); 
@@ -34,9 +46,23 @@ if (opt$task == "test-in-out") {
     jsonlite::write_json(json, opt$out, auto_unbox = TRUE)
 }
 
-if (opt$task == 'risk') {
+
+print(opt); save(file="opt.RData", opt)
+
+if (opt$task == 'risk') 
+{
     pfolio <- loadData(readJSON(opt$file))
-    risk <- risk(pfolio, period = 'daily', p = opt$conf, t = opt$help)
-    jsonlite::write_json(risk, opt$out, auto_unbox = TRUE)
+    
+    result_risk <- risk(pfolio, 
+                 period = 'daily', 
+                 p = opt$conf, 
+                 t = opt$period, 
+                 hist = opt$hist,
+                 method = opt$risk_method,
+                 portfolio_method = opt$portfolio_method
+    )
+    
+    #jsonlite::write_json(result_risk, opt$out, auto_unbox = TRUE)
+    write(RJSONIO::toJSON(result_risk), file = opt$out)
 }
 

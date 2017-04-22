@@ -61,8 +61,6 @@ abstract class Rscripter
         $callString = sprintf("Rscript --vanilla --verbose %s -b %s -f %s -o %s %s",
             $this->rapi, $this->rbase, $this->path.$filename, $this->path.$resfile, $this->argsImplode($args));
 
-        //echo $callString;
-
         unset($output);
         exec($callString, $output);
 
@@ -70,7 +68,7 @@ abstract class Rscripter
 
         $array = json_decode(Storage::read($resfile), true);
 
-        //Storage::delete($filename);
+        Storage::delete($filename);
         Storage::delete($resfile);
 
         return $array;

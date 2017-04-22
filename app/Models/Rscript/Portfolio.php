@@ -21,10 +21,11 @@ class Portfolio extends Rscripter
     {
         $res = $this->callRscript([
             'task' => 'risk',
-            'conf' => 0.95,
-            'period' => 1,
-            'hist' => 250
+            'conf' => $conf,
+            'period' => $period,
+            'hist' => $history
         ]);
+
         return $res;
     }
 

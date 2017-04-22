@@ -37,7 +37,7 @@ class PortfolioTest extends TestCase
     public function test_calculated_risk()
     {
         $risk = $this->portfolio->rscript()->risk(250, 0.95, 1);
-        $this->assertGreaterThan(0, $risk['total']);
+        $this->assertGreaterThan(0, $risk['MVaR']);
 
     }
 
