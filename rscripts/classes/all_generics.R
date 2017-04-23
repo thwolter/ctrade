@@ -18,6 +18,27 @@ if(!isGeneric("amount<-"))
 
 
 
+# cachetime ---------------------------------------------------------------
+
+
+if(!isGeneric("cachetime"))
+    setGeneric("cachetime", function(object) standardGeneric("cachetime"))
+
+if(!isGeneric("cachetime<-"))
+    setGeneric("cachetime<-", function(object, value) standardGeneric("cachetime<-"))
+
+
+
+# cachedir ----------------------------------------------------------------
+
+
+if(!isGeneric("cachedir"))
+    setGeneric("cachedir", function(object) standardGeneric("cachedir"))
+
+if(!isGeneric("cachedir<-"))
+    setGeneric("cachedir<-", function(object, value) standardGeneric("cachedir<-"))
+
+
 # cash --------------------------------------------------------------------
 
 if(!isGeneric("cash"))

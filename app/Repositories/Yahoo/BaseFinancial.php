@@ -24,6 +24,9 @@ abstract class BaseFinancial implements FinanceInterface {
     protected $instrument;
 
     protected $cacheTime = 10;
+    protected $cacheHist = 20;
+
+    protected $histdir = 'Histories';
     
     protected $period = 250; //period in days 
     
@@ -74,33 +77,41 @@ abstract class BaseFinancial implements FinanceInterface {
         $this->period = $period;
         return $this;
     }
-    
-    /*
-     * Perhaps this function will not be required as
-     * directly implemented within R code using quantmod package
-     *
-    public function makeHistory($symbol) {
-        
+
+
+    public function makeHistory($symbol)
+    {
+
         $period = (is_null($this->period)) ? 250 : $this->period;
-        
-        $endDate = (is_null($this->startDate)) ? Carbon::today(): $this->startDate;
+
+        $endDate = (is_null($this->startDate)) ? Carbon::today() : $this->startDate;
         $startDate = $endDate->copy()->addDay(-$period);
-        
-        $directory = 'Histories/'.$endDate->toDateString();
-        $filename  = "{$directory}/{$symbol}_{$period}.json";
-       
-       
-        if (! Storage::disk('local')->exists($filename)) {
+
+        $filename = "{$this->histdir}/{$symbol}.json";
+
+        if (Cache::has($symbol)) {
+
+            $data = Cache::get($symbol);
+        } else {
+
+            $data = $this->client->getHistoricalData($symbol, $startDate, $endDate);
+            Cache::put($symbol, $data, $this->cacheHist);
+        }
+
+        Storage::makeDirectory($this->histdir);
+        Storage::disk('local')->put($filename, json_encode($data));
+
+        /*if (! Storage::disk('local')->exists($filename)) {
        
             $data = $this->client->getHistoricalData($symbol, $startDate, $endDate);
            
             Storage::makeDirectory($directory);
             Storage::disk('local')->put($filename, json_encode($data));
-        }
+        }*/
        
         return $filename;
     }
-    */
+
     
     
     

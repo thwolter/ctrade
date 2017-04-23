@@ -518,3 +518,36 @@ setMethod('readJSON',
             return(object)
           })
 
+
+
+# cachetime ---------------------------------------------------------------
+
+
+setMethod('cachetime', 
+          signature(object = 'rc-portfolio'),
+          function(object) {
+              return(object@cachetime)
+          })
+
+setMethod('cachetime<-', 
+          signature(object = 'rc-portfolio', value = "numeric"),
+          function(object, value) {
+              object@cachetime <- value
+          })
+
+
+
+# cachedir ----------------------------------------------------------------
+
+
+setMethod('cachedir', 
+          signature(object = 'rc-portfolio'),
+          function(object) {
+              return(object@cachedir)
+          })
+
+setMethod('cachedir<-', 
+          signature(object = 'rc-portfolio', value = "character"),
+          function(object, value) {
+              object@cachedir <- value
+          })      

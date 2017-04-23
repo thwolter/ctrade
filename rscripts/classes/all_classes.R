@@ -54,13 +54,17 @@ setClass("rc-portfolio",
          representation = representation(
              instruments = "list",
              tsdata = 'list',
-             showProgress = 'logical'
+             showProgress = 'logical',
+             cachetime = 'numeric',
+             cachedir = 'character'
          ),
          
          prototype = prototype(
              instruments = list(),
              tsdata = list(),
-             showProgress = FALSE
+             showProgress = FALSE,
+             cachetime = 60,
+             cachedir = 'cache'
          ),
          
          contains = 'rc-instrument'
