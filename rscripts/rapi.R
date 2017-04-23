@@ -1,4 +1,4 @@
-library("optparse")
+library(optparse)
 
 option_list = list(
     make_option(c("-b", "--base"), type="character", default=NULL, 
@@ -13,11 +13,17 @@ option_list = list(
     make_option(c("--hist"), type="numeric", default=250, 
               help="number of historical days for parameter estimation [default= %default]", metavar="numeric"),
     
+    make_option(c("--subset"), type="character", default="", 
+                help="an xts/ISO8601 style subset string for return calculation [default= %default]", metavar="character"),
+    
     make_option(c("--conf"), type="numeric", default=0.95, 
               help="confidence level for risk calculation [default= %default]", metavar="numeric"),
     
-    make_option(c("--period"), type="numeric", default=1, 
+    make_option(c("--period"), type="character", default="daily", 
               help="period for risk calculation [default= %default]", metavar="numeric"),
+    
+    make_option(c("--horizon"), type="numeric", default=1, 
+                help="horizon for risk calculation [default= %default]", metavar="numeric"),
     
     make_option(c("--risk_method"), type="character", default="modified", 
                 help="portfolio method [default= %default]", metavar="character"),
@@ -54,15 +60,14 @@ if (opt$task == 'risk')
     pfolio <- loadData(readJSON(opt$file))
     
     result_risk <- risk(pfolio, 
-                 period = 'daily', 
+                 period = opt$period, 
                  p = opt$conf, 
-                 t = opt$period, 
-                 hist = opt$hist,
+                 t = opt$horizon, 
+                 subset = opt$subset,
                  method = opt$risk_method,
                  portfolio_method = opt$portfolio_method
     )
     
-    #jsonlite::write_json(result_risk, opt$out, auto_unbox = TRUE)
     write(RJSONIO::toJSON(result_risk), file = opt$out)
 }
 

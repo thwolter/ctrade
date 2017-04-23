@@ -5,6 +5,8 @@ namespace App\Models\Rscript;
 
 
 use Illuminate\Support\Facades\Storage;
+use Khill\Lavacharts\Lavacharts;
+
 
 class Portfolio extends Rscripter
 {
@@ -13,16 +15,16 @@ class Portfolio extends Rscripter
     /**
      * @param int $history the number of historical days for parameter estimation
      * @param double $conf the VaR confidence level
-     * @param int $period the VaR period
+     * @param int $horizon the VaR period
      *
      * @return array $res with calculated risk results
      */
-    public function risk($history, $conf, $period)
+    public function risk($history, $conf, $horizon)
     {
         $res = $this->callRscript([
             'task' => 'risk',
             'conf' => $conf,
-            'period' => $period,
+            'horizon' => $horizon,
             'hist' => $history
         ]);
 

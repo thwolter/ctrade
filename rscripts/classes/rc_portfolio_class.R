@@ -344,8 +344,7 @@ setMethod('risk',
           function(object, period, p, t, ...) {
               
               res <- PerformanceAnalytics::VaR(
-                  R = returns(object, period, ...), 
-                  #portfolio_method = "component", 
+                  R = returns(object, period, ...),
                   weights = risk.weigths(object), ...)
               
               list(

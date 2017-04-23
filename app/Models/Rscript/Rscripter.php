@@ -97,7 +97,7 @@ abstract class Rscripter
             Storage::delete($resfile);
         }
 
-        if (is_null($array) or $hasError) {
+        if (! isset($array) or $hasError) {
 
             throw new RscriptException(substr($logtext, $hasError));
         }

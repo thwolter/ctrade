@@ -50,3 +50,10 @@ App::bind(
     'App\Repositories\Contracts\InstrumentInterface',
     'App\Repositories\InstrumentRepository'
 );
+
+Route::get('chart/{id}', function($id) {
+    $portfolio = \App\Entities\Portfolio::find($id);
+    \App\Models\Charts::LineChart();
+    \App\Models\Charts::gaugeChart();
+    return view('test');
+});

@@ -185,6 +185,8 @@ return [
         HieuLe\Active\ActiveServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         PragmaRX\Countries\ServiceProvider::class,
+        Khill\Lavacharts\Laravel\LavachartsServiceProvider::class,
+        Clockwork\Support\Laravel\ClockworkServiceProvider::class,
 
 
     ],
@@ -244,6 +246,8 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Countries'=> PragmaRX\Countries\Facade::class,
+        'Lava' => Khill\Lavacharts\Laravel\LavachartsFacade::class,
+        'Clockwork' => Clockwork\Support\Laravel\Facade::class,
 
     ],
 

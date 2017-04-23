@@ -24,8 +24,6 @@ class Portfolio extends Model
         'currency',
         'cash'
     ];
-    
-    
 
     public function user() {
         return $this->belongsTo('App\Entities\User');
@@ -65,14 +63,11 @@ class Portfolio extends Model
             'cash' => ['amount' => $this->cash, 'currency' => $this->currency],
             'item' => []
         ];
-
         $i = 0;
         foreach($this->positions as $position) {
 
             $array['item'][$i++] = $position->toArray();
-
         }
-
         return $array;
     }
 }
