@@ -32,17 +32,20 @@ abstract class Rscripter
     }
 
 
+    public function entityName()
+    {
+        $ref = new \ReflectionClass($this->entity);
+        return $ref->getShortName();
+    }
+    
     /**
      * Saves the portfolio as json file to the file system
      *
      * @return string with name of the json file
      */
-    public function saveJSON()
+    public function saveJSON($filename)
     {
-        $filename = 'tmp/'.uniqid() . '.json';
         Storage::disk('local')->put($filename, json_encode($this->entity->toArray()));
-
-        return $filename;
     }
 
     /**
@@ -58,7 +61,7 @@ abstract class Rscripter
         {
             $s = $s."--{$key}={$value} ";
         }
-        return $s;
+        return trim($s);
     }
 
 
@@ -73,29 +76,37 @@ abstract class Rscripter
      */
     public function callRscript($args)
     {
-        $fn = 'tmp/'.uniqid();
-        $filename = $this->saveJSON();
-        $resfile = $fn.'.json';
-        $logfile = $fn.'.log';
+        $tmpdir = 'tmp/'.uniqid();
+        Storage::makeDirectory($tmpdir);
+        
+        // save entity file
+        $entityFile = "{$tmpdir}/{$this->entityName()}.json";
+        $this->saveJSON($entityFile);
+        
+        // define result file
+        $resultFile = "{$tmpdir}/result.json";
+        
+        // define log file
+        $logFile = "{$tmpdir}/log.txt";
 
-        $callString = sprintf("Rscript --vanilla %s -b %s -f %s -o %s %s 2> %s",
-            $this->rapi, $this->rbase, $this->path.$filename, $this->path.$resfile,
-            $this->argsImplode($args), $this->path.$logfile);
-
+        $callString = sprintf(
+            "Rscript --vanilla %s --base=%s --entity=%s --result=%s %s 2> %s",
+            $this->rapi, $this->rbase, $this->path.$entityFile, $this->path.$resultFile, 
+            $this->argsImplode($args), $this->path.$logFile);
+        
         exec($callString);
-        Storage::delete($filename);
+        
 
-
-        $logtext = Storage::read($logfile);
+        $logtext = Storage::read($logFile);
         $hasError = stripos($logtext, 'ERROR');
-        Storage::delete($logfile);
 
 
-        if (Storage::disk('local')->exists($resfile)) {
+        if (Storage::disk('local')->exists($resultFile)) {
 
-            $array = json_decode(Storage::read($resfile), true);
-            Storage::delete($resfile);
+            $array = json_decode(Storage::read($resultFile), true);
         }
+        
+        Storage::deleteDirectory($tmpdir);
 
         if (! isset($array) or $hasError) {
 

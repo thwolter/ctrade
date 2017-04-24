@@ -1,14 +1,14 @@
 library(optparse)
 
 option_list = list(
-    make_option(c("-b", "--base"), type="character", default=NULL, 
+    make_option(c("--base"), type="character", default=NULL, 
                 help="route path of r-scripts", metavar="character"),
     
-    make_option(c("-f", "--file"), type="character", default=NULL, 
+    make_option(c("--entity"), type="character", default=NULL, 
               help="portfolio file as json", metavar="character"),
     
-    make_option(c("-o", "--out"), type="character", default=NULL, 
-              help="output file name [default= %default]", metavar="character"),
+    make_option(c("--result"), type="character", default=NULL, 
+              help="result output file name [default= %default]", metavar="character"),
     
     make_option(c("--hist"), type="numeric", default=250, 
               help="number of historical days for parameter estimation [default= %default]", metavar="numeric"),
@@ -39,17 +39,17 @@ opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
 
-if (is.null(opt$file) | (is.null(opt$out))){
+if (is.null(opt$base) | is.null(opt$entity) | is.null(opt$entity)) {
     print_help(opt_parser)
-    stop("parameter -f (input file) and -o (output file) have to be specified", call.=FALSE)
+    stop("parameter --base, --entity, --result have to be specified", call.=FALSE)
 }
 
 setwd(opt$base) 
 source('sources.R');
 
 if (opt$task == "test-in-out") {
-    json <- jsonlite::read_json(opt$file)
-    jsonlite::write_json(json, opt$out, auto_unbox = TRUE)
+    json <- jsonlite::read_json(opt$entity)
+    jsonlite::write_json(json, opt$result, auto_unbox = TRUE)
 }
 
 
@@ -57,7 +57,7 @@ save(file="opt.RData", opt)
 
 if (opt$task == 'risk') 
 {
-    pfolio <- loadData(readJSON(opt$file))
+    pfolio <- loadData(readJSON(opt$entity))
     
     result_risk <- risk(pfolio, 
                  period = opt$period, 
@@ -68,6 +68,6 @@ if (opt$task == 'risk')
                  portfolio_method = opt$portfolio_method
     )
     
-    write(RJSONIO::toJSON(result_risk), file = opt$out)
+    write(RJSONIO::toJSON(result_risk), file = opt$result)
 }
 

@@ -22,10 +22,12 @@ class PortfolioTest extends TestCase
 
     public function test_can_save_json()
     {
-        $filename = $this->portfolio->rscript()->saveJSON();
+        $tmpdir = 'tmp/'.uniqid();
+        $filename = $tmpdir.'/test.json';
+        $this->portfolio->rscript()->saveJSON($filename);
 
         $this->assertTrue(Storage::disk('local')->exists($filename));
-        Storage::delete($filename);
+        Storage::deleteDirectory($tmpdir);
     }
 
     public function test_rscript_can_read_and_write_file()
@@ -45,7 +47,7 @@ class PortfolioTest extends TestCase
     {
         $args = ['task' => 'test-in-out', 'period' => 1];
         $argsString = $this->portfolio->rscript()->argsImplode($args);
-        $this->assertEquals('--task=test-in-out --period=1 ', $argsString);
+        $this->assertEquals('--task=test-in-out --period=1', $argsString);
     }
 
 }
