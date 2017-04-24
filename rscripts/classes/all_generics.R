@@ -295,6 +295,14 @@ if(!isGeneric("loadData"))
 
 
 
+# readData ----------------------------------------------------------------
+
+
+if(!isGeneric("readData"))
+    setGeneric("readData", function(object) standardGeneric("readData"))
+
+
+
 # pushPrices --------------------------------------------------------------
 
 if(!isGeneric("pushPrices"))

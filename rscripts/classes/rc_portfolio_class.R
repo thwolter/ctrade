@@ -369,9 +369,9 @@ setMethod('risk.factors', signature(object = 'rc-portfolio'),
               nm <- unique(w)
               nm <- gsub('CURRENCY', currency(object), nm)
               
-              #el <- paste(currency(object), currency(object), sep="/")
+              el <- paste(currency(object), currency(object), sep="/")
               
-              return(nm)
+              return(nm[nm != el])
           }
 )
 
@@ -439,6 +439,44 @@ setMethod('loadData', signature(object = 'rc-portfolio', force = 'logical'),
 setMethod('loadData', signature(object = 'rc-portfolio', force = 'missing'),
           function(object, force) loadData(object, FALSE))
               
+
+
+# readData ----------------------------------------------------------------
+
+
+setMethod('readData', signature(object = 'rc-portfolio'),
+    function(object) {
+              
+        col.names = c("Open", "High", "Low", "Close", "Volume", "Adjusted")
+        
+        rfs <- risk.factors(object)
+        for (rf in rfs) {
+            
+            jsonfile = paste0(rf, ".json")
+            
+            if (!file.exists(jsonfile))
+                stop(paste0("Missing JSON file for symbol '", rf, "'."))
+                  
+            dat <- try(fromJSON(jsonfile)[,-1], silent = TRUE)
+            
+            if (is(dat, 'try-error'))
+                stop(paste0("JSON file for symbol '", rf, "' with inappropriate format."))
+            
+            asDateArgs <- list(x = as.character(dat[, 1]))
+            
+            dat <- xts(dat[, -1], do.call("as.Date", asDateArgs), src = "json", 
+                      updated = Sys.time())
+            
+            colnames(dat) <- paste(toupper(rf), col.names, sep = ".")
+            
+            tsdata(object, rf) <- dat
+        }
+                  
+        object <- pushPrices(object)
+        return(object)
+        
+    }
+)
 
 # pushPrices --------------------------------------------------------------
 

@@ -55,7 +55,7 @@ class StockFinancialTest extends TestCase
     {
         $directory = 'tmp/'.uniqid();
         $filename = $this->stock->makeHistory('ALV.DE', $directory);
-       
+
         $this->assertEquals("{$directory}/ALV.DE.json", $filename);
         $this->assertTrue(Storage::disk('local')->exists("{$directory}/ALV.DE.json"));
 

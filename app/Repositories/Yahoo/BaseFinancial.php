@@ -94,7 +94,8 @@ abstract class BaseFinancial implements FinanceInterface {
             $json = Cache::get($symbol);
         } else {
 
-            $json = json_encode($this->client->getHistoricalData($symbol, $startDate, $endDate));
+            $data = $this->client->getHistoricalData($symbol, $startDate, $endDate);
+            $json = json_encode($data['query']['results']['quote'], JSON_NUMERIC_CHECK);
             Cache::put($symbol, $json, $this->cacheHist);
         }
 
