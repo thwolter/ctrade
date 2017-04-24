@@ -26,8 +26,6 @@ abstract class BaseFinancial implements FinanceInterface {
     protected $cacheTime = 10;
     protected $cacheHist = 20;
 
-    protected $histdir = 'Histories';
-    
     protected $period = 250; //period in days 
     
     protected $startDate;
@@ -66,6 +64,7 @@ abstract class BaseFinancial implements FinanceInterface {
     }
     
     
+    
     public function startDate($date) {
         
         $this->startDate = new Carbon($date);
@@ -79,7 +78,8 @@ abstract class BaseFinancial implements FinanceInterface {
     }
 
 
-    public function makeHistory($symbol)
+
+    public function makeHistory($symbol, $directory)
     {
 
         $period = (is_null($this->period)) ? 250 : $this->period;
@@ -87,28 +87,20 @@ abstract class BaseFinancial implements FinanceInterface {
         $endDate = (is_null($this->startDate)) ? Carbon::today() : $this->startDate;
         $startDate = $endDate->copy()->addDay(-$period);
 
-        $filename = "{$this->histdir}/{$symbol}.json";
+        $filename = "{$directory}/{$symbol}.json";
 
         if (Cache::has($symbol)) {
 
-            $data = Cache::get($symbol);
+            $json = Cache::get($symbol);
         } else {
 
-            $data = $this->client->getHistoricalData($symbol, $startDate, $endDate);
-            Cache::put($symbol, $data, $this->cacheHist);
+            $json = json_encode($this->client->getHistoricalData($symbol, $startDate, $endDate));
+            Cache::put($symbol, $json, $this->cacheHist);
         }
 
-        Storage::makeDirectory($this->histdir);
-        Storage::disk('local')->put($filename, json_encode($data));
+    
+        Storage::disk('local')->put($filename, $json);
 
-        /*if (! Storage::disk('local')->exists($filename)) {
-       
-            $data = $this->client->getHistoricalData($symbol, $startDate, $endDate);
-           
-            Storage::makeDirectory($directory);
-            Storage::disk('local')->put($filename, json_encode($data));
-        }*/
-       
         return $filename;
     }
 

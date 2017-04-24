@@ -53,12 +53,13 @@ class StockFinancialTest extends TestCase
 
     public function test_makeHistory_saves_jsonfile()
     {
-        $filename1 = $this->stock->makeHistory('ALV.DE');
+        $directory = 'tmp/'.uniqid();
+        $filename = $this->stock->makeHistory('ALV.DE', $directory);
+       
+        $this->assertEquals("{$directory}/ALV.DE.json", $filename);
+        $this->assertTrue(Storage::disk('local')->exists("{$directory}/ALV.DE.json"));
 
-        $this->assertEquals("Histories/ALV.DE.json", $filename1);
-        $this->assertTrue(Storage::disk('local')->exists("Histories/ALV.DE.json"));
-
-        Storage::delete($filename1);
+        Storage::deleteDirectory($directory);
     }
 
 }
