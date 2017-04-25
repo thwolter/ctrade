@@ -3,6 +3,8 @@
 
 namespace App\Repositories\Yahoo;
 
+use Carbon\Carbon;
+
 
 class StockFinancial extends BaseFinancial
 {
@@ -39,5 +41,17 @@ class StockFinancial extends BaseFinancial
     public function type($symbol = null)
     {
         return 'Stock';
+    }
+    
+    
+    public function history($symbol, $from = null, $to = null)
+    {
+        $to = (is_null($to)) ? Carbon::today() : $to;
+        $from = (is_null($from)) ? Carbon::today()->addDay(-250) : $from;
+        
+        $data = $this->client->getHistoricalData($symbol, $from, $to);
+        $json = json_encode($data['query']['results']['quote'], JSON_NUMERIC_CHECK);
+        
+        return $json;
     }
 }

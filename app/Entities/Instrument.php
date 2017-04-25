@@ -55,4 +55,10 @@ abstract class Instrument extends Model
     {
         return $this->financial()->currency($this->symbol);
     }
+    
+    
+    public function isCurrency($currency)
+    {
+        return $this->currency() == $currency;
+    }
 }

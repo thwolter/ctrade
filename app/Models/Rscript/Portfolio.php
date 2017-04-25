@@ -6,6 +6,8 @@ namespace App\Models\Rscript;
 
 use Illuminate\Support\Facades\Storage;
 use Khill\Lavacharts\Lavacharts;
+use App\Repositories\Yahoo\Financial;
+use App\Repositories\OandaFinancial;
 
 
 class Portfolio extends Rscripter
@@ -30,5 +32,24 @@ class Portfolio extends Rscripter
 
         return $res;
     }
-
+    
+    
+    public function saveSymbols($directory)
+    {
+        foreach ($this->entity->symbols() as $symbol)
+        {
+            if (stripos($symbol, '/') > 0) {
+                
+                $json = OandaFinancial::history()->get($symbol);
+                $filename = $directory.'/'.str_replace('/', '_', $symbol).'.json';
+                
+            } else {
+                
+                $json = Financial::history()->get($symbol);
+                $filename = "{$directory}/{$symbol}.json";
+            }
+            
+            Storage::disk('local')->put($filename, $json);
+        }
+    }
 }
