@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use Carbon\Carbon;
 use App\Repositories\Yahoo\YahooFinancial;
+use Illuminate\Support\Facades\Cache;
 
 
 class StockFinancial extends YahooFinancial
@@ -49,9 +50,20 @@ class StockFinancial extends YahooFinancial
     {
         $to = (is_null($to)) ? Carbon::today() : $to;
         $from = (is_null($from)) ? Carbon::today()->addDay(-250) : $from;
-        
-        $data = $this->client->getHistoricalData($symbol, $from, $to);
-        $json = json_encode($data['query']['results']['quote'], JSON_NUMERIC_CHECK);
+
+        $key = $symbol.$from->toDateString().$to->toDateString();
+
+        if (Cache::has($key)) {
+
+            $json = Cache::get($key);
+
+        } else {
+
+            $data = $this->client->getHistoricalData($symbol, $from, $to);
+            $json = json_encode($data['query']['results']['quote'], JSON_NUMERIC_CHECK);
+
+            Cache::put($key, $json, $this->cacheHist);
+        }
         
         return $json;
     }

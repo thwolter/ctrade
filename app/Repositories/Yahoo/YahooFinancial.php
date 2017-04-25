@@ -70,41 +70,11 @@ abstract class YahooFinancial implements FinanceInterface {
         $this->startDate = new Carbon($date);
         return $this;
     }
-    
+
+
     public function period($period) {
         
         $this->period = $period;
         return $this;
     }
-
-
-    /* depreciated
-
-    public function makeHistory($symbol, $directory)
-    {
-
-        $period = (is_null($this->period)) ? 250 : $this->period;
-
-        $endDate = (is_null($this->startDate)) ? Carbon::today() : $this->startDate;
-        $startDate = $endDate->copy()->addDay(-$period);
-
-        $filename = "{$directory}/{$symbol}.json";
-
-        if (Cache::has($symbol)) {
-
-            $json = Cache::get($symbol);
-        } else {
-
-            $data = $this->client->getHistoricalData($symbol, $startDate, $endDate);
-            $json = json_encode($data['query']['results']['quote'], JSON_NUMERIC_CHECK);
-            Cache::put($symbol, $json, $this->cacheHist);
-        }
-
-    
-        Storage::disk('local')->put($filename, $json);
-
-        return $filename;
-    }
-    */
-
 }

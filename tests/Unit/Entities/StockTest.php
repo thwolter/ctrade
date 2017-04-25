@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Unit\Entities;
 
 use App\Entities\Position;
 use Tests\TestCase;
@@ -59,17 +59,8 @@ class StockTest extends TestCase
 
         $this->assertStringStartsWith('BASF', $stock->name());
     }
-    
-    
-    public function test_hasCurrency_for_same_curreny_is_true()
-    {
-        $stock = $this->createStock('BAS.DE');
-        
-        $this->assertTrue($stock->hasCurrency('EUR'));
-        $this->assertFalse($stock->hasCurrency('USD'));
-    }
-    
-    
+
+
     public function test_has_history()
     {
         $stock = $this->createStock('BAS.DE');

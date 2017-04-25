@@ -4,16 +4,30 @@ namespace App\Repositories;
 
 use Carbon\Carbon;
 use App\Repositories\Oanda\OandaFinancial;
+use Illuminate\Support\Facades\Cache;
 
 class PortfolioFinancial
 {
+
+    protected $cacheHist = 20;
+
     
     public function history($symbol, $from = null, $to = null)
     {
         $to = (is_null($to)) ? Carbon::today() : $to;
         $from = (is_null($from)) ? Carbon::today()->addDay(-250) : $from;
 
-        $json = OandaFinancial::history()->get($symbol);
+        $key = $symbol.$from->toDateString().$to->toDateString();
+
+        if (Cache::has($key)) {
+
+            $json = Cache::get($key);
+
+        } else {
+
+            $json = OandaFinancial::history()->get($symbol);    //ToDo: implement $from and $to
+            Cache::put($key, $json, $this->cacheHist);
+        }
 
         return $json;
                
