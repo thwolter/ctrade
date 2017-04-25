@@ -61,19 +61,19 @@ class StockTest extends TestCase
     }
     
     
-    public function test_isCurrency_for_same_curreny_is_true()
+    public function test_hasCurrency_for_same_curreny_is_true()
     {
         $stock = $this->createStock('BAS.DE');
         
-        $this->assertTrue($stock->isCurrency('EUR'));
-        $this->assertFalse($stock->isCurrency('USD'));
+        $this->assertTrue($stock->hasCurrency('EUR'));
+        $this->assertFalse($stock->hasCurrency('USD'));
     }
     
     
     public function test_has_history()
     {
         $stock = $this->createStock('BAS.DE');
-        $json = $stock->financial()->history($stock->symbol); 
+        $json = $stock->history();
         
         $this->assertTrue(is_string($json) and is_array(json_decode($json, true)));
     }

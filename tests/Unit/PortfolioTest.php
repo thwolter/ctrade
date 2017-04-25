@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Entities\Portfolio;
 use App\Entities\Position;
 use App\Entities\Stock;
-use App\Repositories\Yahoo\StockFinancial;
+use App\Repositories\StockFinancial;
 use App\Repositories\Yahoo\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -67,27 +67,19 @@ class PortfolioTest extends TestCase
 
         $this->assertArrayHasKey('symbol', $array['item'][0]);
     }
-    
-    public function test_symbols_includes_required_symbols()
-    {
-        $portfolio = $this->makePortfolio('EUR');
-        $symbols = ['ALV.DE', 'BAS.DE', 'YHOO', 'USD/EUR'];
-        $this->assertEquals($symbols, $portfolio->symbols());
-    }
+
     
     public function test_save_required_symbols()
     {
         $tmpdir = $this->tempDirectoroy();
-        $portfolio = $this->makePortfolio('EUR')->rscript()->saveSymbols($tmpdir);
-        $symbols = ['ALV.DE', 'BAS.DE', 'YHOO', 'USD/EUR'];
-        
-        foreach ($symbols as $symbol)
-        {
-            $symbol = str_replace('/', '_', $symbol);
-            $filename = "{$tmpdir}/{$symbol}.json";
-            $this->assertTrue(Storage::disk('local')->exists($filename));
-        }
-        Storage::deleteDirectory($tmpdir);
+        $this->makePortfolio('EUR')->rscript()->saveSymbols($tmpdir);
+
+        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/ALV.DE.json"));
+        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/BAS.DE.json"));
+        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/YHOO.json"));
+        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/USDEUR.json"));
+
+        //Storage::deleteDirectory($tmpdir);
     }   
     
     

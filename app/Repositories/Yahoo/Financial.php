@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 
-class Financial extends BaseFinancial
+class Financial extends YahooFinancial
 {
 
     

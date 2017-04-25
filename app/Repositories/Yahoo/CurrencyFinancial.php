@@ -9,7 +9,7 @@
 namespace App\Repositories\Yahoo;
 
 
-class CurrencyFinancial extends BaseFinancial
+class CurrencyFinancial extends YahooFinancial
 {
 
     

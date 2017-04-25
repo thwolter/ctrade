@@ -6,6 +6,7 @@ use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
 use App\Repositories\Yahoo\Financable;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 
 class Position extends Model implements PresentableInterface
@@ -86,6 +87,11 @@ class Position extends Model implements PresentableInterface
         return $this->financial()->price($this->currency().$currency);
     }
 
+    public function hasCurrency($currency)
+    {
+        return $this->currency() == $currency;
+    }
+
 
     public function toArray() {
 
@@ -96,6 +102,11 @@ class Position extends Model implements PresentableInterface
             'currency' => $this->currency(),
             'amount' => $this->amount
         ];
+    }
+
+    public function history(Carbon $from = null, Carbon $to = null)
+    {
+        return $this->positionable->history($from, $to);
     }
 }
 

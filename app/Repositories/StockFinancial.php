@@ -1,12 +1,13 @@
 <?php
 
 
-namespace App\Repositories\Yahoo;
+namespace App\Repositories;
 
 use Carbon\Carbon;
+use App\Repositories\Yahoo\YahooFinancial;
 
 
-class StockFinancial extends BaseFinancial
+class StockFinancial extends YahooFinancial
 {
 
   
@@ -44,7 +45,7 @@ class StockFinancial extends BaseFinancial
     }
     
     
-    public function history($symbol, $from = null, $to = null)
+    public function history(String $symbol, Carbon $from = null, Carbon $to = null)
     {
         $to = (is_null($to)) ? Carbon::today() : $to;
         $from = (is_null($from)) ? Carbon::today()->addDay(-250) : $from;

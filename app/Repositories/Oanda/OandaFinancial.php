@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Oanda;
 
 use Carbon\Carbon;
 
@@ -22,7 +22,7 @@ class OandaFinancial
     
     public function get($symbol)
     {
-        $currencyPair = explode('/', $symbol);
+        $currencyPair = str_split($symbol, 3);
         $urlString = sprintf($this->url,
             $currencyPair[1], 
             Carbon::today()->addDay(-255)->toDateString(), 

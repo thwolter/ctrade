@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 
-abstract class BaseFinancial implements FinanceInterface {
+abstract class YahooFinancial implements FinanceInterface {
 
 
     protected $client;
@@ -78,6 +78,7 @@ abstract class BaseFinancial implements FinanceInterface {
     }
 
 
+    /* depreciated
 
     public function makeHistory($symbol, $directory)
     {
@@ -104,5 +105,6 @@ abstract class BaseFinancial implements FinanceInterface {
 
         return $filename;
     }
+    */
 
 }

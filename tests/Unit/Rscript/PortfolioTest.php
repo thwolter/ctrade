@@ -22,8 +22,9 @@ class PortfolioTest extends TestCase
 
     public function test_can_save_json()
     {
-        $tmpdir = 'tmp/'.uniqid();
+        $tmpdir = $this->tempDirectoroy();
         $filename = $tmpdir.'/test.json';
+
         $this->portfolio->rscript()->saveJSON($filename);
 
         $this->assertTrue(Storage::disk('local')->exists($filename));
@@ -49,5 +50,6 @@ class PortfolioTest extends TestCase
         $argsString = $this->portfolio->rscript()->argsImplode($args);
         $this->assertEquals('--task=test-in-out --period=1', $argsString);
     }
+
 
 }

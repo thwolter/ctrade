@@ -16,7 +16,7 @@ class Portfolio extends Model
     use Rscriptable;
 
     protected $presenter = 'App\Presenters\Portfolio';
-    protected $financial = 'App\Repositories\Yahoo\CurrencyFinancial';
+    protected $financial = 'App\Repositories\PortfolioFinancial';
     protected $rscriptable = 'App\Models\Rscript\Portfolio';
     
     protected $fillable = [
@@ -69,24 +69,13 @@ class Portfolio extends Model
     }
     
     
-    public function symbols()
+    public function history(String $currency, Carbon $from = null, Carbon $to = null)
     {
-        $arr = [];
-        
-        foreach ($this->positions as $position) 
-        {
-            $symbol = $position->symbol();
-            
-            if (!in_array($symbol, $arr)) $arr[] = $symbol;
-            
-            if ($this->currency() != $position->currency())
-            {
-                $currpair = $position->currency().'/'.$this->currency();
-                if (!in_array($currpair, $arr)) $arr[] = $currpair;
-            }
-        }
-        
-        return $arr;
+        $symbol = $currency.$this->currency();
+
+        $json = $this->financial()->history($symbol, $from, $to);
+
+        return $json;
     }
 }
 

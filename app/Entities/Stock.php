@@ -12,7 +12,7 @@ class Stock extends Instrument
 {
     protected $fillable = ['symbol'];
 
-    protected $financial = 'App\Repositories\Yahoo\StockFinancial';
+    protected $financial = 'App\Repositories\StockFinancial';
     
     public $typeDisp = 'Aktie';
     

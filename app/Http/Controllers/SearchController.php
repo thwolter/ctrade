@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Yahoo\StockFinancial;
+use App\Repositories\StockFinancial;
 use App\Repositories\Yahoo\CurrencyFinancial;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;

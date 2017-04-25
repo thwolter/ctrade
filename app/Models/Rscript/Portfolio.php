@@ -34,22 +34,34 @@ class Portfolio extends Rscripter
     }
     
     
+
     public function saveSymbols($directory)
     {
-        foreach ($this->entity->symbols() as $symbol)
-        {
-            if (stripos($symbol, '/') > 0) {
-                
-                $json = OandaFinancial::history()->get($symbol);
-                $filename = $directory.'/'.str_replace('/', '_', $symbol).'.json';
-                
-            } else {
-                
-                $json = Financial::history()->get($symbol);
+        $symbols = [];
+
+        foreach ($this->entity->positions as $position) {
+            $symbol = $position->symbol();
+            if (! in_array($symbol, $symbols)) {
+
+                $json = $position->history();
                 $filename = "{$directory}/{$symbol}.json";
+
+                Storage::disk('local')->put($filename, $json);
+                $symbols[] = $symbol;
             }
-            
-            Storage::disk('local')->put($filename, $json);
+
+
+            if (! $position->hasCurrency($this->entity->currency())) {
+                $symbol = $position->currency() . $this->entity->currency();
+                if (!in_array($symbol, $symbols)) {
+
+                    $json = $this->entity->history($position->currency());
+                    $filename = "{$directory}/{$symbol}.json";
+
+                    Storage::disk('local')->put($filename, $json);
+                    $riskFactors[] = $symbol;
+                }
+            }
         }
     }
 }

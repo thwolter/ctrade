@@ -118,4 +118,13 @@ class PositionTest extends TestCase
 
         $this->assertEquals('ALV.DE', $array['symbol']);
     }
+
+    public function test_position_has_history()
+    {
+        $position = $this->makePositionWithPortfolio('EUR', 5, 'ALV.DE');
+
+        $json = $position->history();
+
+        $this->assertTrue(is_string($json) and is_array(json_decode($json, true)));
+    }
 }

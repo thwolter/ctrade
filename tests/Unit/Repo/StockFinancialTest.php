@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Yahoo;
 
-use App\Repositories\Yahoo\StockFinancial;
+use App\Repositories\StockFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -50,6 +50,7 @@ class StockFinancialTest extends TestCase
         $this->assertEquals('Stock', $this->stock->type());
     }
 
+    /* depreciated
 
     public function test_makeHistory_saves_jsonfile()
     {
@@ -60,6 +61,14 @@ class StockFinancialTest extends TestCase
         $this->assertTrue(Storage::disk('local')->exists("{$directory}/ALV.DE.json"));
 
         Storage::deleteDirectory($directory);
+    }
+    */
+
+    public function test_has_history_as_json()
+    {
+        $json = $this->stock->history('ALV.DE');
+
+        $this->assertTrue(is_string($json) and is_array(json_decode($json, true)));
     }
 
 }

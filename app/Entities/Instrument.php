@@ -56,9 +56,9 @@ abstract class Instrument extends Model
         return $this->financial()->currency($this->symbol);
     }
     
-    
-    public function isCurrency($currency)
+
+    public function history(Carbon $from = null, Carbon $to = null)
     {
-        return $this->currency() == $currency;
+        return $this->financial()->history($this->symbol(), $from, $to);
     }
 }
