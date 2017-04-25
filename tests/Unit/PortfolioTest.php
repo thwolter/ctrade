@@ -10,6 +10,7 @@ use App\Repositories\Yahoo\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Storage;
 
 
 class PortfolioTest extends TestCase
@@ -66,4 +67,28 @@ class PortfolioTest extends TestCase
 
         $this->assertArrayHasKey('symbol', $array['item'][0]);
     }
+    
+    public function test_symbols_includes_required_symbols()
+    {
+        $portfolio = $this->makePortfolio('EUR');
+        $symbols = ['ALV.DE', 'BAS.DE', 'YHOO', 'USD/EUR'];
+        $this->assertEquals($symbols, $portfolio->symbols());
+    }
+    
+    public function test_save_required_symbols()
+    {
+        $tmpdir = $this->tempDirectoroy();
+        $portfolio = $this->makePortfolio('EUR')->rscript()->saveSymbols($tmpdir);
+        $symbols = ['ALV.DE', 'BAS.DE', 'YHOO', 'USD/EUR'];
+        
+        foreach ($symbols as $symbol)
+        {
+            $symbol = str_replace('/', '_', $symbol);
+            $filename = "{$tmpdir}/{$symbol}.json";
+            $this->assertTrue(Storage::disk('local')->exists($filename));
+        }
+        Storage::deleteDirectory($tmpdir);
+    }   
+    
+    
 }

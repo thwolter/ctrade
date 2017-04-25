@@ -37,9 +37,6 @@ class Portfolio extends Model
         return $this->cash;
     }
 
-    public function valueAtRisk() {
-        //
-    }
 
     public function currency()
     {
@@ -69,6 +66,27 @@ class Portfolio extends Model
             $array['item'][$i++] = $position->toArray();
         }
         return $array;
+    }
+    
+    
+    public function symbols()
+    {
+        $arr = [];
+        
+        foreach ($this->positions as $position) 
+        {
+            $symbol = $position->symbol();
+            
+            if (!in_array($symbol, $arr)) $arr[] = $symbol;
+            
+            if ($this->currency() != $position->currency())
+            {
+                $currpair = $position->currency().'/'.$this->currency();
+                if (!in_array($currpair, $arr)) $arr[] = $currpair;
+            }
+        }
+        
+        return $arr;
     }
 }
 

@@ -6,6 +6,8 @@ namespace App\Models\Rscript;
 
 use Illuminate\Support\Facades\Storage;
 use App\Models\Exceptions\RscriptException;
+use App\Repositories\Yahoo\Financial;
+use App\Repositories\OandaFinancial;
 
 abstract class Rscripter
 {
@@ -47,6 +49,27 @@ abstract class Rscripter
     {
         Storage::disk('local')->put($filename, json_encode($this->entity->toArray()));
     }
+    
+    
+    public function saveSymbols($directory)
+    {
+        foreach ($this->entity->symbols() as $symbol)
+        {
+            if (stripos($symbol, '/') > 0) {
+                
+                $json = OandaFinancial::history()->get($symbol);
+                $filename = $directory.'/'.str_replace('/', '_', $symbol).'.json';
+                
+            } else {
+                
+                $json = Financial::history()->get($symbol);
+                $filename = "{$directory}/{$symbol}.json";
+            }
+            
+            Storage::disk('local')->put($filename, $json);
+        }
+    }
+    
 
     /**
      * Transforms array with parameters into a string to be used within exec call of Rscript
@@ -88,6 +111,8 @@ abstract class Rscripter
         
         // define log file
         $logFile = "{$tmpdir}/log.txt";
+
+        
 
         $callString = sprintf(
             "Rscript --vanilla %s --base=%s --entity=%s --result=%s %s 2> %s",

@@ -41,4 +41,6 @@ class CurrencyFinancial extends BaseFinancial
     {
         return substr($symbol, 3, 3);
     }
+    
+    
 }

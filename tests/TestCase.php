@@ -56,5 +56,9 @@ abstract class TestCase extends BaseTestCase
         return $position;
     }
 
-
+    
+    public function tempDirectoroy() {
+        
+        return 'tmp/'.uniqid();
+    }
 }

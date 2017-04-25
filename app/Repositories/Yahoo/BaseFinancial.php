@@ -105,7 +105,4 @@ abstract class BaseFinancial implements FinanceInterface {
         return $filename;
     }
 
-    
-    
-    
 }

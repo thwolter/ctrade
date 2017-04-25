@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Thomas
- * Date: 13.04.17
- * Time: 11:48
- */
+
 
 namespace App\Repositories\Yahoo;
 
