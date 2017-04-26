@@ -15,19 +15,18 @@ class Portfolio extends Rscripter
 
 
     /**
-     * @param int $history the number of historical days for parameter estimation
+     * @param int $period number of days scaled by sqrt
      * @param double $conf the VaR confidence level
-     * @param int $horizon the VaR period
      *
      * @return array $res with calculated risk results
      */
-    public function risk($history, $conf, $horizon)
+    public function risk($period, $conf)
     {
+        //Todo: SaveSymbols muss noch aufgerufen werden
+
         $res = $this->callRscript([
             'task' => 'risk',
-            'conf' => $conf,
-            'horizon' => $horizon,
-            'hist' => $history
+            'conf' => $conf
         ]);
 
         return $res;

@@ -6,43 +6,27 @@ option_list = list(
     # parameters required for basic reading, writing and error-logging
     #
     make_option(c("-t", "--task"), type="character", default="test-in-out", 
-                help="task to be performed [default=%default]", metavar="character"),
+        help="task to be performed [default=%default]", metavar="character"),
     
     make_option(c("--base"), type="character", default=NULL, 
-                help="route path of r-scripts", metavar="character"),
+        help="route path of r-scripts", metavar="character"),
     
     make_option(c("--entity"), type="character", default=NULL, 
-              help="portfolio file as json", metavar="character"),
+        help="portfolio file as json", metavar="character"),
     
     make_option(c("--result"), type="character", default=NULL, 
-              help="result output file name [default= %default]", metavar="character"),
+        help="result output file name [default= %default]", metavar="character"),
+
+    make_option(c("--directory"), type="character", default=NULL,
+        help="directory with history data", metavar="character"),
     
     
     #
     # parameters for risk calculation
     #
-    make_option(c("--hist"), type="numeric", default=250, 
-              help="number of historical days for parameter estimation [default= %default]", metavar="numeric"),
-    
-    make_option(c("--subset"), type="character", default="", 
-                help="an xts/ISO8601 style subset string for return calculation [default= %default]", metavar="character"),
-    
     make_option(c("--conf"), type="numeric", default=0.95, 
-              help="confidence level for risk calculation [default= %default]", metavar="numeric"),
-    
-    make_option(c("--period"), type="character", default="daily", 
-              help="period for risk calculation [default= %default]", metavar="numeric"),
-    
-    make_option(c("--horizon"), type="numeric", default=1, 
-                help="horizon for risk calculation [default= %default]", metavar="numeric"),
-    
-    make_option(c("--risk_method"), type="character", default="modified", 
-                help="portfolio method [default= %default]", metavar="character"),
-    
-    make_option(c("--portfolio_method"), type="character", default="component", 
-                help="portfolio method [default= %default]", metavar="character")
-    
-    
+              help="confidence level for risk calculation [default= %default]", metavar="numeric")
+
 ); 
 
 #
@@ -62,7 +46,10 @@ if (is.null(opt$base) | is.null(opt$entity) | is.null(opt$entity)) {
 # setting working directory, load required classes and packages
 #
 setwd(opt$base) 
-source('sources.R');
+require(R6)
+source('Class/Instrument.R')
+source('Class/Stock.R')
+source('Class/Portfolio.R')
 
 
 #
@@ -77,19 +64,17 @@ if (opt$task == "test-in-out") {
 
 if (opt$task == 'risk') 
 {
-    pfolio <- readData(readJSON(opt$entity))
-    
-    output <- risk(pfolio, 
-                 period = opt$period, 
-                 p = opt$conf, 
-                 t = opt$horizon, 
-                 subset = opt$subset,
-                 method = opt$risk_method,
-                 portfolio_method = opt$portfolio_method
+    pf <- Portfolio$new(opt$entity, opt$directory)
+
+    require(methods) #for PerformanceAnalytics
+    output <- PerformanceAnalytics::VaR(
+        R = pf$returns(), 
+        p = opt$conf, 
+        weights = pf$delta(), 
+        portfolio_method = 'component'
     )
-    
+
     result = c(output$contribution, Portfolio = output$MVaR)
     
-    write(RJSONIO::toJSON(output), file = opt$result)
+    write(RJSONIO::toJSON(result), file = opt$result)
 }
-

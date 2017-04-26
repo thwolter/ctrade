@@ -94,9 +94,9 @@ abstract class Rscripter
         
 
         $callString = sprintf(
-            "Rscript --vanilla %s --base=%s --entity=%s --result=%s %s 2> %s",
-            $this->rapi, $this->rbase, $this->path.$entityFile, $this->path.$resultFile, 
-            $this->argsImplode($args), $this->path.$logFile);
+            "Rscript --vanilla %s --base=%s --entity=%s --result=%s --directory=%s %s 2> %s",
+            $this->rapi, $this->rbase, $this->path.$entityFile, $this->path.$resultFile,
+            $this->path.$tmpdir, $this->argsImplode($args), $this->path.$logFile);
         
         exec($callString);
         
@@ -110,7 +110,7 @@ abstract class Rscripter
             $array = json_decode(Storage::read($resultFile), true);
         }
         
-        Storage::deleteDirectory($tmpdir);
+        //Storage::deleteDirectory($tmpdir);
 
         if (! isset($array) or $hasError) {
 
