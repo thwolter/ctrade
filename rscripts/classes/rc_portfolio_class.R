@@ -452,6 +452,7 @@ setMethod('readData', signature(object = 'rc-portfolio'),
         rfs <- risk.factors(object)
         for (rf in rfs) {
             
+            rf <- gsub("/", "", rf)
             jsonfile = paste0(rf, ".json")
             
             if (!file.exists(jsonfile))
@@ -467,7 +468,12 @@ setMethod('readData', signature(object = 'rc-portfolio'),
             dat <- xts(dat[, -1], do.call("as.Date", asDateArgs), src = "json", 
                       updated = Sys.time())
             
-            colnames(dat) <- paste(toupper(rf), col.names, sep = ".")
+            if (dim(dat)[2] == 6) {
+                colnames(dat) <- paste(toupper(rf), col.names, sep = ".")
+            } else {
+                colnames(dat)[1] <- paste(toupper(rf), col.names[4], sep = ".")
+                
+            }
             
             tsdata(object, rf) <- dat
         }

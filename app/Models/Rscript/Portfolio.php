@@ -52,7 +52,7 @@ class Portfolio extends Rscripter
 
 
             if (! $position->hasCurrency($this->entity->currency())) {
-                $symbol = $position->currency() . $this->entity->currency();
+                $symbol = $this->entity->currency().$position->currency();
                 if (!in_array($symbol, $symbols)) {
 
                     $json = $this->entity->history($position->currency());

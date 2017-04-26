@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Entities;
 
 use App\Entities\Portfolio;
 use App\Entities\Position;
@@ -77,9 +77,9 @@ class PortfolioTest extends TestCase
         $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/ALV.DE.json"));
         $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/BAS.DE.json"));
         $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/YHOO.json"));
-        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/USDEUR.json"));
+        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/EURUSD.json"));
 
-        //Storage::deleteDirectory($tmpdir);
+        Storage::deleteDirectory($tmpdir);
     }   
     
     

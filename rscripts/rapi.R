@@ -1,6 +1,13 @@
 library(optparse)
 
 option_list = list(
+    
+    #
+    # parameters required for basic reading, writing and error-logging
+    #
+    make_option(c("-t", "--task"), type="character", default="test-in-out", 
+                help="task to be performed [default=%default]", metavar="character"),
+    
     make_option(c("--base"), type="character", default=NULL, 
                 help="route path of r-scripts", metavar="character"),
     
@@ -10,6 +17,10 @@ option_list = list(
     make_option(c("--result"), type="character", default=NULL, 
               help="result output file name [default= %default]", metavar="character"),
     
+    
+    #
+    # parameters for risk calculation
+    #
     make_option(c("--hist"), type="numeric", default=250, 
               help="number of historical days for parameter estimation [default= %default]", metavar="numeric"),
     
@@ -29,12 +40,14 @@ option_list = list(
                 help="portfolio method [default= %default]", metavar="character"),
     
     make_option(c("--portfolio_method"), type="character", default="component", 
-                help="portfolio method [default= %default]", metavar="character"),
+                help="portfolio method [default= %default]", metavar="character")
     
-    make_option(c("-t", "--task"), type="character", default="test-in-out", 
-              help="task to be performed [default=%default]", metavar="character")
+    
 ); 
 
+#
+# parsing options and checking for existence of basic parameters
+#
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
@@ -44,16 +57,23 @@ if (is.null(opt$base) | is.null(opt$entity) | is.null(opt$entity)) {
     stop("parameter --base, --entity, --result have to be specified", call.=FALSE)
 }
 
+
+#
+# setting working directory, load required classes and packages
+#
 setwd(opt$base) 
 source('sources.R');
 
+
+#
+# test for simple in/out operation
+#
 if (opt$task == "test-in-out") {
     json <- jsonlite::read_json(opt$entity)
     jsonlite::write_json(json, opt$result, auto_unbox = TRUE)
 }
 
 
-save(file="opt.RData", opt)
 
 if (opt$task == 'risk') 
 {
