@@ -322,13 +322,14 @@ setMethod('historyLength',
 setMethod('returns',
           signature(object = 'rc-portfolio'),
           function(object, period, ...) {
+              
+              if (!requireNamespace("quantmod", quietly = TRUE)) 
+                    stop("package:", dQuote("quantmod"), "cannot be loaded.")
+              
               rfs <- risk.factors((object))
             
-              el <- paste(currency(object), currency(object), sep='/')
-              rfs <- rfs[rfs != el]
-              
               args <- lapply(rfs, 
-                    function(rf) periodReturn(tsdata(object, rf), period = period, ...))
+                    function(rf) quantmod::periodReturn(tsdata(object, rf), period = period, ...))
               returns <- do.call("merge", c(args, fill = 0))
               colnames(returns) <- rfs
               
@@ -342,6 +343,9 @@ setMethod('returns',
 setMethod('risk', 
           signature(object = 'rc-portfolio'),
           function(object, period, p, t, ...) {
+          
+          if (!requireNamespace("PerformanceAnalytics", quietly = TRUE)) 
+            stop("package:", dQuote("PerformanceAnalytics"), "cannot be loaded.")
               
               res <- PerformanceAnalytics::VaR(
                   R = returns(object, period, ...),
@@ -369,7 +373,7 @@ setMethod('risk.factors', signature(object = 'rc-portfolio'),
               nm <- unique(w)
               nm <- gsub('CURRENCY', currency(object), nm)
               
-              el <- paste(currency(object), currency(object), sep="/")
+              el <- paste(currency(object), currency(object), sep="")
               
               return(nm[nm != el])
           }
@@ -395,7 +399,7 @@ setMethod('risk.weigths', signature(object = 'rc-portfolio', item = 'missing'),
               }
               nm <- gsub('CURRENCY', currency(object), nm)
               names(weights) <- nm
-              return(weights[names(weights) != paste(currency(object), currency(object), sep='/')])
+              return(weights[names(weights) != paste(currency(object), currency(object), sep='')])
         }
 )
 
@@ -447,21 +451,29 @@ setMethod('loadData', signature(object = 'rc-portfolio', force = 'missing'),
 setMethod('readData', signature(object = 'rc-portfolio'),
     function(object) {
               
+        if (!requireNamespace("jsonlite", quietly = TRUE)) 
+            stop("package:", dQuote("jsonlite"), "cannot be loaded.")
+        
         col.names = c("Open", "High", "Low", "Close", "Volume", "Adjusted")
         
         rfs <- risk.factors(object)
         for (rf in rfs) {
             
-            rf <- gsub("/", "", rf)
             jsonfile = paste0(rf, ".json")
             
             if (!file.exists(jsonfile))
                 stop(paste0("Missing JSON file for symbol '", rf, "'."))
                   
-            dat <- try(fromJSON(jsonfile)[,-1], silent = TRUE)
+            dat <- try(jsonlite::fromJSON(jsonfile)[,-1], silent = TRUE)
             
             if (is(dat, 'try-error'))
                 stop(paste0("JSON file for symbol '", rf, "' with inappropriate format."))
+            
+            if (!is(dat[,2], "numeric")) {
+                df <- as.data.frame(dat)
+                df[,-1] <- sapply(dat[,-1], type.convert)
+                dat <- df
+            }
             
             asDateArgs <- list(x = as.character(dat[, 1]))
             

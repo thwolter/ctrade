@@ -70,7 +70,7 @@ class Portfolio extends Model
     
     public function history(String $currency, Carbon $from = null, Carbon $to = null)
     {
-        $symbol = $currency.$this->currency();
+        $symbol = $this->currency().$currency;
 
         $json = $this->financial()->history($symbol, $from, $to);
 

@@ -84,7 +84,7 @@ setMethod('value',
 setMethod('risk.weigths', signature(object = 'rc-cash', item = 'missing'),
           function(object, item) {
               x <- list(value(object))
-              names(x) <- paste0('CURRENCY/', currency(object))
+              names(x) <- paste0('CURRENCY', currency(object))
               return(x)
           }
 )

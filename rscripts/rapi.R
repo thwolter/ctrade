@@ -77,7 +77,7 @@ if (opt$task == "test-in-out") {
 
 if (opt$task == 'risk') 
 {
-    pfolio <- loadData(readJSON(opt$entity))
+    pfolio <- readData(readJSON(opt$entity))
     
     result_risk <- risk(pfolio, 
                  period = opt$period, 

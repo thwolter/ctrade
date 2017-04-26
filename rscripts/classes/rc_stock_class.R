@@ -97,7 +97,7 @@ setMethod('type',
 setMethod('value', 
           signature(object = 'rc-stock'),
           function(object) {
-              fxrate <- price(object, paste('CURRENCY', currency(object), sep='/'))
+              fxrate <- price(object, paste('CURRENCY', currency(object), sep=''))
               quote <- price(object, symbol(object)) 
               max(-Inf, round(shares(object) * quote * fxrate, 2))
           }
@@ -110,7 +110,7 @@ setMethod('value',
 setMethod('risk.weigths', signature(object = 'rc-stock', item = 'missing'),
           function(object, item) {
               x <- list(value(object), value(object))
-              names(x) <- c(paste0('CURRENCY/', currency(object)), symbol(object))
+              names(x) <- c(paste0('CURRENCY', currency(object)), symbol(object))
               return(x)
           }
 )

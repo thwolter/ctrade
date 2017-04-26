@@ -48,7 +48,7 @@ class OandaFinancial
             $array[] = $newrow;
         }
         
-        return json_encode($array);
+        return json_encode($array, JSON_NUMERIC_CHECK);
     }
     
 }
