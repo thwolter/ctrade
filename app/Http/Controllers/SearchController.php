@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\StockFinancial;
-use App\Repositories\Yahoo\CurrencyFinancial;
+use App\Repositories\CurrencyFinancial;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use DirkOlbrich\YahooFinanceQuery\YahooFinanceQuery;

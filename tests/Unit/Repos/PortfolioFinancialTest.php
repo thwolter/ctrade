@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Repo;
+namespace Tests\Unit\Repos;
 
 use App\Repositories\PortfolioFinancial;
 use Tests\TestCase;

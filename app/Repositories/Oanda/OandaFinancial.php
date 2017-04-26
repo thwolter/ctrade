@@ -14,20 +14,21 @@ class OandaFinancial
     
     
     
-    static public function history()
+    static public function make()
     {
         return new OandaFinancial;
     }
     
     
-    public function get($symbol)
+    public function history($symbol, Carbon $from = null, Carbon $to = null)
     {
+        $to = (is_null($to)) ? Carbon::today() : $to;
+        $from = (is_null($from)) ? Carbon::today()->addDay(-250) : $from;
+
         $currencyPair = str_split($symbol, 3);
+
         $urlString = sprintf($this->url,
-            $currencyPair[1], 
-            Carbon::today()->addDay(-255)->toDateString(), 
-            Carbon::today()->toDateString(), 
-            $currencyPair[0]);
+            $currencyPair[1], $from->toDateString(), $to->toDateString(), $currencyPair[0]);
             
         $data = json_decode(file_get_contents($urlString), true)['widget'][0]['data'];
         

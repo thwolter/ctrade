@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Yahoo;
 
+use App\Repositories\Exceptions\FinancialException;
 
 trait Financable
 {
@@ -14,7 +15,7 @@ trait Financable
     {
         if (! $this->financial or ! class_exists($this->financial)) {
             
-            throw new FinancialException();
+            throw new FinancialException("property financial = '{$this->financial}' doesn't exist.");
         }
         
         if (! isset(static::$financialInstance)) {

@@ -6,7 +6,6 @@ use App\Models\Rscript\Rscriptable;
 use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Yahoo\Financable;
-use Illuminate\Support\Facades\Storage;
 
 
 class Portfolio extends Model

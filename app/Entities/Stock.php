@@ -4,9 +4,6 @@
 namespace App\Entities;
 
 
-use App\Repositories\Exceptions\FinancialException;
-
-
 
 class Stock extends Instrument
 {

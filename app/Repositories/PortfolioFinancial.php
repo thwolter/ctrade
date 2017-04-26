@@ -25,7 +25,7 @@ class PortfolioFinancial
 
         } else {
 
-            $json = OandaFinancial::history()->get($symbol);    //ToDo: implement $from and $to
+            $json = OandaFinancial::make()->history($symbol, $from, $to);
             Cache::put($key, $json, $this->cacheHist);
         }
 
@@ -33,9 +33,4 @@ class PortfolioFinancial
                
     }
 
-
-
 }
-    
-                
-                

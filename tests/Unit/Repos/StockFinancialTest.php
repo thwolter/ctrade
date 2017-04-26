@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Yahoo;
+namespace Tests\Unit\Repos;
 
 use App\Repositories\StockFinancial;
 use Tests\TestCase;

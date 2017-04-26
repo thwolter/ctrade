@@ -6,8 +6,9 @@
  * Time: 11:48
  */
 
-namespace App\Repositories\Yahoo;
+namespace App\Repositories;
 
+use App\Repositories\Yahoo\YahooFinancial;
 
 class CurrencyFinancial extends YahooFinancial
 {

@@ -6,7 +6,7 @@ use App\Entities\Portfolio;
 use App\Entities\Position;
 use App\Entities\Stock;
 use App\Repositories\StockFinancial;
-use App\Repositories\Yahoo\CurrencyFinancial;
+use App\Repositories\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

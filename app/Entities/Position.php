@@ -18,7 +18,7 @@ class Position extends Model implements PresentableInterface
 
     protected $presenter = 'App\Presenters\Position';
     
-    protected $financial = 'App\Repositories\Yahoo\CurrencyFinancial';
+    protected $financial = 'App\Repositories\CurrencyFinancial';
 
     protected $fillable = [
         'positionable_type',

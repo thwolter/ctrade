@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Yahoo;
+namespace Tests\Unit\Repos;
 
-use App\Repositories\Yahoo\CurrencyFinancial;
+use App\Repositories\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

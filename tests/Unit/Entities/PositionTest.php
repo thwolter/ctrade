@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Entities\Position;
 use App\Entities\Stock;
 use App\Entities\Portfolio;
-use App\Repositories\Yahoo\CurrencyFinancial;
+use App\Repositories\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -57,14 +57,14 @@ class PositionTest extends TestCase
     
     public function test_convert_USD_into_position_currency() {
         
-        $financial = new \App\Repositories\Yahoo\CurrencyFinancial;
+        $financial = new CurrencyFinancial;
         
         $this->assertEquals($financial->price('EURUSD'), $this->position->convert('USD'));
     }
     
     public function test_total_with_currency_converts_into_this_currency() {
         
-        $financial = new \App\Repositories\Yahoo\CurrencyFinancial;
+        $financial = new CurrencyFinancial;
         
         $rate = $financial->price('EURUSD');
         

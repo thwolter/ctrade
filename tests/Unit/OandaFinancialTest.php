@@ -12,7 +12,7 @@ class OandaFinancialTest extends TestCase
     
     public function test_EURUSD_has_history()
     {
-        $data = OandaFinancial::history()->get("EURUSD");
+        $data = OandaFinancial::make()->history("EURUSD");
         
     }
 }
