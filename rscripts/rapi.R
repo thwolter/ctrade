@@ -79,7 +79,7 @@ if (opt$task == 'risk')
 {
     pfolio <- readData(readJSON(opt$entity))
     
-    result_risk <- risk(pfolio, 
+    output <- risk(pfolio, 
                  period = opt$period, 
                  p = opt$conf, 
                  t = opt$horizon, 
@@ -88,6 +88,8 @@ if (opt$task == 'risk')
                  portfolio_method = opt$portfolio_method
     )
     
-    write(RJSONIO::toJSON(result_risk), file = opt$result)
+    result = c(output$contribution, Portfolio = output$MVaR)
+    
+    write(RJSONIO::toJSON(output), file = opt$result)
 }
 

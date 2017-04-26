@@ -37,6 +37,11 @@ Route::get('portfolios/{portfolio}/search/index', ['as' => 'search.index', 'uses
 Route::get('portfolios/{portfolio}/search/{symbol}', ['as' => 'search.item', 'uses' => 'SearchController@item']);
 Route::get('portfolios/{portfolio}/search/{type}/{symbol}', ['as' => 'search.show', 'uses' => 'SearchController@show']);
 
+
+// Risk resources
+Route::get('/portfolios/{portfolio}/risk', ['as' => 'risks.index', 'uses' => 'RiskController@index']);
+
+
 // User auth
 Auth::routes();
 Route::get('/home', 'HomeController@index');
