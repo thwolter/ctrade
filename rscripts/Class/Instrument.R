@@ -20,6 +20,16 @@ Instrument <- R6Class('Instrument',
         trade = function(x)
         {
             self$amount <- self$amount + x
+        },
+        
+        
+        
+        amountHistory = function(dates)
+        {
+            amount <- as.xts(rep(self$amount, times=length(dates)), dates)
+            colnames(amount) <- 'Amount.Close'
+            
+            return(amount)
         }
         
     )
