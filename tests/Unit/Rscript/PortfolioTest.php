@@ -31,13 +31,8 @@ class PortfolioTest extends TestCase
         Storage::deleteDirectory($tmpdir);
     }
 
-    public function test_rscript_can_read_and_write_file()
-    {
-        $result = $this->portfolio->rscript()->callRscript(['task' => 'test-in-out']);
-        $this->assertEquals($this->portfolio->cash(), $result['cash']['amount']);
-    }
 
-    public function test_calculated_risk()
+   public function test_calculated_risk()
     {
         $risk = $this->portfolio->rscript()->risk(20, 0.95);
        

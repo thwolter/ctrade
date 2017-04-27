@@ -38,18 +38,8 @@ abstract class Rscripter
         $ref = new \ReflectionClass($this->entity);
         return $ref->getShortName();
     }
-    
-    /**
-     * Saves the portfolio as json file to the file system
-     *
-     * @return string with name of the json file
-     */
-    public function saveJSON($filename)
-    {
-        Storage::disk('local')->put($filename, json_encode($this->entity->toArray()));
-    }
-    
-    
+
+
     /**
      * Transforms array with parameters into a string to be used within exec call of Rscript
      *
@@ -72,34 +62,26 @@ abstract class Rscripter
      * The functions uses the file system to transfer both portfolio data and results
      *
      * @param array $args representing required arguments for Rscript
+     * @directory string with name of temp directory
      * @return array with result from Rscript
      *
      * @throws RscriptException if no output was written or result is with errors
      */
-    public function callRscript($args)
+    public function callRscript($directory, $args)
     {
-        $tmpdir = 'tmp/'.uniqid();
-        Storage::makeDirectory($tmpdir);
-        
-        // save entity file
-        $entityFile = "{$tmpdir}/{$this->entityName()}.json";
-        $this->saveJSON($entityFile);
-        
         // define result file
-        $resultFile = "{$tmpdir}/result.json";
+        $resultFile = "{$directory}/result.json";
         
         // define log file
-        $logFile = "{$tmpdir}/log.txt";
+        $logFile = "{$directory}/log.txt";
 
-        
 
         $callString = sprintf(
-            "Rscript --vanilla %s --base=%s --entity=%s --result=%s --directory=%s %s 2> %s",
-            $this->rapi, $this->rbase, $this->path.$entityFile, $this->path.$resultFile,
-            $this->path.$tmpdir, $this->argsImplode($args), $this->path.$logFile);
+            "Rscript --vanilla %s --base=%s --result=%s --directory=%s %s 2> %s",
+            $this->rapi, $this->rbase, $this->path.$resultFile,
+            $this->path.$directory, $this->argsImplode($args), $this->path.$logFile);
         
         exec($callString);
-        
 
         $logtext = Storage::read($logFile);
         $hasError = stripos($logtext, 'ERROR');
@@ -110,7 +92,7 @@ abstract class Rscripter
             $array = json_decode(Storage::read($resultFile), true);
         }
         
-        //Storage::deleteDirectory($tmpdir);
+        //Storage::deleteDirectory($directory);
 
         if (! isset($array) or $hasError) {
 
@@ -118,5 +100,16 @@ abstract class Rscripter
         }
 
         return $array;
+    }
+
+    /**
+     * @return string
+     */
+    public function makeDirectory(): string
+    {
+        $tmpdir = 'tmp/' . uniqid();
+        Storage::makeDirectory($tmpdir);
+
+        return $tmpdir;
     }
 }

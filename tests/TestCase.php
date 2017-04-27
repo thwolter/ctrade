@@ -5,6 +5,7 @@ namespace Tests;
 use App\Entities\Position;
 use App\Entities\Stock;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Storage;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -59,6 +60,9 @@ abstract class TestCase extends BaseTestCase
     
     public function tempDirectoroy() {
         
-        return 'tmp/'.uniqid();
+        $tmpdir = 'tmp/'.uniqid();
+        Storage::makeDirectory($tmpdir);
+
+        return $tmpdir;
     }
 }
