@@ -1,4 +1,5 @@
 library(R6)
+require(xts)
 ## https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html
 
 
@@ -231,7 +232,7 @@ Portfolio <- R6Class('Portfolio',
         {
             ccy <- private$currencyPair(self$currency)
             ref <- self$hist[[1]]
-            res <- as.xts(rep(1, times=dim(ref)[1]), zoo::index(ref))
+            res <- xts::as.xts(rep(1, times=dim(ref)[1]), zoo::index(ref))
             
             colnames(res) <- paste(toupper(ccy), "Close", sep = ".")
             return(res)
