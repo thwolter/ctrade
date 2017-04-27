@@ -75,10 +75,12 @@ abstract class Rscripter
         // define log file
         $logFile = "{$directory}/log.txt";
 
+        // entity file
+        $entity = $this->saveJSON($directory);
 
         $callString = sprintf(
-            "Rscript --vanilla %s --base=%s --result=%s --directory=%s %s 2> %s",
-            $this->rapi, $this->rbase, $this->path.$resultFile,
+            "Rscript --vanilla %s --base=%s --entity=%s --result=%s --directory=%s %s 2> %s",
+            $this->rapi, $this->rbase, $this->path.$entity, $this->path.$resultFile,
             $this->path.$directory, $this->argsImplode($args), $this->path.$logFile);
         
         exec($callString);
@@ -92,7 +94,7 @@ abstract class Rscripter
             $array = json_decode(Storage::read($resultFile), true);
         }
         
-        //Storage::deleteDirectory($directory);
+        Storage::deleteDirectory($directory);
 
         if (! isset($array) or $hasError) {
 
@@ -111,5 +113,18 @@ abstract class Rscripter
         Storage::makeDirectory($tmpdir);
 
         return $tmpdir;
+    }
+
+    /**
+     * Saves the portfolio as json file to the file system
+     *
+     * @return string with name of the json file
+     */
+    public function saveJSON($directory)
+    {
+        $filename = "{$directory}/{$this->entityName()}.json";
+        Storage::disk('local')->put($filename, json_encode($this->entity->toArray()));
+
+        return $filename;
     }
 }

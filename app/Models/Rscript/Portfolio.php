@@ -23,13 +23,10 @@ class Portfolio extends Rscripter
     public function risk($period, $conf)
     {
         $tmpdir = $this->makeDirectory();
-
-        $entity = $this->saveJSON($tmpdir);
         $this->saveSymbols($tmpdir);
 
         $res = $this->callRscript($tmpdir, [
             'task' => 'risk',
-            'entity' => $this->path.$entity,
             'conf' => $conf
         ]);
 
@@ -66,19 +63,6 @@ class Portfolio extends Rscripter
                 }
             }
         }
-    }
-
-    /**
-     * Saves the portfolio as json file to the file system
-     *
-     * @return string with name of the json file
-     */
-    public function saveJSON($directory)
-    {
-        $filename = "{$directory}/{$this->entityName()}.json";
-        Storage::disk('local')->put($filename, json_encode($this->entity->toArray()));
-
-        return $filename;
     }
 
 
