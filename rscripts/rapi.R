@@ -61,21 +61,21 @@ if (opt$task == "test-in-out") {
     jsonlite::write_json(json, opt$result, auto_unbox = TRUE)
 }
 
-
-
-if (opt$task == 'risk') 
-{
-    pf <- Portfolio$new(opt$entity, opt$directory)
-
-    require(methods) #for PerformanceAnalytics
-    output <- PerformanceAnalytics::VaR(
-        R = pf$returns(), 
-        p = opt$conf, 
-        weights = pf$delta(), 
-        portfolio_method = 'component'
+#
+# simple return function which writes into a file
+#
+RapiClass <- R6Class('Rapi',
+    privat = list('dir' = NULL, 'file' = NULL),
+    public = list(
+        initialize = function(directory, file) {
+            private$dir <- directory
+            private$file <- file},
+        write = function(array) {write(RJSONIO::toJSON(array), file = private$file)}
     )
+)
 
-    result = c(output$contribution, Portfolio = output$MVaR)
-    
-    write(RJSONIO::toJSON(result), file = opt$result)
-}
+Rapi <- RapiClass$new(opt$directory, opt$result)
+#
+# call this files to perform tasks
+#
+source('Risk.R')
