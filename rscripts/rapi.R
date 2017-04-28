@@ -7,10 +7,10 @@ option_list = list(
 # parameters required for basic reading, writing and error-logging
 #
     make_option(c("--base"), type="character", default=NULL, 
-                help="route path of r-scripts", metavar="character"),
+        help="route path of r-scripts", metavar="character"),
     
     make_option(c("--directory"), type="character", default=NULL,
-                help="directory with history data", metavar="character"),
+        help="directory with history data", metavar="character"),
     
     make_option(c("-t", "--task"), type="character", default="test-in-out", 
         help="task to be performed [default=%default]", metavar="character"),
@@ -26,7 +26,10 @@ option_list = list(
 # parameters for risk calculation
 #
     make_option(c("--conf"), type="numeric", default=0.95, 
-              help="confidence level for risk calculation [default= %default]", metavar="numeric")
+              help="confidence level for risk calculation [default= %default]", metavar="numeric"),
+              
+    make_option(c("--period"), type="numeric", default=1, 
+              help="time period [default= %default]", metavar="numeric")
 
 ); 
 
@@ -44,13 +47,6 @@ if (is.null(opt$base) | is.null(opt$directory) | is.null(opt$entity) | is.null(o
 
 
 
-#load("M:/00 Workings/shiny/rscripts/opt.RData")
-
-#opt$base <-  "M:/00 Workings/shiny/rscripts"
-#opt$entity <- "M:/00 Workings/shiny/rscripts/tests/1.json"
-#opt$result <- "M:/00 Workings/shiny/rscripts/result.json"
-#opt$directory <- "M:/00 Workings/shiny/rscripts/tests"
-
 
 #
 # Rapi Class definition
@@ -63,8 +59,11 @@ RapiClass <- R6Class('Rapi',
         'directory' = NULL,
         'task' = NULL,
         'entity' = NULL,
+        'conf' = NULL,
+        'period' = NULL,
         
         write = function(array) {write(RJSONIO::toJSON(array), file = private$result)}
+        #write = function(array) {jsonlite::write_json(as.data.frame(array), private$result)}
     ),
     
     public = list(
@@ -85,6 +84,8 @@ RapiClass <- R6Class('Rapi',
             private$directory <- array$directory
             private$task <- array$task
             private$entity <- array$entity
+            private$conf <- array$conf
+            private$period <- array$period
            
             setwd(private$base)
             
@@ -101,13 +102,19 @@ RapiClass <- R6Class('Rapi',
 )
 
 
-##
+
+
+#
 # Register scripts to be loaded for execution
 #
 source(paste(opt$base, "RiskRscript.R", sep = "/"))
 
 
 
+
+#
+# Run Api and perform requested task
+#
 RapiClass$new(opt)
 
 

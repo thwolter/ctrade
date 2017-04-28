@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 
 class PortfolioTest extends TestCase
@@ -32,7 +33,7 @@ class PortfolioTest extends TestCase
     }
 
 
-   public function test_calculated_risk()
+    public function test_calculated_risk()
     {
         $risk = $this->portfolio->rscript()->risk(20, 0.95);
        
@@ -48,5 +49,12 @@ class PortfolioTest extends TestCase
         $this->assertEquals('--task=test-in-out --period=1', $argsString);
     }
 
+    
+    public function test_receive_historic_portfolio_values()
+    {
+        $valueHistory = $this->portfolio->rscript()->valueHistory(60);
+       
+        $this->assertEquals(60, array_count_values($valueHistory));
+    }
 
 }

@@ -10,10 +10,14 @@ use App\Models\Exceptions\RscriptException;
 
 abstract class Rscripter
 {
+    
+    protected $cleanup = false;
+    
     protected $entity;
     protected $path;
     protected $rapi;
     protected $rbase;
+    
 
 
     /**
@@ -94,12 +98,16 @@ abstract class Rscripter
             $array = json_decode(Storage::read($resultFile), true);
         }
         
-        Storage::deleteDirectory($directory);
 
-        if (! isset($array) or $hasError) {
+        if ($this->cleanup and !$hasError and isset($array)) 
+            Storage::deleteDirectory($directory);
 
+        if ($hasError) 
             throw new RscriptException(substr($logtext, $hasError));
-        }
+            
+        if (! isset($array)) 
+            throw new RscriptException('returned invalide json file');
+        
 
         return $array;
     }

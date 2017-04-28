@@ -119,7 +119,7 @@ Portfolio <- R6Class('Portfolio',
         
         
         
-        value = function(current = TRUE)
+        value = function(n = 1)
         {
             val <- 0
             for (i in 1:length(self$items))
@@ -142,7 +142,6 @@ Portfolio <- R6Class('Portfolio',
             
             colnames(val) <- "Value"
             
-            n <- ifelse(current, 1, Inf)
             return(tail(val, n))
         }
         

@@ -1,3 +1,18 @@
+#
+# test for simple in/out operation
+#
+RapiClass$set("private", "test-in-out", function()
+{
+    json <- jsonlite::read_json(opt$entity)
+    private$write(json)
+})
+
+
+
+#
+# Calculate the riks on portfolio and position level
+# @result array with 1-day risks
+#
 RapiClass$set("private", "risk", function()
 {
     pf <- Portfolio$new(private$entity, private$directory)
@@ -17,11 +32,13 @@ RapiClass$set("private", "risk", function()
 })
 
 
+
 #
-# test for simple in/out operation
+# receive historic values of the portfolio
 #
-RapiClass$set("private", "test-in-out", function()
+RapiClass$set("private", "valueHistory", function()
 {
-    json <- jsonlite::read_json(opt$entity)
-    private$write(json)
+    pf <- Portfolio$new(private$entity, private$directory)
+    
+    private$write(as.data.frame(pf$value(60)))
 })

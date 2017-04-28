@@ -10,6 +10,7 @@ use App\Repositories\Yahoo\Financial;
 use App\Repositories\OandaFinancial;
 
 
+
 class Portfolio extends Rscripter
 {
 
@@ -25,12 +26,18 @@ class Portfolio extends Rscripter
         $tmpdir = $this->makeDirectory();
         $this->saveSymbols($tmpdir);
 
-        $res = $this->callRscript($tmpdir, [
-            'task' => 'risk',
-            'conf' => $conf
-        ]);
+        return $this->callRscript($tmpdir, ['task' => 'risk', 'conf' => $conf]);
 
-        return $res;
+    }
+    
+    
+    public function valueHistory($period)
+    {
+        $tmpdir = $this->makeDirectory();
+        $this->saveSymbols($tmpdir);
+        
+        return $this->callRscript($tmpdir, 
+            ['task' => 'valueHistory', 'period' => $period]);
     }
     
     
