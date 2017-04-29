@@ -62,8 +62,16 @@ RapiClass <- R6Class('Rapi',
         'conf' = NULL,
         'period' = NULL,
         
-        write = function(array) {write(RJSONIO::toJSON(array), file = private$result)}
-        #write = function(array) {jsonlite::write_json(as.data.frame(array), private$result)}
+        write = function(data) {
+            if (any(class(data) == 'xts')) {
+                df <- cbind(zoo::index(data), as.data.frame(data))
+                row.names(df) <- index(df)
+                colnames(df)[1] <- "Date"
+                jsonlite::write_json(df, private$result)
+                return()
+            }
+            write(RJSONIO::toJSON(data), file = private$result)
+        }
     ),
     
     public = list(
@@ -96,7 +104,13 @@ RapiClass <- R6Class('Rapi',
             self$do()
         },
         
-        do = function() {do.call(private[[private$task]], list())}
+        do = function() {
+            foo <- self[[private$task]]
+            nms <- names(formals(foo))
+            args <- lapply(nms, function(nm) {private[[nm]]})
+            names(args) <- nms
+            do.call(foo, args)
+        }
         
     )
 )
@@ -108,7 +122,6 @@ RapiClass <- R6Class('Rapi',
 # Register scripts to be loaded for execution
 #
 source(paste(opt$base, "RiskRscript.R", sep = "/"))
-
 
 
 

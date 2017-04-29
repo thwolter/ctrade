@@ -54,7 +54,7 @@ class PortfolioTest extends TestCase
     {
         $valueHistory = $this->portfolio->rscript()->valueHistory(60);
        
-        $this->assertEquals(60, array_count_values($valueHistory));
+        $this->assertEquals(60, count($valueHistory));
     }
 
 }

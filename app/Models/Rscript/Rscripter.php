@@ -11,7 +11,7 @@ use App\Models\Exceptions\RscriptException;
 abstract class Rscripter
 {
     
-    protected $cleanup = false;
+    protected $cleanup = true;
     
     protected $entity;
     protected $path;
@@ -105,8 +105,9 @@ abstract class Rscripter
         if ($hasError) 
             throw new RscriptException(substr($logtext, $hasError));
             
-        if (! isset($array)) 
-            throw new RscriptException('returned invalide json file');
+        if (! is_array($array))
+            throw new RscriptException('returned invalid json file');
+
         
 
         return $array;
