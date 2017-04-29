@@ -58,16 +58,20 @@ RapiClass$set("public", "summary", function(period, conf)
     valueHist = pf$value(period)
 
     require(methods) #for PerformanceAnalytics
-    output <- PerformanceAnalytics::VaR(
+    Risk <- PerformanceAnalytics::VaR(
         R = pf$returns(),
         p = conf,
         weights = pf$delta(),
         portfolio_method = 'component'
     )
     
+    Returns = colMeans(pf$returns()) * pf$delta()
+    
     result = list(
-        Risks = self$df(output$contribution), 
-        Total = self$df(output$MVaR), 
+        Risks = self$df(Risk$contribution), 
+        Total = self$df(Risk$MVaR),
+        Returns = self$df(Returns),
+        Value = self$df(pf$value()),
         History = self$df(valueHist)
     )
     

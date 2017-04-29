@@ -11,10 +11,18 @@ class RiskController extends Controller
      public function index($id)
      {
          $portfolio = Portfolio::findOrFail($id);
-         $summary = $portfolio->rscript()->summary(60);
 
-         Charts::LineChart($summary['History']);
-         Charts::gaugeChart();
+         $key = 'summary'.$id;
+         if (\Cache::has($key)) {
+             $summary = \Cache::get($key);
+         } else {
+             $summary = $portfolio->rscript()->summary(60);
+             \Cache::put($key, $summary, 20);
+         }
+
+         Charts::history($summary);
+         Charts::riskchart($summary);
+         Charts::piechart($summary);
 
          return view('risks.index', compact('portfolio'));
      }

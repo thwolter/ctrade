@@ -4,13 +4,16 @@
 
     here should be the chart
     
-    <div id="stock-div"></div>
+    <div id="history-chart"></div>
 
-    <div id="chart"></div>
+    <div id="risk-chart"></div>
+
+    <div id="contrib-chart"></div>
 
 
-@linechart('MyStocks', 'stock-div');
-@gaugechart('Temps', 'chart')
+@areachart('HistoryChart', 'history-chart');
+@gaugechart('Risk', 'risk-chart')
+    @piechart('Contribution', 'contrib-chart')
 
  
 
