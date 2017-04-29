@@ -13,15 +13,28 @@ RapiClass <- R6Class('Rapi',
                          'period' = NULL,
                          
                          write = function(data) {
-                             if (any(class(data) == 'xts')) {
-                                 df <- cbind(zoo::index(data), as.data.frame(data))
-                                 row.names(df) <- index(df)
-                                 colnames(df)[1] <- "Date"
-                                 jsonlite::write_json(df, private$result)
-                                 return()
-                    
-                             write(RJSONIO::toJSON(data), file = private$result)}
-                             }
+                             if (!(is.data.frame(data) | is.list(data)))
+                                 stop("Argument must be a data.frame; is class '", class(data), "'")
+                             
+                             jsonlite::write_json(data, private$result)
+                         },
+                         
+                         
+                         xts2df = function(data)
+                         {
+                             df <- cbind(zoo::index(data), as.data.frame(data))
+                             row.names(df) <- index(df)
+                             colnames(df)[1] <- "Date"
+                             return(df)
+                         },
+                         
+                         
+                         vec2df = function(data)
+                         {
+                             data.frame(Name = names(data), Value = as.vector(data))
+                         }
+                         
+                         
                         ),
                      
                      public = list(
@@ -55,11 +68,33 @@ RapiClass <- R6Class('Rapi',
                          },
                          
                          do = function() {
+                             
                              foo <- self[[private$task]]
+                             
+                             if (is.null(foo))
+                                 stop("no function for task '", private$task, 
+                                      "' defined (must be public with name '", private$task, "')")
+                             
                              nms <- names(formals(foo))
                              args <- lapply(nms, function(nm) {private[[nm]]})
                              names(args) <- nms
                              do.call(foo, args)
+                        },
+                        
+                        
+                        df = function(data)
+                        {
+                            if (any(class(data) == 'xts')) 
+                                return(private$xts2df(data))
+                            
+                            if (is.vector(data))
+                                return(private$vec2df(data))
+                            
+                            if (is.atomic(data))
+                                return(data.frame(Value = data))
+                            
+                            stop("Don't know how to convert class '", class(data), "' into a data.frame")
+                            
                         }
                          
                      )

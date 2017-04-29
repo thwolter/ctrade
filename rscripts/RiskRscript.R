@@ -25,7 +25,10 @@ RapiClass$set("public", "risk", function()
         portfolio_method = 'component'
     )
     
-    result = c(output$contribution, Portfolio = output$MVaR)
+    result = list(
+        Risks = self$df(output$contribution), 
+        Total = self$df(output$MVaR)
+    )
     
     private$write(result)
     
@@ -40,6 +43,34 @@ RapiClass$set("public", "valueHistory", function(period)
 {
     pf <- Portfolio$new(private$entity, private$directory)
     
-    private$write(pf$value(period))
-    return(pf$value(period))
+    result = list(
+        History = self$df(pf$value(period))
+    )
+    
+    private$write(result)
+})
+
+
+RapiClass$set("public", "summary", function(period, conf)
+{
+    pf <- Portfolio$new(private$entity, private$directory)
+
+    valueHist = pf$value(period)
+
+    require(methods) #for PerformanceAnalytics
+    output <- PerformanceAnalytics::VaR(
+        R = pf$returns(),
+        p = conf,
+        weights = pf$delta(),
+        portfolio_method = 'component'
+    )
+    
+    result = list(
+        Risks = self$df(output$contribution), 
+        Total = self$df(output$MVaR), 
+        History = self$df(valueHist)
+    )
+    
+    private$write(result)
+    
 })

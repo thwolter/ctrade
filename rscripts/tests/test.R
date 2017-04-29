@@ -1,5 +1,6 @@
 load("~/Code/ctrade/rscripts/opt.RData")
 
+opt$task <- "valueHistory"
 opt$base <- "~/Code/ctrade/rscripts/"
 opt$directory <- "~/Code/ctrade/rscripts/tests"
 opt$entity <- "~/Code/ctrade/rscripts/tests/Portfolio.json"

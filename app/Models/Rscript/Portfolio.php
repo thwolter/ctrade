@@ -39,6 +39,15 @@ class Portfolio extends Rscripter
         return $this->callRscript($tmpdir, 
             ['task' => 'valueHistory', 'period' => $period]);
     }
+
+    public function summary()
+    {
+        $tmpdir = $this->makeDirectory();
+        $this->saveSymbols($tmpdir);
+
+        return $this->callRscript($tmpdir,
+            ['task' => 'summary', 'period' => 60, 'conf' => 0.95]);
+    }
     
     
 

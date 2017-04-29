@@ -27,9 +27,6 @@ class SearchController extends Controller
         $string = $request->get('search');
         $suggest =  $query->symbolSuggest($string)->get();
 
-        $client = new \Scheb\YahooFinanceApi\ApiClient();
-        $suggest = $client->search($string);
-        
         return view ('search.index', compact('portfolio', 'suggest'));
     }
 

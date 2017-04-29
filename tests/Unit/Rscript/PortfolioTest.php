@@ -36,9 +36,8 @@ class PortfolioTest extends TestCase
     public function test_calculated_risk()
     {
         $risk = $this->portfolio->rscript()->risk(20, 0.95);
-       
-        $this->assertGreaterThan(20, $risk['Portfolio']);
-        $this->assertLessThan(80, $risk['Portfolio']);
+        $this->assertGreaterThan(20, $risk['Total'][0]['Value']);
+        $this->assertLessThan(80, $risk['Total'][0]['Value']);
 
     }
 
@@ -54,7 +53,17 @@ class PortfolioTest extends TestCase
     {
         $valueHistory = $this->portfolio->rscript()->valueHistory(60);
        
-        $this->assertEquals(60, count($valueHistory));
+        $this->assertEquals(60, count($valueHistory['History']));
     }
 
+
+    public function test_summary_has_figures_and_history()
+    {
+        $summary = $this->portfolio->rscript()->summary();
+
+        $this->assertArrayHasKey('Risks', $summary);
+        $this->assertArrayHasKey('History', $summary);
+
+        $this->assertGreaterThan(5, count($summary['History']));
+    }
 }

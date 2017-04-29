@@ -6,7 +6,7 @@ use Lava;
 
 class Charts
 {
-    static public function LineChart()
+    static public function LineChart($data)
     {
         $stocksTable = Lava::DataTable();
 
@@ -15,10 +15,8 @@ class Charts
             ->addNumberColumn('Official');
 
 
-        for ($a = 1; $a < 30; $a++) {
-            $stocksTable->addRow([
-                '2015-10-' . $a, rand(800,1000), rand(800,1000)
-            ]);
+        for ($i = 1; $i < count($data); $i++) {
+            $stocksTable->addRow([$data[$i]['Date'], $data[$i]['Value']]);
         }
 
         Lava::LineChart('MyStocks', $stocksTable);

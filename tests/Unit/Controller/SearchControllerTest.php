@@ -33,4 +33,5 @@ class SearchControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+
 }
