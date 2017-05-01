@@ -1,4 +1,4 @@
-@extends('portfolios.show')
+@extends('layouts.portfolio')
 
     @section('container-content')
 

@@ -1,33 +1,27 @@
-@extends('layouts.master')
+@extends('layouts.portfolio')
 
-@section('content')
+@section('container-content')
 
-    <section class="ct-panel">
+    <div class="key-figure">
+        <label class="label">Aktuell</label>
+        <span class="value">{{ $portfolio->present()->total() }}</span>
+    </div>
 
-        @include('portfolios.header')
-
-        <!-- sidebar navigation -->
-        <div class="ct-panel__ct-nav">
-
-            @include('portfolios.nav')
-
-        </div>
-
-        <!--content-portfolio -->
-        <main class="ct-panel__ct-body">
-
-            @yield('container-content')
-
-        </main>
-
-        <!-- footer -->
-        <footer></footer>
+    <!-- Form with method get -->
+    {!! Form::open(['route' => ['portfolios.edit', $portfolio->id], 'method' => 'get']) !!}
 
 
 
-    </section>
+    <!-- submit button -->
+        <div class="form-group">
+
+            <label class="col-md-4 control-label" for="button1id"></label>
+            <div class="col-md-8">
+                <a href="{{ route('portfolios.destroy', $portfolio->id) }}">Portfolio löschen</a>
+                {!! Form::submit('Bearbeiten', ['class' => 'btn btn-primary']) !!}
+            </div>
+         </div>
+
+    {!! Form::close() !!}
 
 @endsection
-
-
-

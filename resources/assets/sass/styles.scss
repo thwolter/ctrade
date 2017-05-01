@@ -14,7 +14,8 @@ $box-background-color: #e2e9f5;
 
 
 // modules
-@import "modules/ct-panel";
+@import "modules/_basic";
+@import "modules/_ct-panel";
 @import "modules/_key-figure";
 @import "modules/_navbars";
 

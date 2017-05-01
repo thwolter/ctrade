@@ -18,7 +18,8 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" class="main-container">
+        <!-- app-bar with login -->
         <div class="hidden-xs app-bar">
 
             <!-- Branding Image -->

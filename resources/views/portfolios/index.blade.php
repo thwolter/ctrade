@@ -8,11 +8,9 @@
         <!-- a single portfolio -->
         <section class="ct-panel">
 
-            @include('portfolios.header')
+            <h2 class="portfolio-title"><a href="{{ route('portfolios.show', $portfolio->id) }}"> {{ $portfolio->name }}</a></h2>
 
             <div class="ct-panel__ct-body">
-
-
 
                 <div class="">
                     <a class="btn btn-primary inline-block-tight pull-right"

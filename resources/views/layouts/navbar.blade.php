@@ -23,9 +23,10 @@
                         <li><a href="{{ route('portfolios.show', $portfolio->id) }}">{{ $portfolio->name }}</a></li>
                     @endforeach
 
-
+                    <span class="sidebar-nav--sub-title">Verwalten</span>
 
                     <li><a href="{{ route('portfolios.create') }}">+ Neues Portfolios</a></li>
+                    <li><a href="#">Einstellungen</a></li>
 
                 </ul>
 

@@ -2,44 +2,12 @@
 // Layout
 // ------------------------------------------------------
 
-.ct-panel {
-  @extend .panel;
-  @extend .panel-primary;
-}
-
-.ct-panel__ct-header {
-  @extend .panel-heading;
-}
-
-.ct-panel__ct-nav {
-}
-
-.ct-panel__ct-body {
-  @extend .panel-body;
+.portfolio {
 }
 
 
-// ------------------------------------------------------
-// Modules
-// ------------------------------------------------------
-
-.ct-header {
-  .title {
-    display: inline;
-  }
-
-  a {
-    padding-left: 10px;
-    color: white;
-  }
-  icon {
-    padding: 0 3px;
-    color: white;
-  }
-}
-
-
-.ct-nav {
+.portfolio--nav {
+  margin: 40px 0px 20px 0px;
   ul {
     @extend .nav;
     @extend .nav-tabs;
@@ -50,22 +18,25 @@
 }
 
 
-.ct-header__key-figures{
-  @extend .pull-right;
-}
-
-
 // ------------------------------------------------------
-// Variants
+// Modules
 // ------------------------------------------------------
 
-.ct-panel--create {
-  @extend .ct-panel;
+.portfolio-title{
 
+  margin-bottom: 20px;
+
+  .title {
+
+    display:inline;
+
+  }
+
+  .subtitle {
+
+  }
 }
 
-.ct-panel--edit {
-  @extend .ct-panel;
 
-}
+
 
