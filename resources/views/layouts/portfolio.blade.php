@@ -4,14 +4,6 @@
 
     <section class="portfolio">
 
-        <div class="portfolio--header">
-            <div class="portfolio-title">
-                <p class="subtitle">Portfolio</p>
-                <h2 class="title">{{ $portfolio->name }}</h2>
-            </div>
-        </div>
-
-
         <nav class="portfolio--nav">
             <ul>
                 <li class="{{ active_class(if_route_pattern(['portfolios.*'])) }}">
@@ -29,7 +21,6 @@
                 <li><a href="#">Optimieren</a></li>
             </ul>
         </nav>
-
 
         <main class="portfolio--body">
             @yield('container-content')

@@ -20,7 +20,9 @@
                     @php($portfolios = auth()->user()->portfolios)
 
                     @foreach($portfolios as $portfolio)
-                        <li><a href="{{ route('portfolios.show', $portfolio->id) }}">{{ $portfolio->name }}</a></li>
+                        <li class="">
+                            <a href="{{ route('portfolios.show', $portfolio->id) }}">{{ $portfolio->name }}</a>
+                        </li>
                     @endforeach
 
                     <span class="sidebar-nav--sub-title">Verwalten</span>
