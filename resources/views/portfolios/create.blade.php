@@ -11,7 +11,7 @@
 
             {!! Form::open(['route' => 'portfolios.store']) !!}
 
-            @include('layouts.errors')
+            @include('partials.errors')
 
             <div class="form-group">
                 {!! Form::label('name', 'Name:') !!}

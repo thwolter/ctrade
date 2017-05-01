@@ -5,7 +5,7 @@
     <!-- Form with method  -->
     {!! Form::open(['route' => ['search.index', $portfolio->id], 'method' => 'Get']) !!}
 
-    @include('layouts.errors')
+    @include('partials.errors')
 
     <!-- search form input -->
     <div class="form-group">

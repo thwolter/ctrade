@@ -19,17 +19,26 @@
 
 <body>
     <div id="app">
-        <!-- top navigation -->
-       @include('layouts.navbar')
+        <div class="hidden-xs app-bar">
 
-        <!-- main content -->
-        <div class="container">
-            <div class="row">
-                <div>
-                    @yield('content')
-                </div> <!-- end main content -->
-            </div>
+            <!-- Branding Image -->
+            <a class="navbar-brand" href="{{ url('/') }}">
+                {{ config('app.name', 'Laravel') }}
+            </a>
+
+            @include('partials.auth')
         </div>
+
+        <div class="col-sm-3">
+            <!-- sidebar navigation -->
+            @include('layouts.navbar')
+        </div>
+
+        <div class="col-sm-9">
+            <!-- main content -->
+            @yield('content')
+        </div>
+
     </div>
 
     <!-- Scripts -->

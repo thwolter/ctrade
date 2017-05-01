@@ -15,7 +15,7 @@
                 <div class="form-horizontal">
                     <fieldset>
 
-                        @include('layouts.errors')
+                        @include('partials.errors')
 
                         <!-- Text input-->
                         <div class="form-group">

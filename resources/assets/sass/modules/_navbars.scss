@@ -1,0 +1,57 @@
+// top navigation bar
+.app-bar {
+  @extend .navbar-inverse;
+  height: 50px;
+  margin: 0px 15px 20px 15px;
+}
+
+.app-bar--nav {
+  @extend .nav;
+  @extend .navbar-nav;
+  @extend .pull-right;
+}
+
+.app-bar--nav > .open > a:focus {
+  background-color: #ecf0f1;
+}
+
+
+// sidebar navigation bar
+.sidebar {
+  @extend .navbar;
+  @extend .navbar-inverse;
+  @extend .navbar-static-top;
+  padding-top: 15px;
+}
+.sidebar-nav {
+  //@extend .navbar-inverse;
+}
+
+.sidebar-header {
+  @extend .navbar-header;
+  float: none;
+}
+
+.sidebar-nav ul {
+  float: none;
+}
+
+.sidebar-nav li {
+  float: none;
+  display: block;
+}
+
+.sidebar-nav a {
+  padding: 10px 15px !important;
+}
+
+.sidebar-nav--sub-title {
+  color: #ccc;
+  padding: 0px 15px;
+  font-size: 11px;
+  font-weight: lighter;
+}
+
+.navbar-separator {
+  margin: 30px 0;
+}
