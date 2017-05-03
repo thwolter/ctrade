@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Entities\Position;
 use App\Entities\Stock;
 use App\Entities\Portfolio;
-use App\Repositories\CurrencyFinancial;
+use App\Repositories\Yahoo\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

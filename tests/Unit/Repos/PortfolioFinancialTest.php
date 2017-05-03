@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Repos;
 
-use App\Repositories\PortfolioFinancial;
+use App\Repositories\Yahoo\PortfolioFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
