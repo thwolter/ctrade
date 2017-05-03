@@ -4,7 +4,7 @@ namespace App\Entities;
 
 use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
-use App\Repositories\Yahoo\Financable;
+use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -18,7 +18,7 @@ class Position extends Model implements PresentableInterface
 
     protected $presenter = 'App\Presenters\Position';
     
-    protected $financial = 'App\Repositories\CurrencyFinancial';
+    protected $financial = 'App\Repositories\Yahoo\CurrencyFinancial';
 
     protected $fillable = [
         'positionable_type',

@@ -9,7 +9,7 @@ use App\Repositories\FinancialRepository;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use App\Repositories\Yahoo\Financable;
+use App\Repositories\Financable;
 
 
 abstract class Instrument extends Model

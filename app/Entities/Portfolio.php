@@ -5,7 +5,7 @@ namespace App\Entities;
 use App\Models\Rscript\Rscriptable;
 use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
-use App\Repositories\Yahoo\Financable;
+use App\Repositories\Financable;
 
 
 class Portfolio extends Model
@@ -15,7 +15,7 @@ class Portfolio extends Model
     use Rscriptable;
 
     protected $presenter = 'App\Presenters\Portfolio';
-    protected $financial = 'App\Repositories\PortfolioFinancial';
+    protected $financial = 'App\Repositories\Yahoo\PortfolioFinancial';
     protected $rscriptable = 'App\Models\Rscript\Portfolio';
     
     protected $fillable = [

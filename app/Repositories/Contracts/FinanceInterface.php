@@ -1,13 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Thomas
- * Date: 13.04.17
- * Time: 09:53
- */
+
 
 namespace App\Repositories\Contracts;
 
+use Carbon\Carbon;
 
 interface FinanceInterface
 {
@@ -17,7 +13,9 @@ interface FinanceInterface
 
     public function currency($symbol);
     
-    //public function makeHistory($symbol);
-
-    //public function history($symbol, \DateTime $startDate, \DateTime $endDate);
+    public function name($symbol);
+    
+    public function history($symbol, Carbon $from = null, Carbon $to = null);
+    
+   
 }

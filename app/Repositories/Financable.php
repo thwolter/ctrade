@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Yahoo;
+namespace App\Repositories;
 
 use App\Repositories\Exceptions\FinancialException;
 

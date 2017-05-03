@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Repos;
 
-use App\Repositories\CurrencyFinancial;
+use App\Repositories\Yahoo\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
