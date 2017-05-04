@@ -34,7 +34,7 @@ class MetadataController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        //
     }
 
     /**
@@ -81,4 +81,5 @@ class MetadataController extends Controller
     {
         //
     }
+
 }
