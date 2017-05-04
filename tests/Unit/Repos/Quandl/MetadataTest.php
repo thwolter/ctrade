@@ -8,13 +8,22 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MetadataTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+    use DatabaseMigrations;
+
+
+    protected $meta;
+
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->meta = new \App\Repositories\Quandl\Metadata();
+    }
+
+
     public function testExample()
     {
+        $data = meta->load('SSE');
         $this->assertTrue(true);
     }
 }
