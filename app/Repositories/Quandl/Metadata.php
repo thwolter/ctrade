@@ -16,13 +16,13 @@ class Metadata
     
     public function __construct() 
     {
-        $this->client = new Quandl(env('QUANDL_API_KEY'), 'json');
+        $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
     }
 
 
-    public function getList($database)
+    public function load($database)
     {
-        $dataset = json_decode($quandl->getList($database, 1, 10), true);
+        $dataset = json_decode($this->client->getList($database, 1, 10), true);
         $this->store($this->get($dataset));
     }
     
