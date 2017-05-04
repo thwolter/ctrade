@@ -15,6 +15,7 @@ class CreateNamesTable extends Migration
     {
         Schema::create('names', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('metadata_id');
             $table->string('name');
             $table->timestamps();
         });

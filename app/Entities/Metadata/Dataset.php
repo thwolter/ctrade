@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Dataset extends Model
 {
     protected $fillable = [
-        'name'
+        'code'
     ];
     
     public function metadata()
     {
-        return $this->belongsTo('App\Entities\Metadata\Metadata');
+        return $this->hasMany('App\Entities\Metadata\Metadata');
     }
 }

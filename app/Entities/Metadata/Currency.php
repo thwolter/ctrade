@@ -9,11 +9,10 @@ class Currency extends Model
     
     protected $fillable = [
         'iso',
-        'name',
     ];
     
     public function metadata()
     {
-        return $this->belongsTo('App\Entities\Metadata\Metadata');
+        return $this->hasMany('App\Entities\Metadata\Metadata');
     }
 }

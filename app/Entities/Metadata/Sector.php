@@ -10,8 +10,8 @@ class Sector extends Model
         'sector'
     ];
     
-    public function metadata()
+    public function metadatas()
     {
-        return $this->belongsTo('App\Entities\Metadata\Metadata');
+        return $this->hasMany('App\Entities\Metadata\Metadata');
     }
 }

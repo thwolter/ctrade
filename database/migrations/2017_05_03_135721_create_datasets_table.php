@@ -15,7 +15,8 @@ class CreateDatasetsTable extends Migration
     {
         Schema::create('datasets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->integer('metadata_id');
+            $table->string('code');
             $table->timestamps();
         });
     }

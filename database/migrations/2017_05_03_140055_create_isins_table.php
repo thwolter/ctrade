@@ -15,6 +15,7 @@ class CreateIsinsTable extends Migration
     {
         Schema::create('isins', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('metadata_id');
             $table->string('isin');
             $table->timestamps();
         });

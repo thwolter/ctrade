@@ -15,6 +15,7 @@ class CreateWknsTable extends Migration
     {
         Schema::create('wkns', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('metadata_id');
             $table->string('wkn');
             $table->timestamps();
         });
