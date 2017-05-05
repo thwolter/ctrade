@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Metadata extends Model
 {
-    
+    protected $fillable = [
+        'symbol', 'name_id', 'currency_id', 'provider_id',
+        'database_id', 'wkn_id', 'isin_id', 'sector_id'
+    ];
+
+
     public function currency()
     {
         return $this->belongsTo('App\Entities\Metadata\Currency');
@@ -16,12 +21,6 @@ class Metadata extends Model
     public function database()
     {
         return $this->belongsTo('App\Entities\Metadata\Database');
-    }
-    
-    
-    public function dataset()
-    {
-        return $this->belongsTo('App\Entities\Metadata\Dataset');
     }
     
     

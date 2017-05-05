@@ -6,9 +6,10 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+
 class BaseMetadataTest extends TestCase
 {
-    //use DatabaseMigrations;
+    use DatabaseMigrations;
 
 
     protected $meta;

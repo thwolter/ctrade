@@ -15,13 +15,13 @@ class CreateMetadataTable extends Migration
     {
         Schema::create('metadata', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('provider_id')->nullable();
+            $table->string('symbol');
+            $table->integer('name_id');
+            $table->integer('currency_id');
+            $table->integer('provider_id');
             $table->integer('database_id')->nullable();
-            $table->integer('dataset_id')->nullable();
             $table->integer('wkn_id')->nullable();
-            $table->integer('name_id')->nullable();
             $table->integer('isin_id')->nullable();
-            $table->integer('currency_id')->nullable();
             $table->integer('sector_id')->nullable();
             $table->timestamps();
         });

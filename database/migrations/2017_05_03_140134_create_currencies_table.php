@@ -15,7 +15,6 @@ class CreateCurrenciesTable extends Migration
     {
         Schema::create('currencies', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('metadata_id');
             $table->string('iso');
             $table->timestamps();
         });

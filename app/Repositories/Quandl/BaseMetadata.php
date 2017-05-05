@@ -31,43 +31,93 @@ class BaseMetadata
 
     public function load($database)
     {
-        $dataset = json_decode($this->client->getList($database, 1, 2), true);
-        $this->get($dataset);
-    }
-    
+        $items = json_decode($this->client->getList($database, 1, 100), true);
 
-    private function get($dataset)
-    {
-        
-        foreach ($dataset as $item)
+        foreach ($items['datasets'] as $item)
         {
-            $metadata = new Metadata();
-            //$metadata->save();
-        
-            $item = array_first($item);
-           
-            $raw_name = strtoupper($item['name']);
-            $desc = strtoupper($item['description']);
- 
-            $reIsin = '/ISIN*\s*([A-Z0-9]+)/';
-            $reCcy = '/CURRENCY:*\s*([A-Z]+)/';
-            $reSector = '/SECTOR:*\s*([A-Z \-]*)/';
+            $metadata = new Metadata([
+                'symbol' => $this->getSymbol($item),
+                'name_id' => $this->getNameId($item),
+                'currency_id' => $this->getCurrencyId($item),
+                'provider_id' => $this->getProviderId($item),
+                'database_id' => $this->getDatabaseId($item),
+                'wkn_id' => $this->getWknId($item),
+                'isin_id' => $this->getIsinId($item)
+            ]);
 
-            $dataset = new Dataset(['code' => $item['dataset_code']]);
-            //$dataset->metadata()->save($metadata);
-            //$metadata->databases()->create(['code' => $item['database_code']]);
-            //$metadata->names()->create(['name' => title_case(trim(explode('WKN', (explode('|', $raw_name)[0]))[0]))]);
-            //$metadata->wkns()->create(['wkn' => trim(explode('WKN', (explode('|', $raw_name)[0]))[1])]);
-            //$metadata->isins()->create(['isin' => (preg_match($reIsin, $raw_name, $matches)) ? $matches[1] : null]);
-            //$metadata->isos()->create(['iso' => (preg_match($reCcy, $desc, $matches)) ? $matches[1] : null]);
-            //$metadata->sectors()->create(['sector' => (preg_match($reSector, $desc, $matches)) ? title_case($matches[1]) : null]);
-
-            //$firstDate = $item['oldest_available_date'];
-            //$lastDate = $item['newest_available_date'];
-           
+            $metadata->save();
         }
     }
-        
-    
+
+    public function getSymbol($item)
+    {
+        return $item['dataset_code'];
+    }
+
+    public function getProviderId($item)
+    {
+        $entry = Provider::firstOrCreate(['name' => 'Quandl']);
+        return $entry->id;
+    }
+
+
+    public function getDatabaseId($item)
+    {
+        $entry = Database::firstOrCreate(['code' => $item['database_code']]);
+        return $entry->id;
+    }
+
+
+    public function getNameId($item)
+    {
+        $raw_name = strtoupper($item['name']);
+        $name = trim(explode('WKN', (explode('|', $raw_name)[0]))[0]);
+
+        $entry = Name::firstOrCreate(['name' => title_case($name)]);
+        return $entry->id;
+    }
+
+    public function getWknId($item)
+    {
+        $raw_name = strtoupper($item['name']);
+        $wkn = trim(explode('WKN', (explode('|', $raw_name)[0]))[1]);
+
+        $entry = Wkn::firstOrCreate(['wkn' => $wkn]);
+        return $entry->id;
+    }
+
+    public function getIsinId($item)
+    {
+        $raw_name = strtoupper($item['name']);
+        $re = '/ISIN*\s*([A-Z0-9]+)/';
+        $isin = preg_match($re, $raw_name, $matches) ? $matches[1] : null;
+
+        $entry = Isin::firstOrCreate(['isin' => $isin]);
+        return $entry->id;
+    }
+
+    public function getCurrencyId($item)
+    {
+
+        $desc = strtoupper($item['description']);
+        $re = '/CURRENCY:*\s*([A-Z]+)/';
+
+        $currency = preg_match($re, $desc, $matches) ? $matches[1] : null;
+
+        $entry = Currency::firstOrCreate(['iso' => $currency]);
+        return $entry->id;
+    }
+
+
+    public function getSectorId($item)
+    {
+        $desc = strtoupper($item['description']);
+        $re = '/SECTOR:*\s*([A-Z \-]*)/';
+
+        $sector = preg_match($re, $desc, $matches) ? title_case($matches[1]) : null;
+
+        $entry = Isin::firstOrCreate(['sector' => $sector]);
+        return $entry->id;
+    }
 }
 
