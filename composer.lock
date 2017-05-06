@@ -485,16 +485,16 @@
         },
         {
             "name": "itsgoingd/clockwork",
-            "version": "v1.13.1",
+            "version": "v1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itsgoingd/clockwork.git",
-                "reference": "9864bad522eba9f486e79c0cb7bc953967b64cf7"
+                "reference": "5b96f724537ba3e402e024eaa34ebcfd7881b6af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/9864bad522eba9f486e79c0cb7bc953967b64cf7",
-                "reference": "9864bad522eba9f486e79c0cb7bc953967b64cf7",
+                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/5b96f724537ba3e402e024eaa34ebcfd7881b6af",
+                "reference": "5b96f724537ba3e402e024eaa34ebcfd7881b6af",
                 "shasum": ""
             },
             "require": {
@@ -526,7 +526,7 @@
                 "logging",
                 "profiling"
             ],
-            "time": "2017-01-25T13:47:29+00:00"
+            "time": "2017-05-03T22:27:31+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",

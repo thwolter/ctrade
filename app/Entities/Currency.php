@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Metadata;
+namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,8 +11,8 @@ class Currency extends Model
         'iso',
     ];
     
-    public function metadata()
+    public function stocks()
     {
-        return $this->hasMany('App\Entities\Metadata\Metadata');
+        return $this->hasMany(Stock::class);
     }
 }

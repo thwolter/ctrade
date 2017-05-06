@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Metadata extends Model
 {
     protected $fillable = [
-        'symbol', 'name_id', 'currency_id', 'provider_id',
-        'database_id', 'wkn_id', 'isin_id', 'sector_id'
+        'symbol', 'provider_id', 'database_id',
+        'instrumentable_id', 'instrumentable_type'
     ];
 
+
+    public function instrumentable()
+    {
+        return $this->morphTo();
+    }
 
     public function currency()
     {
@@ -23,18 +28,7 @@ class Metadata extends Model
         return $this->belongsTo('App\Entities\Metadata\Database');
     }
     
-    
-    public function isin()
-    {
-        return $this->belongsTo('App\Entities\Metadata\Isin');
-    }
-    
-    
-    public function name()
-    {
-        return $this->belongsTo('App\Entities\Metadata\Name');
-    }
-    
+
     
     public function provider()
     {
@@ -46,10 +40,5 @@ class Metadata extends Model
     {
         return $this->belongsTo('App\Entities\Metadata\Sector');
     }
-    
-    
-    public function wkn()
-    {
-        return $this->belongsTo('App\Entities\Metadata\Wkn');
-    }
+
 }

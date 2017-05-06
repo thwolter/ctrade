@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWknsTable extends Migration
+class CreateDatabaseProviderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateWknsTable extends Migration
      */
     public function up()
     {
-        Schema::create('wkns', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('wkn');
+        Schema::create('database_provider', function (Blueprint $table) {
+            $table->integer('database_id');
+            $table->integer('provider_id');
+            $table->primary(['provider_id', 'database_id']);
             $table->timestamps();
         });
     }
@@ -27,6 +28,7 @@ class CreateWknsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wkns');
+        Schema::dropIfExists('database_provider');
+
     }
 }

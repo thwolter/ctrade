@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Unit\Repos\Quandl;
+namespace Tests\Unit\Repos\Metadata;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Repositories\Metadata\BaseMetadata;
 
 
 class BaseMetadataTest extends TestCase
@@ -18,13 +19,14 @@ class BaseMetadataTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->meta = new \App\Repositories\Quandl\BaseMetadata();
+        $this->meta = new BaseMetadata();
     }
 
 
     public function testExample()
     {
-        $data = $this->meta->load('SSE');
-        $this->assertTrue(true);
+        $this->meta->load('SSE');
+        $data = BaseMetadata::all();
+        $this->assert(true);
     }
 }

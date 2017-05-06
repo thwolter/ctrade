@@ -37,9 +37,10 @@ $factory->define(App\Entities\Portfolio::class, function(Faker\Generator $faker)
 
 
 
-$factory->define(App\Entities\Stock::class, function() {
+$factory->define(App\Entities\Stock::class, function(Faker\Generator $faker) {
     return [
-        'symbol' => 'ALV.DE'
+        'name' => $faker->company,
+        'currency_id' => factory(App\Entities\Currency::class)->create()->id
     ];
 });
 
@@ -54,5 +55,43 @@ $factory->define(App\Entities\Position::class, function(Faker\Generator $faker) 
         'positionable_id' => $stock->id,
         'positionable_type' => get_class($stock),
         'amount' => $faker->randomDigitNotNull
+    ];
+});
+
+$factory->define(App\Entities\Currency::class, function(Faker\Generator $faker) {
+
+    return [
+        'code' => $faker->currencyCode
+    ];
+});
+
+$factory->define(App\Entities\Sector::class, function(Faker\Generator $faker) {
+
+    return [
+        'name' => $faker->word
+    ];
+});
+
+
+$factory->define(\App\Entities\Dataset::class, function(Faker\Generator $faker) {
+
+    return [
+        'code' => $faker->word,
+    ];
+});
+
+
+$factory->define(\App\Entities\Database::class, function(Faker\Generator $faker) {
+
+    return [
+        'code' => $faker->word,
+    ];
+});
+
+
+$factory->define(\App\Entities\Provider::class, function(Faker\Generator $faker) {
+
+    return [
+        'name' => $faker->word,
     ];
 });

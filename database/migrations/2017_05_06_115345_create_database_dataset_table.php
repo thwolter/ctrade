@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIsinsTable extends Migration
+class CreateDatabaseDatasetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateIsinsTable extends Migration
      */
     public function up()
     {
-        Schema::create('isins', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('isin');
+        Schema::create('database_dataset', function (Blueprint $table) {
+            $table->integer('database_id');
+            $table->integer('dataset_id');
+            $table->primary(['dataset_id', 'database_id']);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateIsinsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('isins');
+        Schema::dropIfExists('database_dataset');
     }
 }

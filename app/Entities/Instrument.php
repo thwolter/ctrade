@@ -4,6 +4,7 @@
 namespace App\Entities;
 
 
+use App\Entities\Metadata\Metadata;
 use App\Repositories\Contracts\InstrumentInterface;
 use App\Repositories\FinancialRepository;
 use Collective\Html\Eloquent\FormAccessible;
@@ -22,7 +23,7 @@ abstract class Instrument extends Model
    
     public function positions()
     {
-        return $this->morphMany('App\Entities\Position', 'positionable');
+        return $this->morphMany(Position::class, 'positionable');
     }
 
 
@@ -30,13 +31,6 @@ abstract class Instrument extends Model
     {
         return $this->financial()->price($this->symbol);
     }
-
-   
-    public function name()
-    {
-        return $this->financial()->name($this->symbol);
-    }
-
 
 
     public function symbol()
@@ -53,12 +47,23 @@ abstract class Instrument extends Model
 
     public function currency()
     {
-        return $this->financial()->currency($this->symbol);
+        return $this->belongsTo(Currency::class);
+    }
+
+
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
     }
     
 
     public function history(Carbon $from = null, Carbon $to = null)
     {
         return $this->financial()->history($this->symbol(), $from, $to);
+    }
+
+    public function datasets()
+    {
+        return $this->belongsToMany(Dataset::class)->withTimestamps();
     }
 }

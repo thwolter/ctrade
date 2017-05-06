@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Entities;
 
-use App\Entities\Position;
+use App\Entities\Currency;
+use App\Entities\Database;
+use App\Entities\Sector;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -10,63 +12,61 @@ use App\Entities\Stock;
 
 class StockTest extends TestCase
 {
-
     use DatabaseMigrations;
 
+    protected $stock;
+
+    protected $currency = 'EUR';
+    protected $code = 'XYZ';
+    protected $name = 'Fake Name';
+    protected $sector = 'Example Sector';
 
 
-    private function createStock($symbol)
+    public function setUp()
     {
-        $portfolio = factory('App\Entities\Portfolio')->create();
+        parent::setUp();
 
-        $stock = Stock::firstOrCreate(['symbol'=> $symbol]);
+        $this->stock = $this->createStock();
+    }
 
-        $position = new Position();
-        $stock->positions()->save($position);
-        $portfolio->positions()->save($position);
+    private function createStock()
+    {
+        factory(Currency::class)
+            ->create(['code' => $this->currency])
+            ->stocks()
+            ->create(['name' => $this->name]);
+
+        $stock = Stock::where('name', $this->name)->first();
+
+        Sector::FirstOrCreate(['name' => $this->sector])->stocks()->save($stock);
 
         return $stock;
-    }
-
-/*
-    public function test_position_is_created()
-    {
-        $this->createStock('ALV.DE');
-
-        $this->assertDatabaseHas('stocks', ['symbol' => 'ALV.DE']);
-    }
-*/
-
-    public function test_stock_has_price() {
-
-        $stock = $this->createStock('BAS.DE');
-
-        $this->assertGreaterThan(0, $stock->price());
     }
 
 
     public function test_stock_has_currency() {
 
-        $stock = $this->createStock('BAS.DE');
-
-        $this->assertStringStartsWith('EUR', $stock->currency());
+        $this->assertEquals($this->currency, $this->stock->currency->code);
     }
 
 
     public function test_stock_has_name() {
 
-        $stock = $this->createStock('BAS.DE');
-
-        $this->assertStringStartsWith('BASF', $stock->name());
+        $this->assertEquals($this->name, $this->stock->name);
     }
 
+    public function test_stock_has_sector() {
 
-    public function test_has_history()
+        $this->assertEquals($this->sector, $this->stock->sector->name);
+    }
+
+    public function test_stock_can_be_assigned_to_database()
     {
-        $stock = $this->createStock('BAS.DE');
-        $json = $stock->history();
-        
-        $this->assertTrue(is_string($json) and is_array(json_decode($json, true)));
+        Database::firstOrCreate(['code' => $this->code])
+            ->stocks()
+            ->save($this->stock);
+
+        $this->assertEquals($this->code, $this->stock->database->code);
+
     }
-   
 }

@@ -15,7 +15,11 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('symbol');
+            $table->string('name');
+            $table->integer('currency_id');
+            $table->string('wkn')->nullable();
+            $table->string('isin')->nullable();
+            $table->integer('sector_id')->nullable();
             $table->timestamps();
         });
     }

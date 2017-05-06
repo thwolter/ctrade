@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNamesTable extends Migration
+class CreateDatasetStockTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateNamesTable extends Migration
      */
     public function up()
     {
-        Schema::create('names', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
+        Schema::create('dataset_stock', function (Blueprint $table) {
+            $table->integer('stock_id');
+            $table->integer('dataset_id');
+            $table->primary(['stock_id', 'dataset_id']);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateNamesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('names');
+        Schema::dropIfExists('dataset_stock');
     }
 }
