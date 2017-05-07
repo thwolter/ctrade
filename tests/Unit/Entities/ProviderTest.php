@@ -3,6 +3,7 @@
 namespace Tests\Unit\Entities;
 
 use App\Entities\Database;
+use App\Entities\Dataset;
 use App\Entities\Provider;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -11,6 +12,13 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class ProviderTest extends TestCase
 {
     use DatabaseMigrations;
+
+    public function attachDatabase($provider)
+    {
+        $database = factory(Database::class)->create();
+        $provider->databases()->attach($database->id);
+    }
+
 
     public function test_provider_can_have_many_databases()
     {
@@ -25,12 +33,5 @@ class ProviderTest extends TestCase
         {
             $this->assertEquals($provider->name, $database->providers->first()->name);
         }
-    }
-
-
-    public function attachDatabase($provider)
-    {
-        $database = factory(Database::class)->create();
-        $provider->databases()->attach($database->id);
     }
 }

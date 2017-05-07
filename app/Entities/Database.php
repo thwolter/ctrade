@@ -19,4 +19,16 @@ class Database extends Model
     {
         return $this->belongsToMany(Dataset::class)->withTimestamps();
     }
+
+    public function hasProvider($id)
+    {
+        $providers = $this->providers;
+
+        foreach ($providers as $provider)
+        {
+            if ($provider->id == $id) return true;
+        }
+        return false;
+
+    }
 }

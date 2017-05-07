@@ -4,6 +4,7 @@ namespace Tests\Unit\Entities;
 
 use App\Entities\Currency;
 use App\Entities\Database;
+use App\Entities\Dataset;
 use App\Entities\Sector;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -60,13 +61,14 @@ class StockTest extends TestCase
         $this->assertEquals($this->sector, $this->stock->sector->name);
     }
 
-    public function test_stock_can_be_assigned_to_database()
+    public function test_stock_can_be_assigned_to_dataset()
     {
-        Database::firstOrCreate(['code' => $this->code])
+        Dataset::firstOrCreate(['code' => $this->code])
             ->stocks()
             ->save($this->stock);
 
-        $this->assertEquals($this->code, $this->stock->database->code);
+        $code = $this->stock->datasets->first()->code;
+        $this->assertEquals($this->code, $code);
 
     }
 }

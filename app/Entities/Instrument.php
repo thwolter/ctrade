@@ -66,4 +66,5 @@ abstract class Instrument extends Model
     {
         return $this->belongsToMany(Dataset::class)->withTimestamps();
     }
+
 }

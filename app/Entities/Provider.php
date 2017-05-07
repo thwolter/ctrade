@@ -2,7 +2,6 @@
 
 namespace App\Entities;
 
-use App\Entities\Database;
 use Illuminate\Database\Eloquent\Model;
 
 class Provider extends Model
@@ -15,4 +14,5 @@ class Provider extends Model
     {
         return $this->belongsToMany(Database::class)->withTimestamps();
     }
+
 }

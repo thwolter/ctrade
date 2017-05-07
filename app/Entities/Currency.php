@@ -8,7 +8,7 @@ class Currency extends Model
 {
     
     protected $fillable = [
-        'iso',
+        'code',
     ];
     
     public function stocks()
