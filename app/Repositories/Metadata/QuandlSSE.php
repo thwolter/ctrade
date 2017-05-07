@@ -8,24 +8,24 @@ use App\Entities\Dataset;
 use App\Repositories\Exceptions\MetadataException;
 
 
-class QuandlMetadata extends Metadata
+class QuandlSSE extends Metadata
 {
-    
-    protected $require = ['Symbol', 'Name', 'Currency'];
+    protected $provider = 'Quandl';
+
+    protected $required = ['symbol', 'name', 'currency'];
 
 
     public function __construct() 
     {
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
-        $this->provider = 'Quandl';
     }
 
 
-    public function load($database)
+    public function loadDatabase($name)
     {
-        $items = json_decode($this->client->getList($database, 1, 21), true);
+        list($provider, $database) = $this->findOrCreateDatabase($name);
 
-        list($provider, $database) = $this->findOrCreateDatabase($database);
+        $items = json_decode($this->client->getList($name, 1, 30), true);
 
         foreach ($items['datasets'] as $item)
         {
@@ -37,18 +37,13 @@ class QuandlMetadata extends Metadata
                 'dataset'  => $dataset
             ];
 
-            if (! $this->pathExist($path))
-            {
-                // check for valid stock
-                // check for existing entry for stock
+            if ($this->pathExist($path)) {
 
-                if (! $this->saveStock($item, $path)) $dataset->delete();
-
-
-
+                // update stock
             } else {
 
-                // update Stock
+                if (! $this->saveStock($item, $path)) {$dataset->delete();}
+
             }
         }
     }
@@ -56,6 +51,8 @@ class QuandlMetadata extends Metadata
 
     public function saveStock($item, $path)
     {
+        if (!$this->validStock($item)) return false;
+
         $stock = Currency::firstOrCreate(['code' => $this->currency($item)])
             ->stocks()->create([
                 'name' => $this->name($item),
@@ -69,20 +66,20 @@ class QuandlMetadata extends Metadata
         return true;
     }
 
-    public function isValid($item)
-    {
-        foreach ($this->require as $field)
-        {
-            $method = 'get'.studly_case($field);
-            if (!method_exists($this, $method)) $method = $method . 'Id';
 
+    public function validStock($item)
+    {
+        foreach ($this->required as $method)
+        {
             if (!method_exists($this, $method))
                 throw new MetadataException("no method '{$method}' defined");
 
-            $id = $this->$method($item);
+            $result = $this->$method($item);
 
-            return (is_null($id) ? false : true);
+            if (is_null($result) or empty($result)) return false;
         }
+
+        return true;
 
     }
 

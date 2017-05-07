@@ -30,7 +30,7 @@ class Metadata
 
     public function assignSectorToStock($name, $stock)
     {
-        if (!is_null($name) and !emptyString($name)) {
+        if (!is_null($name) and !empty($name)) {
             $sector = Sector::firstOrCreate(['name' => $name]);
             $stock->sector()->associate($sector)->save();
         }
