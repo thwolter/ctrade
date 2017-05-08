@@ -96,7 +96,7 @@ class StockTest extends TestCase
             'dataset'  => $dataset->id
         ];
         
-        $this->assertEquals($expect, $this->stock->pathway());
+        $this->assertEquals($expect, $this->stock->pathway()[0]);
         
         
         

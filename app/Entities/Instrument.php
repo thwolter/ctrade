@@ -4,7 +4,6 @@
 namespace App\Entities;
 
 
-use App\Entities\Metadata\Metadata;
 use App\Repositories\Contracts\InstrumentInterface;
 use App\Repositories\FinancialRepository;
 use Collective\Html\Eloquent\FormAccessible;
@@ -49,11 +48,11 @@ abstract class Instrument extends Model
     {
         $pathway = null;
         
-        foreach ($this->datasets() as $dataset)
+        foreach ($this->datasets as $dataset)
         {
-            foreach ($dataset->databases() as $database)
+            foreach ($dataset->databases as $database)
             {
-                foreach ($database->providers() as $provider)
+                foreach ($database->providers as $provider)
                 {
                     $pathway[] = [
                         'provider' => $provider->id,
