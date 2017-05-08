@@ -3,6 +3,7 @@
 
 namespace App\Repositories\Metadata;
 
+use App\Entities\Stock;
 use App\Repositories\Exceptions\MetadataException;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,6 +30,7 @@ class QuandlSSE extends Metadata
                 // update stock
             } else {
 
+                //Todo: check for security type, for now assume all are stocks
                 if (! $this->saveStock($item, $path)) { $this->destroyPath($path); }
             }
         }
@@ -94,6 +96,11 @@ class QuandlSSE extends Metadata
         $re = '/SECTOR:*\s*([A-Z \-]*)/';
 
         return preg_match($re, $desc, $matches) ? title_case($matches[1]) : null;
+    }
+
+    public function model($item)
+    {
+        return Stock::class;
     }
 
     public function getItems()

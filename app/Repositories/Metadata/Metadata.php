@@ -14,6 +14,7 @@ use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Entities\Provider;
 use App\Entities\Sector;
+use App\Entities\Stock;
 
 abstract class Metadata
 {
@@ -35,6 +36,7 @@ abstract class Metadata
             $stock->sector()->associate($sector)->save();
         }
     }
+
 
     public function assignDatabaseToStock($database, $dataset, $stock)
     {
@@ -63,7 +65,10 @@ abstract class Metadata
 
     public function setPath(Array $item, Provider $provider, Database $database)
     {
-        $dataset = Dataset::firstOrCreate(['code' => $this->symbol($item)]);
+        $dataset = Dataset::firstOrCreate([
+            'code' => $this->symbol($item),
+            'model' => $this->model($item)
+        ]);
 
         return [
             'provider' => $provider,
@@ -93,6 +98,8 @@ abstract class Metadata
     abstract public function name($item);
 
     abstract public function currency($item);
+
+    abstract public function model($item);
 
     public function checkValidity($item)
     {

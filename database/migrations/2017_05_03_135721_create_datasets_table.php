@@ -16,7 +16,7 @@ class CreateDatasetsTable extends Migration
         Schema::create('datasets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code')->unique();
-            $table->integer('instrument_id');
+            $table->string('model');
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use App\Entities\Provider;
 use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Entities\Sector;
+use App\Entities\Security;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,6 +20,7 @@ class StockTest extends TestCase
     protected $stock;
     protected $database;
     protected $dataset;
+    protected $provider;
 
     protected $currency = 'EUR';
     protected $code = 'XYZ';
@@ -49,8 +51,6 @@ class StockTest extends TestCase
         $this->stock = Stock::where('name', $this->name)->first();
 
         Sector::FirstOrCreate(['name' => $this->sector])->stocks()->save($this->stock);
-
-        
     }
     
     private function assignPathway()
@@ -89,7 +89,10 @@ class StockTest extends TestCase
 
     public function test_stock_can_be_assigned_to_dataset()
     {
-        Dataset::firstOrCreate(['code' => 'ALV.DE'])
+        Dataset::firstOrCreate([
+            'code' => 'ALV.DE',
+            'security_id' => factory(Security::class)->create()->id
+        ])
             ->stocks()
             ->save(factory(Stock::class)->create());
 
