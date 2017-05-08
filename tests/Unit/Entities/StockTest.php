@@ -89,13 +89,13 @@ class StockTest extends TestCase
 
     public function test_stock_can_be_assigned_to_dataset()
     {
-        Dataset::firstOrCreate(['code' => $this->datasetCode])
+        Dataset::firstOrCreate(['code' => 'ALV.DE'])
             ->stocks()
-            ->save($this->stock);
+            ->save(factory(Stock::class)->create());
 
         $code = $this->stock->datasets->first()->code;
         
-        $this->assertEquals($this->code, $code);
+        $this->assertEquals($this->datasetCode, $code);
     }
     
     
@@ -116,6 +116,6 @@ class StockTest extends TestCase
     {
         $price = $this->stock->price();
         
-        $this->assertGreater(0, $price);
+        $this->assertGreaterThan(0, $price);
     }
 }

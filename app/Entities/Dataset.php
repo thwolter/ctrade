@@ -20,6 +20,11 @@ class Dataset extends Model
         return $this->belongsToMany(Stock::class)->withTimestamps();
     }
 
+    public function security()
+    {
+        return $this->belongsTo(Security::class);
+    }
+
     public function providers()
     {
         $ids = null;

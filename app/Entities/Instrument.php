@@ -78,14 +78,11 @@ abstract class Instrument extends Model
             case 'Quandl':
                 return Quandldata::make()->price($pathway);
                 break;
-            
+
+            case 'others':
+                //
+                break;
         } 
-    }
-
-
-    public function symbol()
-    {
-        return $this->symbol;
     }
 
 
