@@ -27,9 +27,52 @@ abstract class Instrument extends Model
     }
 
 
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
+    }
+    
+    
+    public function datasets()
+    {
+        return $this->belongsToMany(Dataset::class)->withTimestamps();
+    }
+    
+    
+    public function pathway()
+    {
+        $pathway = null;
+        
+        foreach ($this->datasets() as $dataset)
+        {
+            foreach ($dataset->databases() as $database)
+            {
+                foreach ($database->providers() as $provider)
+                {
+                    $pathway[] = [
+                        'provider' => $provider->id,
+                        'database' => $database->id,
+                        'dataset'  => $dataset->id
+                    ];
+                }
+            }
+        }
+        
+        return $pathway;
+    }
+    
+    
     public function price()
     {
-        return $this->financial()->price($this->symbol);
+       
+        // chose prefered provider, perhaps the first one
+        // get quote
     }
 
 
@@ -45,16 +88,7 @@ abstract class Instrument extends Model
     }
 
 
-    public function currency()
-    {
-        return $this->belongsTo(Currency::class);
-    }
 
-
-    public function sector()
-    {
-        return $this->belongsTo(Sector::class);
-    }
     
 
     public function history(Carbon $from = null, Carbon $to = null)
@@ -62,9 +96,6 @@ abstract class Instrument extends Model
         return $this->financial()->history($this->symbol(), $from, $to);
     }
 
-    public function datasets()
-    {
-        return $this->belongsToMany(Dataset::class)->withTimestamps();
-    }
+   
 
 }

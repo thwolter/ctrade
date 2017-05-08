@@ -47,13 +47,10 @@ $factory->define(App\Entities\Stock::class, function(Faker\Generator $faker) {
 
 $factory->define(App\Entities\Position::class, function(Faker\Generator $faker) {
 
-    $stock = factory('App\Entities\Stock')->create();
-    $portfolio = factory('App\Entities\Portfolio')->create();
-
-    return [
-        'portfolio_id' => $portfolio->id,
-        'positionable_id' => $stock->id,
-        'positionable_type' => get_class($stock),
+   return [
+        'portfolio_id' => factory('App\Entities\Portfolio')->create()->id,
+        'positionable_id' => factory('App\Entities\Stock')->create()->id,
+        'positionable_type' => 'App\Entities\Stock',
         'amount' => $faker->randomDigitNotNull
     ];
 });

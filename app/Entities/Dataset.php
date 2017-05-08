@@ -51,9 +51,4 @@ class Dataset extends Model
 
         return false;
     }
-
-    public function sourceToProvider($id)
-    {
-
-    }
 }

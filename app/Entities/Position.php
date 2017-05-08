@@ -5,6 +5,7 @@ namespace App\Entities;
 use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
 use App\Repositories\Financable;
+use App\Entities\Portfolio;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -35,7 +36,7 @@ class Position extends Model implements PresentableInterface
 
     public function portfolio()
     {
-        return $this->belongsTo('App\Entities\Portfolio');
+        return $this->belongsTo(Portfolio::class);
     }
 
 
@@ -46,7 +47,7 @@ class Position extends Model implements PresentableInterface
 
     public function currency()
     {
-        return $this->positionable->currency();
+        return $this->positionable->currency->code;
     }
 
     public function type()
@@ -58,7 +59,6 @@ class Position extends Model implements PresentableInterface
     {
         return $this->positionable->typeDisp;
     }
-
 
     public function amount()
     {

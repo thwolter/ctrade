@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Entities\Position;
 use App\Entities\Stock;
 use App\Entities\Portfolio;
+use App\Entities\Currency;
 use App\Repositories\Yahoo\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -13,6 +14,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class PositionTest extends TestCase
 {
     protected $position;
+    protected $currency;
+    protected $stock;
 
     use DatabaseMigrations;
 
@@ -20,13 +23,20 @@ class PositionTest extends TestCase
     {
         parent::setUp();
 
-        $this->position = factory('App\Entities\Position')->create();
+        $this->currency = factory(Currency::class)->create();
+        
+        $this->stock = factory(Stock::class)->create(
+            ['currency_id' => $this->currency->id]);
+        
+        $this->position = factory('App\Entities\Position')->create([
+            'positionable_id' => $this->stock->id,
+            'positionable_type' => Stock::class]);
     }
 
 
     public function test_positions_stock_has_currency()
     {
-       $this->assertStringStartsWith('EUR', $this->position->currency());
+        $this->assertEquals($this->currency->code, $this->position->currency());
     }
 
     public function test_position_stock_has_price()
