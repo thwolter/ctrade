@@ -17,18 +17,25 @@ class StockTest extends TestCase
     use DatabaseMigrations;
 
     protected $stock;
+    protected $database;
+    protected $dataset;
 
     protected $currency = 'EUR';
     protected $code = 'XYZ';
     protected $name = 'Fake Name';
     protected $sector = 'Example Sector';
+    
+    protected $providerName = 'Quandl';
+    protected $databaseCode = 'SSE';
+    protected $datasetCode = 'ALV';
 
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->stock = $this->createStock();
+        $this->createStock();
+        $this->assignPathway();
     }
 
 
@@ -39,11 +46,23 @@ class StockTest extends TestCase
             ->stocks()
             ->create(['name' => $this->name]);
 
-        $stock = Stock::where('name', $this->name)->first();
+        $this->stock = Stock::where('name', $this->name)->first();
 
-        Sector::FirstOrCreate(['name' => $this->sector])->stocks()->save($stock);
+        Sector::FirstOrCreate(['name' => $this->sector])->stocks()->save($this->stock);
 
-        return $stock;
+        
+    }
+    
+    private function assignPathway()
+    {
+        $this->dataset = factory(Dataset::class)->create(['code' => $this->datasetCode]);
+        $this->dataset->stocks()->attach($this->stock->id);
+        
+        $this->database = factory(Database::class)->create(['code' => $this->databaseCode]);
+        $this->database->datasets()->attach($this->dataset->id);
+        
+        $this->provider = factory(Provider::class)->create(['name' => $this->providerName]);
+        $this->provider->databases()->attach($this->database->id);
     }
 
 
@@ -70,7 +89,7 @@ class StockTest extends TestCase
 
     public function test_stock_can_be_assigned_to_dataset()
     {
-        Dataset::firstOrCreate(['code' => $this->code])
+        Dataset::firstOrCreate(['code' => $this->datasetCode])
             ->stocks()
             ->save($this->stock);
 
@@ -79,27 +98,24 @@ class StockTest extends TestCase
         $this->assertEquals($this->code, $code);
     }
     
+    
     public function test_stock_has_pathway()
     {
-        $dataset = factory(Dataset::class)->create();
-        $dataset->stocks()->attach($this->stock->id);
-        
-        $database = factory(Database::class)->create();
-        $database->datasets()->attach($dataset->id);
-        
-        $provider = factory(Provider::class)->create();
-        $provider->databases()->attach($database->id);
-        
         $expect = [
-            'provider' => $provider->id,
-            'database' => $database->id,
-            'dataset'  => $dataset->id
+            'provider' => $this->provider->id,
+            'database' => $this->database->id,
+            'dataset'  => $this->dataset->id
         ];
         
         $this->assertEquals($expect, $this->stock->pathway()[0]);
         
+    }
+    
+    
+    public function test_stock_has_price()
+    {
+        $price = $this->stock->price();
         
-        
-        
+        $this->assertGreater(0, $price);
     }
 }

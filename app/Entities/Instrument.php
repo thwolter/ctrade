@@ -10,6 +10,7 @@ use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use App\Repositories\Financable;
+use App\Repositories\Quandl\Quandldata;
 
 
 abstract class Instrument extends Model
@@ -70,8 +71,15 @@ abstract class Instrument extends Model
     public function price()
     {
        
-        // chose prefered provider, perhaps the first one
-        // get quote
+        $pathway = $this->pathway()[0];
+        
+        switch(Provider::find($pathway['provider'])->name) 
+        {
+            case 'Quandl':
+                return Quandldata::make()->price($pathway);
+                break;
+            
+        } 
     }
 
 
