@@ -9,18 +9,18 @@
 namespace App\Repositories\Metadata;
 
 
+use App\Entities\Currency;
 use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Entities\Provider;
 use App\Entities\Sector;
 
-class Metadata
+abstract class Metadata
 {
 
     protected $provider;
-    protected $client;
 
-    public function pathExist($path)
+    public function existPath($path)
     {
         $dataset = Dataset::find($path['dataset']->id);
 
@@ -44,6 +44,39 @@ class Metadata
             $database->datasets()->attach($dataset->id);
     }
 
+    public function saveStock($item, $path)
+    {
+        if (!$this->checkValidity($item)) return false;
+
+        $stock = Currency::firstOrCreate(['code' => $this->currency($item)])
+            ->stocks()->create([
+                'name' => $this->name($item),
+                'wkn' => $this->wkn($item),
+                'isin' => $this->isin($item)
+            ]);
+
+        $this->assignSectorToStock($this->sector($item), $stock);
+        $this->assignDatabaseToStock($path['database'], $path['dataset'], $stock);
+
+        return true;
+    }
+
+    public function setPath(Array $item, Provider $provider, Database $database)
+    {
+        $dataset = Dataset::firstOrCreate(['code' => $this->symbol($item)]);
+
+        return [
+            'provider' => $provider,
+            'database' => $database,
+            'dataset' => $dataset
+        ];
+    }
+
+    public function destroyPath(Array $path)
+    {
+        $path['dataset']->delete();
+    }
+
     protected function findOrCreateDatabase($name): array
     {
         $provider = Provider::firstOrCreate(['name' => $this->provider]);
@@ -53,5 +86,31 @@ class Metadata
             $provider->databases()->attach($database->id);
 
         return [$provider, $database];
+    }
+
+    abstract public function symbol($item);
+
+    abstract public function name($item);
+
+    abstract public function currency($item);
+
+    public function checkValidity($item)
+    {
+        return true;
+    }
+
+    public function wkn($item)
+    {
+        return null;
+    }
+
+    public function isin($item)
+    {
+        return null;
+    }
+
+    public function sector($item)
+    {
+        return null;
     }
 }

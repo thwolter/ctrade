@@ -3,71 +3,39 @@
 
 namespace App\Repositories\Metadata;
 
-use App\Entities\Currency;
-use App\Entities\Dataset;
 use App\Repositories\Exceptions\MetadataException;
+use Illuminate\Support\Facades\Storage;
 
 
 class QuandlSSE extends Metadata
 {
     protected $provider = 'Quandl';
-
     protected $required = ['symbol', 'name', 'currency'];
 
-
-    public function __construct() 
-    {
-        $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
-    }
+    protected $client;
 
 
     public function loadDatabase($name)
     {
         list($provider, $database) = $this->findOrCreateDatabase($name);
 
-        $items = json_decode($this->client->getList($name, 1, 30), true);
-
+        $items = $this->getItems();
         foreach ($items['datasets'] as $item)
         {
-            $dataset = Dataset::firstOrCreate(['code' => $this->symbol($item)]);
+            $path = $this->setPath($item, $provider, $database);
 
-            $path = [
-                'provider' => $provider,
-                'database' => $database,
-                'dataset'  => $dataset
-            ];
-
-            if ($this->pathExist($path)) {
+            if ($this->existPath($path)) {
 
                 // update stock
             } else {
 
-                if (! $this->saveStock($item, $path)) {$dataset->delete();}
-
+                if (! $this->saveStock($item, $path)) { $this->destroyPath($path); }
             }
         }
     }
 
 
-    public function saveStock($item, $path)
-    {
-        if (!$this->validStock($item)) return false;
-
-        $stock = Currency::firstOrCreate(['code' => $this->currency($item)])
-            ->stocks()->create([
-                'name' => $this->name($item),
-                'wkn' => $this->wkn($item),
-                'isin' => $this->isin($item)
-        ]);
-
-        $this->assignSectorToStock($this->sector($item), $stock);
-        $this->assignDatabaseToStock($path['database'], $path['dataset'], $stock);
-
-        return true;
-    }
-
-
-    public function validStock($item)
+    public function checkValidity($item)
     {
         foreach ($this->required as $method)
         {
@@ -128,6 +96,15 @@ class QuandlSSE extends Metadata
         return preg_match($re, $desc, $matches) ? title_case($matches[1]) : null;
     }
 
+    public function getItems()
+    {
+        $items = json_decode(Storage::get('QuandlSSE.json'), true);
+        return $items;
+
+        //$this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
+        //Storage::put('QuandlSSE.json', $this->client->getList($name, 1, 30));
+        //$items = json_decode($this->client->getList($name, 1, 30), true);
+    }
 
 }
 
