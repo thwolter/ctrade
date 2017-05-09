@@ -22,11 +22,6 @@ class StockTest extends TestCase
     protected $dataset;
     protected $provider;
 
-    protected $currency = 'EUR';
-    protected $code = 'XYZ';
-    protected $name = 'Fake Name';
-    protected $sector = 'Example Sector';
-    
     protected $providerName = 'Quandl';
     protected $databaseCode = 'SSE';
     protected $datasetCode = 'ALV';
@@ -36,22 +31,10 @@ class StockTest extends TestCase
     {
         parent::setUp();
 
-        $this->createStock();
+        $this->stock = Stock::saveWithParameter('Allianz', 'EUR', 'Insurance');
         $this->assignPathway();
     }
 
-
-    private function createStock()
-    {
-        factory(Currency::class)
-            ->create(['code' => $this->currency])
-            ->stocks()
-            ->create(['name' => $this->name]);
-
-        $this->stock = Stock::where('name', $this->name)->first();
-
-        Sector::FirstOrCreate(['name' => $this->sector])->stocks()->save($this->stock);
-    }
     
     private function assignPathway()
     {
@@ -68,21 +51,21 @@ class StockTest extends TestCase
 
     public function test_stock_has_currency() {
 
-        $this->assertEquals($this->currency, $this->stock->currency->code);
+        $this->assertEquals('EUR', $this->stock->currency->code);
     }
 
 
 
     public function test_stock_has_name() {
 
-        $this->assertEquals($this->name, $this->stock->name);
+        $this->assertEquals('Allianz', $this->stock->name);
     }
 
 
 
     public function test_stock_has_sector() {
 
-        $this->assertEquals($this->sector, $this->stock->sector->name);
+        $this->assertEquals('Insurance', $this->stock->sector->name);
     }
 
 
@@ -121,17 +104,4 @@ class StockTest extends TestCase
         $this->assertGreaterThan(0, $price);
     }
 
-
-    public function test_saveWithParameter_saves_stock()
-    {
-        $name = 'xyz Stock';
-        Stock::saveWithParameter($name, 'EUR', 'abc');
-
-        $stock = Stock::whereName($name)->get()->first();
-
-        $this->assertEquals($name, $stock->name);
-        $this->assertEquals('EUR', $stock->currency->code);
-        $this->assertEquals('abc', $stock->sector->name);
-
-    }
 }

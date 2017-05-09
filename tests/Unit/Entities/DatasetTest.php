@@ -101,4 +101,25 @@ class DatasetTest extends TestCase
         $this->assertTrue($dataset->hasProvider($provider->id));
         $this->assertFalse($dataset->hasProvider(555));
     }
+
+    public function test_saveWithPath_saves_stock()
+    {
+        $stock = Stock::saveWithParameter('Allianz', 'EUR', 'Insurance');
+        Dataset::saveWithPath($stock, [
+            'provider' => 'Quandl',
+            'database' => 'SSE',
+            'dataset' => 'ALV'
+        ]);
+
+        Dataset::saveWithPath($stock, [
+            'provider' => 'Yahoo',
+            'database' => null,
+            'dataset' => 'ALV'
+        ]);
+
+        $providers = Dataset::whereCode('ALV')->first()->providers();
+
+        $this->assertEquals(1, array_search('Quandl', $providers));
+        $this->assertEquals(2, array_search('Yahoo', $providers));
+    }
 }

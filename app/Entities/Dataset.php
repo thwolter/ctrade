@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use Entities\Exceptions\DatasetExceptions;
 use Illuminate\Database\Eloquent\Model;
 
 class Dataset extends Model
@@ -55,20 +56,26 @@ class Dataset extends Model
 
     static public function saveWithPath($instrument, Array $codes)
     {
-        Currency::create(['code' => $stock->currency()])
-            ->stocks()->save($stock);
+        if (!array_has($codes, 'provider') or
+            !array_has($codes, 'database') or
+            !array_has($codes, 'dataset'))
 
-        Sector::create(['name' => $stock->sector()])
-            ->stocks()->save($stock);
+            throw new DatasetExceptions(
+                "Variable 'codes' must be array with keys 'provider', 'database' and 'dataset'");
 
-        $dataset = Dataset::firstOrCreate(['name' => $pathway['dataset']]);
-        $dataset->stocks()->attach($stock->id);
+        $rc = new \ReflectionClass($instrument);
+        $model = str_plural(strtolower($rc->getShortName()));
 
-        $database = Database::firstOrCreate(['code' => $pathway['database']]);
+        $dataset = Dataset::firstOrCreate(['code' => $codes['dataset']]);
+        $dataset->$model()->attach($instrument->id);
+
+        $database = Database::firstOrCreate(['code' => $codes['database']]);
         $database->datasets()->attach($dataset->id);
 
-        $provider = Provider::firstOrCreate(['name' => $pathway['provider']]);
+        $provider = Provider::firstOrCreate(['name' => $codes['provider']]);
         $provider->databases()->attach($database->id);
+
+        return $dataset;
 
     }
 
