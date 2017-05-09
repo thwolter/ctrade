@@ -72,7 +72,7 @@ class Dataset extends Model
         $database = Database::firstOrCreate(['code' => $codes['database']]);
         $database->datasets()->attach($dataset->id);
 
-        $provider = Provider::firstOrCreate(['name' => $codes['provider']]);
+        $provider = Provider::firstOrCreate(['code' => $codes['provider']]);
         $provider->databases()->attach($database->id);
 
         return $dataset;

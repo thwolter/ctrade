@@ -90,6 +90,6 @@ $factory->define(\App\Entities\Database::class, function(Faker\Generator $faker)
 $factory->define(\App\Entities\Provider::class, function(Faker\Generator $faker) {
 
     return [
-        'name' => $faker->word,
+        'code' => $faker->word,
     ];
 });

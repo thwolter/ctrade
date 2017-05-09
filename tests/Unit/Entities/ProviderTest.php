@@ -27,11 +27,11 @@ class ProviderTest extends TestCase
         $this->attachDatabase($provider);
         $this->attachDatabase($provider);
 
-        $databases = Provider::whereName($provider->name)->first()->databases;
+        $databases = Provider::whereCode($provider->code)->first()->databases;
 
         foreach ($databases as $database)
         {
-            $this->assertEquals($provider->name, $database->providers->first()->name);
+            $this->assertEquals($provider->code, $database->providers->first()->code);
         }
     }
 }

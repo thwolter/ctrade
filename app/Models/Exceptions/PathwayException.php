@@ -4,7 +4,7 @@
 namespace App\Models\Exceptions;
 
 
-class RscriptException extends \Exception
+class PathwayException extends \Exception
 {
 
 }
