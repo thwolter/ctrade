@@ -41,7 +41,7 @@ abstract class Instrument extends Model
     
     public function datasets()
     {
-        return $this->belongsToMany(Dataset::class)->withTimestamps();
+        return $this->morphToMany(Dataset::class, 'datasetable')->withTimestamps();
     }
     
     

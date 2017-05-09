@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDatasetsTable extends Migration
+class CreateDatasetablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateDatasetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('datasets', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('code')->unique();
+        Schema::create('datasetables', function (Blueprint $table) {
+            //$table->increments('id');
+            $table->integer('dataset_id');
+            $table->integer('datasetable_id');
+            $table->string('datasetable_type');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateDatasetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('datasets');
+        Schema::dropIfExists('datasetables');
     }
 }

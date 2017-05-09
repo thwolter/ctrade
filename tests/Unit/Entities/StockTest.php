@@ -90,8 +90,7 @@ class StockTest extends TestCase
     public function test_stock_can_be_assigned_to_dataset()
     {
         Dataset::firstOrCreate([
-            'code' => 'ALV.DE',
-            'security_id' => factory(Security::class)->create()->id
+            'code' => 'ALV.DE'
         ])
             ->stocks()
             ->save(factory(Stock::class)->create());
@@ -120,5 +119,19 @@ class StockTest extends TestCase
         $price = $this->stock->price();
         
         $this->assertGreaterThan(0, $price);
+    }
+
+
+    public function test_saveWithParameter_saves_stock()
+    {
+        $name = 'xyz Stock';
+        Stock::saveWithParameter($name, 'EUR', 'abc');
+
+        $stock = Stock::whereName($name)->get()->first();
+
+        $this->assertEquals($name, $stock->name);
+        $this->assertEquals('EUR', $stock->currency->code);
+        $this->assertEquals('abc', $stock->sector->name);
+
     }
 }

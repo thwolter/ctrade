@@ -17,13 +17,9 @@ class Dataset extends Model
 
     public function stocks()
     {
-        return $this->belongsToMany(Stock::class)->withTimestamps();
+        return $this->morphedByMany(Stock::class, 'datasetable')->withTimestamps();
     }
 
-    public function security()
-    {
-        return $this->belongsTo(Security::class);
-    }
 
     public function providers()
     {
@@ -56,4 +52,24 @@ class Dataset extends Model
 
         return false;
     }
+
+    static public function saveWithPath($instrument, Array $codes)
+    {
+        Currency::create(['code' => $stock->currency()])
+            ->stocks()->save($stock);
+
+        Sector::create(['name' => $stock->sector()])
+            ->stocks()->save($stock);
+
+        $dataset = Dataset::firstOrCreate(['name' => $pathway['dataset']]);
+        $dataset->stocks()->attach($stock->id);
+
+        $database = Database::firstOrCreate(['code' => $pathway['database']]);
+        $database->datasets()->attach($dataset->id);
+
+        $provider = Provider::firstOrCreate(['name' => $pathway['provider']]);
+        $provider->databases()->attach($database->id);
+
+    }
+
 }

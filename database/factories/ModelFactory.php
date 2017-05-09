@@ -75,7 +75,6 @@ $factory->define(\App\Entities\Dataset::class, function(Faker\Generator $faker) 
 
     return [
         'code' => $faker->word,
-        'model' => \App\Entities\Stock::class
     ];
 });
 
