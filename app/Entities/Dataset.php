@@ -30,7 +30,7 @@ class Dataset extends Model
         {
             foreach ($database->providers as $provider)
             {
-                $ids[$provider->id] = $provider->name;
+                $ids[$provider->id] = $provider->code;
             }
         }
 
@@ -41,7 +41,7 @@ class Dataset extends Model
     {
         $providers = $this->providers();
 
-        return (is_null($providers)) ? null : array_key_exists($id, $this->providers());
+        return (is_null($providers)) ? null : array_key_exists($id, $providers);
     }
 
     public function hasDatabase($id)

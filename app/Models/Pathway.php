@@ -37,6 +37,7 @@ class Pathway
     
     public function assign($instrument)
     {
+        //Todo: check if already assigned, in this case do nothing
         $rc = new \ReflectionClass($instrument);
         $model = str_plural(strtolower($rc->getShortName()));
 
@@ -49,6 +50,23 @@ class Pathway
     }
     
 
+    static public function getForDatasets($datasets)
+    {
+        $path = null;
+        foreach ($datasets as $dataset) {
+            foreach ($dataset->databases as $database) {
+                foreach ($database->providers as $provider) {
+                    $path[] = [
+                        'provider' => $provider,
+                        'database' => $database,
+                        'dataset'  => $dataset
+                    ];
+                }
+            }
+        }
+
+        return $path;
+    }
     
     public function provider($value)
     {
@@ -74,9 +92,10 @@ class Pathway
     
     public function save()
     {
+        //Todo: check if alread assigned and do nothing in this case
         $this->database->save();
         $this->provider->save();
-        
+
         $this->database->datasets()->attach($this->dataset->id);
         $this->provider->databases()->attach($this->database->id);
         
@@ -86,6 +105,7 @@ class Pathway
     
     private function setMetaObject($class, $value)
     {
+        $meta = null;
        
         switch(gettype($value))
         {
@@ -102,10 +122,10 @@ class Pathway
                     $meta = $value;
                 break;
         }
-        
-        if (! isset($meta))
-            throw new PathwayException("value '{$value}' ");
-            
+
+        if (is_null($meta))
+            throw new PathwayException("value for class '{$class}' missing");
+
         return $meta;
     }
     

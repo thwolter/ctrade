@@ -4,6 +4,7 @@
 namespace App\Entities;
 
 
+use App\Models\Pathway;
 use App\Repositories\Contracts\InstrumentInterface;
 use App\Repositories\FinancialRepository;
 use Collective\Html\Eloquent\FormAccessible;
@@ -43,40 +44,18 @@ abstract class Instrument extends Model
     {
         return $this->morphToMany(Dataset::class, 'datasetable')->withTimestamps();
     }
-    
-    
-    public function pathway()
-    {
-        $pathway = null;
-        
-        foreach ($this->datasets as $dataset)
-        {
-            foreach ($dataset->databases as $database)
-            {
-                foreach ($database->providers as $provider)
-                {
-                    $pathway[] = [
-                        'provider' => $provider->id,
-                        'database' => $database->id,
-                        'dataset'  => $dataset->id
-                    ];
-                }
-            }
-        }
-        
-        return $pathway;
-    }
+
     
     
     public function price()
     {
-       
-        $pathway = $this->pathway()[0];
-        
-        switch(Provider::find($pathway['provider'])->name) 
+        //Todo: instead of first path, perhaps implement priority or loop?
+        $path = Pathway::getForDatasets($this->datasets)[0];
+
+        switch($path['provider']->code)
         {
             case 'Quandl':
-                return Quandldata::make()->price($pathway);
+                return Quandldata::make()->price($path);
                 break;
 
             case 'others':

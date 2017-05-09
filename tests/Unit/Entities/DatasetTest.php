@@ -6,6 +6,7 @@ use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Entities\Provider;
 use App\Entities\Stock;
+use App\Models\Pathway;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -14,112 +15,79 @@ class DatasetTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function attachStock($dataset)
+
+    public function setUp()
     {
-        $stock = factory(Stock::class)->create();
-        $dataset->stocks()->attach($stock->id);
+        parent::setUp();
+
+        $stockA = Stock::saveWithParameter('Allianz', 'EUR', 'Insurance');
+        $stockB = Stock::saveWithParameter('Allianz 2', 'EUR', 'Chemical');
+
+        Pathway::make('Quandl', 'SSE', 'ALV')->assign($stockA);
+        Pathway::make('Yahoo', 'Yahoo', 'ALV')->assign($stockA);
+
+        Pathway::make('Another', 'Another', 'ALV')->assign($stockB);
+
     }
 
 
-    public function attachDataset($stock)
+    public function test_can_assign_two_stocks_on_a_dataset()
     {
-        $dataset = factory(Dataset::class)->create();
-        $stock->datasets()->attach($dataset->id);
-    }
+        $stocks = Dataset::whereCode('ALV')->first()->stocks;
 
-
-    public function test_can_assign_two_stocks()
-    {
-        $dataset = factory(Dataset::class)->create();
-
-        $this->attachStock($dataset);
-        $this->attachStock($dataset);
-
-        $stocks = Dataset::whereCode($dataset->code)->first()->stocks;
-
-        foreach ($stocks as $stock)
-        {
-            $this->assertEquals($dataset->code, $stock->datasets->first()->code);
+        foreach ($stocks as $stock) {
+            $this->assertEquals('ALV', $stock->datasets->first()->code);
         }
+
+
     }
 
     public function test_stock_can_have_two_datasets()
     {
-        $stock = factory(Stock::class)->create();
+        $datasets = Stock::whereName('Allianz')->first()->datasets;
 
-        $this->attachDataset($stock);
-        $this->attachDataset($stock);
-
-        $datasets = Stock::whereName($stock->name)->first()->datasets;
-
-        foreach ($datasets as $dataset)
-        {
-            $this->assertEquals($stock->name, $dataset->stocks->first()->name);
+        foreach ($datasets as $dataset) {
+            $this->assertEquals('Allianz', $dataset->stocks->first()->name);
         }
     }
 
+
     public function test_can_get_provider_ids()
     {
-        $dataset = factory(Dataset::class)->create();
+        $ids = Dataset::whereCode('ALV')->first()->providers();
 
-        $database = factory(Database::class)->create();
-        $database->datasets()->attach($dataset->id);
-
-        $provider1 = factory(Provider::class)->create();
-        $provider1->databases()->attach($database->id);
-
-        $provider2 = factory(Provider::class)->create();
-        $provider2->databases()->attach($database->id);
-
-        $ids = $dataset->providers();
-
-        $this->assertTrue(array_key_exists($provider1->id, $ids));
-        $this->assertTrue(array_key_exists($provider2->id, $ids));
+        $this->assertTrue(in_array('Quandl', $ids));
+        $this->assertTrue(in_array('Yahoo', $ids));
     }
+
 
     public function test_hasDatabase_returns_boolean()
     {
-        $dataset = factory(Dataset::class)->create();
-
-        $database = factory(Database::class)->create();
-        $database->datasets()->attach($dataset->id);
+        $dataset = Dataset::whereCode('ALV')->first();
+        $database = Database::whereCode('SSE')->first();
 
         $this->assertTrue($dataset->hasDatabase($database->id));
         $this->assertFalse($dataset->hasDatabase(555));
     }
 
+
     public function test_hasProvider_returns_boolean()
     {
-        $dataset = factory(Dataset::class)->create();
+        $dataset = Dataset::whereCode('ALV')->first();
+        $provider = Provider::whereCode('Yahoo');
 
-        $database = factory(Database::class)->create();
-        $database->datasets()->attach($dataset->id);
+        $this->assertTrue($dataset->hasProvider(Provider::whereCode('Yahoo')->first()->id));
+        $this->assertTrue($dataset->hasProvider(Provider::whereCode('Quandl')->first()->id));
 
-        $provider = factory(Provider::class)->create();
-        $provider->databases()->attach($database->id);
-
-        $this->assertTrue($dataset->hasProvider($provider->id));
         $this->assertFalse($dataset->hasProvider(555));
     }
 
+
     public function test_saveWithPath_saves_stock()
     {
-        $stock = Stock::saveWithParameter('Allianz', 'EUR', 'Insurance');
-        Dataset::saveWithPath($stock, [
-            'provider' => 'Quandl',
-            'database' => 'SSE',
-            'dataset' => 'ALV'
-        ]);
-
-        Dataset::saveWithPath($stock, [
-            'provider' => 'Yahoo',
-            'database' => null,
-            'dataset' => 'ALV'
-        ]);
-
         $providers = Dataset::whereCode('ALV')->first()->providers();
 
-        $this->assertEquals(1, array_search('Quandl', $providers));
-        $this->assertEquals(2, array_search('Yahoo', $providers));
+        $this->assertContains('Quandl', $providers);
+        $this->assertContains('Yahoo', $providers);
     }
 }

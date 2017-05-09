@@ -19,7 +19,7 @@ class PathwayTest extends TestCase
     {
         $stock = Stock::saveWithParameter('Allianz', 'EUR', 'Industry');
         
-        $pathway = Pathway::make('Quandl', 'SSE', 'ALV')->assign($stock);
+        Pathway::make('Quandl', 'SSE', 'ALV')->assign($stock);
     
         $this->assertTrue(Dataset::whereCode('ALV')->first()->hasProvider('Quandl'));  
             
