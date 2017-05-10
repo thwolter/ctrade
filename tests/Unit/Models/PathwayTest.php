@@ -13,16 +13,35 @@ class PathwayTest extends TestCase
 {
     
     use DatabaseMigrations;
-    
-    
+
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $stock = Stock::saveWithParameter('Allianz', 'EUR', 'Industry');
+
+        Pathway::make('Quandl', 'SSE', 'ALV')->assign($stock);
+        Pathway::make('Yahoo', 'Yahoo', 'ALV')->assign($stock);
+
+    }
+
+
     public function test_can_assign_pathway()
     {
-        $stock = Stock::saveWithParameter('Allianz', 'EUR', 'Industry');
-        
-        Pathway::make('Quandl', 'SSE', 'ALV')->assign($stock);
-    
-        $this->assertTrue(Dataset::whereCode('ALV')->first()->hasProvider('Quandl'));  
-            
-        
+        $this->assertTrue(Dataset::whereCode('ALV')->first()->hasProvider('Quandl'));
+    }
+
+
+    public function test_first_provider_is_Quandl()
+    {
+        $datasets = Stock::whereName('Allianz')->first()->datasets;
+
+        $path = Pathway::withDatasets($datasets)->first();
+        $this->assertEquals('Quandl', $path->provider->code);
+
+        $path->next();
+        $this->assertEquals('Yahoo', $path->provider->code);
+
     }
 }

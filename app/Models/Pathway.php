@@ -11,24 +11,35 @@ use App\Models\Exceptions\PathwayException;
 
 class Pathway
 {
-    protected $provider;
-    protected $database;
-    protected $dataset;
+    private $theProvider;
+    private $theDatabase;
+    private $theDataset;
+
+    private $path;
+    private $pathPointer = 0;
+
+    public $provider = null;
+    public $database = null;
+    public $dataset = null;
+
     
-    
-    
-    public function __construct($codeArray = [])
+    public function __construct($codeArray = null, $path = [])
     {
-        $this->provider($codeArray['provider'])
-            ->database($codeArray['database'])
-            ->dataset($codeArray['dataset']);
+        if (!is_null($codeArray)) {
+            $this->provider($codeArray['provider'])
+                ->database($codeArray['database'])
+                ->dataset($codeArray['dataset']);
+        }
+
+        $this->path = $path;
+
     }
     
     
     static public function make($provider, $database, $dataset)
     {
         return new Pathway([
-            'provider' => $provider, 
+            'provider' => $provider,
             'database' => $database, 
             'dataset' => $dataset
         ]);
@@ -41,8 +52,8 @@ class Pathway
         $rc = new \ReflectionClass($instrument);
         $model = str_plural(strtolower($rc->getShortName()));
 
-        $this->dataset->save();
-        $this->dataset->$model()->attach($instrument->id);
+        $this->theDataset->save();
+        $this->theDataset->$model()->attach($instrument->id);
         
         $this->save();
         
@@ -50,9 +61,9 @@ class Pathway
     }
     
 
-    static public function getForDatasets($datasets)
+    static public function withDatasets($datasets)
     {
-        $path = null;
+        $path = [];
         foreach ($datasets as $dataset) {
             foreach ($dataset->databases as $database) {
                 foreach ($database->providers as $provider) {
@@ -65,26 +76,54 @@ class Pathway
             }
         }
 
-        return $path;
+        return new Pathway(null, $path);
+    }
+
+    public function first()
+    {
+        $this->pathPointer = 0;
+
+        $this->setVariables();
+        return $this;
+    }
+
+    public function next()
+    {
+        if ($this->pathPointer == count($this->path))
+           return null;
+
+        $this->pathPointer++;
+
+        $this->setVariables();
+        return $this;
+    }
+
+    private function setVariables()
+    {
+        $path = $this->path[$this->pathPointer];
+
+        $this->provider = $path['provider'];
+        $this->database = $path['database'];
+        $this->dataset = $path['dataset'];
     }
     
     public function provider($value)
     {
-        $this->provider = $this->setMetaObject(Provider::class, $value);
+        $this->theProvider = $this->setMetaObject(Provider::class, $value);
         return $this;
     }
     
     
     public function database($value)
     {
-        $this->database = $this->setMetaObject(Database::class, $value);
+        $this->theDatabase = $this->setMetaObject(Database::class, $value);
         return $this;
     }
     
     
     public function dataset($value)
     {
-        $this->dataset = $this->setMetaObject(Dataset::class, $value);
+        $this->theDataset = $this->setMetaObject(Dataset::class, $value);
         return $this;
     }
     
@@ -93,11 +132,11 @@ class Pathway
     public function save()
     {
         //Todo: check if alread assigned and do nothing in this case
-        $this->database->save();
-        $this->provider->save();
+        $this->theDatabase->save();
+        $this->theProvider->save();
 
-        $this->database->datasets()->attach($this->dataset->id);
-        $this->provider->databases()->attach($this->database->id);
+        $this->theDatabase->datasets()->attach($this->theDataset->id);
+        $this->theProvider->databases()->attach($this->theDatabase->id);
         
         return $this;
     }
