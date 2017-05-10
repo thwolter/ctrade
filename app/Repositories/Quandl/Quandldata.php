@@ -4,6 +4,7 @@ namespace App\Repositories\Quandl;
 
 use App\Entities\Database;
 use App\Entities\Dataset;
+use App\Models\Exceptions\QuandlException;
 use App\Models\Pathway;
 
 class Quandldata extends \Quandl
@@ -33,6 +34,10 @@ class Quandldata extends \Quandl
 
         $quandlCode = "{$database_code}/{$dataset_code}";
         $data = json_decode($this->client->getSymbol($quandlCode, ['limit' => 1]), true);
+
+        if (! is_null($this->client->error)) {
+            throw new QuandlException($this->client->error);
+        }
 
         $column = array_search('Last', $data['dataset']['column_names']);
         return $data['dataset']['data'][0][$column];

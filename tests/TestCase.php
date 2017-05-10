@@ -2,8 +2,10 @@
 
 namespace Tests;
 
+use App\Entities\Portfolio;
 use App\Entities\Position;
 use App\Entities\Stock;
+use App\Models\Pathway;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,12 +50,17 @@ abstract class TestCase extends BaseTestCase
 
     public function makePositionWithPortfolio($currency, $amount, $symbol)
     {
+        $stock = Stock::saveWithParameter($symbol, $currency, 'A sector');
+        Pathway::make('Quandl', 'SSE', $symbol)->assign($stock);
+
         $position = new Position(['amount' => $amount]);
-        $stock = Stock::create(['symbol' => $symbol]);
-        $portfolio = factory('App\Entities\Portfolio')->create(['currency' => $currency]);
+        $portfolio = factory(Portfolio::class)->create(['currency' => $currency]);
 
         $stock->positions()->save($position);
         $portfolio->positions()->save($position);
+        $position->save();
+
+
         return $position;
     }
 

@@ -4,6 +4,7 @@
 namespace App\Entities;
 
 
+use App\Entities\Exceptions\InstrumentException;
 use App\Models\Pathway;
 use App\Repositories\Contracts\InstrumentInterface;
 use App\Repositories\FinancialRepository;
@@ -50,8 +51,13 @@ abstract class Instrument extends Model
     public function price()
     {
         //Todo: instead of first path, perhaps implement priority or loop?
-        
-        $path = Pathway::withDatasets($this->datasets->first();
+
+        if (! count($this->datasets)) {
+            $cls = get_class($this);
+            throw new InstrumentException("no dataset assigned to class '{$cls}'' with name '{$this->name}''");
+        }
+
+        $path = Pathway::withDatasets($this->datasets)->first();
         
         switch($path->provider->code)
         {

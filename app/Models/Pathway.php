@@ -7,6 +7,7 @@ use App\Entities\Provider;
 use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Models\Exceptions\PathwayException;
+use Illuminate\Database\Eloquent\Collection;
 
 
 class Pathway
@@ -16,7 +17,7 @@ class Pathway
     private $theDataset;
 
     private $path;
-    private $pathPointer = 0;
+    private $pathPointer;
 
     public $provider = null;
     public $database = null;
@@ -74,6 +75,14 @@ class Pathway
 
     static public function withDatasets($datasets)
     {
+        if (get_class($datasets) != Collection::class) {
+            throw new PathwayException("expect class '{Collection::class}', given was '{get_class($datasets)}");
+        }
+
+        if (!count($datasets)) {
+            throw new PathwayException("empty collection 'datasets' cannot be evaluated");
+        }
+
         $path = [];
         foreach ($datasets as $dataset) {
             foreach ($dataset->databases as $database) {
@@ -147,6 +156,9 @@ class Pathway
 
     private function setVariables()
     {
+        if (! isset($this->pathPointer))
+            throw new PathwayException("Call to method 'first()' missing");
+
         $path = $this->path[$this->pathPointer];
 
         $this->provider = $path['provider'];

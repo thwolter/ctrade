@@ -15,6 +15,7 @@ use App\Entities\Dataset;
 use App\Entities\Provider;
 use App\Entities\Sector;
 use App\Entities\Stock;
+use App\Repositories\Quandl\Quandldata;
 
 abstract class Metadata
 {
@@ -84,7 +85,11 @@ abstract class Metadata
 
     protected function findOrCreateDatabase($name): array
     {
-        $provider = Provider::firstOrCreate(['name' => $this->provider]);
+        $provider = Provider::firstOrCreate([
+            'code' => $this->provider,
+            'financial' => Quandldata::class
+        ]);
+
         $database = Database::firstOrCreate(['code' => $name]);
 
         if (!$database->hasProvider($provider->id))
