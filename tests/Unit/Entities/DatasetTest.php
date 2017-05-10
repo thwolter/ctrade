@@ -76,10 +76,10 @@ class DatasetTest extends TestCase
         $dataset = Dataset::whereCode('ALV')->first();
         $provider = Provider::whereCode('Yahoo');
 
-        $this->assertTrue($dataset->hasProvider(Provider::whereCode('Yahoo')->first()->id));
-        $this->assertTrue($dataset->hasProvider(Provider::whereCode('Quandl')->first()->id));
+        $this->assertTrue($dataset->hasProviderWithId(Provider::whereCode('Yahoo')->first()->id));
+        $this->assertTrue($dataset->hasProviderWithCode(Provider::whereCode('Quandl')->first()->code));
 
-        $this->assertFalse($dataset->hasProvider(555));
+        $this->assertFalse($dataset->hasProviderWithId(555));
     }
 
 

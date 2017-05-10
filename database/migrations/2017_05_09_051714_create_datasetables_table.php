@@ -18,6 +18,7 @@ class CreateDatasetablesTable extends Migration
             $table->integer('dataset_id');
             $table->integer('datasetable_id');
             $table->string('datasetable_type');
+            $table->primary(['dataset_id', 'datasetable_id']);
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@ class Pathway
     private $theDataset;
 
     private $path;
-    private $pathPointer = 0;
+    private $pathPointer;
 
     public $provider = null;
     public $database = null;
@@ -48,16 +48,16 @@ class Pathway
     
     public function assign($instrument)
     {
-        //Todo: check if already assigned, in this case do nothing
         $rc = new \ReflectionClass($instrument);
         $model = str_plural(strtolower($rc->getShortName()));
 
         $this->theDataset->save();
-        $this->theDataset->$model()->attach($instrument->id);
+
+        if (! $this->theDataset->$model->contains($instrument->id)) {
+            $this->theDataset->$model()->attach($instrument->id);
+        }
         
-        $this->save();
-        
-        return $this;
+        return $this->save();
     }
     
 
@@ -79,33 +79,22 @@ class Pathway
         return new Pathway(null, $path);
     }
 
+
     public function first()
     {
         $this->pathPointer = 0;
-
-        $this->setVariables();
-        return $this;
+        return $this->setVariables();
     }
+
 
     public function next()
     {
-        if ($this->pathPointer == count($this->path))
+        if ($this->pathPointer++ == count($this->path) - 1)
            return null;
 
-        $this->pathPointer++;
-
-        $this->setVariables();
-        return $this;
+        return $this->setVariables();
     }
 
-    private function setVariables()
-    {
-        $path = $this->path[$this->pathPointer];
-
-        $this->provider = $path['provider'];
-        $this->database = $path['database'];
-        $this->dataset = $path['dataset'];
-    }
     
     public function provider($value)
     {
@@ -126,21 +115,36 @@ class Pathway
         $this->theDataset = $this->setMetaObject(Dataset::class, $value);
         return $this;
     }
-    
-    
+
     
     public function save()
     {
-        //Todo: check if alread assigned and do nothing in this case
         $this->theDatabase->save();
         $this->theProvider->save();
 
-        $this->theDatabase->datasets()->attach($this->theDataset->id);
-        $this->theProvider->databases()->attach($this->theDatabase->id);
+        if (! $this->theDatabase->datasets->contains($this->theDataset->id)) {
+            $this->theDatabase->datasets()->attach($this->theDataset->id);
+        }
+
+        if (! $this->theProvider->databases->contains($this->theDatabase->id)) {
+            $this->theProvider->databases()->attach($this->theDatabase->id);
+        }
         
         return $this;
     }
-    
+
+
+    private function setVariables()
+    {
+        $path = $this->path[$this->pathPointer];
+
+        $this->provider = $path['provider'];
+        $this->database = $path['database'];
+        $this->dataset = $path['dataset'];
+
+        return $this;
+    }
+
     
     private function setMetaObject($class, $value)
     {
@@ -167,5 +171,4 @@ class Pathway
 
         return $meta;
     }
-    
 }

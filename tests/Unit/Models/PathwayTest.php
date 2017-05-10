@@ -29,7 +29,7 @@ class PathwayTest extends TestCase
 
     public function test_can_assign_pathway()
     {
-        $this->assertTrue(Dataset::whereCode('ALV')->first()->hasProvider('Quandl'));
+        $this->assertTrue(Dataset::whereCode('ALV')->first()->hasProviderWithCode('Quandl'));
     }
 
 
@@ -43,5 +43,6 @@ class PathwayTest extends TestCase
         $path->next();
         $this->assertEquals('Yahoo', $path->provider->code);
 
+        $this->assertEquals(null, $path->next());
     }
 }

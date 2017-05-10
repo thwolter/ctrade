@@ -37,12 +37,19 @@ class Dataset extends Model
         return $ids;
     }
 
-    public function hasProvider($id)
+    public function hasProviderWithId($id)
     {
         $providers = $this->providers();
-
         return (is_null($providers)) ? null : array_key_exists($id, $providers);
     }
+
+
+    public function hasProviderWithCode($code)
+    {
+        $providers = $this->providers();
+        return (is_null($providers)) ? null : in_array($code, $providers);
+    }
+
 
     public function hasDatabase($id)
     {
