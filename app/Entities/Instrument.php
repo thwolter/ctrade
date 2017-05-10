@@ -50,12 +50,13 @@ abstract class Instrument extends Model
     public function price()
     {
         //Todo: instead of first path, perhaps implement priority or loop?
-        $path = Pathway::getForDatasets($this->datasets)[0];
-
-        switch($path['provider']->code)
+        
+        $path = Pathway::withDatasets($this->datasets->first();
+        
+        switch($path->provider->code)
         {
             case 'Quandl':
-                return Quandldata::make()->price($path);
+                return Quandldata::make($path)->price();
                 break;
 
             case 'others':

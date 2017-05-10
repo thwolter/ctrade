@@ -45,4 +45,17 @@ class PathwayTest extends TestCase
 
         $this->assertEquals(null, $path->next());
     }
+    
+    
+    public function test_can_call_with_id_1()
+    {
+        $this->assertEquals('Quandl', Pathway::withDatasetId(1)->first()->provider->code);
+    }
+    
+    
+    public function test_can_call_with_code_ALV()
+    {
+        $this->assertEquals('Quandl', Pathway::withDatasetCode('ALV')->first()->provider->code);
+    }
 }
+

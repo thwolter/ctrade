@@ -4,32 +4,32 @@ namespace App\Repositories\Quandl;
 
 use App\Entities\Database;
 use App\Entities\Dataset;
-
+use App\Models\Pathway;
 
 class Quandldata extends \Quandl
 {
     
     protected $client;
+    protected $path;
     
     
-    public function __construct()
+    public function __construct(Pathway $path)
     {
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
+        $this->path = $path;
     }
 
     
-    static public function make()
+    static public function make($path)
     {
-        return new Quandldata();
+        return new Quandldata($path);
     }
     
     
-    public function price($pathway)
+    public function price()
     {
-        //ToDo: read price from json
-
-        $database_code = Database::find($pathway['database'])->code;
-        $dataset_code = Dataset::find($pathway['dataset'])->code;
+        $database_code = $this->path->database->code;
+        $dataset_code = $this->path->dataset->code;
 
         $quandlCode = "{$database_code}/{$dataset_code}";
         $data = json_decode($this->client->getSymbol($quandlCode, ['limit' => 1]), true);

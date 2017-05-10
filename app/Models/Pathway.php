@@ -16,7 +16,7 @@ class Pathway
     private $theDataset;
 
     private $path;
-    private $pathPointer;
+    private $pathPointer = 0;
 
     public $provider = null;
     public $database = null;
@@ -58,6 +58,17 @@ class Pathway
         }
         
         return $this->save();
+    }
+    
+    static public function withDatasetCode($code)
+    {
+        return Pathway::withDatasets(Dataset::whereCode($code)->get());
+    }
+
+
+    static public function withDatasetId($id)
+    {
+        return Pathway::withDatasets(Dataset::whereId($id)->get());
     }
     
 
