@@ -68,10 +68,10 @@ abstract class Instrument extends Model
     }
 
 
-    public function history(Carbon $from = null, Carbon $to = null)
+    public function history($params = ['limit' => 250])
     {
         $path = $this->pathway()->first();
-        return $path->provider->financial($path)->history($from, $to);
+        return $path->provider->financial($path)->history($params);
     }
 
    

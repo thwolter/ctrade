@@ -37,12 +37,11 @@ class Quandldata extends \Quandl
     }
 
 
-    public function history(Carbon $from = null, Carbon $to = null)
+    public function history($params = ['limit' => 250])
     {
-        $data = json_decode($this->getJsonHistory(['limit' => 1]), true);
+        $data = json_decode($this->getJsonHistory($params), true);
 
-        $column = array_search('Last', $data['dataset']['column_names']);
-        return $data['dataset']['data'][0][$column];
+        return $data['dataset']['data'];
     }
 
 
@@ -56,9 +55,9 @@ class Quandldata extends \Quandl
     }
 
 
-    private function getJsonHistory($parms = [])
+    private function getJsonHistory($params = [])
     {
-        $json = $this->client->getSymbol($this->quandlCode(), $parms);
+        $json = $this->client->getSymbol($this->quandlCode(), $params);
 
         if (!is_null($this->client->error)) {
             throw new QuandlException($this->client->error);

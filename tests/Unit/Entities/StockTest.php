@@ -69,6 +69,6 @@ class StockTest extends TestCase
 
     public function test_stock_has_history()
     {
-        $this->assertJson($this->stock->history());
+        $this->assertEquals(250, count($this->stock->history(['limit' => 250])));
     }
 }
