@@ -46,30 +46,6 @@ abstract class Instrument extends Model
         return $this->morphToMany(Dataset::class, 'datasetable')->withTimestamps();
     }
 
-    
-    
-    public function price()
-    {
-        //Todo: instead of first path, perhaps implement priority or loop?
-
-        if (! count($this->datasets)) {
-            $cls = get_class($this);
-            throw new InstrumentException("no dataset assigned to class '{$cls}'' with name '{$this->name}''");
-        }
-
-        $path = Pathway::withDatasets($this->datasets)->first();
-        
-        switch($path->provider->code)
-        {
-            case 'Quandl':
-                return Quandldata::make($path)->price();
-                break;
-
-            case 'others':
-                //
-                break;
-        } 
-    }
 
 
     public function type()
@@ -78,12 +54,24 @@ abstract class Instrument extends Model
     }
 
 
+    public function pathway()
+    {
+        return Pathway::withDatasets($this->datasets);
+    }
 
-    
+
+    public function price()
+    {
+        //Todo: instead of first path, perhaps implement priority or loop?
+        $path = $this->pathway()->first();
+        return $path->provider->financial($path)->price();
+    }
+
 
     public function history(Carbon $from = null, Carbon $to = null)
     {
-        return $this->financial()->history($this->symbol(), $from, $to);
+        $path = $this->pathway()->first();
+        return $path->provider->financial($path)->history($from, $to);
     }
 
    

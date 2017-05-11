@@ -6,6 +6,7 @@ use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Models\Exceptions\QuandlException;
 use App\Models\Pathway;
+use Carbon\Carbon;
 
 class Quandldata extends \Quandl
 {
@@ -29,17 +30,39 @@ class Quandldata extends \Quandl
     
     public function price()
     {
+        $data = json_decode($this->getJsonHistory(['limit' => 1]), true);
+
+        $column = array_search('Last', $data['dataset']['column_names']);
+        return $data['dataset']['data'][0][$column];
+    }
+
+
+    public function history(Carbon $from = null, Carbon $to = null)
+    {
+        $data = json_decode($this->getJsonHistory(['limit' => 1]), true);
+
+        $column = array_search('Last', $data['dataset']['column_names']);
+        return $data['dataset']['data'][0][$column];
+    }
+
+
+    private function quandlCode(): string
+    {
         $database_code = $this->path->database->code;
         $dataset_code = $this->path->dataset->code;
 
         $quandlCode = "{$database_code}/{$dataset_code}";
-        $data = json_decode($this->client->getSymbol($quandlCode, ['limit' => 1]), true);
+        return $quandlCode;
+    }
 
-        if (! is_null($this->client->error)) {
+
+    private function getJsonHistory($parms = [])
+    {
+        $json = $this->client->getSymbol($this->quandlCode(), $parms);
+
+        if (!is_null($this->client->error)) {
             throw new QuandlException($this->client->error);
         }
-
-        $column = array_search('Last', $data['dataset']['column_names']);
-        return $data['dataset']['data'][0][$column];
+        return $json;
     }
 }

@@ -8,6 +8,7 @@ use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Entities\Sector;
 use App\Entities\Security;
+use App\Models\Pathway;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -32,20 +33,7 @@ class StockTest extends TestCase
         parent::setUp();
 
         $this->stock = Stock::saveWithParameter('Allianz', 'EUR', 'Insurance');
-        $this->assignPathway();
-    }
-
-    
-    private function assignPathway()
-    {
-        $this->dataset = factory(Dataset::class)->create(['code' => $this->datasetCode]);
-        $this->dataset->stocks()->attach($this->stock->id);
-        
-        $this->database = factory(Database::class)->create(['code' => $this->databaseCode]);
-        $this->database->datasets()->attach($this->dataset->id);
-        
-        $this->provider = factory(Provider::class)->create(['name' => $this->providerName]);
-        $this->provider->databases()->attach($this->database->id);
+        Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
     }
 
 
@@ -55,53 +43,32 @@ class StockTest extends TestCase
     }
 
 
-
     public function test_stock_has_name() {
 
         $this->assertEquals('Allianz', $this->stock->name);
     }
 
 
-
     public function test_stock_has_sector() {
 
         $this->assertEquals('Insurance', $this->stock->sector->name);
-    }
-
-
-
-    public function test_stock_can_be_assigned_to_dataset()
-    {
-        Dataset::firstOrCreate([
-            'code' => 'ALV.DE'
-        ])
-            ->stocks()
-            ->save(factory(Stock::class)->create());
-
-        $code = $this->stock->datasets->first()->code;
-        
-        $this->assertEquals($this->datasetCode, $code);
     }
     
     
     public function test_stock_has_pathway()
     {
-        $expect = [
-            'provider' => $this->provider->id,
-            'database' => $this->database->id,
-            'dataset'  => $this->dataset->id
-        ];
-        
-        $this->assertEquals($expect, $this->stock->pathway()[0]);
-        
+        $this->assertEquals('Quandl', $this->stock->pathway()->first()->provider->code);
     }
     
     
     public function test_stock_has_price()
     {
-        $price = $this->stock->price();
-        
-        $this->assertGreaterThan(0, $price);
+        $this->assertGreaterThan(0, $this->stock->price());
     }
 
+
+    public function test_stock_has_history()
+    {
+        $this->assertJson($this->stock->history());
+    }
 }
