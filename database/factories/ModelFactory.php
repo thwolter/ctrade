@@ -75,6 +75,7 @@ $factory->define(\App\Entities\Dataset::class, function(Faker\Generator $faker) 
 
     return [
         'code' => $faker->word,
+        'column' => 1
     ];
 });
 

@@ -71,4 +71,10 @@ class StockTest extends TestCase
     {
         $this->assertEquals(250, count($this->stock->history(['limit' => 250])));
     }
+    
+    
+    public function test_stock_has_VaR()
+    {
+        $this->assertGreaterThan(0, $this->stock->VaR()['price']);
+    }
 }

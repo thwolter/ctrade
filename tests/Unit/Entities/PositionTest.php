@@ -95,6 +95,8 @@ class PositionTest extends TestCase
         $this->assertEquals($expect, $position->total('CZK'));
     }
 
+
+    //Todo: implement new currency data source
     public function test_method_currency_give_position_currency()
     {
         $stock = factory('App\Entities\Stock')->create(['symbol' => 'YHOO']);
@@ -123,8 +125,8 @@ class PositionTest extends TestCase
     public function test_position_has_history()
     {
 
-        $json = $this->position->history();
+        $data = $this->position->history();
 
-        $this->assertTrue(is_string($json) and is_array(json_decode($json, true)));
+        $this->assertTrue(is_array($data));
     }
 }

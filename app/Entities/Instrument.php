@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\App;
 use App\Repositories\Financable;
 use App\Repositories\Quandl\Quandldata;
 
+use MathPHP\Statistics\Circular;
+use MathPHP\Probability\Distribution\Table;
+use MathPHP\Statistics\Average;
+
 
 abstract class Instrument extends Model
 {
@@ -75,5 +79,32 @@ abstract class Instrument extends Model
     }
 
    
+   public function VaR()
+   {
+        $data = $this->history([
+           'limit' => 250,
+           'column_index' =>3
+        ]);
+        
+        $x = array_column($data, 1);
+        
+        $count = count($x) - 1;
+        for ($i = 0; $i < $count; $i++) {
+            $return[] = $x[$i] / $x[$i+1] - 1;
+        }
+        
+        $VaR = 2.33 * Circular::standardDeviation($return) * $x[0];
+        $mean = Average::mean($return);
+        
+        $result = [
+            'VaR' => $VaR,
+            'mean' => $mean,
+            'expect' => $x[0] * (1 + $mean),
+            'range' => [$x[0] - $VaR, $x[0] + $VaR],
+            'price' => $x[0]
+        ];
+        
+        return $result;
+   }
 
 }

@@ -20,7 +20,9 @@ use App\Repositories\Quandl\Quandldata;
 abstract class Metadata
 {
 
+    protected $column;
     protected $provider;
+
 
     public function existPath($path)
     {
@@ -29,6 +31,7 @@ abstract class Metadata
         return ($dataset->hasProvider($path['provider']->id)
             and $dataset->hasDatabase($path['database']->id));
     }
+
 
     public function assignSectorToStock($name, $stock)
     {
@@ -55,7 +58,7 @@ abstract class Metadata
             ->stocks()->create([
                 'name' => $this->name($item),
                 'wkn' => $this->wkn($item),
-                'isin' => $this->isin($item)
+                'isin' => $this->isin($item),
             ]);
 
         $this->assignSectorToStock($this->sector($item), $stock);
@@ -68,7 +71,8 @@ abstract class Metadata
     {
         $dataset = Dataset::firstOrCreate([
             'code' => $this->symbol($item),
-            'model' => $this->model($item)
+            'model' => $this->model($item),
+            'column' => $this->column
         ]);
 
         return [
@@ -87,7 +91,6 @@ abstract class Metadata
     {
         $provider = Provider::firstOrCreate([
             'code' => $this->provider,
-            'financial' => Quandldata::class
         ]);
 
         $database = Database::firstOrCreate(['code' => $name]);

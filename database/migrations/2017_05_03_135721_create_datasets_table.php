@@ -16,6 +16,7 @@ class CreateDatasetsTable extends Migration
         Schema::create('datasets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code')->unique();
+            $table->string('column')->nullable(); // for testing reasons only
             $table->timestamps();
         });
     }

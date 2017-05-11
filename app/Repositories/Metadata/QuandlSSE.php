@@ -12,6 +12,7 @@ class QuandlSSE extends Metadata
 {
     protected $provider = 'Quandl';
     protected $required = ['symbol', 'name', 'currency'];
+    protected $column = 3; // column representing close price
 
     protected $client;
 
@@ -107,10 +108,6 @@ class QuandlSSE extends Metadata
     {
         $items = json_decode(Storage::get('QuandlSSE.json'), true);
         return $items;
-
-        //$this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
-        //Storage::put('QuandlSSE.json', $this->client->getList($name, 1, 30));
-        //$items = json_decode($this->client->getList($name, 1, 30), true);
     }
 
 }
