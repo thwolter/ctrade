@@ -28,7 +28,7 @@ abstract class Metadata
     {
         $dataset = Dataset::find($path['dataset']->id);
 
-        return ($dataset->hasProvider($path['provider']->id)
+        return ($dataset->hasProviderWithId($path['provider']->id)
             and $dataset->hasDatabase($path['database']->id));
     }
 
@@ -71,7 +71,7 @@ abstract class Metadata
     {
         $dataset = Dataset::firstOrCreate([
             'code' => $this->symbol($item),
-            'model' => $this->model($item),
+            //'model' => $this->model($item),
             'column' => $this->column
         ]);
 

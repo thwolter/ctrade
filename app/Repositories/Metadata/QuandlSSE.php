@@ -11,11 +11,19 @@ use Illuminate\Support\Facades\Storage;
 class QuandlSSE extends Metadata
 {
     protected $provider = 'Quandl';
+    protected $database = 'SSE';
+    
     protected $required = ['symbol', 'name', 'currency'];
     protected $column = 3; // column representing close price
 
     protected $client;
+    protected $useFile = true;
 
+
+    public function __construct()
+    {
+        $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
+    }
 
     public function loadDatabase($name)
     {
@@ -106,7 +114,16 @@ class QuandlSSE extends Metadata
 
     public function getItems()
     {
-        $items = json_decode(Storage::get('QuandlSSE.json'), true);
+        if ($this->useFile) {
+            // for testing reasons
+            $items = json_decode(Storage::get('QuandlSSE.json'), true);
+            return $items;
+        }
+        
+        $json = $this->client->getList($this->database, 1, 30);
+        Storage::put('QuandlSSE.json', $json); // for testing reasons
+        
+        $items = json_decode($json, true);
         return $items;
     }
 
