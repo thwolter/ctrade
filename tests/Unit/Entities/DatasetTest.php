@@ -20,8 +20,16 @@ class DatasetTest extends TestCase
     {
         parent::setUp();
 
-        $stockA = Stock::saveWithParameter('Allianz', 'EUR', 'Insurance');
-        $stockB = Stock::saveWithParameter('Allianz 2', 'EUR', 'Chemical');
+        $stockA = Stock::saveWithParameter([
+            'name' => 'Allianz',
+            'currency' => 'EUR',
+            'sector' => 'Insurance'
+        ]);
+        $stockB = Stock::saveWithParameter([
+            'name' => 'Allianz 2',
+            'currency' => 'EUR',
+            'sector' => 'Chemical'
+        ]);
 
         Pathway::make('Quandl', 'SSE', 'ALV')->assign($stockA);
         Pathway::make('Yahoo', 'Yahoo', 'ALV')->assign($stockA);

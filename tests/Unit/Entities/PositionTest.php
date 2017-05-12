@@ -25,7 +25,11 @@ class PositionTest extends TestCase
     {
         parent::setUp();
 
-        $this->stock = Stock::saveWithParameter('Allianz', 'EUR', 'Industry');
+        $this->stock = Stock::saveWithParameter([
+            'name' => 'Allianz',
+            'currency' => 'EUR',
+            'sector' => 'Industry'
+        ]);
         Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
 
         $this->position = factory(Position::class)->create([

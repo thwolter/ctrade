@@ -50,7 +50,11 @@ abstract class TestCase extends BaseTestCase
 
     public function makePositionWithPortfolio($currency, $amount, $symbol)
     {
-        $stock = Stock::saveWithParameter($symbol, $currency, 'A sector');
+        $stock = Stock::saveWithParameter([
+            'name' => $symbol,
+            'currency' => $currency,
+            'sector' =>'A sector'
+        ]);
         Pathway::make('Quandl', 'SSE', $symbol)->assign($stock);
 
         $position = new Position(['amount' => $amount]);

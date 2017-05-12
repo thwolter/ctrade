@@ -18,7 +18,11 @@ class QuandldataTest extends TestCase
     {
         parent::setUp();
         
-        $stock = Stock::saveWithParameter('Allianz', 'EUR', 'Industry');
+        $stock = Stock::saveWithParameter([
+            'name' => 'Allianz',
+            'currency' => 'EUR',
+            'sector' => 'Industry'
+        ]);
         Pathway::make('Quandl', 'SSE', 'ALV')->assign($stock);
     }
     

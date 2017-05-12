@@ -10,7 +10,9 @@ use Carbon\Carbon;
 
 class Quandldata extends \Quandl
 {
-    
+
+    protected $priceColumnNames = ['Last', 'Close'];
+
     protected $client;
     protected $path;
     
@@ -30,18 +32,13 @@ class Quandldata extends \Quandl
     
     public function price()
     {
-        $data = json_decode($this->getJsonHistory(['limit' => 1]), true);
-
-        $column = array_search('Last', $data['dataset']['column_names']);
-        return $data['dataset']['data'][0][$column];
+        return $this->getArrayHistory(['limmit' => 1])[0];
     }
 
 
-    public function history($params = ['limit' => 250])
+    public function history($parameter = ['limit' => 250])
     {
-        $data = json_decode($this->getJsonHistory($params), true);
-
-        return $data['dataset']['data'];
+        return $this->getArrayHistory($parameter);
     }
 
 
@@ -55,13 +52,38 @@ class Quandldata extends \Quandl
     }
 
 
-    private function getJsonHistory($params = [])
+    private function getJsonHistory($parameter = [])
     {
-        $json = $this->client->getSymbol($this->quandlCode(), $params);
+        $json = $this->client->getSymbol($this->quandlCode(), $parameter);
 
         if (!is_null($this->client->error)) {
             throw new QuandlException($this->client->error);
         }
         return $json;
+    }
+
+
+    private function getArrayHistory($parameter = [])
+    {
+        $data = json_decode($this->getJsonHistory($parameter), true);
+
+        $timeSeries = $data['dataset']['data'];
+        $columnNames = $data['dataset']['column_names'];
+
+        return array_column($timeSeries, $this->priceColumn($columnNames));
+
+
+    }
+
+    private function priceColumn($columnNames)
+    {
+        $i = 0;
+        $count = count($this->priceColumnNames);
+
+        while (! isset($column) and $i < $count) {
+            $column = array_search($this->priceColumnNames[$i++], $columnNames);
+        }
+
+        return ($column) ? $column : 1;
     }
 }

@@ -74,8 +74,7 @@ $factory->define(App\Entities\Sector::class, function(Faker\Generator $faker) {
 $factory->define(\App\Entities\Dataset::class, function(Faker\Generator $faker) {
 
     return [
-        'code' => $faker->word,
-        'column' => 1
+        'code' => $faker->word
     ];
 });
 

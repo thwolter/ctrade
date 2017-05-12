@@ -32,7 +32,11 @@ class StockTest extends TestCase
     {
         parent::setUp();
 
-        $this->stock = Stock::saveWithParameter('Allianz', 'EUR', 'Insurance');
+        $this->stock = Stock::saveWithParameter([
+            'name' => 'Allianz',
+            'currency' => 'EUR',
+            'sector' => 'Insurance'
+        ]);
         Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
     }
 

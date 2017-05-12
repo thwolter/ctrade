@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Repositories\Metadata\QuandlSSE;
 
 
-class QuandlMetadataTest extends TestCase
+class QuandlSSETest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -26,7 +26,7 @@ class QuandlMetadataTest extends TestCase
 
     public function testExample()
     {
-        $this->meta->loadDatabase('SSE');
+        $this->meta->loadDatabase();
         //$data = BaseMetadata::all();
         $this->assertTrue(true);
     }

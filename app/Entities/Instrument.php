@@ -81,14 +81,10 @@ abstract class Instrument extends Model
    
    public function VaR()
    {
-        $data = $this->history([
-           'limit' => 250,
-           'column_index' =>3
-        ]);
-        
-        $x = array_column($data, 1);
+        $x = $this->history(['limit' => 250]);
         
         $count = count($x) - 1;
+
         for ($i = 0; $i < $count; $i++) {
             $return[] = $x[$i] / $x[$i+1] - 1;
         }

@@ -14,15 +14,18 @@ class Stock extends Instrument
     public $typeDisp = 'Aktie';
 
 
-    static public function saveWithParameter($name, $currency, $sector)
+    static public function saveWithParameter($parameter)
     {
-        $stock = Stock::firstOrNew(['name' => $name]);
+        $stock = Stock::firstOrNew(['name' => $parameter['name']]);
 
-        Currency::firstOrCreate(['code' => $currency])
+        Currency::firstOrCreate(['code' => $parameter['currency']])
             ->stocks()->save($stock);
 
-        is_null($sector) or Sector::firstOrCreate(['name' => $sector])
+        is_null($parameter['sector']) or Sector::firstOrCreate(['name' => $parameter['sector']])
             ->stocks()->save($stock);
+
+        is_null($parameter['wkn']) or $stock->wkn = $parameter['wkn'];
+        is_null($parameter['isin']) or $stock->isin = $parameter['isin'];
 
         $stock->save();
 
