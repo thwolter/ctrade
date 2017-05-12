@@ -4,6 +4,7 @@
 namespace App\Repositories\Metadata;
 
 use App\Entities\Stock;
+use App\Models\Pathway;
 use App\Repositories\Exceptions\MetadataException;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,21 +28,18 @@ class QuandlSSE extends Metadata
 
     public function loadDatabase($name)
     {
-        list($provider, $database) = $this->findOrCreateDatabase($name);
-
-        $items = $this->getItems();
+        $items = $this->getItemsFromFile();
         foreach ($items['datasets'] as $item)
         {
-            $path = $this->setPath($item, $provider, $database);
+            //Todo: check for security type, for now assume all are stocks
+            $stock = Stock::saveWithParameter(
+                $this->name($item),
+                $this->currency($item),
+                $this->sector($item)
+            );
 
-            if ($this->existPath($path)) {
-
-                // update stock
-            } else {
-
-                //Todo: check for security type, for now assume all are stocks
-                if (! $this->saveStock($item, $path)) { $this->destroyPath($path); }
-            }
+            Pathway::make($this->provider, $this->database, $this->symbol($item))
+                ->assign($stock);
         }
     }
 
@@ -114,17 +112,15 @@ class QuandlSSE extends Metadata
 
     public function getItems()
     {
-        if ($this->useFile) {
-            // for testing reasons
-            $items = json_decode(Storage::get('QuandlSSE.json'), true);
-            return $items;
-        }
-        
         $json = $this->client->getList($this->database, 1, 30);
-        Storage::put('QuandlSSE.json', $json); // for testing reasons
+        //Storage::put('QuandlSSE.json', $json); // for testing reasons
         
-        $items = json_decode($json, true);
-        return $items;
+        return json_decode($json, true);
+    }
+
+    public function getItemsFromFile()
+    {
+        return json_decode(Storage::get('QuandlSSE.json'), true);
     }
 
 }

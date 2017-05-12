@@ -21,7 +21,7 @@ class Stock extends Instrument
         Currency::firstOrCreate(['code' => $currency])
             ->stocks()->save($stock);
 
-        Sector::firstOrCreate(['name' => $sector])
+        is_null($sector) or Sector::firstOrCreate(['name' => $sector])
             ->stocks()->save($stock);
 
         $stock->save();
