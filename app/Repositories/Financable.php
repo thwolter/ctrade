@@ -20,7 +20,7 @@ trait Financable
         
         if (! isset(static::$financialInstance)) {
             
-            static::$financialInstance = new $this->financial;
+            static::$financialInstance = new $this->financial($this->pathway());
         }
         
         return static::$financialInstance;

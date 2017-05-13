@@ -17,6 +17,12 @@ class QuandlSSE extends QuandlMetadata
     protected $useFile = true;
 
 
+    static public function sync()
+    {
+        $meta = new self();
+        $meta->load();
+    }
+
     public function isValid($item)
     {
         foreach ($this->required as $method)

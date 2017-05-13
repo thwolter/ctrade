@@ -66,41 +66,20 @@ abstract class Instrument extends Model
 
     public function price()
     {
-        //Todo: instead of first path, perhaps implement priority or loop?
-        $path = $this->pathway()->first();
-        return $path->provider->financial($path)->price();
+        return $this->financial()->price();
     }
 
 
-    public function history($params = ['limit' => 250])
+    public function history($parameter = ['limit' => 250])
     {
-        $path = $this->pathway()->first();
-        return $path->provider->financial($path)->history($params);
+        return $this->financial()->history($parameter);
     }
 
-   
-   public function VaR()
-   {
-        $x = $this->history(['limit' => 250]);
-        
-        $count = count($x) - 1;
 
-        for ($i = 0; $i < $count; $i++) {
-            $return[] = $x[$i] / $x[$i+1] - 1;
-        }
-        
-        $VaR = 2.33 * Circular::standardDeviation($return) * $x[0];
-        $mean = Average::mean($return);
-        
-        $result = [
-            'VaR' => $VaR,
-            'mean' => $mean,
-            'expect' => $x[0] * (1 + $mean),
-            'range' => [$x[0] - $VaR, $x[0] + $VaR],
-            'price' => $x[0]
-        ];
-        
-        return $result;
-   }
+    public function ValueAtRisk()
+    {
+        return $this->financial()->ValueAtRisk();
+    }
+   
 
 }

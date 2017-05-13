@@ -1,48 +1,52 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Thomas
- * Date: 07.05.17
- * Time: 18:05
- */
 
 namespace App\Repositories\Metadata;
 
 
-use App\Entities\Currency;
-use App\Entities\Database;
-use App\Entities\Dataset;
-use App\Entities\Provider;
-use App\Entities\Sector;
-use App\Entities\Stock;
 use App\Models\Pathway;
-use App\Repositories\Quandl\Quandldata;
+use App\Repositories\Exceptions\MetadataException;
 
 abstract class QuandlMetadata
 {
 
     protected $client;
     protected $provider = 'Quandl';
+    protected $database;
 
     protected $perPage = 100;
-    protected $nextPage = 1;
-    protected $maxPages = 1;
+    protected $nextPage = 0;
+    protected $maxPages = INF;
     protected $totalPages = 2;
 
 
 
     public function __construct()
     {
+        //Todo: check for test environment and limit data reading
+        if (env('APP_ENV') == 'testing') {
+            $this->setTestingParameters();
+        }
+
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
     }
 
 
+    private function setTestingParameters()
+    {
+        $this->maxPages = 1;
+        $this->perPage = 5;
+    }
+
     abstract public function saveItem($item);
 
 
-    public function loadDatabase()
+    public function load()
     {
-        while ($this->nextPage <= $this->totalPages) {
+        if (!isset($this->database)) {
+            throw new MetadataException("variable 'database' must be set");
+        }
+
+        while ($this->nextPage++ <= min($this->totalPages, $this->maxPages)) {
             $items = $this->getItems();
             foreach ($items as $item) {
 
@@ -54,8 +58,6 @@ abstract class QuandlMetadata
                         ->assign($instrument);
                 }
             }
-
-            $this->nextPage++;
         }
     }
 

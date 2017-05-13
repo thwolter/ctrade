@@ -3,6 +3,7 @@
 namespace Tests\Unit\Repos\Metadata;
 
 use App\Entities\Dataset;
+use App\Entities\Stock;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -26,8 +27,8 @@ class QuandlSSETest extends TestCase
 
     public function testExample()
     {
-        $this->meta->loadDatabase();
-        //$data = BaseMetadata::all();
-        $this->assertTrue(true);
+        $this->meta->load();
+
+        $this->assertEquals(5, count(Stock::all()));
     }
 }

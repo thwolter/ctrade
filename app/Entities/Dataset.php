@@ -21,6 +21,11 @@ class Dataset extends Model
         return $this->morphedByMany(Stock::class, 'datasetable')->withTimestamps();
     }
 
+    public function ccyPairs()
+    {
+        return $this->morphedByMany(CcyPair::class, 'datasetable')->withTimestamps();
+    }
+
 
     public function providers()
     {

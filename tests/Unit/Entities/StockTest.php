@@ -79,6 +79,6 @@ class StockTest extends TestCase
     
     public function test_stock_has_VaR()
     {
-        $this->assertGreaterThan(0, $this->stock->VaR()['price']);
+        $this->assertGreaterThan(0, $this->stock->ValueAtRisk()['VaR']);
     }
 }

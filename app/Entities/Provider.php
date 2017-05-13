@@ -17,15 +17,5 @@ class Provider extends Model
         return $this->belongsToMany(Database::class)->withTimestamps();
     }
 
-    public function financial($path)
-    {
-        switch($this->code)
-        {
-            case 'Quandl': return Quandldata::make($path); break;
-            case 'others'; // break;
-            default:
-                throw new MetadataException("No financial available for provider code '{$this->code}''");
-        }
-    }
 
 }

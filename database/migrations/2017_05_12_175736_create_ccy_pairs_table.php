@@ -15,7 +15,7 @@ class CreateCcyPairsTable extends Migration
     {
         Schema::create('ccy_pairs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('original');
+            $table->string('origin');
             $table->string('target');
             $table->timestamps();
         });
