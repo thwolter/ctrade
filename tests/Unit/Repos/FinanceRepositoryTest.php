@@ -47,7 +47,12 @@ class FinanceRepositoryTest extends TestCase
         $repo = new FinanceRepository();
 
         $this->assertEquals(250, count($repo->ccyHistory('CZK', 'USD')));
-
     }
 
+    public function test_CZKUSD_has_price()
+    {
+        $repo = new FinanceRepository();
+
+        $this->assertGreaterThan(0, count($repo->ccyPrice('CZK', 'USD')));
+    }
 }

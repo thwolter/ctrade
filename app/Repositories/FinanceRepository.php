@@ -107,8 +107,10 @@ class FinanceRepository
         }
 
         return $x;
+    }
 
-
-
+    public function ccyPrice($origin, $target)
+    {
+        return $this->ccyHistory($origin, $target, ['limit' => 1])[0];
     }
 }
