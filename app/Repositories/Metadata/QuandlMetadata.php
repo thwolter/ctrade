@@ -28,6 +28,7 @@ abstract class QuandlMetadata
         }
 
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
+        $this->client->timeout = 60;
     }
 
 

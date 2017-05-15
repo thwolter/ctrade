@@ -7,16 +7,12 @@ namespace App\Entities;
 use App\Entities\Exceptions\InstrumentException;
 use App\Models\Pathway;
 use App\Repositories\Contracts\InstrumentInterface;
-use App\Repositories\FinancialRepository;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use App\Repositories\Financable;
-use App\Repositories\Quandl\Quandldata;
 
-use MathPHP\Statistics\Circular;
-use MathPHP\Probability\Distribution\Table;
-use MathPHP\Statistics\Average;
+use App\Models\QuantModel;
 
 
 abstract class Instrument extends Model
@@ -78,7 +74,7 @@ abstract class Instrument extends Model
 
     public function ValueAtRisk()
     {
-        return $this->financial()->ValueAtRisk();
+        return QuantModel::ValueAtRisk($this->history(['limit' => 250]));
     }
    
 

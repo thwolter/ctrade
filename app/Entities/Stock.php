@@ -5,13 +5,13 @@ namespace App\Entities;
 
 
 
-use App\Repositories\FinanceRepository;
+use App\Repositories\DataRepository;
 
 class Stock extends Instrument
 {
     protected $fillable = ['name', 'wkn', 'isin'];
 
-    protected $financial = FinanceRepository::class;
+    protected $financial = DataRepository::class;
     
     public $typeDisp = 'Aktie';
 

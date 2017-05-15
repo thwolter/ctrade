@@ -26,13 +26,14 @@ class QuandlECB extends QuandlMetadata
         $currencies = array_where($currencies, function($value) {return $value != 'EUR';});
         foreach ($currencies as $currency) {
 
-            $symbol = $this->database.'/'.$this->origin.$currency;
-            $json = $this->client->getSymbol($symbol, ['limit' => 1]);
+            $datasetCode = $this->database.'/'.$this->origin.$currency;
+            $json = $this->client->getSymbol($datasetCode, ['limit' => 1]);
 
+            // simple check if symbol is an available currency-pair
             $symbol = json_decode($json, true)['dataset']['dataset_code'];
 
             if ($this->client->error) {
-                throw new MetadataException($this->client->error);
+                throw new MetadataException("{$this->client->error} for symbol '{$symbol}'");
             }
 
             $instrument = $this->saveItem($currency);

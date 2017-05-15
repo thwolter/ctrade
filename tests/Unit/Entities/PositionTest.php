@@ -2,11 +2,14 @@
 
 namespace Tests\Unit;
 
+use App\Entities\CcyPair;
 use App\Entities\Position;
 use App\Entities\Stock;
 use App\Entities\Portfolio;
 use App\Entities\Currency;
 use App\Models\Pathway;
+use App\Models\QuantModel;
+use App\Repositories\Metadata\QuandlECB;
 use App\Repositories\Yahoo\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -35,6 +38,10 @@ class PositionTest extends TestCase
         $this->position = factory(Position::class)->create([
             'positionable_id' => $this->stock->id,
             'positionable_type' => Stock::class]);
+
+        Currency::firstOrCreate(['code' => 'USD']);
+        QuandlECB::sync();
+
     }
 
 
@@ -63,20 +70,11 @@ class PositionTest extends TestCase
     {
         $this->assertGreaterThan(0, $this->position->total());
     }
-    
-    
-    public function test_convert_USD_into_position_currency() {
-        
-        $financial = new CurrencyFinancial;
-        
-        $this->assertEquals($financial->price('EURUSD'), $this->position->convert('USD'));
-    }
+
     
     public function test_total_with_currency_converts_into_this_currency() {
         
-        $financial = new CurrencyFinancial;
-        
-        $rate = $financial->price('EURUSD');
+        $rate = CcyPair::whereOrigin('EUR')->whereTarget('USD')->first()->price();
         
         $this->assertEquals($this->position->total() * $rate, $this->position->total('USD'));
         
@@ -88,28 +86,29 @@ class PositionTest extends TestCase
 
         $this->assertEquals(5 * $position->price(), $position->total());
     }
-    
+
+
     public function test_position_total_value_in_portfolio_currency()
     {
-        $position = $this->makePositionWithPortfolio('CZK', 5, 'ALV.DE');
-        $currency = new CurrencyFinancial;
+        $position = $this->makePositionWithPortfolio('EUR', 5, 'ALV');
+        $rate = QuantModel::ccyPrice('EUR', 'USD');
         
-        $expect = 5 * $position->price() * $currency->price('EURCZK');
+        $expect = 5 * $position->price() * $rate;
 
-        $this->assertEquals($expect, $position->total('CZK'));
+        $this->assertEquals($expect, $position->total('USD'));
     }
 
 
     //Todo: implement new currency data source
     public function test_method_currency_give_position_currency()
     {
-        $stock = factory('App\Entities\Stock')->create(['symbol' => 'YHOO']);
-        $stock->positions()->save(new Position);
+        $this->stock->positions()->save(new Position);
 
-        $position = $stock->positions()->first();
+        $position = $this->stock->positions()->first();
 
-        $this->assertEquals('USD', $position->currency());
+        $this->assertEquals('EUR', $position->currency());
     }
+
 
     public function test_typeDisp_of_stock_shows_Aktie()
     {

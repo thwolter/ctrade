@@ -44,8 +44,8 @@ class Quandldata extends \Quandl
 
     private function quandlCode(): string
     {
-        $database_code = $this->path->database->code;
-        $dataset_code = $this->path->dataset->code;
+        $database_code = $this->path->first()->database->code;
+        $dataset_code = $this->path->first()->dataset->code;
 
         $quandlCode = "{$database_code}/{$dataset_code}";
         return $quandlCode;
