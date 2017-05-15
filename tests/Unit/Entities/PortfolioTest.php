@@ -5,8 +5,8 @@ namespace Tests\Unit\Entities;
 use App\Entities\Portfolio;
 use App\Entities\Position;
 use App\Entities\Stock;
-use App\Repositories\Yahoo\StockFinancial;
-use App\Repositories\Yahoo\CurrencyFinancial;
+use App\Entities\Currency;
+
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -18,15 +18,17 @@ class PortfolioTest extends TestCase
 
     use DatabaseMigrations;
 
-    public function test_EUR_portfolio_has_currency_EUR()
+    public function test_portfolio_has_currency()
     {
-        $portfolio = factory('App\Entities\Portfolio')->create(['currency' => 'EUR']);
-        $this->assertEquals('EUR', $portfolio->currency());
+        $currency = factory(Currency::class)->create();
+        $portfolio = factory(Portfolio::class)->create(['currency_id' => $currency->id]);
+        
+        $this->assertEquals($currency->code, $portfolio->currency->code);
     }
 
     public function test_portfolio_total_for_ALV()
     {
-        $portfolio = $this->makePortfolioWithStock('EUR', 10, 'ALV.DE');
+        $portfolio = $this->makePortfolioWithStock('EUR', 10, 'ALV');
 
         $stock = new StockFinancial;
         $expect = 10 * $stock->price('ALV.DE');

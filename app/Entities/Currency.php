@@ -15,4 +15,9 @@ class Currency extends Model
     {
         return $this->hasMany(Stock::class);
     }
+    
+    public function portfolios()
+    {
+        return $this->hasMany(Portfolio::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace Tests;
 use App\Entities\Portfolio;
 use App\Entities\Position;
 use App\Entities\Stock;
+use App\Entities\Currency;
 use App\Models\Pathway;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Storage;
@@ -39,9 +40,12 @@ abstract class TestCase extends BaseTestCase
 
     public function makePortfolioWithStock($currency, $amount, $symbol)
     {
+        $stock = factory(Stock::class)->create();
+        $currency = Currency::firstOrCreate(['code' => $currency]);
+        
         $position = new Position(['amount' => $amount]);
-        $stock = Stock::create(['symbol' => $symbol]);
-        $portfolio = factory('App\Entities\Portfolio')->create(['currency' => $currency]);
+      
+        $portfolio = factory(Portfolio::class)->create(['currency_id' => $currency->id]);
 
         $stock->positions()->save($position);
         $portfolio->positions()->save($position);

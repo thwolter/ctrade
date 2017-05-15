@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Models\Rscript\Rscriptable;
+use App\Entities\Currency;
 use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
@@ -29,17 +30,16 @@ class Portfolio extends Model
     public function positions() {
         return $this->hasMany('App\Entities\Position');
     }
+    
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
 
     public function cash() {
         return $this->cash;
     }
-
-
-    public function currency()
-    {
-        return $this->currency;
-    }
-
+    
     public function total()
     {
         return $this->positions->sum->total($this->currency());

@@ -11,6 +11,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(App\Entities\User::class, 5)->create()->each(function ($u) {
+        $u->portfolios()->save(factory(App\Entities\Portfolio::class)->make());
     }
 }
