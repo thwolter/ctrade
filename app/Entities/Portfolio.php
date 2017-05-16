@@ -20,15 +20,15 @@ class Portfolio extends Model
     protected $rscriptable = 'App\Models\Rscript\Portfolio';
     
     protected $fillable = [
-        'name', 'currency', 'cash'
+        'name', 'cash'
     ];
 
     public function user() {
-        return $this->belongsTo('App\Entities\User');
+        return $this->belongsTo(User::class);
     }
 
     public function positions() {
-        return $this->hasMany('App\Entities\Position');
+        return $this->hasMany(Position::class);
     }
     
     public function currency()
@@ -42,7 +42,7 @@ class Portfolio extends Model
     
     public function total()
     {
-        return $this->positions->sum->total($this->currency());
+        return $this->positions->sum->total($this->currency->code);
     }
     
     public function value()

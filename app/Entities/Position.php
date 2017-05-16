@@ -49,7 +49,7 @@ class Position extends Model implements PresentableInterface
 
     public function currency()
     {
-        return $this->positionable->currency->code;
+        return $this->positionable->currency;
     }
 
     public function type()
@@ -84,9 +84,9 @@ class Position extends Model implements PresentableInterface
     
     public function convert($currency = null) {
         
-        if (is_null($currency) or $this->currency() == $currency) return 1;
+        if (is_null($currency) or $this->currency()->code == $currency) return 1;
         
-        return QuantModel::ccyPrice($this->currency(), $currency);
+        return QuantModel::ccyPrice($this->currency()->code, $currency);
     }
 
 

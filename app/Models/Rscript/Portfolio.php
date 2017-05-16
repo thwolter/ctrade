@@ -4,6 +4,7 @@
 namespace App\Models\Rscript;
 
 
+use App\Models\QuantModel;
 use Illuminate\Support\Facades\Storage;
 use Khill\Lavacharts\Lavacharts;
 use App\Repositories\Yahoo\Financial;
@@ -53,29 +54,29 @@ class Portfolio extends Rscripter
 
     public function saveSymbols($directory)
     {
-        $symbols = [];
+        $saved = [];
 
         foreach ($this->entity->positions as $position) {
-            $symbol = $position->symbol();
-            if (! in_array($symbol, $symbols)) {
+            $id = 'pos-'.$position->id;
+            if (! in_array($id, $saved)) {
 
                 $json = $position->history();
-                $filename = "{$directory}/{$symbol}.json";
+                $filename = "{$directory}/{$id}.json";
 
                 Storage::disk('local')->put($filename, $json);
-                $symbols[] = $symbol;
+                $saved[] = $id;
             }
 
 
             if (! $position->hasCurrency($this->entity->currency())) {
-                $symbol = $this->entity->currency().$position->currency();
-                if (!in_array($symbol, $symbols)) {
+                $symbol = $this->entity->currency->code.$position->currency()->code;
+                if (!in_array($symbol, $saved)) {
 
-                    $json = $this->entity->history($position->currency());
+                    $json = QuantModel::ccyHistory($this->entity->currency->code, $position->currency()->code);
                     $filename = "{$directory}/{$symbol}.json";
 
                     Storage::disk('local')->put($filename, $json);
-                    $riskFactors[] = $symbol;
+                    $saved[] = $symbol;
                 }
             }
         }

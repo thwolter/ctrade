@@ -4,13 +4,14 @@ namespace Tests\Unit\Repos;
 
 use App\Entities\CcyPair;
 use App\Entities\Currency;
+use App\Models\QuantModel;
 use App\Repositories\DataRepository;
 use App\Repositories\Metadata\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class DataRepositoryTest extends TestCase
+class QuantModelTest extends TestCase
 {
 
     use DatabaseMigrations;
@@ -28,31 +29,23 @@ class DataRepositoryTest extends TestCase
 
     public function test_EURUSD_has_history()
     {
-        $repo = new DataRepository();
-
-        $this->assertEquals(250, count($repo->ccyHistory('EUR', 'USD')));
+        $this->assertEquals(250, count(QuantModel::ccyHistory('EUR', 'USD')));
     }
 
 
     public function test_USDEUR_has_history()
     {
-        $repo = new DataRepository();
-
-        $this->assertEquals(250, count($repo->ccyHistory('USD', 'EUR')));
+        $this->assertEquals(250, count(QuantModel::ccyHistory('USD', 'EUR')));
     }
 
 
     public function test_CZKUSD_has_history()
     {
-        $repo = new DataRepository();
-
-        $this->assertEquals(250, count($repo->ccyHistory('CZK', 'USD')));
+        $this->assertEquals(250, count(QuantModel::ccyHistory('CZK', 'USD')));
     }
 
     public function test_CZKUSD_has_price()
     {
-        $repo = new DataRepository();
-
-        $this->assertGreaterThan(0, count($repo->ccyPrice('CZK', 'USD')));
+        $this->assertGreaterThan(0, count(QuantModel::ccyPrice('CZK', 'USD')));
     }
 }

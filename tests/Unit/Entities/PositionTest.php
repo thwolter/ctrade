@@ -21,6 +21,7 @@ class PositionTest extends TestCase
     protected $currency;
     protected $stock;
 
+
     use DatabaseMigrations;
 
 
@@ -37,7 +38,9 @@ class PositionTest extends TestCase
 
         $this->position = factory(Position::class)->create([
             'positionable_id' => $this->stock->id,
-            'positionable_type' => Stock::class]);
+            'positionable_type' => Stock::class,
+            'amount' => 5
+        ]);
 
         Currency::firstOrCreate(['code' => 'USD']);
         QuandlECB::sync();
@@ -47,7 +50,7 @@ class PositionTest extends TestCase
 
     public function test_positions_stock_has_currency()
     {
-        $this->assertEquals('EUR', $this->position->currency());
+        $this->assertEquals('EUR', $this->position->currency()->code);
     }
 
     public function test_position_stock_has_price()
@@ -82,20 +85,17 @@ class PositionTest extends TestCase
 
     public function test_position_total_value_in_original_currency()
     {
-        $position = $this->makePositionWithPortfolio('EUR', 5, 'ALV');
-
-        $this->assertEquals(5 * $position->price(), $position->total());
+        $this->assertEquals(5 * $this->position->price(), $this->position->total());
     }
 
 
     public function test_position_total_value_in_portfolio_currency()
     {
-        $position = $this->makePositionWithPortfolio('EUR', 5, 'ALV');
         $rate = QuantModel::ccyPrice('EUR', 'USD');
-        
-        $expect = 5 * $position->price() * $rate;
 
-        $this->assertEquals($expect, $position->total('USD'));
+        $expect = 5 * $this->position->price() * $rate;
+
+        $this->assertEquals($expect, $this->position->total('USD'));
     }
 
 
@@ -106,7 +106,7 @@ class PositionTest extends TestCase
 
         $position = $this->stock->positions()->first();
 
-        $this->assertEquals('EUR', $position->currency());
+        $this->assertEquals('EUR', $position->currency()->code);
     }
 
 
