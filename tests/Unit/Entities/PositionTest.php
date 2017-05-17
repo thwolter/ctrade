@@ -29,6 +29,8 @@ class PositionTest extends TestCase
     {
         parent::setUp();
 
+        $this->seed(\TestingDatabaseSeeder::class);
+
         $this->stock = Stock::saveWithParameter([
             'name' => 'Allianz',
             'currency' => 'EUR',
