@@ -29,8 +29,6 @@ class PositionTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(\TestingDatabaseSeeder::class);
-
         $this->stock = Stock::saveWithParameter([
             'name' => 'Allianz',
             'currency' => 'EUR',
@@ -104,9 +102,8 @@ class PositionTest extends TestCase
     //Todo: implement new currency data source
     public function test_method_currency_give_position_currency()
     {
-        $this->stock->positions()->save(new Position);
-
-        $position = $this->stock->positions()->first();
+        $position = factory(Position::class)->create();
+        $this->stock->positions()->save($position);
 
         $this->assertEquals('EUR', $position->currency()->code);
     }
@@ -114,9 +111,7 @@ class PositionTest extends TestCase
 
     public function test_typeDisp_of_stock_shows_Aktie()
     {
-        $position = $this->stock->positions()->first();
-        
-        $this->assertEquals('Aktie', $position->typeDisp());
+        $this->assertEquals('Aktie', $this->position->typeDisp());
     }
 
     public function test_can_create_an_array()

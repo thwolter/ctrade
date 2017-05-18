@@ -10,6 +10,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Currency;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
@@ -58,7 +59,13 @@ class PortfoliosController extends Controller
             'cash' => 'required'
         ]);
 
-        $portfolio = new Portfolio($request->all());
+
+        $portfolio = new Portfolio([
+            'name' => $request->get('name'),
+            'cash' => $request->get('cash'),
+            'currency_id' => Currency::whereCode($request->get('currency'))->first()->id
+        ]);
+
         auth()->user()->portfolios()->save($portfolio);
 
         return redirect(route('portfolios.show', $portfolio->id));

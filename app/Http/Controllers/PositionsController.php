@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pathway;
 use App\Repositories\FinancialMapping;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -56,6 +57,7 @@ class PositionsController extends Controller
 
         $portfolio = Portfolio::findOrFail($request->get('portfolio_id'));
 
+        //Todo: adapt new pathway scheme
         $instrument = resolve('App\\Entities\\'.$this->mapType($request->get('type')))
             ::firstOrCreate(['symbol'=> $request->get('symbol')]);
 

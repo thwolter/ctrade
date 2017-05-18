@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Dusk\DuskServiceProvider;
@@ -17,6 +18,11 @@ class AppServiceProvider extends ServiceProvider
     {
         // required for migrate ot use utf8mb4
         Schema::defaultStringLength(191);
+
+        Relation::morphMap([
+            'stock' => 'App\Entities\Stock',
+            'ccy' => 'App\Entities\CcyPair'
+        ]);
     }
 
     /**
