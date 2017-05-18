@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Entities\User;
+use App\Entities\Portfolio;
+
 
 class PortfolioTest extends TestCase
 {
@@ -18,10 +20,12 @@ class PortfolioTest extends TestCase
         $this->user = factory('App\Entities\User')->create();
     }
 
-
-    public function test_user_can_see_all_own_portfolios()
+    /**
+     * @test
+     */ 
+    public function user_can_see_all_own_portfolios()
     {
-        $portfolios = factory('App\Entities\Portfolio', 3)->create(['user_id' => $this->user->id]);
+        $portfolios = factory(Portfolio::class, 3)->create(['user_id' => $this->user->id]);
 
         $page = $this->actingAs($this->user)->get('/portfolios');
 
@@ -30,20 +34,24 @@ class PortfolioTest extends TestCase
         };
     }
     
-    
-    public function test_user_can_see_single_portfolio()
+    /**
+     * @test
+     */ 
+    public function user_can_see_single_portfolio()
     {
-        $this->portfolio = factory('App\Entities\Portfolio')->create(['user_id' => $this->user->id]);
+        $portfolio = factory(Portfolio::class)->create(['user_id' => $this->user->id]);
         
         $this->actingAs($this->user)
-            ->get('/portfolios/'.$this->portfolio->id)
-            ->assertSee($this->portfolio->name);
+            ->get('/portfolios/'.$portfolio->id)
+            ->assertSee($portfolio->name);
     }
     
-    
-    public function test_user_cannot_see_foreign_portfolios()
+    /**
+     * @test
+     */ 
+    public function user_cannot_see_foreign_portfolios()
     {
-        $portfolio = factory('App\Entities\Portfolio')->create(['user_id' => $this->user->id + 1]);
+        $portfolio = factory(Portfolio::class)->create(['user_id' => $this->user->id + 1]);
 
         $this->actingAs($this->user)
             ->get('/portfolios')

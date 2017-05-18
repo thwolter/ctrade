@@ -50,6 +50,13 @@ class Portfolio extends Model
         return $this->total() + $this->cash();
     }
     
+    
+    public function setCurrency($code)
+    {
+        $this->currency()->associate(Currency::create(['code' => $code]));
+    }
+    
+    
     public function toArray()
     {
         $array = [
@@ -73,6 +80,19 @@ class Portfolio extends Model
         $json = $this->financial()->history($symbol, $from, $to);
 
         return $json;
+    }
+    
+    
+    public function obtain($amount, $instrument)
+    {
+        $position = new Position(['amount' => $amount]);
+
+        $position->portfolio()->associate($this);
+        $position->positionable()->associate($instrument);
+
+        $position->save();
+        
+        return $this;
     }
 }
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Entities;
 
+use App\Entities\User;
 use App\Entities\CcyPair;
 use App\Entities\Portfolio;
 use App\Entities\Position;
@@ -16,74 +17,102 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
 
 
+
 class PortfolioTest extends TestCase
 {
     use DatabaseMigrations;
 
-    protected $currency;
-    protected $stock;
-    protected $position;
-    protected $portfolio;
-
-
-    public function setUp()
+  
+    /**
+     * @test
+     */
+    public function can_create_new_portfolio_for_a_user()
     {
-        parent::setUp();
-
-        $this->currency = Currency::firstOrCreate(['code' => 'USD']);
-        QuandlECB::sync();
-
-        $this->stock = Stock::saveWithParameter([
-            'name' => 'Allianz',
-            'currency' => 'EUR',
-            'sector' => 'Industry'
-        ]);
-        Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
-
-        $this->portfolio = factory(Portfolio::class)->create([
-            'currency_id' => $this->currency->id
-        ]);
-
-        $this->position = factory(Position::class)->make([
-            'positionable_id' => $this->stock->id,
-            'positionable_type' => Stock::class,
-            'amount' => 10
-        ]);
-
-        $this->portfolio->positions()->save($this->position);
-    }
-
-    public function test_portfolio_has_currency()
-    {
-        $this->assertEquals($this->currency->code, $this->portfolio->currency->code);
-    }
-
-    public function test_portfolio_total_for_ALV()
-    {
-        $rate = CcyPair::whereOrigin('EUR')->whereTarget('USD')->first()->price();
-
-        $this->assertEquals(10 * $rate * $this->stock->price(), $this->portfolio->total());
+        $portfolio = new Portfolio(['name' => 'A Test Portfolio', 'cash' => 1000]);
+        $portfolio->setCurrency('CHF');
+        
+        $user = factory(User::class)->create();
+        $user->obtain($portfolio);
+        
+        $this->assertEquals($user->id, Portfolio::whereName('A Test Portfolio')->first()->user->id);
+        
+        return $portfolio;
     }
 
 
-    public function test_can_make_array()
+    /**
+     * @test
+     * @depends can_create_new_portfolio_for_a_user
+     */ 
+    public function portfolio_has_currency_CHF($portfolio)
     {
-        $array = $this->portfolio->toArray();
-
-        $this->assertArrayHasKey('name', $array['item'][0]);
+        $this->assertEquals('CHF', $portfolio->currency->code);
+    }
+    
+    
+    /**
+     * @test
+     * @depends can_create_new_portfolio_for_a_user
+     */ 
+    public function portfolio_has_cash_1000($portfolio)
+    {
+        $this->assertEquals(1000, $portfolio->cash);
+    }
+    
+    
+     /**
+     * @test
+     * @depends can_create_new_portfolio_for_a_user
+     */ 
+     public function can_obtain_a_position($portfolio)
+     {
+         $stock = factory(Stock::class)->create();
+         $portfolio->obtain(10, $stock);
+         
+         $this->assertEquals($stock->id, $stock->positions()->first()->id);
+         
+         return $portfolio;
+     }
+     
+     
+     /**
+     * @test
+     * @depends can_obtain_a_position
+     */ 
+    public function total_equals_position_total($portfolio)
+    {
+        $stub = $this->createMock(Stock::class);
+        $stub->method('price')->willReturn(150);
+        
+        $this->assertEquals(0, $portfolio->total());
     }
 
     
-    public function test_save_required_symbols()
+    /**
+     * @test
+     * @depends can_obtain_a_position
+     */ 
+    public function empty_portfolio_has_array_of_length_0($portfolio)
+    {
+        $array = $portfolio->toArray();
+        
+        $this->assertEquals(0, count($array['item']));
+    }
+
+    
+    
+    /**
+     * @test
+     * @depends can_obtain_a_position
+     */ 
+    public function will_save_the_position_history($portfolio)
     {
         $tmpdir = $this->tempDirectoroy();
-        $this->portfolio->rscript()->saveSymbols($tmpdir);
-
-
+        $portfolio->rscript()->saveSymbols($tmpdir);
+dd($portfolio->positions()->first());
         $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/pos-1.json"));
-        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/USDEUR.json"));
-
-        Storage::deleteDirectory($tmpdir);
+       
+        //Storage::deleteDirectory($tmpdir);
     }   
     
     

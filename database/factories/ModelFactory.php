@@ -30,7 +30,9 @@ $factory->define(App\Entities\Portfolio::class, function(Faker\Generator $faker)
         ['code' => factory(\App\Entities\Currency::class)->make()->code]);
 
     return  [
-        'user_id' => factory('App\Entities\User')->create()->id,
+        'user_id' => function() {
+            return factory('App\Entities\User')->create()->id;
+        },
         'name' => $faker->sentence,
         'currency_id' => $currency->id,
         'cash' => 100 * $faker->randomDigitNotNull
@@ -64,7 +66,7 @@ $factory->define(App\Entities\Position::class, function(Faker\Generator $faker) 
 $factory->define(App\Entities\Currency::class, function(Faker\Generator $faker) {
 
     return [
-        'code' => $faker->randomElement(['EUR', 'USD', 'CZK', 'CHF', 'GBP'])
+        'code' => $faker->randomElement(['EUR', 'USD', 'CZK'])
     ];
 });
 

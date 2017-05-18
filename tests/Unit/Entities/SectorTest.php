@@ -11,13 +11,13 @@ class SectorTest extends TestCase
 {
     use DatabaseMigrations;
 
-    protected $sector = 'Example Sector';
-
-
-    public function test_can_create_sector()
+    /**
+     * @test
+     */
+    public function can_create_sector()
     {
-        factory(Sector::class)->create(['name' => $this->sector]);
-        $sector = Sector::where('name', $this->sector)->first()->name;
-        $this->assertEquals($this->sector, $sector);
+        factory(Sector::class)->create(['name' => 'Example Sector']);
+        
+        $this->assertEquals('Example Sector', Sector::whereName('Example Sector')->first()->name);
     }
 }
