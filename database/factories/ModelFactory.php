@@ -101,3 +101,11 @@ $factory->define(\App\Entities\Provider::class, function(Faker\Generator $faker)
         'code' => $faker->word,
     ];
 });
+
+$factory->define(\App\Entities\CcyPair::class, function(Faker\Generator $faker) {
+
+    return [
+        'origin' => $faker->currencyCode,
+        'target' => $faker->currencyCode
+    ];
+});

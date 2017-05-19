@@ -41,8 +41,8 @@ class PortfoliosController extends Controller
      */
     public function create()
     {
-
-        return view('portfolios.create');
+        $currencies = Currency::eligible();
+        return view('portfolios.create', compact('currencies'));
     }
 
     /**

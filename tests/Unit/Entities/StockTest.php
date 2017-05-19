@@ -19,19 +19,12 @@ class StockTest extends TestCase
     use DatabaseMigrations;
 
     protected $stock;
-    protected $database;
-    protected $dataset;
-    protected $provider;
-
-    protected $providerName = 'Quandl';
-    protected $databaseCode = 'SSE';
-    protected $datasetCode = 'ALV';
 
 
     public function setUp()
     {
         parent::setUp();
-
+        
         $this->stock = Stock::saveWithParameter([
             'name' => 'Allianz',
             'currency' => 'EUR',

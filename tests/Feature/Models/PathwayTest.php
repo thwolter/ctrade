@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Feature\Models;
 
+use App\Entities\CcyPair;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -60,6 +61,18 @@ class PathwayTest extends TestCase
     public function test_can_call_with_code_ALV()
     {
         $this->assertEquals('Quandl', Pathway::withDatasetCode('ALV')->first()->provider->code);
+    }
+
+    /** @test */
+    public function can_assign_a_currency_pair()
+    {
+        $cpair = factory(CcyPair::class)->create([
+            'origin' => 'EUR',
+            'target' => 'USD'
+        ]);
+        Pathway::make('Quandl', 'ECB', 'EURUSD')->assign($cpair);
+
+        $this->assertEquals('Quandl', $cpair->pathway()->first()->provider->code);
     }
 }
 

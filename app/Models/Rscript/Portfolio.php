@@ -7,8 +7,6 @@ namespace App\Models\Rscript;
 use App\Models\QuantModel;
 use Illuminate\Support\Facades\Storage;
 use Khill\Lavacharts\Lavacharts;
-use App\Repositories\Yahoo\Financial;
-use App\Repositories\OandaFinancial;
 
 
 
@@ -24,61 +22,66 @@ class Portfolio extends Rscripter
      */
     public function risk($period, $conf)
     {
-        $tmpdir = $this->makeDirectory();
-        $this->saveSymbols($tmpdir);
+        $this->storeHistoryFiles();
 
-        return $this->callRscript($tmpdir, ['task' => 'risk', 'conf' => $conf]);
+        return $this->callRscript($this->fullpath(), ['task' => 'risk', 'conf' => $conf]);
 
     }
     
     
     public function valueHistory($period)
     {
-        $tmpdir = $this->makeDirectory();
-        $this->saveSymbols($tmpdir);
+        $this->storeHistoryFiles();
         
-        return $this->callRscript($tmpdir, 
+        return $this->callRscript($this->tmpDir,
             ['task' => 'valueHistory', 'period' => $period]);
     }
 
+
     public function summary()
     {
-        $tmpdir = $this->makeDirectory();
-        $this->saveSymbols($tmpdir);
+        $this->storeHistoryFiles();
 
-        return $this->callRscript($tmpdir,
+        return $this->callRscript($this->tmpDir,
             ['task' => 'summary', 'period' => 60, 'conf' => 0.95]);
     }
     
     
 
-    public function saveSymbols($directory)
+    public function storeHistoryFiles()
     {
-        $saved = [];
+        $positions = $this->entity->positions;
 
-        foreach ($this->entity->positions as $position) {
-            $id = 'pos-'.$position->id;
-            if (! in_array($id, $saved)) {
+        foreach ($positions as $position) {
 
-                $json = $position->history();
-                $filename = "{$directory}/{$id}.json";
+            $this->storePositionHistory($position);
 
-                Storage::disk('local')->put($filename, $json);
-                $saved[] = $id;
-            }
+            $this->storeCurrencyHistory($this->entity->currency(), $position->currency());
+
+        }
+    }
 
 
-            if (! $position->hasCurrency($this->entity->currency())) {
-                $symbol = $this->entity->currency->code.$position->currency()->code;
-                if (!in_array($symbol, $saved)) {
+    protected function storePositionHistory($position)
+    {
+        $filename = "{$this->tmpDir}/pos-{$position->id}.json";
 
-                    $json = QuantModel::ccyHistory($this->entity->currency->code, $position->currency()->code);
-                    $filename = "{$directory}/{$symbol}.json";
+        if (! file_exists($filename)) {
 
-                    Storage::disk('local')->put($filename, $json);
-                    $saved[] = $symbol;
-                }
-            }
+            Storage::disk('local')->put($filename, $position->history());
+        }
+    }
+
+
+    protected function storeCurrencyHistory(Currency $base, Currency $target)
+    {
+        $filename = "{$this->tmpDir}/{$base->code}.{$target->code}.json";
+
+        if (! file_exists($filename)) {
+
+            $json = QuantModel::ccyHistory($base->code, $target->code);
+
+            Storage::disk('local')->put($filename, $json);
         }
     }
 

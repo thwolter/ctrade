@@ -23,28 +23,35 @@ class Portfolio extends Model
         'name', 'cash'
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function positions() {
+
+    public function positions()
+    {
         return $this->hasMany(Position::class);
     }
-    
+
+
     public function currency()
     {
         return $this->belongsTo(Currency::class);
     }
 
-    public function cash() {
+    public function cash()
+    {
         return $this->cash;
     }
-    
+
+
     public function total()
     {
         return $this->positions->sum->total($this->currency->code);
     }
-    
+
+
     public function value()
     {
         return $this->total() + $this->cash();
@@ -53,7 +60,7 @@ class Portfolio extends Model
     
     public function setCurrency($code)
     {
-        $this->currency()->associate(Currency::create(['code' => $code]));
+        $this->currency()->associate(Currency::firstOrCreate(['code' => $code]));
     }
     
     
@@ -86,13 +93,10 @@ class Portfolio extends Model
     public function obtain($amount, $instrument)
     {
         $position = new Position(['amount' => $amount]);
-
-        $position->portfolio()->associate($this);
         $position->positionable()->associate($instrument);
 
-        $position->save();
-        
+        $this->positions()->save($position);
+
         return $this;
     }
 }
-

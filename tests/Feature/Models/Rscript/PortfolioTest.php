@@ -1,6 +1,7 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Models\Rscript;
+
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -19,6 +20,34 @@ class PortfolioTest extends TestCase
         parent::setUp();
         $this->user = factory('App\Entities\User')->create();
     }
+
+    public function test_calculated_risk()
+    {
+        $risk = $this->rscripter->risk(20, 0.95);
+        $this->assertGreaterThan(20, $risk['Total'][0]['Value']);
+        $this->assertLessThan(80, $risk['Total'][0]['Value']);
+
+    }
+
+
+    public function test_receive_historic_portfolio_values()
+    {
+        $valueHistory = $this->portfolio->rscript()->valueHistory(60);
+
+        $this->assertEquals(60, count($valueHistory['History']));
+    }
+
+
+    public function test_summary_has_figures_and_history()
+    {
+        $summary = $this->portfolio->rscript()->summary();
+
+        $this->assertArrayHasKey('Risks', $summary);
+        $this->assertArrayHasKey('History', $summary);
+
+        $this->assertGreaterThan(5, count($summary['History']));
+    }
+
 
     /**
      * @test

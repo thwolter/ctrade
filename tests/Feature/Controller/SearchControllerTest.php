@@ -1,17 +1,19 @@
 <?php
 
-namespace Tests\Unit\Controller;
+namespace Tests\Feature\Controller\SearchControllerTest;
 
+use App\Http\Controllers\InstrumentController;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class PositionsControllerTest extends TestCase
+class SearchControllerTest extends TestCase
 {
-    use DatabaseMigrations;
 
-    protected $portfolio;
+    use DatabaseTransactions;
+
     protected $user;
+    protected $portfolio;
 
     public function setUp()
     {
@@ -21,12 +23,15 @@ class PositionsControllerTest extends TestCase
         $this->user = $this->portfolio->user;
     }
 
-    public function test_position_can_be_stored()
+
+    public function test_search_show_works()
     {
         $response = $this->actingAs($this->user)->get(
-            route('positions.store', ['portfolio_id' => $this->portfolio->id, 'symbol' => 'ALV.DE', 'type'=> 'S'])
+            route('search.show', ['portfolio' => $this->portfolio->id, 'symbol' => 'ALV.DE', 'type'=> 'S'])
         );
 
         $response->assertStatus(200);
     }
+
+
 }

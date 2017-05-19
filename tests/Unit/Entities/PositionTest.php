@@ -29,6 +29,7 @@ class PositionTest extends TestCase
     {
         parent::setUp();
 
+
         $this->stock = Stock::saveWithParameter([
             'name' => 'Allianz',
             'currency' => 'EUR',
