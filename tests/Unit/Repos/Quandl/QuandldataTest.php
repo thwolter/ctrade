@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Repos\Quandl;
 
+use App\Models\Exceptions\PathwayException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -25,13 +26,32 @@ class QuandldataTest extends TestCase
         ]);
         Pathway::make('Quandl', 'SSE', 'ALV')->assign($stock);
     }
-    
-    
-    public function test_stock_has_price()
+
+
+    /** @test */
+    public function a_code_has_a_price()
     {
-        $path = Pathway::withDatasetCode('ALV')->first();
-        $price = Quandldata::make($path)->price();
-        
-        $this->assertGreaterThan(0, $price);
+        $quandl = new Quandldata('ALV');
+
+        $this->assertGreaterThan(0, Quandldata::getPrice('ALV'));
+        $this->assertGreaterThan(0, $quandl->price());
     }
+
+    /** @test */
+    public function a_code_has_a_history()
+    {
+        $quandl = new Quandldata('ALV');
+
+        $this->assertEquals(250, count(Quandldata::getHistory('ALV')));
+        $this->assertEquals(250, count($quandl->history()));
+    }
+
+    /** @test */
+    public function a_price_for_invalid_code_throws_an_error()
+    {
+        $this->expectException(PathwayException::class);
+        Quandldata::getPrice('Fake');
+    }
+
+
 }

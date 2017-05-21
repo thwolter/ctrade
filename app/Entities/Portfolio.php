@@ -40,6 +40,12 @@ class Portfolio extends Model
         return $this->belongsTo(Currency::class);
     }
 
+
+    public function currencyCode()
+    {
+        return $this->currency->code;
+    }
+
     public function cash()
     {
         return $this->cash;
@@ -48,7 +54,7 @@ class Portfolio extends Model
 
     public function total()
     {
-        return $this->positions->sum->total($this->currency->code);
+        return $this->positions->sum->total($this->currencyCode());
     }
 
 

@@ -10,6 +10,7 @@ use App\Entities\Currency;
 use App\Models\Pathway;
 use App\Models\QuantModel;
 use App\Repositories\Metadata\QuandlECB;
+use App\Repositories\Quandl\Quandldata;
 use App\Repositories\Yahoo\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -18,9 +19,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class PositionTest extends TestCase
 {
     protected $position;
-    protected $currency;
-    protected $stock;
-
 
     use DatabaseMigrations;
 
@@ -29,34 +27,26 @@ class PositionTest extends TestCase
     {
         parent::setUp();
 
-
-        $this->stock = Stock::saveWithParameter([
-            'name' => 'Allianz',
-            'currency' => 'EUR',
-            'sector' => 'Industry'
-        ]);
-        Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
-
-        $this->position = factory(Position::class)->create([
-            'positionable_id' => $this->stock->id,
-            'positionable_type' => Stock::class,
-            'amount' => 5
-        ]);
+        $this->position = $this->makePositionWithStock('ALV', 'Allianz');
 
         Currency::firstOrCreate(['code' => 'USD']);
         QuandlECB::sync();
 
     }
 
-
-    public function test_positions_stock_has_currency()
+    /** @test */
+    public function positions_has_a_currency()
     {
         $this->assertEquals('EUR', $this->position->currency()->code);
+        $this->assertEquals('EUR', $this->position->currencyCode());
     }
 
-    public function test_position_stock_has_price()
+    /** @test */
+    public function position_has_a_price()
     {
-        $this->assertGreaterThan(0, $this->position->price());
+        $price = Quandldata::getPrice('ALV');
+
+        $this->assertEquals($price, $this->position->price());
     }
 
 
@@ -103,10 +93,7 @@ class PositionTest extends TestCase
     //Todo: implement new currency data source
     public function test_method_currency_give_position_currency()
     {
-        $position = factory(Position::class)->create();
-        $this->stock->positions()->save($position);
-
-        $this->assertEquals('EUR', $position->currency()->code);
+        $this->assertEquals('EUR', $this->position->currency()->code);
     }
 
 
@@ -129,5 +116,40 @@ class PositionTest extends TestCase
         $data = $this->position->history();
 
         $this->assertTrue(is_array($data));
+    }
+
+
+    /** @test */
+    public function position_has_a_currency_code()
+    {
+        $this->assertEquals('EUR', $this->position->currencyCode());
+    }
+
+    /** @test */
+    public function different_positions_have_different_prices()
+    {
+        $priceALV = $this->position->price();
+        $priceDAI = $this->makePositionWithStock('DAI', 'Daimler')->price();
+
+        $this->assertNotEquals($priceALV, $priceDAI);
+    }
+
+
+    public function makePositionWithStock($datasetCode, $name)
+    {
+        $stock = Stock::saveWithParameter([
+            'name' => $name,
+            'currency' => 'EUR',
+            'sector' => 'Industry'
+        ]);
+        Pathway::make('Quandl', 'SSE', $datasetCode)->assign($stock);
+
+        $position = factory(Position::class)->create([
+            'positionable_id' => $stock->id,
+            'positionable_type' => Stock::class,
+            'amount' => 5
+        ]);
+
+        return $position;
     }
 }

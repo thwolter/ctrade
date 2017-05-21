@@ -74,4 +74,10 @@ class StockTest extends TestCase
     {
         $this->assertGreaterThan(0, $this->stock->ValueAtRisk()['VaR']);
     }
+
+    /** @test */
+    public function stock_has_a_currency_code()
+    {
+        $this->assertEquals('EUR', $this->stock->currencyCode());
+    }
 }

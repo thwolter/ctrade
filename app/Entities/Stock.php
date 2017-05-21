@@ -6,9 +6,13 @@ namespace App\Entities;
 
 
 use App\Repositories\DataRepository;
+use Laravel\Scout\Searchable;
 
 class Stock extends Instrument
 {
+
+    use Searchable;
+
     protected $fillable = ['name', 'wkn', 'isin'];
 
     protected $financial = DataRepository::class;

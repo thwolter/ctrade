@@ -105,6 +105,14 @@ class PortfolioTest extends TestCase
         $this->assertEquals(1000, $array['cash']['amount']);
     }
 
+
+    /** @test */
+    public function portfolio_has_a_currency_code()
+    {
+        $this->assertEquals('CHF', $this->portfolio->currencyCode());
+    }
+
+
     protected function createPortfolioWithUser()
     {
         $portfolio = new Portfolio(['name' => 'A Test Portfolio', 'cash' => 1000]);
@@ -116,4 +124,6 @@ class PortfolioTest extends TestCase
         $this->user = $user;
         $this->portfolio = $portfolio;
     }
+
+
 }

@@ -31,7 +31,7 @@ class Currency extends Model
 
         foreach ($currencies as $currency)
         {
-            $eligible[] = $currency->code;
+            $eligible[$currency->id] = $currency->code;
         };
 
         return $eligible;

@@ -74,5 +74,24 @@ class PathwayTest extends TestCase
 
         $this->assertEquals('Quandl', $cpair->pathway()->first()->provider->code);
     }
+
+    /** @test */
+    public function make_returns_a_pathway_with_path()
+    {
+        $pathway = Pathway::make('Quandl', 'SSE', 'ALV');
+
+        $this->assertInstanceOf(Pathway::class, $pathway);
+        $this->assertEquals('Quandl', $pathway->first()->provider->code);
+    }
+
+    /** @test */
+    public function a_pathway_can_be_persited()
+    {
+        Pathway::make('Quandl', 'SSE', 'ALV')->save();
+        $code = Pathway::withDatasetCode('ALV')->first()->provider->code;
+
+        $this->assertEquals('Quandl', $code);
+    }
+
 }
 

@@ -12,28 +12,24 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Pathway
 {
-    private $theProvider;
-    private $theDatabase;
-    private $theDataset;
-
     private $path;
     private $pathPointer;
 
+    // instances of classes
     public $provider = null;
     public $database = null;
     public $dataset = null;
 
     
-    public function __construct($codeArray = null, $path = [])
+    public function __construct($codes = null, $path = [])
     {
-        if (!is_null($codeArray)) {
-            $this->provider($codeArray['provider'])
-                ->database($codeArray['database'])
-                ->dataset($codeArray['dataset']);
+        if (!is_null($codes)) {
+            $this->provider($codes['provider'])
+                ->database($codes['database'])
+                ->dataset($codes['dataset']);
         }
 
         $this->path = $path;
-
     }
     
     
@@ -45,17 +41,19 @@ class Pathway
             'dataset' => $dataset
         ]);
     }
-    
-    
+
+
+
+
     public function assign($instrument)
     {
         $rc = new \ReflectionClass($instrument);
         $model = str_plural(strtolower($rc->getShortName()));
 
-        $this->theDataset->save();
+        $this->dataset->save();
 
-        if (! $this->theDataset->$model->contains($instrument->id)) {
-            $this->theDataset->$model()->attach($instrument->id);
+        if (! $this->dataset->$model->contains($instrument->id)) {
+            $this->dataset->$model()->attach($instrument->id);
         }
         
         return $this->save();
@@ -63,13 +61,23 @@ class Pathway
     
     static public function withDatasetCode($code)
     {
-        return Pathway::withDatasets(Dataset::whereCode($code)->get());
+        $datasets = Dataset::whereCode($code)->get();
+
+        if (!count($datasets))
+            throw new PathwayException("No dataset assigned to code '{$code}'");
+
+        return Pathway::withDatasets($datasets);
     }
 
 
     static public function withDatasetId($id)
     {
-        return Pathway::withDatasets(Dataset::whereId($id)->get());
+        $datasets = Dataset::whereId($id)->get();
+
+        if (!count($datasets))
+            throw new PathwayException("No dataset assigned to id '{$id}'");
+
+        return Pathway::withDatasets($datasets);
     }
     
 
@@ -79,24 +87,8 @@ class Pathway
             throw new PathwayException("expect class '{Collection::class}', given was '{get_class($datasets)}");
         }
 
-        if (!count($datasets)) {
-            throw new PathwayException("empty collection 'datasets' cannot be evaluated");
-        }
-
-        $path = [];
-        foreach ($datasets as $dataset) {
-            foreach ($dataset->databases as $database) {
-                foreach ($database->providers as $provider) {
-                    $path[] = [
-                        'provider' => $provider,
-                        'database' => $database,
-                        'dataset'  => $dataset
-                    ];
-                }
-            }
-        }
-
-        return new Pathway(null, $path);
+        $pathway = new Pathway();
+        return $pathway->setPathArray($datasets);
     }
 
 
@@ -116,46 +108,52 @@ class Pathway
     }
 
     
-    public function provider($value)
+    public function provider($code)
     {
-        $this->theProvider = $this->setMetaObject(Provider::class, $value);
+        $this->provider = $this->setMetaObject(Provider::class, $code);
         return $this;
     }
     
     
-    public function database($value)
+    public function database($code)
     {
-        $this->theDatabase = $this->setMetaObject(Database::class, $value);
+        $this->database = $this->setMetaObject(Database::class, $code);
         return $this;
     }
     
     
-    public function dataset($value)
+    public function dataset($code)
     {
-        $this->theDataset = $this->setMetaObject(Dataset::class, $value);
+        $this->dataset = $this->setMetaObject(Dataset::class, $code);
         return $this;
     }
 
     
     public function save()
     {
-        $this->theDatabase->save();
-        $this->theProvider->save();
+        $this->database->save();
+        $this->provider->save();
+        $this->dataset->save();
 
-        if (! $this->theDatabase->datasets->contains($this->theDataset->id)) {
-            $this->theDatabase->datasets()->attach($this->theDataset->id);
+        if (! $this->database->datasets->contains($this->dataset->id)) {
+
+            $this->database->datasets()->attach($this->dataset->id);
         }
 
-        if (! $this->theProvider->databases->contains($this->theDatabase->id)) {
-            $this->theProvider->databases()->attach($this->theDatabase->id);
+        if (! $this->provider->databases->contains($this->database->id)) {
+
+            $this->provider->databases()->attach($this->database->id);
         }
-        
+
         return $this;
     }
 
 
     private function setVariables()
     {
+        if (! count($this->path))
+            return $this;
+
         if (! isset($this->pathPointer))
             throw new PathwayException("Call to method 'first()' missing");
 
@@ -193,5 +191,23 @@ class Pathway
             throw new PathwayException("value for class '{$class}' missing");
 
         return $meta;
+    }
+
+
+    private function setPathArray($datasets)
+    {
+        $this->path = [];
+        foreach ($datasets as $dataset) {
+            foreach ($dataset->databases as $database) {
+                foreach ($database->providers as $provider) {
+                    $this->path[] = [
+                        'provider' => $provider,
+                        'database' => $database,
+                        'dataset' => $dataset
+                    ];
+                }
+            }
+        }
+        return $this;
     }
 }

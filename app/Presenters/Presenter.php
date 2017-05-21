@@ -31,15 +31,15 @@ abstract class Presenter
     }
     
     
-    public function priceFormat($value, $currency)
+    public function priceFormat($value, $currencyCode)
     {
         if (is_null($this->priceFormat)) {
             $this->priceFormat = new \NumberFormatter( 'de_DE', \NumberFormatter::CURRENCY );
         }
         
-        $currencyFmt = $this->priceFormat->formatCurrency($value, $currency);
+        $currencyFmt = $this->priceFormat->formatCurrency($value, $currencyCode);
         
-        return preg_replace($this->replace, '', $currencyFmt).' '.$currency;
+        return preg_replace($this->replace, '', $currencyFmt).' '.$currencyCode;
     
     }
 

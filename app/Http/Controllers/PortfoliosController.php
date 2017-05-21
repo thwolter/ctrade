@@ -59,14 +59,14 @@ class PortfoliosController extends Controller
             'cash' => 'required'
         ]);
 
-
         $portfolio = new Portfolio([
             'name' => $request->get('name'),
-            'cash' => $request->get('cash'),
-            'currency_id' => Currency::whereCode($request->get('currency'))->first()->id
+            'cash' => $request->get('cash')
         ]);
+        $portfolio->currency()
+            ->associate(Currency::find($request->get('currency')));
 
-        auth()->user()->portfolios()->save($portfolio);
+        auth()->user()->obtain($portfolio);
 
         return redirect(route('portfolios.show', $portfolio->id));
     }

@@ -18,7 +18,7 @@
                 <th class="table-cell-value">Anzahl</th>
                 <th class="table-cell-value">Preis</th>
                 <th class="table-cell-value">Gesamt</th>
-                <th class="table-cell-value">Gesamt ({{ $portfolio->currency }})</th>
+                <th class="table-cell-value">Gesamt ({{ $portfolio->currencyCode() }})</th>
             </tr>
         </thead>
 
@@ -30,14 +30,13 @@
                 <th></th>
                 <th class="table-cell-value"></th>
                 <th class="table-cell-value">Summe</th>
-                <th class="table-cell-value">{{ $portfolio->present()->total($portfolio->currency) }}</th>
+                <th class="table-cell-value">{{ $portfolio->present()->total($portfolio->currencyCode()) }}</th>
             </tr>
         </tfoot>
 
         <tbody>
             @php( $count = 0)
             @foreach($portfolio->positions as $position)
-
                 <tr>
                     <td>{{ ++$count }}</td>
                     <td>{{ $position->typeDisp() }}</td>
@@ -45,7 +44,7 @@
                     <td class="table-cell-value">{{ $position->amount() }}</td>
                     <td class="table-cell-value">{{ $position->present()->price() }}</td>
                     <td class="table-cell-value">{{ $position->present()->total() }}</td>
-                    <td class="table-cell-value">{{ $position->present()->total($portfolio->currency) }}</td>
+                    <td class="table-cell-value">{{ $position->present()->total($portfolio->currencyCode()) }}</td>
                 </tr>
             @endforeach
         </tbody>

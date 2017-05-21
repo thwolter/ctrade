@@ -27,6 +27,6 @@ class CurrencyTest extends TestCase
         factory(Currency::class)->create(['code' => 'USD']);
         factory(Currency::class)->create(['code' => 'TRY', 'eligible' => false]);
 
-        $this->assertEquals(['EUR', 'USD'], Currency::eligible());
+        $this->assertEquals(['1' => 'EUR', '2' => 'USD'], Currency::eligible());
     }
 }

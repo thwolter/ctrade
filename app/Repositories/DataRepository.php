@@ -15,36 +15,39 @@ use MathPHP\Statistics\Circular;
 class DataRepository
 {
 
-    protected $pathway;
+    protected $provider;
 
     public function __construct(Pathway $pathway = null)
     {
-        $this->pathway = $pathway;
+        $this->provider = $this->dataProvider($pathway);
     }
 
-    public function dataRepository()
+    private function dataProvider($pathway)
     {
-        $path = $this->pathway->first();
-        $code = $path->provider->code;
+        $path = $pathway->first();
 
-        switch ($code) {
+        switch ($path->provider->code) {
             case 'Quandl':
-                return Quandldata::make($path);
+                return new Quandldata($path->dataset->code);
                 break;
-            case 'others'; // break;
+            case 'others';
+                // define other data providers
+                // break;
             default:
-                throw new MetadataException("No financial available for provider code '{$code}''");
+                throw new MetadataException("No financial available for provider code '{$this->providerCode}''");
         }
     }
 
     public function price()
     {
-        return $this->dataRepository()->price();
+        return $this->provider->price();
     }
 
 
-    public function history($parameter)
+    public function history($parameter = ['limit' => 250])
     {
-        return $this->dataRepository()->history($parameter);
+        return $this->provider->history($parameter);
     }
+
+
 }
