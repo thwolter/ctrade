@@ -55,9 +55,7 @@ class Portfolio extends Rscripter
         foreach ($positions as $position) {
 
             $this->storePositionHistory($position);
-
             $this->storeCurrencyHistory($this->entity->currency(), $position->currency());
-
         }
     }
 
