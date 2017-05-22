@@ -15,7 +15,7 @@ class CreateDatabasesTable extends Migration
     {
         Schema::create('databases', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code');
+            $table->string('code')->unique()->nullable();
             $table->timestamps();
         });
     }

@@ -2,84 +2,117 @@
 
 namespace Tests\Unit\Entities;
 
+use App\Entities\User;
+use App\Entities\CcyPair;
 use App\Entities\Portfolio;
 use App\Entities\Position;
 use App\Entities\Stock;
-use App\Repositories\Yahoo\StockFinancial;
-use App\Repositories\Yahoo\CurrencyFinancial;
+use App\Entities\Currency;
+
+use App\Models\Pathway;
+use App\Repositories\Metadata\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
 
 
+
 class PortfolioTest extends TestCase
 {
-
     use DatabaseMigrations;
 
-    public function test_EUR_portfolio_has_currency_EUR()
+  
+    /**
+     * @test
+     */
+    public function can_create_new_portfolio_for_a_user()
     {
-        $portfolio = factory('App\Entities\Portfolio')->create(['currency' => 'EUR']);
-        $this->assertEquals('EUR', $portfolio->currency());
-    }
-
-    public function test_portfolio_total_for_ALV()
-    {
-        $portfolio = $this->makePortfolioWithStock('EUR', 10, 'ALV.DE');
-
-        $stock = new StockFinancial;
-        $expect = 10 * $stock->price('ALV.DE');
-
-        $this->assertEquals($expect, $portfolio->total());
-    }
-    
-    
-    public function test_portfolio_total_for_YHOO()
-    {
-        $portfolio = $this->makePortfolioWithStock('CZK', 10, 'YHOO');
-
-        $currency = new CurrencyFinancial;
-        $stock = new StockFinancial;
+        $portfolio = new Portfolio(['name' => 'A Test Portfolio', 'cash' => 1000]);
+        $portfolio->setCurrency('CHF');
         
-        $expect = 10 * $stock->price('YHOO') * $currency->price('USDCZK');
+        $user = factory(User::class)->create();
+        $user->obtain($portfolio);
+        
+        $this->assertEquals($user->id, Portfolio::whereName('A Test Portfolio')->first()->user->id);
+        
+        return $portfolio;
+    }
 
-        $this->assertEquals($expect, $portfolio->total());
+
+    /**
+     * @test
+     * @depends can_create_new_portfolio_for_a_user
+     */ 
+    public function portfolio_has_currency_CHF($portfolio)
+    {
+        $this->assertEquals('CHF', $portfolio->currency->code);
     }
     
-    public function test_portfolio_value_for_YHOO_and_cash()
+    
+    /**
+     * @test
+     * @depends can_create_new_portfolio_for_a_user
+     */ 
+    public function portfolio_has_cash_1000($portfolio)
     {
-        $portfolio = $this->makePortfolioWithStock('CZK', 10, 'YHOO');
-
-        $currency = new CurrencyFinancial;
-        $stock = new StockFinancial;
+        $this->assertEquals(1000, $portfolio->cash);
+    }
+    
+    
+     /**
+     * @test
+     * @depends can_create_new_portfolio_for_a_user
+     */ 
+     public function can_obtain_a_position($portfolio)
+     {
+         $stock = factory(Stock::class)->create();
+         $portfolio->obtain(10, $stock);
+         
+         $this->assertEquals($stock->id, $stock->positions()->first()->id);
+         
+         return $portfolio;
+     }
+     
+     
+     /**
+     * @test
+     * @depends can_obtain_a_position
+     */ 
+    public function total_equals_position_total($portfolio)
+    {
+        $stub = $this->createMock(Stock::class);
+        $stub->method('price')->willReturn(150);
         
-        $expect = 10 * $stock->price('YHOO') * $currency->price('USDCZK') 
-            + $portfolio->cash();
-
-        $this->assertEquals($expect, $portfolio->value());
+        $this->assertEquals(0, $portfolio->total());
     }
 
-    public function test_can_make_array()
+    
+    /**
+     * @test
+     * @depends can_obtain_a_position
+     */ 
+    public function empty_portfolio_has_array_of_length_0($portfolio)
     {
-        $portfolio = $this->makePortfolioWithStock('USD', 10, 'ALV.DE');
         $array = $portfolio->toArray();
-
-        $this->assertArrayHasKey('symbol', $array['item'][0]);
+        
+        $this->assertEquals(0, count($array['item']));
     }
 
     
-    public function test_save_required_symbols()
+    
+    /**
+     * @test
+     * @depends can_obtain_a_position
+     */ 
+    public function will_save_the_position_history($portfolio)
     {
         $tmpdir = $this->tempDirectoroy();
-        $this->makePortfolio('EUR')->rscript()->saveSymbols($tmpdir);
-
-        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/ALV.DE.json"));
-        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/BAS.DE.json"));
-        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/YHOO.json"));
-        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/EURUSD.json"));
-
-        Storage::deleteDirectory($tmpdir);
+        $portfolio->rscript()->saveSymbols($tmpdir);
+dd($portfolio->positions()->first());
+        $this->assertTrue(Storage::disk('local')->exists("{$tmpdir}/pos-1.json"));
+       
+        //Storage::deleteDirectory($tmpdir);
     }   
     
     

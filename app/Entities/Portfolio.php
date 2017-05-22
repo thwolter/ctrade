@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Models\Rscript\Rscriptable;
+use App\Entities\Currency;
 use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
@@ -19,36 +20,42 @@ class Portfolio extends Model
     protected $rscriptable = 'App\Models\Rscript\Portfolio';
     
     protected $fillable = [
-        'name', 'currency', 'cash'
+        'name', 'cash'
     ];
 
     public function user() {
-        return $this->belongsTo('App\Entities\User');
+        return $this->belongsTo(User::class);
     }
 
     public function positions() {
-        return $this->hasMany('App\Entities\Position');
+        return $this->hasMany(Position::class);
+    }
+    
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
     }
 
     public function cash() {
         return $this->cash;
     }
-
-
-    public function currency()
-    {
-        return $this->currency;
-    }
-
+    
     public function total()
     {
-        return $this->positions->sum->total($this->currency());
+        return $this->positions->sum->total($this->currency->code);
     }
     
     public function value()
     {
         return $this->total() + $this->cash();
     }
+    
+    
+    public function setCurrency($code)
+    {
+        $this->currency()->associate(Currency::create(['code' => $code]));
+    }
+    
     
     public function toArray()
     {
@@ -73,6 +80,19 @@ class Portfolio extends Model
         $json = $this->financial()->history($symbol, $from, $to);
 
         return $json;
+    }
+    
+    
+    public function obtain($amount, $instrument)
+    {
+        $position = new Position(['amount' => $amount]);
+
+        $position->portfolio()->associate($this);
+        $position->positionable()->associate($instrument);
+
+        $position->save();
+        
+        return $this;
     }
 }
 

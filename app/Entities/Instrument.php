@@ -4,12 +4,15 @@
 namespace App\Entities;
 
 
+use App\Entities\Exceptions\InstrumentException;
+use App\Models\Pathway;
 use App\Repositories\Contracts\InstrumentInterface;
-use App\Repositories\FinancialRepository;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use App\Repositories\Financable;
+
+use App\Models\QuantModel;
 
 
 abstract class Instrument extends Model
@@ -22,27 +25,27 @@ abstract class Instrument extends Model
    
     public function positions()
     {
-        return $this->morphMany('App\Entities\Position', 'positionable');
+        return $this->morphMany(Position::class, 'positionable');
     }
 
 
-    public function price()
+    public function currency()
     {
-        return $this->financial()->price($this->symbol);
+        return $this->belongsTo(Currency::class);
     }
 
-   
-    public function name()
+
+    public function sector()
     {
-        return $this->financial()->name($this->symbol);
+        return $this->belongsTo(Sector::class);
     }
-
-
-
-    public function symbol()
+    
+    
+    public function datasets()
     {
-        return $this->symbol;
+        return $this->morphToMany(Dataset::class, 'datasetable')->withTimestamps();
     }
+
 
 
     public function type()
@@ -51,14 +54,28 @@ abstract class Instrument extends Model
     }
 
 
-    public function currency()
+    public function pathway()
     {
-        return $this->financial()->currency($this->symbol);
+        return Pathway::withDatasets($this->datasets);
     }
-    
 
-    public function history(Carbon $from = null, Carbon $to = null)
+
+    public function price()
     {
-        return $this->financial()->history($this->symbol(), $from, $to);
+        return $this->financial()->price();
     }
+
+
+    public function history($parameter = ['limit' => 250])
+    {
+        return $this->financial()->history($parameter);
+    }
+
+
+    public function ValueAtRisk()
+    {
+        return QuantModel::ValueAtRisk($this->history(['limit' => 250]));
+    }
+   
+
 }

@@ -25,34 +25,79 @@ $factory->define(App\Entities\User::class, function (Faker\Generator $faker) {
 
 
 $factory->define(App\Entities\Portfolio::class, function(Faker\Generator $faker) {
+
+    $currency = \App\Entities\Currency::firstOrCreate(
+        ['code' => factory(\App\Entities\Currency::class)->make()->code]);
+
     return  [
         'user_id' => function() {
             return factory('App\Entities\User')->create()->id;
         },
         'name' => $faker->sentence,
-        'currency' => $faker->currencyCode,
+        'currency_id' => $currency->id,
         'cash' => 100 * $faker->randomDigitNotNull
     ];
 });
 
 
 
-$factory->define(App\Entities\Stock::class, function() {
+$factory->define(App\Entities\Stock::class, function(Faker\Generator $faker) {
+
+    $currency = \App\Entities\Currency::firstOrCreate(
+        ['code' => factory(\App\Entities\Currency::class)->make()->code]);
+
     return [
-        'symbol' => 'ALV.DE'
+        'name' => $faker->company,
+        'currency_id' => $currency->id
     ];
 });
 
 
 $factory->define(App\Entities\Position::class, function(Faker\Generator $faker) {
 
-    $stock = factory('App\Entities\Stock')->create();
-    $portfolio = factory('App\Entities\Portfolio')->create();
+   return [
+        'portfolio_id' => factory('App\Entities\Portfolio')->create()->id,
+        'positionable_id' => factory('App\Entities\Stock')->create()->id,
+        'positionable_type' => 'App\Entities\Stock',
+        'amount' => $faker->randomDigitNotNull
+    ];
+});
+
+$factory->define(App\Entities\Currency::class, function(Faker\Generator $faker) {
 
     return [
-        'portfolio_id' => $portfolio->id,
-        'positionable_id' => $stock->id,
-        'positionable_type' => get_class($stock),
-        'amount' => $faker->randomDigitNotNull
+        'code' => $faker->randomElement(['EUR', 'USD', 'CZK'])
+    ];
+});
+
+$factory->define(App\Entities\Sector::class, function(Faker\Generator $faker) {
+
+    return [
+        'name' => $faker->word
+    ];
+});
+
+
+
+$factory->define(\App\Entities\Dataset::class, function(Faker\Generator $faker) {
+
+    return [
+        'code' => $faker->word
+    ];
+});
+
+
+$factory->define(\App\Entities\Database::class, function(Faker\Generator $faker) {
+
+    return [
+        'code' => $faker->word,
+    ];
+});
+
+
+$factory->define(\App\Entities\Provider::class, function(Faker\Generator $faker) {
+
+    return [
+        'code' => $faker->word,
     ];
 });

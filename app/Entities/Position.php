@@ -2,9 +2,12 @@
 
 namespace App\Entities;
 
+use App\Models\QuantModel;
 use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
 use App\Repositories\Financable;
+use App\Entities\Portfolio;
+use App\Repositories\DataRepository;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -16,9 +19,9 @@ class Position extends Model implements PresentableInterface
     
     use Presentable;
 
-    protected $presenter = 'App\Presenters\Position';
+    protected $presenter = \App\Presenters\Position::class;
     
-    protected $financial = 'App\Repositories\Yahoo\CurrencyFinancial';
+    protected $financial = DataRepository::class;
 
     protected $fillable = [
         'positionable_type',
@@ -35,7 +38,7 @@ class Position extends Model implements PresentableInterface
 
     public function portfolio()
     {
-        return $this->belongsTo('App\Entities\Portfolio');
+        return $this->belongsTo(Portfolio::class);
     }
 
 
@@ -46,7 +49,7 @@ class Position extends Model implements PresentableInterface
 
     public function currency()
     {
-        return $this->positionable->currency();
+        return $this->positionable->currency;
     }
 
     public function type()
@@ -59,14 +62,13 @@ class Position extends Model implements PresentableInterface
         return $this->positionable->typeDisp;
     }
 
-
     public function amount()
     {
         return $this->amount;
     }
 
     public function name() {
-        return $this->positionable->name();
+        return $this->positionable->name;
     }
 
     public function symbol() {
@@ -82,10 +84,11 @@ class Position extends Model implements PresentableInterface
     
     public function convert($currency = null) {
         
-        if (is_null($currency) or $this->curreny == $currency) return 1;
+        if (is_null($currency) or $this->currency()->code == $currency) return 1;
         
-        return $this->financial()->price($this->currency().$currency);
+        return QuantModel::ccyPrice($this->currency()->code, $currency);
     }
+
 
     public function hasCurrency($currency)
     {
@@ -104,9 +107,9 @@ class Position extends Model implements PresentableInterface
         ];
     }
 
-    public function history(Carbon $from = null, Carbon $to = null)
+    public function history($parameter = ['limit' => 250])
     {
-        return $this->positionable->history($from, $to);
+        return $this->positionable->history($parameter);
     }
 }
 

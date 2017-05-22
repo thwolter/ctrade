@@ -2,7 +2,13 @@
 
 namespace Tests\Unit\Entities;
 
-use App\Entities\Position;
+use App\Entities\Currency;
+use App\Entities\Provider;
+use App\Entities\Database;
+use App\Entities\Dataset;
+use App\Entities\Sector;
+use App\Entities\Security;
+use App\Models\Pathway;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -10,63 +16,69 @@ use App\Entities\Stock;
 
 class StockTest extends TestCase
 {
-
     use DatabaseMigrations;
 
+    protected $stock;
+    protected $database;
+    protected $dataset;
+    protected $provider;
+
+    protected $providerName = 'Quandl';
+    protected $databaseCode = 'SSE';
+    protected $datasetCode = 'ALV';
 
 
-    private function createStock($symbol)
+    public function setUp()
     {
-        $portfolio = factory('App\Entities\Portfolio')->create();
+        parent::setUp();
 
-        $stock = Stock::firstOrCreate(['symbol'=> $symbol]);
-
-        $position = new Position();
-        $stock->positions()->save($position);
-        $portfolio->positions()->save($position);
-
-        return $stock;
-    }
-
-/*
-    public function test_position_is_created()
-    {
-        $this->createStock('ALV.DE');
-
-        $this->assertDatabaseHas('stocks', ['symbol' => 'ALV.DE']);
-    }
-*/
-
-    public function test_stock_has_price() {
-
-        $stock = $this->createStock('BAS.DE');
-
-        $this->assertGreaterThan(0, $stock->price());
+        $this->stock = Stock::saveWithParameter([
+            'name' => 'Allianz',
+            'currency' => 'EUR',
+            'sector' => 'Insurance'
+        ]);
+        Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
     }
 
 
     public function test_stock_has_currency() {
 
-        $stock = $this->createStock('BAS.DE');
-
-        $this->assertStringStartsWith('EUR', $stock->currency());
+        $this->assertEquals('EUR', $this->stock->currency->code);
     }
 
 
     public function test_stock_has_name() {
 
-        $stock = $this->createStock('BAS.DE');
-
-        $this->assertStringStartsWith('BASF', $stock->name());
+        $this->assertEquals('Allianz', $this->stock->name);
     }
 
 
-    public function test_has_history()
+    public function test_stock_has_sector() {
+
+        $this->assertEquals('Insurance', $this->stock->sector->name);
+    }
+    
+    
+    public function test_stock_has_pathway()
     {
-        $stock = $this->createStock('BAS.DE');
-        $json = $stock->history();
-        
-        $this->assertTrue(is_string($json) and is_array(json_decode($json, true)));
+        $this->assertEquals('Quandl', $this->stock->pathway()->first()->provider->code);
     }
-   
+    
+    
+    public function test_stock_has_price()
+    {
+        $this->assertGreaterThan(0, $this->stock->price());
+    }
+
+
+    public function test_stock_has_history()
+    {
+        $this->assertEquals(250, count($this->stock->history(['limit' => 250])));
+    }
+    
+    
+    public function test_stock_has_VaR()
+    {
+        $this->assertGreaterThan(0, $this->stock->ValueAtRisk()['VaR']);
+    }
 }

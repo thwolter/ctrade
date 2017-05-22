@@ -15,7 +15,7 @@ class CreatePositionsTable extends Migration
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('portfolio_id')->nullable()->index(); //TODO: shouldn't be nullable
+            $table->integer('portfolio_id')->index();
             $table->integer('positionable_id');
             $table->string('positionable_type');
             $table->float('amount')->nullable();

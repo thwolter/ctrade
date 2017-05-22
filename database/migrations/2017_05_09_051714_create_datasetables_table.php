@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWknsTable extends Migration
+class CreateDatasetablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateWknsTable extends Migration
      */
     public function up()
     {
-        Schema::create('wkns', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('wkn');
+        Schema::create('datasetables', function (Blueprint $table) {
+            //$table->increments('id');
+            $table->integer('dataset_id');
+            $table->integer('datasetable_id');
+            $table->string('datasetable_type');
+            $table->primary(['dataset_id', 'datasetable_id']);
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateWknsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wkns');
+        Schema::dropIfExists('datasetables');
     }
 }

@@ -10,6 +10,9 @@ class PositionsControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected $portfolio;
+    protected $user;
+
     public function setUp()
     {
         parent::setUp();

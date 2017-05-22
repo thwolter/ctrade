@@ -2,9 +2,14 @@
 
 namespace Tests\Unit;
 
+use App\Entities\CcyPair;
 use App\Entities\Position;
 use App\Entities\Stock;
 use App\Entities\Portfolio;
+use App\Entities\Currency;
+use App\Models\Pathway;
+use App\Models\QuantModel;
+use App\Repositories\Metadata\QuandlECB;
 use App\Repositories\Yahoo\CurrencyFinancial;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -13,20 +18,39 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class PositionTest extends TestCase
 {
     protected $position;
+    protected $currency;
+    protected $stock;
+
 
     use DatabaseMigrations;
+
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->position = factory('App\Entities\Position')->create();
+        $this->stock = Stock::saveWithParameter([
+            'name' => 'Allianz',
+            'currency' => 'EUR',
+            'sector' => 'Industry'
+        ]);
+        Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
+
+        $this->position = factory(Position::class)->create([
+            'positionable_id' => $this->stock->id,
+            'positionable_type' => Stock::class,
+            'amount' => 5
+        ]);
+
+        Currency::firstOrCreate(['code' => 'USD']);
+        QuandlECB::sync();
+
     }
 
 
     public function test_positions_stock_has_currency()
     {
-       $this->assertStringStartsWith('EUR', $this->position->currency());
+        $this->assertEquals('EUR', $this->position->currency()->code);
     }
 
     public function test_position_stock_has_price()
@@ -34,14 +58,10 @@ class PositionTest extends TestCase
         $this->assertGreaterThan(0, $this->position->price());
     }
 
-    public function test_position_stock_has_symbol()
-    {
-        $this->assertEquals('ALV.DE', $this->position->symbol());
-    }
 
     public function test_position_stock_has_name()
     {
-        $this->assertStringStartsWith('ALLIANZ', $this->position->name());
+        $this->assertEquals('Allianz', $this->position->name());
     }
 
     public function test_position_has_amount()
@@ -53,20 +73,11 @@ class PositionTest extends TestCase
     {
         $this->assertGreaterThan(0, $this->position->total());
     }
-    
-    
-    public function test_convert_USD_into_position_currency() {
-        
-        $financial = new CurrencyFinancial;
-        
-        $this->assertEquals($financial->price('EURUSD'), $this->position->convert('USD'));
-    }
+
     
     public function test_total_with_currency_converts_into_this_currency() {
         
-        $financial = new CurrencyFinancial;
-        
-        $rate = $financial->price('EURUSD');
+        $rate = CcyPair::whereOrigin('EUR')->whereTarget('USD')->first()->price();
         
         $this->assertEquals($this->position->total() * $rate, $this->position->total('USD'));
         
@@ -74,57 +85,48 @@ class PositionTest extends TestCase
 
     public function test_position_total_value_in_original_currency()
     {
-        $position = $this->makePositionWithPortfolio('EUR', 5, 'ALV.DE');
-
-        $this->assertEquals(5 * $position->price(), $position->total());
+        $this->assertEquals(5 * $this->position->price(), $this->position->total());
     }
-    
+
+
     public function test_position_total_value_in_portfolio_currency()
     {
-        $position = $this->makePositionWithPortfolio('CZK', 5, 'ALV.DE');
-        $currency = new CurrencyFinancial;
-        
-        $expect = 5 * $position->price() * $currency->price('EURCZK');
+        $rate = QuantModel::ccyPrice('EUR', 'USD');
 
-        $this->assertEquals($expect, $position->total('CZK'));
+        $expect = 5 * $this->position->price() * $rate;
+
+        $this->assertEquals($expect, $this->position->total('USD'));
     }
 
+
+    //Todo: implement new currency data source
     public function test_method_currency_give_position_currency()
     {
-        $stock = factory('App\Entities\Stock')->create(['symbol' => 'YHOO']);
-        $stock->positions()->save(new Position);
+        $position = factory(Position::class)->create();
+        $this->stock->positions()->save($position);
 
-        $position = $stock->positions()->first();
-
-        $this->assertEquals('USD', $position->currency());
+        $this->assertEquals('EUR', $position->currency()->code);
     }
+
 
     public function test_typeDisp_of_stock_shows_Aktie()
     {
-        $stock = factory('App\Entities\Stock')->create(['symbol' => 'YHOO']);
-        $stock->positions()->save(new Position);
-
-        $position = $stock->positions()->first();
-        
-        $this->assertEquals('Aktie', $position->typeDisp());
+        $this->assertEquals('Aktie', $this->position->typeDisp());
     }
 
     public function test_can_create_an_array()
     {
-        $position = $this->makePositionWithPortfolio('EUR', 5, 'ALV.DE');
-        $array = $position->toArray();
+        $array = $this->position->toArray();
 
         $this->assertArrayHasKey('name', $array);
-
-        $this->assertEquals('ALV.DE', $array['symbol']);
+        $this->assertEquals('Allianz', $array['name']);
     }
 
     public function test_position_has_history()
     {
-        $position = $this->makePositionWithPortfolio('EUR', 5, 'ALV.DE');
 
-        $json = $position->history();
+        $data = $this->position->history();
 
-        $this->assertTrue(is_string($json) and is_array(json_decode($json, true)));
+        $this->assertTrue(is_array($data));
     }
 }
