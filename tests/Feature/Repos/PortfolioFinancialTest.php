@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Repos;
+namespace Tests\Feature\Repos;
 
 use App\Repositories\Yahoo\PortfolioFinancial;
 use Tests\TestCase;

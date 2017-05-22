@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Entities;
+namespace Tests\Feature\Entities;
 
 use App\Entities\Currency;
 use App\Entities\Provider;

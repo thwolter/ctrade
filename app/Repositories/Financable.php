@@ -7,7 +7,7 @@ use App\Repositories\Exceptions\FinancialException;
 trait Financable
 {
     
-    protected static $financialInstance;
+    protected $financialInstance;
 
 
  
@@ -18,12 +18,12 @@ trait Financable
             throw new FinancialException("property financial = '{$this->financial}' doesn't exist.");
         }
         
-        if (! isset(static::$financialInstance)) {
+        if (! isset($financialInstance)) {
             
-            static::$financialInstance = new $this->financial($this->pathway());
+            $this->financialInstance = new $this->financial($this->pathway());
         }
         
-        return static::$financialInstance;
+        return $this->financialInstance;
         
     }
 }

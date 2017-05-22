@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Entities;
+namespace Tests\Feature\Entities;
 
 use App\Entities\CcyPair;
 use App\Entities\Currency;

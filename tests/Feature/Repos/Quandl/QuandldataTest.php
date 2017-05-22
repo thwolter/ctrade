@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Repos\Quandl;
+namespace Tests\Feature\Repos\Quandl;
 
 use App\Models\Exceptions\PathwayException;
 use Tests\TestCase;

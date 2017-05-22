@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Repos\Metadata;
+namespace Tests\Feature\Repos\Metadata;
 
 use App\Entities\Currency;
 use App\Models\Pathway;
