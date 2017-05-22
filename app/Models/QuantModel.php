@@ -100,6 +100,10 @@ class QuantModel
     protected function getCurrencyHistoryWithBase($base, $currency, $parameter): array
     {
         $ccy = CcyPair::whereOrigin($base)->whereTarget($currency)->first();
+
+        if (is_null($ccy))
+            throw new QuantModelException("No pathway is defined for currency pair {$base}{$currency}. Call 'QuandlECB::sync()' could be called");
+
         return Quandldata::getHistory($ccy->symbol(), $parameter);
     }
 }

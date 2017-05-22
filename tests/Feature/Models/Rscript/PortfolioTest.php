@@ -6,6 +6,7 @@ use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\Stock;
 use App\Models\Pathway;
+use App\Repositories\Metadata\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -17,20 +18,24 @@ class PortfolioTest extends TestCase
     use DatabaseMigrations;
 
     protected $portfolio;
+    protected $stock;
 
 
     public function setUp()
     {
         parent::setUp();
 
-        $currency = Currency::firstOrCreate(['code' => 'EUR']);
+        $currency = Currency::firstOrCreate(['code' => 'USD']);
+        Currency::firstOrCreate(['code' => 'EUR']);
 
-        $stock = Stock::saveWithParameter([
+        QuandlECB::sync();
+
+        $this->stock = Stock::saveWithParameter([
                   'name' => 'Allianz',
                   'currency' => 'EUR',
                   'sector' => 'Insurance'
               ]);
-        Pathway::make('Quandl', 'SSE', 'ALV')->assign($stock);
+        Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
 
         $this->portfolio = factory(Portfolio::class)->create([
             'currency_id' => $currency->id
@@ -50,7 +55,10 @@ class PortfolioTest extends TestCase
     /** @test */
     public function it_saves_a_portfolio_position_as_json()
     {
-        $this->portfolio->obtain(10, $stock);
+        $this->portfolio->obtain(10, $this->stock);
+        $this->portfolio->rscript()->storeHistoryFiles();
+
+        $this->assertFileExists($this->portfolio->rscript()->fullpath('Stock-1.json'));
 
     }
 

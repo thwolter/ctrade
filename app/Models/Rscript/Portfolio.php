@@ -4,6 +4,7 @@
 namespace App\Models\Rscript;
 
 
+use App\Entities\Currency;
 use App\Models\QuantModel;
 use Illuminate\Support\Facades\Storage;
 use Khill\Lavacharts\Lavacharts;
@@ -55,14 +56,15 @@ class Portfolio extends Rscripter
         foreach ($positions as $position) {
 
             $this->storePositionHistory($position);
-            $this->storeCurrencyHistory($this->entity->currency(), $position->currency());
+            $this->storeCurrencyHistory($this->entity->currencyCode(), $position->currencyCode());
         }
     }
 
 
     protected function storePositionHistory($position)
     {
-        $filename = "{$this->tmpDir}/pos-{$position->id}.json";
+        // Todo: 'Stock' must be result of the underlying instrument
+        $filename = $this->path("Stock-{$position->id}.json");
 
         if (! file_exists($filename)) {
 
@@ -71,13 +73,13 @@ class Portfolio extends Rscripter
     }
 
 
-    protected function storeCurrencyHistory(Currency $base, Currency $target)
+    protected function storeCurrencyHistory($origin, $target)
     {
-        $filename = "{$this->tmpDir}/{$base->code}.{$target->code}.json";
+        $filename = $this->path("{$origin}.{$target}.json");
 
         if (! file_exists($filename)) {
 
-            $json = QuantModel::ccyHistory($base->code, $target->code);
+            $json = QuantModel::ccyHistory($origin, $target);
 
             Storage::disk('local')->put($filename, $json);
         }

@@ -11,14 +11,10 @@ use App\Models\Exceptions\RscriptException;
 abstract class Rscripter
 {
     
-    protected $cleanup = true;
-
     protected $logFile = 'log.txt';
     protected $resultFile = 'result.json';
 
     protected $entity;
-    protected $rapi;
-    protected $rbase;
     protected $path;
 
 
@@ -39,11 +35,6 @@ abstract class Rscripter
         $this->makeTempDir();
     }
 
-
-    public function __destruct()
-    {
-        //Storage::deleteDirectory($this->path());
-    }
 
     public function entityName()
     {
@@ -96,20 +87,14 @@ abstract class Rscripter
     public function callRscript($args = ['task' => 'test-in-out'])
     {
         $entity = $this->saveJSON();
-
         exec($this->getRCallString($entity, $args));
-        $errorMessage= $this->getErrorMessage();
+
+        //$error = $this->getErrorMessage();
+        if ($error = $this->getErrorMessage())
+            throw new RscriptException($error);
 
         $result = $this->getResultArray();
-
-        if ($this->cleanup)
-            Storage::deleteDirectory($this->path());
-
-        if ($errorMessage)
-            throw new RscriptException($errorMessage);
-            
-        if (! is_array($result))
-            throw new RscriptException('Rscript returned an invalid json file');
+        $this->deleteTempDir();
 
         return $result;
     }
@@ -121,6 +106,12 @@ abstract class Rscripter
     {
         $this->path = 'tmp/' . uniqid();
         Storage::makeDirectory($this->path);
+    }
+
+
+    public function deleteTempDir()
+    {
+        Storage::deleteDirectory($this->path());
     }
 
     /**
@@ -160,16 +151,20 @@ abstract class Rscripter
 
         $pos = stripos($logtext, 'ERROR');
 
-        return ($pos) ? substr($logtext, $pos) : false;
+        return ($pos !== true) ? substr($logtext, $pos) : false;
     }
 
 
     private function getResultArray()
     {
-        if (Storage::disk('local')->exists($this->path($this->resultFile))) {
+        if (!Storage::disk('local')->exists($this->path($this->resultFile)))
+            return false;
 
-            $array = json_decode(Storage::read($this->path($this->resultFile)), true);
-        }
-        return isset($array) ? $array : false;
+        $array = json_decode(Storage::read($this->path($this->resultFile)), true);
+
+        if (! is_array($array))
+            throw new RscriptException('Rscript returned an invalid json file');
+
+        return $array;
     }
 }
