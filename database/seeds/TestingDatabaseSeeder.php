@@ -14,27 +14,9 @@ class TestingDatabaseSeeder extends Seeder
 
     public function run()
     {
-        $stockALV = Stock::firstOrNew(['name' => 'Allianz']);
-        $stockBAS = Stock::firstOrNew(['name' => 'Basf']);
-        $stockDAI = Stock::firstOrNew(['name' => 'Daimler']);
-
-        $ccyEUR = Currency::firstOrCreate(['code' => 'EUR']);
-        $ccyUSD = Currency::firstOrCreate(['code' => 'USD']);
-        $ccyCHF = Currency::firstOrCreate(['code' => 'CHF']);
-
-        // create 3 stocks with currency EUR
-        $ccyEUR->stocks()->save($stockALV);
-        $ccyEUR->stocks()->save($stockBAS);
-        $ccyEUR->stocks()->save($stockDAI);
-
-        // pathways to Quandl
-        Pathway::make('Quandl', 'ECB', 'EURUSD')->assign($stockALV);
-        Pathway::make('Quandl', 'ECB', 'EURCHF')->assign($stockALV);
-
-        Pathway::make('Quandl', 'SSE', 'ALV')->assign($stockALV);
-        Pathway::make('Quandl', 'SSE', 'BAS')->assign($stockBAS);
-        Pathway::make('Quandl', 'SSE', 'DAI')->assign($stockDAI);
-
+        $this->call(UserSeeder::class);
+        $this->call(CurrencySeeder::class);
+        $this->call(StockSeeder::class);
 
         // a user
         $user = factory(User::class)->create();

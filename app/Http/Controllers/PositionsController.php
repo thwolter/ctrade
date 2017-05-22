@@ -35,9 +35,9 @@ class PositionsController extends Controller
      */
     public function create($id)
     {
-        $portfolio = Portfolio::findOrFail($id);
-        return view('search.index', compact('portfolio'));
+        return app(SearchController::class)->index(new Request(), $id);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -45,25 +45,13 @@ class PositionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return string
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        $this -> validate(request(), [
-            'symbol' => 'required',
-            'portfolio_id' => 'required',
-            'type' => 'required'
-        ]);
+        $instrument = resolve($request->get('type'))
+            ->find($request->get('itemId'));
 
-        $position = new Position(['amount' => $request->get('amount')]);
-
-        $portfolio = Portfolio::findOrFail($request->get('portfolio_id'));
-
-        //Todo: adapt new pathway scheme
-        $instrument = resolve('App\\Entities\\'.$this->mapType($request->get('type')))
-            ::firstOrCreate(['symbol'=> $request->get('symbol')]);
-
-
-        $instrument->positions()->save($position);
-        $portfolio->positions()->save($position);
+        $portfolio = Portfolio::find($id)
+            ->obtain($request->get('amount'), $instrument);
 
         return redirect(route('positions.index', $portfolio->id));
 

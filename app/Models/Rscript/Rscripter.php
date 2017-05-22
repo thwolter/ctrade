@@ -12,17 +12,16 @@ abstract class Rscripter
 {
     
     protected $cleanup = true;
-    
+
     protected $entity;
-    protected $path;
     protected $rapi;
     protected $rbase;
-    
+    protected $path;
 
 
     /**
      * Constructor to set the entity (e.g. Portfolio) and
-     * to define required path's to be handed over to Rscript
+     * to define required tmp_path's to be handed over to Rscript
      *
      * Rscripter constructor.
      * @param $entity
@@ -32,8 +31,9 @@ abstract class Rscripter
         $this->entity = $entity;
 
         $this->rapi = base_path().'/rscripts/rapi.R';
-        $this->path = storage_path().'/app/';
         $this->rbase = base_path(). '/rscripts';
+
+        $this->makeTempDir();
     }
 
 
@@ -43,6 +43,20 @@ abstract class Rscripter
         return $ref->getShortName();
     }
 
+
+    public function path($file = null)
+    {
+        if (is_null($file)) {
+            return $this->path;
+        } else {
+            return $this->path.'/'.$file;
+        }
+    }
+
+    public function fullpath($file = null)
+    {
+        return storage_path('app/'.$this->path($file));
+    }
 
     /**
      * Transforms array with parameters into a string to be used within exec call of Rscript
@@ -73,19 +87,14 @@ abstract class Rscripter
      */
     public function callRscript($directory, $args)
     {
-        // define result file
-        $resultFile = "{$directory}/result.json";
-        
-        // define log file
-        $logFile = "{$directory}/log.txt";
-
-        // entity file
-        $entity = $this->saveJSON($directory);
+        $result = 'result.json';
+        $log = 'log.txt';
+        $entity = $this->saveJSON();
 
         $callString = sprintf(
             "Rscript --vanilla %s --base=%s --entity=%s --result=%s --directory=%s %s 2> %s",
-            $this->rapi, $this->rbase, $this->path.$entity, $this->path.$resultFile,
-            $this->path.$directory, $this->argsImplode($args), $this->path.$logFile);
+            $this->rapi, $this->rbase, storage_path('app/'.$entity), $this->fullpath($result),
+            $this->fullpath(), $this->argsImplode($args), $this->fullpath($log));
         
         exec($callString);
 
@@ -116,12 +125,10 @@ abstract class Rscripter
     /**
      * @return string
      */
-    public function makeDirectory(): string
+    public function makeTempDir()
     {
-        $tmpdir = 'tmp/' . uniqid();
-        Storage::makeDirectory($tmpdir);
-
-        return $tmpdir;
+        $this->path = 'tmp/' . uniqid();
+        Storage::makeDirectory($this->path);
     }
 
     /**
@@ -129,9 +136,10 @@ abstract class Rscripter
      *
      * @return string with name of the json file
      */
-    public function saveJSON($directory)
+    public function saveJSON()
     {
-        $filename = "{$directory}/{$this->entityName()}.json";
+        $filename = $this->path($this->entityName().'.json');
+
         Storage::disk('local')->put($filename, json_encode($this->entity->toArray()));
 
         return $filename;

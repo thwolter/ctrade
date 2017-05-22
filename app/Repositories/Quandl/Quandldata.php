@@ -8,41 +8,64 @@ use App\Models\Exceptions\QuandlException;
 use App\Models\Pathway;
 use Carbon\Carbon;
 
-class Quandldata extends \Quandl
+class Quandldata
 {
 
     protected $priceColumnNames = ['Last', 'Close'];
 
     protected $client;
     protected $path;
-    
-    
-    public function __construct(Pathway $path)
+
+
+    /**
+     * Quandldata constructor.
+     * @param string $code of a dataset
+     */
+    public function __construct(String $code)
     {
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
-        $this->path = $path;
+        $this->path = $this->getPathway($code);
     }
 
-    
-    static public function make($path)
-    {
-        return new Quandldata($path);
-    }
-    
-    
+
     public function price()
     {
-        return $this->getArrayHistory(['limmit' => 1])[0];
+        return $this->getArrayHistory(['limit' => 1])[0];
+    }
+
+    /**
+     * The price of an instrument with given dataset code
+     * @param string $code
+     * @return int
+     */
+    static public function getPrice($code)
+    {
+        $quandl = new Quandldata($code);
+        return $quandl->price();
     }
 
 
     public function history($parameter = ['limit' => 250])
     {
         return $this->getArrayHistory($parameter);
+
     }
 
 
-    private function quandlCode(): string
+    /**
+     * The history of an instrument with given dataset code
+     * @param string $code
+     * @param array $parameter
+     * @return array
+     */
+    static public function getHistory($code, $parameter = ['limit' => 250])
+    {
+        $quandl = new Quandldata($code);
+        return $quandl->history($parameter);
+    }
+
+
+    private function quandlCode()
     {
         $database_code = $this->path->first()->database->code;
         $dataset_code = $this->path->first()->dataset->code;
@@ -85,5 +108,11 @@ class Quandldata extends \Quandl
         }
 
         return ($column) ? $column : 1;
+    }
+
+
+    private function getPathway($code)
+    {
+        return Pathway::withDatasetCode($code)->first();
     }
 }

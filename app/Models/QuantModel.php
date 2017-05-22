@@ -5,6 +5,7 @@ namespace App\Models;
 
 
 use App\Entities\CcyPair;
+use App\Models\Exceptions\QuantModelException;
 use App\Repositories\Quandl\Quandldata;
 use MathPHP\Statistics\Average;
 use MathPHP\Statistics\Circular;
@@ -38,41 +39,67 @@ class QuantModel
 
     static public function ccyHistory($origin, $target, $parameter = ['limit' => 250])
     {
+        $model = new QuantModel();
+        return $model->getCurrencyHistory($origin, $target, $parameter);
+    }
+
+
+    public function getCurrencyHistory($origin, $target, $parameter = ['limit' => 250])
+    {
+        if ($origin == $target) {
+            return array_pad([], $parameter['limit'], 1);
+        }
+
         $base = 'EUR';
 
         if ($origin == $base) {
-            $ccy = CcyPair::whereOrigin($base)->whereTarget($target)->first();
-            return Quandldata::make($ccy->pathway()->first())->history($parameter);
+            $hist = $this->getCurrencyHistoryWithBase($base, $target, $parameter);
+            return $hist;
         }
 
         if ($target == $base) {
-            $ccy = CcyPair::whereOrigin($base)->whereTarget($origin)->first();
-            $hist = Quandldata::make($ccy->pathway()->first())->history($parameter);
-
-            $histInverse = [];
-            foreach ($hist as $x) {
-                $histInverse[] = 1/$x;
-            }
-            return $histInverse;
+            $hist = $this->getCurrencyHistoryWithBase($base, $origin, $parameter);
+            return $this->inverse($hist);
         }
 
-        $ccy1 = CcyPair::whereOrigin($base)->whereTarget($target)->first();
-        $hist1 = Quandldata::make($ccy1->pathway()->first())->history($parameter);
+        $hist1 = $this->getCurrencyHistoryWithBase($base, $target, $parameter);
+        $hist2 = $this->getCurrencyHistoryWithBase($base, $origin, $parameter);
 
-        $ccy2 = CcyPair::whereOrigin($base)->whereTarget($origin)->first();
-        $hist2 = Quandldata::make($ccy2->pathway()->first())->history($parameter);
-
-        $x = [];
-        $count = count($hist1);
-        for ($i = 0; $i < $count; $i++) {
-            $x[$i] = $hist2[$i]/$hist1[$i];
-        }
-
-        return $x;
+        return $this->divide($hist1, $hist2);
     }
+
 
     static public function ccyPrice($origin, $target)
     {
         return self::ccyHistory($origin, $target, ['limit' => 1])[0];
+    }
+
+
+    protected function inverse($x)
+    {
+        return $this->divide(array_pad([], count($x), 1), $x);
+    }
+
+
+    public function divide($x, $y)
+    {
+        $divide = [];
+        $n = count($x);
+        $m = count($y);
+
+        if ($n != $m)
+            throw new QuantModelException("vectors must have same length, was {$n} and {$m}");
+
+        for ($i = 0; $i < $n; $i++)
+        {
+            $divide[] = $x[$i]/$y[$i];
+        }
+        return $divide;
+    }
+
+    protected function getCurrencyHistoryWithBase($base, $currency, $parameter): array
+    {
+        $ccy = CcyPair::whereOrigin($base)->whereTarget($currency)->first();
+        return Quandldata::getHistory($ccy->symbol(), $parameter);
     }
 }

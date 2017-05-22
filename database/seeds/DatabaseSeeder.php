@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Entities\Stock;
+use App\Entities\Currency;
+use App\Models\Pathway;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,7 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UsersTableSeeder::class);
-        $this->call(CurrencyTableSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(CurrencySeeder::class);
+        $this->call(StockSeeder::class);
     }
 }

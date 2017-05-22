@@ -13,7 +13,7 @@ class CcyPair extends Model
 
     use Financable;
 
-    protected $financial = Quandldata::class;
+    protected $financial = DataRepository::class;
 
 
     protected $fillable = ['origin', 'target'];
@@ -33,7 +33,7 @@ class CcyPair extends Model
 
     public function symbol()
     {
-        return $this->origin.$this->target();
+        return $this->origin.$this->target;
     }
 
 

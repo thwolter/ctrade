@@ -8,16 +8,32 @@ class Currency extends Model
 {
     
     protected $fillable = [
-        'code',
+        'code', 'elibible'
     ];
-    
+
+
     public function stocks()
     {
         return $this->hasMany(Stock::class);
     }
-    
+
+
     public function portfolios()
     {
         return $this->hasMany(Portfolio::class);
+    }
+
+
+    static public function eligible()
+    {
+        $eligible = [];
+        $currencies = Currency::whereEligible(true)->get();
+
+        foreach ($currencies as $currency)
+        {
+            $eligible[$currency->id] = $currency->code;
+        };
+
+        return $eligible;
     }
 }

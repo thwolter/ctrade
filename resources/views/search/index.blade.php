@@ -7,6 +7,12 @@
 
     @include('partials.errors')
 
+    <!-- select type -->
+    <div class="form-group">
+        {!! Form::label('type', 'Typ:') !!}
+        {!! Form::select('type', $types, null, ['class' => 'form-control']) !!}
+    </div>
+
     <!-- search form input -->
     <div class="form-group">
         {!! Form::label('search', 'Suchen:') !!}
@@ -41,7 +47,7 @@
                 <td>{{ ++$count }}</td>
                 <td>{{ $item['typeDisp'] }}</td>
                 <td>{{ $item['symbol'] }}</td>
-                <td><a href="{{ route('search.show', [$portfolio->id, $item['type'], $item['symbol']]) }}">{{ $item['name'] }}</a></td>
+                <td><a href="{{ route('search.show', [$portfolio->id, get_class($item), $item->id]) }}">{{ $item['name'] }}</a></td>
                 <td>{{ $item['exchDisp'] }}</td>
             </tr>
         @endforeach

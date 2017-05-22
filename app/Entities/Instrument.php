@@ -35,6 +35,12 @@ abstract class Instrument extends Model
     }
 
 
+    public function currencyCode()
+    {
+        return $this->currency->code;
+    }
+
+
     public function sector()
     {
         return $this->belongsTo(Sector::class);

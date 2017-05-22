@@ -188,6 +188,7 @@ return [
         Khill\Lavacharts\Laravel\LavachartsServiceProvider::class,
         Clockwork\Support\Laravel\ClockworkServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        \Laravel\Scout\ScoutServiceProvider::class,
 
     ],
 

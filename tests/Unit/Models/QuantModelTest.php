@@ -1,51 +1,37 @@
 <?php
 
-namespace Tests\Unit\Repos;
+namespace Tests\Unit\Models;
 
-use App\Entities\CcyPair;
-use App\Entities\Currency;
+use App\Models\Exceptions\QuantModelException;
 use App\Models\QuantModel;
-use App\Repositories\DataRepository;
-use App\Repositories\Metadata\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class QuantModelTest extends TestCase
 {
-
-    use DatabaseMigrations;
-
-    public function setUp()
+    /** @test */
+    public function can_divide_array_with_one_entry()
     {
-        parent::setUp();
-
-        Currency::firstOrCreate(['code' => 'USD']);
-        Currency::firstOrCreate(['code' => 'CZK']);
-
-        QuandlECB::sync();
-
+        $m = new QuantModel();
+        $this->assertEquals([0.25], $m->divide([1], [4]));
     }
 
-    public function test_EURUSD_has_history()
+    /** @test */
+    public function can_divide_array_with_two_entries()
     {
-        $this->assertEquals(250, count(QuantModel::ccyHistory('EUR', 'USD')));
+        $m = new QuantModel();
+        $this->assertEquals([0.25, 0.5], $m->divide([1,3], [4,6]));
     }
 
-
-    public function test_USDEUR_has_history()
+    /**
+     * @test
+     */
+    public function throws_an_error_for_different_vector_lengths()
     {
-        $this->assertEquals(250, count(QuantModel::ccyHistory('USD', 'EUR')));
-    }
+        $m = new QuantModel();
 
-
-    public function test_CZKUSD_has_history()
-    {
-        $this->assertEquals(250, count(QuantModel::ccyHistory('CZK', 'USD')));
-    }
-
-    public function test_CZKUSD_has_price()
-    {
-        $this->assertGreaterThan(0, count(QuantModel::ccyPrice('CZK', 'USD')));
+        $this->expectException(QuantModelException::class);
+        $this->assertEquals([0.25, 0.5], $m->divide([1,3], [4]));
     }
 }
