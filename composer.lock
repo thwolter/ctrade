@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "db46ff29c4352d7bf8e90edfa634df18",
+    "content-hash": "9ab729f70e347f065509644424677234",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -668,16 +668,16 @@
         },
         {
             "name": "khill/lavacharts",
-            "version": "3.1.4",
+            "version": "3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kevinkhill/lavacharts.git",
-                "reference": "be47d86d5deb5e99a69967c02fc6a30de04a9d31"
+                "reference": "d0f103d546d8d701f4e9fe63641f00f11231942f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kevinkhill/lavacharts/zipball/be47d86d5deb5e99a69967c02fc6a30de04a9d31",
-                "reference": "be47d86d5deb5e99a69967c02fc6a30de04a9d31",
+                "url": "https://api.github.com/repos/kevinkhill/lavacharts/zipball/d0f103d546d8d701f4e9fe63641f00f11231942f",
+                "reference": "d0f103d546d8d701f4e9fe63641f00f11231942f",
                 "shasum": ""
             },
             "require": {
@@ -761,7 +761,7 @@
                 "laravel",
                 "symfony"
             ],
-            "time": "2017-04-22T19:59:15+00:00"
+            "time": "2017-05-21T23:23:09+00:00"
         },
         {
             "name": "laravel/dusk",
@@ -1068,16 +1068,16 @@
         },
         {
             "name": "laravelcollective/html",
-            "version": "v5.4.5",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "4aae8fb4384f9aaa17df44ad843b45af9cd721b3"
+                "reference": "9b8f51e7a2368911c896f5d42757886bae0717b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/4aae8fb4384f9aaa17df44ad843b45af9cd721b3",
-                "reference": "4aae8fb4384f9aaa17df44ad843b45af9cd721b3",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/9b8f51e7a2368911c896f5d42757886bae0717b5",
+                "reference": "9b8f51e7a2368911c896f5d42757886bae0717b5",
                 "shasum": ""
             },
             "require": {
@@ -1118,7 +1118,7 @@
             ],
             "description": "HTML and Form Builders for the Laravel Framework",
             "homepage": "http://laravelcollective.com",
-            "time": "2017-05-19T08:15:59+00:00"
+            "time": "2017-05-22T06:35:07+00:00"
         },
         {
             "name": "league/flysystem",
@@ -1205,16 +1205,16 @@
         },
         {
             "name": "markrogoyski/math-php",
-            "version": "v0.28.0",
+            "version": "v0.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/markrogoyski/math-php.git",
-                "reference": "443aa343f2056820aca6242c890903ba7d7d9cc3"
+                "reference": "3137abc283c341488bb91493894409329cf01012"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/markrogoyski/math-php/zipball/443aa343f2056820aca6242c890903ba7d7d9cc3",
-                "reference": "443aa343f2056820aca6242c890903ba7d7d9cc3",
+                "url": "https://api.github.com/repos/markrogoyski/math-php/zipball/3137abc283c341488bb91493894409329cf01012",
+                "reference": "3137abc283c341488bb91493894409329cf01012",
                 "shasum": ""
             },
             "require": {
@@ -1266,7 +1266,7 @@
                 "regressions",
                 "statistics"
             ],
-            "time": "2017-05-02T14:44:23+00:00"
+            "time": "2017-05-20T20:33:53+00:00"
         },
         {
             "name": "mledoze/countries",
@@ -2989,16 +2989,16 @@
         },
         {
             "name": "fzaninotto/faker",
-            "version": "v1.6.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "44f9a286a04b80c76a4e5fb7aad8bb539b920123"
+                "reference": "a013415201d4f6b41cef7cf629b7ae91c8df2c32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/44f9a286a04b80c76a4e5fb7aad8bb539b920123",
-                "reference": "44f9a286a04b80c76a4e5fb7aad8bb539b920123",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/a013415201d4f6b41cef7cf629b7ae91c8df2c32",
+                "reference": "a013415201d4f6b41cef7cf629b7ae91c8df2c32",
                 "shasum": ""
             },
             "require": {
@@ -3006,12 +3006,14 @@
             },
             "require-dev": {
                 "ext-intl": "*",
-                "phpunit/phpunit": "~4.0",
+                "phpunit/phpunit": "~4.0||~5.0",
                 "squizlabs/php_codesniffer": "~1.5"
             },
             "type": "library",
             "extra": {
-                "branch-alias": []
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
             },
             "autoload": {
                 "psr-4": {
@@ -3033,7 +3035,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-04-29T12:21:54+00:00"
+            "time": "2017-05-15T16:09:28+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -3897,16 +3899,16 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "3c7d21999e815cdfac70c6c7d79d3a9cb1bc7bc2"
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/3c7d21999e815cdfac70c6c7d79d3a9cb1bc7bc2",
-                "reference": "3c7d21999e815cdfac70c6c7d79d3a9cb1bc7bc2",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/7f066a26a962dbe58ddea9f72a4e82874a3975a4",
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4",
                 "shasum": ""
             },
             "require": {
@@ -3945,7 +3947,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-05-18T13:44:30+00:00"
+            "time": "2017-05-22T07:24:03+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -4353,7 +4355,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dirkolbrich/yahoo-finance-query": 20
+        "dirkolbrich/yahoo-finance-query": 20,
+        "fzaninotto/faker": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

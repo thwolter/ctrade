@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class SearchControllerTest extends TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseMigrations;
 
     protected $user;
     protected $portfolio;

@@ -98,11 +98,11 @@ abstract class Rscripter
         
         exec($callString);
 
-        $logtext = Storage::read($logFile);
+        $logtext = Storage::read($this->path($log));
         $hasError = stripos($logtext, 'ERROR');
 
 
-        if (Storage::disk('local')->exists($resultFile)) {
+        if (Storage::disk('local')->exists($this->path($result))) {
 
             $array = json_decode(Storage::read($resultFile), true);
         }
