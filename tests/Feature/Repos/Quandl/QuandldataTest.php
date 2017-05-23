@@ -42,8 +42,9 @@ class QuandldataTest extends TestCase
     {
         $quandl = new Quandldata('ALV');
 
-        $this->assertEquals(250, count(Quandldata::getHistory('ALV')));
-        $this->assertEquals(250, count($quandl->history()));
+        $this->assertCount(250, Quandldata::getHistory('ALV'));
+        $this->assertCount(250, $quandl->history());
+        
     }
 
     /** @test */
@@ -53,5 +54,21 @@ class QuandldataTest extends TestCase
         Quandldata::getPrice('Fake');
     }
 
-
+    
+    /** @test */
+    public function history_has_a_date_and_a_price_column()
+    {
+        $quandl = new Quandldata('ALV');
+        $array = $quandl->history(['limit' => 5]);
+        
+        $this->assertTrue($this->validateDate($array[0]['Date']));
+        $this->assertTrue(is_numeric($array[0]['Close']));
+    }
+    
+    
+    public function validateDate($date)
+    {
+        $d = \Carbon\Carbon::createFromFormat('Y-m-d', $date);
+        return $d && $d->format('Y-m-d') === $date;
+    }
 }

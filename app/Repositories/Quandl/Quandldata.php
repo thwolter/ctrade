@@ -75,7 +75,7 @@ class Quandldata
     }
 
 
-    private function getJsonHistory($parameter = [])
+    public function getJsonHistory($parameter = [])
     {
         $json = $this->client->getSymbol($this->quandlCode(), $parameter);
 
@@ -86,17 +86,23 @@ class Quandldata
     }
 
 
-    private function getArrayHistory($parameter = [])
+    public function getArrayHistory($parameter = [])
     {
         $data = json_decode($this->getJsonHistory($parameter), true);
 
         $timeSeries = $data['dataset']['data'];
         $columnNames = $data['dataset']['column_names'];
+        
+        $n = $this->priceColumn($columnNames);
+        $y = [];
+        foreach($timeSeries as $x)
+        {
+            $y[] = ['Date' => $x[0], 'Close' => $x[$n]];
+        }
 
-        return array_column($timeSeries, $this->priceColumn($columnNames));
-
-
+        return $y;
     }
+
 
     private function priceColumn($columnNames)
     {
