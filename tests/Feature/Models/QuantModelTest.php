@@ -60,6 +60,14 @@ class QuantModelTest extends TestCase
     public function EUREUR_has_history_of_1()
     {
         $this->assertGreaterThan(0, count(QuantModel::ccyPrice('EUR', 'EUR')));
+    }
 
+    /** @test */
+    public function history_for_same_currency_has_Date_and_Price_column()
+    {
+        $history = QuantModel::ccyHistory('EUR', 'EUR');
+
+        $this->assertTrue($this->validateDate($history[0]['Date']));
+        $this->assertTrue(is_numeric($history[0]['Close']));
     }
 }

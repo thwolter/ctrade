@@ -22,4 +22,11 @@ abstract class TestCase extends BaseTestCase
 
         return $tmpdir;
     }
+
+    public function validateDate($date)
+    {
+        if (is_null($date)) return false;
+        $d = \Carbon\Carbon::createFromFormat('Y-m-d', $date);
+        return $d && $d->format('Y-m-d') === $date;
+    }
 }

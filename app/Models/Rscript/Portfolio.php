@@ -5,6 +5,7 @@ namespace App\Models\Rscript;
 
 
 use App\Entities\Currency;
+use App\Models\Exceptions\RscriptException;
 use App\Models\QuantModel;
 use Illuminate\Support\Facades\Storage;
 use Khill\Lavacharts\Lavacharts;
@@ -69,7 +70,12 @@ class Portfolio extends Rscripter
 
         if (! file_exists($filename)) {
 
-            Storage::disk('local')->put($filename, json_encode($position->history()));
+            $history = $position->history();
+
+            if (!$this->validPriceArray($history))
+                throw new RscriptException("'{$filename}' could not be save; incorrect format of input array.");
+
+            Storage::disk('local')->put($filename, json_encode($history));
         }
     }
 
@@ -80,9 +86,12 @@ class Portfolio extends Rscripter
 
         if (! file_exists($filename)) {
 
-            $json = json_encode(QuantModel::ccyHistory($origin, $target));
+            $history = QuantModel::ccyHistory($origin, $target);
 
-            Storage::disk('local')->put($filename, $json);
+            if (!$this->validPriceArray($history))
+                throw new RscriptException("File '{$filename}' could not be saved; incorrect format of data array.");
+
+            Storage::disk('local')->put($filename, json_encode($history));
         }
     }
 

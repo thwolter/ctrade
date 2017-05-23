@@ -34,4 +34,50 @@ class QuantModelTest extends TestCase
         $this->expectException(QuantModelException::class);
         $this->assertEquals([0.25, 0.5], $m->divide([1,3], [4]));
     }
+
+
+    /** @test */
+    public function cbind_combines_arrays_with_unique_dates()
+    {
+        $m = new QuantModel();
+
+        $arr1 = [['Date' => '2017-03-20', 'Price' => 10], ['Date' => '2017-03-19', 'Price' => 6]];
+        $arr2 = [['Date' => '2017-03-20', 'Price' => 5], ['Date' => '2017-03-19', 'Price' => 4]];
+
+        $res = [
+            '2017-03-20' => ['Date' => '2017-03-20', 10, 5],
+            '2017-03-19' => ['Date' => '2017-03-19', 6,  4]
+        ];
+
+        $this->assertEquals($res, $m->cbindArray($arr1, $arr2));
+    }
+
+    /** @test */
+    public function cbind_combines_array_with_non_uniuqe_dates()
+    {
+        $m = new QuantModel();
+
+        $arr1 = [['Date' => '2017-03-20', 'Price' => 10], ['Date' => '2017-03-19', 'Price' => 6]];
+        $arr2 = [['Date' => '2017-03-20', 'Price' => 5], ['Date' => '2017-03-18', 'Price' => 4]];
+
+        $res = [
+            '2017-03-20' => ['Date' => '2017-03-20', 10, 5],
+        ];
+
+        $this->assertEquals($res, $m->cbindArray($arr1, $arr2));
+    }
+
+    /** @test */
+    public function divide_accepts_a_Date_column()
+    {
+        $m = new QuantModel();
+
+        $arr1 = [['Date' => '2017-03-20', 'Price' => 10], ['Date' => '2017-03-19', 'Price' => 6]];
+        $arr2 = [['Date' => '2017-03-20', 'Price' => 5], ['Date' => '2017-03-19', 'Price' => 4]];
+
+        $this->assertEquals([2, 1.5], $m->divide($arr1, $arr2));
+
+    }
+
+
 }

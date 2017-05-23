@@ -62,13 +62,6 @@ class QuandldataTest extends TestCase
         $array = $quandl->history(['limit' => 5]);
         
         $this->assertTrue($this->validateDate($array[0]['Date']));
-        $this->assertTrue(is_numeric($array[0]['Close']));
-    }
-    
-    
-    public function validateDate($date)
-    {
-        $d = \Carbon\Carbon::createFromFormat('Y-m-d', $date);
-        return $d && $d->format('Y-m-d') === $date;
+        $this->assertTrue(is_numeric($array[0]['Price']));
     }
 }

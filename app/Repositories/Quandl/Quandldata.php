@@ -97,7 +97,7 @@ class Quandldata
         $y = [];
         foreach($timeSeries as $x)
         {
-            $y[] = ['Date' => $x[0], 'Close' => $x[$n]];
+            $y[] = ['Date' => $x[0], 'Price' => $x[$n]];
         }
 
         return $y;

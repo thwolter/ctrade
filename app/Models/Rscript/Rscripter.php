@@ -151,7 +151,7 @@ abstract class Rscripter
 
         $pos = stripos($logtext, 'ERROR');
 
-        return ($pos !== true) ? substr($logtext, $pos) : false;
+        return ($pos !== false) ? substr($logtext, $pos) : false;
     }
 
 
@@ -166,5 +166,21 @@ abstract class Rscripter
             throw new RscriptException('Rscript returned an invalid json file');
 
         return $array;
+    }
+
+    public function validateDate($date)
+    {
+        if (is_null($date)) return false;
+
+        $d = \Carbon\Carbon::createFromFormat('Y-m-d', $date);
+        return $d && $d->format('Y-m-d') === $date;
+    }
+
+    public function validPriceArray($array)
+    {
+        $checkDate = $this->validateDate($array[0]['Price']);
+        $checkPrice = is_numeric($array[0]['Price']);
+
+        return $checkDate and $checkPrice;
     }
 }

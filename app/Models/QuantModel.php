@@ -77,7 +77,7 @@ class QuantModel
 
     protected function inverse($x)
     {
-        return $this->divide(array_pad([], count($x), 1), $x);
+        return $this->divide(array_pad([], count($x), 1), array_column($x, 'Price'));
     }
 
 
@@ -90,12 +90,43 @@ class QuantModel
         if ($n != $m)
             throw new QuantModelException("vectors must have same length, was {$n} and {$m}");
 
-        for ($i = 0; $i < $n; $i++)
-        {
-            $divide[] = $x[$i]/$y[$i];
+        if (is_array($x[0])) {
+
+            $array = $this->cbindArray($x, $y);
+            foreach ($array as $row) { $divide[] = $row[0]/$row[1]; }
+
+        } else {
+            for ($i = 0; $i < $n; $i++) { $divide[] = $x[$i]/$y[$i]; }
         }
+
         return $divide;
     }
+
+
+    /**
+     * Combines two array into one array based on matched values for 'Date' column.
+     * Both Arrays must have a 'Date' and a 'Price' column. The result is an date
+     * indexed array with two columns representing the prices of initial array.
+     *
+     * @param $arr1
+     * @param $arr2
+     * @return array
+     */
+    public function cbindArray($arr1, $arr2)
+    {
+        $x = $this->indexedArray($arr1);
+        $y = $this->indexedArray($arr2);
+
+        $dates = array_intersect(array_keys($x), array_keys($y));
+
+        $res = [];
+        foreach ($dates as $date)
+        {
+            $res[$date] = ['Date' => $date, $x[$date], $y[$date]];
+        }
+        return $res;
+    }
+
 
     protected function getCurrencyHistoryWithBase($base, $currency, $parameter): array
     {
@@ -105,5 +136,13 @@ class QuantModel
             throw new QuantModelException("No pathway is defined for currency pair {$base}{$currency}. Call 'QuandlECB::sync()' could be called");
 
         return Quandldata::getHistory($ccy->symbol(), $parameter);
+    }
+
+    private function indexedArray($array)
+    {
+        $keys = array_column($array, 'Date');
+        $values = array_column($array, 'Price');
+
+        return array_combine($keys, $values);
     }
 }
