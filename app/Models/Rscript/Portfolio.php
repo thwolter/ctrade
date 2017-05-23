@@ -25,7 +25,7 @@ class Portfolio extends Rscripter
     {
         $this->storeHistoryFiles();
 
-        return $this->callRscript($this->fullpath(), ['task' => 'risk', 'conf' => $conf]);
+        return $this->callRscript(['task' => 'risk', 'conf' => $conf]);
 
     }
     
@@ -63,12 +63,13 @@ class Portfolio extends Rscripter
 
     protected function storePositionHistory($position)
     {
-        // Todo: 'Stock' must be result of the underlying instrument
-        $filename = $this->path("Stock-{$position->id}.json");
+        $type = $position->positionable_type;
+        $id = $position->positionable_id;
+        $filename = $this->path("{$type}-{$id}.json");
 
         if (! file_exists($filename)) {
 
-            Storage::disk('local')->put($filename, $position->history());
+            Storage::disk('local')->put($filename, json_encode($position->history()));
         }
     }
 
@@ -79,7 +80,7 @@ class Portfolio extends Rscripter
 
         if (! file_exists($filename)) {
 
-            $json = QuantModel::ccyHistory($origin, $target);
+            $json = json_encode(QuantModel::ccyHistory($origin, $target));
 
             Storage::disk('local')->put($filename, $json);
         }

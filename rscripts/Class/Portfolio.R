@@ -23,7 +23,9 @@ Portfolio <- R6Class('Portfolio',
             if (!requireNamespace("quantmod", quietly = TRUE)) 
                 stop("package:", dQuote("quantmod"), "cannot be loaded.")
 
+
             private$load(filename)
+
             private$loadHistories(directory)
         },
         
@@ -150,10 +152,12 @@ Portfolio <- R6Class('Portfolio',
     
     
     private = list(
-        
-        
+
         load = function(filename) 
         {
+            if (! file.exists(filename))
+            stop(paste0("Missing Portfolio JSON file '", filename, "'."))
+
             self$items <- NULL;
             json <- jsonlite::fromJSON(filename)
             

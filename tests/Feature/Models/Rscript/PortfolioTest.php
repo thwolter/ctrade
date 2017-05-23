@@ -58,17 +58,17 @@ class PortfolioTest extends TestCase
         $this->portfolio->obtain(10, $this->stock);
         $this->portfolio->rscript()->storeHistoryFiles();
 
-        $this->assertFileExists($this->portfolio->rscript()->fullpath('Stock-1.json'));
+        $this->assertFileExists($this->portfolio->rscript()->fullpath('stock-1.json'));
 
     }
 
 
-    //ToDo: Portfolio definieren, mit welchem gerechnet werden kann
-
     /** @test */
     public function a_risk_is_calculated()
     {
-        $risk = $this->rscripter->risk(20, 0.95);
+        $this->portfolio->obtain(10, $this->stock);
+        $risk = $this->portfolio->rscript()->risk(20, 0.95);
+
         $this->assertGreaterThan(20, $risk['Total'][0]['Value']);
         $this->assertLessThan(80, $risk['Total'][0]['Value']);
 

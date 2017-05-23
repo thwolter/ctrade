@@ -121,7 +121,7 @@ RapiClass <- R6Class('Rapi',
             if (is.null(foo))
                 stop("no function for task '", private$task, 
                      "' defined (must be public with name '", private$task, "')")
-            
+
             nms <- names(formals(foo))
             args <- lapply(nms, function(nm) {private[[nm]]})
             names(args) <- nms

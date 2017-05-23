@@ -33,6 +33,7 @@ abstract class Rscripter
         $this->rbase = base_path(). '/rscripts';
 
         $this->makeTempDir();
+
     }
 
 
@@ -89,7 +90,6 @@ abstract class Rscripter
         $entity = $this->saveJSON();
         exec($this->getRCallString($entity, $args));
 
-        //$error = $this->getErrorMessage();
         if ($error = $this->getErrorMessage())
             throw new RscriptException($error);
 

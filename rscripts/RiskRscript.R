@@ -16,7 +16,7 @@ RapiClass$set("public", "test-in-out", function()
 RapiClass$set("public", "risk", function()
 {
     pf <- Portfolio$new(private$entity, private$directory)
- 
+
     require(methods) #for PerformanceAnalytics
     output <- PerformanceAnalytics::VaR(
         R = pf$returns(),
