@@ -44,7 +44,7 @@ class PositionTest extends TestCase
     /** @test */
     public function position_has_a_price()
     {
-        $price = Quandldata::getPrice('ALV');
+        $price = array_first(Quandldata::getPrice('ALV'));
 
         $this->assertEquals($price, $this->position->price());
     }
@@ -68,8 +68,8 @@ class PositionTest extends TestCase
     
     public function test_total_with_currency_converts_into_this_currency() {
         
-        $rate = CcyPair::whereOrigin('EUR')->whereTarget('USD')->first()->price();
-        
+        $rate = array_first(CcyPair::whereOrigin('EUR')->whereTarget('USD')->first()->price());
+      
         $this->assertEquals($this->position->total() * $rate, $this->position->total('USD'));
         
     }
@@ -82,7 +82,7 @@ class PositionTest extends TestCase
 
     public function test_position_total_value_in_portfolio_currency()
     {
-        $rate = QuantModel::ccyPrice('EUR', 'USD');
+        $rate = array_first(QuantModel::ccyPrice('EUR', 'USD'));
 
         $expect = 5 * $this->position->price() * $rate;
 

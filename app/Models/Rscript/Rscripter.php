@@ -178,8 +178,8 @@ abstract class Rscripter
 
     public function validPriceArray($array)
     {
-        $checkDate = $this->validateDate($array[0]['Price']);
-        $checkPrice = is_numeric($array[0]['Price']);
+        $checkDate = $this->validateDate(array_keys($array)[0]);
+        $checkPrice = is_numeric(array_first($array));
 
         return $checkDate and $checkPrice;
     }

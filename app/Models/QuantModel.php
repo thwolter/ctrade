@@ -15,23 +15,25 @@ class QuantModel
     static public function ValueAtRisk($history)
     {
         $x = $history;
+        $price = array_first($x);
 
         $count = count($x) - 1;
-
+        $keys = array_keys($x);
+        
         $return = [];
         for ($i = 0; $i < $count; $i++) {
-            $return[] = $x[$i] / $x[$i+1] - 1;
+            $return[] = $x[$keys[$i]] / $x[$keys[$i+1]] - 1;
         }
 
-        $VaR = 2.33 * Circular::standardDeviation($return) * $x[0];
+        $VaR = 1.64 * Circular::standardDeviation($return) * $price;
         $mean = Average::mean($return);
 
         $result = [
             'VaR' => $VaR,
             'mean' => $mean,
-            'expect' => $x[0] * (1 + $mean),
-            'range' => [$x[0] - $VaR, $x[0] + $VaR],
-            'price' => $x[0]
+            'expect' => $price * (1 + $mean),
+            'range' => [$price - $VaR, $price + $VaR],
+            'price' => $price
         ];
 
         return $result;
@@ -71,13 +73,15 @@ class QuantModel
 
     static public function ccyPrice($origin, $target)
     {
-        return self::ccyHistory($origin, $target, ['limit' => 1])[0];
+        return self::ccyHistory($origin, $target, ['limit' => 1]);
     }
 
 
     protected function inverse($x)
     {
-        return $this->divide(array_pad([], count($x), 1), array_column($x, 'Price'));
+        $z = $this->arrayPadWithDate($x, 1);
+        
+        return $this->divide($z, $x);
     }
 
 
@@ -90,15 +94,14 @@ class QuantModel
         if ($n != $m)
             throw new QuantModelException("vectors must have same length, was {$n} and {$m}");
 
-        if (is_array($x[0])) {
-
-            $array = $this->cbindArray($x, $y);
-            foreach ($array as $row) { $divide[] = $row[0]/$row[1]; }
-
-        } else {
-            for ($i = 0; $i < $n; $i++) { $divide[] = $x[$i]/$y[$i]; }
+        //$z = $this->cbindArray($x, $y);
+        
+        $keys = array_keys($x);
+        for ($i = 0; $i < $n; $i++) 
+        { 
+            $divide[$keys[$i]] = $x[$keys[$i]]/$y[$keys[$i]]; 
+            
         }
-
         return $divide;
     }
 
@@ -112,17 +115,14 @@ class QuantModel
      * @param $arr2
      * @return array
      */
-    public function cbindArray($arr1, $arr2)
+    public function cbindArray($x, $y)
     {
-        $x = $this->indexedArray($arr1);
-        $y = $this->indexedArray($arr2);
-
         $dates = array_intersect(array_keys($x), array_keys($y));
 
         $res = [];
         foreach ($dates as $date)
         {
-            $res[$date] = ['Date' => $date, $x[$date], $y[$date]];
+            $res[$date] = [$x[$date], $y[$date]];
         }
         return $res;
     }
@@ -138,11 +138,24 @@ class QuantModel
         return Quandldata::getHistory($ccy->symbol(), $parameter);
     }
 
+
     private function indexedArray($array)
     {
         $keys = array_column($array, 'Date');
         $values = array_column($array, 'Price');
 
         return array_combine($keys, $values);
+    }
+    
+    
+    private function arrayPadWithDate($x, $value)
+    {
+        $z = [];
+        foreach ($x as $key=>$value)
+        {
+            $z[$key] = 1;    
+        }
+        
+        return $z;
     }
 }

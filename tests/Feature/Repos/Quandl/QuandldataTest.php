@@ -56,12 +56,12 @@ class QuandldataTest extends TestCase
 
     
     /** @test */
-    public function history_has_a_date_and_a_price_column()
+    public function history_has_a_date_index_and_a_price()
     {
         $quandl = new Quandldata('ALV');
         $array = $quandl->history(['limit' => 5]);
-        
-        $this->assertTrue($this->validateDate($array[0]['Date']));
-        $this->assertTrue(is_numeric($array[0]['Price']));
+       
+        $this->assertTrue($this->validateDate(array_keys($array)[0]));
+        $this->assertTrue(is_numeric(array_first($array)));
     }
 }

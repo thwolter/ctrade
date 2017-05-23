@@ -41,12 +41,12 @@ class QuantModelTest extends TestCase
     {
         $m = new QuantModel();
 
-        $arr1 = [['Date' => '2017-03-20', 'Price' => 10], ['Date' => '2017-03-19', 'Price' => 6]];
-        $arr2 = [['Date' => '2017-03-20', 'Price' => 5], ['Date' => '2017-03-19', 'Price' => 4]];
+        $arr1 = ['2017-03-20' => 10, '2017-03-19' => 6];
+        $arr2 = ['2017-03-20' => 5,  '2017-03-19' => 4];
 
         $res = [
-            '2017-03-20' => ['Date' => '2017-03-20', 10, 5],
-            '2017-03-19' => ['Date' => '2017-03-19', 6,  4]
+            '2017-03-20' => [10, 5],
+            '2017-03-19' => [6,  4]
         ];
 
         $this->assertEquals($res, $m->cbindArray($arr1, $arr2));
@@ -57,11 +57,11 @@ class QuantModelTest extends TestCase
     {
         $m = new QuantModel();
 
-        $arr1 = [['Date' => '2017-03-20', 'Price' => 10], ['Date' => '2017-03-19', 'Price' => 6]];
-        $arr2 = [['Date' => '2017-03-20', 'Price' => 5], ['Date' => '2017-03-18', 'Price' => 4]];
+        $arr1 = ['2017-03-20' => 10, '2017-03-19' => 6];
+        $arr2 = ['2017-03-20' => 5,  '2017-03-18' => 4];
 
         $res = [
-            '2017-03-20' => ['Date' => '2017-03-20', 10, 5],
+            '2017-03-20' => [10, 5],
         ];
 
         $this->assertEquals($res, $m->cbindArray($arr1, $arr2));
@@ -72,10 +72,10 @@ class QuantModelTest extends TestCase
     {
         $m = new QuantModel();
 
-        $arr1 = [['Date' => '2017-03-20', 'Price' => 10], ['Date' => '2017-03-19', 'Price' => 6]];
-        $arr2 = [['Date' => '2017-03-20', 'Price' => 5], ['Date' => '2017-03-19', 'Price' => 4]];
+        $arr1 = ['2017-03-20' => 10, '2017-03-19' => 6];
+        $arr2 = ['2017-03-20' => 5,  '2017-03-19' => 4];
 
-        $this->assertEquals([2, 1.5], $m->divide($arr1, $arr2));
+        $this->assertEquals(['2017-03-20' => 2, '2017-03-19' => 1.5], $m->divide($arr1, $arr2));
 
     }
 

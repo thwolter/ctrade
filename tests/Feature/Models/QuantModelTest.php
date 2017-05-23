@@ -63,11 +63,10 @@ class QuantModelTest extends TestCase
     }
 
     /** @test */
-    public function history_for_same_currency_has_Date_and_Price_column()
+    public function history_for_same_currency_has_is_array_with_1()
     {
         $history = QuantModel::ccyHistory('EUR', 'EUR');
 
-        $this->assertTrue($this->validateDate($history[0]['Date']));
-        $this->assertTrue(is_numeric($history[0]['Close']));
+        $this->assertTrue(is_numeric(array_first($history)));
     }
 }

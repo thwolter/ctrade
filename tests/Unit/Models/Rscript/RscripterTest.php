@@ -12,6 +12,8 @@ use App\Models\Rscript\Portfolio as Rscripter;
 class RscripterTest extends TestCase
 {
 
+    use DatabaseMigrations;
+
     public function setUp()
     {
         parent::setUp();

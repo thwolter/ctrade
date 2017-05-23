@@ -30,7 +30,7 @@ class Quandldata
 
     public function price()
     {
-        return $this->getArrayHistory(['limit' => 1])[0];
+        return $this->getArrayHistory(['limit' => 1]);
     }
 
     /**
@@ -97,7 +97,7 @@ class Quandldata
         $y = [];
         foreach($timeSeries as $x)
         {
-            $y[] = ['Date' => $x[0], 'Price' => $x[$n]];
+            $y[$x[0]] = $x[$n];
         }
 
         return $y;
