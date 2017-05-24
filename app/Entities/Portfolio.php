@@ -73,8 +73,11 @@ class Portfolio extends Model
     public function toArray()
     {
         $array = [
-            'meta' => ['name' => $this->name, 'currency' => $this->currency],
-            'cash' => ['amount' => $this->cash, 'currency' => $this->currency],
+            'name' => $this->name,
+            'currency' => $this->currencyCode(),
+            'cash' => $this->cash,
+            //'meta' => ['name' => $this->name, 'currency' => $this->currency],
+            //'cash' => ['amount' => $this->cash, 'currency' => $this->currency],
             'item' => []
         ];
         $i = 0;

@@ -27,7 +27,7 @@ Instrument <- R6Class('Instrument',
         amountHistory = function(dates)
         {
             amount <- xts::as.xts(rep(self$amount, times=length(dates)), dates)
-            colnames(amount) <- 'Amount.Close'
+            colnames(amount) <- 'Amount'
             
             return(amount)
         }

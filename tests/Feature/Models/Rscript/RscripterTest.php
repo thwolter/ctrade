@@ -69,7 +69,7 @@ class RscripterTest extends TestCase
     /** @test */
     public function can_call_rscript_with_a_test_function()
     {
-        $this->assertTrue(is_array($this->rscripter->callRscript()));
+        $this->assertTrue(is_array($this->rscripter->callRscript(['task' => 'test-in-out'])));
     }
 
     /** @test */

@@ -3,7 +3,7 @@
 #
 RapiClass$set("public", "test-in-out", function()
 {
-    json <- jsonlite::read_json(opt$entity)
+    json <- jsonlite::read_json(paste(opt$directory, opt$entity, sep = "/"))
     private$write(json)
 })
 

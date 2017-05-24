@@ -58,7 +58,7 @@ class PortfolioTest extends TestCase
         $this->portfolio->obtain(10, $this->stock);
         $this->portfolio->rscript()->storeHistoryFiles();
 
-        $this->assertFileExists($this->portfolio->rscript()->fullpath('stock-1.json'));
+        $this->assertFileExists($this->portfolio->rscript()->fullpath('STOCK.1.json'));
 
     }
 
@@ -77,6 +77,7 @@ class PortfolioTest extends TestCase
 
     public function test_receive_historic_portfolio_values()
     {
+        $this->portfolio->obtain(10, $this->stock);
         $valueHistory = $this->portfolio->rscript()->valueHistory(60);
 
         $this->assertEquals(60, count($valueHistory['History']));
@@ -85,6 +86,7 @@ class PortfolioTest extends TestCase
 
     public function test_summary_has_figures_and_history()
     {
+        $this->portfolio->obtain(10, $this->stock);
         $summary = $this->portfolio->rscript()->summary();
 
         $this->assertArrayHasKey('Risks', $summary);

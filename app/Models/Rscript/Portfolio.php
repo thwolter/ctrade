@@ -35,8 +35,7 @@ class Portfolio extends Rscripter
     {
         $this->storeHistoryFiles();
         
-        return $this->callRscript($this->tmpDir,
-            ['task' => 'valueHistory', 'period' => $period]);
+        return $this->callRscript(['task' => 'valueHistory', 'period' => $period]);
     }
 
 
@@ -44,8 +43,7 @@ class Portfolio extends Rscripter
     {
         $this->storeHistoryFiles();
 
-        return $this->callRscript($this->tmpDir,
-            ['task' => 'summary', 'period' => 60, 'conf' => 0.95]);
+        return $this->callRscript(['task' => 'summary', 'period' => 60, 'conf' => 0.95]);
     }
     
     
@@ -64,9 +62,9 @@ class Portfolio extends Rscripter
 
     protected function storePositionHistory($position)
     {
-        $type = $position->positionable_type;
+        $type = strtoupper($position->positionable_type);
         $id = $position->positionable_id;
-        $filename = $this->path("{$type}-{$id}.json");
+        $filename = $this->path("{$type}.{$id}.json");
 
         if (! file_exists($filename)) {
 
@@ -75,14 +73,14 @@ class Portfolio extends Rscripter
             if (!$this->validPriceArray($history))
                 throw new RscriptException("'{$filename}' could not be save; incorrect format of input array.");
 
-            Storage::disk('local')->put($filename, json_encode($history));
+            Storage::disk('local')->put($filename, json_encode($history, JSON_BIGINT_AS_STRING));
         }
     }
 
 
     protected function storeCurrencyHistory($origin, $target)
     {
-        $filename = $this->path("{$origin}.{$target}.json");
+        $filename = $this->path("{$origin}{$target}.json");
 
         if (! file_exists($filename)) {
 

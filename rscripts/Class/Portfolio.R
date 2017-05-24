@@ -24,7 +24,7 @@ Portfolio <- R6Class('Portfolio',
                 stop("package:", dQuote("quantmod"), "cannot be loaded.")
 
 
-            private$load(filename)
+            private$load(paste(directory, filename, sep="/"))
 
             private$loadHistories(directory)
         },
@@ -46,8 +46,8 @@ Portfolio <- R6Class('Portfolio',
                 ccy <- private$currencyPair(item$currency)
                 dates <- zoo::index(self$hist[[1]])
                 
-                quote <- quantmod::Cl(self$hist[[item$symbol]])
-                fxrate <- quantmod::Cl(self$hist[[ccy]])
+                quote <- self$hist[[item$symbol]]
+                fxrate <- self$hist[[ccy]]
                 amount <- item$amountHistory(dates)
                 
                 dat <- private$merge(list(quote, fxrate, amount))
@@ -56,7 +56,7 @@ Portfolio <- R6Class('Portfolio',
                 
             }
             names(delta) <- gsub('___', self$currency, names(delta))
-                                
+                               
             nm <- unique(names(delta))
             nm <- nm[nm != private$currencyPair(self$currency)]
             
@@ -70,7 +70,7 @@ Portfolio <- R6Class('Portfolio',
                 names(xtsjoin) <- names(delta[nm[1]])
                 return(xtsjoin)
             }
-            
+           
             res <- private$merge(lapply(nms, xtssum))
             res <- res[!apply(res[] == 0, 1, any),]
             
@@ -133,8 +133,8 @@ Portfolio <- R6Class('Portfolio',
                 
                 dates <- zoo::index(self$hist[[1]])
                 
-                quote <- quantmod::Cl(self$hist[[symbol]])
-                fxrate <- quantmod::Cl(self$hist[[ccy]])
+                quote <- self$hist[[symbol]]
+                fxrate <- self$hist[[ccy]]
                 amount <- item$amountHistory(dates)
                 
                 dat <- private$merge(list(quote, fxrate, amount))
@@ -161,22 +161,24 @@ Portfolio <- R6Class('Portfolio',
             self$items <- NULL;
             json <- jsonlite::fromJSON(filename)
             
-            self$currency <- json$meta$currency
-            self$cash <- json$cash$amount
-            
+            self$currency <- json$currency
+            self$cash <- json$cash
+           
             items <- as.data.frame(json$item)
             
-            for (i in 1:dim(items)[1]) {
-                
-                item <- items[i,]
-                self$add(Stock$new(item$symbol, item$amount, item$currency))
+            if (dim(items)[1]) {
+                for (i in 1:dim(items)[1]) {
+                    
+                    item <- items[i,]
+                    self$add(Stock$new(item$symbol, item$amount, item$currency))
+                }
+            } else {
+                stop(paste("Task cannot be performed for empty portfolio ", json$name))
             }
         },
         
         loadHistories = function(directory)
         {
-            col.names = c("Open", "High", "Low", "Close", "Volume", "Adjusted")
-            
             rfs <- self$risk.factors()
             for (rf in rfs) {
                 
@@ -185,28 +187,17 @@ Portfolio <- R6Class('Portfolio',
                 if (! file.exists(jsonfile))
                     stop(paste0("Missing JSON file '", jsonfile, "'."))
                 
-                dat <- try(jsonlite::fromJSON(jsonfile)[,-1], silent = TRUE)
-                
+                dat <- try(jsonlite::fromJSON(jsonfile), silent = TRUE)
+
                 if (class(dat) == 'try-error')
                     stop(paste0("JSON file for symbol '", rf, "' with inappropriate format."))
-                
-                if (class(dat[,2]) != "numeric") {
-                    df <- as.data.frame(dat)
-                    df[,-1] <- sapply(dat[,-1], type.convert)
-                    dat <- df
-                }
-                
-                asDateArgs <- list(x = as.character(dat[, 1]))
-                
-                dat <- xts::xts(dat[, -1], do.call("as.Date", asDateArgs), src = "json", 
-                           updated = Sys.time())
-                
-                if (dim(dat)[2] == 6) {
-                    colnames(dat) <- paste(toupper(rf), col.names, sep = ".")
-                } else {
-                    colnames(dat)[1] <- paste(toupper(rf), col.names[4], sep = ".")
-                    
-                }
+
+                df <- data.frame(value = unlist(dat))
+                colnames(df) <- rf
+
+                dat <- xts::xts(df[,1], do.call("as.Date", list(x = rownames(df))),
+                    src = "json", updated = Sys.time())
+
                 self$hist <- c(self$hist, list(dat))
             }
             
@@ -225,7 +216,7 @@ Portfolio <- R6Class('Portfolio',
         
         quote = function(symbol, current = TRUE)
         {
-            quotes <- as.numeric(quantmod::Cl(self$hist[[symbol]]))
+            quotes <- as.numeric(self$hist[[symbol]])
             if (current) return(tail(quotes,1)) else quotes
         },
         
@@ -237,7 +228,7 @@ Portfolio <- R6Class('Portfolio',
             ref <- self$hist[[1]]
             res <- xts::as.xts(rep(1, times=dim(ref)[1]), zoo::index(ref))
             
-            colnames(res) <- paste(toupper(ccy), "Close", sep = ".")
+            colnames(res) <- toupper(ccy)
             return(res)
         },
         

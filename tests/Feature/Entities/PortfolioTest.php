@@ -102,9 +102,27 @@ class PortfolioTest extends TestCase
         $array = $this->portfolio->toArray();
 
         $this->assertEquals(2, count($array['item']));
-        $this->assertEquals(1000, $array['cash']['amount']);
+        $this->assertEquals(1000, $array['cash']);
     }
 
+
+    /** @test */
+    public function portfolio_array_has_currency_for_items_and_self()
+    {
+        $stock1 = factory(Stock::class)->create();
+        $stock2 = factory(Stock::class)->create();
+
+        $this->portfolio
+            ->obtain(10, $stock1)
+            ->obtain(10, $stock2);
+
+        $array = $this->portfolio->toArray();
+
+        $this->assertEquals('CHF', $array['currency']);
+        $this->assertEquals('USD', $array['item'][0]['currency']);
+        $this->assertEquals('STOCK.1', $array['item'][0]['symbol']);
+
+    }
 
     /** @test */
     public function portfolio_has_a_currency_code()

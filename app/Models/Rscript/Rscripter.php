@@ -91,7 +91,7 @@ abstract class Rscripter
         exec($this->getRCallString($entity, $args));
 
         if ($error = $this->getErrorMessage())
-            throw new RscriptException($error);
+            throw new RscriptException('Rscript returned with massage: '.$error);
 
         $result = $this->getResultArray();
         $this->deleteTempDir();
@@ -121,9 +121,9 @@ abstract class Rscripter
      */
     public function saveJSON()
     {
-        $filename = $this->path($this->entityName().'.json');
+        $filename = $this->entityName().'.json';
 
-        Storage::disk('local')->put($filename, json_encode($this->entity->toArray()));
+        Storage::disk('local')->put($this->path($filename), json_encode($this->entity->toArray()));
 
         return $filename;
     }
@@ -132,13 +132,13 @@ abstract class Rscripter
     {
         $callString = sprintf(
             "Rscript --vanilla %s --base=%s --entity=%s --result=%s --directory=%s %s 2> %s",
-            $this->rapi,                          // R api
-            $this->rbase,                         // R base directory
-            storage_path('app/' . $entity),  // filename with entity (e.g. portfolio) data
-            $this->fullpath($this->resultFile),   // result file name
-            $this->fullpath(),                    // tmp directory for reading/writing
-            $this->argsImplode($args),            // arguments for R api
-            $this->fullpath($this->logFile)       // log file
+            $this->rapi,                    // R api
+            $this->rbase,                   // R base directory
+            $entity,                        // filename with entity (e.g. portfolio) data
+            $this->resultFile,              // result file name
+            $this->fullpath(),              // tmp directory for reading/writing
+            $this->argsImplode($args),      // arguments for R api
+            $this->fullpath($this->logFile) // log file
         );
 
         return $callString;
