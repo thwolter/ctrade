@@ -79,9 +79,7 @@ class QuantModel
 
     protected function inverse($x)
     {
-        $z = $this->arrayPadWithDate($x, 1);
-        
-        return $this->divide($z, $x);
+        return $this->divide($this->arrayPadWithDate($x, 1), $x);
     }
 
 
