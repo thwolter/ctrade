@@ -13,6 +13,9 @@
     @extend .nav-tabs;
   }
   li {
+  }
+
+  a {
 
   }
 }
@@ -22,9 +25,12 @@
 // Modules
 // ------------------------------------------------------
 
-.portfolio-title{
+.portfolio--title{
 
-  margin-bottom: 20px;
+  background-color: $brand-primary;
+  color: whitesmoke;
+  line-height: 35px;
+  padding-left: 12px;
 
   .title {
 

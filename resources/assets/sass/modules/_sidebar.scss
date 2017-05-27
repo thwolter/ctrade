@@ -1,29 +1,10 @@
-// top navigation bar
-.app-bar {
-  @extend .navbar-inverse;
-  height: 50px;
-  margin: 0px 15px 20px 15px;
-}
-
-.app-bar--nav {
-  @extend .nav;
-  @extend .navbar-nav;
-  @extend .pull-right;
-}
-
-.app-bar--nav > .open > a:focus {
-  background-color: #ecf0f1;
-}
-
-
 // sidebar navigation bar
 .sidebar {
   @extend .navbar;
   @extend .navbar-default;
   @extend .navbar-static-top;
-  padding-top: 15px;
-  //border-right: 1px solid #e6e5e5;
   border-bottom: none;
+  background-color: transparent;
 }
 .sidebar-nav {
   //@extend .navbar-inverse;
@@ -60,4 +41,6 @@
   margin: 50px 15px 0px 15px;
   border-top: 1px solid #e6e5e5;
 }
+
+
 

@@ -1,34 +1,37 @@
+<nav class="sidebar">
+    <div class="sidebar-nav">
+        <div class="sidebar-header">
 
-<nav class="sidebar hidden-xs">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-    <!-- manage portfolios -->
-    <div id="sidebar-nav-manage">
-        <ul class="nav nav-pills nav-stacked">
-            <li><p>Manage Portfolios</p></li>
-            <li class="active"><a href="{{ route('portfolios.index') }}">Portfolio wählen</a></li>
-            <li><a href="{{ route('portfolios.create') }}">Neu anlegen</a></li>
-            <li><a href="#">Löschen</a></li>
-        </ul><br>
+
+        <div class="collapse navbar-collapse" id="app-navbar-collapse">
+
+            @if (Auth::check())
+                <ul class="nav navbar-nav">
+
+                    <span class="sidebar-nav--sub-title">Meine Portfolios</span>
+                    @php($portfolios = auth()->user()->portfolios)
+
+                    @foreach($portfolios as $portfolio)
+                        <li class="">
+                            <a href="{{ route('portfolios.show', $portfolio->id) }}">{{ $portfolio->name }}</a>
+                        </li>
+                    @endforeach
+
+                    <li><a href="{{ route('portfolios.create') }}">+ Neues Portfolios</a></li>
+
+                </ul>
+
+            @endif
+
+
+        </div>
     </div>
-
-    <!-- analyse portfolios -->
-    <div id ="sidebar-nav-portfolio">
-        <ul class="nav nav-pills nav-stacked">
-            <li><p>Portfolio</p></li>
-            <li><a href="#">Marktwert</a></li>
-            <li><a href="#">Transaktionen</a></li>
-            <li><a href="#">Historie</a></li>
-            <li><a href="#">Limite</a></li>
-            <li><a href="#">Risiko</a></li>
-            <li><a href="#">Optimieren</a></li>
-        </ul><br>
-    </div>
-
-    <!-- sidebar footer -->
-    <div id="sidebar-nav-others">
-        <ul class="nav nav-pills nav-stacked">
-            <li><a href="#">Einstellungen</a></li>
-            <li><a href="#">Newsletter</a></li>
-        </ul><br>
-    </div>
-</nav> <!-- end sidebar navigation -->
+</nav>

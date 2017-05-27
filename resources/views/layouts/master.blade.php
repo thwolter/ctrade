@@ -19,6 +19,7 @@
 
 <body>
     <div id="app" class="main-container">
+
         <!-- app-bar with login -->
         <div class="hidden-xs app-bar">
 
@@ -27,23 +28,20 @@
                 {{ config('app.name', 'Laravel') }}
             </a>
 
-            @include('partials.auth')
+            @include('layouts.appbar')
         </div>
 
-        <div class="col-sm-3">
-            <!-- sidebar navigation -->
-            @include('layouts.navbar')
-        </div>
+        <div>
 
-        <div class="col-sm-9">
-            <!-- main content -->
             @yield('content')
+
         </div>
 
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
 </body>
 </html>
 

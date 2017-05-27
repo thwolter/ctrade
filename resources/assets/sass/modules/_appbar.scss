@@ -1,0 +1,16 @@
+// top navigation bar
+.app-bar {
+  @extend .navbar-inverse;
+  height: 50px;
+  margin: 0px 15px 20px 15px;
+}
+
+.app-bar--nav {
+  @extend .nav;
+  @extend .navbar-nav;
+  @extend .pull-right;
+}
+
+.app-bar--nav > .open > a:focus {
+  background-color: #ecf0f1;
+}

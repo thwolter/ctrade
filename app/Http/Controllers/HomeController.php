@@ -23,6 +23,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if (! count(auth()->user()->portfolios))
+        {
+            return redirect()->route('portfolios.create');
+        }
+
+        $id = auth()->user()->first()->visited_portfolio_id;
+        if (is_null($id))
+            $id = auth()->user()->portfolios->first()->id;
+
+        return redirect()->route('portfolios.show', ['id' => $id]);
     }
 }

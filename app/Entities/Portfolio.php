@@ -76,8 +76,6 @@ class Portfolio extends Model
             'name' => $this->name,
             'currency' => $this->currencyCode(),
             'cash' => $this->cash,
-            //'meta' => ['name' => $this->name, 'currency' => $this->currency],
-            //'cash' => ['amount' => $this->cash, 'currency' => $this->currency],
             'item' => []
         ];
         $i = 0;
