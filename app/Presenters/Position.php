@@ -8,12 +8,6 @@ use App\Entities\Currency;
 class Position extends Presenter
 {
 
-    public function price()
-    {
-        return $this->priceFormat($this->entity->price(), $this->entity->currencyCode());
-    }
-    
-
     public function total($currencyCode = null)
     {
         if (is_null($currencyCode)) {

@@ -1,54 +1,71 @@
-@extends('layouts.portfolio')
+@extends('layouts.master')
 
-@section('container-content')
+@section('content')
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            {!! Form::open(['route' => ['positions.store', $portfolio->id], 'method' => 'POST']) !!}
+            {!! Form::hidden('type', get_class($item)) !!}
+            {!! Form::hidden('itemId', $item->id) !!}
 
-    {!! Form::open(['route' => ['positions.store', $portfolio->id], 'method' => 'POST']) !!}
+            <div class="form-horizontal">
+                <fieldset>
+                    <!-- Form Name -->
+                    <legend>{{ $item->name}}</legend>
 
-    {!! Form::hidden('type', get_class($item)) !!}
-    {!! Form::hidden('itemId', $item->id) !!}
+                    <!-- item name and key figures -->
+                    <div class="form-group">
+                        {!! Form::label('type', $item->typeDisp, ['class' => 'col-md-3 control-label']) !!}
+                        <div class="col-md-8">
+                            <div class="form-control-static">{{ $item->name }}</div>
+                            <span class="help-block">ISIN: {{ $item->isin }} | WKN: {{ $item->wkn }}</span>
+                        </div>
+                    </div>
 
-    <div class="form-horizontal">
+                    <!-- item price and price date -->
+                    <div class="form-group">
+                        {!! Form::label('price', 'Kurs', ['class' => 'col-md-3 control-label']) !!}
+                        <div class="col-md-8">
+                            <div class="form-control-static"> {{ $item->present()->price() }}</div>
+                            <span class="help-block">{{ $item->present()->priceDate() }}</span>
+                        </div>
+                    </div>
 
-        <fieldset>
-            <!-- Form Name -->
-            <legend>{{ $item->name}}</legend>
+                    <!-- text field for number of shares -->
+                    <div class="form-group">
+                        {!! Form::label('amount', 'Stückzahl', ['class' => 'col-md-3 control-label']) !!}
+                        <div class="col-md-8">
+                            {!! Form::number('amount', 0, ['class' => 'form-control input-md']) !!}
+                            <span class="help-block">Wieviel Aktien sollen gakauft werden?</span>
+                        </div>
+                    </div>
 
+                    <!-- select to deduct from available cash -->
+                    <div class="form-group">
+                        {!! Form::label('deduct', 'Hinzufügen', ['class' => 'col-md-3 control-label']) !!}
+                        <div class="col-md-8">
+                            <div class="checkbox">
+                                {!! Form::radio('deduct', 'yes', true) !!}
+                                <span style="padding-left: 7px">Vom cash abziehen</span>
+                            </div>
+                            <div class="checkbox">
+                                {!! Form::radio('deduct', 'no') !!}
+                                <span style="padding-left: 7px">Portfolio hinzufügen</span>
+                            </div>
+                            <span class="help-block">help</span>
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                {!! Form::label('type', $item->typeDisp, ['class' => 'col-md-4 control-label']) !!}
-                <div class="col-md-8">
-                    <span> {{ $item->name }}</span>
-                    <span class="help-block">ISIN: {{ $item->isin }} | WKN: {{ $item->wkn }}</span>
-                </div>
+                    <!-- Button (Double) -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="button1id"></label>
+                        <div class="col-md-8">
+                            {!! Form::submit('Speichern', ['class' => 'btn btn-primary']) !!}
+                            <a href="{{ URL::previous() }}" class="btn btn-default">Abbrechen</a>
+                        </div>
+                    </div>
+
+                </fieldset>
             </div>
-
-            <div class="form-group">
-                {!! Form::label('price', 'Kurs', ['class' => 'col-md-4 control-label']) !!}
-                <div class="col-md-8">
-                    <span> {{ $item->price() }}</span>
-                    <span class="help-block">Stand ...</span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                {!! Form::label('amount', 'Stückzahl:', ['class' => 'col-md-4 control-label']) !!}
-                <div class="col-md-8">
-                    {!! Form::number('amount', 0, ['class' => 'form-control input-md']) !!}
-                    <span class="help-block">Anzahl</span>
-                </div>
-            </div>
-
-            <!-- Button (Double) -->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="button1id"></label>
-                <div class="col-md-8">
-                    {!! Form::submit('Abbrechen', ['class' => 'btn btn-inverse']) !!}
-                    {!! Form::submit('Speichern', ['class' => 'btn btn-primary']) !!}
-                </div>
-            </div>
-
-        </fieldset>
-    </div>
 
 
 @endsection

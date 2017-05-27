@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <div id="app" class="main-container">
+    <div id="app" class="container">
 
         <!-- app-bar with login -->
         <div class="hidden-xs app-bar">

@@ -5,6 +5,7 @@ namespace App\Entities;
 
 
 
+use App\Presenters\Presentable;
 use App\Repositories\DataRepository;
 use Laravel\Scout\Searchable;
 
@@ -13,9 +14,13 @@ class Stock extends Instrument
 
     use Searchable;
 
+    use Presentable;
+
     protected $fillable = ['name', 'wkn', 'isin'];
 
     protected $financial = DataRepository::class;
+
+    protected $presenter = \App\Presenters\Stock::class;
     
     public $typeDisp = 'Aktie';
 

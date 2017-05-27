@@ -2,12 +2,13 @@
 
 @section('content')
 
-    <div class="col-sm-3">
+    <div class="row">
+    <div class="col-md-3">
         <!-- sidebar navigation -->
         @include('layouts.sidebar')
     </div>
 
-    <div class="col-sm-9">
+    <div class="col-md-9">
         <section class="portfolio">
             <div class="portfolio--title">
                 {{ $portfolio->name }}
@@ -40,7 +41,7 @@
 
         </section>
     </div>
-
+    </div>
 @endsection
 
 

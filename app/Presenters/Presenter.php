@@ -36,11 +36,17 @@ abstract class Presenter
         if (is_null($this->priceFormat)) {
             $this->priceFormat = new \NumberFormatter( 'de_DE', \NumberFormatter::CURRENCY );
         }
-        
+
+        if (is_array($value)) $value = array_first($value);
         $currencyFmt = $this->priceFormat->formatCurrency($value, $currencyCode);
         
         return preg_replace($this->replace, '', $currencyFmt).' '.$currencyCode;
     
+    }
+
+    public function price()
+    {
+        return $this->priceFormat($this->entity->price(), $this->entity->currencyCode());
     }
 
 }
