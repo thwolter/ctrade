@@ -49,4 +49,15 @@ abstract class Presenter
         return $this->priceFormat($this->entity->price(), $this->entity->currencyCode());
     }
 
+    public function valueAtRisk()
+    {
+        return $this->priceFormat($this->entity->valueAtRisk(), $this->entity->currencyCode());
+    }
+
+    public function percentRisk()
+    {
+        return sprintf('%01.1f%%', $this->entity->percentRisk());
+
+    }
+
 }

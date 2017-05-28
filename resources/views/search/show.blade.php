@@ -32,7 +32,22 @@
                     </div>
                 </div>
 
-                 <!-- text field for number of shares -->
+                <!-- item risk -->
+                <div class="form-group">
+                    {!! Form::label('risk', 'Risiko', ['class' => 'col-md-3 control-label']) !!}
+                    <div class="col-md-8">
+                        <div class="form-control-static">
+                            {{ $item->present()->valueAtRisk() }}
+                            <pan style="padding-left: 7px">
+                                ({{ $item->present()->percentRisk() }}
+                                vom Kurswert)
+                            </pan>
+                        </div>
+                        <span class="help-block">{{ $item->present()->priceDate() }}</span>
+                    </div>
+                </div>
+
+                <!-- text field for number of shares -->
                 <div class="form-group">
                     {!! Form::label('amount', 'Stückzahl', ['class' => 'col-md-3 control-label']) !!}
                     <div class="col-md-8">

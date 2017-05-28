@@ -51,9 +51,12 @@
                 <tr>
                     <th>Nr.</th>
                     <th>Tpye</th>
-                    <th>Symbol</th>
+                    <th>Währung</th>
                     <th>Name</th>
-                    <th>Börse</th>
+                    <th>WKN</th>
+                    <th>ISIN</th>
+                    <th>Sektor</th>
+                    <th>Kurs</th>
                 </tr>
                 </thead>
 
@@ -63,9 +66,13 @@
                     <tr>
                         <td>{{ ++$count }}</td>
                         <td>{{ $item['typeDisp'] }}</td>
-                        <td>{{ $item['symbol'] }}</td>
+                        <td>{{ $item->currencyCode() }}</td>
                         <td><a href="{{ route('search.show', [$portfolio->id, get_class($item), $item->id]) }}">{{ $item['name'] }}</a></td>
-                        <td>{{ $item['exchDisp'] }}</td>
+                        <td>{{ $item->wkn }}</td>
+                        <td>{{ $item->isin }}</td>
+                        @php ($sector = is_null($item->sector) ? '' : $item->sector->name)
+                        <td>{{ $sector }}</td>
+                        <td style="text-align: right">{{ $item->present()->price() }}</td>
                     </tr>
                 @endforeach
                 </tbody>

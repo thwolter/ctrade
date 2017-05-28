@@ -82,6 +82,11 @@ abstract class Instrument extends Model
     {
         return QuantModel::ValueAtRisk($this->history(['limit' => 250]));
     }
+
+    public function percentRisk()
+    {
+        return array_first($this->price()) / $this->ValueAtRisk();
+    }
    
 
 }

@@ -16,6 +16,7 @@ class Stock extends Presenter
         //Todo: setlocale has to be called centralized for a user
         setlocale(LC_TIME, 'German');
         return $date->formatLocalized('%A %d %B %Y');
-
     }
+
+
 }

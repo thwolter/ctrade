@@ -12,7 +12,7 @@ use MathPHP\Statistics\Circular;
 
 class QuantModel
 {
-    static public function ValueAtRisk($history)
+    static public function ValueAtRisk_old($history)
     {
         $x = $history;
         $price = array_first($x);
@@ -38,6 +38,18 @@ class QuantModel
 
         return $result;
     }
+
+
+    static public function ValueAtRisk($history)
+    {
+        $quant = new self();
+
+        $price = array_first($history);
+        $returns = $quant->returns($history);
+
+        return 1.64 * Circular::standardDeviation($returns) * $price;
+    }
+
 
     static public function ccyHistory($origin, $target, $parameter = ['limit' => 250])
     {
@@ -134,6 +146,19 @@ class QuantModel
             throw new QuantModelException("No pathway is defined for currency pair {$base}{$currency}. Call 'QuandlECB::sync()' could be called");
 
         return Quandldata::getHistory($ccy->symbol(), $parameter);
+    }
+
+    public function returns($history)
+    {
+        $returns = [];
+
+        $count = count($history) - 1;
+        $keys = array_keys($history);
+
+        for ($i = 0; $i < $count; $i++) {
+            $returns[] = $history[$keys[$i]] / $history[$keys[$i + 1]] - 1;
+        }
+        return $returns;
     }
 
 

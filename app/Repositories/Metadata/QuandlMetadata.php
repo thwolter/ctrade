@@ -5,50 +5,84 @@ namespace App\Repositories\Metadata;
 
 use App\Models\Pathway;
 use App\Repositories\Exceptions\MetadataException;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\Output;
 
 abstract class QuandlMetadata
 {
+
+    protected $testing = [
+        'maxPages' => 1,
+        'perPage' => 5
+    ];
+
+    protected $local = [
+        'maxPages' => 2,
+        'perPage' => 20
+    ];
+
+    protected $running = [
+        'maxPages' => INF,
+        'perPage' => 100
+    ];
 
     protected $client;
     protected $provider = 'Quandl';
     protected $database;
 
-    protected $perPage = 100;
+    protected $output;
+
     protected $nextPage = 0;
-    protected $maxPages = INF;
     protected $totalPages = 2;
+    protected $maxPages;
+    protected $perPage;
 
 
-
-    public function __construct()
+    public function __construct($output = null)
     {
-        //Todo: check for test environment and limit data reading
-        if (env('APP_ENV') == 'testing') {
-            $this->setTestingParameters();
-        }
+        $this->setting();
 
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
         $this->client->timeout = 60;
+
+        $this->output = $output;
     }
 
 
-    private function setTestingParameters()
+    private function setting()
     {
-        $this->maxPages = 1;
-        $this->perPage = 5;
+        $parms = $this->running;
+
+        if (\App::environment('testing')) $parms = $this->testing;
+        if (\App::environment('local')) $parms = $this->local;
+
+        $this->maxPages = $parms['maxPages'];
+        $this->perPage = $parms['perPage'];
     }
+
 
     abstract public function saveItem($item);
 
 
     public function load()
     {
+        $progress = null;
+
         if (!isset($this->database)) {
             throw new MetadataException("variable 'database' must be set");
         }
 
-        while ($this->nextPage++ <= min($this->totalPages, $this->maxPages)) {
+        while ($this->nextPage++ <= min($this->totalPages, $this->maxPages))
+        {
             $items = $this->getItems();
+
+            if (is_null($progress))
+            {
+                $pages = min($this->totalPages, $this->maxPages);
+                $progress = new ProgressBar($this->output, $pages * $this->perPage);
+                $progress->start();
+            }
+
             foreach ($items as $item) {
 
                 $instrument = $this->saveItem($item);
@@ -58,8 +92,11 @@ abstract class QuandlMetadata
                     Pathway::make($this->provider, $this->database, $this->symbol($item))
                         ->assign($instrument);
                 }
+                $progress->advance();
             }
         }
+        $progress->finish();
+
     }
 
 

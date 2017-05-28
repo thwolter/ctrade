@@ -104,7 +104,7 @@ class Portfolio extends Model
 
         if (is_null($position))
         {
-            $position = new Position();
+            $position = new Position(['amount' => 0]);
             $position->positionable()->associate($instrument);
         }
 

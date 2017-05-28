@@ -39,6 +39,9 @@ class syncQuandlShares extends Command
      */
     public function handle()
     {
-        QuandlSSE::sync();
+        $meta = new QuandlSSE($this->output);
+        $meta->load();
+
+        $this->info(" Done. \n");
     }
 }
