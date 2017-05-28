@@ -40,8 +40,8 @@ abstract class Presenter
         if (is_array($value)) $value = array_first($value);
         $currencyFmt = $this->priceFormat->formatCurrency($value, $currencyCode);
         
-        return preg_replace($this->replace, '', $currencyFmt).' '.$currencyCode;
-    
+        //return preg_replace($this->replace, '', $currencyFmt).' '.$currencyCode;
+        return $currencyFmt;
     }
 
     public function price()
