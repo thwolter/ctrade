@@ -20,8 +20,8 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         Relation::morphMap([
-            'stock' => 'App\Entities\Stock',
-            'ccy' => 'App\Entities\CcyPair'
+            'stock' => \App\Entities\Stock::class,
+            'ccyPair' => \App\Entities\CcyPair::class
         ]);
     }
 

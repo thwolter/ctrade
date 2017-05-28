@@ -250,6 +250,7 @@ return [
         'Lava' => Khill\Lavacharts\Laravel\LavachartsFacade::class,
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
 
+
     ],
 
 ];

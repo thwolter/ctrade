@@ -13,3 +13,4 @@ function format_price($value)
 
     return numfmt_format_currency($fmt, $value, "EUR")."\n";
 }
+
