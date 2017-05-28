@@ -47,11 +47,21 @@ class PositionsController extends Controller
      */
     public function store(Request $request, $id)
     {
+        $amount = $request->get('amount');
+
         $instrument = resolve($request->get('type'))
             ->find($request->get('itemId'));
 
         $portfolio = Portfolio::find($id)
-            ->obtain($request->get('amount'), $instrument);
+            ->obtain($amount, $instrument);
+        //Todo: obtain to look for existing instrument and if so, increase amount only
+
+        if ($request->get('deduct') == 'yes')
+        {
+            $total = $amount * array_first($instrument->price());
+            $portfolio->cash = $portfolio->cash - $total;
+            $portfolio->save();
+        }
 
         return redirect(route('positions.index', $portfolio->id));
 
