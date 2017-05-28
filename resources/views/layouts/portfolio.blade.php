@@ -12,6 +12,9 @@
         <section class="portfolio">
             <div class="portfolio--title">
                 {{ $portfolio->name }}
+                <span class="pull-right">
+                    <a href="{{ route('portfolios.edit', $portfolio->id) }}">Einstellungen</a>
+                </span>
             </div>
 
             <nav class="portfolio--nav">

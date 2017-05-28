@@ -40,14 +40,14 @@ class QuantModel
     }
 
 
-    static public function ValueAtRisk($history)
+    static public function ValueAtRisk($history, $conf = 1.64)
     {
         $quant = new self();
 
         $price = array_first($history);
         $returns = $quant->returns($history);
 
-        return 1.64 * Circular::standardDeviation($returns) * $price;
+        return $conf * Circular::standardDeviation($returns) * $price;
     }
 
 

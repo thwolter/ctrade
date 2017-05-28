@@ -17,8 +17,8 @@ abstract class QuandlMetadata
     ];
 
     protected $local = [
-        'maxPages' => 2,
-        'perPage' => 20
+        'maxPages' => 5,
+        'perPage' => 100
     ];
 
     protected $running = [

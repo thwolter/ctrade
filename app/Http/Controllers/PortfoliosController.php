@@ -104,7 +104,15 @@ class PortfoliosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Portfolio::whereId($id)->update(['name' => $request->name, 'currency'=> $request->currency]);
+        Portfolio::whereId($id)->update([
+            'name' => $request->name,
+            'confidence' => $request->confidence,
+            'period' => $request->period,
+            'mailing' => $request->mailing,
+            'threshold' => $request->threshold,
+            'limit' => $request->limit,
+            'limit_abs' => $request->limit_abs == 'yes' ? true : false
+        ]);
 
         return redirect(route('portfolios.show', $id));
     }
