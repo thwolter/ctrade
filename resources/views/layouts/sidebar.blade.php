@@ -1,37 +1,19 @@
-<nav class="sidebar">
-    <div class="sidebar-nav">
-        <div class="sidebar-header">
+@if (Auth::check())
+    <div class="list-group">
+        @php($portfolios = auth()->user()->portfolios)
 
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                <span class="sr-only">Toggle Navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
+        @foreach($portfolios as $portfolio)
+            <a href="{{ route('portfolios.show', $portfolio->id) }}"
+               class="list-group-item {{ active_class(if_route_param('portfolio', $portfolio->id)) }}">
 
+                {{ $portfolio->name }}
+                <p>{{ $portfolio->present()->total() }}</p>
 
-        <div class="collapse navbar-collapse" id="app-navbar-collapse">
+            </a>
+        @endforeach
 
-            @if (Auth::check())
-                <ul class="nav navbar-nav">
-
-                    <span class="sidebar-nav--sub-title">Meine Portfolios</span>
-                    @php($portfolios = auth()->user()->portfolios)
-
-                    @foreach($portfolios as $portfolio)
-                        <li class="">
-                            <a href="{{ route('portfolios.show', $portfolio->id) }}">{{ $portfolio->name }}</a>
-                        </li>
-                    @endforeach
-
-                    <li><a href="{{ route('portfolios.create') }}">+ Neues Portfolios</a></li>
-
-                </ul>
-
-            @endif
-
-
+        <div class="center-block">
+            <a href="{{ route('portfolios.create') }}" class="btn list-group-item">Neues Portfolios</a>
         </div>
     </div>
-</nav>
+@endif

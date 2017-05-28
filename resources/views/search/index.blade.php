@@ -2,7 +2,12 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+
+        <div class="col-md-3">
+            @include('layouts.sidebar')
+        </div>
+
+        <div class="col-md-9">
 
             <!-- Form with method Get -->
             {!! Form::open([
@@ -26,7 +31,7 @@
             <div class="form-group">
                 {!! Form::label('search', 'Suchen:', ['class' => 'col-md-1 control-label']) !!}
                 <div class="col-md-8">
-                    {!! Form::text('search', null, ['placeholder' => 'Search ...', 'class' => 'form-control']) !!}
+                    {!! Form::text('search', $search, ['placeholder' => 'Search ...', 'class' => 'form-control']) !!}
                     <span class="help-block">
                         Name, Wkn oder Isin
                     </span>
@@ -46,7 +51,7 @@
 
             @if(isset($suggest))
 
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
                 <tr>
                     <th>Nr.</th>
@@ -56,7 +61,6 @@
                     <th>WKN</th>
                     <th>ISIN</th>
                     <th>Sektor</th>
-                    <th>Kurs</th>
                 </tr>
                 </thead>
 
@@ -72,7 +76,6 @@
                         <td>{{ $item->isin }}</td>
                         @php ($sector = is_null($item->sector) ? '' : $item->sector->name)
                         <td>{{ $sector }}</td>
-                        <td style="text-align: right">{{ $item->present()->price() }}</td>
                     </tr>
                 @endforeach
                 </tbody>

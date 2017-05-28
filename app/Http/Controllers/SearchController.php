@@ -25,13 +25,15 @@ class SearchController extends Controller
     {
         $portfolio = Portfolio::findOrFail($id);
         $types = $this->types;
+        $search = $request->search;
 
-        if ($type = $request->get('type')) {
-            $suggest = resolve($request->get('type'))
-                ->search($request->get('search'))->get();
+        if ($type = $request->type) {
+
+            $suggest = resolve($request->type)->search($search)->get();
         }
 
-        return view ('search.index', compact('portfolio', 'suggest', 'types'));
+        return view ('search.index',
+            compact('portfolio', 'suggest', 'types', 'search'));
     }
 
     

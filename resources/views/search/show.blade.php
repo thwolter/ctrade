@@ -2,7 +2,12 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+
+        <div class="col-md-3">
+            @include('layouts.sidebar')
+        </div>
+
+        <div class="col-md-9">
             {!! Form::open(['route' => ['positions.store', $portfolio->id],
                 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
