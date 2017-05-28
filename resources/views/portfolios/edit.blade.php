@@ -78,11 +78,23 @@
 
                             <!-- currency form input -->
                             <div class="form-group">
-                                {!! Form::label('currency', 'Währung:', ['class' => 'col-md-4 control-label']) !!}
+                                {!! Form::label('currency', 'Währung', ['class' => 'col-md-4 control-label']) !!}
                                 <div class="col-md-6">
                                     <div class="form-control-static">{{ $portfolio->currencyCode() }}</div>
                                     <span class="help-block">Die Währung kann nachträglich nicht geändert werden</span>
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                {!! Form::label('delete', 'Löschen', ['class' => 'col-md-4 control-label']) !!}
+                                <div class="col-md-6">
+                                    <div class="form-control-static">
+                                        {!! Form::checkbox('delete', 'yes', false) !!}
+                                        Portfolio löschen
+                                        <span class="help-block">Achtung: kann nicht rückgängig gemacht werden</span>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <!-- submit button -->

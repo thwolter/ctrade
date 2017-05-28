@@ -104,6 +104,9 @@ class PortfoliosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ( $request->delete == 'yes')
+            return view('portfolios.delete', compact('id'));
+
         Portfolio::whereId($id)->update([
             'name' => $request->name,
             'confidence' => $request->confidence,
