@@ -53,9 +53,15 @@ class Portfolio extends Model
     }
 
 
-    public function total()
+    public function positionsTotal()
     {
         return $this->positions->sum->total($this->currencyCode());
+    }
+
+
+    public function total()
+    {
+        return $this->positionsTotal()+$this->cash();
     }
 
 
