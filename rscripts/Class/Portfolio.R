@@ -141,6 +141,8 @@ Portfolio <- R6Class('Portfolio',
                 
                 val <- val + item$value(quote, fxrate, amount)
             }
+
+            val <- val + self$cash
             
             colnames(val) <- "Value"
             
