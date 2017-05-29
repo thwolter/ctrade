@@ -26,13 +26,14 @@ class Charts
     {
         $VaR = $summary['Total'][0]['Value'];
         $value = $summary['Value'][0]['Value'];
-        $max = max(
-            0.05 * $value, $VaR);
+
+        $relativeRisk = $VaR/$value;
+        $max = 0.2;
 
         $risk = Lava::DataTable()
             ->addStringColumn('Type')
             ->addNumberColumn('Value')
-            ->addRow(['Risiko', $VaR]);
+            ->addRow(['Risiko', $relativeRisk]);
 
         Lava::GaugeChart('Risk', $risk)
             ->setOptions([
