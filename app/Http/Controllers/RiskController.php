@@ -17,7 +17,7 @@ class RiskController extends Controller
              $summary = \Cache::get($key);
          } else {
              $summary = $portfolio->rscript()->summary(60);
-             \Cache::put($key, $summary, 20);
+             \Cache::put($key, $summary, 0);
          }
 
          Charts::history($summary);
