@@ -11,3 +11,7 @@ Homestead.yaml
 .Rproj.user
 .phpstorm.meta.php
 _ide_helper*
+.RData
+.Rhistory
+errordump.rda
+opt.RData

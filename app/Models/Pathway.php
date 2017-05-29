@@ -31,8 +31,14 @@ class Pathway
 
         $this->path = $path;
     }
-    
-    
+
+
+    public function __toString()
+    {
+        return $this->string();
+    }
+
+
     static public function make($provider, $database, $dataset)
     {
         return new Pathway([
@@ -209,5 +215,10 @@ class Pathway
             }
         }
         return $this;
+    }
+
+    public function string()
+    {
+        return "{$this->provider->code}.{$this->database->code}.{$this->dataset->code}";
     }
 }
