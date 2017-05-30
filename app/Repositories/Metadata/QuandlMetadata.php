@@ -18,7 +18,7 @@ abstract class QuandlMetadata
     ];
 
     protected $local = [
-        'maxPages' => INF,
+        'maxPages' => 5,
         'perPage' => 100
     ];
 
@@ -93,13 +93,13 @@ abstract class QuandlMetadata
 
                 if (Pathway::exist($this->provider, $this->database, $this->symbol($item)))
                 {
-                    $this->updateItem($item);
-                    $countUpdated++;
+                    if ($this->updateItem($item))
+                        $countUpdated++;
                     
                 } else {
                     
-                    $this->createItemWithPathway($item);
-                    $countStored++;
+                    if ($this->createItemWithPathway($item))
+                        $countStored++;
  
                 }
                 
@@ -116,11 +116,15 @@ abstract class QuandlMetadata
     {
         $instrument = $this->saveItem($item);
 
-        if (is_null($instrument))
-            Log::notice('symbol '.$this->symbol($item).' not saved');
+        if (is_null($instrument)) {
+            Log::notice('symbol ' . $this->symbol($item) . ' not saved');
+            return false;
+        }
         
         Pathway::make($this->provider, $this->database, $this->symbol($item))
                 ->assign($instrument);
+
+        return true;
 
     }
 

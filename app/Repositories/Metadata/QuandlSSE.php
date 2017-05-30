@@ -78,6 +78,10 @@ class QuandlSSE extends QuandlMetadata
     {
         //Todo: check for security type, for now assume all are stocks
         //Todo: check whether stock should be updated based on wkn, isin, name
+
+        return false;
+
+        //return true if updated
     }
 
 
