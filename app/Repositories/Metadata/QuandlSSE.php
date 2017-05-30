@@ -36,7 +36,7 @@ class QuandlSSE extends QuandlMetadata
             $result = $this->$method($item);
             if (is_null($result) or empty($result)) {
                 
-                Log::notice('symbol '.symbol($item).' marked as invalid');
+                Log::notice('symbol '.$this->symbol($item).' marked as invalid');
                 return false;
             }
         }
