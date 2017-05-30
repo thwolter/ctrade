@@ -18,8 +18,8 @@ abstract class QuandlMetadata
     ];
 
     protected $local = [
-        'maxPages' => 2,
-        'perPage' => 10
+        'maxPages' => 6,
+        'perPage' => 100
     ];
 
     protected $running = [
@@ -63,19 +63,21 @@ abstract class QuandlMetadata
 
 
     abstract public function saveItem($item);
+    
+    abstract public function updateItem($item);
 
 
     public function load()
     {
         $progress = null;
-        $count = 0;
+        $countStored = 0;
+        $countUpdated = 0;
 
         if (!isset($this->database)) {
             throw new MetadataException("variable 'database' must be set");
         }
     
         Log::notice('start loading '.$this->database);
-        
         while ($this->nextPage <= min($this->totalPages, $this->maxPages))
         {
             $items = $this->getItems();
@@ -89,25 +91,37 @@ abstract class QuandlMetadata
 
             foreach ($items as $item) {
 
-                $instrument = $this->saveItem($item);
-
-                if (!is_null($instrument)) {
+                if (Pathway::exist($this->provider, $this->database, $this->symbol($item)))
+                {
+                    $this->updateItem($item);
+                    $countUpdated++;
                     
-                    Pathway::make($this->provider, $this->database, $this->symbol($item))
-                        ->assign($instrument);
                 } else {
                     
-                    Log::notice('symbol '.$this->symbol($item).' not saved');
+                    $this->createItemWithPathway($item);
+                    $countStored++;
+ 
                 }
-                Log::notice('load symbol '.$this->symbol($item));
+                
                 $progress->advance();
-                $count++;
             }
         }
         
+        Log::notice("finished loading {$this->database} ({$countStored} new; {$countUpdated} updated)");
         $progress->finish();
+    }
+    
+    
+    public function createItemWithPathway($item)
+    {
+        $instrument = $this->saveItem($item);
 
-        Log::notice("finished loading {$this->database} with {$count} items checked");
+        if (is_null($instrument))
+            Log::notice('symbol '.$this->symbol($item).' not saved');
+        
+        Pathway::make($this->provider, $this->database, $this->symbol($item))
+                ->assign($instrument);
+
     }
 
 

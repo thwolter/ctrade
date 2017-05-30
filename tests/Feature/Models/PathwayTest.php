@@ -104,5 +104,15 @@ class PathwayTest extends TestCase
         $this->assertEquals(NULL, $pw_fails);
     }
 
+    /** @test */
+    public function exist_returns_true_or_fals()
+    {
+        Pathway::make('Quandl', 'SSE', 'ALV')->save();
+        $pw_exist = Pathway::exist('Quandl', 'SSE', 'ALV');
+        $pw_fails = Pathway::exist('Quandl', 'SSE', 'BAS');
+
+        $this->assertTrue($pw_exist);
+        $this->assertFalse($pw_fails);
+    }
 }
 

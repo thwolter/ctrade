@@ -3,6 +3,7 @@
 namespace App\Repositories\Metadata;
 
 use App\Entities\Stock;
+use App\Entities\Currency;
 use App\Models\Pathway;
 use App\Repositories\Exceptions\MetadataException;
 use Illuminate\Support\Facades\Storage;
@@ -45,20 +46,40 @@ class QuandlSSE extends QuandlMetadata
     public function saveItem($item)
     {
         //Todo: check for security type, for now assume all are stocks
-        //Todo: check whether stock should be updated based on wkn, isin, name
+        
         
         if (!$this->isValid($item)) return null;
 
-        $stock = Stock::saveWithParameter([
-            'name' => $this->name($item),
-            'currency' => $this->currency($item),
-            'sector' => $this->sector($item),
-            'isin' => $this->isin($item),
-            'wkn' => $this->wkn($item)
-        ]);
+        $currency = Currency::find(['code' => $this->currency($item)]);
         
+        if (is_null($currency)) {
+            Log::notice("item with dataset {symbol($item)} not stored (requires currency {currency($item)})");
+            return null;
+        }
+
+        $stock = Stock::firstOrNew([
+            'name' => $this->name($item),
+            'wkn'  => $this->wkn($item),
+            'isin' => $this->isin($item)
+        ]);
+
+        $currency->stocks()->save($stock);
+
+        if (! is_null($this->sector($item)))
+            Sector::firstOrCreate(['name' => $this->sector($item)])->stocks()->save($stock);
+
+        $stock->save();
+
         return $stock;
     }
+    
+    
+    public function updateItem($item)
+    {
+        //Todo: check for security type, for now assume all are stocks
+        //Todo: check whether stock should be updated based on wkn, isin, name
+    }
+
 
     public function symbol($item)
     {

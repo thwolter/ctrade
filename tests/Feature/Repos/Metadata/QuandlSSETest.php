@@ -21,7 +21,7 @@ class QuandlSSETest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->meta = new QuandlSSE();
+        $this->meta = new QuandlSSE($this->output);
     }
 
 

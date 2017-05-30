@@ -67,6 +67,12 @@ class Pathway
         
         return null;
     }
+    
+    
+    static public function exist($providerCode, $databaseCode, $datasetCode)
+    {
+        return ! is_null(self::get($providerCode, $databaseCode, $datasetCode));
+    }
 
 
     public function assign($instrument)
