@@ -53,7 +53,7 @@ class QuandlSSE extends QuandlMetadata
         $currency = Currency::whereCode($this->currency($item))->first();
         
         if (is_null($currency)) {
-            Log::notice("item with dataset {symbol($item)} not stored (requires currency {currency($item)})");
+            Log::notice("item with dataset {$this->symbol($item)} not stored (requires currency {$this->currency($item)})");
             return null;
         }
 
