@@ -18,8 +18,8 @@ abstract class QuandlMetadata
     ];
 
     protected $local = [
-        'maxPages' => 5,
-        'perPage' => 100
+        'maxPages' => 2,
+        'perPage' => 10
     ];
 
     protected $running = [
@@ -68,6 +68,7 @@ abstract class QuandlMetadata
     public function load()
     {
         $progress = null;
+        $count = 0;
 
         if (!isset($this->database)) {
             throw new MetadataException("variable 'database' must be set");
@@ -75,7 +76,7 @@ abstract class QuandlMetadata
     
         Log::notice('start loading '.$this->database);
         
-        while ($this->nextPage++ <= min($this->totalPages, $this->maxPages))
+        while ($this->nextPage <= min($this->totalPages, $this->maxPages))
         {
             $items = $this->getItems();
 
@@ -86,7 +87,6 @@ abstract class QuandlMetadata
                 $progress->start();
             }
 
-            $count = 0;
             foreach ($items as $item) {
 
                 $instrument = $this->saveItem($item);
@@ -97,12 +97,14 @@ abstract class QuandlMetadata
                         ->assign($instrument);
                 } else {
                     
-                    Log::notice('symbol '.symbol($item).' not saved');
+                    Log::notice('symbol '.$this->symbol($item).' not saved');
                 }
+                Log::notice('load symbol '.$this->symbol($item));
                 $progress->advance();
                 $count++;
             }
         }
+        
         $progress->finish();
 
         Log::notice("finished loading {$this->database} with {$count} items checked");
