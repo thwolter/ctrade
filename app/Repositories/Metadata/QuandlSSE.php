@@ -101,7 +101,9 @@ class QuandlSSE extends QuandlMetadata
     public function wkn($item)
     {
         $raw_name = strtoupper($item['name']);
-        $wkn = trim(explode('WKN', (explode('|', $raw_name)[0]))[1]);
+
+        //Todo: check errors
+        $wkn = @trim(explode('WKN', (explode('|', $raw_name)[0]))[1]);
 
         return (empty($wkn)) ? null : $wkn;
 
