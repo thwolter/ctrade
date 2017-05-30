@@ -7,6 +7,7 @@ use App\Models\Pathway;
 use App\Repositories\Exceptions\MetadataException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\Output;
+use Illuminate\Support\Facades\Log;
 
 abstract class QuandlMetadata
 {
@@ -71,7 +72,9 @@ abstract class QuandlMetadata
         if (!isset($this->database)) {
             throw new MetadataException("variable 'database' must be set");
         }
-
+    
+        Log::notice('start loading '.$this->database);
+        
         while ($this->nextPage++ <= min($this->totalPages, $this->maxPages))
         {
             $items = $this->getItems();
@@ -83,20 +86,26 @@ abstract class QuandlMetadata
                 $progress->start();
             }
 
+            $count = 0;
             foreach ($items as $item) {
 
                 $instrument = $this->saveItem($item);
 
-                if (!is_null($instrument))
-                {
+                if (!is_null($instrument)) {
+                    
                     Pathway::make($this->provider, $this->database, $this->symbol($item))
                         ->assign($instrument);
+                } else {
+                    
+                    Log::notice('symbol '.symbol($item).' not saved');
                 }
                 $progress->advance();
+                $count++;
             }
         }
         $progress->finish();
 
+        Log::notice("finished loading {$this->database} with {$count} items checked");
     }
 
 

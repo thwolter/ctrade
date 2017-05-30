@@ -6,6 +6,7 @@ use App\Entities\Stock;
 use App\Models\Pathway;
 use App\Repositories\Exceptions\MetadataException;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 
 class QuandlSSE extends QuandlMetadata
@@ -31,7 +32,11 @@ class QuandlSSE extends QuandlMetadata
                 throw new MetadataException("no method '{$method}' defined");
 
             $result = $this->$method($item);
-            if (is_null($result) or empty($result)) return false;
+            if (is_null($result) or empty($result)) {
+                
+                Log::notice('symbol '.symbol($item).' marked as invalid');
+                return false;
+            }
         }
         return true;
     }
@@ -40,7 +45,8 @@ class QuandlSSE extends QuandlMetadata
     public function saveItem($item)
     {
         //Todo: check for security type, for now assume all are stocks
-
+        //Todo: check whether stock should be updated based on wkn, isin, name
+        
         if (!$this->isValid($item)) return null;
 
         $stock = Stock::saveWithParameter([
@@ -50,6 +56,7 @@ class QuandlSSE extends QuandlMetadata
             'isin' => $this->isin($item),
             'wkn' => $this->wkn($item)
         ]);
+        
         return $stock;
     }
 
