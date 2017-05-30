@@ -92,6 +92,17 @@ class PathwayTest extends TestCase
 
         $this->assertEquals('Quandl', $code);
     }
+    
+    /** @test */
+    public function returns_a_pathway_or_null()
+    {
+        Pathway::make('Quandl', 'SSE', 'ALV')->save();
+        $pw_exist = Pathway::get('Quandl', 'SSE', 'ALV');
+        $pw_fails = Pathway::get('Quandl', 'SSE', 'BAS');
+
+        $this->assertTrue(get_class($pw_exist) == Pathway::class);
+        $this->assertEquals(NULL, $pw_fails);
+    }
 
 }
 

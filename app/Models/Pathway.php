@@ -49,6 +49,24 @@ class Pathway
     }
 
 
+    static public function get($providerCode, $databaseCode, $datasetCode)
+    {
+        $datasets = Dataset::whereCode($datasetCode)->get();
+        
+        if (count($datasets))
+        {
+            $pathway = self::withDatasets($datasets)->first();
+        
+            $count = count($pathway->path);
+            for ($i = 0; $i < $count; $i++) {
+            
+                if (($pathway->provider->code == $providerCode) and ($pathway->database->code == $databaseCode))
+                    return $pathway;
+            }
+        }
+        
+        return null;
+    }
 
 
     public function assign($instrument)
