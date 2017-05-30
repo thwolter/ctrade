@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Metadata;
 
+use App\Entities\Sector;
 use App\Entities\Stock;
 use App\Entities\Currency;
 use App\Models\Pathway;
@@ -46,11 +47,10 @@ class QuandlSSE extends QuandlMetadata
     public function saveItem($item)
     {
         //Todo: check for security type, for now assume all are stocks
-        
-        
+
         if (!$this->isValid($item)) return null;
 
-        $currency = Currency::find(['code' => $this->currency($item)]);
+        $currency = Currency::whereCode($this->currency($item))->first();
         
         if (is_null($currency)) {
             Log::notice("item with dataset {symbol($item)} not stored (requires currency {currency($item)})");
