@@ -1,19 +1,33 @@
 @if (Auth::check())
-    <div class="list-group">
+    <div>
         @php($portfolios = auth()->user()->portfolios)
 
         @foreach($portfolios as $portfolio)
-            <a href="{{ route('portfolios.show', $portfolio->id) }}"
-               class="list-group-item {{ active_class(if_route_param('portfolio', $portfolio->id)) }}">
-
-                {{ $portfolio->name }}
-                <p>{{ $portfolio->present()->total() }}</p>
-
-            </a>
+            <div class="card">
+                <div class="card-block {{ active_class(if_route_param('portfolio', $portfolio->id)) }}">
+                    <a href="{{ route('portfolios.show', $portfolio->id) }}">
+                        <h5 class="card-title">{{ $portfolio->name }}</h5>
+                    </a>
+                    <p class="card-text">
+                        <div class="container">
+                            <dl class="row">
+                                <dt class="col-sm-5">Cash:</dt> 
+                                <dd class="col-sm-7">{{ $portfolio->present()->total() }}</dd>
+                                <dt class="col-sm-5">Aktien:</dt> 
+                                <dd class="col-sm-7">{{ $portfolio->present()->total() }}</dd>
+                            </dl>
+                        </div>
+                    </p>
+                    
+                    <a href="{{ route('portfolios.show', $portfolio->id) }}" class="btn theme-btn-color">Öffnen</a>
+                </div>
+                
+            </div>
+            <div class="space-20"></div>
         @endforeach
 
-        <div class="center-block">
-            <a href="{{ route('portfolios.create') }}" class="btn list-group-item">Neues Portfolios</a>
+        <div class="text-center">
+            <button href="{{ route('portfolios.create') }}" class="btn btn btn-secondary">Neues Portfolios</button>
         </div>
     </div>
 @endif

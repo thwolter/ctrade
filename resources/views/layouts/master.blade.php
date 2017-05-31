@@ -17,7 +17,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
-    <script>window.Laravel = {!! json_encode(['csrfToken' => csrf_token(), ]) !!}; </script>
+    <script> window.Laravel = {!! json_encode(['csrfToken' => csrf_token(), ]) !!} </script>
 
     <!-- jQuery plugins. -->
     <script src="{{ asset('js/plugins/plugins.js') }}"></script>
