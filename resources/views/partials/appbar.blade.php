@@ -7,10 +7,10 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="#"><i class="ion-home"></i> Home</a></li>
-                <li class="nav-item"><a class="nav-link" href=""><i class="ion-images"></i> Blog</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="ion-person-stalker"></i> Über uns</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="ion-android-call"></i> Kontakt</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"> Über uns</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Kontakt</a></li>
 
                 @if (Auth::guest())
                     <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>

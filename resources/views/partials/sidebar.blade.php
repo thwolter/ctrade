@@ -1,5 +1,6 @@
 @if (Auth::check())
     <div>
+
         @php($portfolios = auth()->user()->portfolios)
 
         @foreach($portfolios as $portfolio)
@@ -11,9 +12,7 @@
                     <p class="card-text">
                         <div class="container">
                             <dl class="row">
-                                <dt class="col-sm-5">Cash:</dt> 
-                                <dd class="col-sm-7">{{ $portfolio->present()->total() }}</dd>
-                                <dt class="col-sm-5">Aktien:</dt> 
+                                <dt class="col-sm-5">Gesamt:</dt>
                                 <dd class="col-sm-7">{{ $portfolio->present()->total() }}</dd>
                             </dl>
                         </div>

@@ -54,7 +54,7 @@
     {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'Get']) !!}
 
         <div class="form-group">
-            {!! Form::submit('Neue Position', ['class' => 'button--right']) !!}
+            {!! Form::submit('Neue Position', ['class' => 'btn theme-btn-color']) !!}
         </div>
 
     {!! Form::close() !!}

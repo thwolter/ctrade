@@ -26,7 +26,7 @@
 
 <body>
 
-    @include('layouts.appbar')
+    @include('partials.appbar')
 
     @yield('content')
 
@@ -34,7 +34,7 @@
     <a href="#" class="scrollToTop"><i class="ion-android-arrow-dropup-circle"></i></a>
     <!--back to top end-->
 
-    @include('layouts.footer')
+    @include('partials.footer')
 
 
 </body>

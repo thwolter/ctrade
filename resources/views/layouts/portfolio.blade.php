@@ -16,31 +16,21 @@
 
             <div class="col-md-3">
                 <!-- sidebar navigation -->
-                @include('layouts.sidebar')
+                @include('partials.sidebar')
             </div>
 
             <div class="col-md-9">
                 <div class="panel panel-primary">
-    
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            {{ $portfolio->name }}
-                            <span class="pull-right">
-                                <a href="{{ route('portfolios.edit', $portfolio->id) }}">Einstellungen</a>
-                            </span>
-                        </h3>
-                    </div>
-    
+
+                    <!-- title and nav -->
+                    <h3>{{ $portfolio->name }}</h3>
+                    @include('partials.pills')
+                    <hr><!-- /title and nav -->
            
-                    <div class="panel-body">
-                        @include('partials.pills')
+                    <div>
                         @yield('container-content')
                     </div>
-    
-                    <!-- footer -->
-                    <div class="">
-    
-                    </div>
+
                 </div>
             </div>
         </div>
