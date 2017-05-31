@@ -1,29 +1,39 @@
-<!-- Authentication Links -->
-<ul class="app-bar--nav">
-    <li><a href="{{ route('login') }}">Blog</a></li>
-    <li><a href="{{ route('login') }}">Über uns</a></li>
+<nav class="navbar navbar-toggleable-sm navbar-light bg-faded yamm">
+    <div class="container">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><img src="{{ asset('img/logo-dark.png') }}" class="img-fluid" alt=""></a>
 
-    @if (Auth::guest())
-        <li><a href="{{ route('login') }}">Login</a></li>
-    @else
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                {{ Auth::user()->name }} <span class="caret"></span>
-            </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="#"><i class="ion-home"></i> Home</a></li>
+                <li class="nav-item"><a class="nav-link" href=""><i class="ion-images"></i> Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="ion-person-stalker"></i> Über uns</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="ion-android-call"></i> Kontakt</a></li>
 
-            <ul class="dropdown-menu" role="menu">
-                <li>
-                    <a href="{{ route('logout') }}"
-                       onclick="event.preventDefault();
-                       document.getElementById('logout-form').submit();">
-                        Logout
-                    </a>
+                @if (Auth::guest())
+                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                @else
+                    <li class=" dropdown nav-item">
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Mein Account</a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout
+                                </a>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
-                </li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
+
+                            <li><a class="dropdown-item" href="#">Einstellungen</a></li>
+
+                        </ul>
+                    </li>
+                @endif
             </ul>
-        </li>
-    @endif
-</ul>
+        </div>
+    </div>
+</nav><!--nav end-->
