@@ -22,7 +22,7 @@
         <li><a class="nav-link" href="#">Optimieren</a></li>
 
         <li class="nav-item">
-            <a class="nav-link"
+            <a class="nav-link {{ active_class(if_route_pattern(['edit*'])) }}"
                href="{{ route('portfolios.edit', $portfolio->id) }}">Einstellungen</a>
         </li>
     </ul>

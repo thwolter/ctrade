@@ -26,10 +26,8 @@
                     <h3>{{ $portfolio->name }}</h3>
                     @include('partials.pills')
                     <hr><!-- /title and nav -->
-           
-                    <div>
-                        @yield('container-content')
-                    </div>
+
+                    @yield('container-content')
 
                 </div>
             </div>

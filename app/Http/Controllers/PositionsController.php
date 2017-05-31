@@ -36,6 +36,7 @@ class PositionsController extends Controller
     public function create($id)
     {
         return app(SearchController::class)->index(new Request(), $id);
+
     }
 
 

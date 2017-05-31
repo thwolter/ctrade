@@ -30,12 +30,12 @@
 
     @yield('content')
 
+    <div class="space-70"></div>
+    @include('partials.footer')
+
     <!--back to top-->
     <a href="#" class="scrollToTop"><i class="ion-android-arrow-dropup-circle"></i></a>
     <!--back to top end-->
-
-    @include('partials.footer')
-
 
 </body>
 </html>
