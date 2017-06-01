@@ -78,7 +78,8 @@ abstract class QuandlMetadata
         }
     
         Log::notice('start loading '.$this->database);
-        while ($this->nextPage <= min($this->totalPages, $this->maxPages))
+        while ($this->nextPage <= min($this->totalPages, $this->maxPages)
+            and !is_null($this->nextPage))
         {
             $items = $this->getItems();
 
