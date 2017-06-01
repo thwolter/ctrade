@@ -46,7 +46,7 @@ abstract class Instrument extends Model
     }
     
     
-    public function datasource()
+    public function datasources()
     {
         return $this->morphToMany(Datasource::class, 'sourcable')->withTimestamps();
     }

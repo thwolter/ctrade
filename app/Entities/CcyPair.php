@@ -19,7 +19,7 @@ class CcyPair extends Model
     protected $fillable = ['origin', 'target'];
 
 
-    public function datasource()
+    public function datasources()
     {
         return $this->morphToMany(Datasource::class, 'sourcable')->withTimestamps();
     }

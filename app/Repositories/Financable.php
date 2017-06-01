@@ -20,7 +20,7 @@ trait Financable
         
         if (! isset($financialInstance)) {
             
-            $this->financialInstance = new $this->financial($this->datasource);
+            $this->financialInstance = new $this->financial($this->datasources);
         }
         
         return $this->financialInstance;

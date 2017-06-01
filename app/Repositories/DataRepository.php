@@ -18,9 +18,9 @@ class DataRepository
     protected $provider;
     
 
-    public function __construct(Collection $datasource = null)
+    public function __construct(Collection $sources)
     {
-        $this->provider = $this->dataProvider($datasource);
+        $this->provider = $this->dataProvider($sources);
     }
 
 

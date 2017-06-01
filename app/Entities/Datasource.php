@@ -85,6 +85,6 @@ class Datasource extends Model
         if (!count($set))
             throw new DatasourceException("No dataset available for '{$dataset}'");
             
-        return self::where('dataset_id', $set->first()->id)->get();
+        return self::where('dataset_id', $set->id)->get();
     }
 }

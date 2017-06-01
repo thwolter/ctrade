@@ -54,7 +54,7 @@ class StockTest extends TestCase
     
     public function test_stock_has_datasource()
     {
-        $this->assertEquals('Quandl', $this->stock->datasource->first()->provider->code);
+        $this->assertEquals('Quandl', $this->stock->datasources->first()->provider->code);
     }
     
     
@@ -72,7 +72,7 @@ class StockTest extends TestCase
     
     public function test_stock_has_VaR()
     {
-        $this->assertGreaterThan(0, $this->stock->ValueAtRisk()['VaR']);
+        $this->assertGreaterThan(0, $this->stock->ValueAtRisk());
     }
 
     /** @test */
