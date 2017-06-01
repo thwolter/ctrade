@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Entities\Stock;
-use App\Models\Pathway;
+use App\Entities\Datasource;
 use App\Entities\Currency;
 
 class StockSeeder extends Seeder
@@ -19,8 +19,8 @@ class StockSeeder extends Seeder
         $stockBAS->currency()->associate($currency)->save();
         $stockDAI->currency()->associate($currency)->save();
 
-        Pathway::make('Quandl', 'SSE', 'ALV')->assign($stockALV);
-        Pathway::make('Quandl', 'SSE', 'BAS')->assign($stockBAS);
-        Pathway::make('Quandl', 'SSE', 'DAI')->assign($stockDAI);
+        Datasource::make('Quandl', 'SSE', 'ALV')->assign($stockALV);
+        Datasource::make('Quandl', 'SSE', 'BAS')->assign($stockBAS);
+        Datasource::make('Quandl', 'SSE', 'DAI')->assign($stockDAI);
     }
 }

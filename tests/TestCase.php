@@ -6,7 +6,6 @@ use App\Entities\Portfolio;
 use App\Entities\Position;
 use App\Entities\Stock;
 use App\Entities\Currency;
-use App\Models\Pathway;
 use App\Repositories\Metadata\QuandlECB;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Storage;

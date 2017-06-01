@@ -52,5 +52,15 @@ class DatasourceTest extends TestCase
 
         $this->assertEquals('Allianz', Datasource::first()->stocks->first()->name);
     }
+    
+    
+    /** @test */
+    public function can_get_database_code()
+    {
+        Datasource::make('Quandl', 'SSE', 'ALV')
+            ->assign($this->stock);
+            
+        $this->assertEquals('SSE', Datasource::withDataset('ALV')->first()->database->code);
+    }
 
 }

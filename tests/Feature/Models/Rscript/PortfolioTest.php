@@ -5,7 +5,7 @@ namespace Tests\Feature\Models\Rscript;
 use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\Stock;
-use App\Models\Pathway;
+use App\Entities\Datasource;
 use App\Repositories\Metadata\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -35,7 +35,7 @@ class PortfolioTest extends TestCase
                   'currency' => 'EUR',
                   'sector' => 'Insurance'
               ]);
-        Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
+        Datasource::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
 
         $this->portfolio = factory(Portfolio::class)->create([
             'currency_id' => $currency->id

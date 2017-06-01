@@ -3,6 +3,8 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Entities\Exceptions\DatasourceException;
+
 
 class Datasource extends Model
 {
@@ -23,6 +25,8 @@ class Datasource extends Model
     {
         return $this->belongsTo(Dataset::class);
     }
+    
+    
 
     public function stocks()
     {
@@ -60,10 +64,27 @@ class Datasource extends Model
 
     static public function exist($provider, $database, $dataset)
     {
-        $source = self::where('provider_id', Provider::whereCode($provider)->first()->id)
+        $datasetCol = Dataset::whereCode($dataset)->first();
+        
+        if (is_null($datasetCol)) 
+            return false;
+           
+        $source = self::where('dataset_id', $datasetCol->id)
+            ->where('provider_id', Provider::whereCode($provider)->first()->id)
             ->where('database_id', Database::whereCode($database)->first()->id)
-            ->where('dataset_id', Dataset::whereCode($dataset)->first()->id)->first();
-
+            ->first();
+            
         return ! is_null($source);
+    }
+    
+    
+    static public function withDataset($dataset)
+    {
+        $set = Dataset::whereCode($dataset)->first();
+    
+        if (!count($set))
+            throw new DatasourceException("No dataset available for '{$dataset}'");
+            
+        return self::where('dataset_id', $set->first()->id)->get();
     }
 }

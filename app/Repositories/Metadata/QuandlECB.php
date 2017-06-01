@@ -6,7 +6,7 @@ namespace App\Repositories\Metadata;
 
 use App\Entities\CcyPair;
 use App\Entities\Currency;
-use App\Models\Pathway;
+use App\Entities\Datasource;
 use App\Repositories\Exceptions\MetadataException;
 
 
@@ -40,7 +40,7 @@ class QuandlECB extends QuandlMetadata
 
             if (!is_null($instrument))
             {
-                Pathway::make($this->provider, $this->database, $symbol)
+                Datasource::make($this->provider, $this->database, $symbol)
                     ->assign($instrument);
             }
         }
@@ -54,6 +54,17 @@ class QuandlECB extends QuandlMetadata
         ]);
 
         return $currency;
+    }
+    
+    
+    public function updateItem($item)
+    {
+        //Todo: check for security type, for now assume all are stocks
+        //Todo: check whether stock should be updated based on wkn, isin, name
+
+        return false;
+
+        //return true if updated
     }
 
     static public function sync()

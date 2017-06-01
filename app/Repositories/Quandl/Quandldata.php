@@ -5,7 +5,7 @@ namespace App\Repositories\Quandl;
 use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Models\Exceptions\QuandlException;
-use App\Models\Pathway;
+use App\Entities\Datasource;
 use Carbon\Carbon;
 
 class Quandldata
@@ -14,7 +14,7 @@ class Quandldata
     protected $priceColumnNames = ['Last', 'Close'];
 
     protected $client;
-    protected $path;
+    protected $source;
 
 
     /**
@@ -24,7 +24,7 @@ class Quandldata
     public function __construct(String $code)
     {
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
-        $this->path = $this->getPathway($code);
+        $this->source = $this->getDatasource($code);
     }
 
 
@@ -67,8 +67,8 @@ class Quandldata
 
     private function quandlCode()
     {
-        $database_code = $this->path->first()->database->code;
-        $dataset_code = $this->path->first()->dataset->code;
+        $database_code = $this->source->first()->database->code;
+        $dataset_code = $this->source->first()->dataset->code;
 
         $quandlCode = "{$database_code}/{$dataset_code}";
         return $quandlCode;
@@ -117,8 +117,8 @@ class Quandldata
     }
 
 
-    private function getPathway($code)
+    private function getDatasource($code)
     {
-        return Pathway::withDatasetCode($code)->first();
+        return Datasource::withDataset($code);
     }
 }

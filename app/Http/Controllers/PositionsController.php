@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pathway;
 use App\Repositories\FinancialMapping;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;

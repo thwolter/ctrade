@@ -5,7 +5,6 @@ namespace App\Repositories\Metadata;
 use App\Entities\Sector;
 use App\Entities\Stock;
 use App\Entities\Currency;
-use App\Models\Pathway;
 use App\Repositories\Exceptions\MetadataException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;

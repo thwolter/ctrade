@@ -3,7 +3,7 @@
 namespace Tests\Feature\Repos\Metadata;
 
 use App\Entities\Currency;
-use App\Models\Pathway;
+use App\Entities\Datasource;
 use App\Repositories\Metadata\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -31,7 +31,7 @@ class QuandlECBTest extends TestCase
         $currency = Currency::firstOrCreate(['code' => 'CZK']);
 
         $this->meta->load();
-        $provider = Pathway::withDatasetId($currency->id)->first()->provider;
+        $provider = Datasource::withDataset('EURCZK')->first()->provider;
 
         $this->assertEquals('Quandl', $provider->code);
     }
@@ -39,7 +39,7 @@ class QuandlECBTest extends TestCase
     public function test_can_call_with_static_sync()
     {
         QuandlECB::sync();
-        $provider = Pathway::withDatasetId(1)->first()->provider;
+        $provider = Datasource::withDataset('EURUSD')->first()->provider;
 
         $this->assertEquals('Quandl', $provider->code);
 

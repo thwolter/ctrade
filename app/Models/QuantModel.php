@@ -10,6 +10,7 @@ use App\Repositories\Quandl\Quandldata;
 use MathPHP\Statistics\Average;
 use MathPHP\Statistics\Circular;
 
+
 class QuantModel
 {
     static public function ValueAtRisk_old($history)
@@ -143,10 +144,11 @@ class QuantModel
         $ccy = CcyPair::whereOrigin($base)->whereTarget($currency)->first();
 
         if (is_null($ccy))
-            throw new QuantModelException("No pathway is defined for currency pair {$base}{$currency}. Call 'QuandlECB::sync()' could be called");
+            throw new QuantModelException("No datasource defined for currency pair {$base}{$currency}. Call 'QuandlECB::sync()' could be called");
 
         return Quandldata::getHistory($ccy->symbol(), $parameter);
     }
+
 
     public function returns($history)
     {

@@ -5,7 +5,6 @@ namespace App\Entities;
 
 
 use App\Entities\Exceptions\InstrumentException;
-use App\Models\Pathway;
 use App\Repositories\Contracts\InstrumentInterface;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
@@ -47,22 +46,15 @@ abstract class Instrument extends Model
     }
     
     
-    public function datasets()
+    public function datasource()
     {
-        return $this->morphToMany(Dataset::class, 'datasetable')->withTimestamps();
+        return $this->morphToMany(Datasource::class, 'sourcable')->withTimestamps();
     }
 
-
-
+    
     public function type()
     {
         return $this->financial()->type();
-    }
-
-
-    public function pathway()
-    {
-        return Pathway::withDatasets($this->datasets);
     }
 
 

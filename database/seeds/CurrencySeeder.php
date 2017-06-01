@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Entities\Currency;
-use App\Models\Pathway;
+use App\Entities\Datasource;
 
 class CurrencySeeder extends Seeder
 {
@@ -17,7 +17,7 @@ class CurrencySeeder extends Seeder
         $eurusd = \App\Entities\CcyPair::firstOrCreate(['origin' => 'EUR', 'target' => 'USD']);
         $eurchf = \App\Entities\CcyPair::firstOrCreate(['origin' => 'EUR', 'target' => 'CHF']);
 
-        Pathway::make('Quandl', 'ECB', 'EURUSD')->assign($eurusd);
-        Pathway::make('Quandl', 'ECB', 'EURCHF')->assign($eurchf);
+        Datasource::make('Quandl', 'ECB', 'EURUSD')->assign($eurusd);
+        Datasource::make('Quandl', 'ECB', 'EURCHF')->assign($eurchf);
     }
 }

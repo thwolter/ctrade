@@ -4,7 +4,7 @@
 namespace App\Entities\Exceptions;
 
 
-class DatasetException extends \Exception
+class DatasourceException extends \Exception
 {
 
 }

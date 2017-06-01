@@ -9,7 +9,6 @@ use App\Entities\Position;
 use App\Entities\Stock;
 use App\Entities\Currency;
 
-use App\Models\Pathway;
 use App\Repositories\Metadata\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -119,7 +118,8 @@ class PortfolioTest extends TestCase
         $array = $this->portfolio->toArray();
 
         $this->assertEquals('CHF', $array['currency']);
-        $this->assertEquals('USD', $array['item'][0]['currency']);
+        $this->assertEquals($stock1->currency->code, $array['item'][0]['currency']);
+        $this->assertEquals($stock2->currency->code, $array['item'][1]['currency']);
         $this->assertEquals('STOCK.1', $array['item'][0]['symbol']);
 
     }

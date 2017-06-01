@@ -8,7 +8,7 @@ use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Entities\Sector;
 use App\Entities\Security;
-use App\Models\Pathway;
+use App\Entities\Datasource;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -30,7 +30,7 @@ class StockTest extends TestCase
             'currency' => 'EUR',
             'sector' => 'Insurance'
         ]);
-        Pathway::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
+        Datasource::make('Quandl', 'SSE', 'ALV')->assign($this->stock);
     }
 
 
@@ -52,9 +52,9 @@ class StockTest extends TestCase
     }
     
     
-    public function test_stock_has_pathway()
+    public function test_stock_has_datasource()
     {
-        $this->assertEquals('Quandl', $this->stock->pathway()->first()->provider->code);
+        $this->assertEquals('Quandl', $this->stock->datasource->first()->provider->code);
     }
     
     

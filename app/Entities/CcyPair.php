@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-use App\Models\Pathway;
+use App\Entities\Datasource;
 use App\Repositories\Financable;
 use App\Repositories\DataRepository;
 use App\Repositories\Quandl\Quandldata;
@@ -12,22 +12,16 @@ class CcyPair extends Model
 {
 
     use Financable;
+    
 
     protected $financial = DataRepository::class;
-
 
     protected $fillable = ['origin', 'target'];
 
 
-    public function datasets()
+    public function datasource()
     {
-        return $this->morphToMany(Dataset::class, 'datasetable')->withTimestamps();
-    }
-
-
-    public function pathway()
-    {
-        return Pathway::withDatasets($this->datasets);
+        return $this->morphToMany(Datasource::class, 'sourcable')->withTimestamps();
     }
 
 

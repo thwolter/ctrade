@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Repos\Quandl;
 
-use App\Models\Exceptions\PathwayException;
+use App\Entities\Exceptions\DatasourceException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Entities\Dataset;
 use App\Entities\Stock;
-use App\Models\Pathway;
+use App\Entities\Datasource;
 use App\Repositories\Quandl\Quandldata;
 
 class QuandldataTest extends TestCase
@@ -24,7 +24,8 @@ class QuandldataTest extends TestCase
             'currency' => 'EUR',
             'sector' => 'Industry'
         ]);
-        Pathway::make('Quandl', 'SSE', 'ALV')->assign($stock);
+        
+        Datasource::make('Quandl', 'SSE', 'ALV')->assign($stock);
     }
 
 
@@ -50,7 +51,7 @@ class QuandldataTest extends TestCase
     /** @test */
     public function a_price_for_invalid_code_throws_an_error()
     {
-        $this->expectException(PathwayException::class);
+        $this->expectException(DatasourceException::class);
         Quandldata::getPrice('Fake');
     }
 

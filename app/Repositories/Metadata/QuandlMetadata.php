@@ -3,7 +3,7 @@
 namespace App\Repositories\Metadata;
 
 
-use App\Models\Pathway;
+use App\Entities\Datasource;
 use App\Repositories\Exceptions\MetadataException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\Output;
@@ -18,7 +18,7 @@ abstract class QuandlMetadata
     ];
 
     protected $local = [
-        'maxPages' => 5,
+        'maxPages' => 2,
         'perPage' => 100
     ];
 
@@ -90,15 +90,15 @@ abstract class QuandlMetadata
             }
 
             foreach ($items as $item) {
-
-                if (Pathway::exist($this->provider, $this->database, $this->symbol($item)))
+                
+                if (Datasource::exist($this->provider, $this->database, $this->symbol($item)))
                 {
                     if ($this->updateItem($item))
                         $countUpdated++;
                     
                 } else {
                     
-                    if ($this->createItemWithPathway($item))
+                    if ($this->createItemWithSource($item))
                         $countStored++;
  
                 }
@@ -112,7 +112,8 @@ abstract class QuandlMetadata
     }
     
     
-    public function createItemWithPathway($item)
+    
+    public function createItemWithSource($item)
     {
         $instrument = $this->saveItem($item);
 
@@ -121,11 +122,10 @@ abstract class QuandlMetadata
             return false;
         }
         
-        Pathway::make($this->provider, $this->database, $this->symbol($item))
+        Datasource::make($this->provider, $this->database, $this->symbol($item))
                 ->assign($instrument);
 
         return true;
-
     }
 
 

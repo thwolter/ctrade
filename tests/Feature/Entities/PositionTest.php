@@ -7,8 +7,8 @@ use App\Entities\Position;
 use App\Entities\Stock;
 use App\Entities\Portfolio;
 use App\Entities\Currency;
-use App\Models\Pathway;
 use App\Models\QuantModel;
+use App\Entities\Datasource;
 use App\Repositories\Metadata\QuandlECB;
 use App\Repositories\Quandl\Quandldata;
 use App\Repositories\Yahoo\CurrencyFinancial;
@@ -128,10 +128,10 @@ class PositionTest extends TestCase
     /** @test */
     public function different_positions_have_different_prices()
     {
-        $priceALV = $this->position->price();
+        $priceBAS = $this->makePositionWithStock('BAS', 'Basf')->price();
         $priceDAI = $this->makePositionWithStock('DAI', 'Daimler')->price();
 
-        $this->assertNotEquals($priceALV, $priceDAI);
+        $this->assertNotEquals($priceBAS, $priceDAI);
     }
 
 
@@ -142,7 +142,7 @@ class PositionTest extends TestCase
             'currency' => 'EUR',
             'sector' => 'Industry'
         ]);
-        Pathway::make('Quandl', 'SSE', $datasetCode)->assign($stock);
+        Datasource::make('Quandl', 'SSE', $datasetCode)->assign($stock);
 
         $position = factory(Position::class)->create([
             'positionable_id' => $stock->id,
