@@ -11,17 +11,17 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!--plugins-->
-    <link href="{{ asset('css/plugins/plugins.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/plugins/plugins.css') }}" rel="stylesheet">
 
     <!--Custom css-->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/style.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script> window.Laravel = {!! json_encode(['csrfToken' => csrf_token(), ]) !!} </script>
 
     <!-- jQuery plugins. -->
-    <script src="{{ asset('js/plugins/plugins.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ secure_asset('js/plugins/plugins.js') }}"></script>
+    <script src="{{ secure_asset('js/app.js') }}"></script>
 </head>
 
 <body>
