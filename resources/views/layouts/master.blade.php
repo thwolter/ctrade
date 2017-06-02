@@ -27,18 +27,18 @@
 </head>
 
 <body>
+    <div id="app">
+        @include('partials.appbar')
 
-    @include('partials.appbar')
-
-    @yield('content')
+        @yield('content')
 
 
-    @include('partials.footer')
+        @include('partials.footer')
 
-    <!--back to top-->
-    <a href="#" class="scrollToTop"><i class="ion-android-arrow-dropup-circle"></i></a>
-    <!--back to top end-->
-
+        <!--back to top-->
+        <a href="#" class="scrollToTop"><i class="ion-android-arrow-dropup-circle"></i></a>
+        <!--back to top end-->
+    </div>
 </body>
 </html>
 

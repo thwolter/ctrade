@@ -67,7 +67,7 @@
         <div class="space-70"></div>
         <div class="row">
             <div class="col-md-12 text-center footer-bottom">
-                <a href="index.html"> <img src="assets/img/logo-white.png" alt=""></a>
+                <a href="index.html"> <img src="{{ asset('img/logo-white.png') }}" alt=""></a>
                 <div class="space-20"></div>
                 <span>&copy;2017. All right resrved. Design by design_mylife</span>
             </div>

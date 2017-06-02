@@ -32,6 +32,7 @@ class PortfoliosController extends Controller
     {
         $portfolios = User::findOrFail(auth()->id())->portfolios;
         return view('portfolios.index', compact('portfolios'));
+
     }
 
     /**

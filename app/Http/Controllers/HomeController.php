@@ -23,8 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-
-        return redirect('portfolios.show', compact('user'));
+        return redirect(route('portfolios.index'));
     }
 }
