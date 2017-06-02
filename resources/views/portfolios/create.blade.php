@@ -52,7 +52,7 @@
 
                     <div class="text-right">
                             {!! Form::submit('Erstellen', ['class' => 'btn theme-btn-color']) !!}
-                            <button href="{{ URL::previous() }}" class="btn theme-btn-outline">Abbrechen</button>
+                            <button href="{{ URL::previous() }}" class="btn btn-outline">Abbrechen</button>
                         </div>
                     </div>
 

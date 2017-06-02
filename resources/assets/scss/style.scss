@@ -11,6 +11,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,800);
 @import 'https://fonts.googleapis.com/css?family=Raleway:500,600,700,800';
 @import url('https://fonts.googleapis.com/css?family=Playfair+Display+SC:400,400i');
@@ -741,16 +742,4 @@ a.carousel-control i{
     .carousel-indicators {
         bottom: 0px;
     }
-}
-
-/** nav-pills **/
-.nav-pills .nav-link {
-  border-radius: 0;
-}
-
-.nav-pills .nav-item.show .nav-link,
-.nav-pills .nav-link.active {
-  color: #fff;
-  cursor: default;
-  background-color: #eee;
 }
