@@ -1,0 +1,31 @@
+.home-header-box {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('../img/home/portfolio.jpg') center;
+    background-size: cover;
+    height: 100vh;
+}
+
+.home-header-box .title-box {
+    position: absolute;
+    width: 100%;
+    top: 70%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+}
+
+.home-header-box h1 {
+    color: #ddd;
+    font-size: 45px;
+    font-weight: 300;
+    line-height: 50pt;
+    /*text-transform: uppercase;*/
+    letter-spacing: 2px;
+    word-spacing: 3px;
+}
+
+.home-header-box .button-group {
+    padding-top: 10px;
+}
+
+.home-header-box .highlight {
+    background-color: rgba(13, 57, 97, 0.62);
+}

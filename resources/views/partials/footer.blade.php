@@ -1,5 +1,3 @@
-
-<div class="space-70"></div>
 <div id="footer">
     <div class="container">
         <div class="row">

@@ -15,7 +15,7 @@ use App\User;
 use App\Portfolio;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home.welcome');
 });
 
 

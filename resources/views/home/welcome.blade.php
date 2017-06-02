@@ -2,128 +2,22 @@
 
 @section('content')
 
-
-
-      
-      
-        <div class="clearfix"></div>
-        <div class="slider-master">
-            <!-- Master Slider -->
-            <div class="master-slider ms-skin-default" id="masterslider"> 
-
-                <!-- slide 1 -->
-                <div class="ms-slide slide-1" data-delay="14"> 
-
-                    <!-- slide background --> 
-                    <img src="{{ secure_asset('masterslider/style/blank.gif') }}" data-src="{{ secure_asset('img/m-slide1.jpg') }}" alt="Slide1 background"/>
-
-                    <h3 class="ms-layer title_main"
-                        style="left:150px;top: 230px;"
-                        data-type="text"
-                        data-delay="1500"
-                        data-duration="2500"
-                        data-ease="easeOutExpo"
-                        data-effect="rotate3dtop(-100,0,0,40,t)">Clean minimal business</h3>
-                    <h5 class="ms-layer sub-title"
-                        style="left:150px; top: 320px;"
-                        data-type="text"
-                        data-effect="bottom(45)"
-                        data-duration="3000"
-                        data-delay="2000"
-                        data-ease="easeOutExpo">Perfect for any minimal business startup</h5>
-                    <a class="ms-layer btn1 slide-btn uppercase" href="#"
-                       style="left: 150px; top:340px;"
-                       data-type="text"
-                       data-delay="3000"
-                       data-ease="easeOutExpo"
-                       data-duration="2500"
-                       data-effect="scale(1.5,1.6)"> Learn More <i class="fa fa-angle-right"></i> </a> 
-                    <a class="ms-layer btn2 slide-btn uppercase" href="#"
-                       style="left:300px; top:340px;"
-                       data-type="text"
-                       data-delay="3200"
-                       data-ease="easeOutExpo"
-                       data-duration="2800"
-                       data-effect="scale(1.5,1.6)"> Purchase Now! <i class="fa fa-angle-right"></i></a> </div>
-                <!-- end of slide --> 
-
-                <!-- slide 2 -->
-                <div class="ms-slide slide-2" data-delay="14"> 
-
-                    <!-- slide background --> 
-                    <img src="{{ secure_asset('masterslider/style/blank.gif') }}" data-src="{{ secure_asset('img/m-slide2.jpg') }}" alt="Slide1 background"/>
-
-                    <h3 class="ms-layer title_main full-wid text-center"
-                        style="left:0;top: 230px;"
-                        data-type="text"
-                        data-delay="1500"
-                        data-duration="2500"
-                        data-ease="easeOutExpo"
-                        data-effect="rotate3dtop(-100,0,0,40,t)">Beautiful hand crafted</h3>
-                    <h5 class="ms-layer sub-title full-wid text-center"
-                        style="left:0; top: 320px;"
-                        data-type="text"
-                        data-effect="bottom(45)"
-                        data-duration="3000"
-                        data-delay="2000"
-                        data-ease="easeOutExpo">Simple and elegant design for your next project</h5>
-                    <a class="ms-layer btn1 slide-btn uppercase" href="#"
-                       style="left: 550px; top:340px;"
-                       data-type="text"
-                       data-delay="3000"
-                       data-ease="easeOutExpo"
-                       data-duration="2500"
-                       data-effect="scale(1.5,1.6)"> Learn More <i class="fa fa-angle-right"></i> </a> 
-                    <a class="ms-layer btn2 slide-btn uppercase" href="#"
-                       style="left:700px; top:340px;"
-                       data-type="text"
-                       data-delay="3200"
-                       data-ease="easeOutExpo"
-                       data-duration="2800"
-                       data-effect="scale(1.5,1.6)"> Purchase Now! <i class="fa fa-angle-right"></i></a> </div>
-                <!-- end of slide --> 
-
-                <!-- slide 2 -->
-                <div class="ms-slide slide-3" data-delay="14"> 
-
-                    <!-- slide background --> 
-                    <img src="{{ secure_asset('masterslider/style/blank.gif') }}" data-src="{{ secure_asset('img/m-slide3.jpg') }}" alt="Slide1 background"/>
-
-                    <h3 class="ms-layer title_main full-wid text-center"
-                        style="left:0;top: 230px;"
-                        data-type="text"
-                        data-delay="1500"
-                        data-duration="2500"
-                        data-ease="easeOutExpo"
-                        data-effect="rotate3dtop(-100,0,0,40,t)">You are in good company</h3>
-                    <h5 class="ms-layer sub-title full-wid text-center"
-                        style="left:0; top: 320px;"
-                        data-type="text"
-                        data-effect="bottom(45)"
-                        data-duration="3000"
-                        data-delay="2000"
-                        data-ease="easeOutExpo">Most popular minimal business theme ever</h5>
-                    <a class="ms-layer btn1 slide-btn uppercase" href="#"
-                       style="left: 550px; top:340px;"
-                       data-type="text"
-                       data-delay="3000"
-                       data-ease="easeOutExpo"
-                       data-duration="2500"
-                       data-effect="scale(1.5,1.6)"> Learn More <i class="fa fa-angle-right"></i> </a> 
-                    <a class="ms-layer btn2 slide-btn uppercase" href="#"
-                       style="left:700px; top:340px;"
-                       data-type="text"
-                       data-delay="3200"
-                       data-ease="easeOutExpo"
-                       data-duration="2800"
-                       data-effect="scale(1.5,1.6)"> Purchase Now! <i class="fa fa-angle-right"></i></a> </div>
-                <!-- end of slide --> 
+    <div class="clearfix"></div>
+    <header class="home-header-box">
+        <div class="title-box">
+            <h1><span class="highlight">ERFOLREICHER INVESTIEREN.</span> <br>
+                Portfolio professionell steuern</h1>
+            <div id="header-buttons" class="button-group">
+                <a href="{{ route('register') }}" class="btn theme-btn-color btn-lg btn-radius" style="margin-right: 10px">Entdecken</a>
+                <a href="#infos" class="btn btn-outline-secondary btn-lg btn-radius">Mehr Infos</a>
             </div>
-            <!-- end Master Slider -->
         </div>
-        <div class="space-50"></div>
-        <div class="container">
-            <div class="row intro-row">
+    </header>
+
+    <div id="infos" class="space-50"></div>
+
+    <div class="container">
+        <div class="row intro-row">
                 <div class="col-md-12 text-center wow animated fadeInUp">
                     <h2>Bizwrap built for Minimal business Projects</h2>
                     <h3 class="subtitle">With Clean and Modern Design</h3>
@@ -171,7 +65,7 @@
                     <div class="portfolio-sec">
                         <div class="portfolio-thumnail">
                             <a href="portfolio-single.html">
-                                <img src="{{ secure_asset('img/work/work-1.jpg') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('img/work/work-1.jpg') }}" class="img-fluid" alt="">
                             </a>
                         </div>
                         <div class="portfolio-desc text-center">
@@ -185,7 +79,7 @@
                     <div class="portfolio-sec">
                         <div class="portfolio-thumnail">
                             <a href="portfolio-single.html">
-                                <img src="{{ secure_asset('img/work/work-2.jpg') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('img/work/work-2.jpg') }}" class="img-fluid" alt="">
                             </a>
                         </div>
                         <div class="portfolio-desc text-center">
@@ -199,7 +93,7 @@
                     <div class="portfolio-sec">
                         <div class="portfolio-thumnail">
                             <a href="portfolio-single.html">
-                                <img src="{{ secure_asset('img/work/work-3.jpg') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('img/work/work-3.jpg') }}" class="img-fluid" alt="">
                             </a>
                         </div>
                         <div class="portfolio-desc text-center">
@@ -215,7 +109,7 @@
                     <div class="portfolio-sec">
                         <div class="portfolio-thumnail">
                             <a href="portfolio-single.html">
-                                <img src="{{ secure_asset('img/work/work-4.jpg') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('img/work/work-4.jpg') }}" class="img-fluid" alt="">
                             </a>
                         </div>
                         <div class="portfolio-desc text-center">
@@ -229,7 +123,7 @@
                     <div class="portfolio-sec">
                         <div class="portfolio-thumnail">
                             <a href="portfolio-single.html">
-                                <img src="{{ secure_asset('img/work/work-5.jpg') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('img/work/work-5.jpg') }}" class="img-fluid" alt="">
                             </a>
                         </div>
                         <div class="portfolio-desc text-center">
@@ -243,7 +137,7 @@
                     <div class="portfolio-sec">
                         <div class="portfolio-thumnail">
                             <a href="portfolio-single.html">
-                                <img src="{{ secure_asset('/img/work/work-6.jpg') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('/img/work/work-6.jpg') }}" class="img-fluid" alt="">
                             </a>
                         </div>
                         <div class="portfolio-desc text-center">
@@ -304,7 +198,7 @@
 
                     </div>
                     <div class="col-md-5 wow animated fadeInRight">
-                        <img src="{{ secure_asset('img/ipad.png') }}" class="img-fluid" alt="">
+                        <img src="{{ asset('img/ipad.png') }}" class="img-fluid" alt="">
                     </div>
                 </div>
 
@@ -348,7 +242,7 @@
                     <div class="news-sec">
                         <div class="news-thumnail">
                             <a href="blog-post.html">
-                                <img src="{{ secure_asset('img/blog/blog-1.jpg') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('img/blog/blog-1.jpg') }}" class="img-fluid" alt="">
                             </a>
                         </div>
                         <div class="news-desc">
@@ -364,7 +258,7 @@
                     <div class="news-sec">
                         <div class="news-thumnail">
                             <a href="blog-post.html">
-                                <img src="{{ secure_asset('img/blog/blog-2.jpg') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('img/blog/blog-2.jpg') }}" class="img-fluid" alt="">
                             </a>
                         </div>
                         <div class="news-desc">
@@ -380,7 +274,7 @@
                     <div class="news-sec">
                         <div class="news-thumnail">
                             <a href="blog-post.html">
-                                <img src="{{ secure_asset('/img/blog/blog-4.jpg') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('/img/blog/blog-4.jpg') }}" class="img-fluid" alt="">
                             </a>
                         </div>
                         <div class="news-desc">
@@ -423,90 +317,37 @@
                 </h3>
             </div>
         </div>
-        <!--footer-->
-        <div id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 margin-btm-20">
-                        <div class="footer-col">
-                            <h3>Bizwrap</h3>
-                            <p>
-                                aliqua.adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna. aliqua.adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
-                            </p>
-                        </div>
-                        <div class="space-20"></div>
-                        <div class="footer-col">
-                            <h3>contact info</h3>
-                            <p><i class="ion-home"></i> pearl tower,3rd floor,jaipur,302012</p>
-                            <p><i class="ion-iphone"></i> +91 9887568614</p>
-                            <p><i class="ion-email"></i> mail@domain.com</p>
-                        </div>
-                        <div class="space-20"></div>
-                        <div class="footer-col">
-                            <h3>Follow us</h3>
-                            <ul class=" list-inline social-btn">
-                                <li class="list-inline-item"><a href="#"><i class="ion-social-facebook" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like On Facebook"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="ion-social-twitter" data-toggle="tooltip" data-placement="top" title="" data-original-title="Follow On twitter"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="ion-social-googleplus" data-toggle="tooltip" data-placement="top" title="" data-original-title="Follow On googleplus"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="ion-social-pinterest" data-toggle="tooltip" data-placement="top" title="" data-original-title="pinterest"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="ion-social-skype" data-toggle="tooltip" data-placement="top" title="" data-original-title="skype"></i></a></li>
-                            </ul>
-                        </div><!--footer social col-->
-                    </div><!--col-4 end-->
-                    <div class="col-md-3 margin-btm-20">
-                        <div class="footer-col">
-                            <h3>Latest post</h3>
-                            <ul class="post-list list-unstyled">
-                                <li><a href="#" class="hover-color">Blog post with image</a></li>
-                                <li><a href="#" class="hover-color">lorem ipsum dollor sit amet</a></li>
-                                <li><a href="#" class="hover-color">Blog post with audio</a></li>
-                                <li><a href="#" class="hover-color">lorem ipsum dollor sit amet</a></li>
-                                <li><a href="#" class="hover-color">Blog post with quote</a></li>
-                            </ul>
-                        </div>
-                    </div><!--latest post col end-->
-                    <div class="col-md-5">
-                        <div class="footer-col">
-                            <h3>Get in touch</h3>
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Name...">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="email" class="form-control" placeholder="Email...">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control" placeholder="Subject...">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <textarea class="form-control" placeholder="Massage..." rows="7"></textarea>
-                                    </div>
-                                    <div class="col-md-12 text-right">
-                                        <button type="submit" class="btn btn-lg btn-white">Send massege</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div><!--get in touch col end-->
-                </div><!--footer main row end-->  
-                <div class="space-70"></div>
-                <div class="row">
-                    <div class="col-md-12 text-center footer-bottom">
-                        <a href="index.html"> <img src="{{ secure_asset('/img/logo-white.png') }}" alt=""></a>
-                        <div class="space-20"></div>
-                        <span>&copy;2017. All right resrved. Design by design_mylife</span>
-                    </div>
-                </div><!--footer copyright row end-->
-            </div><!--container-->
-        </div><!--footer main end-->
-        <a href="#" class="scrollToTop"><i class="ion-android-arrow-dropup-circle"></i></a>
-        <!--back to top end-->
 
-       
-        <!--page template scripts-->
-        <script src="{{ secure_asset('masterslider/masterslider.min.js') }}"></script> 
-        <script src="{{ secure_asset('js/masterslider-custom.js') }}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function(){
+            // Add scrollspy to <body>
+            $('body').scrollspy({target: "header", offset: 50});
+
+            // Add smooth scrolling on all links inside the navbar
+            $("#header-buttons a").on('click', function(event) {
+                // Make sure this.hash has a value before overriding default behavior
+                if (this.hash !== "") {
+                    // Prevent default anchor click behavior
+                    event.preventDefault();
+
+                    // Store hash
+                    var hash = this.hash;
+
+                    // Using jQuery's animate() method to add smooth page scroll
+                    // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800, function(){
+
+                        // Add hash (#) to URL when done scrolling (default click behavior)
+                        window.location.hash = hash;
+                    });
+                }  // End if
+            });
+        });
+    </script>
+
+
 
 
 @endsection
