@@ -13,6 +13,7 @@
 
     @if (count($portfolios) == 0)
 
+        <!-- welcome-box -->
         <div class="container">
             <div id="welcome" class=" welcome-box">
                 <h1>Willkommen</h1>
@@ -26,14 +27,15 @@
                     <a class="btn btn theme-btn-color-outline btn-lg" href="#examples" role="button">Beispiele</a>
                 </div>
             </div>
-        </div>
+        </div><!-- /welccome-box -->
 
         <div id="examples" class="space-70"></div>
 
+        <!-- example masonry -->
         <div class="blog-masonary-wrapper">
             <div class="container">
                 <div class="row mas-boxes" id="mas-boxes">
-                    @foreach ($examples as $example)
+                    @foreach ($examples as $portfolio)
                         @php($bounceIn = '0.3s')
                         @include('portfolios.partials.masonry')
                     @endforeach
@@ -44,28 +46,26 @@
 
     @endif
 
-    <!-- show list of portfolios -->
-    @foreach($portfolios as $portfolio)
+    @if (count($portfolios) > 0)
 
-        <!-- a single portfolio -->
-        <section class="ct-panel">
+        <!-- show list of portfolios -->
+        @foreach($portfolios as $portfolio)
 
-            <h2 class="portfolio-title"><a href="{{ route('portfolios.show', $portfolio->id) }}"> {{ $portfolio->name }}</a></h2>
+            <div id="portfolios" class="space-70"></div>
 
-            <div class="ct-panel__ct-body">
-
-                <div class="">
-                    <a class="btn btn-primary inline-block-tight pull-right"
-                       href="/portfolios/{{ $portfolio->id }}">Öffnen</a>
+            <!-- portfolio masonry -->
+            <div class="blog-masonary-wrapper">
+                <div class="container">
+                    <div class="row mas-boxes" id="mas-boxes">
+                        @foreach ($portfolios as $portfolio)
+                            @php($bounceIn = '0.3s')
+                            @include('portfolios.partials.masonry')
+                        @endforeach
+                    </div>
                 </div>
-
-                <p>
-                    {{ $portfolio->currency }}
-                </p>
             </div>
-        </section>
-
-    @endforeach
+        @endforeach
+    @endif
 
     <script src="{{ asset('cubeportfolio/js/jquery.cubeportfolio.min.js') }}"></script>
     <script>

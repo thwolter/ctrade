@@ -24,11 +24,29 @@ class Portfolio extends Model
         'name', 'cash', 'description', 'img_url'
     ];
 
+
+    public function getCategoryNameAttribute()
+    {
+        $default = $this->category;
+        return (!is_null($default)) ? $default->name : 'keine Kategory';
+    }
+
+    public function getImageUrlAttribute()
+    {
+        $default = $this->img_url;
+        return ($default);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+
+    public function image()
+    {
+        return $this->hasOne(PortfolioImage::class);
+    }
 
     public function positions()
     {

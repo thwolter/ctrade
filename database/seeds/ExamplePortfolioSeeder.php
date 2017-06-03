@@ -5,6 +5,7 @@ use App\Entities\Portfolio;
 use App\Entities\Category;
 use App\Entities\User;
 use App\Entities\Currency;
+use App\Entities\PortfolioImage;
 
 class ExamplePortfolioSeeder extends Seeder
 {
@@ -50,7 +51,6 @@ class ExamplePortfolioSeeder extends Seeder
         $portfolio = new Portfolio([
             'name' => $parm['name'],
             'cash' => $parm['cash'],
-            'img_url' => $parm['img_url'],
             'description' => $parm['description']
         ]);
 
@@ -61,5 +61,9 @@ class ExamplePortfolioSeeder extends Seeder
         $portfolio->currency()->associate($currency);
 
         $user->portfolios()->save($portfolio);
+
+        $image = new PortfolioImage(['path' => $parm['img_url']]);
+        $portfolio->image()->save($image);
+
     }
 }

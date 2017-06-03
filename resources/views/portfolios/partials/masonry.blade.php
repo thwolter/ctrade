@@ -2,16 +2,16 @@
     <div class="news-sec wow animated bounceIn" data-wow-delay="{{ $bounceIn }}">
         <div class="news-thumnail">
             <a href="blog-post.html">
-                <img src="{{ $example->img_url }}" class="img-fluid" alt="">
+                <img src="{{ $portfolio->image->path }}" class="img-fluid" alt="">
             </a>
         </div>
         <div class="news-desc">
             <h3 class="blog-post-title">
-                <a href="blog-post.html" class="hover-color">{{ $example->name  }}</a>
+                <a href="blog-post.html" class="hover-color">{{ $portfolio->name  }}</a>
             </h3>
-            <span class="news-post-cat">{{ $example->category->name }}</span>
+            <span class="news-post-cat">{{ $portfolio->categoryName }}</span>
             <p>
-                {{ $example->description }}
+                {{ $portfolio->description }}
             </p>
             <a href="#" class="mas-link">Portfolio ansehen <i class="ion-ios-arrow-right"></i></a>
         </div>
