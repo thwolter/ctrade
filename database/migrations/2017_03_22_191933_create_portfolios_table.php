@@ -17,6 +17,8 @@ class CreatePortfoliosTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('name');
+            $table->string('description')->nullable();
+            $table->integer('category_id')->nullable();
             $table->float('cash');
             $table->integer('currency_id');
             $table->float('confidence')->default(0.95);

@@ -14,19 +14,12 @@
 use App\User;
 use App\Portfolio;
 
-Route::get('/', function () {
-    return view('home.welcome');
-});
 
+Route::get('/', 'HomeController@index');
+Route::get('/blog', function() {});
+Route::get('/about', function() {});
 
-Route::get('/blog', function() {
-
-});
-
-Route::get('/about', function() {
-
-});
-
+Auth::routes();
 
 Route::resource('/portfolios', 'PortfoliosController');
 Route::resource('/portfolios/{portfolio}/positions', 'PositionsController');
@@ -42,14 +35,6 @@ Route::get('portfolios/{portfolio}/search/{type}/{id}', ['as' => 'search.show', 
 Route::get('/portfolios/{portfolio}/risk', ['as' => 'risks.index', 'uses' => 'RiskController@index']);
 
 
-// User auth
-Auth::routes();
-Route::get('/home', 'HomeController@index');
-
-
-Route::get('phpinfo', function() {
-    phpinfo();
-});
 
 App::bind(
     'App\Repositories\Contracts\InstrumentInterface',

@@ -21,7 +21,7 @@ class Portfolio extends Model
     protected $rscriptable = 'App\Models\Rscript\Portfolio';
     
     protected $fillable = [
-        'name', 'cash'
+        'name', 'cash', 'description'
     ];
 
     public function user()
@@ -33,6 +33,12 @@ class Portfolio extends Model
     public function positions()
     {
         return $this->hasMany(Position::class);
+    }
+
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
 

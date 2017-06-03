@@ -9,6 +9,11 @@ use App\Entities\Portfolio;
 class SearchController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     protected $types = [
         Stock::class => 'Aktie'
     ];
