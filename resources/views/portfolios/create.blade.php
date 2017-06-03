@@ -51,8 +51,8 @@
                         </div><!-- /cash -->
 
                     <div class="text-right">
-                            {!! Form::submit('Erstellen', ['class' => 'btn theme-btn-color']) !!}
-                            <button href="{{ URL::previous() }}" class="btn btn-outline">Abbrechen</button>
+                        <button href="{{ URL::previous() }}" class="btn btn-secondary">Abbrechen</button>
+                        {!! Form::submit('Erstellen', ['class' => 'btn theme-btn-color']) !!}
                         </div>
                     </div>
 

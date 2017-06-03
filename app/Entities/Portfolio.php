@@ -21,7 +21,7 @@ class Portfolio extends Model
     protected $rscriptable = 'App\Models\Rscript\Portfolio';
     
     protected $fillable = [
-        'name', 'cash', 'description'
+        'name', 'cash', 'description', 'img_url'
     ];
 
     public function user()

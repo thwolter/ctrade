@@ -30,8 +30,9 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
+        $examples = User::whereName('examples')->first()->portfolios;
         $portfolios = User::findOrFail(auth()->id())->portfolios;
-        return view('portfolios.index', compact('portfolios'));
+        return view('portfolios.index', compact('portfolios', 'examples'));
 
     }
 
