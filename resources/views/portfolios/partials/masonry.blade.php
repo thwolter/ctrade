@@ -16,7 +16,7 @@
             <p>
                 {{ $portfolio->description }}
             </p>
-            <a href="#" class="mas-link">Portfolio ansehen <i class="ion-ios-arrow-right"></i></a>
+            <a href="{{ route('portfolios.show', ['id' => $portfolio->id]) }}" class="mas-link">Portfolio ansehen <i class="ion-ios-arrow-right"></i></a>
         </div>
     </div>
 </div>

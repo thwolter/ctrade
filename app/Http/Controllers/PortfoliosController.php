@@ -132,7 +132,11 @@ class PortfoliosController extends Controller
      */
     public function destroy($id)
     {
-        Portfolio::whereId($id)->delete($id);
+        $portfolio = Portfolio::whereId($id);
+
+        Storage::delete('public/images/'.$portfolio->image->path);
+        $portfolio->delete($id);
+
 
         return redirect(route('portfolios.index'));
     }
