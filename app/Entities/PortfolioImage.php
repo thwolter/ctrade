@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class PortfolioImage extends Model
 {
@@ -16,10 +17,14 @@ class PortfolioImage extends Model
         return $this->belongsTo(Portfolio::class);
     }
 
-    public function addImage(Request $request)
-    {
-        $file = $request->file('file');
-        $file->store('images');
-    }
 
+    public static function fromForm(UploadedFile $file)
+    {
+        $image = new static;
+
+        $image->path = time() . $file->getClientOriginalName();;
+
+        return $image;
+
+    }
 }

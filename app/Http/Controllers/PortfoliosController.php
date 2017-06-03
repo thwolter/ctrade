@@ -11,9 +11,11 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Currency;
+use App\Entities\PortfolioImage;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
+use Illuminate\Support\Facades\Storage;
 
 class PortfoliosController extends Controller
 {
@@ -135,6 +137,32 @@ class PortfoliosController extends Controller
         return redirect(route('portfolios.index'));
     }
 
+    public function addImage(Request $request, $id)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:jpg,jpeg,png,bmp'
+        ]);
+
+        $portfolio = Portfolio::find($id);
+
+        $file = $request->file('file');
+        $image = PortfolioImage::fromForm($file);
+
+        if (is_null($portfolio->image)) {
+
+            $file->storeAs('public/images', $image->path);
+            $portfolio->addImage($image);
+
+        } else {
+
+            Storage::delete('public/images/'.$portfolio->image->path);
+            $file->storeAs('public/images', $image->path);
+            $portfolio->updateImage($image);
+        }
+
+
+
+    }
 
 }
 

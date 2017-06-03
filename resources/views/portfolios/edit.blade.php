@@ -99,6 +99,16 @@
 
     {!! Form::close() !!}
 
+
+    <form id="add-image-form" action="{{ route('image.upload', ['id' => $portfolio->id]) }}" method="POST" class="dropzone">
+        {{ csrf_field() }}
+        <input type="file" name="file" />
+    </form>
+
+@endsection
+
+@section('scripts.footer')
+    <script src="{{ asset('js/dropzone.js') }}"></script>
 @endsection
 
 

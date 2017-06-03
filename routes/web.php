@@ -34,7 +34,8 @@ Route::get('portfolios/{portfolio}/search/{type}/{id}', ['as' => 'search.show', 
 // Risk resources
 Route::get('/portfolios/{portfolio}/risk', ['as' => 'risks.index', 'uses' => 'RiskController@index']);
 
-
+// File upload
+Route::post('/{portfolio}/image-upload', ['as' => 'image.upload', 'uses' => 'PortfoliosController@addImage']);
 
 App::bind(
     'App\Repositories\Contracts\InstrumentInterface',

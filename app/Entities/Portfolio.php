@@ -28,13 +28,14 @@ class Portfolio extends Model
     public function getCategoryNameAttribute()
     {
         $default = $this->category;
-        return (!is_null($default)) ? $default->name : 'keine Kategory';
+        return (!is_null($default)) ? $default->name : 'keine Kategorie';
     }
 
     public function getImageUrlAttribute()
     {
-        $default = $this->img_url;
-        return ($default);
+        $file = $this->image;
+        return (! is_null($file)) ? 'images/'.$file->path : null;
+
     }
 
     public function user()
@@ -154,4 +155,16 @@ class Portfolio extends Model
             ->first();
     }
 
+    public function addImage(PortfolioImage $image)
+    {
+        return $this->image()->save($image);
+    }
+
+    public function updateImage(PortfolioImage $image)
+    {
+        $this->image->path = $image->path;
+        $this->image->update();
+
+        return $this;
+    }
 }

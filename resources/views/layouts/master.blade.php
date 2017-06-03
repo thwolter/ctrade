@@ -39,6 +39,8 @@
         <a href="#" class="scrollToTop"><i class="ion-android-arrow-dropup-circle"></i></a>
         <!--back to top end-->
     </div>
+
+    @yield('scripts.footer')
 </body>
 </html>
 

@@ -2,7 +2,10 @@
     <div class="news-sec wow animated bounceIn" data-wow-delay="{{ $bounceIn }}">
         <div class="news-thumnail">
             <a href="blog-post.html">
-                <img src="{{ $portfolio->image->path }}" class="img-fluid" alt="">
+                @php ($img = $portfolio->imageUrl)
+                @if (!is_null($img))
+                    <img src="{{ asset('storage/'.$portfolio->imageUrl) }}" class="img-fluid" alt="">
+                @endif
             </a>
         </div>
         <div class="news-desc">

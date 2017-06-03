@@ -48,25 +48,23 @@
 
     @if (count($portfolios) > 0)
 
-        <!-- show list of portfolios -->
-        @foreach($portfolios as $portfolio)
+        <div id="portfolios" class="space-70"></div>
 
-            <div id="portfolios" class="space-70"></div>
-
-            <!-- portfolio masonry -->
-            <div class="blog-masonary-wrapper">
-                <div class="container">
-                    <div class="row mas-boxes" id="mas-boxes">
-                        @foreach ($portfolios as $portfolio)
-                            @php($bounceIn = '0.3s')
-                            @include('portfolios.partials.masonry')
-                        @endforeach
-                    </div>
+        <!-- portfolio masonry -->
+        <div class="blog-masonary-wrapper">
+            <div class="container">
+                <div class="row mas-boxes" id="mas-boxes">
+                    @foreach ($portfolios as $portfolio)
+                        @php($bounceIn = '0.3s')
+                        @include('portfolios.partials.masonry')
+                    @endforeach
                 </div>
             </div>
-        @endforeach
+        </div>
     @endif
+@endsection
 
+@section('scripts.footer')
     <script src="{{ asset('cubeportfolio/js/jquery.cubeportfolio.min.js') }}"></script>
     <script>
         (function ($, window, document, undefined) {
@@ -102,6 +100,7 @@
             });
         })(jQuery, window, document);
     </script>
+
     <script>
         $(document).ready(function(){
             // Add scrollspy to <body>
