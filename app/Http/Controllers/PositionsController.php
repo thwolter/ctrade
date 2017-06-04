@@ -105,16 +105,26 @@ class PositionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $portfolio, $id)
+    public function update(Request $request, $id)
     {
         $this -> validate(request(), [
-            'amount' => 'required'
+            'amount' => 'min:0'
         ]);
 
-        $position = Position::find($id);
-        $position->update(['amount' => $request->get('amount')]);
+        $sign = ($request->get('direction') == 'buy') ? -1 : 1;
 
-        return redirect(route('positions.index', $position->portfolio->id));
+        $position = Position::find($id);
+        $portfolio = $position->portfolio;
+
+        $amount = $position->amount + $sign * $request->get('amount');
+        $position->update(['amount' => $amount]);
+
+        if ($request->get('deduct') == 'yes') {
+
+            $portfolio->cash = $portfolio->cash - $sign * array_first($position->price());
+            $position->save();
+        }
+        return redirect(route('positions.index', $portfolio->id));
     }
 
     /**
@@ -125,10 +135,27 @@ class PositionsController extends Controller
      */
     public function destroy($id)
     {
-        $position = Position::find($id);
-        $position->delete();
+        $position = Position::find($id)->delete();
 
         return redirect(route('positions.index', $position->portfolio->id));
+    }
+
+
+    public function buy($id)
+    {
+        $position = Position::find($id);
+        $portfolio = $position->portfolio;
+
+        return view('positions.buy', compact('position', 'portfolio'));
+    }
+
+
+    public function sell($id)
+    {
+        $position = Position::find($id);
+        $portfolio = $position->portfolio;
+
+        return view('positions.sell', compact('position', 'portfolio'));
     }
 
 }

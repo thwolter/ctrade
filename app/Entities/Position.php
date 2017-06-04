@@ -78,6 +78,8 @@ class Position extends Model implements PresentableInterface
         return $this->positionable->name;
     }
 
+
+
     public function symbol() 
     {
         return $this->positionable->symbol;

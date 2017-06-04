@@ -152,7 +152,7 @@ class Portfolio extends Model
 
     public function buy($amount, $instrument)
     {
-        $this->cash = $this->cash - $amount * array_first($instrument->price());;
+        $this->cash = $this->cash - $amount * array_first($instrument->price());
         return $this->obtain($amount, $instrument)->save();
     }
 
@@ -163,8 +163,8 @@ class Portfolio extends Model
 
         if ($this->positionWith($instrument)->amount == 0)
             $this->position->delete();
-
     }
+
 
     public function positionWith($instrument)
     {

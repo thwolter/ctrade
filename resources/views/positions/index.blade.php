@@ -71,8 +71,8 @@
                     </td>
 
                     <td class="align-middle">
-                        <p style="margin-bottom: 0px"><a href="#">Zukaufen</a></p>
-                        <p style="margin-bottom: 0px"><a href="#">Verkaufen</a></p>
+                        <p style="margin-bottom: 0px"><a href="{{ route('positions.buy', ['id' => $position->id]) }}">Zukaufen</a></p>
+                        <p style="margin-bottom: 0px"><a href="{{ route('positions.sell', ['id' => $position->id]) }}">Verkaufen</a></p>
                     </td>
                 </tr>
             @endforeach
