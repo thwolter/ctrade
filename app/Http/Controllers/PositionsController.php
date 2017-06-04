@@ -56,15 +56,15 @@ class PositionsController extends Controller
             'amount' => 'min:0'
         ]);
 
+        $portfolio = Portfolio::find($id);
+
         $amount = $request->get('amount');
         $instrument = resolve($request->get('type'))->find($request->get('itemId'));
-        $portfolio = Portfolio::find($id)->obtain($amount, $instrument);
 
-        if ($request->get('deduct') == 'yes')
-        {
-            $total = $amount * array_first($instrument->price());
-            $portfolio->cash = $portfolio->cash - $total;
-            $portfolio->save();
+        if ($request->get('deduct') == 'yes') {
+            $portfolio->buy($amount, $instrument);
+        } else {
+            $portfolio->obtain($amount, $instrument);
         }
 
         return redirect(route('positions.index', $portfolio->id));

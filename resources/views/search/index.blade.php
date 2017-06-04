@@ -45,8 +45,8 @@
         {!! Form::close() !!}
     </div>
 
-    <div id="searchResults" class="space-70"></div>
     @if(isset($suggest))
+    <div id="searchResults" class="space-70"></div>
         <div>
             <h4>Suchergebnisse</h4>
             <div class="space-20"></div>

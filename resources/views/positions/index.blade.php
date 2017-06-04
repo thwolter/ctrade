@@ -7,18 +7,15 @@
         <dd>{{ $portfolio->present()->cash() }} </dd>
     </dl>
 
-    <hr>
+
 
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nr.</th>
-                <th>Tpye</th>
-                <th>Name</th>
-                <th class="table-cell-value">Anzahl</th>
-                <th class="table-cell-value">Preis</th>
+                <th>Position</th>
+                <th class="">Stück</th>
                 <th class="table-cell-value">Gesamt</th>
-                <th class="table-cell-value">Gesamt ({{ $portfolio->currencyCode() }})</th>
             </tr>
         </thead>
 
@@ -38,13 +35,28 @@
             @php( $count = 0)
             @foreach($portfolio->positions as $position)
                 <tr>
-                    <td>{{ ++$count }}</td>
-                    <td>{{ $position->typeDisp() }}</td>
-                    <td><a href="{{ route('positions.show', ['pid' => $portfolio->id, 'id' => $position->id]) }}">{{ $position->name() }}</a></td>
-                    <td class="table-cell-value">{{ $position->amount() }}</td>
-                    <td class="table-cell-value">{{ $position->present()->price() }}</td>
-                    <td class="table-cell-value">{{ $position->present()->total() }}</td>
-                    <td class="table-cell-value">{{ $position->present()->total($portfolio->currencyCode()) }}</td>
+                    <td class="align-middle">{{ ++$count }}</td>
+                    <td class="align-middle">
+                        <h5><a href="{{ route('positions.show', ['pid' => $portfolio->id, 'id' => $position->id]) }}">
+                                {{ $position->name() }}</a>
+                        </h5>
+                        <span>
+                            {{ $position->typeDisp() }} | {{ $position->present()->price() }}
+                            ({{ $position->present()->priceDate() }})
+                        </span>
+                    </td>
+                    <td class="align-middle table-cell-value">{{ $position->amount() }}</td>
+                    <td class="align-middle table-cell-value">
+                        {{ $position->present()->total() }}
+                        @if ($position->currencyCode() != $portfolio->currencyCode())
+                            <span>{{ $position->present()->total($portfolio->currencyCode()) }}</span>
+                        @endif
+                    </td>
+
+                    <td class="align-middle">
+                        <span><a href="#">Zukaufen</a></span>
+                        <span><a href="#">Verkaufen</a></span>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

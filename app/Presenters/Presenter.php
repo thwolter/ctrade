@@ -4,16 +4,17 @@
 namespace App\Presenters;
 
 
+use Carbon\Carbon;
+
 abstract class Presenter
 {
 
     public $entity;
-    
+
     protected $replace = '/[^0-9,"."]/';
-    
+
     protected $priceFormat;
-    
-    
+
 
     public function __construct($entity)
     {
@@ -29,17 +30,17 @@ abstract class Presenter
 
         return $this->entity->$property();
     }
-    
-    
+
+
     public function priceFormat($value, $currencyCode)
     {
         if (is_null($this->priceFormat)) {
-            $this->priceFormat = new \NumberFormatter( 'de_DE', \NumberFormatter::CURRENCY );
+            $this->priceFormat = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
         }
 
         if (is_array($value)) $value = array_first($value);
         $currencyFmt = $this->priceFormat->formatCurrency($value, $currencyCode);
-        
+
         //return preg_replace($this->replace, '', $currencyFmt).' '.$currencyCode;
         return $currencyFmt;
     }
@@ -57,7 +58,10 @@ abstract class Presenter
     public function percentRisk()
     {
         return sprintf('%01.1f%%', $this->entity->percentRisk());
-
     }
 
+    public function priceDate()
+    {
+        return Carbon::parse(key($this->entity->price()))->formatLocalized('%d.%m.%Y');
+    }
 }

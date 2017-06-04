@@ -44,7 +44,7 @@ class Position extends Model implements PresentableInterface
 
     public function price()
     {
-        return array_first($this->positionable->price());
+        return $this->positionable->price();
     }
 
     public function currency()
@@ -86,7 +86,7 @@ class Position extends Model implements PresentableInterface
     
     public function total($currency = null) 
     {
-        return $this->amount() * $this->price() * $this->convert($currency);
+        return $this->amount() * array_first($this->price()) * $this->convert($currency);
     }
  
     

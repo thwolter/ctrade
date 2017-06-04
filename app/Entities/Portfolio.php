@@ -149,6 +149,23 @@ class Portfolio extends Model
         return $this;
     }
 
+
+    public function buy($amount, $instrument)
+    {
+        $this->cash = $this->cash - $amount * array_first($instrument->price());;
+        return $this->obtain($amount, $instrument)->save();
+    }
+
+
+    public function sell($amount, $instrument)
+    {
+        $this->buy(-$amount, $instrument);
+
+        if ($this->positionWith($instrument)->amount == 0)
+            $this->position->delete();
+
+    }
+
     public function positionWith($instrument)
     {
         $type = array_search(get_class($instrument), Relation::morphMap());
