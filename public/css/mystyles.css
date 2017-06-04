@@ -137,3 +137,12 @@
 }
 
 
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f7f7f7;
+}
+
+.portfolio-panel thead {
+    background-color: #4c779e;
+    color: whitesmoke;
+}
+

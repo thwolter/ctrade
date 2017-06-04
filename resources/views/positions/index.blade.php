@@ -2,20 +2,26 @@
 
 @section('container-content')
 
+    <h3>Cash</h3>
+    <div class="space-40"></div>
+
     <dl>
         <dt>Barbestand:</dt>
         <dd>{{ $portfolio->present()->cash() }} </dd>
     </dl>
 
+    <div class="space-70"></div>
+    <h3>Aktien</h3>
+    <div class="space-40"></div>
+    <table class="table table-striped table-responsive">
 
-
-    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nr.</th>
                 <th>Position</th>
                 <th class="">Stück</th>
                 <th class="table-cell-value">Gesamt</th>
+                <th></th>
             </tr>
         </thead>
 
@@ -23,11 +29,9 @@
             <tr>
                 <th></th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th class="table-cell-value"></th>
                 <th class="table-cell-value">Summe</th>
                 <th class="table-cell-value">{{ $portfolio->present()->total($portfolio->currencyCode()) }}</th>
+                <th></th>
             </tr>
         </tfoot>
 
@@ -54,8 +58,8 @@
                     </td>
 
                     <td class="align-middle">
-                        <span><a href="#">Zukaufen</a></span>
-                        <span><a href="#">Verkaufen</a></span>
+                        <p style="margin-bottom: 0px"><a href="#">Zukaufen</a></p>
+                        <p style="margin-bottom: 0px"><a href="#">Verkaufen</a></p>
                     </td>
                 </tr>
             @endforeach
