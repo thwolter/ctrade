@@ -21,9 +21,6 @@
     <!-- Scripts -->
     <script> window.Laravel = {!! json_encode(['csrfToken' => csrf_token(), ]) !!} </script>
 
-    <!-- jQuery plugins. -->
-    <script src="{{ asset('js/plugins/plugins.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
 </head>
 
 <body>
@@ -32,7 +29,6 @@
 
         @yield('content')
 
-
         @include('partials.footer')
 
         <!--back to top-->
@@ -40,6 +36,9 @@
         <!--back to top end-->
     </div>
 
+    <!-- jQuery plugins. -->
+    <script src="{{ asset('js/plugins/plugins.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     @yield('scripts.footer')
 </body>
 </html>

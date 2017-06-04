@@ -7,7 +7,8 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">
+                        @if (Auth::guest()) Home @else Portfolios @endif</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
                 <li class="nav-item"><a class="nav-link" href="#"> Über uns</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Kontakt</a></li>
@@ -16,7 +17,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                 @else
                     <li class=" dropdown nav-item">
-                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Mein Account</a>
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Account</a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item" href="{{ route('logout') }}"

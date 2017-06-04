@@ -14,18 +14,19 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-md-3">
-                <!-- sidebar navigation -->
+            <!-- sidebar navigation -->
+            <div class="col-lg-2 col-md-3 col-sm-4">
                 @include('partials.sidebar')
             </div>
 
-            <div class="col-md-9">
+            <!-- main section -->
+            <div class="col-lg-9 offset-lg-1 col-md-8 offset-md-1 col-sm-8">
                 <div class="panel panel-primary">
 
-                    <!-- title and nav -->
-                    <h3>{{ $portfolio->name }}</h3>
-                    @include('partials.pills')
-                    <hr><!-- /title and nav -->
+                    <!-- title -->
+                    <h2>{{ $portfolio->name }}</h2>
+                    <span class="news-post-cat">{{ $portfolio->categoryName }} | angelegt 20.02.2016</span>
+                    <hr><!-- /title -->
 
                     @yield('container-content')
 
@@ -33,6 +34,8 @@
             </div>
         </div>
     </div>
+
+    <div class="space-70"></div>
 @endsection
 
 

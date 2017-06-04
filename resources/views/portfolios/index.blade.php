@@ -5,14 +5,13 @@
     <section id="content-region-3" class="padding-40 page-tree-bg">
         <div class="container">
             <h3 class="page-tree-text">
-                Portfolio anlegen
+                Meine Portfolios
             </h3>
         </div>
     </section><!--page-tree end here-->
     <div class="space-70"></div>
 
     @if (count($portfolios) == 0)
-
         <!-- welcome-box -->
         <div class="container">
             <div id="welcome" class=" welcome-box">
@@ -42,8 +41,6 @@
                 </div>
             </div>
         </div>
-
-
     @endif
 
     @if (count($portfolios) > 0)
@@ -61,8 +58,22 @@
                 </div>
             </div>
         </div>
+
+        <!-- create-button-box -->
+        <div class="row">
+        <div class="container">
+            <div class="create-button-box">
+                <a class="btn theme-btn-color btn-lg"
+                   href="{{ route('portfolios.create') }}"
+                   role="button">Neues Portfolio</a>
+            </div>
+        </div>
+        </div><!-- /create-button-box -->
+        <div class="space-70"></div>
+
     @endif
 @endsection
+
 
 @section('scripts.footer')
     <script src="{{ asset('cubeportfolio/js/jquery.cubeportfolio.min.js') }}"></script>

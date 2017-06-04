@@ -8,6 +8,7 @@ use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\UploadedFile;
 
 
 class Portfolio extends Model
@@ -23,6 +24,9 @@ class Portfolio extends Model
     protected $fillable = [
         'name', 'cash', 'description', 'img_url'
     ];
+
+    protected $imagesPath = 'public/images';
+
 
 
     public function getCategoryNameAttribute()
@@ -155,16 +159,32 @@ class Portfolio extends Model
             ->first();
     }
 
-    public function addImage(PortfolioImage $image)
+    public function addImage(UploadedFile $file)
     {
+        $image = PortfolioImage::fromForm($file);
+        $file->storeAs($this->imagesPath . '', $image->path);
+
         return $this->image()->save($image);
     }
 
-    public function updateImage(PortfolioImage $image)
+
+    public function updateImage(UploadedFile $file)
     {
+        $image = PortfolioImage::fromForm($file);
+
+        \Storage::delete($this->imagesPath.$this->image->path);
+
+        $file->storeAs($this->imagesPath, $image->path);
         $this->image->path = $image->path;
+
         $this->image->update();
 
         return $this;
+    }
+
+    public function deleteImage()
+    {
+        \Storage::delete('public/images/'.$this->image->path);
+
     }
 }

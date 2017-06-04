@@ -134,7 +134,7 @@ class PortfoliosController extends Controller
     {
         $portfolio = Portfolio::whereId($id);
 
-        Storage::delete('public/images/'.$portfolio->image->path);
+        $portfolio->deleteImage();
         $portfolio->delete($id);
 
 
@@ -147,22 +147,15 @@ class PortfoliosController extends Controller
             'file' => 'required|mimes:jpg,jpeg,png,bmp'
         ]);
 
+        $file = $request->file('file');
         $portfolio = Portfolio::find($id);
 
-        $file = $request->file('file');
-        $image = PortfolioImage::fromForm($file);
+        if (is_null($portfolio->image))
+            $portfolio->addImage($file);
 
-        if (is_null($portfolio->image)) {
+        else
+            $portfolio->updateImage($file);
 
-            $file->storeAs('public/images', $image->path);
-            $portfolio->addImage($image);
-
-        } else {
-
-            Storage::delete('public/images/'.$portfolio->image->path);
-            $file->storeAs('public/images', $image->path);
-            $portfolio->updateImage($image);
-        }
 
 
 

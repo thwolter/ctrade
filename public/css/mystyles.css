@@ -42,3 +42,39 @@
     background-color: #f2f4f7;
     padding: 20px;
 }
+
+.create-button-box {
+    text-align: right;
+}
+
+
+/********************************************************
+/* sidebar navigation
+*********************************************************/
+.sidebar-nav a {
+    color: #4c779e;
+    text-transform: uppercase;
+}
+
+.sidebar-nav a.active{
+    background-color: #f7f7f7;
+    color: #4c779e;
+    border-radius: 0px;
+    border-left: 3px solid #4c779e;
+}
+
+.input-form {
+    background-color: #f7f7f7;
+    border: 1px solid #eee;
+    padding: 25px 40px;
+}
+
+.input-form .form-title {
+    margin-bottom: 40px;
+    font-size: 25px;
+    color: #4c779e;
+}
+
+.input-form .buttons-row {
+    padding-top: 25px;
+}
