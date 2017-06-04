@@ -78,3 +78,62 @@
 .input-form .buttons-row {
     padding-top: 25px;
 }
+
+
+/********************************************************
+/* input form
+*********************************************************/
+.input-form {
+    background-color: #f7f7f7;
+    border: 1px solid #eee;
+    padding: 25px 40px;
+}
+
+.input-form .form-title {
+    margin-bottom: 40px;
+    font-size: 25px;
+    color: #4c779e;
+}
+
+.input-form .buttons-row {
+    padding-top: 25px;
+}
+
+/********************************************************
+/* portfolio panel
+*********************************************************/
+.portfolio-panel .panel-title {
+    border-bottom: 1px solid #4c779e;
+    margin-bottom: 50px;
+}
+
+.portfolio-panel h2 {
+    color: #4c779e;
+}
+
+.portfolio-panel .boxed-container {
+    background-color: #f7f7f7;
+    border: 1px solid #eee;
+    padding: 20px 35px;
+}
+
+.portfolio-panel .value-caption {
+    margin-bottom: 3px;
+}
+.portfolio-panel .value-highlight {
+    font-size: 25px;
+    font-weight: lighter;
+    color: #f7f7f7;
+    background-color: #4c779e;
+    padding: 0px 8px;
+}
+
+.portfolio-panel .red {
+    background-color: #a94442;
+}
+
+.portfolio-panel .neutral {
+    background-color: black;
+}
+
+

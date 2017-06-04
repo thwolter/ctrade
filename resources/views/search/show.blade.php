@@ -2,72 +2,58 @@
 
 @section('container-content')
 
-
-    {!! Form::open(['route' => ['positions.store', $portfolio->id],
-        'method' => 'POST', 'class' => 'form-horizontal']) !!}
-
-    {!! Form::hidden('type', get_class($item)) !!}
-    {!! Form::hidden('itemId', $item->id) !!}
-
-
-    <fieldset>
-        <!-- Form Name -->
-        <legend>{{ $item->name}}</legend>
-
-        <!-- item name and key figures -->
-        <div class="form-group row">
-            {!! Form::label('type', $item->typeDisp, ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                <div class="form-control-static">{{ $item->name }}</div>
-                <span class="help-block">ISIN: {{ $item->isin }} | WKN: {{ $item->wkn }}</span>
-            </div>
-        </div>
-
-        <!-- item price and price date -->
-        <div class="form-group row">
-            {!! Form::label('price', 'Kurs', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                <div class="form-control-static"> {{ $item->present()->price() }}</div>
-                <span class="help-block">{{ $item->present()->priceDate() }}</span>
-            </div>
-        </div>
-
-        <!-- item risk -->
-        <div class="form-group row">
-            {!! Form::label('risk', 'Risiko', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                <div class="form-control-static">
-                    {{ $item->present()->valueAtRisk() }}
-                    <pan style="padding-left: 7px">
-                        ({{ $item->present()->percentRisk() }}
-                        vom Kurswert)
-                    </pan>
+    <div class="panel-body">
+        <div class="container boxed-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>{{ $item->name }}</h3>
+                    <span>{{ $item->typeDisp }}|{{ $item->isin }}|{{ $item->wkn }}</span>
                 </div>
-                <span class="help-block">{{ $item->present()->priceDate() }}</span>
+                <div class="col-md-3">
+                    <p class="value-caption">Preis</p>
+                    <span class="value-highlight neutral">{{ $item->present()->price() }}</span>
+                </div>
+                <div class="col-md-3">
+                    <p class="value-caption">Risiko</p>
+                    <span class="value-highlight red">{{ $item->present()->valueAtRisk() }}</span>
+                </div>
             </div>
         </div>
 
-        <!-- text field for number of shares -->
-        <div class="form-group row">
-            {!! Form::label('amount', 'Stückzahl', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                {!! Form::number('amount', 0, ['class' => 'form-control input-md']) !!}
-                <span class="help-block">Wieviel Aktien sollen gakauft werden?</span>
-            </div>
+        <div class="space-70"></div>
+        <div class="container">
+
+            <h4>Position dem Portfolio hinzufügen</h4>
+            <div class="space-40"></div>
+
+            {!! Form::open(['route' => ['positions.store', $portfolio->id],
+                'method' => 'POST', 'class' => 'form-horizontal']) !!}
+
+                {!! Form::hidden('type', get_class($item)) !!}
+                {!! Form::hidden('itemId', $item->id) !!}
+
+                @include('partials.errors')
+
+                <!-- text field for number of shares -->
+                <div class="form-group row">
+                    {!! Form::label('amount', 'Stückzahl', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
+                    <div class="col-md-2">
+                        {!! Form::number('amount', 0, ['class' => 'form-control input-md']) !!}
+                    </div>
+                </div>
+
+                @include('partials.charging')
+
+                <!-- Button (Double) -->
+                <div class="space-70"></div>
+                <div class="col-md-8 offset-md-3">
+                    {!! Form::submit('Hinzufügen', ['class' => 'btn theme-btn-color']) !!}
+                    <a href="{{ URL::previous() }}" class="btn btn-secondary">Abbrechen</a>
+                </div>
+
+             {!! Form::close() !!}
         </div>
-
-        @include('partials.charging')
-
-        <!-- Button (Double) -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="button1id"></label>
-            <div class="col-md-8">
-                {!! Form::submit('Speichern', ['class' => 'btn theme-btn-color']) !!}
-                <button href="{{ URL::previous() }}" class="btn theme-btn-outline">Abbrechen</button>
-            </div>
-        </div>
-    </fieldset>
-
+    </div>
 @endsection
 
 

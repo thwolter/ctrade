@@ -39,8 +39,8 @@ class PositionsController extends Controller
      */
     public function create($id)
     {
+        //Todo: better use redirect
         return app(SearchController::class)->index(new Request(), $id);
-
     }
 
 
@@ -52,14 +52,13 @@ class PositionsController extends Controller
      */
     public function store(Request $request, $id)
     {
+        $this->validate($request, [
+            'amount' => 'min:0'
+        ]);
+
         $amount = $request->get('amount');
-
-        $instrument = resolve($request->get('type'))
-            ->find($request->get('itemId'));
-
-        $portfolio = Portfolio::find($id)
-            ->obtain($amount, $instrument);
-        //Todo: obtain to look for existing instrument and if so, increase amount only
+        $instrument = resolve($request->get('type'))->find($request->get('itemId'));
+        $portfolio = Portfolio::find($id)->obtain($amount, $instrument);
 
         if ($request->get('deduct') == 'yes')
         {

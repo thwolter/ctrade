@@ -21,12 +21,13 @@
 
             <!-- main section -->
             <div class="col-lg-9 offset-lg-1 col-md-8 offset-md-1 col-sm-8">
-                <div class="panel panel-primary">
+                <div class="panel portfolio-panel">
 
                     <!-- title -->
-                    <h2>{{ $portfolio->name }}</h2>
-                    <span class="news-post-cat">{{ $portfolio->categoryName }} | angelegt 20.02.2016</span>
-                    <hr><!-- /title -->
+                    <div class="panel-title">
+                        <h2>{{ $portfolio->name }}</h2>
+                        <span class="news-post-cat">{{ $portfolio->categoryName }} | angelegt 20.02.2016</span>
+                    </div><!-- /title -->
 
                     @yield('container-content')
 
