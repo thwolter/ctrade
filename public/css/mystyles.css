@@ -136,13 +136,43 @@
     background-color: black;
 }
 
-
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: #f7f7f7;
-}
-
 .portfolio-panel thead {
     background-color: #4c779e;
     color: whitesmoke;
 }
 
+.portfolio-panel a {
+    color: #ab977c;
+}
+
+
+/********************************************************
+/* general
+*********************************************************/
+
+.pull-right {
+    text-align: right;
+}
+
+
+/********************************************************
+/* tables
+*********************************************************/
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f7f7f7;
+}
+
+.summary-table {
+    line-height: 30px;
+}
+
+.summary-table .table-value {
+    font-size: 20px;
+    padding-left: 30px;
+    font-weight: lighter;
+}
+
+.summary-table .table-key {
+
+}

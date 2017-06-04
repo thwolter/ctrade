@@ -82,7 +82,7 @@ class Portfolio extends Model
     }
 
 
-    public function positionsTotal()
+    public function stockTotal()
     {
         return $this->positions->sum->total($this->currencyCode());
     }
@@ -90,7 +90,7 @@ class Portfolio extends Model
 
     public function total()
     {
-        return $this->positionsTotal()+$this->cash();
+        return $this->stockTotal() + $this->cash();
     }
 
 

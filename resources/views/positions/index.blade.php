@@ -2,38 +2,51 @@
 
 @section('container-content')
 
-    <h3>Cash</h3>
+    <h3>Zusammenfassung</h3>
+    <div class="space-20"></div>
+
+    <div class="boxed-container">
+        <table class="summary-table">
+            <tr>
+                <td class="table-key">Barbestand</td>
+                <td class="pull-right table-value">{{ $portfolio->present()->cash() }}</td>
+            </tr>
+            <tr>
+                <td class="table-key">Aktien</td>
+                <td class="pull-right table-value">{{ $portfolio->present()->stockTotal() }}</td>
+            </tr>
+            <tfoot>
+                <tr>
+                    <th class="table-key">Gesamt</th>
+                    <th class="pull-right table-value">{{ $portfolio->present()->total() }}</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
     <div class="space-40"></div>
 
-    <dl>
-        <dt>Barbestand:</dt>
-        <dd>{{ $portfolio->present()->cash() }} </dd>
-    </dl>
+    <!-- Form with method Post -->
+    {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'Get']) !!}
+        <div class="pull-right">
+            {!! Form::submit('Neue Position', ['class' => 'btn theme-btn-color']) !!}
+        </div>
+    {!! Form::close() !!}
 
     <div class="space-70"></div>
     <h3>Aktien</h3>
     <div class="space-40"></div>
-    <table class="table table-striped table-responsive">
+    <table class="table table-striped">
 
         <thead>
             <tr>
-                <th>Nr.</th>
-                <th>Position</th>
-                <th class="">Stück</th>
-                <th class="table-cell-value">Gesamt</th>
+                <th>Nr</th>
+                <th>Aktien</th>
+                <th class="pull-right">Stück</th>
+                <th class="pull-right">Gesamt</th>
                 <th></th>
             </tr>
         </thead>
-
-        <tfoot>
-            <tr>
-                <th></th>
-                <th></th>
-                <th class="table-cell-value">Summe</th>
-                <th class="table-cell-value">{{ $portfolio->present()->total($portfolio->currencyCode()) }}</th>
-                <th></th>
-            </tr>
-        </tfoot>
 
         <tbody>
             @php( $count = 0)
@@ -49,8 +62,8 @@
                             ({{ $position->present()->priceDate() }})
                         </span>
                     </td>
-                    <td class="align-middle table-cell-value">{{ $position->amount() }}</td>
-                    <td class="align-middle table-cell-value">
+                    <td class="align-middle pull-right">{{ $position->amount() }}</td>
+                    <td class="align-middle pull-right">
                         {{ $position->present()->total() }}
                         @if ($position->currencyCode() != $portfolio->currencyCode())
                             <span>{{ $position->present()->total($portfolio->currencyCode()) }}</span>
@@ -65,17 +78,6 @@
             @endforeach
         </tbody>
     </table>
-
-    <!-- Form with method Post -->
-    {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'Get']) !!}
-
-        <div class="form-group">
-            {!! Form::submit('Neue Position', ['class' => 'btn theme-btn-color']) !!}
-        </div>
-
-    {!! Form::close() !!}
-
-
 @endsection
 
 
