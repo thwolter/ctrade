@@ -58,6 +58,10 @@ class Portfolio extends Model
         return $this->hasMany(Position::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 
     public function category()
     {

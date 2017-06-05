@@ -2,10 +2,15 @@
 
 namespace App\Entities;
 
+use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
+    use Presentable;
+
+    protected $presenter = \App\Presenters\Transaction::class;
+
     protected $fillable = [
         'date',
         'amount',
@@ -80,7 +85,7 @@ class Transaction extends Model
 
         $transaction->portfolio()->associate($portfolio);
         $transaction->instrumentable()->associate($position->positionable);
-        $transaction->transactionType()->associate(TransactionType::firstOrCreate(['name' => $type]));
+        $transaction->transactionType()->associate(TransactionType::firstOrCreate(['code' => $type]));
         return $transaction->save();
     }
 
@@ -99,7 +104,7 @@ class Transaction extends Model
         ]);
 
         $transaction->portfolio()->associate($portfolio);
-        $transaction->transactionType()->associate(TransactionType::firstOrCreate(['name' => $type]));
+        $transaction->transactionType()->associate(TransactionType::firstOrCreate(['code' => $type]));
 
         return $transaction->save();
     }

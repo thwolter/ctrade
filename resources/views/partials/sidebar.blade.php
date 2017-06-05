@@ -1,8 +1,14 @@
 <nav class="sidebar-nav">
     <ul class="nav flex-column">
+
         <li class="my-nav-item">
             <a class="nav-link {{ active_class(if_route_pattern(['portfolios.*'])) }}"
                href="{{ route('portfolios.show', $portfolio->id) }}">Überblick</a>
+        </li>
+
+        <li class="my-nav-item">
+            <a class="nav-link {{ active_class(if_route_pattern(['transactions.*'])) }}"
+               href="{{ route('transactions.index', $portfolio->id) }}">Transaktionen</a>
         </li>
 
         <li class="my-nav-item">

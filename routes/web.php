@@ -36,6 +36,11 @@ Route::get('portfolios/{portfolio}/search/index', ['as' => 'search.index', 'uses
 Route::get('portfolios/{portfolio}/search/{symbol}', ['as' => 'search.item', 'uses' => 'SearchController@item']);
 Route::get('portfolios/{portfolio}/search/{type}/{id}', ['as' => 'search.show', 'uses' => 'SearchController@show']);
 
+// Transaction resources
+Route::get('transactions/index/{portfolio}', ['as' => 'transactions.index', 'uses' => 'TransactionController@index']);
+Route::get('transactions/create/{portfolio}', ['as' => 'transactions.create', 'uses' => 'TransactionController@create']);
+Route::get('transactions/{transaction}', ['as' => 'transactions.show', 'uses' => 'TransactionController@show']);
+
 
 // Risk resources
 Route::get('/portfolios/{portfolio}/risk', ['as' => 'risks.index', 'uses' => 'RiskController@index']);

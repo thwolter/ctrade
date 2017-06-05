@@ -3,8 +3,6 @@
 namespace App\Presenters;
 
 
-use App\Entities\Currency;
-
 class Position extends Presenter
 {
 
