@@ -32,7 +32,7 @@ abstract class Presenter
     }
 
 
-    public function priceFormat($value, $currencyCode)
+    public function formatPrice($value, $currencyCode)
     {
         if (is_null($this->priceFormat)) {
             $this->priceFormat = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
@@ -47,12 +47,12 @@ abstract class Presenter
 
     public function price()
     {
-        return $this->priceFormat($this->entity->price(), $this->entity->currencyCode());
+        return $this->formatPrice($this->entity->price(), $this->entity->currencyCode());
     }
 
     public function valueAtRisk()
     {
-        return $this->priceFormat($this->entity->valueAtRisk(), $this->entity->currencyCode());
+        return $this->formatPrice($this->entity->valueAtRisk(), $this->entity->currencyCode());
     }
 
     public function percentRisk()
@@ -63,5 +63,10 @@ abstract class Presenter
     public function priceDate()
     {
         return Carbon::parse(key($this->entity->price()))->formatLocalized('%d.%m.%Y');
+    }
+
+    public function formatDate($date)
+    {
+        return Carbon::parse($date)->formatLocalized('%d.%m.%Y');
     }
 }

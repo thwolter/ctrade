@@ -17,8 +17,8 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ active_class(if_route_pattern(['return.*'])) }}"
-               href="#">Entwicklung</a>
+            <a class="nav-link {{ active_class(if_route_pattern(['history.*'])) }}"
+               href="{{ route('history.index', $portfolio->id) }}">Entwicklung</a>
         </li>
 
         <li class="nav-item">

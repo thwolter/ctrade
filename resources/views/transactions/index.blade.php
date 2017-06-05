@@ -37,10 +37,10 @@
                         <tr>
                             <td class="align-middle">{{ ++$count }}</td>
                             <td class="align-middle">{{ $transaction->present()->date }}</td>
-                            <td class="align-middle">{{ $transaction->transactionType->name }}</td>
+                            <td class="align-middle">{{ $transaction->present()->type }}</td>
                             <td class="align-middle">
                                 <h5><a href="{{ route('transactions.show', ['id' => $transaction->id]) }}">
-                                        {{ $instrument->name}}</a></h5>
+                                        {{ $transaction->present()->name}}</a></h5>
                                 <span>
                                     {{ $instrument->typeDisp}} | {{ $instrument->wkn }}
                                     | {{ $instrument->isin }}
@@ -56,7 +56,7 @@
             </table>
 
             <div class="space-20"></div>
-            {!! Form::open(['route' => ['transactions.create', $portfolio->id], 'method' => 'Get']) !!}
+            {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'Get']) !!}
                 <div class="pull-right">
                     {!! Form::submit('Neue Transaktion', ['class' => 'btn theme-btn-color']) !!}
                 </div>

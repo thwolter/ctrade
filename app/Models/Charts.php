@@ -25,7 +25,7 @@ class Charts
     static public function riskchart($summary)
     {
         $VaR = $summary['Total'][0]['Value'];
-        $value = $summary['Value'][0]['Value'];
+        $value = $summary['History'][0]['Value'];
 
         $relativeRisk = $VaR/$value;
         $max = 0.2;

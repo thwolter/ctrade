@@ -41,6 +41,8 @@ Route::get('transactions/index/{portfolio}', ['as' => 'transactions.index', 'use
 Route::get('transactions/create/{portfolio}', ['as' => 'transactions.create', 'uses' => 'TransactionController@create']);
 Route::get('transactions/{transaction}', ['as' => 'transactions.show', 'uses' => 'TransactionController@show']);
 
+// History resources
+Route::get('/history/{portfolio}', ['as' => 'history.index', 'uses' => 'HistoryController@index']);
 
 // Risk resources
 Route::get('/portfolios/{portfolio}/risk', ['as' => 'risks.index', 'uses' => 'RiskController@index']);

@@ -24,9 +24,16 @@
                 <div class="panel portfolio-panel">
 
                     <!-- title -->
-                    <div class="panel-title">
-                        <h2>{{ $portfolio->name }}</h2>
-                        <span class="news-post-cat">{{ $portfolio->categoryName }} | angelegt 20.02.2016</span>
+                    <div class="container panel-title">
+                        <div class="row">
+                            <div class="col-md-10 header-text">
+                                <h2>{{ $portfolio->name }}</h2>
+                                <span class="news-post-cat">{{ $portfolio->categoryName }} | angelegt 20.02.2016</span>
+                            </div>
+                            <div class="col-md-2 header-image">
+                                <img src="{{ $portfolio->present()->image }}" class="img-fluid" alt="Mountain View">
+                            </div>
+                        </div>
                     </div><!-- /title -->
 
                     @yield('container-content')
@@ -38,6 +45,5 @@
 
     <div class="space-70"></div>
 @endsection
-
 
 

@@ -103,7 +103,7 @@
 /* portfolio panel
 *********************************************************/
 .portfolio-panel .panel-title {
-    border-bottom: 1px solid #4c779e;
+    /*border-bottom: 1px solid #4c779e;*/
     margin-bottom: 50px;
 }
 
@@ -143,6 +143,19 @@
 
 .portfolio-panel table a {
     color: #ab977c;
+}
+
+.portfolio-panel img {
+    width: 100px;
+    height: 100px;
+}
+
+.portfolio-panel .header-text {
+    border-bottom: 1px solid #4c779e;
+}
+
+.portfolio-panel .header-image {
+
 }
 
 

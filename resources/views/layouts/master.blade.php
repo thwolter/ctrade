@@ -17,6 +17,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/mystyles.css') }}" rel="stylesheet">
 
+    @yield('css.header')
 
     <!-- Scripts -->
     <script> window.Laravel = {!! json_encode(['csrfToken' => csrf_token(), ]) !!} </script>

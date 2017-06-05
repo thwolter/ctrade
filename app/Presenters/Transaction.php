@@ -17,14 +17,21 @@ class Transaction extends Presenter
     public function total()
     {
         $total = $this->entity->amount * $this->entity->price;
-        return $this->priceFormat($total, $this->entity->portfolio->currencyCode());
+        return $this->formatPrice($total, $this->entity->portfolio->currencyCode());
     }
 
     public function date()
     {
-        return Carbon::parse($this->entity->date)->formatLocalized('%d.%m.%Y');
-
+        return $this->formatDate($this->entity->date);
     }
 
+    public function type()
+    {
+        return $this->entity->transactionType->name;
+    }
 
+    public function name()
+    {
+        return $this->entity->instrumentable->name;
+    }
 }

@@ -99,7 +99,9 @@
 
     {!! Form::close() !!}
 
-
+    <div class="space-40"></div>
+    <h4>Portfolio Bild</h4>
+    <div class="space-10"></div>
     <form id="add-image-form" action="{{ route('image.upload', ['id' => $portfolio->id]) }}" method="POST" class="dropzone">
         {{ csrf_field() }}
         <input type="file" name="file" />
@@ -107,8 +109,15 @@
 
 @endsection
 
+
 @section('scripts.footer')
     <script src="{{ asset('js/dropzone.js') }}"></script>
+@endsection
+
+
+@section('css.header')
+    <link href="{{ asset('css/basic.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/dropzone.css') }}" rel="stylesheet">
 @endsection
 
 
