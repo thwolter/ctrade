@@ -168,9 +168,8 @@
 }
 
 .summary-table .table-value {
-    font-size: 20px;
-    padding-left: 30px;
-    font-weight: lighter;
+    font-size: 18px;
+    padding-left: 40px;
 }
 
 .summary-table .table-key {

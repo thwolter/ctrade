@@ -48,7 +48,8 @@ class PositionsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return string
+     * @param  int $id the portfolio id
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $id)
     {
@@ -56,18 +57,13 @@ class PositionsController extends Controller
             'amount' => 'min:0'
         ]);
 
-        $portfolio = Portfolio::find($id);
-
         $amount = $request->get('amount');
         $instrument = resolve($request->get('type'))->find($request->get('itemId'));
 
-        if ($request->get('deduct') == 'yes') {
-            $portfolio->buy($amount, $instrument);
-        } else {
-            $portfolio->obtain($amount, $instrument);
-        }
+        $positionId = Portfolio::find($id)->makePosition($instrument);
+        Portfolio::buy($positionId, $amount);
 
-        return redirect(route('positions.index', $portfolio->id));
+        return redirect(route('positions.index', $id));
 
     }
 
@@ -78,11 +74,10 @@ class PositionsController extends Controller
      * @return \Illuminate\Http\Response
      *
      */
-    public function show($pid, $id)
+    public function show($id)
     {
-        $position = Position::findOrFail($id);
+        $position = Position::find($id);
         $portfolio = $position->portfolio;
-        //$instrument = $position->positionable;
 
         return view('positions.show', compact('portfolio', 'position'));
     }
@@ -102,7 +97,7 @@ class PositionsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int $id the position id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -111,19 +106,14 @@ class PositionsController extends Controller
             'amount' => 'min:0'
         ]);
 
-        $sign = ($request->get('direction') == 'buy') ? -1 : 1;
+        $amount = $request->get('amount');
 
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
-
-        $amount = $position->amount + $sign * $request->get('amount');
-        $position->update(['amount' => $amount]);
-
-        if ($request->get('deduct') == 'yes') {
-
-            $portfolio->cash = $portfolio->cash - $sign * array_first($position->price());
-            $position->save();
+        if ($request->get('direction') == 'buy') {
+            $portfolio = Portfolio::buy($id, $amount);
+        } else {
+            $portfolio = Portfolio::sell($id, $amount);
         }
+
         return redirect(route('positions.index', $portfolio->id));
     }
 
@@ -157,5 +147,7 @@ class PositionsController extends Controller
 
         return view('positions.sell', compact('position', 'portfolio'));
     }
+
+
 
 }

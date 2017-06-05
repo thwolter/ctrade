@@ -133,7 +133,7 @@ class Portfolio extends Model
     }
     
     
-    public function obtain($amount, $instrument)
+    public function makePosition($instrument)
     {
         $position = $this->positionWith($instrument);
 
@@ -141,30 +141,56 @@ class Portfolio extends Model
         {
             $position = new Position(['amount' => 0]);
             $position->positionable()->associate($instrument);
+            $this->positions()->save($position);
         }
 
-        $position->amount = $position->amount + $amount;
-        $this->positions()->save($position);
-
-        return $this;
+        return $position->id;
     }
 
-
-    public function buy($amount, $instrument)
+    /**
+     * A buy or sell transaction on the portfolio with a given position id.
+     * As default the transaction is being settled with portfolio's cash.
+     *
+     * @param int $id the position id
+     * @param float $amount the transaction's amount
+     * @return Portfolio
+     */
+    public static function buy($id, $amount)
     {
-        $this->cash = $this->cash - $amount * array_first($instrument->price());
-        return $this->obtain($amount, $instrument)->save();
+        $position = Position::find($id);
+        $portfolio = $position->portfolio;
+
+        $newAmount = $position->amount + $amount;
+
+        if ($newAmount == 0) {
+            $position->delete();
+        }
+        else {
+            $position->update(['amount' => $newAmount]);
+        }
+
+        $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
+        $portfolio->save();
+
+        return $portfolio;
     }
 
 
-    public function sell($amount, $instrument)
+    public static function sell($id, $amount)
     {
-        $this->buy(-$amount, $instrument);
-
-        if ($this->positionWith($instrument)->amount == 0)
-            $this->position->delete();
+        return self::buy($id, -$amount);
     }
 
+
+    public function deposit($amount)
+    {
+        $this->cash = $this->cash + $amount;
+    }
+
+    public function withdraw($amount)
+    {
+        $this->cash = $this->cash - $amount;
+    }
 
     public function positionWith($instrument)
     {

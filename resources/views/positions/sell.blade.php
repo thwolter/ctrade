@@ -9,7 +9,7 @@
         <div class="space-70"></div>
         <div class="container">
 
-            <h4>Aktien</h4>
+            <h4>Aktien verkaufen</h4>
             <div class="space-40"></div>
 
         {!! Form::open(['route' => ['positions.update', $position->id],

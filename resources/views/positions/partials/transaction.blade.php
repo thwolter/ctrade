@@ -1,7 +1,8 @@
 <div class="form-group row">
     {!! Form::label('current', 'Bestand', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
     <div class="col-md-2">
-        <div class="form-control-static">{{ $position->amount }}</div>
+        @php($amount = (isset($position) ? $position->amount : 0))
+        <div class="form-control-static">{{ $amount }}</div>
 
     </div>
 </div>

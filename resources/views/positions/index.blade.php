@@ -54,7 +54,7 @@
                 <tr>
                     <td class="align-middle">{{ ++$count }}</td>
                     <td class="align-middle">
-                        <h5><a href="{{ route('positions.show', ['pid' => $portfolio->id, 'id' => $position->id]) }}">
+                        <h5><a href="{{ route('positions.show', ['id' => $position->id]) }}">
                                 {{ $position->name() }}</a>
                         </h5>
                         <span>
