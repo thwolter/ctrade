@@ -9,6 +9,10 @@ use App\Entities\PortfolioImage;
 
 class ExamplePortfolioSeeder extends Seeder
 {
+
+    protected $exampleResource = 'assets/img/examples/';
+
+
     /**
      * Run the database seeds.
      *
@@ -21,7 +25,7 @@ class ExamplePortfolioSeeder extends Seeder
         $this->savePortfolio($user, [
             'name' => 'Dax Werte',
             'cash' => 1000,
-            'img_url' => asset('img/portfolios/bg-1.jpg'),
+            'img_url' => 'green-energy.jpg',
             'description' => 'Das Portfolio enthält 10 Werte aus dem Deutschen Aktienindex',
             'category' => 'Dax',
             'currency' => 'EUR'
@@ -30,7 +34,7 @@ class ExamplePortfolioSeeder extends Seeder
         $this->savePortfolio($user, [
             'name' => 'Andere Werte',
             'cash' => 1000,
-            'img_url' => asset('img/portfolios/bg-1.jpg'),
+            'img_url' => 'car-fuel.jpg',
             'description' => 'Das Portfolio enthält 10 Werte aus dem Deutschen Aktienindex',
             'category' => 'Dax',
             'currency' => 'EUR'
@@ -39,12 +43,13 @@ class ExamplePortfolioSeeder extends Seeder
         $this->savePortfolio($user, [
             'name' => 'Und noch mehr',
             'cash' => 1000,
-            'img_url' => asset('img/portfolios/bg-1.jpg'),
+            'img_url' => 'laptop.jpg',
             'description' => 'Das Portfolio enthält 10 Werte aus dem Deutschen Aktienindex',
             'category' => 'Dax',
             'currency' => 'EUR'
         ]);
     }
+
 
     public function savePortfolio($user, $parm)
     {
@@ -62,8 +67,17 @@ class ExamplePortfolioSeeder extends Seeder
 
         $user->portfolios()->save($portfolio);
 
-        $image = new PortfolioImage(['path' => $parm['img_url']]);
-        $portfolio->image()->save($image);
+        $this->saveImage($portfolio, $parm['img_url']);
+    }
 
+
+
+    private function saveImage($portfolio, $url)
+    {
+        File::copy(resource_path($this->exampleResource . $url),
+            storage_path('app/public/images/' . $url));
+
+        $image = new PortfolioImage(['path' => $url]);
+        $portfolio->image()->save($image);
     }
 }

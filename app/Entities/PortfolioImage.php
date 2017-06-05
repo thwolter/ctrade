@@ -22,7 +22,7 @@ class PortfolioImage extends Model
     {
         $image = new static;
 
-        $image->path = time() . $file->getClientOriginalName();;
+        $image->path = time() . $file->getClientOriginalName();
 
         return $image;
 

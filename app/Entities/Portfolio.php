@@ -25,7 +25,7 @@ class Portfolio extends Model
         'name', 'cash', 'description', 'img_url'
     ];
 
-    protected $imagesPath = 'public/images';
+    public $imagesPath = 'public/images';
 
 
 
