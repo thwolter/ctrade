@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePositionsTable extends Migration
+class CreateTransactionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreatePositionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('positions', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
+            $table->date('date');
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
-            $table->integer('positionable_id');
-            $table->string('positionable_type');
-            $table->float('amount')->nullable();
+            $table->integer('transaction_type_id');
+            $table->integer('instrumentable_id')->nullable();
+            $table->string('instrumentable_type')->nullable();
+            $table->float('amount');
+            $table->float('price')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +34,6 @@ class CreatePositionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('positions');
+        Schema::dropIfExists('transactions');
     }
 }

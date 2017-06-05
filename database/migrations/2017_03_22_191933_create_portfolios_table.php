@@ -15,7 +15,8 @@ class CreatePortfoliosTable extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
             $table->string('description')->nullable();
             $table->integer('category_id')->nullable();
@@ -27,6 +28,7 @@ class CreatePortfoliosTable extends Migration
             $table->integer('threshold')->default(0);
             $table->float('limit')->default(0);
             $table->boolean('limit_abs')->default(true);
+            $table->boolean('public')->default(false);
             $table->timestamps();
         });
     }

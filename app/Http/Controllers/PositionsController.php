@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Transaction;
 use App\Repositories\FinancialMapping;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -60,8 +61,10 @@ class PositionsController extends Controller
         $amount = $request->get('amount');
         $instrument = resolve($request->get('type'))->find($request->get('itemId'));
 
-        $positionId = Portfolio::find($id)->makePosition($instrument);
-        Portfolio::buy($positionId, $amount);
+        $position = Portfolio::find($id)->makePosition($instrument);
+        $portfolio = Portfolio::buy($position->id, $amount);
+
+        Transaction::buy($portfolio, new \DateTime(), $position, $amount);
 
         return redirect(route('positions.index', $id));
 
@@ -107,11 +110,18 @@ class PositionsController extends Controller
         ]);
 
         $amount = $request->get('amount');
+        $position = Position::find($id);
 
         if ($request->get('direction') == 'buy') {
+
             $portfolio = Portfolio::buy($id, $amount);
-        } else {
+            Transaction::buy($portfolio, new \DateTime(), $position, $amount);
+        }
+        else {
+
             $portfolio = Portfolio::sell($id, $amount);
+            Transaction::sell($portfolio, new \DateTime(), $position, $amount);
+
         }
 
         return redirect(route('positions.index', $portfolio->id));

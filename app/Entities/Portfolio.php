@@ -144,7 +144,7 @@ class Portfolio extends Model
             $this->positions()->save($position);
         }
 
-        return $position->id;
+        return $position;
     }
 
     /**
