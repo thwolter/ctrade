@@ -7,10 +7,23 @@ use App\Entities\User;
 use App\Entities\Currency;
 use App\Entities\PortfolioImage;
 
-class ExamplePortfolioSeeder extends Seeder
+class PortfolioSeeder extends Seeder
 {
 
-    protected $exampleResource = 'assets/img/examples/';
+    /**
+     * path of source images relative to the resources path
+     * 
+     * @var string
+     */
+    protected $imgSource = 'assets/img/examples/';
+    
+    
+    /**
+     * target path relative to the storage path to copy images
+     * 
+     * @var string
+     */
+    protected $imgTarget = 'public/images/';
 
 
     /**
@@ -25,7 +38,7 @@ class ExamplePortfolioSeeder extends Seeder
         $this->savePortfolio($user, [
             'name' => 'Dax Werte',
             'cash' => 1000,
-            'img_url' => 'green-energy.jpg',
+            'img' => 'green-energy.jpg',
             'description' => 'Das Portfolio enthält 10 Werte aus dem Deutschen Aktienindex',
             'category' => 'Dax',
             'currency' => 'EUR'
@@ -34,7 +47,7 @@ class ExamplePortfolioSeeder extends Seeder
         $this->savePortfolio($user, [
             'name' => 'Andere Werte',
             'cash' => 1000,
-            'img_url' => 'car-fuel.jpg',
+            'img' => 'car-fuel.jpg',
             'description' => 'Das Portfolio enthält 10 Werte aus dem Deutschen Aktienindex',
             'category' => 'Dax',
             'currency' => 'EUR'
@@ -43,7 +56,7 @@ class ExamplePortfolioSeeder extends Seeder
         $this->savePortfolio($user, [
             'name' => 'Und noch mehr',
             'cash' => 1000,
-            'img_url' => 'laptop.jpg',
+            'img' => 'laptop.jpg',
             'description' => 'Das Portfolio enthält 10 Werte aus dem Deutschen Aktienindex',
             'category' => 'Dax',
             'currency' => 'EUR'
@@ -67,17 +80,32 @@ class ExamplePortfolioSeeder extends Seeder
 
         $user->portfolios()->save($portfolio);
 
-        $this->saveImage($portfolio, $parm['img_url']);
+        $this->saveImage($portfolio, $parm['img']);
     }
 
 
 
-    private function saveImage($portfolio, $url)
+    /**
+     * stores the image in the public storage directory assigns it to the portfolio
+     * 
+     * @param Portfolio $portfolio
+     * @param string $img the image name
+     * 
+     * @return bool
+     */ 
+    private function saveImage($portfolio, $img)
     {
-        File::copy(resource_path($this->exampleResource . $url),
-            storage_path('app/public/images/' . $url));
+        $source = resource_path($this->imgSource . $img);
+        $target = storage_path('app/'.$this->imgTarget.$img);
+        
+        Storage::makeDirectory($this->imgTarget);
+        
+        if (!File::copy($source, $target))
+        {
+            die("couldn't copy {$original}");
+        }
 
-        $image = new PortfolioImage(['path' => $url]);
-        $portfolio->image()->save($image);
+        $image = new PortfolioImage(['path' => $img]);
+        return $portfolio->image()->save($image);
     }
 }
