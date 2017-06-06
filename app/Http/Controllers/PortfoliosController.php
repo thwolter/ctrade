@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 
 use App\Entities\Currency;
 use App\Entities\PortfolioImage;
+use App\Http\Requests\CreatePortfolio;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
@@ -52,17 +53,11 @@ class PortfoliosController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreatePortfolio  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePortfolio $request)
     {
-        $this -> validate(request(), [
-            'name' => 'required',
-            'currency' => 'required',
-            'cash' => 'required'
-        ]);
-
         $portfolio = new Portfolio([
             'name' => $request->get('name'),
             'cash' => $request->get('cash')
