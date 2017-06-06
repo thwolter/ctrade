@@ -21,6 +21,7 @@
 
     <!-- Scripts -->
     <script> window.Laravel = {!! json_encode(['csrfToken' => csrf_token(), ]) !!} </script>
+    
 
 </head>
 
@@ -40,7 +41,12 @@
     <!-- jQuery plugins. -->
     <script src="{{ asset('js/plugins/plugins.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    
+    <!-- enable Vue -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.min.js"></script>
+    
     @yield('scripts.footer')
+    
 </body>
 </html>
 

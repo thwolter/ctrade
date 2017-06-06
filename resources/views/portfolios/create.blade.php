@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-
     <section id="content-region-3" class="padding-40 page-tree-bg">
         <div class="container">
             <h3 class="page-tree-text">
@@ -10,7 +9,6 @@
         </div>
     </section><!--page-tree end here-->
     <div class="space-70"></div>
-
     @if (count(Auth::user()->portfolios) == 0)
         <div class="container">
             <div class="row">
@@ -46,7 +44,7 @@
                             {!! Form::label('name', 'Bezeichnung', ['class' => 'col-md-3 col-form-label']) !!}
                             <div class="col-md-8">
                                 {!! Form::text('name', null,
-                                ['class' => 'form-control', 'placeholder' => 'z.B. Deutsche Standardwerte']) !!}
+                                ['class' => 'form-control', 'placeholder' => 'z.B. Deutsche Standardwerte', 'v-model' => 'entry']) !!}
                             </div>
                         </div><!-- /portfolio name -->
 
@@ -62,18 +60,19 @@
                         <div class="form-group row">
                             {!! Form::label('cash', 'Barbestand', ['class' => 'col-md-3 col-form-label']) !!}
                             <div class="col-md-8">
-                                {!! Form::number('cash', 0, ['class' => 'form-control', 'min' => 0, 'step' => '.02']) !!}
+                                {!! Form::number('cash', 0, ['class' => 'form-control', 'min' => 0, 'step' => '.01']) !!}
+                
                                 <span class="help-block">
                                     Barbestand in Portfoliowährung.
                                 </span>
                             </div>
                         </div><!-- /cash -->
-                    <div class="space-10"></div>
-                        <div class="col-md-8 offset-md-3">
+                   
+                        <div class="col-md-8 offset-md-3 button-group">
                             {!! Form::submit('Erstellen', ['class' => 'btn theme-btn-color']) !!}
                             <button href="{{ URL::previous() }}" class="btn btn-secondary">Abbrechen</button>
                         </div>
-                        <div class="space-10"></div>
+                   
                     </div>
 
                     {!! Form::close() !!}
@@ -89,3 +88,8 @@
 @endsection
 
 
+
+@section('scripts.footer')
+
+    
+@endsection
