@@ -15,8 +15,14 @@ class SearchController extends Controller
     }
 
     protected $types = [
-        Stock::class => 'Aktie'
+        'stock' => 'Aktie'
     ];
+
+    protected $typesMap = [
+        'stock' => Stock::class
+    ];
+
+
 
     /**
      * Display the search field and list of suggested items
@@ -32,9 +38,10 @@ class SearchController extends Controller
         $types = $this->types;
         $search = $request->search;
 
-        if ($type = $request->type) {
+        if (array_key_exists($request->type, $this->types)) {
 
-            $suggest = resolve($request->type)->search($search)->get();
+            $suggest = resolve(array_get($this->typesMap, $request->type))
+                ->search($search)->get();
         }
 
         return view ('search.index',

@@ -40,7 +40,6 @@ class PositionsController extends Controller
      */
     public function create($id)
     {
-        //Todo: better use redirect
         return app(SearchController::class)->index(new Request(), $id);
     }
 

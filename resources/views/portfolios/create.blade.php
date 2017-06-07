@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-lg-6 offset-lg-3">
                 <div class="panel panel-default">
-                    <div class="my-login-form">
+                    <div class="input-form">
                 
                         {!! Form::open(['route' => 'portfolios.store']) !!}
                         <h4 class="text-uppercase">Portfolio erstellen</h4><hr>
@@ -72,7 +72,6 @@
 
                         <div class="col-md-8 offset-md-3 button-group">
                             {!! Form::submit('Erstellen', ['class' => 'btn theme-btn-color']) !!}
-                            <button href="{{ URL::previous() }}" class="btn btn-secondary">Abbrechen</button>
                         </div>
 
                     </div>

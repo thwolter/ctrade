@@ -2,7 +2,7 @@
 
 @section('container-content')
 
-    <div class="input-form">
+    <div id="searchForm" class="input-form">
         <div class="form-title">Suchen</div>
 
         <!-- Form with method Get -->
@@ -29,23 +29,32 @@
                 <div class="col-md-10">
                     {!! Form::text('search', $search, ['placeholder' => 'Search ...', 'class' => 'form-control']) !!}
                     <span class="help-block">
-                        Name, Wkn oder Isin
+                        Suche nach Namen oder Branche
                     </span>
                 </div>
             </div>
+
+            @if (isset($suggest) and count($suggest) == 0)
+                <div class="col-md-10 offset-md-2">
+                    <div class="alert alert-info">
+                        <p>Leider keine Ergebnisse gefunden.</p>
+                        <p>Versuche es mit der WKN oder der ISIN oder gib
+                            nur einen Teil des Namens ein.</p>
+                    </div>
+                </div>
+            @endif
 
             <!-- submit button -->
             <div class="row buttons-row">
                 <div class="col-md-10 offset-md-2">
                     {!! Form::submit('Suchen', ['class' => 'btn theme-btn-color']) !!}
-                    <a href="{{ URL::previous() }}" class="btn btn-secondary">Zurück</a>
                 </div>
             </div>
 
         {!! Form::close() !!}
     </div>
 
-    @if(isset($suggest))
+    @if(isset($suggest) and count($suggest) > 0)
     <div id="searchResults" class="space-70"></div>
         <div>
             <h4>Suchergebnisse</h4>
@@ -56,25 +65,31 @@
                         <th>Nr.</th>
                         <th>Tpye</th>
                         <th>Währung</th>
-                        <th>Name</th>
+                        <th>Name/Sektor</th>
                         <th>WKN</th>
                         <th>ISIN</th>
-                        <th>Sektor</th>
+                        <th>Kurs</th>
                     </tr>
                 </thead>
 
                 <tbody>
                      @php( $count = 0)
                      @foreach($suggest as $item)
+                         @php ($sector = is_null($item->sector) ? '' : $item->sector->name)
                          <tr>
-                             <td>{{ ++$count }}</td>
-                             <td>{{ $item['typeDisp'] }}</td>
-                             <td>{{ $item->currencyCode() }}</td>
-                             <td><a href="{{ route('search.show', [$portfolio->id, get_class($item), $item->id]) }}">{{ $item['name'] }}</a></td>
+                             <td class="align-middle">{{ ++$count }}</td>
+                             <td class="align-middle">{{ $item['typeDisp'] }}</td>
+                             <td class="align-middle">{{ $item->currencyCode() }}</td>
+                             <td class="align-middle">
+                                 <span style="display:block">
+                                     <a href="{{ route('search.show', [$portfolio->id, get_class($item), $item->id]) }}">
+                                         {{ $item['name'] }}</a>
+                                 </span>
+                                 <span>{{ $sector }}</span>
+                             </td>
                              <td>{{ $item->wkn }}</td>
                              <td>{{ $item->isin }}</td>
-                             @php ($sector = is_null($item->sector) ? '' : $item->sector->name)
-                             <td>{{ $sector }}</td>
+                             <td>{{ $item->present()->price() }}</td>
                          </tr>
                      @endforeach
                 </tbody>
@@ -86,14 +101,29 @@
 
 
 @section('scripts.footer')
-    <script>
-        $(document).ready(function () {
-            // Handler for .ready() called.
-            $('html, body').animate({
-                scrollTop: $('#searchResults').offset().top
-            }, 800);
-        });
-    </script>
+    @if(isset($suggest) and count($suggest) > 0)
+        <script>
+            $(document).ready(function () {
+                $('html, body').animate({
+                    scrollTop: $('#searchResults').offset().top
+                }, 800);
+            });
+        </script>
+    @endif
+
+    @if(isset($suggest) and count($suggest) == 0)
+        <script>
+            $(document).ready(function () {
+                $('html, body').animate({
+                    scrollTop: $('#searchForm').offset().top
+                }, 800);
+            });
+        </script>
+    @endif
+@endsection
+
+@section('scripts.footer')
+
 @endsection
 
 

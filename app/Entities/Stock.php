@@ -43,4 +43,16 @@ class Stock extends Instrument
         return $stock;
     }
 
+
+    public function toSearchableArray()
+    {
+        return [
+            'name' => $this->name,
+            'sector' => ($this->sector) ? $this->sector->name : '',
+            'isin' => $this->isin,
+            'wkn' => $this->wkn,
+            'currency' => $this->currencyCode(),
+        ];
+    }
+
 }

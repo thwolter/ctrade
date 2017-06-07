@@ -9,9 +9,9 @@
             </h3>
         </div>
     </section><!--page-tree end here-->
-    <div class="space-70"></div>
-    
-    <div class="container">
+
+    <div id="container" class="container">
+        <div class="space-70"></div>
         <div class="row">
 
             <!-- sidebar navigation -->

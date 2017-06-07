@@ -69,6 +69,11 @@
     border-left: 3px solid #4c779e;
 }
 
+
+
+/********************************************************
+/* forms
+*********************************************************/
 .input-form {
     background-color: #f7f7f7;
     border: 1px solid #eee;
@@ -82,7 +87,8 @@
 }
 
 .input-form .buttons-row {
-    padding-top: 25px;
+    padding: 25px 0px 10px 0px;
+    word-spacing: 5px;
 }
 
 
@@ -102,7 +108,7 @@
 }
 
 .input-form .buttons-row {
-    padding-top: 25px;
+    padding-top: 25px 0px 0px 10px;
 }
 
 /********************************************************
