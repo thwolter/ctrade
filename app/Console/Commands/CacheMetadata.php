@@ -3,8 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Repositories\Metadata\QuandlSSE;
-use App\Repositories\Metadata\QuandlECB;
+use App\Repositories\Metadata\QuandlCaching;
 
 class CacheMetadata extends Command
 {
@@ -15,7 +14,6 @@ class CacheMetadata extends Command
      */
     protected $signature = 'metadata:cache
                             {--provider= : Name of the provider (e.g. quandl)} 
-                            {--database= : Specify the providers database (e.g. SSE, ECB)}
                             {--relax : Avoid data loading if the item is in the cache}';
 
     /**
@@ -25,15 +23,7 @@ class CacheMetadata extends Command
      */
     protected $description = 'Refreshes the cash with histories from data provider';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+
 
     /**
      * Execute the console command.
@@ -43,14 +33,17 @@ class CacheMetadata extends Command
     public function handle()
     {
         $relax =$this->option('relax');
-        $database = $this->option('database');
-        
+        $provider = $this->option('provider');
+
+        if (!in_array($provider, ['Quandl', null])) {
+            $this->comment("Provider {$provider} not defined.");
+            return;
+        }
       
-        if ($database == 'SSE' or $database == null)
-            (new QuandlSSE($this->output))->refreshCash($relax);
-         
-         //Todo: implement differenciation between databaes
-         
+        if ($provider == 'Quandl' or $provider == null)
+            (new QuandlCaching($this->output))->refreshCash($relax);
+
         $this->info(" Done. \n");
+        return;
     }
 }

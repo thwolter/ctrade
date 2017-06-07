@@ -17,20 +17,19 @@ class Quandldata
     protected $source;
     protected $code;
     
-    protected $relax;
+    protected $relax = true;
 
 
     /**
      * Quandldata constructor.
      * @param string $code of a dataset
      */
-    public function __construct(String $code, $relax = true)
+    public function __construct(String $code)
     {
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
         $this->source = $this->getDatasource($code);
         
         $this->code = $code;
-        $this->relax = $relax;
     }
 
 
@@ -44,7 +43,7 @@ class Quandldata
     /**
      * The price of an instrument with given dataset code
      * @param string $code
-     * @return int
+     * @return array
      */
     static public function getPrice($code)
     {
@@ -76,9 +75,9 @@ class Quandldata
      * @param array $parameter
      * @return array
      */
-    static public function getHistory($code, $parameter = ['limit' => 250], $relax = true)
+    static public function getHistory($code, $parameter = ['limit' => 250])
     {
-        $quandl = new Quandldata($code, $relax);
+        $quandl = new Quandldata($code);
         return $quandl->history($parameter);
     }
 
@@ -138,5 +137,19 @@ class Quandldata
     private function getDatasource($code)
     {
         return Datasource::withDataset($code);
+    }
+
+
+    static public function refreshCache($code, $relax = true)
+    {
+        $object = new self($code);
+        $object->relax($relax)->history();
+    }
+
+
+    public function relax($relax)
+    {
+        $this->relax = $relax;
+        return $this;
     }
 }

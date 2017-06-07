@@ -102,7 +102,7 @@ class PortfolioSeeder extends Seeder
         
         if (!File::copy($source, $target))
         {
-            die("couldn't copy {$original}");
+            die("couldn't copy {$source}");
         }
 
         $image = new PortfolioImage(['path' => $img]);

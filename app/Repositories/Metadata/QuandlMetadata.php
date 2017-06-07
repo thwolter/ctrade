@@ -136,21 +136,4 @@ abstract class QuandlMetadata
         return $array['datasets'];
     }
     
-    
-    public function refreshCash($relax)
-    {
-        $datasources = Provider::whereCode($this->provider)->first()->datasources;
-        
-        $progress = new ProgressBar($this->output, count($datasources));
-        $progress->start();
-        
-        foreach ($datasources as $datasource)
-        {
-            $code = $datasource->dataset->code;
-            
-            $data = Quandldata::getHistory($code, ['limit' => 250], $relax);
-            $progress->advance();
-        }
-    }
-    
 }
