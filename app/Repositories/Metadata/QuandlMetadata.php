@@ -147,9 +147,8 @@ abstract class QuandlMetadata
         foreach ($datasources as $datasource)
         {
             $code = $datasource->dataset->code;
-            $quandl = new Quandldata($code);
             
-            $data = $quandl->getJsonHistory();
+            $data = Quandldata::getHistory($code);
             $progress->advance();
         }
     }

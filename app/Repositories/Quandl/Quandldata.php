@@ -60,8 +60,17 @@ class Quandldata
      */
     static public function getHistory($code, $parameter = ['limit' => 250])
     {
+        $key = 'Quandl_'.$code;
+        
+        if (\Cache::store('database')->has($key))
+            return \Cache::store('database')->get($key);
+            
         $quandl = new Quandldata($code);
-        return $quandl->history($parameter);
+        $data = $quandl->history($parameter);
+        
+        $expiresAt = Carbon::now()->endOfDay();
+        \Cache::store('database')->put($key, $data, $expiresAt);
+        return $data;
     }
 
 
