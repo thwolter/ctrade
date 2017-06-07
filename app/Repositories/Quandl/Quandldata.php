@@ -15,6 +15,7 @@ class Quandldata
 
     protected $client;
     protected $source;
+    protected $code;
 
 
     /**
@@ -25,12 +26,15 @@ class Quandldata
     {
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
         $this->source = $this->getDatasource($code);
+        $this->code = $code;
     }
 
 
     public function price()
     {
-        return $this->getArrayHistory(['limit' => 1]);
+        $data = $this->history();
+        reset($data);
+        return [key($data) => reset($data)];
     }
 
     /**
@@ -47,7 +51,17 @@ class Quandldata
 
     public function history($parameter = ['limit' => 250])
     {
-        return $this->getArrayHistory($parameter);
+        $key = 'Quandl_'.$this->code;
+        
+        if (\Cache::store('database')->has($key))
+            return \Cache::store('database')->get($key);
+            
+        $data = $this->getArrayHistory($parameter);
+            
+        $expiresAt = Carbon::now()->endOfDay();
+        \Cache::store('database')->put($key, $data, $expiresAt);
+            
+        return $data;
 
     }
 
@@ -60,17 +74,8 @@ class Quandldata
      */
     static public function getHistory($code, $parameter = ['limit' => 250])
     {
-        $key = 'Quandl_'.$code;
-        
-        if (\Cache::store('database')->has($key))
-            return \Cache::store('database')->get($key);
-            
         $quandl = new Quandldata($code);
-        $data = $quandl->history($parameter);
-        
-        $expiresAt = Carbon::now()->endOfDay();
-        \Cache::store('database')->put($key, $data, $expiresAt);
-        return $data;
+        return $quandl->history($parameter);
     }
 
 
