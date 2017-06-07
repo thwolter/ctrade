@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-
+use App\Jobs\UpdateQuandl;
 use Illuminate\Console\Command;
 use App\Repositories\Metadata\QuandlSSE;
 

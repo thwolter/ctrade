@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Entities\Currency;
+
 
 class CreatePortfolio extends FormRequest
 {
@@ -25,9 +27,10 @@ class CreatePortfolio extends FormRequest
     {
         return [
             'name' => 'required',
-            'currency' => 'required'
+            'currency' => 'exists:currencies,id'
         ];
     }
+
 
     /**
      * Configure the validator instance.
@@ -37,12 +40,17 @@ class CreatePortfolio extends FormRequest
      */
     public function withValidator($validator)
     {
+        
         $validator->after(function ($validator) {
-            if ($this->cash != "1") {
-                $validator->errors()->add('field', 'Something is wrong with this field!');
-            }
+            
+            // check if the user already has a portfolio with this name
+            if (count($this->user()->portfolios()->whereName($this->name)->get())) {
+                $validator->errors()->add('name', 'Ein Portfolio mit diesem Namen existiert bereits.');
+            };
+        
         });
     }
+
 
     /**
      * Get the error messages for the defined validation rules.
@@ -52,8 +60,7 @@ class CreatePortfolio extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Wie soll das Portfolio bezeichnet werden?',
-            'body.required'  => 'A message is required',
+            'name.required' => 'Wie soll das Portfolios heißen?',
         ];
     }
 }
