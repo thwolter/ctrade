@@ -2,25 +2,26 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\UpdateQuandl;
-use Illuminate\Console\Command;
-use App\Repositories\Metadata\QuandlSSE;
 
-class syncQuandlShares extends Command
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
+
+
+class DeleteTemp extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'quandl:shares';
+    protected $signature = 'temp:delete';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'syncronize Quandl shares metadata with local database';
+    protected $description = 'Delete the storage/app/tmp directory';
 
     /**
      * Create a new command instance.
@@ -39,9 +40,8 @@ class syncQuandlShares extends Command
      */
     public function handle()
     {
-        $meta = new QuandlSSE($this->output);
-        $meta->load();
-
-        $this->info(" Done. \n");
+        Storage::deleteDirectory('tmp');
+        Storage::makeDirectory('tmp');
+        $this->info("Deleted. \n");
     }
 }

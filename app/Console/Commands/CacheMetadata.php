@@ -2,26 +2,26 @@
 
 namespace App\Console\Commands;
 
-
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
+use App\Repositories\Metadata\QuandlSSE;
 
-
-class deleteTemp extends Command
+class CacheMetadata extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'temp:delete';
+    protected $signature = 'metadata:cache
+                            {--provider= : Name of the provider (e.g. quandl)} 
+                            {--database= : Specify the providers database (e.g. SSE, ECB)}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'delete the storage/app/tmp directory';
+    protected $description = 'Refreshes the cash with histories from data provider';
 
     /**
      * Create a new command instance.
@@ -40,7 +40,9 @@ class deleteTemp extends Command
      */
     public function handle()
     {
-        Storage::deleteDirectory('tmp');
-        Storage::makeDirectory('tmp');
+        $meta = new QuandlSSE($this->output);
+        $meta->refreshCash();
+
+        $this->info(" Done. \n");
     }
 }

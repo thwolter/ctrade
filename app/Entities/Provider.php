@@ -4,6 +4,7 @@ namespace App\Entities;
 
 
 use Illuminate\Database\Eloquent\Model;
+use App\Entities\Datasource;
 
 class Provider extends Model
 {
@@ -11,5 +12,8 @@ class Provider extends Model
         'code', 'name'
     ];
     
-   
+   public function datasources()
+   {
+       return $this->hasMany(Datasource::class);
+   }
 }

@@ -4,34 +4,27 @@ namespace App\Repositories\Metadata;
 
 
 use App\Entities\Datasource;
+use App\Entities\Provider;
+use App\Repositories\Quandl\Quandldata;
 use App\Repositories\Exceptions\MetadataException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\Output;
+use Illuminate\Console\OutputStyle;
 use Illuminate\Support\Facades\Log;
 
 abstract class QuandlMetadata
 {
 
-    protected $testing = [
-        'maxPages' => 1,
-        'perPage' => 5
-    ];
-
-    protected $local = [
-        'maxPages' => 2,
-        'perPage' => 100
-    ];
-
-    protected $running = [
-        'maxPages' => INF,
-        'perPage' => 100
-    ];
+    protected $testing = ['maxPages' => 1,   'perPage' => 5];
+    protected $local   = ['maxPages' => 2,   'perPage' => 100 ];
+    protected $running = ['maxPages' => INF, 'perPage' => 100 ];
 
     protected $client;
     protected $provider = 'Quandl';
     protected $database;
 
     protected $output;
+    protected $progress;
 
     protected $nextPage = 0;
     protected $totalPages = 2;
@@ -39,8 +32,12 @@ abstract class QuandlMetadata
     protected $perPage;
 
 
-    public function __construct($output = null)
+    public function __construct(OutputStyle $output = null)
     {
+        if (!isset($this->database)) {
+            throw new MetadataException("variable 'database' must be set");
+        }
+        
         $this->setting();
 
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
@@ -73,10 +70,7 @@ abstract class QuandlMetadata
         $countStored = 0;
         $countUpdated = 0;
 
-        if (!isset($this->database)) {
-            throw new MetadataException("variable 'database' must be set");
-        }
-    
+        
         Log::notice('start loading '.$this->database);
         while ($this->nextPage <= min($this->totalPages, $this->maxPages)
             and !is_null($this->nextPage))
@@ -133,7 +127,6 @@ abstract class QuandlMetadata
     public function getItems()
     {
         $json = $this->client->getList($this->database, $this->nextPage, $this->perPage);
-        //Storage::put('QuandlSSE.json', $json); // for testing reasons
 
         $array = json_decode($json, true);
 
@@ -142,4 +135,23 @@ abstract class QuandlMetadata
 
         return $array['datasets'];
     }
+    
+    
+    public function refreshCash()
+    {
+        $datasources = Provider::whereCode($this->provider)->first()->datasources;
+        
+        $progress = new ProgressBar($this->output, count($datasources));
+        $progress->start();
+        
+        foreach ($datasources as $datasource)
+        {
+            $code = $datasource->dataset->code;
+            $quandl = new Quandldata($code);
+            
+            $data = $quandl->getJsonHistory();
+            $progress->advance();
+        }
+    }
+    
 }

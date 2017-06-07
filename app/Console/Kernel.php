@@ -13,8 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-       Commands\deleteTemp::class,
-       Commands\syncQuandlShares::class
+       Commands\DeleteTemp::class,
+       Commands\CacheMetadata::class,
+       Commands\UpdateMetadata::class
     ];
 
     /**

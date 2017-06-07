@@ -13,6 +13,7 @@ namespace App\Http\Controllers;
 use App\Entities\Currency;
 use App\Entities\PortfolioImage;
 use App\Http\Requests\CreatePortfolio;
+use App\Http\Requests\UpdatePortfolio;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
@@ -101,7 +102,7 @@ class PortfoliosController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePortfolio $request, $id)
     {
         if ( $request->delete == 'yes')
             return view('portfolios.delete', compact('id'));

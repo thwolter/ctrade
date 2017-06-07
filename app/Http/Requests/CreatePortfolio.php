@@ -26,7 +26,7 @@ class CreatePortfolio extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|max:60',
             'currency' => 'exists:currencies,id'
         ];
     }
@@ -61,6 +61,7 @@ class CreatePortfolio extends FormRequest
     {
         return [
             'name.required' => 'Wie soll das Portfolios heißen?',
+            'name.max' => 'Bezeichung ist zu lang (max 60 Zeichen)'
         ];
     }
 }
