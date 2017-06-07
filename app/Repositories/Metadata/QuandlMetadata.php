@@ -95,7 +95,7 @@ abstract class QuandlMetadata
                     
                     if ($this->createItemWithSource($item))
                         $countStored++;
- 
+
                 }
                 
                 $progress->advance();
@@ -137,7 +137,7 @@ abstract class QuandlMetadata
     }
     
     
-    public function refreshCash()
+    public function refreshCash($relax)
     {
         $datasources = Provider::whereCode($this->provider)->first()->datasources;
         
@@ -148,7 +148,7 @@ abstract class QuandlMetadata
         {
             $code = $datasource->dataset->code;
             
-            $data = Quandldata::getHistory($code);
+            $data = Quandldata::getHistory($code, ['limit' => 250], $relax);
             $progress->advance();
         }
     }

@@ -16,17 +16,21 @@ class Quandldata
     protected $client;
     protected $source;
     protected $code;
+    
+    protected $relax;
 
 
     /**
      * Quandldata constructor.
      * @param string $code of a dataset
      */
-    public function __construct(String $code)
+    public function __construct(String $code, $relax = true)
     {
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
         $this->source = $this->getDatasource($code);
+        
         $this->code = $code;
+        $this->relax = $relax;
     }
 
 
@@ -53,7 +57,7 @@ class Quandldata
     {
         $key = 'Quandl_'.$this->code;
         
-        if (\Cache::store('database')->has($key))
+        if (\Cache::store('database')->has($key) and $this->relax)
             return \Cache::store('database')->get($key);
             
         $data = $this->getArrayHistory($parameter);
@@ -72,9 +76,9 @@ class Quandldata
      * @param array $parameter
      * @return array
      */
-    static public function getHistory($code, $parameter = ['limit' => 250])
+    static public function getHistory($code, $parameter = ['limit' => 250], $relax = true)
     {
-        $quandl = new Quandldata($code);
+        $quandl = new Quandldata($code, $relax);
         return $quandl->history($parameter);
     }
 

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Repositories\Metadata\QuandlSSE;
+use App\Repositories\Metadata\QuandlECB;
 
 class CacheMetadata extends Command
 {
@@ -14,7 +15,8 @@ class CacheMetadata extends Command
      */
     protected $signature = 'metadata:cache
                             {--provider= : Name of the provider (e.g. quandl)} 
-                            {--database= : Specify the providers database (e.g. SSE, ECB)}';
+                            {--database= : Specify the providers database (e.g. SSE, ECB)}
+                            {--relax : Avoid data loading if the item is in the cache}';
 
     /**
      * The console command description.
@@ -40,9 +42,15 @@ class CacheMetadata extends Command
      */
     public function handle()
     {
-        $meta = new QuandlSSE($this->output);
-        $meta->refreshCash();
-
+        $relax =$this->option('relax');
+        $database = $this->option('database');
+        
+      
+        if ($database == 'SSE' or $database == null)
+            (new QuandlSSE($this->output))->refreshCash($relax);
+         
+         //Todo: implement differenciation between databaes
+         
         $this->info(" Done. \n");
     }
 }
