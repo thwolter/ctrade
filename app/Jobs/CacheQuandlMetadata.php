@@ -2,7 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Repositories\Metadata\QuandlCaching;
+use App\Repositories\Quandl\Quandldata;
+use App\Entities\Datasource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,15 +14,18 @@ class CacheQuandlMetadata implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $datasources;
     protected $relax;
 
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param Datasource $datasources
+     * @param bool $relax
      */
-    public function __construct($relax)
+    public function __construct($datasources, $relax)
     {
+        $this->datasources = $datasources;
         $this->relax = $relax;
     }
 
@@ -32,6 +36,10 @@ class CacheQuandlMetadata implements ShouldQueue
      */
     public function handle()
     {
-        (new QuandlCaching())->refreshCash($this->relax);
+        foreach ($this->datasources as $datasource)
+        {
+            $code = $datasource->dataset->code;
+            Quandldata::refreshCache($code, $this->relax);
+        }
     }
 }

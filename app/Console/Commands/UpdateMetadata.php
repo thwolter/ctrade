@@ -47,7 +47,8 @@ class UpdateMetadata extends Command
             return;
         }
 
-        if ($provider == 'Quandl' or $provider == null) {
+        if ($provider == 'Quandl' or $provider == null)
+        {
             dispatch(new UpdateQuandlMetadata());
         }
 

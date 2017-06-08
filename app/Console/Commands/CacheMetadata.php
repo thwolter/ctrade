@@ -2,12 +2,16 @@
 
 namespace App\Console\Commands;
 
+use App\Entities\Provider;
 use App\Jobs\CacheQuandlMetadata;
 use Illuminate\Console\Command;
-use App\Repositories\Metadata\QuandlCaching;
 
 class CacheMetadata extends Command
 {
+
+    public $chunkSize = 20;
+
+
     /**
      * The name and signature of the console command.
      *
@@ -42,7 +46,12 @@ class CacheMetadata extends Command
         }
       
         if ($provider == 'Quandl' or $provider == null) {
-            dispatch(new CacheQuandlMetadata($relax));
+
+            $datasources = Provider::whereCode('Quandl')->first()->datasources;
+            foreach ($datasources->chunk($this->chunkSize) as $chunk)
+            {
+                dispatch(new CacheQuandlMetadata($chunk, $relax));
+            }
         }
 
         $this->info("Done. \n");
