@@ -24,7 +24,7 @@ abstract class QuandlMetadata
     protected $database;
 
     protected $output;
-    protected $progress;
+    protected $progressbar;
 
     protected $nextPage = 0;
     protected $totalPages = 2;
@@ -77,12 +77,7 @@ abstract class QuandlMetadata
         {
             $items = $this->getItems();
 
-            if (is_null($progress))
-            {
-                $pages = min($this->totalPages, $this->maxPages);
-                $progress = new ProgressBar($this->output, $pages * $this->perPage);
-                $progress->start();
-            }
+            $this->progress();
 
             foreach ($items as $item) {
                 
@@ -97,13 +92,13 @@ abstract class QuandlMetadata
                         $countStored++;
 
                 }
-                
-                $progress->advance();
+
+                $this->advance($progress);
             }
         }
         
         Log::notice("finished loading {$this->database} ({$countStored} new; {$countUpdated} updated)");
-        $progress->finish();
+        $this->finish();
     }
     
     
@@ -135,5 +130,30 @@ abstract class QuandlMetadata
 
         return $array['datasets'];
     }
-    
+
+    private function progress()
+    {
+        if (is_null($this->progressbar) and isset($this->output)) {
+
+            $pages = min($this->totalPages, $this->maxPages);
+            $this->progressbar = new ProgressBar($this->output, $pages * $this->perPage);
+            $this->progressbar->start();
+        }
+    }
+
+    private function advance()
+    {
+        if (isset($this->progressbar))
+
+            $this->progressbar->advance();
+    }
+
+
+    private function finish()
+    {
+        if (isset($this->progressbar))
+
+            $this->progressbar->finish();
+    }
+
 }

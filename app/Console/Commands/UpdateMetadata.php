@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\UpdateQuandlMetadata;
 use Illuminate\Console\Command;
 use App\Repositories\Metadata\QuandlSSE;
 
@@ -13,8 +14,7 @@ class UpdateMetadata extends Command
      * @var string
      */
     protected $signature = 'metadata:update
-                            {--provider= : Name of the provider (e.g. quandl)} 
-                            {--database= : Specify the providers database (e.g. SSE, ECB)}';
+                            {--provider= : Name of the provider (Quandl)}';
 
     /**
      * The console command description.
@@ -40,9 +40,18 @@ class UpdateMetadata extends Command
      */
     public function handle()
     {
-        $meta = new QuandlSSE($this->output);
-        $meta->load();
+        $provider = $this->option('provider');
 
-        $this->info(" Done. \n");
+        if (!in_array($provider, ['Quandl', null])) {
+            $this->comment("Provider {$provider} not defined.");
+            return;
+        }
+
+        if ($provider == 'Quandl' or $provider == null) {
+            dispatch(new UpdateQuandlMetadata());
+        }
+
+        $this->info("Done. \n");
+        return;
     }
 }

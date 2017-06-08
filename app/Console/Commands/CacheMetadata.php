@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\CacheQuandlMetadata;
 use Illuminate\Console\Command;
 use App\Repositories\Metadata\QuandlCaching;
 
@@ -40,10 +41,11 @@ class CacheMetadata extends Command
             return;
         }
       
-        if ($provider == 'Quandl' or $provider == null)
-            (new QuandlCaching($this->output))->refreshCash($relax);
+        if ($provider == 'Quandl' or $provider == null) {
+            dispatch(new CacheQuandlMetadata($relax));
+        }
 
-        $this->info(" Done. \n");
+        $this->info("Done. \n");
         return;
     }
 }
