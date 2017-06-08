@@ -18,7 +18,7 @@ class CacheMetadata extends Command
      * @var string
      */
     protected $signature = 'metadata:cache
-                            {--provider= : Name of the provider (e.g. quandl)} 
+                            {--provider= : Name of the provider (Quandl)} 
                             {--relax : Avoid data loading if the item is in the cache}';
 
     /**

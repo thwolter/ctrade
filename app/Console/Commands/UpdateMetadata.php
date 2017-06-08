@@ -9,6 +9,9 @@ use Illuminate\Console\Command;
 
 class UpdateMetadata extends Command
 {
+    protected $chunkSize = 20;
+
+
     /**
      * The name and signature of the console command.
      *
@@ -47,7 +50,8 @@ class UpdateMetadata extends Command
 
         if (!in_array($provider, ['Quandl', null])) {
             
-            return $this->comment("Provider {$provider} not defined.");
+            $this->comment("Provider {$provider} not defined.");
+            return;
         }
 
 
@@ -58,11 +62,12 @@ class UpdateMetadata extends Command
             
             do {
                 $i++;
-                $items = $meta->getItems(20);
+                $items = $meta->getItems($this->chunkSize);
                 dispatch(new UpdateQuandlMetadata($meta, $items));
             } while( $items != [] and $i < $max);
         }
 
-        return $this->info("Done. \n");
+        $this->info("Done. \n");
+        return;
     }
 }

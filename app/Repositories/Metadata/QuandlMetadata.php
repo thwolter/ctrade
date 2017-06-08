@@ -39,7 +39,6 @@ abstract class QuandlMetadata
     }
 
 
-   
 
     public function createItemWithSource($item)
     {
@@ -49,7 +48,6 @@ abstract class QuandlMetadata
             Log::notice('symbol ' . $this->symbol($item) . ' not saved');
             return false;
         }
-        
         Datasource::make($this->provider, $this->database, $this->symbol($item))
                 ->assign($instrument);
 

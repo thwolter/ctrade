@@ -37,4 +37,9 @@ class User extends Authenticatable
     {
         $this->portfolios()->save($portfolio);
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }
