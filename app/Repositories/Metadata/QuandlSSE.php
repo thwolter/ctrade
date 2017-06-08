@@ -12,18 +12,14 @@ use Illuminate\Support\Facades\Log;
 
 class QuandlSSE extends QuandlMetadata
 {
-    protected $database = 'SSE';
+    public $database = 'SSE';
     
     protected $required = ['symbol', 'name', 'currency'];
 
     protected $useFile = true;
 
 
-    static public function sync()
-    {
-        $meta = new self();
-        $meta->load();
-    }
+    
 
     public function isValid($item)
     {
@@ -89,14 +85,25 @@ class QuandlSSE extends QuandlMetadata
         return $item['dataset_code'];
     }
 
+
+    public function description($item)
+    {
+        return $item['description'];
+    }
+
+
     public function name($item)
     {
         $raw_name = strtoupper($item['name']);
         $name = trim(explode('WKN', (explode('|', $raw_name)[0]))[0]);
 
-        return (empty($name)) ? null : title_case($name);
+        if (!empty($name))
+            return title_case($name);
+        else 
+            $this->unableLog('name', $item);
     }
 
+    
     public function wkn($item)
     {
         $raw_name = strtoupper($item['name']);
@@ -104,15 +111,22 @@ class QuandlSSE extends QuandlMetadata
         //Todo: check errors
         $wkn = @trim(explode('WKN', (explode('|', $raw_name)[0]))[1]);
 
-        return (empty($wkn)) ? null : $wkn;
-
+        if (!empty($wkn))
+            return $wkn;
+        else
+            return $this->unableLog('WKN', $item);
     }
 
     public function isin($item)
     {
         $raw_name = strtoupper($item['name']);
         $re = '/ISIN*\s*([A-Z0-9]+)/';
-        return preg_match($re, $raw_name, $matches) ? $matches[1] : null;
+        $match = preg_match($re, $raw_name, $matches);
+        
+        if ($match) 
+            return $matches[1];
+        else 
+            return $this->unableLog('ISIN', $item);
     }
 
     public function currency($item)
@@ -120,7 +134,12 @@ class QuandlSSE extends QuandlMetadata
         $desc = strtoupper($item['description']);
         $re = '/CURRENCY:*\s*([A-Z]+)/';
 
-        return preg_match($re, $desc, $matches) ? $matches[1] : null;
+        $match = preg_match($re, $desc, $matches);
+        
+        if ($match)
+            return $matches[1];
+        else
+            return $this->unableLog('currency', $item);
     }
 
     public function sector($item)
@@ -128,13 +147,20 @@ class QuandlSSE extends QuandlMetadata
         $desc = strtoupper($item['description']);
         $re = '/SECTOR:*\s*([A-Z \-]*)/';
 
-        return preg_match($re, $desc, $matches) ? title_case($matches[1]) : null;
+        $match = preg_match($re, $desc, $matches); 
+        
+        if ($match)
+            title_case($matches[1]);
+        else 
+            return $this->unableLog('sector', $item);
     }
+
 
     public function model($item)
     {
         return Stock::class;
     }
+
 
     public function getItemsFromFile()
     {
@@ -142,6 +168,13 @@ class QuandlSSE extends QuandlMetadata
     }
 
 
+
+    private function unableLog($param, $item)
+    {
+        Log::notice("could not find {$param} for {$this->symbol($item)} -- {$this->description($item)}");
+        
+        return null;
+    }
 
 }
 

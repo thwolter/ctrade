@@ -18,34 +18,7 @@ class QuandlECB extends QuandlMetadata
     protected $baseCcy = ['USD', 'CHF'];
 
 
-    public function load()
-    {
-        $dbCcy = array_column(Currency::all()->toArray(), 'code');
-        $currencies = array_unique(array_merge($this->baseCcy, $dbCcy));
-
-        $currencies = array_where($currencies, function($value) {return $value != 'EUR';});
-        foreach ($currencies as $currency) {
-
-            $datasetCode = $this->database.'/'.$this->origin.$currency;
-            $json = $this->client->getSymbol($datasetCode, ['limit' => 1]);
-
-            // simple check if symbol is an available currency-pair
-            $symbol = json_decode($json, true)['dataset']['dataset_code'];
-
-            if ($this->client->error) {
-                throw new MetadataException("{$this->client->error} for symbol '{$symbol}'");
-            }
-
-            $instrument = $this->saveItem($currency);
-
-            if (!is_null($instrument))
-            {
-                Datasource::make($this->provider, $this->database, $symbol)
-                    ->assign($instrument);
-            }
-        }
-    }
-
+   
     public function saveItem($item)
     {
         $currency = CcyPair::firstOrCreate([
@@ -67,9 +40,4 @@ class QuandlECB extends QuandlMetadata
         //return true if updated
     }
 
-    static public function sync()
-    {
-        $meta = new self();
-        $meta->load();
-    }
 }

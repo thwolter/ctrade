@@ -6,6 +6,9 @@ use App\Entities\Category;
 use App\Entities\User;
 use App\Entities\Currency;
 use App\Entities\PortfolioImage;
+use App\Entities\Stock;
+use App\Entities\Datasource;
+use Illuminate\Support\Facades\Log;
 
 class PortfolioSeeder extends Seeder
 {
@@ -35,7 +38,7 @@ class PortfolioSeeder extends Seeder
     {
         $user = User::whereName('examples')->first();
 
-        $this->savePortfolio($user, [
+        $portfolio = $this->savePortfolio($user, [
             'name' => 'Dax Werte',
             'cash' => 1000,
             'img' => 'green-energy.jpg',
@@ -43,8 +46,14 @@ class PortfolioSeeder extends Seeder
             'category' => 'Dax',
             'currency' => 'EUR'
         ]);
-
-        $this->savePortfolio($user, [
+        
+        $this->assignStocks($portfolio, [
+            ['SSE/5GN', 10], 
+            ['SSE/YB1',5]
+        ]);
+       
+       
+        $portfolio = $this->savePortfolio($user, [
             'name' => 'Andere Werte',
             'cash' => 1000,
             'img' => 'car-fuel.jpg',
@@ -53,7 +62,7 @@ class PortfolioSeeder extends Seeder
             'currency' => 'EUR'
         ]);
 
-        $this->savePortfolio($user, [
+        $portfolio = $this->savePortfolio($user, [
             'name' => 'Und noch mehr',
             'cash' => 1000,
             'img' => 'laptop.jpg',
@@ -81,6 +90,8 @@ class PortfolioSeeder extends Seeder
         $user->portfolios()->save($portfolio);
 
         $this->saveImage($portfolio, $parm['img']);
+        
+        return $portfolio;
     }
 
 
@@ -107,5 +118,26 @@ class PortfolioSeeder extends Seeder
 
         $image = new PortfolioImage(['path' => $img]);
         return $portfolio->image()->save($image);
+    }
+    
+    
+    private function assignStocks($portfolio, $stocks)
+    {
+        foreach ($stocks as $stock)
+        {
+            try {
+                $id = Datasource::withDataset($stock[0])->first()->id;
+            } catch (\Exception $e) {
+                echo "-- {$e->getMessage()}\n";
+                Log::error('PortfolioSeeder could not assign stock: '.$e->getMessage());
+                $id = null;
+            }
+            
+            if (!is_null($id)) {
+     
+                $position = $portfolio->makePosition(Stock::find($id));
+                $portfolio = Portfolio::buy($position->id, $stock[1]);
+            }
+        }
     }
 }

@@ -2,25 +2,33 @@
 
 namespace App\Jobs;
 
-use App\Repositories\Metadata\QuandlSSE;
+use App\Entities\Datasource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
+
 class UpdateQuandlMetadata implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+
+    protected $items;
+    protected $meta;
+
+
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($meta, $items)
     {
-        //
+        $this->items = $items;
+        $this->meta = $meta;
     }
 
     /**
@@ -30,6 +38,15 @@ class UpdateQuandlMetadata implements ShouldQueue
      */
     public function handle()
     {
-        (new QuandlSSE())->load();
+        $updated = $stored = 0;
+        
+        foreach ($this->items as $item) {
+                
+            if ($this->meta->hasDatasource($item)) 
+                $this->meta->updateItem($item);
+                
+            else 
+                $this->meta->createItemWithSource($item);
+        }
     }
 }

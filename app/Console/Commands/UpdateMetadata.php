@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Repositories\Metadata\QuandlSSE;
 use App\Jobs\UpdateQuandlMetadata;
 use Illuminate\Console\Command;
-use App\Repositories\Metadata\QuandlSSE;
+
 
 class UpdateMetadata extends Command
 {
@@ -14,7 +15,8 @@ class UpdateMetadata extends Command
      * @var string
      */
     protected $signature = 'metadata:update
-                            {--provider= : Name of the provider (Quandl)}';
+                            {--provider= : Name of the provider (Quandl)}
+                            {--max= : Maximum pages to be loaded}';
 
     /**
      * The console command description.
@@ -41,18 +43,26 @@ class UpdateMetadata extends Command
     public function handle()
     {
         $provider = $this->option('provider');
+        $max = $this->option('max');
 
         if (!in_array($provider, ['Quandl', null])) {
-            $this->comment("Provider {$provider} not defined.");
-            return;
+            
+            return $this->comment("Provider {$provider} not defined.");
         }
+
 
         if ($provider == 'Quandl' or $provider == null)
         {
-            dispatch(new UpdateQuandlMetadata());
+            $meta = new QuandlSSE();
+            $i = 0;
+            
+            do {
+                $i++;
+                $items = $meta->getItems(20);
+                dispatch(new UpdateQuandlMetadata($meta, $items));
+            } while( $items != [] and $i < $max);
         }
 
-        $this->info("Done. \n");
-        return;
+        return $this->info("Done. \n");
     }
 }
