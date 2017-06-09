@@ -10,12 +10,14 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- facicon -->
+    <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
+
     <!--plugins-->
     <link href="{{ asset('css/plugins/plugins.css') }}" rel="stylesheet">
 
     <!--Custom css-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/mystyles.css') }}" rel="stylesheet">
 
     @yield('css.header')
@@ -27,6 +29,10 @@
 </head>
 
 <body>
+    <div id="preloader">
+        <div id="preloader-inner"></div>
+    </div><!--/preloader-->
+
     <div id="app">
         @include('partials.appbar')
 

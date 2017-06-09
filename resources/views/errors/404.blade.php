@@ -18,11 +18,11 @@
                     <div class="error-actions">
 
                         <a href="/" class="btn theme-btn-color btn-lg">
-                            <span class="glyphicon glyphicon-home"></span>
+                            <i class="fa fa-home fa-fw" aria-hidden="true"></i>
                             Zur Homepage
                         </a>
                         <a href="#" class="btn theme-btn-color-outline btn-lg">
-                            <span class="glyphicon glyphicon-envelope"></span>
+                            <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
                             Kontakt Support
                         </a>
 
