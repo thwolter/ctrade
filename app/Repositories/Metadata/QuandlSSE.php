@@ -150,24 +150,31 @@ class QuandlSSE extends QuandlMetadata
     public function sectorAndIndustry($item)
     {
         $desc = strtoupper($item['description']);
-        $re = '/SECTOR:*\s*([A-Z \-]*)/';
+        $re = '/SECTOR:*\s*([A-Z \/ \& \-\(\)]*)/';
 
-        if (preg_match($re, $desc, $matches))
-            return explode('-', title_case(trim($matches[1])));
-
-        else return null;
+        return (preg_match($re, $desc, $matches)) ? $matches[1] : null;
     }
 
 
     public function sector($item)
     {
-        return $this->sectorAndIndustry($item)[0];
+        $sector = title_case(trim(explode('-', $this->sectorAndIndustry($item))[0]));
+        
+        if (!empty($sector))
+            return $sector;
+        else 
+            return $this->unableLog('sector', $item);
     }
 
 
     public function industry($item)
     {
-        return $this->sectorAndIndustry($item)[1];
+        $split = explode(' - ', $this->sectorAndIndustry($item));
+        
+        if (count($split) == 2) 
+            return title_case(trim($split[1]));
+        else
+            return $this->unableLog('industy', $item);
     }
 
 

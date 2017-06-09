@@ -28,12 +28,11 @@ class QuandlSSETest extends TestCase
     }
 
     /** @test */
-    public function can_load_data()
+    public function can_receive_industry()
     {
         $items = $this->meta->getItems(1);
 
         $this->meta->createItemWithSource($items[0]);
-
 
     }
 
