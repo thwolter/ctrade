@@ -17,7 +17,7 @@ class Transaction extends Model
         'price'
     ];
 
-    public function transactionType()
+    public function type()
     {
         return $this->belongsTo(TransactionType::class);
     }
@@ -85,7 +85,7 @@ class Transaction extends Model
 
         $transaction->portfolio()->associate($portfolio);
         $transaction->instrumentable()->associate($position->positionable);
-        $transaction->transactionType()->associate(TransactionType::firstOrCreate(['code' => $type]));
+        $transaction->type()->associate(TransactionType::firstOrCreate(['code' => $type]));
         return $transaction->save();
     }
 
@@ -104,7 +104,7 @@ class Transaction extends Model
         ]);
 
         $transaction->portfolio()->associate($portfolio);
-        $transaction->transactionType()->associate(TransactionType::firstOrCreate(['code' => $type]));
+        $transaction->type()->associate(TransactionType::firstOrCreate(['code' => $type]));
 
         return $transaction->save();
     }

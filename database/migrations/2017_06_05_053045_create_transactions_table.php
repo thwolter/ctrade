@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->date('date');
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
-            $table->integer('transaction_type_id');
+            $table->integer('type_id');
             $table->integer('instrumentable_id')->nullable();
             $table->string('instrumentable_type')->nullable();
             $table->float('amount');
