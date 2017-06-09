@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 class UpdateMetadata extends Command
 {
-    protected $chunkSize = 20;
+    protected $chunkSize = 50;
 
 
     /**

@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 class CacheMetadata extends Command
 {
 
-    public $chunkSize = 20;
+    public $chunkSize = 50;
 
 
     /**
