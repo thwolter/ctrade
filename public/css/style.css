@@ -309,7 +309,7 @@ small {
   border-radius: 50%;
   border: 3px solid transparent;
   border-top-color: #4c779e;
-  animation: spin 3s linear infinite; }
+  animation: spin 0.3s linear infinite; }
 
 #preloader #preloader-inner:after {
   content: "";
@@ -321,7 +321,7 @@ small {
   border-radius: 50%;
   border: 3px solid transparent;
   border-top-color: #4c779e;
-  animation: spin 1.5s linear infinite; }
+  animation: spin 0.3s linear infinite; }
 
 @keyframes spin {
   0% {

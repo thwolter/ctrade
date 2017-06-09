@@ -7,7 +7,7 @@
             <div class="container boxed-container">
                 <p style="text-align: center">Noch keine Transaktionen vorhanden.</p>
 
-                {!! Form::open(['route' => ['transaction.create', $portfolio->id], 'method' => 'Get']) !!}
+                {!! Form::open(['route' => ['transactions.create', $portfolio->id], 'method' => 'Get']) !!}
                     <div style="text-align: center">
                         {!! Form::submit('Neue Transaktion', ['class' => 'btn theme-btn-color']) !!}
                     </div>
