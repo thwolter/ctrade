@@ -74,6 +74,10 @@ class Portfolio extends Model
         return $this->belongsTo(Currency::class);
     }
 
+    public function keyFigures()
+    {
+        return $this->hasMany(Keyfigure::class);
+    }
 
     public function currencyCode()
     {
@@ -108,7 +112,15 @@ class Portfolio extends Model
     {
         $this->currency()->associate(Currency::firstOrCreate(['code' => $code]));
     }
-    
+
+
+    public function saveKeyFigure($key, $value, $date)
+    {
+        $keyFigure = Keyfigure::make($key, $value, $date);
+        $this->keyFigures()->save($keyFigure);
+
+        return $this;
+    }
     
     public function toArray()
     {
@@ -234,4 +246,6 @@ class Portfolio extends Model
         \Storage::delete('public/images/'.$this->image->path);
 
     }
+
+
 }
