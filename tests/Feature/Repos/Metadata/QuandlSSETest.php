@@ -23,16 +23,17 @@ class QuandlSSETest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->meta = new QuandlSSE(new ConsoleOutput());
+        $this->meta = new QuandlSSE();
         $this->artisan('db:seed', ['--class' => 'CurrencySeeder']);
     }
 
     /** @test */
     public function can_load_data()
     {
-        $this->meta->load();
+        $items = $this->meta->getItems(1);
 
-        $this->assertEquals(5, count(Stock::all()));
+        $this->meta->createItemWithSource($items[0]);
+
 
     }
 

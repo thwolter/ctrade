@@ -20,6 +20,7 @@ class CreateStocksTable extends Migration
             $table->string('wkn')->nullable();
             $table->string('isin')->nullable();
             $table->integer('sector_id')->nullable();
+            $table->integer('industry_id')->nullable();
             $table->timestamps();
         });
     }

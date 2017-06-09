@@ -44,6 +44,12 @@ abstract class Instrument extends Model
     {
         return $this->belongsTo(Sector::class);
     }
+
+
+    public function industry()
+    {
+        return $this->belongsTo(Industry::class);
+    }
     
     
     public function datasources()

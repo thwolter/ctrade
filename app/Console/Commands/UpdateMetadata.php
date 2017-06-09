@@ -47,6 +47,7 @@ class UpdateMetadata extends Command
     {
         $provider = $this->option('provider');
         $max = $this->option('max');
+        if (is_null($max)) $max = INF;
 
         if (!in_array($provider, ['Quandl', null])) {
             

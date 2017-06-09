@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Metadata;
 
+use App\Entities\Industry;
 use App\Entities\Sector;
 use App\Entities\Stock;
 use App\Entities\Currency;
@@ -62,6 +63,9 @@ class QuandlSSE extends QuandlMetadata
 
         if (! is_null($this->sector($item)))
             Sector::firstOrCreate(['name' => $this->sector($item)])->stocks()->save($stock);
+
+        if (! is_null($this->industry($item)))
+            Industry::firstOrCreate(['name' => $this->industry($item)])->stocks()->save($stock);
 
         $stock->save();
 
@@ -142,17 +146,28 @@ class QuandlSSE extends QuandlMetadata
             return $this->unableLog('currency', $item);
     }
 
-    public function sector($item)
+
+    public function sectorAndIndustry($item)
     {
         $desc = strtoupper($item['description']);
         $re = '/SECTOR:*\s*([A-Z \-]*)/';
 
-        $match = preg_match($re, $desc, $matches); 
-        
-        if ($match)
-            title_case($matches[1]);
-        else 
-            return $this->unableLog('sector', $item);
+        if (preg_match($re, $desc, $matches))
+            return explode('-', title_case(trim($matches[1])));
+
+        else return null;
+    }
+
+
+    public function sector($item)
+    {
+        return $this->sectorAndIndustry($item)[0];
+    }
+
+
+    public function industry($item)
+    {
+        return $this->sectorAndIndustry($item)[1];
     }
 
 
