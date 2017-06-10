@@ -4,11 +4,15 @@ namespace App\Entities;
 
 use App\Models\Rscript\Rscriptable;
 use App\Entities\Currency;
+use App\PortfolioSettings;
 use App\Presenters\Presentable;
+use App\Settings;
+use Hamcrest\Core\Set;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\UploadedFile;
+use LaravelPropertyBag\Settings\HasSettings;
 
 
 class Portfolio extends Model
@@ -16,14 +20,20 @@ class Portfolio extends Model
     use Financable;
     use Presentable;
     use Rscriptable;
+    use HasSettings;
 
     protected $presenter = 'App\Presenters\Portfolio';
     protected $financial = 'App\Repositories\Yahoo\PortfolioFinancial';
     protected $rscriptable = 'App\Models\Rscript\Portfolio';
     
     protected $fillable = [
-        'name', 'cash', 'description', 'img_url'
+        'name', 'cash', 'description', 'settings', 'img_url'
     ];
+
+    protected $cast = [
+        'settings' => 'json'
+    ];
+
 
     public $imagesPath = 'public/images';
 

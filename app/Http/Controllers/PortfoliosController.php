@@ -102,11 +102,19 @@ class PortfoliosController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePortfolio $request, $id)
+    public function update(Request $request, $id)
     {
         if ( $request->delete == 'yes')
             return view('portfolios.delete', compact('id'));
 
+        Portfolio::whereId($id)->first()->settings([
+            'confidence_level' => $request->confidence,
+            'horizon' => (int)$request->horizon
+        ]);
+
+        //Portfolio::whereId($id)->first()->settings()->merge(Request::all());
+
+        /*
         Portfolio::whereId($id)->update([
             'name' => $request->name,
             'confidence' => $request->confidence,
@@ -116,6 +124,7 @@ class PortfoliosController extends Controller
             'limit' => $request->limit,
             'limit_abs' => $request->limit_abs == 'yes' ? true : false
         ]);
+        */
 
         return redirect(route('portfolios.show', $id));
     }

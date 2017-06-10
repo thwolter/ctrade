@@ -189,6 +189,7 @@ return [
         Clockwork\Support\Laravel\ClockworkServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         \Laravel\Scout\ScoutServiceProvider::class,
+        LaravelPropertyBag\ServiceProvider::class
 
     ],
 

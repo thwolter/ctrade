@@ -29,16 +29,16 @@
         <div class="form-group row">
             {!! Form::label('confidence', 'Sicherheit', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
             <div class="col-md-8">
-                {!! Form::text('confidence', $portfolio->confidence, ['class' => 'form-control input-md']) !!}
+                {!! Form::text('confidence', $portfolio->settings('confidence_level'), ['class' => 'form-control input-md']) !!}
                 <span class="help-block">Konfidencelevel</span>
             </div>
         </div>
 
         <!-- period form input -->
         <div class="form-group row">
-            {!! Form::label('period', 'Periode', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
+            {!! Form::label('horizon', 'Periode', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
             <div class="col-md-8">
-                {!! Form::text('period', $portfolio->period, ['class' => 'form-control input-md']) !!}
+                {!! Form::text('horizon', $portfolio->settings('horizon'), ['class' => 'form-control input-md']) !!}
                 <span class="help-block">Zeiteinheit</span>
             </div>
         </div><hr>

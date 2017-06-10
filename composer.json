@@ -21,7 +21,8 @@
         "markrogoyski/math-php": "0.*",
         "pragmarx/countries": "^0.1.0",
         "predis/predis": "^1.1",
-        "scheb/yahoo-finance-api": "^1.4"
+        "scheb/yahoo-finance-api": "^1.4",
+        "zachleigh/laravel-property-bag": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "dev-master",

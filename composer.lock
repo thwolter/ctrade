@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "23978a0b737247f07cf1b34cec513882",
+    "content-hash": "73fcbf8d27d314a99c8e265a0a68156c",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -3001,6 +3001,56 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "zachleigh/laravel-property-bag",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zachleigh/laravel-property-bag.git",
+                "reference": "58edee2dec09e4505099448d64dc746d2a210868"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zachleigh/laravel-property-bag/zipball/58edee2dec09e4505099448d64dc746d2a210868",
+                "reference": "58edee2dec09e4505099448d64dc746d2a210868",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "laravel/browser-kit-testing": "~1.0",
+                "laravel/laravel": "~5.3",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "LaravelPropertyBag\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zach Leigh",
+                    "email": "zachleigh@fastmail.jp"
+                }
+            ],
+            "description": "Easy Laravel user settings using a property bag",
+            "homepage": "https://github.com/zachlegih/laravel-property-bag",
+            "keywords": [
+                "Settings",
+                "laravel",
+                "property",
+                "propety bag",
+                "user",
+                "user settings"
+            ],
+            "time": "2017-03-06T02:47:51+00:00"
         }
     ],
     "packages-dev": [
@@ -3106,7 +3156,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-06-02 07:51:32"
+            "time": "2017-06-02T07:51:32+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",

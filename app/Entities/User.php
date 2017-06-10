@@ -2,12 +2,15 @@
 
 namespace App\Entities;
 
+use App\Settings;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use LaravelPropertyBag\Settings\HasSettings;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasSettings;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'settings'
     ];
 
     /**
@@ -26,6 +29,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $cast =[
+        'settings' => 'json'
+    ];
+
 
     public function portfolios() {
 
@@ -42,4 +50,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
 }
