@@ -64,7 +64,10 @@ class UpdateMetadata extends Command
             do {
                 $i++;
                 $items = $meta->getItems($this->chunkSize);
-                dispatch(new UpdateQuandlMetadata($meta, $items));
+
+                $job = (new UpdateQuandlMetadata($meta, $items))->onQueue('quandl');
+                dispatch($job);
+
             } while( $items != [] and $i < $max);
         }
 

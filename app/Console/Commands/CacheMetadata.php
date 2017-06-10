@@ -50,7 +50,8 @@ class CacheMetadata extends Command
             $datasources = Provider::whereCode('Quandl')->first()->datasources;
             foreach ($datasources->chunk($this->chunkSize) as $chunk)
             {
-                dispatch(new CacheQuandlMetadata($chunk, $relax));
+                $job = (new CacheQuandlMetadata($chunk, $relax))->onQueue('quandl');
+                dispatch($job);
             }
         }
 
