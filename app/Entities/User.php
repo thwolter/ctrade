@@ -2,15 +2,13 @@
 
 namespace App\Entities;
 
-use App\Settings;
+use App\Settings\UserSettings;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use LaravelPropertyBag\Settings\HasSettings;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    use HasSettings;
 
     /**
      * The attributes that are mass assignable.
@@ -51,4 +49,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+
+    public function settings($key = null)
+    {
+        $settings = new UserSettings($this);
+
+        return $key ? $settings->get($key) : $settings;
+    }
 }

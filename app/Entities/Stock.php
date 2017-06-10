@@ -49,6 +49,7 @@ class Stock extends Instrument
         return [
             'name' => $this->name,
             'sector' => ($this->sector) ? $this->sector->name : '',
+            'industry' => ($this->industry) ? $this->industry->name : '',
             'isin' => $this->isin,
             'wkn' => $this->wkn,
             'currency' => $this->currencyCode(),

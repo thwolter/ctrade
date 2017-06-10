@@ -38,8 +38,7 @@ class UpdateQuandlMetadata implements ShouldQueue
      */
     public function handle()
     {
-        $updated = $stored = 0;
-        
+
         foreach ($this->items as $item) {
                 
             if ($this->meta->hasDatasource($item)) 

@@ -35,7 +35,8 @@ $factory->define(App\Entities\Portfolio::class, function(Faker\Generator $faker)
         },
         'name' => $faker->sentence,
         'currency_id' => $currency->id,
-        'cash' => 100 * $faker->randomDigitNotNull
+        'cash' => 100 * $faker->randomDigitNotNull,
+        'settings' => ['foo' => 'bar']
     ];
 });
 

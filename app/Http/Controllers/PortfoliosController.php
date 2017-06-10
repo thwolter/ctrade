@@ -107,10 +107,8 @@ class PortfoliosController extends Controller
         if ( $request->delete == 'yes')
             return view('portfolios.delete', compact('id'));
 
-        Portfolio::whereId($id)->first()->settings([
-            'confidence_level' => $request->confidence,
-            'horizon' => (int)$request->horizon
-        ]);
+        Portfolio::whereId($id)->first()->settings()->merge($request->all());
+
 
         //Portfolio::whereId($id)->first()->settings()->merge(Request::all());
 

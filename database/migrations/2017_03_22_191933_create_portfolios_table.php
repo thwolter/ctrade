@@ -22,6 +22,7 @@ class CreatePortfoliosTable extends Migration
             $table->integer('category_id')->nullable();
             $table->float('cash');
             $table->integer('currency_id');
+            $table->json('settings')->nullable();
             $table->boolean('public')->default(false);
             $table->timestamps();
         });
