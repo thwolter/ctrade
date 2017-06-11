@@ -21,7 +21,7 @@
 
             <!-- main section -->
             <div class="col-lg-9 offset-lg-1 col-md-8 offset-md-1 col-sm-8">
-                <div class="panel portfolio-panel">
+                <div class="portfolio-panel">
 
                     <!-- title -->
                     <div class="container panel-title">
