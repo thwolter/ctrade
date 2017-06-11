@@ -129,7 +129,7 @@ class PositionsController extends Controller
     public function new(Request $request, $id)
     {
         $item = resolve($request->itemType)::find($request->itemId);
-        $portfolio = Portfolio::find($id)->first();
+        $portfolio = Portfolio::find($id);
 
         $position = $portfolio->positions()
             ->where('positionable_id', $request->itemId)

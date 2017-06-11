@@ -18,7 +18,6 @@
         {!! Form::hidden('itemId', $item->id) !!}
         {!! Form::hidden('itemType', get_class($item)) !!}
 
-
         @include('partials.errors')
 
         <!-- text field for number of shares -->
