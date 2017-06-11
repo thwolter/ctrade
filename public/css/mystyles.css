@@ -3,6 +3,17 @@
     word-spacing: 5px;
 }
 
+.buy-sell-group {
+    text-align: center;
+    word-spacing: 5px;
+}
+
+.buy-sell-icon {
+    font-size: 1.4em;
+    word-spacing: 5px;
+    text-align: center;
+}
+
 
 /********************************************************
 /* landing-page

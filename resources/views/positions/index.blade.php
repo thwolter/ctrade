@@ -47,8 +47,8 @@
                 <tr>
                     <th>Nr</th>
                     <th>Aktien</th>
-                    <th class="pull-right">Stück</th>
-                    <th class="pull-right">Gesamt</th>
+                    <th class="text-right">Stück</th>
+                    <th class="text-right">Gesamt</th>
                     <th></th>
                 </tr>
             </thead>
@@ -67,8 +67,8 @@
                                 ({{ $position->present()->priceDate() }})
                             </span>
                         </td>
-                        <td class="align-middle pull-right">{{ $position->amount() }}</td>
-                        <td class="align-middle pull-right">
+                        <td class="align-middle text-right">{{ $position->amount() }}</td>
+                        <td class="align-middle text-right">
                             {{ $position->present()->total() }}
                             @if ($position->currencyCode() != $portfolio->currencyCode())
                                 <span>{{ $position->present()->total($portfolio->currencyCode()) }}</span>
@@ -76,8 +76,14 @@
                         </td>
 
                         <td class="align-middle">
-                            <p style="margin-bottom: 0px"><a href="{{ route('positions.buy', ['id' => $position->id]) }}">Zukaufen</a></p>
-                            <p style="margin-bottom: 0px"><a href="{{ route('positions.sell', ['id' => $position->id]) }}">Verkaufen</a></p>
+                            <div class="buy-sell-group">
+                                <a href="{{ route('positions.buy', ['id' => $position->id]) }}">
+                                    <i class="fa fa-plus-square-o buy-sell-icon" aria-hidden="true"></i>
+                                </a>
+                                <a href="{{ route('positions.sell', ['id' => $position->id]) }}">
+                                    <i class="fa fa-minus-square-o buy-sell-icon" aria-hidden="true"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
