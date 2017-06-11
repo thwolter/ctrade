@@ -189,7 +189,8 @@ return [
         Clockwork\Support\Laravel\ClockworkServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         \Laravel\Scout\ScoutServiceProvider::class,
-        LaravelPropertyBag\ServiceProvider::class
+        LaravelPropertyBag\ServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 
     ],
 
@@ -250,6 +251,7 @@ return [
         'Countries'=> PragmaRX\Countries\Facade::class,
         'Lava' => Khill\Lavacharts\Laravel\LavachartsFacade::class,
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
+        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
 
 
     ],

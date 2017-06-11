@@ -22,6 +22,8 @@
         "pragmarx/countries": "^0.1.0",
         "predis/predis": "^1.1",
         "scheb/yahoo-finance-api": "^1.4",
+        "sentry/sentry": "^1.7",
+        "sentry/sentry-laravel": "^0.7.0",
         "zachleigh/laravel-property-bag": "^1.1"
     },
     "require-dev": {
