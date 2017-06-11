@@ -53,12 +53,8 @@ class PositionsController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $this->validate($request, [
-            'amount' => 'min:0'
-        ]);
-
-        $amount = $request->get('amount');
-        $instrument = resolve($request->get('type'))->find($request->get('itemId'));
+        $amount = $request->amount;
+        $instrument = resolve($request->itemType)->find($request->itemId);
 
         $position = Portfolio::find($id)->makePosition($instrument);
         $portfolio = Portfolio::buy($position->id, $amount);
@@ -84,16 +80,6 @@ class PositionsController extends Controller
         return view('positions.show', compact('portfolio', 'position'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -104,11 +90,7 @@ class PositionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this -> validate(request(), [
-            'amount' => 'min:0'
-        ]);
-
-        $amount = $request->get('amount');
+        $amount = $request->amount;
         $position = Position::find($id);
 
         if ($request->get('direction') == 'buy') {
@@ -140,6 +122,25 @@ class PositionsController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function new(Request $request, $id)
+    {
+        $item = resolve($request->itemType)::find($request->itemId);
+        $portfolio = Portfolio::find($id)->first();
+
+        $position = $portfolio->positions()
+            ->where('positionable_id', $request->itemId)
+            ->where('positionable_type', $request->itemType)
+            ->get();
+
+        return count($position)
+            ? redirect(route('positions.buy', $position->id))
+            : view('positions.new', compact('portfolio', 'item', 'position'));
+    }
+
     public function buy($id)
     {
         $position = Position::find($id);
@@ -148,7 +149,6 @@ class PositionsController extends Controller
         return view('positions.buy', compact('position', 'portfolio'));
     }
 
-
     public function sell($id)
     {
         $position = Position::find($id);
@@ -156,7 +156,5 @@ class PositionsController extends Controller
 
         return view('positions.sell', compact('position', 'portfolio'));
     }
-
-
 
 }

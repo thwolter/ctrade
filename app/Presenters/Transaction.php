@@ -27,7 +27,7 @@ class Transaction extends Presenter
 
     public function type()
     {
-        return $this->entity->transactionType->name;
+        return $this->entity->type->name;
     }
 
     public function name()

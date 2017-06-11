@@ -12,13 +12,14 @@
             <h4>Aktien kaufen</h4>
             <div class="space-40"></div>
 
-        {!! Form::open(['route' => ['positions.update', $position->id],
+        {!! Form::open(['route' => ['positions.update', $portfolio->id, $position->id],
             'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
             {!! Form::hidden('direction', 'buy') !!}
+            {!! Form::hidden('itemId', $item->id) !!}
+            {!! Form::hidden('itemType', get_class($item)) !!}
 
             @include('positions.partials.transaction')
-            @include('partials.charging')
 
             <!-- Button (Double) -->
             <div class="space-70"></div>

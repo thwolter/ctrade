@@ -4,15 +4,7 @@
 
     <div class="container">
         @if (count($portfolio->transactions)== 0)
-            <div class="container boxed-container">
-                <p style="text-align: center">Noch keine Transaktionen vorhanden.</p>
-
-                {!! Form::open(['route' => ['transactions.create', $portfolio->id], 'method' => 'Get']) !!}
-                    <div style="text-align: center">
-                        {!! Form::submit('Neue Transaktion', ['class' => 'btn theme-btn-color']) !!}
-                    </div>
-                {!! Form::close() !!}
-            </div>
+            @include('positions.partials.empty')
         @endif
 
         @if (count($portfolio->transactions) > 0)
@@ -39,7 +31,7 @@
                             <td class="align-middle">{{ $transaction->present()->date }}</td>
                             <td class="align-middle">{{ $transaction->present()->type }}</td>
                             <td class="align-middle">
-                                <h5><a href="{{ route('transactions.show', ['id' => $transaction->id]) }}">
+                                <h5><a href="{{ route('transactions.show', [$portfolio->id, 'id' => $transaction->id]) }}">
                                         {{ $transaction->present()->name}}</a></h5>
                                 <span>
                                     {{ $instrument->typeDisp}} | {{ $instrument->wkn }}

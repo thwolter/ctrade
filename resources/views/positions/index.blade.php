@@ -4,17 +4,7 @@
 
 
     @if (count($portfolio->positions) == 0)
-        <div class="input-form">
-            <p class="lead text-center">Dieses Portfolio enhält noch keine Positionen.</p>
-            <!-- Form with method Post -->
-            {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'Get']) !!}
-            <div class="text-center buttons-row">
-                {!! Form::submit('Neue Position', ['class' => 'btn theme-btn-color']) !!}
-            </div>
-            {!! Form::close() !!}
-        </div>
-        <div class="space-70"></div>
-
+        @include('positions.partials.empty')
     @else
 
         <h3>Zusammenfassung</h3>

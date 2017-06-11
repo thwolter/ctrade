@@ -51,7 +51,7 @@ class UpdateQuandlSSE extends Command
 
         $meta = resolve($this->repository);
         $i = 0;
-            
+
         do {
             $i++;
             $items = $meta->getItems($this->chunkSize);

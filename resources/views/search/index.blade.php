@@ -27,7 +27,7 @@
             <div class="form-group row">
                 {!! Form::label('search', 'Suchen:', ['class' => 'col-md-2 col-form-label']) !!}
                 <div class="col-md-10">
-                    {!! Form::text('search', $search, ['placeholder' => 'Search ...', 'class' => 'form-control']) !!}
+                    {!! Form::text('search', $search, ['placeholder' => 'Name, WKN, ISIN, ...', 'class' => 'form-control']) !!}
                     <span class="help-block">
                         Suche nach Namen oder Branche
                     </span>
@@ -82,7 +82,7 @@
                              <td class="align-middle">{{ $item->currencyCode() }}</td>
                              <td class="align-middle">
                                  <span style="display:block">
-                                     <a href="{{ route('search.show', [$portfolio->id, get_class($item), $item->id]) }}">
+                                     <a href="{{ route('search.show', [$portfolio->id, 'type' => $type, 'id' => $item->id]) }}">
                                          {{ $item['name'] }}</a>
                                  </span>
                                  <span>{{ $sector }}</span>

@@ -37,6 +37,7 @@ class SearchController extends Controller
         $portfolio = Portfolio::findOrFail($id);
         $types = $this->types;
         $search = $request->search;
+        $type = $request->type;
 
         if (array_key_exists($request->type, $this->types)) {
 
@@ -45,7 +46,7 @@ class SearchController extends Controller
         }
 
         return view ('search.index',
-            compact('portfolio', 'suggest', 'types', 'search'));
+            compact('portfolio', 'suggest', 'types', 'type', 'search'));
     }
 
     
@@ -53,14 +54,14 @@ class SearchController extends Controller
      * Display the specified resource.
      *
      * @param int $id of the portfolio
-     * @param string $type item's class name
-     * @param int $itemId the item's id
+     * @param Request $request
+     * @param int $id the portfolio's id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, $type, $itemId)
+    public function show(Request $request, $id)
     {
         $portfolio = Portfolio::find($id);
-        $item = resolve($type)->find($itemId);
+        $item = resolve($this->typesMap[$request->type])->find($request->id);
 
         return view('search.show', compact('portfolio', 'item'));
     }

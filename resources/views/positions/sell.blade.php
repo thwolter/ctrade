@@ -12,7 +12,7 @@
             <h4>Aktien verkaufen</h4>
             <div class="space-40"></div>
 
-        {!! Form::open(['route' => ['positions.update', $position->id],
+        {!! Form::open(['route' => ['positions.update', $portfolio->id, $position->id],
             'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
         {!! Form::hidden('direction', 'sell') !!}
