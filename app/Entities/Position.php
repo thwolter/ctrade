@@ -119,9 +119,9 @@ class Position extends Model implements PresentableInterface
         ];
     }
 
-    public function history($parameter = ['limit' => 250])
+    public function history()
     {
-        return $this->positionable->history($parameter);
+        return $this->positionable->history();
     }
 }
 

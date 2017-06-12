@@ -31,9 +31,9 @@ class CcyPair extends Model
     }
 
 
-    public function history($parameter = ['limit' => 250])
+    public function history()
     {
-        return $this->financial()->history($parameter);
+        return $this->financial()->history();
     }
 
 

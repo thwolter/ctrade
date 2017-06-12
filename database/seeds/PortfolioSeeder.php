@@ -126,7 +126,7 @@ class PortfolioSeeder extends Seeder
         foreach ($stocks as $stock)
         {
             try {
-                $id = Datasource::withDataset($stock[0])->first()->id;
+                $id = Datasource::withDatasetOrFail($stock[0])->first()->id;
             } catch (\Exception $e) {
                 echo "-- {$e->getMessage()}\n";
                 Log::error('PortfolioSeeder could not assign stock: '.$e->getMessage());

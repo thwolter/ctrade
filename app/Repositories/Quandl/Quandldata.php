@@ -35,7 +35,7 @@ class Quandldata
             $parameter['limit'] = $this->limit;
         
         $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
-        $this->source = Datasource::withDataset($code);
+        $this->source = Datasource::withDatasetOfFail($code);
         
         $this->history = $this->fetchCachedHistory($parameter);
     }

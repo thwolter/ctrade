@@ -13,34 +13,7 @@ use MathPHP\Statistics\Circular;
 
 class QuantModel
 {
-    static public function ValueAtRisk_old($history)
-    {
-        $x = $history;
-        $price = array_first($x);
-
-        $count = count($x) - 1;
-        $keys = array_keys($x);
-        
-        $return = [];
-        for ($i = 0; $i < $count; $i++) {
-            $return[] = $x[$keys[$i]] / $x[$keys[$i+1]] - 1;
-        }
-
-        $VaR = 1.64 * Circular::standardDeviation($return) * $price;
-        $mean = Average::mean($return);
-
-        $result = [
-            'VaR' => $VaR,
-            'mean' => $mean,
-            'expect' => $price * (1 + $mean),
-            'range' => [$price - $VaR, $price + $VaR],
-            'price' => $price
-        ];
-
-        return $result;
-    }
-
-
+    
     static public function ValueAtRisk($history, $conf = 1.64)
     {
         $quant = new self();
