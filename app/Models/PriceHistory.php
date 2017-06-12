@@ -32,7 +32,7 @@ class PriceHistory
     
     public function price()
     {
-        return head($this->data);
+        return [key($this->data) => head($this->data)];
     }
     
     public function priceDate()

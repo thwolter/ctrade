@@ -146,7 +146,7 @@ class QuantModel
         if (is_null($ccy))
             throw new QuantModelException("No datasource defined for currency pair {$base}{$currency}. Call 'QuandlECB::sync()' could be called");
 
-        return Quandldata::getHistory($ccy->symbol(), $parameter);
+        return (new Quandldata($ccy->symbol(), $parameter))->history();
     }
 
 

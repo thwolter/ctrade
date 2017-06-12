@@ -35,7 +35,7 @@ class PriceHistoryTest extends TestCase
     {
          $data = new PriceHistory($this->data, 4);
          
-         $this->assertEquals(56.95, $data->price());
+         $this->assertEquals(['2017-06-09' => 56.95], $data->price());
     }
     
     /** @test */
