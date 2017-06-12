@@ -25,9 +25,11 @@ class Quandldata
 
     /**
      * Quandldata constructor.
+     *
      * @param string $code of a dataset
+     * @param array $parameter
      */
-    public function __construct(String $code, $paramter = ['limit' => 250])
+    public function __construct(String $code, $parameter = ['limit' => 250])
     {
         if (!array_has($parameter, 'limit')) 
             $parameter['limit'] = $this->limit;
@@ -65,7 +67,7 @@ class Quandldata
     
 
     
-    private function fetchCachedHistory($paramter)
+    private function fetchCachedHistory($parameter)
     {
         $key = "Quandl/{$this->quandlCode()}";
         
