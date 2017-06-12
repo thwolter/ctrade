@@ -9,6 +9,7 @@ use App\Models\Exceptions\RscriptException;
 use App\Models\QuantModel;
 use Illuminate\Support\Facades\Storage;
 use Khill\Lavacharts\Lavacharts;
+use App\Repositories\CurrencyRepository;
 
 
 
@@ -89,8 +90,8 @@ class Portfolio extends Rscripter
 
         if (! file_exists($filename)) {
 
-            $history = QuantModel::ccyHistory($origin, $target);
-
+            $history = (new CurrencyRepository($origin, $base))->history();
+           
             if (!$this->validPriceArray($history))
                 throw new RscriptException("File '{$filename}' could not be saved; incorrect format of data array.");
 

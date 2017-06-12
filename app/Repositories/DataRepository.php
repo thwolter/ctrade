@@ -4,23 +4,35 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
-use App\Entities\CcyPair;
-use App\Entities\Dataset;
-use App\Entities\Datasource;
 use App\Repositories\Exceptions\MetadataException;
 use App\Repositories\Quandl\Quandldata;
-use MathPHP\Statistics\Average;
-use MathPHP\Statistics\Circular;
+
 
 class DataRepository
 {
 
     protected $provider;
     
+    protected $paramter = [
+        'limit' => 250
+    ];
+    
 
     public function __construct(Collection $sources)
     {
         $this->provider = $this->dataProvider($sources);
+    }
+
+
+    public function price()
+    {
+        return $this->provider->price();
+    }
+
+
+    public function history()
+    {
+        return $this->provider->history();
     }
 
 
@@ -31,27 +43,13 @@ class DataRepository
 
         switch ($code) {
             case 'Quandl':
-                return new Quandldata($source->dataset->code);
+                return new Quandldata($source->dataset->code, $this->paramter);
                 break;
-            case 'others';
+            case 'others':
                 // define other data providers
                 // break;
             default:
                 throw new MetadataException("No financial available for provider code '{$code}''");
         }
     }
-
-
-    public function price()
-    {
-        return $this->provider->price();
-    }
-
-
-    public function history($parameter = ['limit' => 250])
-    {
-        return $this->provider->history($parameter);
-    }
-
-
 }

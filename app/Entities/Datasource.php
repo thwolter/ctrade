@@ -82,6 +82,14 @@ class Datasource extends Model
     {
         $set = Dataset::whereCode($dataset)->first();
     
+        return (count($set)) ? self::where('dataset_id', $set->id)->get() : null;
+    }
+    
+    
+    static public function withDatasetOrFail($dataset)
+    {
+        $set = Dataset::whereCode($dataset)->first();
+    
         if (!count($set))
             throw new DatasourceException("No dataset available for '{$dataset}'");
             

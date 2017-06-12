@@ -2,103 +2,147 @@
 
 @section('container-content')
 
-    <!-- Form with method PUT -->
-    {!! Form::open(['route' => ['portfolios.update', $portfolio->id], 'method' => 'PUT']) !!}
 
-        @include('partials.errors')
+    @include('partials.errors')
 
-        <!-- name form input -->
-        <div class="form-group row">
-            {!! Form::label('name', 'Name', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                {!! Form::text('name', $portfolio->name, ['class' => 'form-control input-md']) !!}
-                <span class="help-block">Den Portfolionamen kannst du jederzeit ändern</span>
-            </div>
-        </div>
+    <!-- main settings -->
+    <div class="row">
+        <div class="container">
 
-        <!-- currency form input -->
-        <div class="form-group row">
-            {!! Form::label('currency', 'Währung', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                <div class="form-control-static">{{ $portfolio->currencyCode() }}</div>
-                <span class="help-block">Die Währung kann nachträglich nicht geändert werden</span>
-            </div>
-        </div><hr>
+            <!-- portfolio general -->
+            <div class="setup-panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Einstellungen</h4>
+                </div>
+                <div class="panel-body">
 
-        <!-- confidence level form input -->
-        <div class="form-group row">
-            {!! Form::label('confidence', 'Sicherheit', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                {!! Form::text('confidence', $portfolio->settings('confidence_level'), ['class' => 'form-control input-md']) !!}
-                <span class="help-block">Konfidencelevel</span>
-            </div>
-        </div>
+                    <!-- Form with method PUT -->
+                    {!! Form::open(['route' => ['portfolios.update', $portfolio->id], 'method' => 'PUT']) !!}
 
-        <!-- period form input -->
-        <div class="form-group row">
-            {!! Form::label('horizon', 'Periode', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                {!! Form::text('horizon', $portfolio->settings('horizon'), ['class' => 'form-control input-md']) !!}
-                <span class="help-block">Zeiteinheit</span>
-            </div>
-        </div><hr>
+                        <!-- general-->
+                        <div>
+                                <div class="sub-heading">
+                                    <h4 class="sub-title">Allgemein</h4>
+                                </div>
 
-        <!-- mailing form input -->
-        <div class="form-group row">
-            {!! Form::label('mailing', 'Email', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                {!! Form::text('mailing', $portfolio->mailing, ['class' => 'form-control input-md']) !!}
-                <span class="help-block">Häufigkeit für Mailversand</span>
-            </div>
-        </div>
+                                <!-- name form input -->
+                                <div class="form-group row">
+                                    {!! Form::label('name', 'Name', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
+                                    <div class="col-md-8">
+                                        {!! Form::text('name', $portfolio->name, ['class' => 'form-control input-md']) !!}
+                                        <span class="help-block">Den Portfolionamen kannst du jederzeit ändern</span>
+                                    </div>
+                                </div>
 
-        <!-- threshold form input -->
-        <div class="form-group row">
-            {!! Form::label('threshold', 'Threshold', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                {!! Form::text('threshold', $portfolio->threshold, ['class' => 'form-control input-md']) !!}
-                <span class="help-block">Grenze, ab der Mail geschickt wird</span>
-            </div>
-        </div><hr>
+                                <!-- currency form input -->
+                                <div class="form-group row">
+                                    {!! Form::label('currency', 'Währung', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
+                                    <div class="col-md-8">
+                                        <div class="form-control">{{ $portfolio->currencyCode() }}</div>
+                                        <span class="help-block">Die Währung kann nachträglich nicht geändert werden</span>
+                                    </div>
+                                </div>
+                            </div> <!-- /general-->
 
-        <!-- limit form input -->
-        <div class="form-group row">
-            {!! Form::label('limit', 'Limit', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                {!! Form::text('limit', $portfolio->limit, ['class' => 'form-control input-md']) !!}
-                <span class="help-block">Verlustlimit</span>
-            </div>
-        </div>
+                        <!-- risk parameter-->
+                        <div>
+                                <div class="sub-heading">
+                                    <h4 class="sub-title">Risiko Parameter</h4>
+                                </div>
 
-        <!-- limit_abs form input -->
-        <div class="form-group row">
-            <div class="col-md-8 offset-md-4">
-                {!! Form::checkbox('limit_abs', 'yes', $portfolio->limit_abs, ['class' => '']) !!}
-                 Absolutes Limit
-                <span class="help-block">Verlustlimit</span>
-            </div>
-        </div><hr>
+                                <div class="space-10"></div>
 
-        <!-- delete portfolio -->
-        <div class="form-group row">
-            {!! Form::label('delete', 'Löschen', ['class' => 'col-md-3 offset-md-1 col-form-label']) !!}
-            <div class="col-md-8">
-                <div class="form-control-static">
-                    {!! Form::checkbox('delete', 'yes', false) !!}
-                    unwiderruflich löschen?
-                    <p class="help-block">Achtung: kann nicht rückgängig gemacht werden</p>
+                                <div class="form-group row">
+                                    {!! Form::label('confidence', 'Sicherheit', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
+                                    <div class="col-md-8">
+                                        @php($level = $portfolio->settings('levelConfidence'))
+                                        <div>{!! Form::radio('levelConfidence', 1, ($level == 1),
+                                        ['class' => '']) !!} hohe Sicherheit</div>
+                                        <div>{!! Form::radio('levelConfidence', 2, ($level == 2),
+                                        ['class' => '']) !!} ausgewogenes Sicherheitsnivau</div>
+                                        <div>{!! Form::radio('levelConfidence', 3, ($level == 3),
+                                        ['class' => '']) !!} risikofreudig</div>
+                                        <span class="help-block">Das Sicherheitsniveau ...</span>
+                                    </div>
+                                </div>
+
+                                <!-- period form input -->
+                                <div class="form-group row">
+                                {!! Form::label('horizon', 'Periode', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
+                                <div class="col-md-8">
+                                    {!! Form::text('horizon', $portfolio->settings('horizon'), ['class' => 'form-control input-md']) !!}
+                                    <span class="help-block">Zeiteinheit</span>
+                                </div>
+                            </div>
+                            </div><!-- /risk parameter-->
+
+                        <!-- email-->
+                        <div>
+                                <div class="sub-heading">
+                                    <h4 class="sub-title">Email</h4>
+                                </div>
+
+                                <!-- mailing form input -->
+                                <div class="form-group row">
+                                    {!! Form::label('mailing', 'Email', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
+                                    <div class="col-md-8">
+                                        {!! Form::text('mailing', $portfolio->mailing, ['class' => 'form-control input-md']) !!}
+                                        <span class="help-block">Häufigkeit für Mailversand</span>
+                                    </div>
+                                </div>
+
+                                <!-- threshold form input -->
+                                <div class="form-group row">
+                                    {!! Form::label('threshold', 'Threshold', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
+                                    <div class="col-md-8">
+                                        {!! Form::text('threshold', $portfolio->threshold, ['class' => 'form-control input-md']) !!}
+                                        <span class="help-block">Grenze, ab der Mail geschickt wird</span>
+                                    </div>
+                                </div>
+                            </div><!-- /email-->
+
+                        <!-- submit button -->
+                        <div class="space-40"></div>
+                        <div class="offset-md-1">
+                            {!! Form::submit('Änderungen speichern', ['class' => 'btn theme-btn-color-outline']) !!}
+                        </div>
+                        <div class="space-20"></div>
+
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
+    </div><!-- main settings -->
 
-        <!-- submit button -->
-        <div class="text-right">
-            <button href="{{ URL::previous() }}" class="btn btn-secondary">Abbrechen</button>
-            {!! Form::submit('Speichern', ['class' => 'btn theme-btn-color']) !!}
+    <!-- delete section -->
+    <div class="row">
+        <div class="container">
+            <!-- delete -->
+            <div class="setup-panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Portfolio löschen</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="offset-md-1 remark">
+                            Mit dem Portfolio werden alle dazugehörigen Transaktionen und Positionen gelöscht!
+                        </div>
+
+                        <div class="space-10"></div>
+
+                        <div class="offset-md-1">
+                            {!! Form::open(['route' => ['portfolios.destroy', $portfolio->id], 'method' => 'DELETE']) !!}
+                                {!! Form::submit('Portfolio löschen', ['class' => 'btn btn-danger']) !!}
+                            {!! Form::close() !!}
+                        </div>
+                        <div class="space-20"></div>
+
+
+                    </div>
+                </div><!-- /delete -->
         </div>
+    </div> <!-- /delete section -->
 
-    {!! Form::close() !!}
-
+    <!-- image section -->
     <div class="space-40"></div>
     <h4>Portfolio Bild</h4>
     <div class="space-10"></div>

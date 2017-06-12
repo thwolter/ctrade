@@ -13,7 +13,7 @@ use App\Repositories\Exceptions\MetadataException;
 class QuandlECB extends QuandlMetadata
 {
 
-    protected $database = 'ECB';
+    public $database = 'ECB';
     protected $origin = 'EUR';
     protected $baseCcy = ['USD', 'CHF'];
 

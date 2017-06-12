@@ -109,21 +109,6 @@ class PortfoliosController extends Controller
 
         Portfolio::whereId($id)->first()->settings()->merge($request->all());
 
-
-        //Portfolio::whereId($id)->first()->settings()->merge(Request::all());
-
-        /*
-        Portfolio::whereId($id)->update([
-            'name' => $request->name,
-            'confidence' => $request->confidence,
-            'period' => $request->period,
-            'mailing' => $request->mailing,
-            'threshold' => $request->threshold,
-            'limit' => $request->limit,
-            'limit_abs' => $request->limit_abs == 'yes' ? true : false
-        ]);
-        */
-
         return redirect(route('portfolios.show', $id));
     }
 
@@ -137,7 +122,7 @@ class PortfoliosController extends Controller
     {
         $portfolio = Portfolio::whereId($id);
 
-        $portfolio->deleteImage();
+        //$portfolio->deleteImage();
         $portfolio->delete($id);
 
 
@@ -158,9 +143,6 @@ class PortfoliosController extends Controller
 
         else
             $portfolio->updateImage($file);
-
-
-
 
     }
 

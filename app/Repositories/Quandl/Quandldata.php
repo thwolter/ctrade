@@ -7,6 +7,7 @@ use App\Entities\Dataset;
 use App\Models\Exceptions\QuandlException;
 use App\Entities\Datasource;
 use Carbon\Carbon;
+use App\Models\PriceHistory;
 
 class Quandldata
 {
@@ -15,70 +16,90 @@ class Quandldata
 
     protected $client;
     protected $source;
-    protected $code;
+   
+    protected $history;
     
     protected $relax = true;
+    protected $limit = 250;
 
 
     /**
      * Quandldata constructor.
+     *
      * @param string $code of a dataset
+     * @param array $parameter
      */
-    public function __construct(String $code)
+    public function __construct(String $code, $parameter = ['limit' => 250])
     {
-        $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
-        $this->source = $this->getDatasource($code);
+        if (!array_has($parameter, 'limit')) 
+            $parameter['limit'] = $this->limit;
         
-        $this->code = $code;
+        $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
+        $this->source = Datasource::withDatasetOrFail($code);
+        
+        $this->history = $this->fetchCachedHistory($parameter);
     }
 
 
     public function price()
     {
-        $data = $this->history();
-        reset($data);
-        return [key($data) => reset($data)];
+        return $this->history->price();
     }
 
-    /**
-     * The price of an instrument with given dataset code
-     * @param string $code
-     * @return array
-     */
-    static public function getPrice($code)
+   
+    public function history()
     {
-        $quandl = new Quandldata($code);
-        return $quandl->price();
+        return $this->history->data();
     }
 
 
-    public function history($parameter = ['limit' => 250])
+    public function relax($relax)
     {
-        $key = 'Quandl_'.$this->code;
+        $this->relax = $relax;
+        return $this;
+    }
+    
+    
+    static public function refreshCache($code, $relax = true)
+    {
+        return (new self($code))->relax($relax)->history();
+    }
+    
+
+    
+    private function fetchCachedHistory($parameter)
+    {
+        $key = "Quandl/{$this->quandlCode()}";
         
-        if (\Cache::store('database')->has($key) and $this->relax)
-            return \Cache::store('database')->get($key);
+        if (\Cache::store('database')->has($key) and $this->relax) {
             
-        $data = $this->getArrayHistory($parameter);
+            $data = \Cache::store('database')->get($key);
             
-        $expiresAt = Carbon::now()->endOfDay();
-        \Cache::store('database')->put($key, $data, $expiresAt);
+        } else { 
+        
+            $data = $this->fetchHistory($parameter);
             
+            $expiresAt = Carbon::now()->endOfDay();
+            \Cache::store('database')->put($key, $data, $expiresAt);
+        }
+        
         return $data;
-
     }
 
 
-    /**
-     * The history of an instrument with given dataset code
-     * @param string $code
-     * @param array $parameter
-     * @return array
-     */
-    static public function getHistory($code, $parameter = ['limit' => 250])
+    private function fetchHistory($parameter)
     {
-        $quandl = new Quandldata($code);
-        return $quandl->history($parameter);
+        $json = $this->client->getSymbol($this->quandlCode(), $parameter);
+
+        if (!is_null($this->client->error)) 
+            throw new QuandlException($this->client->error);
+        
+        $array = json_decode($json, true);
+
+        $prices = array_get($array, 'dataset.data');
+        $column = $this->priceColumn(array_get($array, 'dataset.column_names'));
+        
+        return new PriceHistory($prices, $column);
     }
 
 
@@ -87,40 +108,10 @@ class Quandldata
         $database_code = $this->source->first()->database->code;
         $dataset_code = $this->source->first()->dataset->code;
 
-        $quandlCode = "{$database_code}/{$dataset_code}";
-        return $quandlCode;
+        return "{$database_code}/{$dataset_code}";
     }
-
-
-    public function getJsonHistory($parameter = [])
-    {
-        $json = $this->client->getSymbol($this->quandlCode(), $parameter);
-
-        if (!is_null($this->client->error)) {
-            throw new QuandlException($this->client->error);
-        }
-        return $json;
-    }
-
-
-    public function getArrayHistory($parameter = [])
-    {
-        $data = json_decode($this->getJsonHistory($parameter), true);
-
-        $timeSeries = $data['dataset']['data'];
-        $columnNames = $data['dataset']['column_names'];
-        
-        $n = $this->priceColumn($columnNames);
-        $y = [];
-        foreach($timeSeries as $x)
-        {
-            $y[$x[0]] = $x[$n];
-        }
-
-        return $y;
-    }
-
-
+    
+    
     private function priceColumn($columnNames)
     {
         $i = 0;
@@ -131,25 +122,5 @@ class Quandldata
         }
 
         return ($column) ? $column : 1;
-    }
-
-
-    private function getDatasource($code)
-    {
-        return Datasource::withDataset($code);
-    }
-
-
-    static public function refreshCache($code, $relax = true)
-    {
-        $object = new self($code);
-        $object->relax($relax)->history();
-    }
-
-
-    public function relax($relax)
-    {
-        $this->relax = $relax;
-        return $this;
     }
 }

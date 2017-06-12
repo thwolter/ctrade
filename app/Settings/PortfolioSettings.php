@@ -7,7 +7,7 @@ namespace App\Settings;
 class PortfolioSettings extends Settings
 {
     protected $settings = [
-        'confidence_level' => 0.95,
+        'levelConfidence' => 2,
         'horizon' => 20
     ];
 }

@@ -5,6 +5,7 @@ namespace App\Entities;
 use App\Models\QuantModel;
 use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
+use App\Repositories\CurrencyRepository;
 use App\Repositories\Financable;
 use App\Entities\Portfolio;
 use App\Repositories\DataRepository;
@@ -95,8 +96,8 @@ class Position extends Model implements PresentableInterface
     public function convert($currencyCode = null) {
         
         if (is_null($currencyCode) or $this->currencyCode() == $currencyCode) return 1;
-        
-        return array_first(QuantModel::ccyPrice($this->currencyCode(), $currencyCode));
+
+        return array_first((new CurrencyRepository($this->currencyCode(), $currencyCode))->price());
     }
 
 
@@ -119,9 +120,9 @@ class Position extends Model implements PresentableInterface
         ];
     }
 
-    public function history($parameter = ['limit' => 250])
+    public function history()
     {
-        return $this->positionable->history($parameter);
+        return $this->positionable->history();
     }
 }
 
