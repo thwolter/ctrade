@@ -71,7 +71,7 @@
                         <td class="align-middle text-right">
                             {{ $position->present()->total() }}
                             @if ($position->currencyCode() != $portfolio->currencyCode())
-                                <span>{{ $position->present()->total($portfolio->currencyCode()) }}</span>
+                                <div>({{ $position->present()->total($portfolio->currencyCode()) }})</div>
                             @endif
                         </td>
 

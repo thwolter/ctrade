@@ -39,16 +39,16 @@ class DataRepository
     private function dataProvider($datasource)
     {
         $source = $datasource->first();
-        
+        $code = $source->provider->code;
+
         switch ($code) {
             case 'Quandl':
                 return new Quandldata($source->dataset->code, $this->paramter);
                 break;
-            case 'others';
+            case 'others':
                 // define other data providers
                 // break;
             default:
-                $code = $source->provider->code;
                 throw new MetadataException("No financial available for provider code '{$code}''");
         }
     }

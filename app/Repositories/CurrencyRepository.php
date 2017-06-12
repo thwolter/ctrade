@@ -3,9 +3,12 @@
 
 namespace App\Repositories;
 
+use App\Entities\Datasource;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Exceptions\MetadataException;
 use App\Repositories\Quandl\Quandldata;
+use MathPHP\Exception\BadDataException;
 use MathPHP\Functions\Map;
 
 
@@ -15,84 +18,115 @@ class CurrencyRepository
     protected $origin;
     protected $tarbet;
 
-    protected $primaryRepo;
-    protected $originRepo;
-    protected $targetRepo;
-   
-    protected $paramter = [
+    protected $parameter = [
         'limit' => 250
     ];
-    
+
     protected $baseCurrency = 'EUR';
-    
+
     
    
     public function __construct($origin, $target)
     {
         $this->origin = $origin;
         $this->target = $target;
-        
-        $this->setRepositories();
     }
 
 
     public function price()
     {
-        return isset($this->primaryRepo) ? $this->primaryRepo->price() : $this->calculatePrice();
+        $history = $this->getHistory();
+        return [key($history) => head($history)];
     }
 
 
     public function history()
     {
-        return isset($this->primaryRepo) ? $this->primaryRepo->history() : $this->calculateHistory();
+        return $this->getHistory();
     }
 
 
-   
-    private function setRepositories()
-    {
-        $source = Datasource::withDataset($this->origin.$this->target); 
-        
-        if (!is_null($datasource)) 
-            
-            $this->primaryRepo = new DataRepository($sources);
-        
-        else {
-            
-            $this->originRepo = new DataRepository(Datasource::withDataset($this->baseCurrency.$this->origin));
-            $this->targetRepo = new DataRepository(Datasource::withDataset($this->baseCurrency.$this->target));
-        }
-    }
-    
-   
-    private function calculateHistory()
+   private function cachedHistory()
+   {
+       $key = $this->origin.$this->target;
+
+       if (\Cache::store('database')->has($key)) {
+
+           $data = \Cache::store('database')->get($key);
+
+       } else {
+
+           $data = $this->getHistory();
+
+           $expiresAt = Carbon::now()->endOfDay();
+           \Cache::store('database')->put($key, $data, $expiresAt);
+       }
+
+       return $data;
+   }
+
+
+    private function getHistory()
     {
         if ($this->origin == $this->target):
             return array_pad([], $this->parameter['limit'], 1);
 
         elseif ($this->origin == $this->baseCurrency): 
-            return $this->originRepo->history();
+            return $this->direct()->history();
         
         elseif ($this->target == $this->baseCurrency): 
-            return $this->inverse($this->targetRepo->history());
+            return $this->inverse($this->oblique($this->origin)->history());
         
         else:
-            return $this->divide($this->targetRepo->history(), $this->originRepo->history());
+            return $this->divide(
+                $this->oblique($this->origin)->history(),
+                $this->oblique($this->target)->history()
+            );
         
         endif;
     }
 
-    
+
+    private function direct()
+    {
+        return new DataRepository(Datasource::withDataset($this->origin.$this->target));
+    }
+
+
+    private function oblique($currency)
+    {
+        return new DataRepository(Datasource::withDataset($this->baseCurrency.$currency));
+    }
+
+
     protected function inverse($x)
     {
-        return $this->divide($this->array_pad([], 1), $x);
+        return $this->divide(array_pad([], count($x), 1), $x);
     }
 
 
     public function divide($x, $y)
     {
-        $quotient = Map\Multi::divide($x, $y);
-        return array_combine(keys($y), $quotient);
+        $n = $this->checkLengths($x, $y);
+        $quotients = [];
+        $values_x = array_values($x);
+        $values_y = array_values($y);
+
+
+        for ($i = 0; $i < $n; $i++) {
+                $quotients[$i] = $values_x[$i] / $values_y[$i];
+        }
+        return array_combine(array_keys($y), $quotients);
+    }
+
+
+    public function checkLengths($x, $y)
+    {
+        $n = count($x);
+        if ($n != count($y))
+            throw new \Exception('Lengths of arrays are not equal');
+
+        return $n;
     }
 
 }
