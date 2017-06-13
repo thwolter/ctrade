@@ -15,7 +15,7 @@ class BulkUpdate implements ShouldQueue
     
     protected $repo;
     protected $chunk;
-    protected $queue;
+    protected $queueName;
     protected $limit;
 
 
@@ -33,7 +33,7 @@ class BulkUpdate implements ShouldQueue
     {
         $this->repo = $repo;
         $this->chunk = $chunk;
-        $this->queue = $queue;
+        $this->queueName = $queue;
         $this->limit = $limit;
     }
 
@@ -45,15 +45,16 @@ class BulkUpdate implements ShouldQueue
     public function handle()
     {
         $i = 0;
+        $chunk = resolve($this->repo)->getItems($this->chunk);
 
-        do {
-            $i++;
-            $chunk = resolve($this->repo)->getItems($this->chunk);
-
-            $job = (new UpdateChunk($this->repo, $chunk))->onQueue($this->queue);
+        while( $chunk != [] and $i < $this->limit )
+        {
+            $job = (new UpdateChunk($this->repo, $chunk))->onQueue($this->queueName);
             dispatch($job);
 
-        } while( $chunk != [] and $i < $limit );
+            $chunk = resolve($this->repo)->getItems($this->chunk);
+            $i++;
+        }
 
     }
 }

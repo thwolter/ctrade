@@ -24,8 +24,6 @@ abstract class QuandlMetadata
    
    
     abstract public function saveItem($item);
-    abstract public function updateItem($item);
-
 
     public function __construct()
     {
@@ -74,5 +72,11 @@ abstract class QuandlMetadata
     public function hasDatasource($item)
     {
         return Datasource::exist($this->provider, $this->database, $this->symbol($item));
+    }
+
+    public function updateItem($item)
+    {
+        Datasource::get($this->provider, $this->database, $this->symbol($item))
+            ->update(['valid' => true]);
     }
 }

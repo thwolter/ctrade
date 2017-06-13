@@ -75,6 +75,8 @@ class QuandlSSE extends QuandlMetadata
     
     public function updateItem($item)
     {
+        parent::updateItem($item);
+
         //Todo: check for security type, for now assume all are stocks
         //Todo: check whether stock should be updated based on wkn, isin, name
 

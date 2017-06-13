@@ -2,7 +2,6 @@
 
 namespace App\Jobs\Metadata;
 
-use App\Entities\Datasource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -10,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 
-class UpdateQuandlMetadata implements ShouldQueue
+class UpdateChunk implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -42,11 +41,11 @@ class UpdateQuandlMetadata implements ShouldQueue
         $repository = resolve($this->repository);
 
         foreach ($this->items as $item) {
-                
-            if ($repository->hasDatasource($item)) 
+
+            if ($repository->hasDatasource($item))
                 $repository->updateItem($item);
-                
-            else 
+
+            else
                 $repository->createItemWithSource($item);
         }
     }
