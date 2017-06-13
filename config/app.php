@@ -191,6 +191,7 @@ return [
         \Laravel\Scout\ScoutServiceProvider::class,
         LaravelPropertyBag\ServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
+        anlutro\LaravelSettings\ServiceProvider::class
 
     ],
 
@@ -252,6 +253,7 @@ return [
         'Lava' => Khill\Lavacharts\Laravel\LavachartsFacade::class,
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
+        'Setting' => anlutro\LaravelSettings\Facade::class,
 
 
     ],

@@ -2,12 +2,18 @@
 
 namespace App\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Entities\Exceptions\DatasourceException;
+use anlutro\LaravelSettings\Facade as Setting;
+
 
 
 class Datasource extends Model
 {
+    protected $fillable = [
+        'valid'
+    ];
 
     public function provider()
     {
@@ -26,17 +32,18 @@ class Datasource extends Model
         return $this->belongsTo(Dataset::class);
     }
     
-    
 
     public function stocks()
     {
         return $this->morphedByMany(Stock::class, 'sourcable')->withTimestamps();
     }
 
+
     public function ccyPairs()
     {
         return $this->morphedByMany(CcyPair::class, 'sourcable')->withTimestamps();
     }
+
 
     public function assign($instrument)
     {
@@ -62,19 +69,26 @@ class Datasource extends Model
         return $source;
     }
 
+
     static public function exist($provider, $database, $dataset)
     {
+        return is_null(self::get($provider, $database, $dataset)) ? false : true;
+    }
+
+
+    static public function get($provider, $database, $dataset)
+    {
         $datasetCol = Dataset::whereCode($dataset)->first();
-        
-        if (is_null($datasetCol)) 
-            return false;
-           
+
+        if (is_null($datasetCol))
+            return null;
+
         $source = self::where('dataset_id', $datasetCol->id)
             ->where('provider_id', Provider::whereCode($provider)->first()->id)
             ->where('database_id', Database::whereCode($database)->first()->id)
             ->first();
-            
-        return ! is_null($source);
+
+        return is_null($source) ? null : $source;
     }
     
     
@@ -94,5 +108,12 @@ class Datasource extends Model
             throw new DatasourceException("No dataset available for '{$dataset}'");
             
         return self::where('dataset_id', $set->id)->get();
+    }
+
+    public function isValid()
+    {
+        $updated = Setting::get($this->provider.$this->database.'updated');
+
+        return ($this->updated_at->lte(Carbon::parse($updated)) and $this->valid);
     }
 }

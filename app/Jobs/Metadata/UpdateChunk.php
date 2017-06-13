@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Metadata;
 
-use App\Entities\Datasource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -10,13 +9,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 
-class UpdateQuandlMetadata implements ShouldQueue
+class UpdateChunk implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
     protected $items;
-    protected $meta;
+    protected $repository;
 
 
 
@@ -25,10 +24,10 @@ class UpdateQuandlMetadata implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($meta, $items)
+    public function __construct($repository, $items)
     {
         $this->items = $items;
-        $this->meta = $meta;
+        $this->repository = $repository;
     }
 
     /**
@@ -39,13 +38,15 @@ class UpdateQuandlMetadata implements ShouldQueue
     public function handle()
     {
 
+        $repository = resolve($this->repository);
+
         foreach ($this->items as $item) {
-                
-            if ($this->meta->hasDatasource($item)) 
-                $this->meta->updateItem($item);
-                
-            else 
-                $this->meta->createItemWithSource($item);
+
+            if ($repository->hasDatasource($item))
+                $repository->updateItem($item);
+
+            else
+                $repository->createItemWithSource($item);
         }
     }
 }
