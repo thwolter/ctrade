@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
        Commands\DeleteTemp::class,
        Commands\CacheQuandlSSE::class,
-       Commands\UpdateQuandlSSE::class
+       Commands\UpdateMetadata::class
     ];
 
     /**
