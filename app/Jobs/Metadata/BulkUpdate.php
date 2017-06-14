@@ -28,6 +28,9 @@ class BulkUpdate implements ShouldQueue
     protected $created;
     protected $invalidated;
 
+    protected $repository;
+    protected $started_at;
+
 
     /**
      * Create a new job instance.
@@ -55,52 +58,53 @@ class BulkUpdate implements ShouldQueue
     public function handle()
     {
         $i = 0;
+
+        $this->repository = resolve($this->repo);
+        $chunk = $this->repository->getItems($this->chunk);
+
         $this->initCounters();
-
-        $repository = resolve($this->repo);
-        $chunk = $repository->getItems($this->chunk);
-
-        $started_at = Carbon::now();
-        event(new MetadataUpdateHasStarted($repository->provider, $repository->database));
+        $this->starting();
 
         while( ($chunk != []) and ($i < $this->limit) )
         {
-            $this->updateChunk($repository, $chunk);
+            $this->updateChunk($chunk);
 
-            $chunk = $repository->getItems($this->chunk);
+            $chunk = $this->repository->getItems($this->chunk);
             $i++;
         }
 
-        $this->invalidated = $this->invalidated + Datasource::where('updated_at','<', $started_at)->update(['valid' => false]);
-        
-        event(new MetadataUpdateHasFinished($repository->provider, $repository->database, $this->countersToArray()));
+        $this->invalidated = $this->invalidated + Datasource::where('updated_at','<', $this->started_at)->update(['valid' => false]);
+
+        event(new MetadataUpdateHasFinished($this->repository->provider, $this->repository->database, $this->countersToArray()));
         
     }
 
     /**
-     * @param $repository
      * @param $chunk
      */
-    private function updateChunk($repository, $chunk)
+    private function updateChunk($chunk)
     {
         foreach ($chunk as $item) {
 
-            if ($repository->hasDatasource($item)) {
+            if ($this->repository->hasDatasource($item)) {
                 
-                if ($repository->updateItem($item)) 
+                if ($this->repository->updateItem($item))
                     $this->updated++;
                 else
                     $this->invalidated++;
             }
             else {
                 
-                if ($repository->createItemWithSource($item))
+                if ($this->repository->createItemWithSource($item))
                     $this->created++;
             }
         }
     }
 
-    private function initCounters(): void
+    /**
+     * set counter to zero
+     */
+    private function initCounters()
     {
         $this->updated = 0;
         $this->created = 0;
@@ -108,14 +112,25 @@ class BulkUpdate implements ShouldQueue
     }
 
     /**
+     * get an key'd array of the counters
+     *
      * @return array
      */
-    private function countersToArray(): array
+    private function countersToArray()
     {
         return [
             'updated' => $this->updated,
             'created' => $this->created,
             'invalidated' => $this->invalidated
         ];
+    }
+
+    /**
+     * set start timestamp and fire an event
+     */
+    private function starting()
+    {
+        $this->started_at = Carbon::now();
+        event(new MetadataUpdateHasStarted($this->repository->provider, $this->repository->database));
     }
 }

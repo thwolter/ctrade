@@ -103,24 +103,16 @@ class QuandlSSE extends QuandlMetadata
         $raw_name = strtoupper($item['name']);
         $name = trim(explode('WKN', (explode('|', $raw_name)[0]))[0]);
 
-        if (!empty($name))
-            return title_case($name);
-        else 
-            $this->unableLog('name', $item);
+        return $this->check('name', $name, $item);
     }
 
     
     public function wkn($item)
     {
         $raw_name = strtoupper($item['name']);
-
-        //Todo: check errors
         $wkn = @trim(explode('WKN', (explode('|', $raw_name)[0]))[1]);
 
-        if (!empty($wkn))
-            return $wkn;
-        else
-            return $this->unableLog('WKN', $item);
+        return $this->check('wkn', $wkn, $item);
     }
 
     public function isin($item)
@@ -128,11 +120,9 @@ class QuandlSSE extends QuandlMetadata
         $raw_name = strtoupper($item['name']);
         $re = '/ISIN*\s*([A-Z0-9]+)/';
         $match = preg_match($re, $raw_name, $matches);
-        
-        if ($match) 
-            return $matches[1];
-        else 
-            return $this->unableLog('ISIN', $item);
+
+        if ($match) return $matches[1];
+        return $this->unableLog('ISIN', $item);
     }
 
     public function currency($item)
@@ -142,10 +132,8 @@ class QuandlSSE extends QuandlMetadata
 
         $match = preg_match($re, $desc, $matches);
         
-        if ($match)
-            return $matches[1];
-        else
-            return $this->unableLog('currency', $item);
+        if ($match) return $matches[1];
+        return $this->unableLog('currency', $item);
     }
 
 
@@ -161,11 +149,8 @@ class QuandlSSE extends QuandlMetadata
     public function sector($item)
     {
         $sector = title_case(trim(explode('-', $this->sectorAndIndustry($item))[0]));
-        
-        if (!empty($sector))
-            return $sector;
-        else 
-            return $this->unableLog('sector', $item);
+
+        return $this->check('sector', $sector, $item);
     }
 
 
@@ -173,10 +158,8 @@ class QuandlSSE extends QuandlMetadata
     {
         $split = explode(' - ', $this->sectorAndIndustry($item));
         
-        if (count($split) == 2) 
-            return title_case(trim($split[1]));
-        else
-            return $this->unableLog('industy', $item);
+        if (count($split) == 2) return title_case(trim($split[1]));
+        return $this->unableLog('industy', $item);
     }
 
 
@@ -209,6 +192,19 @@ class QuandlSSE extends QuandlMetadata
     {
         Log::notice("could not find {$param} for {$this->symbol($item)} -- {$this->description($item)}");
         
+        return null;
+    }
+
+    /**
+     * @param $name
+     * @param $item
+     * @return string
+     */
+    private function check($string, $value, $item): string
+    {
+        if (!empty($value)) return $value;
+
+        $this->unableLog($string, $item);
         return null;
     }
 
