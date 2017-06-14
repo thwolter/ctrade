@@ -17,7 +17,6 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\NotifyMetadataUpdatedHasStarted'
         ],
         'App\Events\MetadataUpdateHasFinished' => [
-            'App\Listeners\FindInvalideMetadata',
             'App\Listeners\NotifyMetadataUpdatedHasFinished'
         ]
     ];

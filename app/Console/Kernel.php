@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
        Commands\DeleteTemp::class,
        Commands\CacheQuandlSSE::class,
-       Commands\UpdateMetadata::class
+       Commands\UpdateMetadata::class,
+       Commands\TestMail::class
     ];
 
     /**
@@ -28,7 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(UpdateQuandlSSE::class)->dailyAt('23:00');
+        $schedule->command(UpdateMetadata::class)->dailyAt('23:00');
         $schedule->command(CacheQuandlSSE::class)->dailyAt('00:00');
         // $schedule->command('inspire')
         //          ->hourly();
