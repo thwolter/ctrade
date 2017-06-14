@@ -191,7 +191,8 @@ return [
         \Laravel\Scout\ScoutServiceProvider::class,
         LaravelPropertyBag\ServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
-        anlutro\LaravelSettings\ServiceProvider::class
+        anlutro\LaravelSettings\ServiceProvider::class,
+        TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
 
     ],
 

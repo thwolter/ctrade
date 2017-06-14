@@ -23,6 +23,9 @@ class Stock extends Instrument
     protected $presenter = \App\Presenters\Stock::class;
     
     public $typeDisp = 'Aktie';
+    
+    public $asYouType = true;
+    
 
 
     static public function saveWithParameter($parameter)
@@ -53,7 +56,7 @@ class Stock extends Instrument
             'isin' => $this->isin,
             'wkn' => $this->wkn,
             'currency' => $this->currencyCode(),
+            'id' => $this->getKey()
         ];
     }
-
 }
