@@ -8,7 +8,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use anlutro\LaravelSettings\Facade as Setting;
-use Carbon\Carbon;
+use App\Events\MetadataUpdateHasStarted;
+use App\Events\MetadataUpdateHasFinished;
 
 
 
@@ -53,9 +54,9 @@ class BulkUpdate implements ShouldQueue
         $repository = resolve($this->repo);
         $chunk = $repository->getItems($this->chunk);
 
-        $this->timestamp($repository, 'updating');
+        event(new MetadataUpdateHasStarted($repository->provider, $repository->database));
 
-        while( $chunk != [] and $i < $this->limit )
+        while( ($chunk != []) and ($i < $this->limit) )
         {
             $this->updateChunk($repository, $chunk);
 
@@ -63,7 +64,11 @@ class BulkUpdate implements ShouldQueue
             $i++;
         }
 
-        $this->timestamp($repository, 'updated');
+        event(new MetadataUpdateHasFinished($repository->provider, $repository->database, [
+            'refreshed' => null,
+            'created' => null
+        ]));
+        
 
     }
 
@@ -81,15 +86,5 @@ class BulkUpdate implements ShouldQueue
             else
                 $repository->createItemWithSource($item);
         }
-    }
-
-    /**
-     * @param $repository
-     * @param $event
-     */
-    private function timestamp($repository, $event): void
-    {
-        Setting::set($repository->provider . $repository->database . $event, Carbon::now());
-        Setting::save();
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Metadata\BulkUpdate;
-use App\Repositories\Metadata\QuandlSSE;
 use Illuminate\Console\Command;
 
 
@@ -11,7 +10,7 @@ class UpdateMetadata extends Command
 {
    
     protected $reposets = [
-        ['repo' => QuandlSSE::class, 'chunk' => 50, 'queue' => 'quandl'],
+        ['repo' => \App\Repositories\Metadata\QuandlSSE::class, 'chunk' => 50, 'queue' => 'quandl'],
         //
     ];
 
@@ -45,7 +44,7 @@ class UpdateMetadata extends Command
         {
             dispatch(new BulkUpdate($set['repo'], $set['chunk'], $set['queue'], $limit));
         }
-
+        
         $this->info("Done. \n");
         return;
 

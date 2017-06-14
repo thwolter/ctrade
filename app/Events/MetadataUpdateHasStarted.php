@@ -9,19 +9,28 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Carbon\Carbon;
 
-class MetadataHasUpdated
+class MetadataUpdateHasStarted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    
+    public $provider;
+    public $database;
+    public $timestammp;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($provider, $database)
     {
-        //
+        $this->provider = $provider;
+        $this->database = $database;
+        
+        $this->timestamp = Carbon::now();
     }
 
     /**

@@ -13,9 +13,13 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\MetadataHasUpdated' => [
-            'App\Listeners\NotifyMetadataHasUpdated',
+        'App\Events\MetadataUpdateHasStarted' => [
+            'App\Listeners\NotifyMetadataUpdatedHasStarted'
         ],
+        'App\Events\MetadataUpdateHasFinished' => [
+            'App\Listeners\FindInvalideMetadata',
+            'App\Listeners\NotifyMetadataUpdatedHasFinished'
+        ]
     ];
 
     /**
