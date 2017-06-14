@@ -26,6 +26,7 @@ class BulkUpdate implements ShouldQueue
     
     protected $updated;
     protected $created;
+    protected $invalidated;
 
 
     /**
@@ -57,6 +58,7 @@ class BulkUpdate implements ShouldQueue
         
         $this->updated = 0;
         $this->created = 0;
+        $this->invalidated = 0;
 
         $repository = resolve($this->repo);
         $chunk = $repository->getItems($this->chunk);
@@ -72,12 +74,12 @@ class BulkUpdate implements ShouldQueue
             $i++;
         }
 
-        $invalidated = Datasource::where('updated_at','<', $started_at)->update(['valid' => false]);
+        $this->invalidated = $this->invalidated + Datasource::where('updated_at','<', $started_at)->update(['valid' => false]);
         
         event(new MetadataUpdateHasFinished($repository->provider, $repository->database, [
             'updated' => $this->updated,
             'created' => $this->created,
-            'invalidated' => $invalidated
+            'invalidated' => $this->invalidated
         ]));
         
     }
@@ -92,8 +94,10 @@ class BulkUpdate implements ShouldQueue
 
             if ($repository->hasDatasource($item)) {
                 
-                if ($repository->updateItem($item))
+                if ($repository->updateItem($item)) 
                     $this->updated++;
+                else
+                    $this->invalidated++;
             }
             else {
                 

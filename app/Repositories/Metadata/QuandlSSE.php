@@ -24,19 +24,10 @@ class QuandlSSE extends QuandlMetadata
 
     public function isValid($item)
     {
-        foreach ($this->required as $method)
-        {
-            if (!method_exists($this, $method))
-                throw new MetadataException("no method '{$method}' defined");
-
-            $result = $this->$method($item);
-            if (is_null($result) or empty($result)) {
-                
-                Log::notice('symbol '.$this->symbol($item).' marked as invalid');
-                return false;
-            }
-        }
-        return true;
+        return (is_null($this->symbol($item)) || 
+            is_null($this->name($item)) || 
+            is_null($this->currency($item)) ||
+            ($this->latestPrice($item)->diffInDays($this->refreshed($item)) != 0)) 
     }
 
 
@@ -75,14 +66,22 @@ class QuandlSSE extends QuandlMetadata
     
     public function updateItem($item)
     {
-        parent::updateItem($item);
+        if ($this->isValid($item)) {
 
-        //Todo: check for security type, for now assume all are stocks
-        //Todo: check whether stock should be updated based on wkn, isin, name
+            Datasource::get($this->provider, $this->database, $this->symbol($item))
+                ->update(['valid' => true]);
+            return true;
 
-        return false;
-
-        //return true if updated
+        }
+        
+        else {
+            
+            Datasource::get($this->provider, $this->database, $this->symbol($item))
+                ->update(['valid' => false]);
+                
+            Log::notice('symbol '.$this->symbol($item).' marked as invalid');
+            return false;
+        }
     }
 
 
@@ -177,6 +176,18 @@ class QuandlSSE extends QuandlMetadata
             return title_case(trim($split[1]));
         else
             return $this->unableLog('industy', $item);
+    }
+
+
+    private function latestPrice($item)
+    {
+        return new Carbon\Carbon($item['newest_available_date']); 
+    }
+    
+    
+    private function refreshed($item)
+    {
+        return new Carbon\Carbon($item['refreshed_at']); 
     }
 
 

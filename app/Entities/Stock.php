@@ -56,7 +56,7 @@ class Stock extends Instrument
             'isin' => $this->isin,
             'wkn' => $this->wkn,
             'currency' => $this->currencyCode(),
-            'id' => $this->getKey()
+            'id' => $this->id
         ];
     }
 }

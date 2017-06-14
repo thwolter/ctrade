@@ -74,9 +74,9 @@ abstract class QuandlMetadata
         return Datasource::exist($this->provider, $this->database, $this->symbol($item));
     }
 
+
     public function updateItem($item)
     {
-        Datasource::get($this->provider, $this->database, $this->symbol($item))
-            ->update(['valid' => true]);
+        
     }
 }
