@@ -10,7 +10,7 @@ class UpdateMetadata extends Command
 {
    
     protected $reposets = [
-        ['repo' => \App\Repositories\Metadata\QuandlSSE::class, 'chunk' => 50, 'queue' => 'quandl'],
+        ['repo' => \App\Repositories\Metadata\QuandlSSE::class, 'chunk' => 100, 'queue' => 'quandl'],
         //
     ];
 

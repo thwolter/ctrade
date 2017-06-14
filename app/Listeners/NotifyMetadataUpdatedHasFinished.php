@@ -28,7 +28,7 @@ class NotifyMetadataUpdatedHasFinished
      */
     public function handle(MetadataUpdateHasFinished $event)
     {
-        Log::info(sprintf('update finished for provider %s and database %s',
-            $event->provider, $event->database));
+        Log::info(sprintf('update finished for provider %s and database %s with %s created, %s updated and %s invalidated',
+            $event->provider, $event->database, $event->created, $event->updated, $event->invalidated));
     }
 }

@@ -7,9 +7,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use anlutro\LaravelSettings\Facade as Setting;
 use App\Events\MetadataUpdateHasStarted;
 use App\Events\MetadataUpdateHasFinished;
+use Carbon\Carbon;
+use App\Entities\Datasource;
 
 
 
@@ -22,6 +23,9 @@ class BulkUpdate implements ShouldQueue
     protected $chunk;
     protected $queueName;
     protected $limit;
+    
+    protected $updated;
+    protected $created;
 
 
     /**
@@ -50,10 +54,14 @@ class BulkUpdate implements ShouldQueue
     public function handle()
     {
         $i = 0;
+        
+        $this->updated = 0;
+        $this->created = 0;
 
         $repository = resolve($this->repo);
         $chunk = $repository->getItems($this->chunk);
 
+        $started_at = Carbon::now();
         event(new MetadataUpdateHasStarted($repository->provider, $repository->database));
 
         while( ($chunk != []) and ($i < $this->limit) )
@@ -64,27 +72,34 @@ class BulkUpdate implements ShouldQueue
             $i++;
         }
 
+        $invalidated = Datasource::where('updated_at','<', $started_at)->update(['valid' => false]);
+        
         event(new MetadataUpdateHasFinished($repository->provider, $repository->database, [
-            'refreshed' => null,
-            'created' => null
+            'updated' => $this->updated,
+            'created' => $this->created,
+            'invalidated' => $invalidated
         ]));
         
-
     }
 
     /**
-     * @param $chunk
      * @param $repository
+     * @param $chunk
      */
     private function updateChunk($repository, $chunk)
     {
         foreach ($chunk as $item) {
 
-            if ($repository->hasDatasource($item))
-                $repository->updateItem($item);
-
-            else
-                $repository->createItemWithSource($item);
+            if ($repository->hasDatasource($item)) {
+                
+                if ($repository->updateItem($item))
+                    $this->updated++;
+            }
+            else {
+                
+                if ($repository->createItemWithSource($item))
+                    $this->created++;
+            }
         }
     }
 }
