@@ -62,6 +62,8 @@ class BulkUpdate implements ShouldQueue
         $this->repository = resolve($this->repo);
         $chunk = $this->repository->getItems($this->chunk);
 
+        if (!$this->someAreFresh($chunk)) return;
+
         $this->initCounters();
         $this->starting();
 
@@ -76,7 +78,18 @@ class BulkUpdate implements ShouldQueue
         $this->invalidated = $this->invalidated + Datasource::where('updated_at','<', $this->started_at)->update(['valid' => false]);
 
         event(new MetadataUpdateHasFinished($this->repository->provider, $this->repository->database, $this->countersToArray()));
-        
+    }
+
+
+    private function someAreFresh($chunk)
+    {
+        foreach ($chunk as $item) {
+
+            if ($this->repository->refreshed($item)->gte(Carbon::now()))
+                return true;
+        }
+
+        return false;
     }
 
     /**
