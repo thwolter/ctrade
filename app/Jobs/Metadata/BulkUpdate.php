@@ -7,6 +7,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use anlutro\LaravelSettings\Facade as Setting;
+use Carbon\Carbon;
+
+
 
 class BulkUpdate implements ShouldQueue
 {
@@ -45,16 +49,47 @@ class BulkUpdate implements ShouldQueue
     public function handle()
     {
         $i = 0;
-        $chunk = resolve($this->repo)->getItems($this->chunk);
+
+        $repository = resolve($this->repo);
+        $chunk = $repository->getItems($this->chunk);
+
+        $this->timestamp($repository, 'updating');
 
         while( $chunk != [] and $i < $this->limit )
         {
-            $job = (new UpdateChunk($this->repo, $chunk))->onQueue($this->queueName);
-            dispatch($job);
+            $this->updateChunk($repository, $chunk);
 
-            $chunk = resolve($this->repo)->getItems($this->chunk);
+            $chunk = $repository->getItems($this->chunk);
             $i++;
         }
 
+        $this->timestamp($repository, 'updated');
+
+    }
+
+    /**
+     * @param $chunk
+     * @param $repository
+     */
+    private function updateChunk($repository, $chunk)
+    {
+        foreach ($chunk as $item) {
+
+            if ($repository->hasDatasource($item))
+                $repository->updateItem($item);
+
+            else
+                $repository->createItemWithSource($item);
+        }
+    }
+
+    /**
+     * @param $repository
+     * @param $event
+     */
+    private function timestamp($repository, $event): void
+    {
+        Setting::set($repository->provider . $repository->database . $event, Carbon::now());
+        Setting::save();
     }
 }
