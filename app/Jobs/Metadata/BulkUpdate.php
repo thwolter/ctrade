@@ -55,10 +55,7 @@ class BulkUpdate implements ShouldQueue
     public function handle()
     {
         $i = 0;
-        
-        $this->updated = 0;
-        $this->created = 0;
-        $this->invalidated = 0;
+        $this->initCounters();
 
         $repository = resolve($this->repo);
         $chunk = $repository->getItems($this->chunk);
@@ -76,11 +73,7 @@ class BulkUpdate implements ShouldQueue
 
         $this->invalidated = $this->invalidated + Datasource::where('updated_at','<', $started_at)->update(['valid' => false]);
         
-        event(new MetadataUpdateHasFinished($repository->provider, $repository->database, [
-            'updated' => $this->updated,
-            'created' => $this->created,
-            'invalidated' => $this->invalidated
-        ]));
+        event(new MetadataUpdateHasFinished($repository->provider, $repository->database, $this->countersToArray()));
         
     }
 
@@ -105,5 +98,24 @@ class BulkUpdate implements ShouldQueue
                     $this->created++;
             }
         }
+    }
+
+    private function initCounters(): void
+    {
+        $this->updated = 0;
+        $this->created = 0;
+        $this->invalidated = 0;
+    }
+
+    /**
+     * @return array
+     */
+    private function countersToArray(): array
+    {
+        return [
+            'updated' => $this->updated,
+            'created' => $this->created,
+            'invalidated' => $this->invalidated
+        ];
     }
 }

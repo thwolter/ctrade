@@ -2,11 +2,12 @@
 
 namespace App\Repositories\Metadata;
 
+use App\Entities\Datasource;
 use App\Entities\Industry;
 use App\Entities\Sector;
 use App\Entities\Stock;
 use App\Entities\Currency;
-use App\Repositories\Exceptions\MetadataException;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
@@ -24,10 +25,10 @@ class QuandlSSE extends QuandlMetadata
 
     public function isValid($item)
     {
-        return (is_null($this->symbol($item)) || 
-            is_null($this->name($item)) || 
-            is_null($this->currency($item)) ||
-            ($this->latestPrice($item)->diffInDays($this->refreshed($item)) != 0)) 
+        return (!is_null($this->symbol($item)) ||
+            !is_null($this->name($item)) ||
+            !is_null($this->currency($item)) ||
+            ($this->latestPrice($item)->diffInDays($this->refreshed($item)) != 0));
     }
 
 
@@ -181,13 +182,13 @@ class QuandlSSE extends QuandlMetadata
 
     private function latestPrice($item)
     {
-        return new Carbon\Carbon($item['newest_available_date']); 
+        return new Carbon($item['newest_available_date']);
     }
     
     
     private function refreshed($item)
     {
-        return new Carbon\Carbon($item['refreshed_at']); 
+        return new Carbon($item['refreshed_at']);
     }
 
 
