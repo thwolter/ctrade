@@ -7,6 +7,12 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Events\MetadataUpdateHasStarted;
+use App\Events\MetadataUpdateHasFinished;
+use Carbon\Carbon;
+use App\Entities\Datasource;
+
+
 
 class BulkUpdate implements ShouldQueue
 {
@@ -17,6 +23,13 @@ class BulkUpdate implements ShouldQueue
     protected $chunk;
     protected $queueName;
     protected $limit;
+    
+    protected $updated;
+    protected $created;
+    protected $invalidated;
+
+    protected $repository;
+    protected $started_at;
 
 
     /**
@@ -45,16 +58,92 @@ class BulkUpdate implements ShouldQueue
     public function handle()
     {
         $i = 0;
-        $chunk = resolve($this->repo)->getItems($this->chunk);
 
-        while( $chunk != [] and $i < $this->limit )
+        $this->repository = resolve($this->repo);
+        $chunk = $this->repository->getItems($this->chunk);
+
+        if (!$this->someAreFresh($chunk)) return;
+
+        $this->initCounters();
+        $this->starting();
+
+        while( ($chunk != []) and ($i < $this->limit) )
         {
-            $job = (new UpdateChunk($this->repo, $chunk))->onQueue($this->queueName);
-            dispatch($job);
+            $this->updateChunk($chunk);
 
-            $chunk = resolve($this->repo)->getItems($this->chunk);
+            $chunk = $this->repository->getItems($this->chunk);
             $i++;
         }
 
+        $this->invalidated = $this->invalidated + Datasource::where('updated_at','<', $this->started_at)->update(['valid' => false]);
+
+        event(new MetadataUpdateHasFinished($this->repository->provider, $this->repository->database, $this->countersToArray()));
+    }
+
+
+    private function someAreFresh($chunk)
+    {
+        foreach ($chunk as $item) {
+
+            if ($this->repository->refreshed($item)->gte(Carbon::now()))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $chunk
+     */
+    private function updateChunk($chunk)
+    {
+        foreach ($chunk as $item) {
+
+            if ($this->repository->hasDatasource($item)) {
+                
+                if ($this->repository->updateItem($item))
+                    $this->updated++;
+                else
+                    $this->invalidated++;
+            }
+            else {
+                
+                if ($this->repository->createItemWithSource($item))
+                    $this->created++;
+            }
+        }
+    }
+
+    /**
+     * set counter to zero
+     */
+    private function initCounters()
+    {
+        $this->updated = 0;
+        $this->created = 0;
+        $this->invalidated = 0;
+    }
+
+    /**
+     * get an key'd array of the counters
+     *
+     * @return array
+     */
+    private function countersToArray()
+    {
+        return [
+            'updated' => $this->updated,
+            'created' => $this->created,
+            'invalidated' => $this->invalidated
+        ];
+    }
+
+    /**
+     * set start timestamp and fire an event
+     */
+    private function starting()
+    {
+        $this->started_at = Carbon::now();
+        event(new MetadataUpdateHasStarted($this->repository->provider, $this->repository->database));
     }
 }

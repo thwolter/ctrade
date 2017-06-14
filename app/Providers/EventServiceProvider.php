@@ -13,9 +13,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\DatasourceCreated' => [
-            'App\Listeners\LogDatasourceCreated',
+        'App\Events\MetadataUpdateHasStarted' => [
+            'App\Listeners\NotifyMetadataUpdatedHasStarted'
         ],
+        'App\Events\MetadataUpdateHasFinished' => [
+            'App\Listeners\NotifyMetadataUpdatedHasFinished'
+        ]
     ];
 
     /**

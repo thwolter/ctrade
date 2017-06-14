@@ -2,10 +2,7 @@
 
 namespace App\Console\Commands;
 
-use anlutro\LaravelSettings\Facade as Setting;
 use App\Jobs\Metadata\BulkUpdate;
-use App\Repositories\Metadata\QuandlSSE;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 
@@ -13,7 +10,7 @@ class UpdateMetadata extends Command
 {
    
     protected $reposets = [
-        ['repo' => QuandlSSE::class, 'chunk' => 50, 'queue' => 'quandl'],
+        ['repo' => \App\Repositories\Metadata\QuandlSSE::class, 'chunk' => 100, 'queue' => 'quandl'],
         //
     ];
 
@@ -45,14 +42,9 @@ class UpdateMetadata extends Command
 
         foreach ($this->reposets as $set)
         {
-            $meta = resolve($set['repo']);
-
-            Setting::set($meta->provider.$meta->database.'updated', Carbon::now());
-            Setting::save();
-
             dispatch(new BulkUpdate($set['repo'], $set['chunk'], $set['queue'], $limit));
         }
-
+        
         $this->info("Done. \n");
         return;
 

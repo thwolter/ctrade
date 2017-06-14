@@ -25,6 +25,7 @@
         "scheb/yahoo-finance-api": "^1.4",
         "sentry/sentry": "^1.7",
         "sentry/sentry-laravel": "^0.7.0",
+        "teamtnt/laravel-scout-tntsearch-driver": "^3.0",
         "zachleigh/laravel-property-bag": "^1.1"
     },
     "require-dev": {
