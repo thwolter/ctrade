@@ -37,6 +37,38 @@ abstract class QuandlMetadata
     }
 
 
+    public function __call($key, $arguments)
+    {
+        $parm = array_get($this->keys, $key);
+        $item = $arguments[0];
+        
+        if (!is_null($parm)) {
+            
+            $match = preg_match($parm[1], array_get($item, $parm[0]), $matches); 
+            $result = ($match) ? trim($matches[$parm[2]]) : null;
+        
+            return $this->check($key, $result, $item);
+        }
+    }
+    
+    /**
+     * @param string $string
+     * @param string $value
+     * @param $item
+     * @return null|string
+     */
+    private function check($string, $value, $item)
+    {
+        if (!empty($value)) return $value;
+
+        Log::notice(sprintf("%s missing for %s -- %s",
+            $string, $this->symbol($item), $this->description($item)
+        ));
+        
+        return null;
+    }
+    
+    
     public function createItemWithSource($item)
     {
         $instrument = $this->saveItem($item);
@@ -75,5 +107,14 @@ abstract class QuandlMetadata
     public function updateItem($item)
     {
         
+    }
+    
+    private function unableLog($param, $item)
+    {
+        Log::notice(sprintf("'%s' missing for %s -- %s",
+            $param, $this->symbol($item), $this->description($item)
+        ));
+
+        return null;
     }
 }
