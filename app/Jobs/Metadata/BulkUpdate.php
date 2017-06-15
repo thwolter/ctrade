@@ -75,7 +75,7 @@ class BulkUpdate implements ShouldQueue
             $i++;
         }
 
-        $this->invalidated = $this->invalidated + Datasource::where('updated_at','<', $this->started_at)
+        $this->invalidated += Datasource::where('updated_at','<', $this->started_at)
                                 ->whereValid(true)->update(['valid' => false]);
 
         event(new MetadataUpdateHasFinished($this->repository->provider, $this->repository->database, $this->countersToArray()));
