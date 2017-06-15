@@ -85,7 +85,9 @@ class BulkUpdate implements ShouldQueue
     {
         foreach ($chunk as $item) {
 
-            if ($this->repository->refreshed($item)->gte(Carbon::now()))
+            $refreshed_at = $this->repository->refreshed($item);
+
+            if (Datasource::where('updated_at', '>', $refreshed_at) != 0)
                 return true;
         }
 
