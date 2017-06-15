@@ -34,7 +34,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if ($this->shouldReport($exception) and env('APP_ENV') == 'productive') {
+        if ($this->shouldReport($exception) and env('APP_ENV') != 'local') {
             // bind the event ID for Feedback
             $this->sentryID = app('sentry')->captureException($exception);
         }
