@@ -103,7 +103,7 @@ class BulkUpdate implements ShouldQueue
 
             if ($this->repository->hasDatasource($item)) {
                 
-                $updateed = $this->repository->updateItem($item);
+                $updated = $this->repository->updateItem($item);
                     
                 if ($updated == true) $this->updated++;
                 if ($updated == false) $this->invalidated++;
