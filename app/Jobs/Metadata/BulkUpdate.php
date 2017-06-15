@@ -87,7 +87,7 @@ class BulkUpdate implements ShouldQueue
 
             $refreshed_at = $this->repository->refreshed($item);
 
-            if (Datasource::where('updated_at', '>', $refreshed_at) != 0)
+            if (Datasource::where('updated_at', '>', $refreshed_at)->count() != 0)
                 return true;
         }
 
@@ -103,10 +103,10 @@ class BulkUpdate implements ShouldQueue
 
             if ($this->repository->hasDatasource($item)) {
                 
-                if ($this->repository->updateItem($item))
-                    $this->updated++;
-                else
-                    $this->invalidated++;
+                $updateed = $this->repository->updateItem($item);
+                    
+                if ($updated == true) $this->updated++;
+                if ($updated == false) $this->invalidated++;
             }
             else {
                 
