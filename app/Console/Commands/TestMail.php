@@ -44,7 +44,9 @@ class TestMail extends Command
                 'database' => 'SSE',
                 'created' => 100,
                 'updated' => 0,
-                'invalidated' => 2
+                'invalidated' => 2,
+                'total' => 100,
+                'valid' => 100
             ]
         ));    
     }

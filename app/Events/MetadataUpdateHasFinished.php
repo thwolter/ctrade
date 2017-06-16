@@ -19,11 +19,11 @@ class MetadataUpdateHasFinished
     public $provider;
     public $database;
     public $timestamp;
-    public $paramter;
-    
+
     public $created;
     public $updated;
     public $invalidated;
+    public $validated;
 
     /**
      * Create a new event instance.
@@ -34,11 +34,11 @@ class MetadataUpdateHasFinished
     {
         $this->provider = $provider;
         $this->database = $database;
-        $this->created = $parameter['created'];
-        $this->updated = $parameter['updated'];
-        $this->invalidated = $parameter['invalidated'];
-        
-        
+        $this->created = array_get($parameter, 'created');
+        $this->updated = array_get($parameter, 'updated');
+        $this->invalidated = array_get($parameter, 'invalidated');
+        $this->validated = array_get($parameter, 'validated');
+
         $this->timestamp = Carbon::now();
     }
 

@@ -7,6 +7,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use App\Mail\MetadataUpdated;
+use App\Entities\Provider;
+use App\Entities\Database;
+use App\Entities\Datasource;
 
 
 class NotifyMetadataUpdatedHasFinished
@@ -42,6 +45,7 @@ class NotifyMetadataUpdatedHasFinished
                 'created' => $event->created,
                 'updated' => $event->updated,
                 'invalidated' => $event->invalidated,
+                'validated' => $event->validated,
                 'total' => $datasources->count(),
                 'valid' => $datasources->whereValid(true)->count()
             ]

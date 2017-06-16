@@ -16,6 +16,28 @@ use App\Repositories\CurrencyRepository;
 class Portfolio extends Rscripter
 {
 
+    public function makeHistoryArray()
+    {
+        $positions = $this->entity->positions;
+        $result = [];
+        
+        //Todo: this must be done better
+        $dates = array_keys($positions[0]);
+
+        foreach ($positions as $position) {
+            
+            $key = strtoupper($position->positionable_type) . $position->positionable_id;
+            $result[$key] = $position->history($dates);
+            
+            $origin = $this->entity->currencyCode();
+            $target = $position->currencyCode();
+
+            if ($origin != $target)
+                $result[$origin.$target] = (new CurrencyRepository($origin, $base))->history($dates);
+        }
+        
+        return $result;
+    }
 
     /**
      * @param int $period number of days scaled by sqrt

@@ -47,9 +47,9 @@ class Quandldata
     }
 
    
-    public function history()
+    public function history($dates = null)
     {
-        return $this->history->data();
+        return $this->history->data($dates);
     }
 
 

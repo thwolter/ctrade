@@ -46,5 +46,24 @@ class PriceHistoryTest extends TestCase
         $this->assertEquals('2017-06-09', $data->priceDate());
     }
     
-   
+ 
+    /** @test */
+    public function can_receive_a_completed_time_series()
+    {
+        $data = new PriceHistory($this->data, 4);
+        $dates =  [
+            "2017-06-10" => 56.959, // to be filled-up
+            "2017-06-09" => 56.959, // to be filled-up
+            "2017-06-08" => 56.959,
+            "2017-06-07" => 56.681,
+            "2017-06-06" => 58.932,
+            "2017-06-05" => 58.455, // to be filled-up
+            "2017-06-04" => 58.455, // to be filled-up
+            "2017-06-02" => 58.455,
+            "2017-06-01" => 58.322,
+            "2017-05-31" => 58.783
+        ];
+        
+        $this->assertEquals($dates, $data->data(array_keys($dates)), '', 0.2); 
+    }
 }
