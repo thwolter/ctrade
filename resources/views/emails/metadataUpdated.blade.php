@@ -1,5 +1,5 @@
 @component('mail::message')
-# Metadata successfully update
+# Metadata successfully updated
 
 Database {{ $results['provider'] }}/{{ $results['database'] }} was updated with
 

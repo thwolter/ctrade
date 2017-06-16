@@ -7,6 +7,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use App\Mail\MetadataUpdated;
+use App\Entities\Provider;
+use App\Entities\Database;
+use App\Entities\Datasource;
 
 
 class NotifyMetadataUpdatedHasFinished

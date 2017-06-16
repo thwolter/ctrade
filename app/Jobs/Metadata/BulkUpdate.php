@@ -11,6 +11,7 @@ use App\Events\MetadataUpdateHasStarted;
 use App\Events\MetadataUpdateHasFinished;
 use Carbon\Carbon;
 use App\Entities\Datasource;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -84,8 +85,11 @@ class BulkUpdate implements ShouldQueue
 
     private function someAreFresh($items)
     {
-        if (is_null($items)) 
+        if (is_null($items)) {
+            Log::warning('Unable to load data from Quandl.');
             return false;
+        }
+            
         
         foreach ($items as $item) {
 
