@@ -2,21 +2,27 @@
 
 namespace App\Mail;
 
+use App\Entities\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * Class EmailVerification
+ * @package App\Mail
+ */
 class EmailVerification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
+    public $user;
+
 
     /**
-     * Create a new message instance.
+     * Create a new message instance
      *
-     * @return void
+     * @param User $user
      */
     public function __construct(User $user)
     {

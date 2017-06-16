@@ -66,6 +66,8 @@
                     </div>
                 </div>
             </div>
+            <div class="space-70"></div>
+            <div class="space-70"></div>
         </div>
     </div>
 @endsection

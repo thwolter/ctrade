@@ -1,15 +1,13 @@
 @component('mail::message')
-# Emailbestätigung
+# Deine Registierung
 
-## Click the Link To Verify Your Email
-Click the following link to verify your email 
+## Vielen Dank, dass du dich auf unserer Seite registiert hast.
 
-{{url(‘/verifyemail/’.$email_token)}}
+Bitte klicke den folgenden Link, um deine Email Adresse zu bestätigen.
 
-@component('mail::button', ['url' => ''])
-Button Text
-@endcomponent
+{{ route('register.verify', [$user->email_token]) }}
 
-Thanks,<br>
+
+Danke,<br>
 {{ config('app.name') }}
 @endcomponent

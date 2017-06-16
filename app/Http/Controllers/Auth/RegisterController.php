@@ -79,14 +79,15 @@ class RegisterController extends Controller
     * Handle a registration request for the application.
     *
     * @param Request $request
-    * @return Response
+    * @return \Response
     */
     public function register(Request $request)  
     {
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));
         dispatch(new SendVerificationEmail($user));
-        return view(‘verification’);
+
+        return view('auth.emailverification');
     }
 
 
@@ -98,10 +99,12 @@ class RegisterController extends Controller
     */
     public function verify($token)
     {
-        $user = User::where(email_token,$token)->first();
-        $user->verified = 1;
+        $user = User::where('email_token', $token)->first();
+        $user->verified = true;
+        $user->email_token = null;
+
         if($user->save()){
-            return view(emailconfirm,[user=>$user]);
+            return view('auth.emailconfirm', compact('user'));
         }
     }
 }

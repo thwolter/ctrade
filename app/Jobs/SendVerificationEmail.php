@@ -16,17 +16,22 @@ class SendVerificationEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * @var User
+     */
     protected $user;
+
 
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param User $user
      */
     public function __construct(User $user)
     {
         $this->user = $user;
     }
+
 
     /**
      * Execute the job.

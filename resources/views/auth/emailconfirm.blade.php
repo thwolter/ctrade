@@ -1,14 +1,23 @@
 @extends('layouts.master')
 
 @section('content')
+
+    <section id="content-region-3" class="padding-40 page-tree-bg">
+        <div class="container">
+            <h3 class="page-tree-text">
+                Anmeldung
+            </h3>
+        </div>
+    </section><!--page-tree end here-->
+
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8 offset-md-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Registration Confirmed</div>
-                    <div class="panel-body">
-                        Your Email is successfully verified. Click here to <a href=”{{url(‘/login’)}}”>login</a>
-                    </div>
+                    <h2 class="text-center">Geschafft!</h2>
+                    <p class="text-center">
+                        Deine Email wurde erfolgreich bestätigt. Klicke hier, um dich einzuloggen <a href="{{ route('login') }}">login</a>
+                    </p>
                 </div>
             </div>
         </div>
