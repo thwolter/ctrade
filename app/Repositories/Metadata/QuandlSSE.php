@@ -47,12 +47,17 @@ class QuandlSSE extends QuandlMetadata
     
     public function updateItem($item)
     {
-        if ($this->isValid($item)) {
-            return $this->persistValid(true, $item);
-        }
-        else {
-            return $this->persistValid(false, $item);
-        }
+        
+        // if invalidated return null
+        if (! $this->isValid($item))
+            if ($this->persistValid(false , $item)) return null; else return;
+            
+            
+        // if updated return true
+        // return 'updated';
+        
+        // if not updated return false
+        return false;
     }
 
 
@@ -156,10 +161,12 @@ class QuandlSSE extends QuandlMetadata
      */
     private function persistValid($valid, $item)
     {
-        Datasource::get($this->provider, $this->database, $this->symbol($item))
-            ->update(['valid' => $valid]);
-
-        return $valid;
+        $datasource = Datasource::get($this->provider, $this->database, $this->symbol($item));
+        $wasValid = $datasource->valid;
+        
+        $datasource->update(['valid' => $valid]);
+        
+        return ($wasValid != $valid);
     }
 
 }
