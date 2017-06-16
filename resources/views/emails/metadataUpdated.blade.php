@@ -5,6 +5,7 @@ Database {{ $results['provider'] }}/{{ $results['database'] }} was updated with
 
 - {{ $results['created'] }} create items;
 - {{ $results['updated'] }} updated items;
+- {{ $results['validated'] }} validated items;
 - {{ $results['invalidated'] }} invalidated items.
 
 {{ $results['provider'] }}/{{ $results['database'] }} has

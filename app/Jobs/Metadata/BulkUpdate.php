@@ -28,6 +28,7 @@ class BulkUpdate implements ShouldQueue
     protected $updated;
     protected $created;
     protected $invalidated;
+    protected $validated;
 
     protected $repository;
     protected $started_at;
@@ -113,12 +114,14 @@ class BulkUpdate implements ShouldQueue
                 
                 $updated = $this->repository->updateItem($item);
                     
-                if (is_null($updated)): 
+                if ($updated == 'invalidated'):
                     $this->invalidated++;
                 
-                elseif ($updated): 
+                elseif ($updated == 'updated'):
                     $this->updated++;
-                
+
+                elseif ($updated == 'validated'):
+                    $this->validated++;
                 endif; 
             }
             else {
@@ -137,6 +140,7 @@ class BulkUpdate implements ShouldQueue
         $this->updated = 0;
         $this->created = 0;
         $this->invalidated = 0;
+        $this->validated = 0;
     }
 
     /**
@@ -149,7 +153,8 @@ class BulkUpdate implements ShouldQueue
         return [
             'updated' => $this->updated,
             'created' => $this->created,
-            'invalidated' => $this->invalidated
+            'invalidated' => $this->invalidated,
+            'validated' => $this->validated
         ];
     }
 

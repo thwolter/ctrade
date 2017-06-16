@@ -45,6 +45,7 @@ class NotifyMetadataUpdatedHasFinished
                 'created' => $event->created,
                 'updated' => $event->updated,
                 'invalidated' => $event->invalidated,
+                'validated' => $event->validated,
                 'total' => $datasources->count(),
                 'valid' => $datasources->whereValid(true)->count()
             ]

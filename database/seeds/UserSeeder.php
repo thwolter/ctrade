@@ -11,13 +11,15 @@ class UserSeeder extends Seeder
         User::firstOrCreate([
             'name' => 'examples',
             'email' => 'thwolter@web.de',
-            'password' => bcrypt('examples')
+            'password' => bcrypt('examples'),
+            'verified' => true
         ]);
 
         User::firstOrCreate([
             'name' => 'Thomas Wolter',
             'email' => 'thwolter@gmail.com',
-            'password' => bcrypt('123')
+            'password' => bcrypt('123'),
+            'verified' => true
         ]);
     }
 }

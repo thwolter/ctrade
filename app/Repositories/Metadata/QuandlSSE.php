@@ -47,17 +47,24 @@ class QuandlSSE extends QuandlMetadata
     
     public function updateItem($item)
     {
-        
-        // if invalidated return null
-        if (! $this->isValid($item))
-            if ($this->persistValid(false , $item)) return null; else return;
-            
-            
-        // if updated return true
-        // return 'updated';
-        
-        // if not updated return false
-        return false;
+        $action = null;
+
+        if (! $this->isValid($item)) {
+            if ($this->persistValid(false, $item))
+                $action = 'invalidated';
+        }
+
+        else {
+            $validated = $this->persistValid(true, $item);
+
+            // if updated return 'updated'
+
+            // if not updated return 'unchanged'
+
+            if ($validated)
+                $action = 'validated';
+        }
+        return $action;
     }
 
 
@@ -127,7 +134,8 @@ class QuandlSSE extends QuandlMetadata
      */
     private function checkFresh($item)
     {
-        if ($this->latestPrice($item)->diffInDays($this->refreshed($item)) == 0) return true;
+        if ($this->latestPrice($item)->diffInDays($this->refreshed($item)) == 0)
+            return true;
 
         Log::notice(sprintf('%s skipped (last price %s)',
             $this->symbol($item), $this->latestPrice($item)
@@ -144,7 +152,8 @@ class QuandlSSE extends QuandlMetadata
      */
     private function checkCurrency($item)
     {
-        if (!is_null(Currency::whereCode($this->currency($item))->first())) return true;
+        if (!is_null(Currency::whereCode($this->currency($item))->first()))
+            return true;
 
         Log::notice(sprintf('%s skipped (requires currency %s)',
             $this->symbol($item), $this->currency($item)
