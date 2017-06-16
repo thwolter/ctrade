@@ -30,9 +30,9 @@ class DataRepository
     }
 
 
-    public function history()
+    public function history($dates = null)
     {
-        return $this->provider->history();
+        return $this->provider->history($dates);
     }
 
 

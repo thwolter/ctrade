@@ -3,6 +3,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
 
 class PriceHistory
 {
@@ -25,9 +27,13 @@ class PriceHistory
         );
     }
     
-    public function data()
+    public function history($dates = null)
     {
-        return $this->data;
+        if (is_null($dates)) 
+            return $this->data;
+        else {
+            return $this->forDates($dates);
+        }
     }
     
     public function price()
@@ -40,4 +46,22 @@ class PriceHistory
         return key($this->data);
     }
         
+    private function forDates(array $keys)
+    {
+        foreach ($keys as $key) {
+            
+            $result[$key] = array_get($this->data, $key);
+            
+            if (is_null($result[$key])) {
+                
+                $date = new Carbon($key);
+                
+                while (is_null($result[$key])) {
+                    $result[$key] = array_get($this->data, $date->subDay(1)->toDateString());
+                }
+            }
+        }
+        
+        return $result;
+    }
 }
