@@ -60,30 +60,34 @@ class BulkUpdate implements ShouldQueue
         $i = 0;
 
         $this->repository = resolve($this->repo);
-        $chunk = $this->repository->getItems($this->chunk);
+        $items = $this->repository->getFirstItems($this->chunk);
 
-        if (!$this->someAreFresh($chunk)) return;
+        if (!$this->someAreFresh($items)) return;
 
         $this->initCounters();
         $this->starting();
 
-        while( ($chunk != []) and ($i < $this->limit) )
+        while( ($items != []) and ($i < $this->limit) )
         {
-            $this->updateChunk($chunk);
+            $this->updateChunk($items);
 
-            $chunk = $this->repository->getItems($this->chunk);
+            $items = $this->repository->getNextItems($this->chunk);
             $i++;
         }
 
-        $this->invalidated = $this->invalidated + Datasource::where('updated_at','<', $this->started_at)->update(['valid' => false]);
+        $this->invalidated += Datasource::where('updated_at','<', $this->started_at)
+                                ->whereValid(true)->update(['valid' => false]);
 
         event(new MetadataUpdateHasFinished($this->repository->provider, $this->repository->database, $this->countersToArray()));
     }
 
 
-    private function someAreFresh($chunk)
+    private function someAreFresh($items)
     {
-        foreach ($chunk as $item) {
+        if (is_null($items)) 
+            return false;
+        
+        foreach ($items as $item) {
 
             $refreshed_at = $this->repository->refreshed($item);
 
@@ -97,16 +101,21 @@ class BulkUpdate implements ShouldQueue
     /**
      * @param $chunk
      */
-    private function updateChunk($chunk)
+    private function updateChunk($items)
     {
-        foreach ($chunk as $item) {
+        foreach ($items as $item) {
 
             if ($this->repository->hasDatasource($item)) {
                 
                 $updated = $this->repository->updateItem($item);
                     
-                if ($updated == true) $this->updated++;
-                if ($updated == false) $this->invalidated++;
+                if (is_null($updated)): 
+                    $this->invalidated++;
+                
+                elseif ($updated): 
+                    $this->updated++;
+                
+                endif; 
             }
             else {
                 

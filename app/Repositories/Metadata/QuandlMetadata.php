@@ -25,6 +25,7 @@ abstract class QuandlMetadata
    
     abstract public function saveItem($item);
 
+
     public function __construct()
     {
         if (!isset($this->database)) {
@@ -82,9 +83,17 @@ abstract class QuandlMetadata
     }
 
 
-
-    public function getItems($max = 100)
+    public function getFirstItems($max = 100)
     {
+        $this->nextPage = 0;
+        return $this->getNextItems($max);
+        
+    }
+
+    public function getNextItems($max = 100)
+    {
+        if (is_null($this->nextPage)) return [];
+         
         $this->max = $max;
         
         $json = $this->client->getList($this->database, $this->nextPage, $this->max);
