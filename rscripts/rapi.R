@@ -48,7 +48,7 @@ if (is.null(opt$base) | is.null(opt$directory) | is.null(opt$entity) | is.null(o
 
 #
 # dump environment for subsequent debugging in case of an error
-# for debugging call load("errordump.rda"); debugger(errordump)
+# for debugging call load("errordump.rda"); 
 options(error = quote(dump.frames("errordump", TRUE)))
 
 

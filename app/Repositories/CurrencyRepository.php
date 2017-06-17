@@ -19,7 +19,7 @@ class CurrencyRepository
     protected $tarbet;
 
     protected $parameter = [
-        'limit' => 250
+        'limit' => INF
     ];
 
     protected $baseCurrency = 'EUR';

@@ -114,15 +114,15 @@ class Position extends Model implements PresentableInterface
         return [
             'name' => $this->name(),
             'type' => implode(array_slice(explode('\\', $this->type()),-1)),
-            'symbol' => "{$type}.{$this->positionable_id}",
+            'symbol' => "{$type}{$this->positionable_id}",
             'currency' => $this->currencyCode(),
             'amount' => $this->amount
         ];
     }
 
-    public function history()
+    public function history($dates)
     {
-        return $this->positionable->history();
+        return $this->positionable->history($dates);
     }
 }
 

@@ -17,23 +17,14 @@ class PriceHistory
     {
         $this->data = $this->normalize($history, $column);
     }
+
     
-    
-    private function normalize($history, $column)
+    public function history($dates = INF)
     {
-        return array_combine(
-            array_column($history, 0), 
-            array_column($history, $column)
-        );
-    }
-    
-    public function history($dates = null)
-    {
-        if (is_null($dates)) 
-            return $this->data;
-        else {
-            return $this->forDates($dates);
-        }
+        if (is_array($dates))
+            return $this->historyWithDates($dates);
+        else
+            return array_slice($this->data, 0, $dates);
     }
     
     public function price()
@@ -45,25 +36,47 @@ class PriceHistory
     {
         return key($this->data);
     }
-        
-    private function forDates(array $keys)
+
+
+    private function normalize($history, $column)
+    {
+        return array_combine(
+            array_column($history, 0),
+            array_column($history, $column)
+        );
+    }
+
+    private function historyWithDates(array $keys)
     {
         $result = [];
+        $earliest = min(array_keys($this->data));
 
         foreach ($keys as $key) {
             
             $result[$key] = array_get($this->data, $key);
             
             if (is_null($result[$key])) {
-                
+
                 $date = new Carbon($key);
-                
-                while (is_null($result[$key])) {
+                while (is_null($result[$key]) and $date > $earliest) {
                     $result[$key] = array_get($this->data, $date->subDay(1)->toDateString());
                 }
             }
         }
-        
+        $result = $this->replaceNullValues($result);
+
+        return $result;
+    }
+
+    /**
+     * @param $result
+     * @return mixed
+     */
+    private function replaceNullValues($result)
+    {
+        foreach ($result as $key => $value) {
+            if (is_null($value)) $result[$key] = 0;
+        }
         return $result;
     }
 }

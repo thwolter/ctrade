@@ -111,7 +111,12 @@ Portfolio <- R6Class('Portfolio',
             nms <- names(self$delta())
                
             args <- lapply(nms, 
-                function(nm) quantmod::dailyReturn(self$hist[[nm]]))
+                function(nm) {
+                    x <- quantmod::dailyReturn(self$hist[[nm]])
+                    x[is.infinite(x)] <- 0
+                    x[is.nan(x)] <- 0
+                    x
+                    })
             
             returns <- do.call("merge.xts", c(args, fill = 0))
             colnames(returns) <- nms

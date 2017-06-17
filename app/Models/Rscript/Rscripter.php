@@ -4,6 +4,7 @@
 namespace App\Models\Rscript;
 
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Exceptions\RscriptException;
 
@@ -79,6 +80,8 @@ abstract class Rscripter
      * Calls Rscript with an array of arguments to be provided;
      * The functions uses the file system to transfer both portfolio data and results
      *
+     * @param string $task
+     * @param array $data
      * @param array $args representing required arguments for Rscript
      * @directory string with name of temp directory
      * @return array with result from Rscript

@@ -3,7 +3,6 @@
 
 namespace App\Models\Rscript;
 
-
 use App\Entities\Currency;
 use App\Models\Exceptions\RscriptException;
 use App\Models\QuantModel;
@@ -12,32 +11,8 @@ use Khill\Lavacharts\Lavacharts;
 use App\Repositories\CurrencyRepository;
 
 
-
 class Portfolio extends Rscripter
 {
-
-    public function makeHistoryArray()
-    {
-        $positions = $this->entity->positions;
-        $result = [];
-        
-        //Todo: this must be done better
-        $dates = array_keys($positions[0]);
-
-        foreach ($positions as $position) {
-            
-            $key = strtoupper($position->positionable_type) . $position->positionable_id;
-            $result[$key] = $position->history($dates);
-            
-            $origin = $this->entity->currencyCode();
-            $target = $position->currencyCode();
-
-            if ($origin != $target)
-                $result[$origin.$target] = (new CurrencyRepository($origin, $base))->history($dates);
-        }
-        
-        return $result;
-    }
 
     /**
      * @param int $period number of days scaled by sqrt
@@ -47,7 +22,7 @@ class Portfolio extends Rscripter
      */
     public function risk($period, $conf)
     {
-        $this->storeHistoryFiles();
+        $this->saveAsJson($this->historiesToArray());
 
         return $this->callRscript(['task' => 'risk', 'conf' => $conf]);
 
@@ -56,7 +31,7 @@ class Portfolio extends Rscripter
     
     public function valueHistory($period)
     {
-        $this->storeHistoryFiles();
+        $this->saveAsJson($this->historiesToArray());
         
         return $this->callRscript(['task' => 'valueHistory', 'period' => $period]);
     }
@@ -64,60 +39,60 @@ class Portfolio extends Rscripter
 
     public function summary()
     {
-        $this->storeHistoryFiles();
+        $this->saveAsJson($this->historiesToArray());
 
-        return $this->callRscript(['task' => 'summary', 'period' => 60, 'conf' => 0.95]);
+        return $this->callRscript([
+            'task' => 'summary',
+            'period' => 60,
+            'conf' => 0.95
+        ]);
     }
-    
-    
 
-    public function storeHistoryFiles()
+
+    /**
+     * Creates an array of positions history data with same dates.
+     *
+     * @return array
+     */
+    private function historiesToArray()
     {
         $positions = $this->entity->positions;
+        $result = [];
+
+        //Todo: to be based on portfolio settings 1y\6m\2yrs, or similiar
+        $dates = array_keys($positions->first()->history(500));
 
         foreach ($positions as $position) {
 
-            $this->storePositionHistory($position);
+            $key = strtoupper($position->positionable_type) . $position->positionable_id;
+            $result[$key] = $position->history($dates);
 
-            $entityCcy = $this->entity->currencyCode();
-            $positionCcy = $position->currencyCode();
+            $origin = $this->entity->currencyCode();
+            $target = $position->currencyCode();
 
-            if ($entityCcy != $positionCcy)
-                $this->storeCurrencyHistory($entityCcy, $positionCcy);
+            if ($origin != $target)
+                $result[$origin.$target] = (new CurrencyRepository($origin, $target))->history($dates);
         }
+
+        return $result;
     }
 
 
-    protected function storePositionHistory($position)
+    /**
+     * Saves an array of historic date to the file system.
+     *
+     * @param array $histories
+     * @throws RscriptException
+     */
+    private function saveAsJson(array $histories)
     {
-        $type = strtoupper($position->positionable_type);
-        $id = $position->positionable_id;
-        $filename = $this->path("{$type}.{$id}.json");
-
-        if (! file_exists($filename)) {
-
-            $history = $position->history();
+        foreach ($histories as $key => $history) {
+            $filename = $this->path($key.'.json');
 
             if (!$this->validPriceArray($history))
                 throw new RscriptException("'{$filename}' could not be save; incorrect format of input array.");
 
             Storage::disk('local')->put($filename, json_encode($history, JSON_BIGINT_AS_STRING));
-        }
-    }
-
-
-    protected function storeCurrencyHistory($origin, $target)
-    {
-        $filename = $this->path("{$origin}{$target}.json");
-
-        if (! file_exists($filename)) {
-
-            $history = (new CurrencyRepository($origin, $base))->history();
-           
-            if (!$this->validPriceArray($history))
-                throw new RscriptException("File '{$filename}' could not be saved; incorrect format of data array.");
-
-            Storage::disk('local')->put($filename, json_encode($history));
         }
     }
 
