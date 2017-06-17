@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Entities\Stock;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use App\Entities\Currency;
 
 class StockSeeder extends Seeder

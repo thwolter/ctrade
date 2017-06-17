@@ -48,6 +48,8 @@ class PriceHistory
         
     private function forDates(array $keys)
     {
+        $result = [];
+
         foreach ($keys as $key) {
             
             $result[$key] = array_get($this->data, $key);

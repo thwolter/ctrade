@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Entities\Currency;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 
 class CurrencySeeder extends Seeder
 {

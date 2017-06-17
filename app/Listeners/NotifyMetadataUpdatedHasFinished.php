@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\MetadataUpdated;
 use App\Entities\Provider;
 use App\Entities\Database;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 
 
 class NotifyMetadataUpdatedHasFinished

@@ -69,8 +69,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'email_token' => base64_encode($data['email']),
+            'password' => bcrypt($data['password'])
         ]);
     }
     
@@ -87,7 +86,7 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
         dispatch(new SendVerificationEmail($user));
 
-        return view('auth.emailverification');
+        return view('auth.verification');
     }
 
 
@@ -101,10 +100,9 @@ class RegisterController extends Controller
     {
         $user = User::where('email_token', $token)->first();
         $user->verified = true;
-        $user->email_token = null;
 
         if($user->save()){
-            return view('auth.emailconfirm', compact('user'));
+            return view('auth.confirm', compact('user'));
         }
     }
 }

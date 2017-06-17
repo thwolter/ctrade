@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Repositories\Quandl\Quandldata;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

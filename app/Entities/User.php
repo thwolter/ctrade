@@ -56,4 +56,12 @@ class User extends Authenticatable
 
         return $key ? $settings->get($key) : $settings;
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($user) {
+            $user->email_token = str_random(30);
+        });
+    }
 }

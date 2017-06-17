@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Repos;
 
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use App\Repositories\DataRepository;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;

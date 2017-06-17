@@ -3,7 +3,7 @@
 
 namespace App\Repositories;
 
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Exceptions\MetadataException;

@@ -194,6 +194,11 @@ return [
         anlutro\LaravelSettings\ServiceProvider::class,
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
 
+        /*
+        * Custom Service Providers...
+        */
+        App\Providers\DatasourceServiceProvider::class,
+
     ],
 
     /*
@@ -256,6 +261,10 @@ return [
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Setting' => anlutro\LaravelSettings\Facade::class,
 
+        /*
+         * Custom Classes
+         */
+        'Datasource' => App\Facades\Datasource::class,
 
     ],
 

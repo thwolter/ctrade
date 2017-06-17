@@ -8,7 +8,7 @@ use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Entities\Sector;
 use App\Entities\Security;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

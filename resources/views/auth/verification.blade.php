@@ -10,16 +10,20 @@
         </div>
     </section><!--page-tree end here-->
 
-    <div class="container">
+    <div class="container" style="height: 100vH">
+        <div class="space-70"></div>
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <div class="panel panel-default">
-                    <h2 class="text-center">Geschafft!</h2>
+                    <h2 class="text-center">Fast geschafft</h2>
+                    <p class="text-center">Vielen Dank, dass du dich auf unserer Seite registierte hast. </p>
                     <p class="text-center">
-                        Deine Email wurde erfolgreich bestätigt. Klicke hier, um dich einzuloggen <a href="{{ route('login') }}">login</a>
+                        Bitte bestätige deine Email Adresse mit dem Link, dem wir dir per Email geschickt haben.
                     </p>
                 </div>
             </div>
         </div>
+        <div class="space-70"></div>
+        <div class="space-70"></div>
     </div>
 @endsection

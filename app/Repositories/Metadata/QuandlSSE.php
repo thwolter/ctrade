@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Metadata;
 
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use App\Entities\Industry;
 use App\Entities\Sector;
 use App\Entities\Stock;

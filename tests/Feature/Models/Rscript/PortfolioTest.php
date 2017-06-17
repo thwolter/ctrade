@@ -5,7 +5,7 @@ namespace Tests\Feature\Models\Rscript;
 use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\Stock;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use App\Repositories\Metadata\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;

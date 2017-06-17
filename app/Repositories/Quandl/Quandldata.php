@@ -5,7 +5,7 @@ namespace App\Repositories\Quandl;
 use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Models\Exceptions\QuandlException;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use Carbon\Carbon;
 use App\Models\PriceHistory;
 
@@ -47,9 +47,9 @@ class Quandldata
     }
 
    
-    public function history($dates = null)
+    public function history($dates)
     {
-        return $this->history->data($dates);
+        return $this->history->history($dates);
     }
 
 

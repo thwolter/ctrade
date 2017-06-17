@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Entities\Database;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use App\Entities\Provider;
 use App\Jobs\CacheQuandlMetadata;
 use Illuminate\Console\Command;

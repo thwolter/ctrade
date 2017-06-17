@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Entities\Dataset;
 use App\Entities\Stock;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use App\Repositories\Quandl\Quandldata;
 
 class QuandldataTest extends TestCase
