@@ -4,6 +4,7 @@
 namespace App\Models\Rscript;
 
 use App\Entities\Currency;
+use App\Facades\Mapping;
 use App\Models\Exceptions\RscriptException;
 use App\Models\QuantModel;
 use Illuminate\Support\Facades\Storage;
@@ -43,8 +44,8 @@ class Portfolio extends Rscripter
 
         return $this->callRscript([
             'task' => 'summary',
-            'period' => 60,
-            'conf' => 0.95
+            'period' => Mapping::horizon($this->entity->settings('horizon')),
+            'conf' => Mapping::confidence($this->entity->settings('levelConfidence'))
         ]);
     }
 

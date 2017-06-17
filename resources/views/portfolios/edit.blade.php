@@ -55,13 +55,9 @@
                                 <div class="form-group row">
                                     {!! Form::label('confidence', 'Sicherheit', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
                                     <div class="col-md-8">
-                                        @php($level = $portfolio->settings('levelConfidence'))
-                                        <div>{!! Form::radio('levelConfidence', 1, ($level == 1),
-                                        ['class' => '']) !!} hohe Sicherheit</div>
-                                        <div>{!! Form::radio('levelConfidence', 2, ($level == 2),
-                                        ['class' => '']) !!} ausgewogenes Sicherheitsnivau</div>
-                                        <div>{!! Form::radio('levelConfidence', 3, ($level == 3),
-                                        ['class' => '']) !!} risikofreudig</div>
+                                        @php( $confArray = \App\Facades\Mapping::confidenceValues() )
+                                        @php( $confidence = $portfolio->settings('levelConfidence') )
+                                        {!! Form::select('levelConfidence', $confArray, $confidence, ['class' => 'form-control input-md']) !!}
                                         <span class="help-block">Das Sicherheitsniveau ...</span>
                                     </div>
                                 </div>
@@ -70,7 +66,9 @@
                                 <div class="form-group row">
                                 {!! Form::label('horizon', 'Periode', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
                                 <div class="col-md-8">
-                                    {!! Form::text('horizon', $portfolio->settings('horizon'), ['class' => 'form-control input-md']) !!}
+                                    @php( $horizonArray = \App\Facades\Mapping::horizonValues() )
+                                    @php( $horizon = $portfolio->settings('horizon') )
+                                    {!! Form::select('horizon', $horizonArray, $horizon, ['class' => 'form-control input-md']) !!}
                                     <span class="help-block">Zeiteinheit</span>
                                 </div>
                             </div>
@@ -86,7 +84,9 @@
                                 <div class="form-group row">
                                     {!! Form::label('mailing', 'Email', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
                                     <div class="col-md-8">
-                                        {!! Form::text('mailing', $portfolio->mailing, ['class' => 'form-control input-md']) !!}
+                                        @php( $email_frequencies = \App\Facades\Mapping::frequencyValues() )
+                                        @php( $email_frequency = $portfolio->settings('email_frequency') )
+                                        {!! Form::select('email_frequency', $email_frequencies, $email_frequency, ['class' => 'form-control input-md']) !!}
                                         <span class="help-block">Häufigkeit für Mailversand</span>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
                                 <div class="form-group row">
                                     {!! Form::label('threshold', 'Threshold', ['class' => 'col-md-2 offset-md-1 col-form-label']) !!}
                                     <div class="col-md-8">
-                                        {!! Form::text('threshold', $portfolio->threshold, ['class' => 'form-control input-md']) !!}
+                                        {!! Form::text('threshold', $portfolio->settings('threshold'), ['class' => 'form-control input-md']) !!}
                                         <span class="help-block">Grenze, ab der Mail geschickt wird</span>
                                     </div>
                                 </div>

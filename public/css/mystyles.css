@@ -37,12 +37,18 @@
     margin-bottom: 15px;
 }
 
+.setup-panel .sub-heading h4 {
+    background-color: aliceblue;
+}
+
 .setup-panel .sub-title {
     border-bottom: 1px solid #ddd;
     padding: 5px;
 }
 
 .setup-panel .panel-title {
+    background-color: #4c779e;
+    color: white;
     margin: auto;
     padding: 5px;
 }

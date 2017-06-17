@@ -17,6 +17,7 @@ use App\Http\Requests\UpdatePortfolio;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 class PortfoliosController extends Controller
@@ -93,7 +94,7 @@ class PortfoliosController extends Controller
     public function edit($id)
     {
         $portfolio = Portfolio::findOrFail($id);
-        return view('portfolios.edit', compact('portfolio'));
+        return view('portfolios.edit', compact('portfolio', 'url'));
     }
 
     /**
@@ -108,9 +109,11 @@ class PortfoliosController extends Controller
         if ( $request->delete == 'yes')
             return view('portfolios.delete', compact('id'));
 
-        Portfolio::whereId($id)->first()->settings()->merge($request->all());
+        $portfolio = Portfolio::whereId($id)->first();
+        $portfolio->settings()->merge($request->all());
+        $portfolio->update(['name' => $request->name]);
 
-        return redirect(route('portfolios.show', $id));
+        return redirect()->back();
     }
 
     /**

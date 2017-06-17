@@ -198,6 +198,7 @@ return [
         * Custom Service Providers...
         */
         App\Providers\DatasourceServiceProvider::class,
+        App\Providers\MappingServiceProvider::class,
 
     ],
 
@@ -265,6 +266,7 @@ return [
          * Custom Classes
          */
         'Datasource' => App\Facades\Datasource::class,
+        'Mapping' => App\Facades\Mapping::class,
 
     ],
 
