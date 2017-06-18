@@ -15,6 +15,9 @@ use App\Repositories\CurrencyRepository;
 class Portfolio extends Rscripter
 {
 
+    public $dates;
+
+
     /**
      * @param int $period number of days scaled by sqrt
      * @param double $conf the VaR confidence level
@@ -97,5 +100,13 @@ class Portfolio extends Rscripter
         }
     }
 
-
+    /**
+     * Set the dates to be considered for time series.
+     *
+     * @param array $dates
+     */
+    public function setDates(array $dates)
+    {
+        $this->dates = $dates;
+    }
 }

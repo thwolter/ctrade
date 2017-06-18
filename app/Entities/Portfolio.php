@@ -5,6 +5,7 @@ namespace App\Entities;
 use App\Models\Rscript\Rscriptable;
 use App\Presenters\Presentable;
 use App\Settings\PortfolioSettings;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -31,7 +32,6 @@ class Portfolio extends Model
     ];
 
     public $imagesPath = 'public/images';
-
 
 
     public function getCategoryNameAttribute()
@@ -176,8 +176,35 @@ class Portfolio extends Model
     }
 
     /**
-     * A buy or sell transaction on the portfolio with a given position id.
-     * As default the transaction is being settled with portfolio's cash.
+     * Make a Trade without persisting
+     *
+     * @param int $id of position
+     * @param $amount
+     * @return mixed
+     */
+    private function makeTrade($id, $amount)
+    {
+        $position = Position::find($id);
+        $portfolio = $position->portfolio;
+
+        $position->update(['amount' => $position->amount + $amount]);
+
+        $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
+        return $portfolio;
+    }
+
+    private function revertTrade($id, $value)
+    {
+        $position = $this->positions()->find($id);
+
+        $position->amount = $position->amount + $value;
+        $this->cash = $this->cash - $value;
+
+        return $this;
+    }
+
+    /**
+     * A buy transaction for position with a given id.
      *
      * @param int $id the position id
      * @param float $amount the transaction's amount
@@ -185,39 +212,51 @@ class Portfolio extends Model
      */
     public static function buy($id, $amount)
     {
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
-
-        $newAmount = $position->amount + $amount;
-
-        if ($newAmount == 0) {
-            $position->delete();
-        }
-        else {
-            $position->update(['amount' => $newAmount]);
-        }
-
-        $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
+        $portfolio = (new self)->makeTrade($id, $amount);
         $portfolio->save();
 
         return $portfolio;
     }
 
 
+    /**
+     * A sell transaction for position with a given id
+     *
+     * @param $id
+     * @param $amount
+     * @return mixed
+     */
     public static function sell($id, $amount)
     {
-        return self::buy($id, -$amount);
+        $portfolio = (new self)->makeTrade($id, -$amount);
+        $portfolio->save();
+
+        return $portfolio;
     }
 
 
+    /**
+     * Deposit an amount of cash.
+     *
+     * @param int $amount
+     * @return $this
+     */
     public function deposit($amount)
     {
         $this->cash = $this->cash + $amount;
+        return $this;
     }
 
+    /**
+     * Withdraw an amount of cash.
+     *
+     * @param int $amount
+     * @return $this
+     */
     public function withdraw($amount)
     {
         $this->cash = $this->cash - $amount;
+        return $this;
     }
 
     public function positionWith($instrument)
@@ -259,5 +298,29 @@ class Portfolio extends Model
 
     }
 
+    /**
+     * Rolls the portfolio transaction back to the provided date.
+     *
+     * @param $date
+     * @return Portfolio
+     */
+    public function rollbackToDate($date)
+    {
+        $portfolio = clone $this;
+        $transactions = $this->transactions->where('date', '>', $date)->all();
 
+        foreach (array_reverse($transactions) as $transaction) {
+
+            $value = $transaction->amount * $transaction->price;
+            switch($transaction->type->code) {
+                case 'buy':
+                    $portfolio->revertTrade($transaction->position->id, -$value);
+                    break;
+                case 'sell':
+                    $portfolio->revertTrade($transaction->position->id, +$value);
+                    break;
+            }
+        }
+        return $portfolio;
+    }
 }

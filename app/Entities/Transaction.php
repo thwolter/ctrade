@@ -27,6 +27,11 @@ class Transaction extends Model
         return $this->belongsTo(Portfolio::class);
     }
 
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+    }
+
     public function instrumentable()
     {
         return $this->morphTo();
@@ -84,8 +89,10 @@ class Transaction extends Model
         ]);
 
         $transaction->portfolio()->associate($portfolio);
+        $transaction->position()->associate($position);
         $transaction->instrumentable()->associate($position->positionable);
         $transaction->type()->associate(TransactionType::firstOrCreate(['code' => $type]));
+
         return $transaction->save();
     }
 

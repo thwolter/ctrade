@@ -11,3 +11,8 @@ App::bind(
     'App\Repositories\Contracts\InstrumentInterface',
     'App\Repositories\InstrumentRepository'
 );
+
+Route::get('/rollback/{id}/{date}', function($id, $date) {
+    $portfolio = \App\Entities\Portfolio::find($id);
+    $portfolio->rollbackToDate($date);
+});

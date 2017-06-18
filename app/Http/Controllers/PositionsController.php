@@ -88,19 +88,19 @@ class PositionsController extends Controller
      * @param  int $id the position id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $portfolioId, $positionId)
     {
         $amount = $request->amount;
-        $position = Position::find($id);
+        $position = Position::find($positionId);
 
         if ($request->get('direction') == 'buy') {
 
-            $portfolio = Portfolio::buy($id, $amount);
+            $portfolio = Portfolio::buy($positionId, $amount);
             Transaction::buy($portfolio, new \DateTime(), $position, $amount);
         }
         else {
 
-            $portfolio = Portfolio::sell($id, $amount);
+            $portfolio = Portfolio::sell($positionId, $amount);
             Transaction::sell($portfolio, new \DateTime(), $position, $amount);
 
         }

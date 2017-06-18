@@ -10,6 +10,7 @@ class PortfolioSettings extends Settings
         'levelConfidence' => 2,
         'horizon' => '2',
         'email_frequency' => 'daily',
-        'threshold' => 0
+        'threshold' => 0,
+        'historyLength' => 250
     ];
 }
