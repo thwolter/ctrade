@@ -4,6 +4,7 @@
 namespace App\Models\Rscript;
 
 use App\Entities\Currency;
+use App\Facades\Helpers;
 use App\Facades\Mapping;
 use App\Models\Exceptions\RscriptException;
 use App\Models\QuantModel;
@@ -108,19 +109,6 @@ class Portfolio extends Rscripter
     public function setWeekDays($date, $count = null)
     {
         if (is_null($count)) $count = count($this->dates);
-
-        $dates = array();
-        $date = new Carbon($date);
-
-        if ($date->isWeekday())
-            $dates[] = $date->format('Y-m-d');
-
-        while (count($dates)<$count)
-        {
-            $date->subWeekday(1);
-            $dates[] = $date->format('Y-m-d');
-        }
-
-        return $this->setDates($dates);
+        return $this->setDates(Helpers::allWeekDays($date, $count));
     }
 }

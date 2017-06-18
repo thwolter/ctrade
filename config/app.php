@@ -199,6 +199,7 @@ return [
         */
         App\Providers\DatasourceServiceProvider::class,
         App\Providers\MappingServiceProvider::class,
+        App\Providers\HelpersServiceProvider::class,
 
     ],
 
@@ -267,6 +268,7 @@ return [
          */
         'Datasource' => App\Facades\Datasource::class,
         'Mapping' => App\Facades\Mapping::class,
+        'Helpers' => App\Facades\Helpers::class,
 
     ],
 
