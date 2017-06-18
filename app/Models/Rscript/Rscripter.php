@@ -17,6 +17,7 @@ abstract class Rscripter
 
     protected $entity;
     protected $path;
+    protected $dates;
 
 
     /**
@@ -34,18 +35,29 @@ abstract class Rscripter
         $this->rbase = base_path(). '/rscripts';
 
         $this->makeTempDir();
+    }
 
+    /**
+     * Set the dates to be considered for time series.
+     *
+     * @param array $dates
+     * @return $this
+     */
+    public function setDates(array $dates)
+    {
+        $this->dates = $dates;
+        return $this;
     }
 
 
-    public function entityName()
+    private function entityName()
     {
         $ref = new \ReflectionClass($this->entity);
         return $ref->getShortName();
     }
 
 
-    public function path($file = null)
+    protected function path($file = null)
     {
         if (is_null($file)) {
             return $this->path;
@@ -54,7 +66,7 @@ abstract class Rscripter
         }
     }
 
-    public function fullpath($file = null)
+    private function fullpath($file = null)
     {
         return storage_path('app/'.$this->path($file));
     }
@@ -65,7 +77,7 @@ abstract class Rscripter
      * @param array $args representing named parameters
      * @return string with Rscript arguments
      */
-    public function argsImplode($args) {
+    private function argsImplode($args) {
 
         $s = null;
         foreach ($args as $key => $value)
@@ -87,7 +99,7 @@ abstract class Rscripter
      *
      * @throws RscriptException if no output was written or result is with errors
      */
-    public function callRscript($args = ['task' => 'test-in-out'])
+    protected function callRscript($args = ['task' => 'test-in-out'])
     {
         $entity = $this->saveJSON();
         exec($this->getRCallString($entity, $args));
@@ -104,14 +116,14 @@ abstract class Rscripter
     /**
      * @return string
      */
-    public function makeTempDir()
+    private function makeTempDir()
     {
         $this->path = 'tmp/' . uniqid();
         Storage::makeDirectory($this->path);
     }
 
 
-    public function deleteTempDir()
+    private function deleteTempDir()
     {
         Storage::deleteDirectory($this->path());
     }
@@ -121,7 +133,7 @@ abstract class Rscripter
      *
      * @return string with name of the json file
      */
-    public function saveJSON()
+    private function saveJSON()
     {
         $filename = $this->entityName().'.json';
 
@@ -170,7 +182,7 @@ abstract class Rscripter
         return $array;
     }
 
-    public function validateDate($date)
+    private function validateDate($date)
     {
         if (is_null($date)) return false;
 
@@ -178,7 +190,7 @@ abstract class Rscripter
         return $d && $d->format('Y-m-d') === $date;
     }
 
-    public function validPriceArray($array)
+    protected function validPriceArray($array)
     {
         $checkDate = $this->validateDate(array_keys($array)[0]);
         $checkPrice = is_numeric(array_first($array));

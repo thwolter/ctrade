@@ -7,28 +7,36 @@ use App\Entities\Currency;
 use App\Facades\Mapping;
 use App\Models\Exceptions\RscriptException;
 use App\Models\QuantModel;
+use Carbon\Carbon;
+use Faker\Provider\DateTime;
 use Illuminate\Support\Facades\Storage;
 use Khill\Lavacharts\Lavacharts;
 use App\Repositories\CurrencyRepository;
+use When\When;
 
 
 class Portfolio extends Rscripter
 {
 
-    public $dates;
-
+    public function __construct($entity)
+    {
+        parent::__construct($entity);
+        $this->setWeekDays(Carbon::now(), $this->entity->settings('historyLength'));
+    }
 
     /**
-     * @param int $period number of days scaled by sqrt
-     * @param double $conf the VaR confidence level
+     * Calculate the risk on portfolio and position level
      *
      * @return array $res with calculated risk results
      */
-    public function risk($period, $conf)
+    public function risk()
     {
         $this->saveAsJson($this->historiesToArray());
 
-        return $this->callRscript(['task' => 'risk', 'conf' => $conf]);
+        return $this->callRscript([
+            'task' => 'risk',
+            'conf' => Mapping::confidence($this->entity->settings('levelConfidence'))
+        ]);
 
     }
     
@@ -63,19 +71,16 @@ class Portfolio extends Rscripter
         $positions = $this->entity->positions;
         $result = [];
 
-        //Todo: to be based on portfolio settings 1y\6m\2yrs, or similiar
-        $dates = array_keys($positions->first()->history(500));
-
         foreach ($positions as $position) {
 
             $key = strtoupper($position->positionable_type) . $position->positionable_id;
-            $result[$key] = $position->history($dates);
+            $result[$key] = $position->history($this->dates);
 
             $origin = $this->entity->currencyCode();
             $target = $position->currencyCode();
 
             if ($origin != $target)
-                $result[$origin.$target] = (new CurrencyRepository($origin, $target))->history($dates);
+                $result[$origin.$target] = (new CurrencyRepository($origin, $target))->history($this->dates);
         }
 
         return $result;
@@ -100,13 +105,22 @@ class Portfolio extends Rscripter
         }
     }
 
-    /**
-     * Set the dates to be considered for time series.
-     *
-     * @param array $dates
-     */
-    public function setDates(array $dates)
+    public function setWeekDays($date, $count = null)
     {
-        $this->dates = $dates;
+        if (is_null($count)) $count = count($this->dates);
+
+        $dates = array();
+        $date = new Carbon($date);
+
+        if ($date->isWeekday())
+            $dates[] = $date->format('Y-m-d');
+
+        while (count($dates)<$count)
+        {
+            $date->subWeekday(1);
+            $dates[] = $date->format('Y-m-d');
+        }
+
+        return $this->setDates($dates);
     }
 }

@@ -16,12 +16,10 @@ class Portfolio extends Model
 {
     use Financable;
     use Presentable;
-    use Rscriptable;
 
     protected $presenter = 'App\Presenters\Portfolio';
     protected $financial = 'App\Repositories\Yahoo\PortfolioFinancial';
-    protected $rscriptable = 'App\Models\Rscript\Portfolio';
-    
+
     protected $fillable = [
         'name', 'cash', 'description', 'settings', 'img_url'
     ];
