@@ -1,17 +1,24 @@
 <?php
+/**
+ * Calculates the information required to decide whether the user should receive information on
+ * the portfolios risk based on the portfolio settings e.g. limit, threshold, and email frequency.
+ *
+ */
 
 namespace App\Jobs;
 
 use App\Entities\Portfolio;
+use App\Facades\Helpers;
 use App\Facades\Mapping;
-use App\Settings\Settings;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use \App\Models\Rscript\Portfolio as Rscript;
 
-class CalculatePortfolioRisk implements ShouldQueue
+class PreparePortfolioMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     /**
@@ -38,12 +45,12 @@ class CalculatePortfolioRisk implements ShouldQueue
     {
         $confidence = Mapping::confidence($this->portfolio->settings('levelConfidence'));
 
+        $days = Helpers::allWeekDaysBetween($this->portfolio->created_at, Carbon::now());
 
+        $r = new Rscript($this->portfolio);
 
-        //get all weekdays which are not in keyfigures which is later than portfolio date
-        //run through all dates after this date and
-        //calculate the risk
-        //store the risk in keyfigures
+        //calculate the risk for today and previous period
+        //dispatch an email job with a timing as define in portfolio settings
 
 
         //$this->portfolio->keyFigures()->whereKey('Risk'.$confidence);

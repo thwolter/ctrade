@@ -30,7 +30,7 @@ class Keyfigure extends Model
      * @param $date
      * @return Keyfigure
      */
-    static public function make($key, $value, $date)
+    static public function set($key, $value, $date)
     {
         $keyFigure = new self(['value' => $value]);
 
