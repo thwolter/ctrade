@@ -18,7 +18,7 @@
     <link href="{{ asset('css/plugins/plugins.css') }}" rel="stylesheet">
 
     <!--Custom css-->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/bizwrap/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/mystyles.css') }}" rel="stylesheet">
 
     @yield('css.header')
@@ -30,9 +30,6 @@
 </head>
 
 <body>
-    <div id="preloader">
-        <div id="preloader-inner"></div>
-    </div><!--/preloader-->
 
     <div id="app">
         @include('partials.appbar')
@@ -49,9 +46,6 @@
     <!-- jQuery plugins. -->
     <script src="{{ asset('vendor/bizwrap/js/plugins/plugins.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-    
-    <!-- enable Vue -->
-    <script src="https://unpkg.com/vue"></script>
 
     @yield('scripts.footer')
     
