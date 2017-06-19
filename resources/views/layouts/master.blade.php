@@ -47,7 +47,7 @@
     </div>
 
     <!-- jQuery plugins. -->
-    <script src="{{ asset('js/plugins/plugins.js') }}"></script>
+    <script src="{{ asset('vendor/bizwrap/js/plugins/plugins.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     
     <!-- enable Vue -->
