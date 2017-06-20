@@ -11,14 +11,11 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
 
-    <!-- facicon -->
-    <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
-
-    <!--plugins-->
+    <!-- plugins -->
     <link href="{{ asset('css/plugins/plugins.css') }}" rel="stylesheet">
 
-    <!--Custom css-->
-    <link href="{{ asset('vendor/bizwrap/css/style.css') }}" rel="stylesheet">
+    <!-- CSS files -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/mystyles.css') }}" rel="stylesheet">
 
     @yield('css.header')

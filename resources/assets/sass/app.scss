@@ -8,3 +8,9 @@
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "resources/vendor/font-awesome/scss/font-awesome";
+
+@import "mixins";
+@import "spacing";
+@import "footer";
+@import "base";
+@import "navbar";
