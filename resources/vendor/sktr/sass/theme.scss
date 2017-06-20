@@ -1,0 +1,11 @@
+
+@import "theme/variables-default"; // Add your own variables or variables to overwrite default bootstrap settings here. If you want to use another variables preset simple change the name. For example if you want to use the preset for demo1 use "variables-demo3" instead of "variables-default"
+
+@import "assets/bootstrap"; // Bootstrap default styles
+@import "assets/font-awesome"; // adds font awesome via scss
+@import "assets/owl.carousel"; 
+
+// Any additional imported files //
+@import "theme/theme"; //your design
+
+
