@@ -10,10 +10,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-
-    <!-- plugins -->
-    <link href="{{ asset('css/plugins/plugins.css') }}" rel="stylesheet">
-
     <!-- CSS files -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/mystyles.css') }}" rel="stylesheet">
@@ -41,7 +37,6 @@
     </div>
 
     <!-- jQuery plugins. -->
-    <script src="{{ asset('vendor/bizwrap/js/plugins/plugins.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
 
     @yield('scripts.footer')

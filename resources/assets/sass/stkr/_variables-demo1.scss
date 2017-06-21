@@ -1,0 +1,76 @@
+// Use this file to overwrite the basic Bootstrap variables and add your own variables
+// To overwrite a Bootstrap variable you don´t have to touch the Bootstrap folder. 
+// Just copy a variable from /sass/bootstrap/_variables.scss, paste it here and edit the value.
+// As example you find one of the most important Bootstrap variable below: $brand-primary.
+// Thats the ugly Bootstrap blue used for all the links, primary buttons etc.
+// Just add your color code here, compile the theme.scss file to change this color everywhere
+//@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300); // For demo 1 and demo 2
+@import url(http://fonts.googleapis.com/css?family=Merriweather:400,400italic,300,300italic); // global serif
+
+//Colors
+$brand-primary:         #FFD300; //#FFD300 Demo1 //#1EC185 Demo 2 //#EF227F Demo 3
+$body-bg:               #181818 ;
+$wrapper-bg:			#fff;
+$overlay-dark:			rgba(34,34,34, 0.5);
+$secondary-bg:			#b9b9b9;
+
+// Typo
+$font-family-sans-serif:  	'Source Sans Pro', Helvetica, Arial, sans-serif;
+$font-family-serif:       	'Merriweather', Georgia, "Times New Roman", Times, serif ;
+$font-size-base:          	16px;
+$font-size-large:         	ceil(($font-size-base * 1.5)) !default; // ~18px
+$font-size-small:         	ceil(($font-size-base * 0.85)) !default; // ~12px
+$font-size-huge:         	ceil(($font-size-base * 1.75)) !default;
+$line-height-base:        	1.6 ; 
+$text-color:             	#666666;
+$link-color:				$brand-primary;
+$secondary-text-color:		#ffffff;
+$contrast-text-color:		#000000; // #000000 Demo 1 // #ffffff Demo 2 // #ffffff Demo 3
+
+
+$font-size-h1:            floor(($font-size-base * 8.0)) !default; // ~36px
+$font-size-h2:            floor(($font-size-base * 3.5)) !default; // ~30px
+$font-size-h3:            ceil(($font-size-base * 2.75)) !default; // ~24px
+$font-size-h4:            ceil(($font-size-base * 2)) !default; // ~18px
+$font-size-h5:            ceil(($font-size-base * 1.5)) !default;
+$font-size-h6:            ceil(($font-size-base * 1.25)) !default; // ~12px
+$headings-font-weight:    300 !default;
+
+// The Grid
+$grid-gutter-width:         120px !default;
+$wrapper-padding:			($grid-gutter-width * 1.25);
+
+// Buttons 
+$btn-primary-color:              $contrast-text-color;
+$btn-primary-bg:                 $brand-primary !default;
+$btn-primary-border:             darken($btn-primary-bg, 0%) !default;
+
+$padding-base-vertical:     ($font-size-base * 0.25);
+$padding-base-horizontal:   ($font-size-base * 2);
+
+$padding-large-vertical:    ($font-size-base * 0.5);
+$padding-large-horizontal:  ($font-size-base * 4);
+
+$padding-small-vertical:    ($font-size-base * 0.125);
+$padding-small-horizontal:  ($font-size-base * 1);
+
+$padding-xs-vertical:       ($font-size-base * 0.075);
+$padding-xs-horizontal:     ($font-size-base * 0.5);
+
+$line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
+$line-height-small:         1.5 !default;
+
+$border-radius-base:        0px;
+$border-radius-large:       0px;
+$border-radius-small:       0px;
+
+// Navbar Links
+$navbar-default-link-color:                #ffffff;
+$navbar-default-link-hover-color:          #ffffff;
+$navbar-default-link-hover-bg:             $brand-primary;
+
+// Navbar toggle
+$navbar-default-toggle-hover-bg:           #000 !important;
+$navbar-default-toggle-icon-bar-bg:        $secondary-text-color !important;
+$navbar-default-toggle-border-color:       $secondary-text-color;
+

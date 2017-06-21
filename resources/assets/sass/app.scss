@@ -1,16 +1,15 @@
 
 // Fonts
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,800);
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display+SC:400,400i');
+@import "resources/vendor/font-awesome/scss/font-awesome";
 
 // Variables
 @import "variables";
 
-// Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "resources/vendor/font-awesome/scss/font-awesome";
+// bootstrap
+@import "bootstrap";
 
-@import "mixins";
-@import "spacing";
-@import "footer";
-@import "base";
-@import "navbar";
+// bizwrap theme
+@import "bizwrap/style";
