@@ -1,53 +1,87 @@
 
-// Body
-$body-bg: #f5f8fa;
+//Colors
+$brand-primary:         #FFD300; //#FFD300 Demo1 //#1EC185 Demo 2 //#EF227F Demo 3
+$body-bg:               #181818 ;
+$wrapper-bg:			#fff;
+$overlay-dark:			rgba(34,34,34, 0.5);
+$secondary-bg:			#b9b9b9;
 
-// Borders
-$laravel-border-color: darken($body-bg, 10%);
-$list-group-border: $laravel-border-color;
-$navbar-default-border: $laravel-border-color;
-$panel-default-border: $laravel-border-color;
-$panel-inner-border: $laravel-border-color;
+// Typo
+$font-family-sans-serif:  	'Source Sans Pro', Helvetica, Arial, sans-serif;
+$font-family-serif:       	'Merriweather', Georgia, "Times New Roman", Times, serif ;
+$font-size-base:          	1rem;
+$font-size-large:         	ceil(($font-size-base * 1.5)) !default; // ~18px
+$font-size-small:         	ceil(($font-size-base * 0.85)) !default; // ~12px
+$font-size-huge:         	ceil(($font-size-base * 1.75)) !default;
+$line-height-base:        	1.6 ;
+$text-color:             	#666666;
+$link-color:				$brand-primary;
+$secondary-text-color:		#ffffff;
+$contrast-text-color:		#000000; // #000000 Demo 1 // #ffffff Demo 2 // #ffffff Demo 3
 
-// Brands
-$brand-primary: #3097D1;
-$brand-info: #8eb4cb;
-$brand-success: #2ab27b;
-$brand-warning: #cbb956;
-$brand-danger: #bf5329;
 
-// Typography
-$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
-$font-family-sans-serif: "Raleway", sans-serif;
-$font-size-base: 14px;
-$line-height-base: 1.6;
-$text-color: #636b6f;
+$font-size-h1:            floor(($font-size-base * 8.0)) !default; // ~36px
+$font-size-h2:            floor(($font-size-base * 3.5)) !default; // ~30px
+$font-size-h3:            ceil(($font-size-base * 2.75)) !default; // ~24px
+$font-size-h4:            ceil(($font-size-base * 2)) !default; // ~18px
+$font-size-h5:            ceil(($font-size-base * 1.5)) !default;
+$font-size-h6:            ceil(($font-size-base * 1.25)) !default; // ~12px
+$headings-font-weight:    300 !default;
 
-// Navbar
-$navbar-default-bg: #fff;
+// The Grid
+$grid-gutter-width:         120px !default;
+$wrapper-padding:			($grid-gutter-width * 1.25);
 
 // Buttons
-$btn-default-color: $text-color;
+$btn-primary-color:              $contrast-text-color;
+$btn-primary-bg:                 $brand-primary !default;
+$btn-primary-border:             darken($btn-primary-bg, 0%) !default;
 
-// Inputs
-$input-border: lighten($text-color, 40%);
-$input-border-focus: lighten($brand-primary, 25%);
-$input-color-placeholder: lighten($text-color, 30%);
+$padding-base-vertical:     ($font-size-base * 0.25);
+$padding-base-horizontal:   ($font-size-base * 2);
 
-// Panels
-$panel-default-heading-bg: #fff;
+$padding-large-vertical:    ($font-size-base * 0.5);
+$padding-large-horizontal:  ($font-size-base * 4);
+
+$padding-small-vertical:    ($font-size-base * 0.125);
+$padding-small-horizontal:  ($font-size-base * 1);
+
+$padding-xs-vertical:       ($font-size-base * 0.075);
+$padding-xs-horizontal:     ($font-size-base * 0.5);
+
+$line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
+$line-height-small:         1.5 !default;
+
+$border-radius-base:        0px;
+$border-radius-large:       0px;
+$border-radius-small:       0px;
+
+// Navbar Links
+$navbar-default-link-color:                #ffffff;
+$navbar-default-link-hover-color:          #ffffff;
+$navbar-default-link-hover-bg:             $brand-primary;
+
+// Navbar toggle
+$navbar-default-toggle-hover-bg:           #000 !important;
+$navbar-default-toggle-icon-bar-bg:        $secondary-text-color !important;
+$navbar-default-toggle-border-color:       $secondary-text-color;
 
 
-//some variables for Bizwrap theme, you can create your own easily.
+
 $body-bg:#fff;
-$base-line-height:24px;
+
+// colors
 $skincolor: #4c779e;
 $lightcolor:#fff; //white color and background
 $graycolor:#777; //gray color for p tags
 $darkcolor:#333; //dark color for heading
+
+// typography
+$base-line-height:24px;
 $primary-font: 'Open Sans', sans-serif; //default font family
 $secondry-font: 'Playfair Display', serif; //sub title font family
 $title-font:'Raleway', sans-serif;
 $base-font-size:13px; //default basic font size
 $alert-color:red; //alert color
 $default-border: 1px solid #eee;
+

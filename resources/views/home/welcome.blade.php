@@ -3,16 +3,61 @@
 @section('content')
 
     <div class="clearfix"></div>
-    <header class="home-header-box">
-        <div class="title-box">
-            <h1><span class="highlight">ERFOLREICHER INVESTIEREN.</span> <br>
-                Portfolio professionell steuern</h1>
-            <div id="header-buttons" class="button-group">
-                <a href="{{ route('register') }}" class="btn theme-btn-color btn-lg btn-radius" style="margin-right: 10px">Entdecken</a>
-                <a href="#infos" class="btn btn-outline-secondary btn-lg btn-radius">Mehr Infos</a>
+    <header class="header-hero">
+        <div class="container">
+            <div class="text-xs-center">
+                <h1>Erfolgreicher investieren.</h1>
+                <h2>Portfolio professionell steuern</h2>
+                <p class="button-group">
+                    <a href="{{ route('register') }}" class="btn theme-btn-color btn-lg btn-radius">Entdecken</a>
+                    <a href="#infos" class="btn btn-outline-secondary btn-lg btn-radius">Mehr Infos</a>
+                </p>
             </div>
         </div>
     </header>
+
+    <section id="bck-img1" class="wrapper wrapper-dark wrapper-half-left">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-6">
+                    <h4>Lorem ipsum dolor sit amet, consetetur</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="bck-img2" class="wrapper wrapper-primary wrapper-half-right">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-right">
+                    <h4>Lorem ipsum dolor sit amet, consetetur</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="bck-img3" class="wrapper wrapper-dark wrapper-half-left">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-6">
+                    <h4>Lorem ipsum dolor sit amet, consetetur</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="clearfix"></div>
+
+
 
 @endsection
 

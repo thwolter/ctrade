@@ -12,7 +12,6 @@
 
     <!-- CSS files -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/mystyles.css') }}" rel="stylesheet">
 
     @yield('css.header')
 
