@@ -20,6 +20,7 @@
         padding:5px 0;
     }
 }
+/*
 .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
     color:$skincolor;
 }
@@ -28,7 +29,7 @@
 }
 .navbar-inverse .navbar-nav .active>.nav-link, .navbar-inverse .navbar-nav .nav-link.active, .navbar-inverse .navbar-nav .nav-link.open, .navbar-inverse .navbar-nav .open>.nav-link {
     color:$skincolor;
-}
+}*/
 .navbar{
     @include border-radius(0px);
     margin-bottom: 0px;
@@ -69,10 +70,9 @@
 /*********************header option 2***************************/
 
 .navbar-inverse {
-    background-color: rgba(0,0,0,0.9);
+    background-color: $navbar-inverse-color;
     border: none;
     @include border-radius(0px);
-    @include box-shadow ( 0 1px 5px rgba(0, 0, 0, 0.15));
     padding: 10px 0;
     width:100%;
     .navbar-nav>li>a.nav-link {
@@ -82,7 +82,7 @@
         letter-spacing: 2px;
         text-transform: uppercase;
         &:hover {
-            color: $skincolor;
+            color: $navbar-inverse-hover-color;
             background-color: transparent;
         }
     }

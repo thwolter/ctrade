@@ -1,12 +1,27 @@
 
-//Colors
-$brand-primary:         #FFD300; //#FFD300 Demo1 //#1EC185 Demo 2 //#EF227F Demo 3
-$body-bg:               #181818 ;
+// Colors
+$body-bg: #ffffff;
+$white:  				#fff !default;
+$brand-primary:      #FFD300;
 $wrapper-bg:			#fff;
 $overlay-dark:			rgba(34,34,34, 0.5);
 $secondary-bg:			#b9b9b9;
+$skincolor: 			#4c779e;
+$lightcolor:			#fff; //white color and background
+$graycolor:				#777; //gray color for p tags
+$darkcolor:				#333; //dark color for heading
+$alert-color:			red; //alert color
+
+// Boarder
+$default-border: 1px solid #eee;
+
 
 // Typo
+$base-line-height:			24px;
+$primary-font: 				'Open Sans', sans-serif; //default font family
+$secondry-font: 				'Playfair Display', serif; //sub title font family
+$title-font:					'Raleway', sans-serif;
+$base-font-size:				13px; //default basic font size
 $font-family-sans-serif:  	'Source Sans Pro', Helvetica, Arial, sans-serif;
 $font-family-serif:       	'Merriweather', Georgia, "Times New Roman", Times, serif ;
 $font-size-base:          	1rem;
@@ -36,7 +51,11 @@ $wrapper-padding:			($grid-gutter-width * 1.25);
 $btn-primary-color:              $contrast-text-color;
 $btn-primary-bg:                 $brand-primary !default;
 $btn-primary-border:             darken($btn-primary-bg, 0%) !default;
+$border-radius-base:        0px;
+$border-radius-large:       0px;
+$border-radius-small:       0px;
 
+// Padding
 $padding-base-vertical:     ($font-size-base * 0.25);
 $padding-base-horizontal:   ($font-size-base * 2);
 
@@ -52,9 +71,7 @@ $padding-xs-horizontal:     ($font-size-base * 0.5);
 $line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
 $line-height-small:         1.5 !default;
 
-$border-radius-base:        0px;
-$border-radius-large:       0px;
-$border-radius-small:       0px;
+
 
 // Navbar Links
 $navbar-default-link-color:                #ffffff;
@@ -68,20 +85,15 @@ $navbar-default-toggle-border-color:       $secondary-text-color;
 
 
 
-$body-bg:#fff;
+// Navbar
+$navbar-inverse-color: 						#213645 !default;
+$navbar-inverse-hover-color:           rgba($white,.75) !default;
+$navbar-inverse-active-color:          rgba($white,1) !default;
+$navbar-inverse-disabled-color:        rgba($white,.25) !default;
+$navbar-inverse-toggler-bg: str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-inverse-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E"), "#", "%23") !default;
+$navbar-inverse-toggler-border:        rgba($white,.1) !default;
 
-// colors
-$skincolor: #4c779e;
-$lightcolor:#fff; //white color and background
-$graycolor:#777; //gray color for p tags
-$darkcolor:#333; //dark color for heading
 
-// typography
-$base-line-height:24px;
-$primary-font: 'Open Sans', sans-serif; //default font family
-$secondry-font: 'Playfair Display', serif; //sub title font family
-$title-font:'Raleway', sans-serif;
-$base-font-size:13px; //default basic font size
-$alert-color:red; //alert color
-$default-border: 1px solid #eee;
+
+
 

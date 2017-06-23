@@ -2,13 +2,21 @@
 
 @section('content')
 
-    <section id="content-region-3" class="padding-40 page-tree-bg">
+    <section class="portfolio-header">
         <div class="container">
-            <h3 class="page-tree-text">
-                Meine Portfolios
-            </h3>
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>{{ $portfolio->name }}</h2>
+                </div>
+                <div class="col-md-2">
+                    <h2 class="key-figures">
+                        <span class="key-desc">Wert</span><span>{{ $portfolio->present()->total() }}</span>
+                        <span class="key-desc">Risiko</span><span>200</span>
+                    </h2>
+                </div>
+            </div>
         </div>
-    </section><!--page-tree end here-->
+    </section>
 
     <div id="container" class="container">
         <div class="space-70"></div>
@@ -22,19 +30,6 @@
             <!-- main section -->
             <div class="col-lg-9 offset-lg-1 col-md-8 offset-md-1 col-sm-8">
                 <div class="portfolio-panel">
-
-                    <!-- title -->
-                    <div class="container panel-title">
-                        <div class="row">
-                            <div class="col-md-10 header-text">
-                                <h2>{{ $portfolio->name }}</h2>
-                                <span class="news-post-cat">{{ $portfolio->categoryName }} | angelegt 20.02.2016</span>
-                            </div>
-                            <div class="col-md-2 header-image">
-                                <img src="{{ $portfolio->present()->image }}" class="img-fluid" alt="Mountain View">
-                            </div>
-                        </div>
-                    </div><!-- /title -->
 
                     @yield('container-content')
 
