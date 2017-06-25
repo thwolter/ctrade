@@ -2,6 +2,10 @@
 
 @section('content')
 
+    <div class="landing">
+        @include('layouts.partials.landingnav')
+    </div>
+
     <div class="clearfix"></div>
     <header class="header-hero">
         <div class="container">

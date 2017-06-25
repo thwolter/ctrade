@@ -2,6 +2,8 @@
 
 @section('content')
 
+    @include('layouts.partials.mainnav')
+
     <section class="portfolio-header">
         <div class="container">
             <div class="row">

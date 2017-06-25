@@ -1,305 +1,92 @@
-
-// Fonts
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800);
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,800);
-@import url(https://fonts.googleapis.com/css?family=Playfair+Display+SC:400,400i);
-@import url(http://fonts.googleapis.com/css?family=Merriweather:400,400italic,300,300italic); // global serif
-
 @import "resources/vendor/font-awesome/scss/font-awesome";
 
-// Variables
+// Bootstrap Variables & Mixins ************************* /
+
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+
+// Custom Variables & Mixins **************************** /
+
 @import "variables";
-
-// bootstrap
-@import "node_modules/bootstrap/scss/bootstrap.scss";
-
-// bizwrap theme
 @import "mixins";
-@import "base";
-@import "spacing";
-@import "footer";
-@import "button";
-@import "login";
-@import "blog";
 
 
-// Custom
-@import "heroheader";
+// Color Variables Override ***************************** /
+
+@import "skins/slate";
+
+
+// Defaults ********************************************* /
+@import "templates/defaults";
+
+
+// Bootstrap Overrides ********************************** /
+
+@import "bootstrap";
+
+
+// mvp theme
+//@import "components/layout";
+//@import "components/mega-menu";
+//@import "components/portlet";
+//@import "components/icons-list";
+//@import "components/validation";
+//@import "components/backtotop";
+//@import "components/notifications-list";
+//@import "components/pricing-plans";
+//@import "components/pricing-table";
+//@import "components/share-widget";
+//@import "components/social-feed";
+//@import "components/stats";
+//@import "components/headings";
+//@import "components/blank-slate";
+//@import "components/sitemap";
+//@import "components/account";
+//@import "components/error";
+//@import "components/maintenance";
+//@import "components/social-icon";
+//@import "components/utilities";
+
+//@import "components/blog";
+//@import "components/clients";
+//@import "components/comment-list";
+//@import "components/features";
+//@import "components/team-member";
+//@import "components/testimonials";
+
+
+// Plugins ********************************************** /
+
+@import "plugins/datatables";
+@import "plugins/flot";
+@import "plugins/select2";
+@import "plugins/icheck";
+@import "plugins/steps";
+@import "plugins/simplecolorpicker";
+@import "plugins/jquery-ui/slider";
+@import "plugins/summernote";
+@import "plugins/datatable-helper";
+
+
+// Template Specific ************************************ /
+
+//@import "templates/admin/navbar";
+//@import "templates/admin/navbar-notifications";
+//@import "templates/admin/mainnav";
+//@import "templates/admin/content";
+//@import "templates/admin/footer";
+//@import "templates/admin/sticky-footer";
+//@import "templates/landing/navbar";
+
+
+// Demo Styles ****************************************** /
+
+//@import "components/demo";
+
+
+
+// Custom *********************************************** /
+@import "hero";
 @import "wrapper";
-@import "setingpanel";
-@import "navbar";
 
-
-
-.buy-sell-group {
-  text-align: center;
-  word-spacing: 5px;
-}
-
-.buy-sell-icon {
-  font-size: 1.4em;
-  word-spacing: 5px;
-  text-align: center;
-}
-
-/********************************************************
-/* Portfolios
-*********************************************************/
-.portfolio-list-wrapper {
-}
-
-.portfolio {
-	padding: 10px 0;
-	.portfolio-img {
-
-	}
-	.portfolio-desc {
-		padding: 10px;
-		border: 1px solid #ddd;
-		margin: 10px 0px;
-		background-color: #213645;
-	}
-
-	.portfolio-cat {
-		display: block;
-		letter-spacing: 1px;
-		text-transform: uppercase;
-		font-size: 10px;
-		color: #a1b4c1;
-		margin-bottom: 10px;
-		margin-top: 10px;
-	}
-	h3 {
-		font-size: 24px;
-		a {
-			color: #ccc;
-		}
-	}
-	a {
-		color: #ccc;
-	}
-
-}
-
-
-
-/********************************************************
-/* landing-page
-*********************************************************/
-.welcome-box {
-  background-color: #f2f4f7;
-  padding: 20px;
-}
-
-.create-button-box {
-  text-align: right;
-}
-
-
-/********************************************************
-/* sidebar navigation
-*********************************************************/
-.sidebar-nav a {
-  color: #4c779e;
-  text-transform: uppercase;
-}
-
-.sidebar-nav a.active{
-  background-color: #f7f7f7;
-  color: #4c779e;
-  border-radius: 0px;
-  border-left: 3px solid #4c779e;
-}
-
-
-
-/********************************************************
-/* forms
-*********************************************************/
-.input-form {
-  background-color: #f7f7f7;
-  border: 1px solid #eee;
-  padding: 25px 40px;
-}
-
-.input-form .form-title {
-  margin-bottom: 40px;
-  font-size: 25px;
-  color: #4c779e;
-}
-
-.input-form .buttons-row {
-  padding: 25px 0px 10px 0px;
-  word-spacing: 5px;
-}
-
-
-/********************************************************
-/* input form
-*********************************************************/
-.input-form {
-  background-color: #f7f7f7;
-  border: 1px solid #eee;
-  padding: 25px 40px;
-}
-
-.input-form .form-title {
-  margin-bottom: 40px;
-  font-size: 25px;
-  color: #4c779e;
-}
-
-.input-form .buttons-row {
-  padding: 25px 0px 0px 10px;
-}
-
-/********************************************************
-/* portfolio panel
-*********************************************************/
-
-.portfolio-header {
-  	padding: 15px 0;
-  	background-color: #b1bbc3;
-  	border-bottom: $default-border;
-  	h2 {
-    	color: #f7f7f7;
-    	margin: 0;
-  	}
-  	h4 {
-    	display: inline-flex;
-  	}
-	.key-figures {
-		display: inline-flex;
-	}
-	.key-desc {
-		font-size: 14px;
-		padding: 0 10px 0 20px;
-	}
-
-}
-
-.portfolio-panel .panel-title {
-  /*border-bottom: 1px solid #4c779e;*/
-  margin-bottom: 50px;
-}
-
-.portfolio-panel h2 {
-  color: #4c779e;
-}
-
-.portfolio-panel .boxed-container {
-  background-color: #f7f7f7;
-  border: 1px solid #eee;
-  padding: 20px 35px;
-}
-
-.portfolio-panel .value-caption {
-  margin-bottom: 3px;
-}
-.portfolio-panel .value-highlight {
-  font-size: 25px;
-  font-weight: lighter;
-  color: #f7f7f7;
-  background-color: #4c779e;
-  padding: 0px 8px;
-}
-
-.portfolio-panel .red {
-  background-color: #a94442;
-}
-
-.portfolio-panel .neutral {
-  background-color: black;
-}
-
-.portfolio-panel thead {
-  background-color: #4c779e;
-  color: whitesmoke;
-}
-
-.portfolio-panel table a {
-  color: #ab977c;
-}
-
-.portfolio-panel img {
-  width: 100px;
-  height: 100px;
-}
-
-.portfolio-panel .header-text {
-  border-bottom: 1px solid #4c779e;
-}
-
-.portfolio-panel .header-image {
-
-}
-
-
-/********************************************************
-/* general
-*********************************************************/
-
-.pull-right {
-  text-align: right;
-}
-
-
-/********************************************************
-/* tables
-*********************************************************/
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: #f7f7f7;
-}
-
-.summary-table {
-  line-height: 30px;
-}
-
-.summary-table .table-value {
-  font-size: 18px;
-  padding-left: 40px;
-}
-
-.summary-table .table-key {
-
-}
-
-
-/********************************************************
-/* input fields
-*********************************************************/
-
-input::-webkit-input-placeholder {
-  color: #ccc !important;
-}
-
-input:-moz-placeholder { /* Firefox 18- */
-  color: #ccc !important;
-}
-
-input::-moz-placeholder {  /* Firefox 19+ */
-  color: #ccc !important;
-}
-
-input:-ms-input-placeholder {
-  color: #ccc !important;
-}
-
-/********************************************************
-/* 404 page
-*********************************************************/
-
-.error-template {
-  padding: 40px 15px;
-  text-align: center;
-
-}
-.error-actions {
-  margin-top:15px;
-  margin-bottom:15px;
-}
-
-.error-actions .btn {
-  margin-right:10px;
-}
