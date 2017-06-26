@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master_old')
 
 @section('content')
     <div class="space-40"></div>

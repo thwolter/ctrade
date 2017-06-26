@@ -2,72 +2,111 @@
 
 @section('content')
 
-    <section id="content-region-3" class="padding-40 page-tree-bg">
-        <div class="container">
-            <h3 class="page-tree-text">
-                Login into your account
-            </h3>
-        </div>
-    </section><!--page-tree end here-->
-    <div class="space-70"></div>
+    <header class="navbar" role="banner">
 
     <div class="container">
+
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <i class="fa fa-cog"></i>
+            </button>
+
+            <a href="./index.html" class="navbar-brand navbar-brand-img">
+                <img src="./img/logo.png" alt="MVP Ready">
+            </a>
+        </div> <!-- /.navbar-header -->
+
+        <nav class="collapse navbar-collapse" role="navigation">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="./index.html"><i class="fa fa-angle-double-left"></i> &nbsp;Back to Home</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div> <!-- /.container -->
+
+</header>
+
+    <br class="xs-80">
+
+    <div class="account-wrapper">
+
+    <div class="account-body">
+        <h3>Willkommen bei ctrade.</h3>
+        <h5>Bitte melde dich an.</h5>
+        <br>
         <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-                <div class="panel panel-default">
-                    <div class="my-login-form">
+            <div class="col-sm-6">
+                <a href="javascript:;" class="btn btn-twitter btn-block">
+                    <i class="fa fa-twitter"></i>
+                    &nbsp;&nbsp;Login with Twitter
+                </a>
+            </div> <!-- /.col -->
 
-                        <form role="form" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+            <div class="col-sm-6">
+                <a href="javascript:;" class="btn btn-facebook btn-block">
+                    <i class="fa fa-facebook"></i>
+                    &nbsp;&nbsp;Login with Facebook
+                </a>
+            </div> <!-- /.col -->
 
-                            <h4 class="text-uppercase">Login</h4><hr>
+        </div> <!-- /.row -->
 
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <input id="email" type="email" class="form-control" name="email" placeholder="Email.." value="{{ old('email') }} " required autofocus>
+        <span class="account-or-social text-muted">ODER</span>
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+        <form class="form account-form" method="POST" action="{{ route('login') }}">
 
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+            {{ csrf_field() }}
 
-                                <input id="password" type="password" class="form-control" name="password" placeholder="Password.." required>
+            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                <label for="email" class="placeholder-hidden">Email</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="Email" tabindex="1">
+                @if ($errors->has('email'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
+                @endif
+            </div> <!-- /.form-group -->
 
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                <label for="password" class="placeholder-hidden">Passwort</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Passwort" tabindex="2">
+                @if ($errors->has('password'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </span>
+                @endif
+            </div> <!-- /.form-group -->
 
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Eingeloggt bleiben
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="text-right">
-                                <button type="submit" class="btn theme-btn-color">Login</button>
-                            </div>
-                            <hr>
-
-                            <div class="form-btm-link text-center">
-                                <a class="btn btn-link" href="{{ route('password.request') }}">Passwort vergessen?</a>
-                                <span>oder</span>
-                                <a class="btn btn-link" href="{{ route('register') }}">Account erstellen</a>
-                            </div>
-
-                        </form><!--login form end-->
-                    </div>
+            <div class="form-group clearfix">
+                <div class="pull-left">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" class="" {{ old('remember') ? 'checked' : '' }} tabindex="3"> <small>Remember me</small>
+                    </label>
                 </div>
-            </div>
-            <div class="space-70"></div>
-            <div class="space-70"></div>
-        </div>
-    </div>
+
+                <div class="pull-right">
+                    <small><a href="{{ route('password.request') }}">Passwort vergessen?</a></small>
+                </div>
+            </div> <!-- /.form-group -->
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="4">Einloggen &nbsp; <i class="fa fa-play-circle"></i></button>
+            </div> <!-- /.form-group -->
+
+        </form>
+
+    </div> <!-- /.account-body -->
+
+    <div class="account-footer">
+        <p>
+            Noch keinen Account? &nbsp;
+            <a href="{{ route('register') }}" class="">Account erstellen!</a>
+        </p>
+    </div> <!-- /.account-footer -->
+
+</div> <!-- /.account-wrapper -->
+
 @endsection

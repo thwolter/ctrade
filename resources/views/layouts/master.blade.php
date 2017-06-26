@@ -2,7 +2,7 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="{{ config('app.locale') }}" class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 <head>
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -18,13 +18,17 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- CSS files -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/fontawesome/css/font-awesome.min.css') }}">
 
-    @yield('css.header')
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
 
-    <!-- Scripts -->
-    <script> window.Laravel = {!! json_encode(['csrfToken' => csrf_token(), ]) !!} </script>
+    <!-- App CSS -->
+    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/admin-1/css/mvpready-admin.css') }}">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -33,20 +37,58 @@
     <![endif]-->
 </head>
 
-<body>
+<body class="layout-fixed  ">
+
+<div id="wrapper">
+
+   @if (Auth::check())
+
+        @include('layouts.partials.appbar')
+        @include('layouts.partials.mainnav')
+
+    @endif
+
         @yield('content')
-        @include('partials.footer')
+        @include('layouts.partials.footer')
 
-        <!--back to top-->
-        <a href="#" class="scrollToTop"><i class="ion-android-arrow-dropup-circle"></i></a>
-        <!--back to top end-->
-    </div>
 
-    <!-- jQuery plugins. -->
-    <script src="{{ asset('js/app.js') }}"></script>
 
-    @yield('scripts.footer')
-    
+</div> <!-- /#wrapper -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Core JS -->
+<script src="{{ asset('vendor/mvp-theme/bower_components/jquery/dist/jquery.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/slimscroll/jquery.slimscroll.js') }}"></script>
+
+
+
+<!-- Plugin JS -->
+<script src="{{ asset('vendor/mvp-theme/bower_components/flot/excanvas.min.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/flot/jquery.flot.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/flot/jquery.flot.pie.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/flot/jquery.flot.resize.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/flot/jquery.flot.time.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/flot/jquery.flot.stack.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/flot/jquery.flot.categories.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/flot.orderbars/js/jquery.flot.orderBars.js') }}"></script>
+
+<!-- App JS -->
+<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/templates/admin-2/js/mvpready-admin.js') }}"></script>
+
+
+<!-- Demo JS -->
+<script src="{{ asset('vendor/mvp-theme/global/js/demos/flot/line.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/global/js/demos/flot/pie.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/global/js/demos/flot/auto.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/global/js/demos/flot/scatter.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/global/js/demos/flot/vertical.js') }}"></script>
+
+@yield('scripts.footer')
+
 </body>
 </html>
-

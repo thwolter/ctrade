@@ -1,40 +1,72 @@
-<nav class="navbar navbar-toggleable-sm">
+<div class="mainnav ">
+
     <div class="container">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="index.html"><img src="{{ asset('img/logo-dark.png') }}" class="img-fluid" alt=""></a>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="/">
-                        @if (Auth::guest()) Home @else Portfolios @endif</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"> Über uns</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Kontakt</a></li>
+        <a class="mainnav-toggle" data-toggle="collapse" data-target=".mainnav-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <i class="fa fa-bars"></i>
+        </a>
+        <nav class="collapse mainnav-collapse" role="navigation">
 
-                @if (Auth::guest())
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                @else
-                    <li class=" dropdown nav-item">
-                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Account</a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout
-                                </a>
+            <ul class="mainnav-menu">
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
+                <li class="dropdown pull-right">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                        Portfolios
+                        <i class="mainnav-caret"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-edit dropdown-icon "></i>
+                                Neues Portfolio
+                            </a>
+                        </li>
 
-                            <li><a class="dropdown-item" href="#">Einstellungen</a></li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-edit dropdown-icon "></i>
+                                Übersicht
+                            </a>
+                        </li>
 
-                        </ul>
-                    </li>
-                @endif
+                    </ul>
+                </li>
+
+                <li class="{{ active_class(if_route_pattern(['portfolios.*'])) }}">
+                    <a href="{{ route('portfolios.show', $portfolio->id) }}">
+                        Übersicht
+                    </a>
+                </li>
+
+                <li class="{{ active_class(if_route_pattern(['transactions.*'])) }}">
+                    <a href="{{ route('transactions.index', $portfolio->id) }}">
+                        Transaktionen
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="{{ route('positions.index', $portfolio->id) }}">
+                        Positionen
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="{{ route('risks.index', $portfolio->id) }}">
+                        Risiko
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="#">
+                        Optimieren
+                    </a>
+                </li>
+
             </ul>
-        </div>
-    </div>
-</nav><!--nav end-->
+
+        </nav>
+
+    </div> <!-- /.container -->
+
+</div> <!-- /.mainnav -->
