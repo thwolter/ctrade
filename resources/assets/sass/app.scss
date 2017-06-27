@@ -1,29 +1,29 @@
-@import "resources/vendor/font-awesome/scss/font-awesome";
+@import "font-awesome/scss/font-awesome";
 
 // Bootstrap Variables & Mixins ************************* /
 
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+//@import "node_modules/bootstrap/scss/variables";
+//@import "node_modules/bootstrap/scss/mixins";
 
 
 // Custom Variables & Mixins **************************** /
 
-@import "variables";
-@import "mixins";
+//@import "variables";
+//@import "mixins";
 
 
 // Color Variables Override ***************************** /
 
-@import "skins/slate";
+//@import "skins/slate";
 
 
 // Defaults ********************************************* /
-@import "templates/defaults";
+//@import "templates/defaults";
 
 
 // Bootstrap Overrides ********************************** /
 
-@import "bootstrap";
+//@import "bootstrap";
 
 
 // mvp theme
@@ -58,15 +58,15 @@
 
 // Plugins ********************************************** /
 
-@import "plugins/datatables";
-@import "plugins/flot";
-@import "plugins/select2";
-@import "plugins/icheck";
-@import "plugins/steps";
-@import "plugins/simplecolorpicker";
-@import "plugins/jquery-ui/slider";
-@import "plugins/summernote";
-@import "plugins/datatable-helper";
+//@import "plugins/datatables";
+//@import "plugins/flot";
+//@import "plugins/select2";
+//@import "plugins/icheck";
+//@import "plugins/steps";
+//@import "plugins/simplecolorpicker";
+//@import "plugins/jquery-ui/slider";
+//@import "plugins/summernote";
+//@import "plugins/datatable-helper";
 
 
 // Template Specific ************************************ /
@@ -87,6 +87,10 @@
 
 
 // Custom *********************************************** /
-@import "hero";
-@import "wrapper";
+//@import "hero";
+//@import "wrapper";
 
+
+.separator {
+	border-bottom: 1px solid #ddd;
+}

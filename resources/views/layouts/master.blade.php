@@ -26,6 +26,7 @@
 
     <!-- App CSS -->
     <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/admin-1/css/mvpready-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
@@ -45,6 +46,7 @@
 
         @include('layouts.partials.appbar')
         @include('layouts.partials.mainnav')
+
 
     @endif
 
@@ -68,6 +70,7 @@
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/templates/admin-2/js/mvpready-admin.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 
 
 @yield('scripts.footer')
