@@ -2,34 +2,7 @@
 
 @section('content')
 
-    <header class="navbar" role="banner">
-
-    <div class="container">
-
-        <div class="navbar-header">
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <i class="fa fa-cog"></i>
-            </button>
-
-            <a href="./index.html" class="navbar-brand navbar-brand-img">
-                <img src="./img/logo.png" alt="MVP Ready">
-            </a>
-        </div> <!-- /.navbar-header -->
-
-        <nav class="collapse navbar-collapse" role="navigation">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="./index.html"><i class="fa fa-angle-double-left"></i> &nbsp;Back to Home</a>
-                </li>
-            </ul>
-        </nav>
-
-    </div> <!-- /.container -->
-
-</header>
-
-    <br class="xs-80">
+    @include('auth.partials.header')
 
     <div class="account-wrapper">
 

@@ -25,7 +25,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
 
     <!-- App CSS -->
-    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/admin-1/css/mvpready-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/landing/css/mvpready-landing.css') }}">
+    <link href="{{ asset('vendor/mvp-theme/bower_components/animate.css/animate.min.css') }}" rel="stylesheet">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
@@ -35,25 +36,20 @@
     <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <link rel="shortcut icon" href="favicon.ico">
 </head>
 
-<body class="layout-fixed">
+<body class="layout-fixed  ">
 
 <div id="wrapper">
 
-   @if (Auth::check())
-
-        @include('layouts.partials.appbar')
-        @include('layouts.partials.mainnav')
-
-    @endif
-
     @yield('content')
-    @include('layouts.partials.footer')
-
-
 
 </div> <!-- /#wrapper -->
+
+
+@yield ('footer')
 
 
 <!-- Bootstrap core JavaScript
@@ -61,16 +57,16 @@
 <!-- Core JS -->
 <script src="{{ asset('vendor/mvp-theme/bower_components/jquery/dist/jquery.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/bower_components/slimscroll/jquery.slimscroll.js') }}"></script>
+
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="http://preview.oklerthemes.com/porto/4.1.0/vendor/jquery.gmap/jquery.gmap.js"></script>
 
 
 <!-- App JS -->
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/templates/admin-2/js/mvpready-admin.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/templates/landing/js/mvpready-landing.js') }}"></script>
 
-
-@yield('scripts.footer')
 
 </body>
 </html>

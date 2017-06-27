@@ -16,7 +16,7 @@ class HomeController extends Controller
         if (\Auth::check())
             return redirect(route('portfolios.index'));
         else
-            return view('home.welcome');
+            return view('home.home');
 
     }
 }
