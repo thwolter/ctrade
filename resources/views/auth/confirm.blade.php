@@ -2,13 +2,7 @@
 
 @section('content')
 
-    <section id="content-region-3" class="padding-40 page-tree-bg">
-        <div class="container">
-            <h3 class="page-tree-text">
-                Anmeldung
-            </h3>
-        </div>
-    </section><!--page-tree end here-->
+    @include('auth.partials.header')
 
     <div class="container" style="height: 100vH">
         <div class="space-70"></div>

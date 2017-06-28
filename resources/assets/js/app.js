@@ -1,4 +1,4 @@
-
+/*
 var Chart = require('chart.js');
 
 var context = document.getElementById("myChart").getContext('2d');
@@ -30,6 +30,7 @@ new Chart(context, {
         }]
     }
 });
+*/
 
 /**
  * The nvpready theme brings its own bootstrap based on version 3
@@ -46,7 +47,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('example', require('./components/Example.vue'));
-Vue.component('line-chart', require('./components/LineChart.vue'));
+Vue.component('portlet', require('./components/Portlet.vue'));
 
 const app = new Vue({
     el: '#wrapper'

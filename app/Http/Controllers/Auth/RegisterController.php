@@ -55,6 +55,7 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'checkbox' => 'required'
         ]);
     }
 
@@ -86,7 +87,7 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
         dispatch(new SendVerificationEmail($user));
 
-        return view('auth.verification');
+        return redirect(route('register.success'));
     }
 
 
@@ -104,5 +105,10 @@ class RegisterController extends Controller
         if($user->save()){
             return view('auth.confirm', compact('user'));
         }
+    }
+
+    public function success()
+    {
+        return view('auth.success');
     }
 }

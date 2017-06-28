@@ -51,12 +51,9 @@
     @endif
 
     @yield('content')
-    @include('layouts.partials.footer')
-
-
 
 </div> <!-- /#wrapper -->
-
+@include('layouts.partials.footer')
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
