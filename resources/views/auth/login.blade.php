@@ -32,25 +32,17 @@
         <form class="form account-form" method="POST" action="{{ route('login') }}">
 
             {{ csrf_field() }}
+            
+            @include('partials.errors')
 
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <label for="email" class="placeholder-hidden">Email</label>
                 <input type="text" class="form-control" id="email" name="email" placeholder="Email" tabindex="1">
-                @if ($errors->has('email'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
-                @endif
             </div> <!-- /.form-group -->
 
             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                 <label for="password" class="placeholder-hidden">Passwort</label>
                 <input type="password" class="form-control" name="password" id="password" placeholder="Passwort" tabindex="2">
-                @if ($errors->has('password'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </span>
-                @endif
             </div> <!-- /.form-group -->
 
             <div class="form-group clearfix">
