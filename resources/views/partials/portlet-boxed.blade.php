@@ -1,18 +1,13 @@
-<div class="content">
-    <div class="container">
-        <div class="portlet portlet-boxed">
+<div class="portlet portlet-boxed">
+     <div class="portlet-header">
+         <h3 class="portlet-title"><u>{{ $title }}</u></h3>
+     </div> <!-- /.portlet-header -->
 
-            <div class="portlet-header">
-                <h3 class="portlet-title"><u>{{ $title }}</u></h3>
-            </div> <!-- /.portlet-header -->
+    <div class="portlet-body">
+        <div class="row">
 
-            <div class="portlet-body">
-                <div class="row">
+            {{ $slot }}
 
-                   {{ $slot }}
-
-                </div> <!-- /.row -->
-            </div> <!-- /.portlet-body -->
-        </div> <!-- /.portlet -->
-    </div>
-</div>
+        </div> <!-- /.row -->
+    </div> <!-- /.portlet-body -->
+</div> <!-- /.portlet -->

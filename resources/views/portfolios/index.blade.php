@@ -2,25 +2,24 @@
 
 @section('content')
 
-    @if (count($portfolios) == 0)
-        @include('portfolios.partials.welcome')
-        @component('partials.portlet-boxed')
-            @slot('title', 'Beispiele')
-            @foreach($examples as $portfolio)
-                @include('portfolios.partials.item')
-            @endforeach
-        @endcomponent
+    <div class="content">
+        <div class="container">
+            @component('partials.portlet-boxed')
 
-    @endif
+                @if (count($portfolios) == 0)
+                    @slot('title', 'Beispiele')
+                    @include('portfolios.partials.welcome')
+                    @php ($portfolios = $examples)
+                @else
+                    @slot('title', 'Meine Portfolios')
+                @endif
 
-    @if (count($portfolios) > 0)
-        @component('partials.portlet-boxed')
-            @slot('title', 'Meine Portfolios')
-            @foreach($portfolios as $portfolio)
-                @include('portfolios.partials.item')
-            @endforeach
-        @endcomponent
-    @endif
+                @foreach($portfolios as $portfolio)
+                    @include('portfolios.partials.item')
+                @endforeach
+            @endcomponent
+        </div>
+    </div>
 @endsection
 
 

@@ -2,14 +2,113 @@
 
 @section('content')
 
-    <section id="content-region-3" class="padding-40 page-tree-bg">
+    @php ($focus = 'Neues Portfolio')
+
+    <div class="content">
         <div class="container">
-            <h3 class="page-tree-text">
-                Portfolio anlegen
-            </h3>
-        </div>
-    </section><!--page-tree end here-->
-    <div class="space-70"></div>
+
+            <div class="row">
+                <canvas id="myChart" width="400" height="400"></canvas>
+                <line-chart></line-chart>
+            </div>
+
+            <div class="row">
+                <section class="demo-section">
+
+                    <div class="portlet portlet-boxed">
+
+                        <div class="portlet-header">
+                            <h4 class="portlet-title">
+                                Accordion Panel
+                            </h4>
+                        </div> <!-- /.portlet-header -->
+
+                        <div class="portlet-body">
+
+                            <div class="panel-group accordion-panel" id="accordion-paneled">
+
+                                <div class="panel open">
+
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseOne">
+
+                                                Collapsible Group Item #1
+                                            </a>
+                                        </h4>
+                                    </div> <!-- /.panel-heading -->
+
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                        </div> <!-- /.panel-body -->
+                                    </div> <!-- /.panel-collapse -->
+
+                                </div> <!-- /.panel -->
+
+                                <div class="panel ">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseTwo">
+                                                Collapsible Group Item #2
+                                            </a>
+                                        </h4>
+                                    </div> <!-- /.panel-heading -->
+
+                                    <div id="collapseTwo" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                        </div> <!-- /.panel-body -->
+                                    </div> <!-- /.panel-collapse -->
+
+                                </div> <!-- /.panel -->
+
+                                <div class="panel ">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseThree">
+                                                Collapsible Group Item #3
+                                            </a>
+                                        </h4>
+                                    </div> <!-- /.panel-heading -->
+
+                                    <div id="collapseThree" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                        </div> <!-- /.panel-body -->
+                                    </div> <!-- /.panel-collapse -->
+
+                                </div> <!-- /.panel -->
+
+                                <div class="panel ">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseFour">
+                                                Collapsible Group Item #4
+                                            </a>
+                                        </h4>
+                                    </div> <!-- /.panel-heading -->
+
+                                    <div id="collapseFour" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                        </div> <!-- /.panel-body -->
+                                    </div> <!-- /.panel-collapse -->
+
+                                </div> <!-- /.panel -->
+
+                            </div> <!-- /.accordion -->
+
+                        </div> <!-- /.portlet-body -->
+
+                    </div> <!-- /.portlet -->
+
+                </section> <!-- /.demo-section -->
+            </div> <!-- /.row -->
+        </div> <!-- /.container -->
+    </div> <!-- /.content -->
+
+
 
     @if (count(Auth::user()->portfolios) == 0)
         <div class="container">
@@ -83,8 +182,7 @@
         </div>
     </div>
 
-    <div class="space-70"></div>
-    <div class="space-70"></div>
+
 
 @endsection
 

@@ -1,4 +1,4 @@
-<div class="mainnav ">
+<div class="mainnav">
     <div class="container">
 
         <a class="mainnav-toggle" data-toggle="collapse" data-target=".mainnav-collapse">
@@ -14,7 +14,7 @@
                         @if (if_route(['portfolios.index']))
                             Meine Portfolios
                         @else
-                            {{ $portfolio->name }}
+                            @if ( isset($focus)) {{ $focus }} @else {{ $portfolio->name }} @endif
                         @endif
                         <i class="mainnav-caret"></i>
                     </a>
@@ -49,7 +49,7 @@
                     </ul>
                 </li>
 
-                @if (!if_route('portfolios.index'))
+                @if (!isset($focus))
 
                     <li class="{{ active_class(if_route(['portfolios.show'])) }}">
                         <a href="{{ route('portfolios.show', $portfolio->id) }}">
