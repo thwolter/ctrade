@@ -37,7 +37,9 @@
                             </a>
                         </li>
 
-                        <div class="separator"></div>
+                        @if (Auth::user()->portfolios->count())
+                            <div class="separator"></div>
+                        @endif
 
                         @foreach (Auth::user()->portfolios as $portfolio)
                             <li>
@@ -51,7 +53,7 @@
                     </ul>
                 </li>
 
-                @if (!isset($focus) and isset($portfolio))
+                @if ((!isset($focus)) and isset($portfolio))
 
                     <li class="{{ active_class(if_route(['portfolios.show'])) }}">
                         <a href="{{ route('portfolios.show', $portfolio->id) }}">

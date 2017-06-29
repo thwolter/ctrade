@@ -47,7 +47,6 @@
         @include('layouts.partials.appbar')
         @include('layouts.partials.mainnav')
 
-
     @endif
 
     @yield('content')
