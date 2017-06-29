@@ -4,20 +4,29 @@
 
     <div class="content">
         <div class="container">
-            @component('partials.portlet-boxed')
 
-                @if (count($portfolios) == 0)
-                    @slot('title', 'Beispiele')
+            @if (count($portfolios) == 0)
+            
+                <portlet title="Portfolio anlegen">    
                     @include('portfolios.partials.welcome')
                     @php ($portfolios = $examples)
-                @else
-                    @slot('title', 'Meine Portfolios')
-                @endif
-
-                @foreach($portfolios as $portfolio)
-                    @include('portfolios.partials.item')
-                @endforeach
-            @endcomponent
+                </portlet>
+                
+                <portlet id="examples" title="Beispiele">
+                     @foreach($examples as $portfolio)
+                        @include('portfolios.partials.item')
+                    @endforeach
+                </portlet>
+            
+            @else
+                
+                <portlet title="Meine Portfolios">
+                    @foreach($portfolios as $portfolio)
+                        @include('portfolios.partials.item')
+                    @endforeach
+                </portlet>
+                
+            @endif
         </div>
     </div>
 @endsection
