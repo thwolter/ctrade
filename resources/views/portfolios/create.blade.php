@@ -8,11 +8,14 @@
         <div class="container">
 
             @if (count(Auth::user()->portfolios) == 0)
-                <div class="alert alert-success">
-                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-                    <strong>Willkommen!</strong> You successfully read this important alert message.
-                </div> <!-- /.alert -->
+                <div class="row">
+                    <div class="alert alert-success">
+                        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+                        <strong>Willkommen!</strong> Du bist dabei, dein erstes Portfolio anzulegen.
+                    </div> <!-- /.alert -->
+                </div>
             @endif
+
 
             <div class="row">
                 <portlet title="Portfolio erstellen">
@@ -25,7 +28,7 @@
                     <!-- portfolio name -->
                     <div class="form-group row">
                         {!! Form::label('name', 'Bezeichnung', ['class' => 'col-md-2 col-md-offset-1 col-form-label']) !!}
-                        <div class="col-md-7">
+                        <div class="col-md-3">
                             {!! Form::text('name', null,
                             ['class' => 'form-control', 'placeholder' => 'z.B. Deutsche Standardwerte']) !!}
                         </div>
@@ -34,46 +37,45 @@
                     <!-- currency -->
                     <div class="form-group row">
                         {!! Form::label('currency', 'Währung', ['class' => 'col-md-2 col-md-offset-1 col-form-label']) !!}
-                        <div class="col-md-7">
-                            {!! Form::select('currency', $currencies, null, ['class' => 'form-control']) !!}
+                        <div class="col-md-3">
+                            {!! Form::select('currency', $currencies, null, ['class' => 'form-control', 'v-model' => 'currency']) !!}
                         </div>
+                        <p>@{{ currency }}</p>
                     </div><!-- /currecny -->
 
                     <!-- cash -->
                     <div class="form-group row">
                         {!! Form::label('cash', 'Barbestand', ['class' => 'col-md-2 col-md-offset-1 col-form-label']) !!}
-                        <div class="col-md-7">
-                            {!! Form::number('cash', 0, ['class' => 'form-control', 'min' => 0, 'step' => '.01']) !!}
-
+                        <div class="col-md-3">
+                            <input-price id="cash" name="cash" class="form-control" symbol="EUR"></input-price>
                             <span class="help-block">
                                 Barbestand in Portfoliowährung.
                             </span>
                         </div>
                     </div><!-- /cash -->
 
-                    <div class="col-md-7 col-md-push-3">
+                    <div class="col-md-3 col-md-push-3">
                         {!! Form::submit('Erstellen', ['class' => 'btn btn-primary']) !!}
                         <button type="reset" class="btn btn-default">Abbrechen</button>
                     </div>
 
                     {!! Form::close() !!}
-                </div>
-                </portlet>
+                    </div>
+                </portlet> <!-- /portlet -->
             </div> <!-- /.row -->
 
             <div class="row">
-                    <portlet title="Hinweise">
-                        <div class="panel-group accordion-panel" id="accordion-paneled">
+                <portlet title="Hinweise">
+                    <div class="panel-group accordion-panel" id="accordion-paneled">
 
-                            <div class="panel open">
+                        <div class="panel open">
 
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseOne">
-
-                                            Collapsible Group Item #1
-                                        </a>
-                                    </h4>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">                                        
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-paneled" href="#collapseOne">
+                                        Collapsible Group Item #1
+                                    </a>
+                                </h4>
                                 </div> <!-- /.panel-heading -->
 
                                 <div id="collapseOne" class="panel-collapse collapse in">
@@ -141,7 +143,6 @@
 
         </div> <!-- /.container -->
     </div> <!-- /.content -->
+    
 
 @endsection
-
-

@@ -176,7 +176,7 @@
                         <div class="notification-list">
 
                             <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img src="../../global/img/avatars/avatar-3-md.jpg"
+                                <div class="notification-icon"><img src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-3-md.jpg') }}"
                                                                     alt=""></div>
                                 <div class="notification-title">New Message</div>
                                 <div class="notification-description">Praesent dictum nisl non est sagittis luctus.
@@ -185,7 +185,7 @@
                             </a> <!-- / .notification -->
 
                             <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img src="../../global/img/avatars/avatar-3-md.jpg"
+                                <div class="notification-icon"><img src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-3-sm.jpg') }}"
                                                                     alt=""></div>
                                 <div class="notification-title">New Message</div>
                                 <div class="notification-description">Lorem ipsum dolor sit amet, consectetur
@@ -195,7 +195,7 @@
                             </a> <!-- / .notification -->
 
                             <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img src="../../global/img/avatars/avatar-4-md.jpg"
+                                <div class="notification-icon"><img src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-4-md.jpg') }}"
                                                                     alt=""></div>
                                 <div class="notification-title">New Message</div>
                                 <div class="notification-description">Lorem ipsum dolor sit amet, consectetur
@@ -205,7 +205,7 @@
                             </a> <!-- / .notification -->
 
                             <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img src="../../global/img/avatars/avatar-5-md.jpg"
+                                <div class="notification-icon"><img src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-5-md.jpg') }}"
                                                                     alt=""></div>
                                 <div class="notification-title">New Message</div>
                                 <div class="notification-description">Lorem ipsum dolor sit amet, consectetur

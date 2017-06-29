@@ -48,7 +48,16 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('portlet', require('./components/Portlet.vue'));
+Vue.component('inputPrice', require('./components/InputPrice.vue'));
+
+
+
 
 const app = new Vue({
-    el: '#wrapper'
+    el: '#wrapper',
+    
+    data: {
+        currency: ''
+    }
 });
+

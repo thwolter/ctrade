@@ -94,3 +94,7 @@
 .separator {
 	border-bottom: 1px solid #ddd;
 }
+
+[v-cloak] {
+  display: none;
+}

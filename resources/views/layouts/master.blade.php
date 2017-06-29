@@ -27,7 +27,8 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/admin-1/css/mvpready-admin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
+    
+    
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
 
@@ -54,6 +55,7 @@
 </div> <!-- /#wrapper -->
 @include('layouts.partials.footer')
 
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Core JS -->
@@ -66,8 +68,8 @@
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/templates/admin-1/js/mvpready-admin.js') }}"></script>
-<script src="{{ asset('js/app.js') }}"></script>
 
+<script src="{{ asset('js/app.js') }}"></script>
 
 @yield('scripts.footer')
 
