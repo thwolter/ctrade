@@ -13,8 +13,10 @@
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                         @if (if_route(['portfolios.index']))
                             Meine Portfolios
-                        @else
-                            @if ( isset($focus)) {{ $focus }} @else {{ $portfolio->name }} @endif
+                        @elseif (isset($focus)) 
+                            {{ $focus }} 
+                        @elseif (isset($portfolio)) 
+                            {{ $portfolio->name }}
                         @endif
                         <i class="mainnav-caret"></i>
                     </a>
@@ -49,7 +51,7 @@
                     </ul>
                 </li>
 
-                @if (!isset($focus))
+                @if (!isset($focus) and isset($portfolio))
 
                     <li class="{{ active_class(if_route(['portfolios.show'])) }}">
                         <a href="{{ route('portfolios.show', $portfolio->id) }}">
