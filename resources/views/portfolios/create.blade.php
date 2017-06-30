@@ -38,9 +38,8 @@
                     <div class="form-group row">
                         {!! Form::label('currency', 'Währung', ['class' => 'col-md-2 col-md-offset-1 col-form-label']) !!}
                         <div class="col-md-3">
-                            {!! Form::select('currency', $currencies, null, ['class' => 'form-control', 'v-model' => 'currency']) !!}
+                            {!! Form::select('currency', $currencies, null, ['class' => 'form-control']) !!}
                         </div>
-                        <p>@{{ currency }}</p>
                     </div><!-- /currecny -->
 
                     <!-- cash -->

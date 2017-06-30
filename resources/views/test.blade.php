@@ -41,32 +41,41 @@
 
 <body>
 
-<div id="wrapper">
 
-    <div class="row">
-        <portlet>
-            <tabs>
 
-                <tab name="first tab">
-                    <p>some text</p>
-                </tab>
+<div id="wrapper" class="container">
+    
+    @php( $array = ['1' => 'EUR', '2' => 'USD'] )
+   
+    <form-wrapper parm="{{ $array }}">
+        <input v-model="currency">
+        <p>@{{ currency }}</p>
+    </form-wrapper>
+    
+  <tabs>
+      
+        <tab name="about us">
+            <h2>This is the content for about us tab</h2>
+        </tab>
+      
+        <tab name="about our company">
+            <h2>This is the content for about our company tab</h2>
+        </tab>
+  
+  </tabs>
+  
+</div>>
 
-                <tab name="second tab">
-                    <p>some other text</p>
-                </tab>
 
-            </tabs>
-        </portlet>
-    </div>
-
-</div>
 
 
 <script src="{{ asset('js/app.js') }}"></script>
 
 
+
 <script>
 
+  
 
 
 </script>

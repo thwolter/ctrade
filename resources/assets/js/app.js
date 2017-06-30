@@ -49,18 +49,10 @@ window.Vue = require('vue');
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('portlet', require('./components/Portlet.vue'));
 Vue.component('inputPrice', require('./components/InputPrice.vue'));
-Vue.component('tabs', require('./components/Tabs.vue'));
-Vue.component('tab', require('./components/Tab.vue'));
-
-
-
 
 
 const app = new Vue({
     el: '#wrapper',
     
-    data: {
-        currency: ''
-    }
 });
 
