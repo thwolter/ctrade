@@ -41,11 +41,11 @@
                             <div class="separator"></div>
                         @endif
 
-                        @foreach (Auth::user()->portfolios as $portfolio)
+                        @foreach (Auth::user()->portfolios as $items)
                             <li>
-                                <a href="{{ route('portfolios.show', $portfolio->id) }}">
+                                <a href="{{ route('portfolios.show', $items->id) }}">
                                     <i class="fa fa-angle-double-right dropdown-icon "></i>
-                                    {{ $portfolio->name }}
+                                    {{ $items->name }}
                                 </a>
                             </li>
                         @endforeach
