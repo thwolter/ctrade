@@ -50,10 +50,38 @@ Vue.component('example', require('./components/Example.vue'));
 Vue.component('portlet', require('./components/Portlet.vue'));
 Vue.component('inputPrice', require('./components/InputPrice.vue'));
 Vue.component('icon-stat', require('./components/IconStat.vue'));
+Vue.component('cash-trade', require('./components/CashTrade.vue'));
 
+window.Event = new class {
+    constructor() {
+        this.vue = new Vue();
+    }
+    fire(event, data = null) {
+        this.vue.$emit(event, data);
+    }
+    listen(event, callback) {
+        this.vue.$on(event, callback);
+    }
+};
 
 const app = new Vue({
     el: '#wrapper',
+
+    data: {
+        showFormCash: false,
+        FormCashDirection: null
+    },
+
+    methods: {
+        makeDeposit() {
+            this.showFormCash = ! this.showFormCash;
+            this.FormCashDirection = 'deposit';
+        },
+        makeWithdrawal() {
+            this.showFormCash = ! this.showFormCash;
+            this.FormCashDirection = 'withdrawal';
+        }
+    },
     
 });
 

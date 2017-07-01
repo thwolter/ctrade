@@ -1,4 +1,4 @@
-<portlet title="Barbestand">
+<portlet id="cash-container" title="Barbestand">
     <table class="table table-striped table-hover positions-table">
         <thead>
         <tr>
@@ -17,10 +17,10 @@
 
             <td class="align-middle">
                 <div class="buy-sell-icons text-center">
-                    <a href="{{ route('positions.buy', ['id' => 0]) }}">
+                    <a href="#" class="btn-link" @click="makeDeposit">
                         <i class="fa fa-plus-square buy-icon" aria-hidden="true"></i>
                     </a>
-                    <a href="{{ route('positions.sell', ['id' => 0]) }}">
+                    <a href="#" class="btn-link" @click="makeWithdrawal">
                         <i class="fa fa-minus-square sell-icon" aria-hidden="true"></i>
                     </a>
                 </div>
@@ -31,9 +31,12 @@
 
     <!-- Form with method Post -->
     {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'Get']) !!}
-    <div>
-        {!! Form::submit('Position hinzufügen', ['class' => 'btn btn-default']) !!}
-    </div>
+    <cash-trade v-if="showFormCash" inline-template>
+        <div>
+            Deposit
+        </div>
+    </cash-trade>
+
     {!! Form::close() !!}
 
 </portlet>
