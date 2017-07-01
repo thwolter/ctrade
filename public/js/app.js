@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -163,7 +163,7 @@ new Chart(context, {
  * require('./bootstrap');
  */
 
-window.Vue = __webpack_require__(17);
+window.Vue = __webpack_require__(20);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -171,9 +171,10 @@ window.Vue = __webpack_require__(17);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', __webpack_require__(10));
-Vue.component('portlet', __webpack_require__(12));
-Vue.component('inputPrice', __webpack_require__(11));
+Vue.component('example', __webpack_require__(11));
+Vue.component('portlet', __webpack_require__(14));
+Vue.component('inputPrice', __webpack_require__(13));
+Vue.component('icon-stat', __webpack_require__(12));
 
 var app = new Vue({
     el: '#wrapper'
@@ -1021,7 +1022,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_numeric__ = __webpack_require__(9);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            iconClass: 'fa icon-stat-visual '
+        };
+    },
+
+    props: {
+        label: { required: true },
+        icon: { default: 'fa-dollar bg-primary' }
+    },
+    created: function created() {
+        this.iconClass = this.iconClass + this.icon;
+    }
+});
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_numeric__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_numeric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_numeric__);
 //
 //
@@ -1058,7 +1106,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1086,7 +1134,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1276,14 +1324,14 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(4),
   /* template */
-  __webpack_require__(14),
+  __webpack_require__(16),
   /* scopeId */
   null,
   /* cssModules */
@@ -1310,14 +1358,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(5),
   /* template */
-  __webpack_require__(13),
+  __webpack_require__(15),
   /* scopeId */
   null,
   /* cssModules */
@@ -1344,14 +1392,48 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(6),
   /* template */
-  __webpack_require__(16),
+  __webpack_require__(18),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/IconStat.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] IconStat.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b11249bc", Component.options)
+  } else {
+    hotAPI.reload("data-v-b11249bc", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(7),
+  /* template */
+  __webpack_require__(19),
   /* scopeId */
   null,
   /* cssModules */
@@ -1378,14 +1460,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(7),
+  __webpack_require__(8),
   /* template */
-  __webpack_require__(15),
+  __webpack_require__(17),
   /* scopeId */
   null,
   /* cssModules */
@@ -1412,7 +1494,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1441,7 +1523,7 @@ if (false) {
 }
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1486,7 +1568,7 @@ if (false) {
 }
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1511,7 +1593,42 @@ if (false) {
 }
 
 /***/ }),
-/* 16 */
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "icon-stat"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-8 text-left"
+  }, [_c('span', {
+    staticClass: "icon-stat-label"
+  }, [_vm._v(_vm._s(_vm.label))]), _vm._v(" "), _c('span', {
+    staticClass: "icon-stat-value"
+  }, [_vm._t("default")], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-4 text-center"
+  }, [_c('i', {
+    class: _vm.iconClass
+  })])]), _vm._v(" "), _vm._m(0)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "icon-stat-footer"
+  }, [_c('i', {
+    staticClass: "fa fa-clock-o"
+  }), _vm._v(" Updated Now\n    ")])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b11249bc", module.exports)
+  }
+}
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1543,7 +1660,7 @@ if (false) {
 }
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11239,10 +11356,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(18)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(21)))
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports) {
 
 var g;
@@ -11269,7 +11386,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(1);

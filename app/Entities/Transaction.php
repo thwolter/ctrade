@@ -5,6 +5,37 @@ namespace App\Entities;
 use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Entities\Transaction
+ *
+ * @property int $id
+ * @property string $date
+ * @property int $portfolio_id
+ * @property int $type_id
+ * @property int $instrumentable_id
+ * @property string $instrumentable_type
+ * @property int $position_id
+ * @property float $amount
+ * @property float $price
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $instrumentable
+ * @property-read \App\Entities\Portfolio $portfolio
+ * @property-read \App\Entities\Position $position
+ * @property-read \App\Entities\TransactionType $type
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereAmount($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereDate($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereInstrumentableId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereInstrumentableType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction wherePortfolioId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction wherePositionId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction wherePrice($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereTypeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Transaction extends Model
 {
     use Presentable;

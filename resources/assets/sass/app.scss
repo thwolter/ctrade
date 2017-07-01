@@ -98,3 +98,19 @@
 [v-cloak] {
   display: none;
 }
+
+
+
+.buy-sell-icons {
+	font-size: 20px;
+	line-height: 0px;
+	word-spacing: 5px;
+
+	.buy-icon {
+		color: #5f9c5f;
+	}
+	.sell-icon {
+		color: #e06464;
+	}
+}
+

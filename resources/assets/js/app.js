@@ -49,6 +49,7 @@ window.Vue = require('vue');
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('portlet', require('./components/Portlet.vue'));
 Vue.component('inputPrice', require('./components/InputPrice.vue'));
+Vue.component('icon-stat', require('./components/IconStat.vue'));
 
 
 const app = new Vue({
