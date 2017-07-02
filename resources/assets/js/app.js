@@ -51,6 +51,7 @@ Vue.component('portlet', require('./components/Portlet.vue'));
 Vue.component('inputPrice', require('./components/InputPrice.vue'));
 Vue.component('icon-stat', require('./components/IconStat.vue'));
 Vue.component('cash-trade', require('./components/CashTrade.vue'));
+Vue.component('transaction-buttons', require('./components/TransactionButtons.vue'));
 
 window.Event = new class {
     constructor() {
@@ -66,22 +67,5 @@ window.Event = new class {
 
 const app = new Vue({
     el: '#wrapper',
-
-    data: {
-        showFormCash: false,
-        FormCashDirection: null
-    },
-
-    methods: {
-        makeDeposit() {
-            this.showFormCash = ! this.showFormCash;
-            this.FormCashDirection = 'deposit';
-        },
-        makeWithdrawal() {
-            this.showFormCash = ! this.showFormCash;
-            this.FormCashDirection = 'withdrawal';
-        }
-    },
-    
 });
 

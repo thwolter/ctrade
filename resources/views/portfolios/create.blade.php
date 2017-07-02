@@ -44,8 +44,8 @@
 
                     <!-- cash -->
                     <div class="form-group row">
-                        {!! Form::label('cash', 'Barbestand', ['class' => 'col-md-2 col-md-offset-1 col-form-label']) !!}
-                        <div class="col-md-3">
+                        {!! Form::label('cash', 'Barbestand', ['class' => 'col-xs-2 col-xs-offset-1 col-form-label']) !!}
+                        <div class="col-xs-3">
                             <input-price id="cash" name="cash" class="form-control" symbol="EUR"></input-price>
                             <span class="help-block">
                                 Barbestand in Portfoliowährung.
@@ -53,7 +53,7 @@
                         </div>
                     </div><!-- /cash -->
 
-                    <div class="col-md-3 col-md-push-3">
+                    <div class="col-xs-3 col-xs-push-3">
                         {!! Form::submit('Erstellen', ['class' => 'btn btn-primary']) !!}
                         <button type="reset" class="btn btn-default">Abbrechen</button>
                     </div>

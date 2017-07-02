@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 24);
+/******/ 	return __webpack_require__(__webpack_require__.s = 26);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -167,7 +167,7 @@ new Chart(context, {
  * require('./bootstrap');
  */
 
-window.Vue = __webpack_require__(22);
+window.Vue = __webpack_require__(24);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -175,11 +175,12 @@ window.Vue = __webpack_require__(22);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', __webpack_require__(13));
-Vue.component('portlet', __webpack_require__(16));
-Vue.component('inputPrice', __webpack_require__(15));
-Vue.component('icon-stat', __webpack_require__(14));
-Vue.component('cash-trade', __webpack_require__(12));
+Vue.component('example', __webpack_require__(14));
+Vue.component('portlet', __webpack_require__(17));
+Vue.component('inputPrice', __webpack_require__(16));
+Vue.component('icon-stat', __webpack_require__(15));
+Vue.component('cash-trade', __webpack_require__(13));
+Vue.component('transaction-buttons', __webpack_require__(18));
 
 window.Event = new (function () {
     function _class() {
@@ -206,24 +207,7 @@ window.Event = new (function () {
 }())();
 
 var app = new Vue({
-    el: '#wrapper',
-
-    data: {
-        showFormCash: false,
-        FormCashDirection: null
-    },
-
-    methods: {
-        makeDeposit: function makeDeposit() {
-            this.showFormCash = !this.showFormCash;
-            this.FormCashDirection = 'deposit';
-        },
-        makeWithdrawal: function makeWithdrawal() {
-            this.showFormCash = !this.showFormCash;
-            this.FormCashDirection = 'withdrawal';
-        }
-    }
-
+    el: '#wrapper'
 });
 
 /***/ }),
@@ -1140,7 +1124,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_numeric__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_numeric__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_numeric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_numeric__);
 //
 //
@@ -1206,6 +1190,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            show: false,
+            direction: null
+        };
+    },
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    },
+
+
+    methods: {
+        makeDeposit: function makeDeposit() {
+            this.setFocus('deposit');
+        },
+        makeWithdrawal: function makeWithdrawal() {
+            this.setFocus('withdrawal');
+        },
+        setFocus: function setFocus(direction) {
+            if (this.direction !== direction) {
+                this.show = true;
+                this.direction = direction;
+            } else {
+                this.show = false;
+                this.direction = null;
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1395,14 +1417,14 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(4),
   /* template */
-  __webpack_require__(18),
+  __webpack_require__(20),
   /* scopeId */
   null,
   /* cssModules */
@@ -1429,7 +1451,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
@@ -1462,14 +1484,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(6),
   /* template */
-  __webpack_require__(17),
+  __webpack_require__(19),
   /* scopeId */
   null,
   /* cssModules */
@@ -1496,14 +1518,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(7),
   /* template */
-  __webpack_require__(20),
+  __webpack_require__(22),
   /* scopeId */
   null,
   /* cssModules */
@@ -1530,14 +1552,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(8),
   /* template */
-  __webpack_require__(21),
+  __webpack_require__(23),
   /* scopeId */
   null,
   /* cssModules */
@@ -1564,14 +1586,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(9),
   /* template */
-  __webpack_require__(19),
+  __webpack_require__(21),
   /* scopeId */
   null,
   /* cssModules */
@@ -1598,7 +1620,40 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 17 */
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(10),
+  /* template */
+  null,
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/TransactionButtons.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-79d8bc38", Component.options)
+  } else {
+    hotAPI.reload("data-v-79d8bc38", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1627,7 +1682,7 @@ if (false) {
 }
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1672,7 +1727,7 @@ if (false) {
 }
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1697,7 +1752,7 @@ if (false) {
 }
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1732,7 +1787,7 @@ if (false) {
 }
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1764,7 +1819,7 @@ if (false) {
 }
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11460,10 +11515,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(23)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(25)))
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports) {
 
 var g;
@@ -11490,7 +11545,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(1);
