@@ -38,9 +38,16 @@ new Chart(context, {
  * require('./bootstrap');
  */
 
-window.Vue = require('vue');
 import axios from 'axios';
 import Form from './core/Form';
+
+
+window.Vue = require('vue');
+window.Event = require('./core/Event');
+window.axios = axios;
+window.Form = Form;
+
+
 
 
 Vue.component('example', require('./components/Example.vue'));
@@ -50,23 +57,14 @@ Vue.component('icon-stat', require('./components/IconStat.vue'));
 Vue.component('cash-trade', require('./components/CashTrade.vue'));
 Vue.component('transaction-buttons', require('./components/TransactionButtons.vue'));
 
-window.Event = new class {
-    constructor() {
-        this.vue = new Vue();
-    }
-    fire(event, data = null) {
-        this.vue.$emit(event, data);
-    }
-    listen(event, callback) {
-        this.vue.$on(event, callback);
-    }
-};
+
+
 
 const app = new Vue({
     el: '#wrapper',
     
     data: {
-        form: new Form({
+        form: new Event({
             name: '',
             description: ''
         })

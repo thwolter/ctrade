@@ -4,6 +4,8 @@
 
     <div class="content">
         <div class="container">
+            @include('positions.partials.cash')
+            
             @if (count($portfolio->positions) == 0)
                 @include('positions.partials.empty')
             @else

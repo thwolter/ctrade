@@ -1,3 +1,5 @@
+import Errors from './Errors';
+
 class Form {
     /**
      * Create a new Form instance.
