@@ -75,12 +75,12 @@ window.Form = __WEBPACK_IMPORTED_MODULE_1__core_Form__["a" /* default */];
  * vue components
  */
 
-Vue.component('example', __webpack_require__(42));
-Vue.component('portlet', __webpack_require__(45));
-Vue.component('inputPrice', __webpack_require__(44));
-Vue.component('icon-stat', __webpack_require__(43));
-Vue.component('cash-trade', __webpack_require__(41));
-Vue.component('transaction-buttons', __webpack_require__(46));
+Vue.component('example', __webpack_require__(43));
+Vue.component('portlet', __webpack_require__(46));
+Vue.component('inputPrice', __webpack_require__(45));
+Vue.component('icon-stat', __webpack_require__(44));
+Vue.component('cash-trade', __webpack_require__(42));
+Vue.component('buy-sell-btn', __webpack_require__(41));
 
 Event = new (function () {
     function _class() {
@@ -141,6 +141,61 @@ var app = new Vue({
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            show: false,
+            direction: null
+        };
+    },
+
+
+    methods: {
+        doBuy: function doBuy() {
+            this.setFocus('buy');
+        },
+        doSell: function doSell() {
+            this.setFocus('sell');
+        },
+        setFocus: function setFocus(direction) {
+            if (this.direction !== direction) {
+                this.show = true;
+                this.direction = direction;
+                this.fireEvent();
+            } else {
+                this.show = false;
+                this.direction = null;
+            }
+        },
+        fireEvent: function fireEvent() {
+            if (this.buy) {
+                Event.fire('onBuy');
+            } else {
+                Event.fire('onSell');
+            }
+        }
+    },
+
+    computed: {
+        buy: function buy() {
+            return this.direction === 'buy';
+        },
+        sell: function sell() {
+            return this.direction === 'sell';
+        }
+    }
+});
+
+/***/ }),
+/* 34 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
 //
 //
 //
@@ -158,28 +213,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['route', 'action'],
+    props: {
+        route: String,
+        deposit: Boolean
+    },
 
     data: function data() {
         return {
             form: new Form({
                 amount: null
-            })
+            }),
+            title: null,
+            btnTitle: null,
+            btnClass: null
         };
     },
 
 
     methods: {
         onSubmit: function onSubmit() {
-            this.form.post('/portfolios/1/deposit').then(function (response) {
+            this.form.post(this.route).then(function (response) {
                 return alert('Wahoo!');
             });
+        }
+    },
+
+    created: function created() {
+        if (this.deposit) {
+            this.title = 'Cash einzahlen';
+            this.btnTitle = 'Einzahlen';
+            this.btnClass = 'btn btn-secondary';
+        } else {
+            this.title = 'Cash auszahlen';
+            this.btnTitle = 'Auszahlen';
+            this.btnClass = 'btn btn-primary';
         }
     }
 });
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -208,7 +281,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -255,7 +328,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -303,7 +376,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -328,41 +401,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['title']
-});
-
-/***/ }),
-/* 38 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            show: false,
-            direction: null
-        };
-    },
-
-
-    methods: {
-        makeDeposit: function makeDeposit() {
-            this.setFocus('deposit');
-        },
-        makeWithdrawal: function makeWithdrawal() {
-            this.setFocus('withdrawal');
-        },
-        setFocus: function setFocus(direction) {
-            if (this.direction !== direction) {
-                this.show = true;
-                this.direction = direction;
-            } else {
-                this.show = false;
-                this.direction = null;
-            }
-        }
-    }
 });
 
 /***/ }),
@@ -631,6 +669,39 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(33),
   /* template */
+  null,
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/BuySellBtn.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0c7af38e", Component.options)
+  } else {
+    hotAPI.reload("data-v-0c7af38e", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(34),
+  /* template */
   __webpack_require__(47),
   /* scopeId */
   null,
@@ -658,12 +729,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(34),
+  __webpack_require__(35),
   /* template */
   __webpack_require__(48),
   /* scopeId */
@@ -692,12 +763,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(35),
+  __webpack_require__(36),
   /* template */
   __webpack_require__(51),
   /* scopeId */
@@ -726,12 +797,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(36),
+  __webpack_require__(37),
   /* template */
   __webpack_require__(52),
   /* scopeId */
@@ -760,12 +831,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(37),
+  __webpack_require__(38),
   /* template */
   __webpack_require__(50),
   /* scopeId */
@@ -794,44 +865,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(38),
-  /* template */
-  null,
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/TransactionButtons.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-79d8bc38", Component.options)
-  } else {
-    hotAPI.reload("data-v-79d8bc38", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('form', {
+  return _c('div', [_c('h4', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('form', {
     on: {
       "submit": function($event) {
         $event.preventDefault();
@@ -869,14 +909,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.amount = $event.target.value
       }
     }
-  })]), _vm._v(" "), _vm._m(0)])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  })]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-2"
   }, [_c('button', {
-    staticClass: "btn btn-secondary"
-  }, [_vm._v("Einzahlen")])])
-}]}
+    class: _vm.btnClass
+  }, [_vm._v(_vm._s(_vm.btnTitle))])])])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

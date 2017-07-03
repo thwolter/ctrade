@@ -1,5 +1,5 @@
 <portlet id="cash-container" title="Barbestand">
-    <transaction-buttons inline-template>
+    <buy-sell-btn inline-template>
         <div>
             <table class="table table-striped table-hover positions-table">
                 <thead>
@@ -19,10 +19,10 @@
 
                     <td class="align-middle">
                         <div class="buy-sell-icons text-center">
-                            <a href="#" class="btn-link" @click="makeDeposit">
+                            <a href="#" class="btn-link" @click="doBuy">
                                 <i class="fa fa-plus-square buy-icon" aria-hidden="true"></i>
                             </a>
-                            <a href="#" class="btn-link" @click="makeWithdrawal">
+                            <a href="#" class="btn-link" @click="doSell">
                                 <i class="fa fa-minus-square sell-icon" aria-hidden="true"></i>
                             </a>
                         </div>
@@ -33,39 +33,21 @@
 
             <transition name="none">
                 <div v-if="show" class="transaction-dialog">
-                    <div v-if="direction === 'deposit'">
-
-                        <h4 class="title">Geld einzahlen</h4>
-
+                    <div v-if="buy">
                         <cash-trade route="{{ route('portfolios.deposit', $portfolio->id, false) }}"
-                                    action="deposit">
+                                    :deposit="true">
                         </cash-trade>
-
                     </div>
 
                     <div v-else>
-                        <!-- Form with method Post -->
-                        {!! Form::open(['route' => ['portfolios.withdraw', $portfolio->id], 'method' => 'PUT']) !!}
-
-                        <h3>Geld auszahlen</h3>
-
-                        <div class="form-group">
-                            {!! Form::label('cash', 'Betrag', ['class' => 'control-label col-xs-2 cursor-pointer']) !!}
-                            <div class="col-xs-7">
-                                <input-price id="withdraw" name="withdraw" class="form-control"
-                                             symbol="EUR"></input-price>
-                            </div>
-                            <div class="col-xs-2">
-                                {!! Form::submit('Auszahlen', ['class' => 'btn btn-primary']) !!}
-                            </div>
-                        </div>
-
+                        <cash-trade route="{{ route('portfolios.withdraw', $portfolio->id, false) }}"
+                                    :deposit="false">
+                        </cash-trade>
                     </div>
                 </div>
             </transition>
-            {!! Form::close() !!}
 
         </div>
-    </transaction-buttons>
+    </buy-sell-btn>
 
 </portlet>
