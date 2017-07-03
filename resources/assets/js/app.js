@@ -43,12 +43,17 @@ import Form from './core/Form';
 
 
 window.Vue = require('vue');
-window.Event = require('./core/Event');
+
 window.axios = axios;
 window.Form = Form;
 
 
 
+
+
+/**
+ * vue components
+ */
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('portlet', require('./components/Portlet.vue'));
@@ -58,25 +63,20 @@ Vue.component('cash-trade', require('./components/CashTrade.vue'));
 Vue.component('transaction-buttons', require('./components/TransactionButtons.vue'));
 
 
-
+Event = new class {
+    constructor() {
+        this.vue = new Vue();
+    }
+    fire(event, data = null) {
+        this.vue.$emit(event, data);
+    }
+    listen(event, callback) {
+        this.vue.$on(event, callback);
+    }
+}
 
 const app = new Vue({
-    el: '#wrapper',
-    
-    data: {
-        form: new Event({
-            name: '',
-            description: ''
-        })
-    },
-
-    methods: {
-        onSubmit() {
-            this.form.post('/projects')
-                .then(response => alert('Wahoo!'));
-        }
-    }
-    
+    el: '#wrapper'
 });
 
 

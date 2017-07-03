@@ -242,6 +242,7 @@ class Portfolio extends Model
     public function deposit($amount)
     {
         $this->cash = $this->cash + $amount;
+        $this->save();
         return $this;
     }
 
@@ -254,6 +255,7 @@ class Portfolio extends Model
     public function withdraw($amount)
     {
         $this->cash = $this->cash - $amount;
+        $this->save();
         return $this;
     }
 

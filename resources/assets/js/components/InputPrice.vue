@@ -17,8 +17,7 @@
 
     export default {
 
-        inherit: true,
-        props: ['currency', 'value'],
+        props: ['currency'],
 
         components: {
             VueNumeric

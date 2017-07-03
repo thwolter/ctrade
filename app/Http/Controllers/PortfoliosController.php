@@ -152,8 +152,8 @@ class PortfoliosController extends Controller
 
     public function deposit(Request $request, $id) {
 
-        Portfolio::whereId($id)->first()->deposit($request->deposit);
-        return redirect()->route('positions.index');
+        Portfolio::whereId($id)->first()->deposit($request->amount);
+        return redirect()->route('positions.index', $id);
     }
 }
 

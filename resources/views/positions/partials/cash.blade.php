@@ -34,33 +34,26 @@
             <transition name="none">
                 <div v-if="show" class="transaction-dialog">
                     <div v-if="direction === 'deposit'">
-                        <!-- Form with method Post -->
-                        {!! Form::open(['route' => ['portfolio.deposit', $portfolio->id], 'method' => 'POST']) !!}
 
                         <h4 class="title">Geld einzahlen</h4>
 
-                        <div class="form-group">
-                            {!! Form::label('cash', 'Betrag', ['class' => 'control-label col-xs-2 cursor-pointer']) !!}
-                            <div class="col-xs-7">
-                                <input-price id="deposit" name="deposit" class="form-control" symbol="EUR"></input-price>
-                            </div>
-                            <div class="col-xs-2">
-                                {!! Form::submit('Einzahlen', ['class' => 'btn btn-secondary']) !!}
-                            </div>
-                            <input v-model="price"></input>
-                        </div>
+                        <cash-trade route="{{ route('portfolios.deposit', $portfolio->id, false) }}"
+                                    action="deposit">
+                        </cash-trade>
+
                     </div>
 
                     <div v-else>
                         <!-- Form with method Post -->
-                        {!! Form::open(['route' => ['portfolio.withdraw', $portfolio->id], 'method' => 'PUT']) !!}
+                        {!! Form::open(['route' => ['portfolios.withdraw', $portfolio->id], 'method' => 'PUT']) !!}
 
                         <h3>Geld auszahlen</h3>
 
                         <div class="form-group">
                             {!! Form::label('cash', 'Betrag', ['class' => 'control-label col-xs-2 cursor-pointer']) !!}
                             <div class="col-xs-7">
-                                <input-price id="withdraw" name="withdraw" class="form-control" symbol="EUR"></input-price>
+                                <input-price id="withdraw" name="withdraw" class="form-control"
+                                             symbol="EUR"></input-price>
                             </div>
                             <div class="col-xs-2">
                                 {!! Form::submit('Auszahlen', ['class' => 'btn btn-primary']) !!}
