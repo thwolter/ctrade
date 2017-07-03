@@ -1,15 +1,23 @@
 <script>
     export default {
-
+        props: ['price'],
         data() {
             return {
                 show: false,
-                direction: null
+                direction: null,
+                value: null
             }
         },
 
         mounted() {
             console.log('Component mounted.')
+        },
+
+        created() {
+            Event.listen('set-value', function(value) {
+                this.value = value;
+                console.log(this);
+            })
         },
 
         methods: {

@@ -1139,14 +1139,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
     inherit: true,
-
-    name: 'App',
+    props: ['currency', 'value'],
 
     components: {
         VueNumeric: __WEBPACK_IMPORTED_MODULE_0_vue_numeric___default.a
@@ -1154,9 +1154,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
-            price: '',
+            price: null,
             symbol: 'EUR'
         };
+    },
+
+
+    methods: {
+        setValue: function setValue() {
+            Event.fire('set-value', this.price);
+        }
     }
 });
 
@@ -1196,14 +1203,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['price'],
     data: function data() {
         return {
             show: false,
-            direction: null
+            direction: null,
+            value: null
         };
     },
     mounted: function mounted() {
         console.log('Component mounted.');
+    },
+    created: function created() {
+        Event.listen('set-value', function (value) {
+            this.value = value;
+            console.log(this);
+        });
     },
 
 
@@ -1800,6 +1815,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "minus": false,
       "precision": 2,
       "currency-symbol-position": "suffix"
+    },
+    on: {
+      "input": _vm.setValue
     },
     model: {
       value: (_vm.price),
