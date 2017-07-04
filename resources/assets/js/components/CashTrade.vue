@@ -7,9 +7,22 @@
                 <label for="amount" class="control-label col-xs-2 cursor-pointer"></label>
                 <div class="col-xs-7">
                     <div class="input-group">
-                        <span class="input-group-addon">€</span>
-                        <input type="text" id="amount" name="amount" class="form-control" v-model="form.amount">
+                        <span class="input-group-addon">EUR</span>
+                        <vue-numeric
+                            id="cash"
+                            name="cash"
+                            min=0
+                            placeholder="only number allowed"
+                            separator="."
+                            :minus="false"
+                            :precision="2"
+                            v-model="form.amount"
+                            class="form-control">
+                        </vue-numeric>
                     </div>
+
+                    <input v-model="form.amount" type="hidden" name="amount">
+
                 </div>
                 <div class="col-xs-2">
                     <button :class="btnClass">{{ btnTitle }}</button>
@@ -39,7 +52,8 @@
                 }),
                 title: null,
                 btnTitle: null,
-                btnClass: null
+                btnClass: null,
+                price: 0
             }
         },
 

@@ -39,10 +39,10 @@
 
         computed: {
             buy() {
-                return this.direction === 'buy'
+                return (this.direction === 'buy')
             },
             sell() {
-                return this.direction === 'sell'
+                return (this.direction === 'sell')
             }
         }
     }

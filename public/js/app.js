@@ -177,7 +177,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
-    watch: {
+    computed: {
         buy: function buy() {
             return this.direction === 'buy';
         },
@@ -195,6 +195,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_numeric__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_numeric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_numeric__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -236,7 +250,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }),
             title: null,
             btnTitle: null,
-            btnClass: null
+            btnClass: null,
+            price: 0
         };
     },
 
@@ -902,17 +917,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input-group"
   }, [_c('span', {
     staticClass: "input-group-addon"
-  }, [_vm._v("€")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("EUR")]), _vm._v(" "), _c('vue-numeric', {
+    staticClass: "form-control",
+    attrs: {
+      "id": "cash",
+      "name": "cash",
+      "min": "0",
+      "placeholder": "only number allowed",
+      "separator": ".",
+      "minus": false,
+      "precision": 2,
+      "currency-symbol-position": "suffix"
+    },
+    model: {
+      value: (_vm.form.amount),
+      callback: function($$v) {
+        _vm.form.amount = $$v
+      },
+      expression: "form.amount"
+    }
+  })], 1), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.form.amount),
       expression: "form.amount"
     }],
-    staticClass: "form-control",
     attrs: {
-      "type": "text",
-      "id": "amount",
+      "type": "hidden",
       "name": "amount"
     },
     domProps: {
@@ -924,7 +956,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.amount = $event.target.value
       }
     }
-  })])]), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-2"
   }, [_c('button', {
     class: _vm.btnClass
