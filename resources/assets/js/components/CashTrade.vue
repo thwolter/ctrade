@@ -6,7 +6,10 @@
             <div class="form-group">
                 <label for="amount" class="control-label col-xs-2 cursor-pointer"></label>
                 <div class="col-xs-7">
-                    <input type="text" id="amount" name="amount" class="form-control" v-model="form.amount">
+                    <div class="input-group">
+                        <span class="input-group-addon">€</span>
+                        <input type="text" id="amount" name="amount" class="form-control" v-model="form.amount">
+                    </div>
                 </div>
                 <div class="col-xs-2">
                     <button :class="btnClass">{{ btnTitle }}</button>
@@ -17,10 +20,16 @@
 </template>
 
 <script>
+    import VueNumeric from 'vue-numeric'
+
     export default {
         props: {
             route: String,
             deposit: Boolean
+        },
+
+        components: {
+            VueNumeric
         },
 
         data() {
