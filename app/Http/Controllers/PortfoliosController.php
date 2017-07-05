@@ -152,6 +152,9 @@ class PortfoliosController extends Controller
 
     public function deposit(Request $request, $id) {
 
+        $this->validate($request, [
+            'amount' => 'required|min:0.01'
+        ]);
         Portfolio::whereId($id)->first()->deposit($request->amount);
         return redirect()->route('positions.index', $id);
     }

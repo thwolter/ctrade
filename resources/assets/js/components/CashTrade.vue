@@ -8,10 +8,13 @@
                 <div class="col-xs-7">
                     <div class="input-group">
                         <span class="input-group-addon">EUR</span>
-                        <input type="text" id="value" name="value" :class="classObject" v-model="form.value" placeholder="Betrag">
+                        <input type="text" id="value" name="value" :class="classObject" v-model="form.value"
+                               placeholder="Betrag">
                     </div>
-                    <p v-if="error" class="error-text">Bitte einen gültigen Wert eingebenen.</p>
-                    <p v-if="!$v.form.amount.between" class="error-text">Wert muss positiv sein.</p>
+                    <p class="error-text">
+                        <span v-if="error">Ungültiger Wert.</span>
+                        <span v-if="form.errors.has('amount')" v-text="form.errors.get('amount')"></span>
+                    </p>
                     <input :amount="form.amount" type="hidden" name="cash" id="cash">
 
                 </div>
@@ -25,7 +28,6 @@
 
 <script>
     import {required, between} from 'vuelidate/lib/validators';
-    import accounting from 'accounting-js'
 
     export default {
         props: {
@@ -76,6 +78,27 @@
                     number = Number(String(value).replace(/[^0-9-.]+/g, ''))
                 }
                 return number
+            },
+
+            /**
+             * test if a string value corresponds the float Value
+             *
+             * @param floatVal
+             * @param stringVal
+             * @returns {boolean}
+             */
+            floatMatchString(floatVal, stringVal) {
+                let a = floatVal;
+                let b = stringVal;
+
+                let rounded = Math.round(a * 100) / 100;
+                a = rounded.toString().replace('.', ',').replace(/,\s*$/, '');
+
+                if (b.includes(',')) b = b.replace(/((,0*)|,?0*)$/, '');
+
+                console.log('a=' + a);
+                console.log('b=' + b);
+                return (a === b);
             }
         },
 
@@ -88,20 +111,9 @@
                 }
             },
 
-            valueMatch() {
-                let rounded = Math.round(this.form.amount * 100) / 100;
-                let a = rounded.toString().replace('.', ',').replace(/,\s*$/, '');
-
-                let b = this.form.value;
-                if (b.includes(',')) b = b.replace(/((,0*)|,?0*)$/, '');
-
-                console.log('a=' + a);
-                console.log('b=' + b);
-                return (a === b);
-            },
-
             error() {
-                return (this.form.amount !== null && (this.$v.form.amount.$invalid || !this.valueMatch))
+                let match = this.floatMatchString(this.form.amount, this.form.value);
+                return (this.form.amount !== null && (this.$v.form.amount.$invalid || !match))
             }
         },
 

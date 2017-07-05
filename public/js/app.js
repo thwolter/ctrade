@@ -69,8 +69,7 @@ var regex = exports.regex = function regex(type, expr) {
 /* 10 */,
 /* 11 */,
 /* 12 */,
-/* 13 */,
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -159,7 +158,7 @@ function withParams(paramsOrClosure, maybeValidator) {
 }
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -263,12 +262,13 @@ var app = new Vue({
 });
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
+/* 16 */,
 /* 17 */,
 /* 18 */,
 /* 19 */,
@@ -346,8 +346,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_accounting_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_accounting_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_accounting_js__);
 //
 //
 //
@@ -373,7 +371,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
 
 
 
@@ -429,6 +429,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 number = Number(String(value).replace(/[^0-9-.]+/g, ''));
             }
             return number;
+        },
+
+
+        /**
+         * test if a string value corresponds the float Value
+         *
+         * @param floatVal
+         * @param stringVal
+         * @returns {boolean}
+         */
+        floatMatchString: function floatMatchString(floatVal, stringVal) {
+            var a = floatVal;
+            var b = stringVal;
+
+            var rounded = Math.round(a * 100) / 100;
+            a = rounded.toString().replace('.', ',').replace(/,\s*$/, '');
+
+            if (b.includes(',')) b = b.replace(/((,0*)|,?0*)$/, '');
+
+            console.log('a=' + a);
+            console.log('b=' + b);
+            return a === b;
         }
     },
 
@@ -440,19 +462,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return 'form-control';
             }
         },
-        valueMatch: function valueMatch() {
-            var rounded = Math.round(this.form.amount * 100) / 100;
-            var a = rounded.toString().replace('.', ',').replace(/,\s*$/, '');
-
-            var b = this.form.value;
-            if (b.includes(',')) b = b.replace(/((,0*)|,?0*)$/, '');
-
-            console.log('a=' + a);
-            console.log('b=' + b);
-            return a === b;
-        },
         error: function error() {
-            return this.form.amount !== null && (this.$v.form.amount.$invalid || !this.valueMatch);
+            var match = this.floatMatchString(this.form.amount, this.form.value);
+            return this.form.amount !== null && (this.$v.form.amount.$invalid || !match);
         }
     },
 
@@ -1146,11 +1158,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.value = $event.target.value
       }
     }
-  })]), _vm._v(" "), (_vm.error) ? _c('p', {
+  })]), _vm._v(" "), _c('p', {
     staticClass: "error-text"
-  }, [_vm._v("Bitte einen gültigen Wert eingebenen.")]) : _vm._e(), _vm._v(" "), (!_vm.$v.form.amount.between) ? _c('p', {
-    staticClass: "error-text"
-  }, [_vm._v("Wert muss positiv sein.")]) : _vm._e(), _vm._v(" "), _c('input', {
+  }, [(_vm.error) ? _c('span', [_vm._v("Ungültiger Wert.")]) : _vm._e(), _vm._v(" "), (_vm.form.errors.has('amount')) ? _c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('amount'))
+    }
+  }) : _vm._e()]), _vm._v(" "), _c('input', {
     attrs: {
       "amount": _vm.form.amount,
       "type": "hidden",
@@ -1312,7 +1326,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _vval = __webpack_require__(71);
 
-var _params = __webpack_require__(14);
+var _params = __webpack_require__(13);
 
 var buildFromKeys = function buildFromKeys(keys, fn, keyFn) {
   return keys.reduce(function (build, key) {
@@ -2351,7 +2365,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 /* istanbul ignore next */
-var withParams =  false ? require('./withParamsBrowser').withParams : __webpack_require__(14).withParams;
+var withParams =  false ? require('./withParamsBrowser').withParams : __webpack_require__(13).withParams;
 
 exports.default = withParams;
 
@@ -2360,8 +2374,8 @@ exports.default = withParams;
 /* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(15);
-module.exports = __webpack_require__(16);
+__webpack_require__(14);
+module.exports = __webpack_require__(15);
 
 
 /***/ })
