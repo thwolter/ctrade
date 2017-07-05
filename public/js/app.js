@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.regex = exports.ref = exports.len = exports.req = exports.withParams = undefined;
 
-var _withParams = __webpack_require__(76);
+var _withParams = __webpack_require__(80);
 
 var _withParams2 = _interopRequireDefault(_withParams);
 
@@ -237,8 +237,8 @@ function withParams(paramsOrClosure, maybeValidator) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_Form__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_Form__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vuelidate__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -298,13 +298,13 @@ window.Form = __WEBPACK_IMPORTED_MODULE_1__core_Form__["a" /* default */];
  * vue components
  */
 
-Vue.component('example', __webpack_require__(48));
-Vue.component('portlet', __webpack_require__(51));
-Vue.component('inputPrice', __webpack_require__(50));
-Vue.component('icon-stat', __webpack_require__(49));
-Vue.component('cash-trade', __webpack_require__(47));
-Vue.component('buy-sell-btn', __webpack_require__(45));
-Vue.component('cash-success', __webpack_require__(46));
+Vue.component('example', __webpack_require__(51));
+Vue.component('portlet', __webpack_require__(54));
+Vue.component('inputPrice', __webpack_require__(53));
+Vue.component('icon-stat', __webpack_require__(52));
+Vue.component('cash-trade', __webpack_require__(50));
+Vue.component('buy-sell-btn', __webpack_require__(48));
+Vue.component('cash-success', __webpack_require__(49));
 
 window.Event = new (function () {
     function _class() {
@@ -359,8 +359,93 @@ var app = new Vue({
 /* 32 */,
 /* 33 */,
 /* 34 */,
-/* 35 */,
-/* 36 */
+/* 35 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_cleave_js__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_cleave_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_cleave_js__);
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    value: {
+      type: String,
+      default: ''
+    },
+    options: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    events: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    }
+  },
+
+  data: function data() {
+    return {
+      cleave: null
+    };
+  },
+
+
+  methods: {
+    emitEvent: function emitEvent() {
+      this.$emit('input', this.$el.value);
+      this.$emit('rawValueChanged', this.cleave.getRawValue());
+    }
+  },
+
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$el.value = this.value;
+    this.cleave = new __WEBPACK_IMPORTED_MODULE_0_cleave_js___default.a(this.$el, this.options);
+    Object.keys(this.events).map(function (key) {
+      _this.$refs.input.addEventListener(key, _this.events[key]);
+    });
+    if (this.options.maxLength) {
+      this.$el.setAttribute('maxlength', this.options.maxLength);
+    }
+
+    // in case of cleave.js remove result or properties from cleave instance.
+    if (this.cleave.properties && this.cleave.properties.hasOwnProperty('result')) {
+      this.$watch('cleave.properties.result', this.emitEvent);
+    } else {
+      this.$el.addEventListener('input', this.emitEvent);
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.cleave.destroy();
+  },
+
+
+  watch: {
+    options: {
+      deep: true,
+      handler: function handler(val) {
+        this.cleave.destroy();
+        this.cleave = new __WEBPACK_IMPORTED_MODULE_0_cleave_js___default.a(this.$el, val);
+      }
+    }
+  }
+
+});
+
+/***/ }),
+/* 36 */,
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -412,7 +497,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -508,14 +593,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_cleave__);
 //
 //
 //
@@ -544,6 +631,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -551,6 +639,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
 
     mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__["a" /* default */]],
+
+    components: {
+        Cleave: __WEBPACK_IMPORTED_MODULE_2_vue_cleave___default.a
+    },
 
     props: {
         route: String,
@@ -568,7 +660,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 cls: null,
                 title: null
             },
-            decimal: ','
+            decimal: ',',
+            cleave: {
+                numeral: true,
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            }
         };
     },
 
@@ -596,8 +693,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         error: function error() {
-            var match = this.floatMatchesString(this.form.amount, this.form.value);
-            return this.form.amount !== null && (this.$v.form.amount.$invalid || !match);
+            //let match = this.floatMatchesString(this.form.amount, this.form.value);
+            //return (this.form.amount !== null && (this.$v.form.amount.$invalid || !match))
+            return this.form.amount !== null && this.$v.form.amount.$invalid;
         },
         eventName: function eventName() {
             return this.deposit ? 'deposit-success' : 'withdraw-success';
@@ -632,7 +730,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -661,7 +759,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -708,7 +806,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -756,7 +854,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -784,7 +882,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -876,11 +974,11 @@ var Errors = function () {
 /* harmony default export */ __webpack_exports__["a"] = (Errors);
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Errors__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Errors__ = __webpack_require__(44);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1040,12 +1138,1063 @@ var Form = function () {
 /* harmony default export */ __webpack_exports__["a"] = (Form);
 
 /***/ }),
-/* 45 */
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(true)
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["Cleave"] = factory();
+	else
+		root["Cleave"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+
+	/**
+	 * Construct a new Cleave instance by passing the configuration object
+	 *
+	 * @param {String / HTMLElement} element
+	 * @param {Object} opts
+	 */
+	var Cleave = function (element, opts) {
+	    var owner = this;
+
+	    if (typeof element === 'string') {
+	        owner.element = document.querySelector(element);
+	    } else {
+	        owner.element = ((typeof element.length !== 'undefined') && element.length > 0) ? element[0] : element;
+	    }
+
+	    if (!owner.element) {
+	        throw new Error('[cleave.js] Please check the element');
+	    }
+
+	    opts.initValue = owner.element.value;
+
+	    owner.properties = Cleave.DefaultProperties.assign({}, opts);
+
+	    owner.init();
+	};
+
+	Cleave.prototype = {
+	    init: function () {
+	        var owner = this, pps = owner.properties;
+
+	        // no need to use this lib
+	        if (!pps.numeral && !pps.phone && !pps.creditCard && !pps.date && (pps.blocksLength === 0 && !pps.prefix)) {
+	            return;
+	        }
+
+	        pps.maxLength = Cleave.Util.getMaxLength(pps.blocks);
+
+	        owner.isAndroid = Cleave.Util.isAndroid();
+	        owner.lastInputValue = '';
+
+	        owner.onChangeListener = owner.onChange.bind(owner);
+	        owner.onKeyDownListener = owner.onKeyDown.bind(owner);
+	        owner.onCutListener = owner.onCut.bind(owner);
+	        owner.onCopyListener = owner.onCopy.bind(owner);
+
+	        owner.element.addEventListener('input', owner.onChangeListener);
+	        owner.element.addEventListener('keydown', owner.onKeyDownListener);
+	        owner.element.addEventListener('cut', owner.onCutListener);
+	        owner.element.addEventListener('copy', owner.onCopyListener);
+
+
+	        owner.initPhoneFormatter();
+	        owner.initDateFormatter();
+	        owner.initNumeralFormatter();
+
+	        owner.onInput(pps.initValue);
+	    },
+
+	    initNumeralFormatter: function () {
+	        var owner = this, pps = owner.properties;
+
+	        if (!pps.numeral) {
+	            return;
+	        }
+
+	        pps.numeralFormatter = new Cleave.NumeralFormatter(
+	            pps.numeralDecimalMark,
+	            pps.numeralIntegerScale,
+	            pps.numeralDecimalScale,
+	            pps.numeralThousandsGroupStyle,
+	            pps.numeralPositiveOnly,
+	            pps.delimiter
+	        );
+	    },
+
+	    initDateFormatter: function () {
+	        var owner = this, pps = owner.properties;
+
+	        if (!pps.date) {
+	            return;
+	        }
+
+	        pps.dateFormatter = new Cleave.DateFormatter(pps.datePattern);
+	        pps.blocks = pps.dateFormatter.getBlocks();
+	        pps.blocksLength = pps.blocks.length;
+	        pps.maxLength = Cleave.Util.getMaxLength(pps.blocks);
+	    },
+
+	    initPhoneFormatter: function () {
+	        var owner = this, pps = owner.properties;
+
+	        if (!pps.phone) {
+	            return;
+	        }
+
+	        // Cleave.AsYouTypeFormatter should be provided by
+	        // external google closure lib
+	        try {
+	            pps.phoneFormatter = new Cleave.PhoneFormatter(
+	                new pps.root.Cleave.AsYouTypeFormatter(pps.phoneRegionCode),
+	                pps.delimiter
+	            );
+	        } catch (ex) {
+	            throw new Error('[cleave.js] Please include phone-type-formatter.{country}.js lib');
+	        }
+	    },
+
+	    onKeyDown: function (event) {
+	        var owner = this, pps = owner.properties,
+	            charCode = event.which || event.keyCode,
+	            Util = Cleave.Util,
+	            currentValue = owner.element.value;
+
+	        if (Util.isAndroidBackspaceKeydown(owner.lastInputValue, currentValue)) {
+	            charCode = 8;
+	        }
+
+	        owner.lastInputValue = currentValue;
+
+	        // hit backspace when last character is delimiter
+	        if (charCode === 8 && Util.isDelimiter(currentValue.slice(-pps.delimiterLength), pps.delimiter, pps.delimiters)) {
+	            pps.backspace = true;
+
+	            return;
+	        }
+
+	        pps.backspace = false;
+	    },
+
+	    onChange: function () {
+	        this.onInput(this.element.value);
+	    },
+
+	    onCut: function (e) {
+	        this.copyClipboardData(e);
+	        this.onInput('');
+	    },
+
+	    onCopy: function (e) {
+	        this.copyClipboardData(e);
+	    },
+
+	    copyClipboardData: function (e) {
+	        var owner = this,
+	            pps = owner.properties,
+	            Util = Cleave.Util,
+	            inputValue = owner.element.value,
+	            textToCopy = '';
+
+	        if (!pps.copyDelimiter) {
+	            textToCopy = Util.stripDelimiters(inputValue, pps.delimiter, pps.delimiters);
+	        } else {
+	            textToCopy = inputValue;
+	        }
+
+	        try {
+	            if (e.clipboardData) {
+	                e.clipboardData.setData('Text', textToCopy);
+	            } else {
+	                window.clipboardData.setData('Text', textToCopy);
+	            }
+
+	            e.preventDefault();
+	        } catch (ex) {
+	            //  empty
+	        }
+	    },
+
+	    onInput: function (value) {
+	        var owner = this, pps = owner.properties,
+	            prev = value,
+	            Util = Cleave.Util;
+
+	        // case 1: delete one more character "4"
+	        // 1234*| -> hit backspace -> 123|
+	        // case 2: last character is not delimiter which is:
+	        // 12|34* -> hit backspace -> 1|34*
+	        // note: no need to apply this for numeral mode
+	        if (!pps.numeral && pps.backspace && !Util.isDelimiter(value.slice(-pps.delimiterLength), pps.delimiter, pps.delimiters)) {
+	            value = Util.headStr(value, value.length - pps.delimiterLength);
+	        }
+
+	        // phone formatter
+	        if (pps.phone) {
+	            pps.result = pps.phoneFormatter.format(value);
+	            owner.updateValueState();
+
+	            return;
+	        }
+
+	        // numeral formatter
+	        if (pps.numeral) {
+	            pps.result = pps.prefix + pps.numeralFormatter.format(value);
+	            owner.updateValueState();
+
+	            return;
+	        }
+
+	        // date
+	        if (pps.date) {
+	            value = pps.dateFormatter.getValidatedDate(value);
+	        }
+
+	        // strip delimiters
+	        value = Util.stripDelimiters(value, pps.delimiter, pps.delimiters);
+
+	        // strip prefix
+	        value = Util.getPrefixStrippedValue(value, pps.prefix, pps.prefixLength);
+
+	        // strip non-numeric characters
+	        value = pps.numericOnly ? Util.strip(value, /[^\d]/g) : value;
+
+	        // convert case
+	        value = pps.uppercase ? value.toUpperCase() : value;
+	        value = pps.lowercase ? value.toLowerCase() : value;
+
+	        // prefix
+	        if (pps.prefix) {
+	            value = pps.prefix + value;
+
+	            // no blocks specified, no need to do formatting
+	            if (pps.blocksLength === 0) {
+	                pps.result = value;
+	                owner.updateValueState();
+
+	                return;
+	            }
+	        }
+
+	        // update credit card props
+	        if (pps.creditCard) {
+	            owner.updateCreditCardPropsByValue(value);
+	        }
+
+	        // strip over length characters
+	        value = Util.headStr(value, pps.maxLength);
+
+	        // apply blocks
+	        pps.result = Util.getFormattedValue(value, pps.blocks, pps.blocksLength, pps.delimiter, pps.delimiters);
+
+	        // nothing changed
+	        // prevent update value to avoid caret position change
+	        if (prev === pps.result && prev !== pps.prefix) {
+	            return;
+	        }
+
+	        owner.updateValueState();
+	    },
+
+	    updateCreditCardPropsByValue: function (value) {
+	        var owner = this, pps = owner.properties,
+	            Util = Cleave.Util,
+	            creditCardInfo;
+
+	        // At least one of the first 4 characters has changed
+	        if (Util.headStr(pps.result, 4) === Util.headStr(value, 4)) {
+	            return;
+	        }
+
+	        creditCardInfo = Cleave.CreditCardDetector.getInfo(value, pps.creditCardStrictMode);
+
+	        pps.blocks = creditCardInfo.blocks;
+	        pps.blocksLength = pps.blocks.length;
+	        pps.maxLength = Util.getMaxLength(pps.blocks);
+
+	        // credit card type changed
+	        if (pps.creditCardType !== creditCardInfo.type) {
+	            pps.creditCardType = creditCardInfo.type;
+
+	            pps.onCreditCardTypeChanged.call(owner, pps.creditCardType);
+	        }
+	    },
+
+	    updateValueState: function () {
+	        var owner = this;
+
+	        // fix Android browser type="text" input field
+	        // cursor not jumping issue
+	        if (owner.isAndroid) {
+	            window.setTimeout(function () {
+	                owner.element.value = owner.properties.result;
+	            }, 1);
+
+	            return;
+	        }
+
+	        owner.element.value = owner.properties.result;
+	    },
+
+	    setPhoneRegionCode: function (phoneRegionCode) {
+	        var owner = this, pps = owner.properties;
+
+	        pps.phoneRegionCode = phoneRegionCode;
+	        owner.initPhoneFormatter();
+	        owner.onChange();
+	    },
+
+	    setRawValue: function (value) {
+	        var owner = this, pps = owner.properties;
+
+	        value = value !== undefined && value !== null ? value.toString() : '';
+
+	        if (pps.numeral) {
+	            value = value.replace('.', pps.numeralDecimalMark);
+	        }
+
+	        owner.element.value = value;
+	        owner.onInput(value);
+	    },
+
+	    getRawValue: function () {
+	        var owner = this,
+	            pps = owner.properties,
+	            Util = Cleave.Util,
+	            rawValue = owner.element.value;
+
+	        if (pps.rawValueTrimPrefix) {
+	            rawValue = Util.getPrefixStrippedValue(rawValue, pps.prefix, pps.prefixLength);
+	        }
+
+	        if (pps.numeral) {
+	            rawValue = pps.numeralFormatter.getRawValue(rawValue);
+	        } else {
+	            rawValue = Util.stripDelimiters(rawValue, pps.delimiter, pps.delimiters);
+	        }
+
+	        return rawValue;
+	    },
+
+	    getFormattedValue: function () {
+	        return this.element.value;
+	    },
+
+	    destroy: function () {
+	        var owner = this;
+
+	        owner.element.removeEventListener('input', owner.onChangeListener);
+	        owner.element.removeEventListener('keydown', owner.onKeyDownListener);
+	        owner.element.removeEventListener('cut', owner.onCutListener);
+	        owner.element.removeEventListener('copy', owner.onCopyListener);
+	    },
+
+	    toString: function () {
+	        return '[Cleave Object]';
+	    }
+	};
+
+	Cleave.NumeralFormatter = __webpack_require__(1);
+	Cleave.DateFormatter = __webpack_require__(2);
+	Cleave.PhoneFormatter = __webpack_require__(3);
+	Cleave.CreditCardDetector = __webpack_require__(4);
+	Cleave.Util = __webpack_require__(5);
+	Cleave.DefaultProperties = __webpack_require__(6);
+
+	// for angular directive
+	((typeof global === 'object' && global) ? global : window)['Cleave'] = Cleave;
+
+	// CommonJS
+	module.exports = Cleave;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var NumeralFormatter = function (numeralDecimalMark,
+	                                 numeralIntegerScale,
+	                                 numeralDecimalScale,
+	                                 numeralThousandsGroupStyle,
+	                                 numeralPositiveOnly,
+	                                 delimiter) {
+	    var owner = this;
+
+	    owner.numeralDecimalMark = numeralDecimalMark || '.';
+	    owner.numeralIntegerScale = numeralIntegerScale >= 0 ? numeralIntegerScale : 10;
+	    owner.numeralDecimalScale = numeralDecimalScale >= 0 ? numeralDecimalScale : 2;
+	    owner.numeralThousandsGroupStyle = numeralThousandsGroupStyle || NumeralFormatter.groupStyle.thousand;
+	    owner.numeralPositiveOnly = !!numeralPositiveOnly;
+	    owner.delimiter = (delimiter || delimiter === '') ? delimiter : ',';
+	    owner.delimiterRE = delimiter ? new RegExp('\\' + delimiter, 'g') : '';
+	};
+
+	NumeralFormatter.groupStyle = {
+	    thousand: 'thousand',
+	    lakh:     'lakh',
+	    wan:      'wan'
+	};
+
+	NumeralFormatter.prototype = {
+	    getRawValue: function (value) {
+	        return value.replace(this.delimiterRE, '').replace(this.numeralDecimalMark, '.');
+	    },
+
+	    format: function (value) {
+	        var owner = this, parts, partInteger, partDecimal = '';
+
+	        // strip alphabet letters
+	        value = value.replace(/[A-Za-z]/g, '')
+	            // replace the first decimal mark with reserved placeholder
+	            .replace(owner.numeralDecimalMark, 'M')
+
+	            // strip non numeric letters except minus and "M"
+	            // this is to ensure prefix has been stripped
+	            .replace(/[^\dM-]/g, '')
+
+	            // replace the leading minus with reserved placeholder
+	            .replace(/^\-/, 'N')
+
+	            // strip the other minus sign (if present)
+	            .replace(/\-/g, '')
+
+	            // replace the minus sign (if present)
+	            .replace('N', owner.numeralPositiveOnly ? '' : '-')
+
+	            // replace decimal mark
+	            .replace('M', owner.numeralDecimalMark)
+
+	            // strip any leading zeros
+	            .replace(/^(-)?0+(?=\d)/, '$1');
+
+	        partInteger = value;
+
+	        if (value.indexOf(owner.numeralDecimalMark) >= 0) {
+	            parts = value.split(owner.numeralDecimalMark);
+	            partInteger = parts[0];
+	            partDecimal = owner.numeralDecimalMark + parts[1].slice(0, owner.numeralDecimalScale);
+	        }
+
+	        if (owner.numeralIntegerScale > 0) {
+	          partInteger = partInteger.slice(0, owner.numeralIntegerScale + (value.slice(0, 1) === '-' ? 1 : 0));
+	        }
+
+	        switch (owner.numeralThousandsGroupStyle) {
+	        case NumeralFormatter.groupStyle.lakh:
+	            partInteger = partInteger.replace(/(\d)(?=(\d\d)+\d$)/g, '$1' + owner.delimiter);
+
+	            break;
+
+	        case NumeralFormatter.groupStyle.wan:
+	            partInteger = partInteger.replace(/(\d)(?=(\d{4})+$)/g, '$1' + owner.delimiter);
+
+	            break;
+
+	        default:
+	            partInteger = partInteger.replace(/(\d)(?=(\d{3})+$)/g, '$1' + owner.delimiter);
+	        }
+
+	        return partInteger.toString() + (owner.numeralDecimalScale > 0 ? partDecimal.toString() : '');
+	    }
+	};
+
+	module.exports = NumeralFormatter;
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var DateFormatter = function (datePattern) {
+	    var owner = this;
+
+	    owner.blocks = [];
+	    owner.datePattern = datePattern;
+	    owner.initBlocks();
+	};
+
+	DateFormatter.prototype = {
+	    initBlocks: function () {
+	        var owner = this;
+	        owner.datePattern.forEach(function (value) {
+	            if (value === 'Y') {
+	                owner.blocks.push(4);
+	            } else {
+	                owner.blocks.push(2);
+	            }
+	        });
+	    },
+
+	    getBlocks: function () {
+	        return this.blocks;
+	    },
+
+	    getValidatedDate: function (value) {
+	        var owner = this, result = '';
+
+	        value = value.replace(/[^\d]/g, '');
+
+	        owner.blocks.forEach(function (length, index) {
+	            if (value.length > 0) {
+	                var sub = value.slice(0, length),
+	                    sub0 = sub.slice(0, 1),
+	                    rest = value.slice(length);
+
+	                switch (owner.datePattern[index]) {
+	                case 'd':
+	                    if (sub === '00') {
+	                        sub = '01';
+	                    } else if (parseInt(sub0, 10) > 3) {
+	                        sub = '0' + sub0;
+	                    } else if (parseInt(sub, 10) > 31) {
+	                        sub = '31';
+	                    }
+
+	                    break;
+
+	                case 'm':
+	                    if (sub === '00') {
+	                        sub = '01';
+	                    } else if (parseInt(sub0, 10) > 1) {
+	                        sub = '0' + sub0;
+	                    } else if (parseInt(sub, 10) > 12) {
+	                        sub = '12';
+	                    }
+
+	                    break;
+	                }
+
+	                result += sub;
+
+	                // update remaining string
+	                value = rest;
+	            }
+	        });
+
+	        return result;
+	    }
+	};
+
+	module.exports = DateFormatter;
+
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var PhoneFormatter = function (formatter, delimiter) {
+	    var owner = this;
+
+	    owner.delimiter = (delimiter || delimiter === '') ? delimiter : ' ';
+	    owner.delimiterRE = delimiter ? new RegExp('\\' + delimiter, 'g') : '';
+
+	    owner.formatter = formatter;
+	};
+
+	PhoneFormatter.prototype = {
+	    setFormatter: function (formatter) {
+	        this.formatter = formatter;
+	    },
+
+	    format: function (phoneNumber) {
+	        var owner = this;
+
+	        owner.formatter.clear();
+
+	        // only keep number and +
+	        phoneNumber = phoneNumber.replace(/[^\d+]/g, '');
+
+	        // strip delimiter
+	        phoneNumber = phoneNumber.replace(owner.delimiterRE, '');
+
+	        var result = '', current, validated = false;
+
+	        for (var i = 0, iMax = phoneNumber.length; i < iMax; i++) {
+	            current = owner.formatter.inputDigit(phoneNumber.charAt(i));
+
+	            // has ()- or space inside
+	            if (/[\s()-]/g.test(current)) {
+	                result = current;
+
+	                validated = true;
+	            } else {
+	                if (!validated) {
+	                    result = current;
+	                }
+	                // else: over length input
+	                // it turns to invalid number again
+	            }
+	        }
+
+	        // strip ()
+	        // e.g. US: 7161234567 returns (716) 123-4567
+	        result = result.replace(/[()]/g, '');
+	        // replace library delimiter with user customized delimiter
+	        result = result.replace(/[\s-]/g, owner.delimiter);
+
+	        return result;
+	    }
+	};
+
+	module.exports = PhoneFormatter;
+
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var CreditCardDetector = {
+	    blocks: {
+	        uatp:          [4, 5, 6],
+	        amex:          [4, 6, 5],
+	        diners:        [4, 6, 4],
+	        discover:      [4, 4, 4, 4],
+	        mastercard:    [4, 4, 4, 4],
+	        dankort:       [4, 4, 4, 4],
+	        instapayment:  [4, 4, 4, 4],
+	        jcb:           [4, 4, 4, 4],
+	        maestro:       [4, 4, 4, 4],
+	        visa:          [4, 4, 4, 4],
+	        general:       [4, 4, 4, 4],
+	        generalStrict: [4, 4, 4, 7]
+	    },
+
+	    re: {
+	        // starts with 1; 15 digits, not starts with 1800 (jcb card)
+	        uatp: /^(?!1800)1\d{0,14}/,
+
+	        // starts with 34/37; 15 digits
+	        amex: /^3[47]\d{0,13}/,
+
+	        // starts with 6011/65/644-649; 16 digits
+	        discover: /^(?:6011|65\d{0,2}|64[4-9]\d?)\d{0,12}/,
+
+	        // starts with 300-305/309 or 36/38/39; 14 digits
+	        diners: /^3(?:0([0-5]|9)|[689]\d?)\d{0,11}/,
+
+	        // starts with 51-55/22-27; 16 digits
+	        mastercard: /^(5[1-5]|2[2-7])\d{0,14}/,
+
+	        // starts with 5019/4175/4571; 16 digits
+	        dankort: /^(5019|4175|4571)\d{0,12}/,
+
+	        // starts with 637-639; 16 digits
+	        instapayment: /^63[7-9]\d{0,13}/,
+
+	        // starts with 2131/1800/35; 16 digits
+	        jcb: /^(?:2131|1800|35\d{0,2})\d{0,12}/,
+
+	        // starts with 50/56-58/6304/67; 16 digits
+	        maestro: /^(?:5[0678]\d{0,2}|6304|67\d{0,2})\d{0,12}/,
+
+	        // starts with 4; 16 digits
+	        visa: /^4\d{0,15}/
+	    },
+
+	    getInfo: function (value, strictMode) {
+	        var blocks = CreditCardDetector.blocks,
+	            re = CreditCardDetector.re;
+
+	        // In theory, visa credit card can have up to 19 digits number.
+	        // Set strictMode to true will remove the 16 max-length restrain,
+	        // however, I never found any website validate card number like
+	        // this, hence probably you don't need to enable this option.
+	        strictMode = !!strictMode;
+
+	        if (re.amex.test(value)) {
+	            return {
+	                type:   'amex',
+	                blocks: blocks.amex
+	            };
+	        } else if (re.uatp.test(value)) {
+	            return {
+	                type:   'uatp',
+	                blocks: blocks.uatp
+	            };
+	        } else if (re.diners.test(value)) {
+	            return {
+	                type:   'diners',
+	                blocks: blocks.diners
+	            };
+	        } else if (re.discover.test(value)) {
+	            return {
+	                type:   'discover',
+	                blocks: strictMode ? blocks.generalStrict : blocks.discover
+	            };
+	        } else if (re.mastercard.test(value)) {
+	            return {
+	                type:   'mastercard',
+	                blocks: blocks.mastercard
+	            };
+	        } else if (re.dankort.test(value)) {
+	            return {
+	                type:   'dankort',
+	                blocks: blocks.dankort
+	            };
+	        } else if (re.instapayment.test(value)) {
+	            return {
+	                type:   'instapayment',
+	                blocks: blocks.instapayment
+	            };
+	        } else if (re.jcb.test(value)) {
+	            return {
+	                type:   'jcb',
+	                blocks: blocks.jcb
+	            };
+	        } else if (re.maestro.test(value)) {
+	            return {
+	                type:   'maestro',
+	                blocks: strictMode ? blocks.generalStrict : blocks.maestro
+	            };
+	        } else if (re.visa.test(value)) {
+	            return {
+	                type:   'visa',
+	                blocks: strictMode ? blocks.generalStrict : blocks.visa
+	            };
+	        } else {
+	            return {
+	                type:   'unknown',
+	                blocks: strictMode ? blocks.generalStrict : blocks.general
+	            };
+	        }
+	    }
+	};
+
+	module.exports = CreditCardDetector;
+
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var Util = {
+	    noop: function () {
+	    },
+
+	    strip: function (value, re) {
+	        return value.replace(re, '');
+	    },
+
+	    isDelimiter: function (letter, delimiter, delimiters) {
+	        // single delimiter
+	        if (delimiters.length === 0) {
+	            return letter === delimiter;
+	        }
+
+	        // multiple delimiters
+	        return delimiters.some(function (current) {
+	            if (letter === current) {
+	                return true;
+	            }
+	        });
+	    },
+
+	    getDelimiterREByDelimiter: function (delimiter) {
+	        return new RegExp(delimiter.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1'), 'g');
+	    },
+
+	    stripDelimiters: function (value, delimiter, delimiters) {
+	        var owner = this;
+
+	        // single delimiter
+	        if (delimiters.length === 0) {
+	            var delimiterRE = delimiter ? owner.getDelimiterREByDelimiter(delimiter) : '';
+
+	            return value.replace(delimiterRE, '');
+	        }
+
+	        // multiple delimiters
+	        delimiters.forEach(function (current) {
+	            value = value.replace(owner.getDelimiterREByDelimiter(current), '');
+	        });
+
+	        return value;
+	    },
+
+	    headStr: function (str, length) {
+	        return str.slice(0, length);
+	    },
+
+	    getMaxLength: function (blocks) {
+	        return blocks.reduce(function (previous, current) {
+	            return previous + current;
+	        }, 0);
+	    },
+
+	    // strip value by prefix length
+	    // for prefix: PRE
+	    // (PRE123, 3) -> 123
+	    // (PR123, 3) -> 23 this happens when user hits backspace in front of "PRE"
+	    getPrefixStrippedValue: function (value, prefix, prefixLength) {
+	        if (value.slice(0, prefixLength) !== prefix) {
+	            var diffIndex = this.getFirstDiffIndex(prefix, value.slice(0, prefixLength));
+
+	            value = prefix + value.slice(diffIndex, diffIndex + 1) + value.slice(prefixLength + 1);
+	        }
+
+	        return value.slice(prefixLength);
+	    },
+
+	    getFirstDiffIndex: function (prev, current) {
+	        var index = 0;
+
+	        while (prev.charAt(index) === current.charAt(index))
+	            if (prev.charAt(index++) === '')
+	                return -1;
+
+	        return index;
+	    },
+
+	    getFormattedValue: function (value, blocks, blocksLength, delimiter, delimiters) {
+	        var result = '',
+	            multipleDelimiters = delimiters.length > 0,
+	            currentDelimiter;
+
+	        // no options, normal input
+	        if (blocksLength === 0) {
+	            return value;
+	        }
+
+	        blocks.forEach(function (length, index) {
+	            if (value.length > 0) {
+	                var sub = value.slice(0, length),
+	                    rest = value.slice(length);
+
+	                result += sub;
+
+	                currentDelimiter = multipleDelimiters ? (delimiters[index] || currentDelimiter) : delimiter;
+
+	                if (sub.length === length && index < blocksLength - 1) {
+	                    result += currentDelimiter;
+	                }
+
+	                // update remaining string
+	                value = rest;
+	            }
+	        });
+
+	        return result;
+	    },
+
+	    isAndroid: function () {
+	        if (navigator && /android/i.test(navigator.userAgent)) {
+	            return true;
+	        }
+
+	        return false;
+	    },
+
+	    // On Android chrome, the keyup and keydown events
+	    // always return key code 229 as a composition that
+	    // buffers the user’s keystrokes
+	    // see https://github.com/nosir/cleave.js/issues/147
+	    isAndroidBackspaceKeydown: function (lastInputValue, currentInputValue) {
+	        if (!this.isAndroid()) {
+	            return false;
+	        }
+
+	        return currentInputValue === lastInputValue.slice(0, -1);
+	    }
+	};
+
+	module.exports = Util;
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+
+	/**
+	 * Props Assignment
+	 *
+	 * Separate this, so react module can share the usage
+	 */
+	var DefaultProperties = {
+	    // Maybe change to object-assign
+	    // for now just keep it as simple
+	    assign: function (target, opts) {
+	        target = target || {};
+	        opts = opts || {};
+
+	        // credit card
+	        target.creditCard = !!opts.creditCard;
+	        target.creditCardStrictMode = !!opts.creditCardStrictMode;
+	        target.creditCardType = '';
+	        target.onCreditCardTypeChanged = opts.onCreditCardTypeChanged || (function () {});
+
+	        // phone
+	        target.phone = !!opts.phone;
+	        target.phoneRegionCode = opts.phoneRegionCode || 'AU';
+	        target.phoneFormatter = {};
+
+	        // date
+	        target.date = !!opts.date;
+	        target.datePattern = opts.datePattern || ['d', 'm', 'Y'];
+	        target.dateFormatter = {};
+
+	        // numeral
+	        target.numeral = !!opts.numeral;
+	        target.numeralIntegerScale = opts.numeralIntegerScale >= 0 ? opts.numeralIntegerScale : 10;
+	        target.numeralDecimalScale = opts.numeralDecimalScale >= 0 ? opts.numeralDecimalScale : 2;
+	        target.numeralDecimalMark = opts.numeralDecimalMark || '.';
+	        target.numeralThousandsGroupStyle = opts.numeralThousandsGroupStyle || 'thousand';
+	        target.numeralPositiveOnly = !!opts.numeralPositiveOnly;
+
+	        // others
+	        target.numericOnly = target.creditCard || target.date || !!opts.numericOnly;
+
+	        target.uppercase = !!opts.uppercase;
+	        target.lowercase = !!opts.lowercase;
+
+	        target.prefix = (target.creditCard || target.phone || target.date) ? '' : (opts.prefix || '');
+	        target.prefixLength = target.prefix.length;
+	        target.rawValueTrimPrefix = !!opts.rawValueTrimPrefix;
+	        target.copyDelimiter = !!opts.copyDelimiter;
+
+	        target.initValue = opts.initValue === undefined ? '' : opts.initValue.toString();
+
+	        target.delimiter =
+	            (opts.delimiter || opts.delimiter === '') ? opts.delimiter :
+	                (opts.date ? '/' :
+	                    (opts.numeral ? ',' :
+	                        (opts.phone ? ' ' :
+	                            ' ')));
+	        target.delimiterLength = target.delimiter.length;
+	        target.delimiters = opts.delimiters || [];
+
+	        target.blocks = opts.blocks || [];
+	        target.blocksLength = target.blocks.length;
+
+	        target.root = (typeof global === 'object' && global) ? global : window;
+
+	        target.maxLength = 0;
+
+	        target.backspace = false;
+	        target.result = '';
+
+	        return target;
+	    }
+	};
+
+	module.exports = DefaultProperties;
+
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ }
+/******/ ])
+});
+;
+
+/***/ }),
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(36),
+  __webpack_require__(35),
+  /* template */
+  __webpack_require__(55),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/node_modules/vue-cleave/src/Cleave.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Cleave.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3188b75e", Component.options)
+  } else {
+    hotAPI.reload("data-v-3188b75e", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(37),
   /* template */
   null,
   /* scopeId */
@@ -1073,14 +2222,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(37),
+  __webpack_require__(38),
   /* template */
-  __webpack_require__(53),
+  __webpack_require__(57),
   /* scopeId */
   null,
   /* cssModules */
@@ -1107,14 +2256,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(38),
+  __webpack_require__(39),
   /* template */
-  __webpack_require__(52),
+  __webpack_require__(56),
   /* scopeId */
   null,
   /* cssModules */
@@ -1141,14 +2290,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(39),
+  __webpack_require__(40),
   /* template */
-  __webpack_require__(54),
+  __webpack_require__(58),
   /* scopeId */
   null,
   /* cssModules */
@@ -1175,14 +2324,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(40),
+  __webpack_require__(41),
   /* template */
-  __webpack_require__(57),
+  __webpack_require__(61),
   /* scopeId */
   null,
   /* cssModules */
@@ -1209,14 +2358,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(41),
+  __webpack_require__(42),
   /* template */
-  __webpack_require__(58),
+  __webpack_require__(62),
   /* scopeId */
   null,
   /* cssModules */
@@ -1243,14 +2392,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(42),
+  __webpack_require__(43),
   /* template */
-  __webpack_require__(56),
+  __webpack_require__(60),
   /* scopeId */
   null,
   /* cssModules */
@@ -1277,7 +2426,27 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 52 */
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('input', {
+    ref: "input",
+    attrs: {
+      "type": "text"
+    }
+  })
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3188b75e", module.exports)
+  }
+}
+
+/***/ }),
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1303,30 +2472,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input-group"
   }, [_c('span', {
     staticClass: "input-group-addon"
-  }, [_vm._v("EUR")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.form.value),
-      expression: "form.value"
-    }],
+  }, [_vm._v("EUR")]), _vm._v(" "), _c('cleave', {
     class: _vm.classObject,
     attrs: {
       "type": "text",
       "id": "value",
       "name": "value",
-      "placeholder": "Betrag"
+      "placeholder": "Betrag",
+      "options": _vm.cleave
     },
-    domProps: {
-      "value": (_vm.form.value)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.form.value = $event.target.value
-      }
+    model: {
+      value: (_vm.form.value),
+      callback: function($$v) {
+        _vm.form.value = $$v
+      },
+      expression: "form.value"
     }
-  })]), _vm._v(" "), _c('p', {
+  })], 1), _vm._v(" "), _c('p', {
     staticClass: "error-text"
   }, [(_vm.error) ? _c('span', [_vm._v("Ungültiger Wert.")]) : _vm._e(), _vm._v(" "), (_vm.form.errors.has('amount')) ? _c('span', {
     domProps: {
@@ -1354,7 +2516,7 @@ if (false) {
 }
 
 /***/ }),
-/* 53 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1393,7 +2555,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-title"
   }, [_vm._v(_vm._s(_vm.title))])]), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
-  }, [_vm._v("W\n                    "), _c('span', {
+  }, [_c('span', {
     staticClass: "lead"
   }, [_vm._v(_vm._s(_vm.body))])]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
@@ -1416,7 +2578,7 @@ if (false) {
 }
 
 /***/ }),
-/* 54 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1445,8 +2607,8 @@ if (false) {
 }
 
 /***/ }),
-/* 55 */,
-/* 56 */
+/* 59 */,
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1471,7 +2633,7 @@ if (false) {
 }
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1506,7 +2668,7 @@ if (false) {
 }
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1541,7 +2703,7 @@ if (false) {
 }
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1554,7 +2716,7 @@ exports.withParams = exports.validationMixin = exports.Vuelidate = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _vval = __webpack_require__(75);
+var _vval = __webpack_require__(79);
 
 var _params = __webpack_require__(14);
 
@@ -2075,7 +3237,7 @@ exports.withParams = _params.withParams;
 exports.default = Vuelidate;
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2090,7 +3252,7 @@ var _common = __webpack_require__(0);
 exports.default = (0, _common.regex)('alpha', /^[a-zA-Z]*$/);
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2105,7 +3267,7 @@ var _common = __webpack_require__(0);
 exports.default = (0, _common.regex)('alphaNum', /^[a-zA-Z0-9]*$/);
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2136,7 +3298,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2155,7 +3317,7 @@ exports.default = function (min, max) {
 };
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2172,7 +3334,7 @@ var emailRegex = /(^$|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+")
 exports.default = (0, _common.regex)('email', emailRegex);
 
 /***/ }),
-/* 65 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2183,59 +3345,59 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.and = exports.or = exports.url = exports.sameAs = exports.requiredUnless = exports.requiredIf = exports.required = exports.minLength = exports.maxLength = exports.email = exports.between = exports.numeric = exports.alphaNum = exports.alpha = undefined;
 
-var _alpha = __webpack_require__(60);
+var _alpha = __webpack_require__(64);
 
 var _alpha2 = _interopRequireDefault(_alpha);
 
-var _alphaNum = __webpack_require__(61);
+var _alphaNum = __webpack_require__(65);
 
 var _alphaNum2 = _interopRequireDefault(_alphaNum);
 
-var _numeric = __webpack_require__(68);
+var _numeric = __webpack_require__(72);
 
 var _numeric2 = _interopRequireDefault(_numeric);
 
-var _between = __webpack_require__(63);
+var _between = __webpack_require__(67);
 
 var _between2 = _interopRequireDefault(_between);
 
-var _email = __webpack_require__(64);
+var _email = __webpack_require__(68);
 
 var _email2 = _interopRequireDefault(_email);
 
-var _maxLength = __webpack_require__(66);
+var _maxLength = __webpack_require__(70);
 
 var _maxLength2 = _interopRequireDefault(_maxLength);
 
-var _minLength = __webpack_require__(67);
+var _minLength = __webpack_require__(71);
 
 var _minLength2 = _interopRequireDefault(_minLength);
 
-var _required = __webpack_require__(70);
+var _required = __webpack_require__(74);
 
 var _required2 = _interopRequireDefault(_required);
 
-var _requiredIf = __webpack_require__(71);
+var _requiredIf = __webpack_require__(75);
 
 var _requiredIf2 = _interopRequireDefault(_requiredIf);
 
-var _requiredUnless = __webpack_require__(72);
+var _requiredUnless = __webpack_require__(76);
 
 var _requiredUnless2 = _interopRequireDefault(_requiredUnless);
 
-var _sameAs = __webpack_require__(73);
+var _sameAs = __webpack_require__(77);
 
 var _sameAs2 = _interopRequireDefault(_sameAs);
 
-var _url = __webpack_require__(74);
+var _url = __webpack_require__(78);
 
 var _url2 = _interopRequireDefault(_url);
 
-var _or = __webpack_require__(69);
+var _or = __webpack_require__(73);
 
 var _or2 = _interopRequireDefault(_or);
 
-var _and = __webpack_require__(62);
+var _and = __webpack_require__(66);
 
 var _and2 = _interopRequireDefault(_and);
 
@@ -2257,7 +3419,7 @@ exports.or = _or2.default;
 exports.and = _and2.default;
 
 /***/ }),
-/* 66 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2276,7 +3438,7 @@ exports.default = function (length) {
 };
 
 /***/ }),
-/* 67 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2295,7 +3457,7 @@ exports.default = function (length) {
 };
 
 /***/ }),
-/* 68 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2310,7 +3472,7 @@ var _common = __webpack_require__(0);
 exports.default = (0, _common.regex)('numeric', /^[0-9]*$/);
 
 /***/ }),
-/* 69 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2341,7 +3503,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 70 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2356,7 +3518,7 @@ var _common = __webpack_require__(0);
 exports.default = (0, _common.withParams)({ type: 'required' }, _common.req);
 
 /***/ }),
-/* 71 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2375,7 +3537,7 @@ exports.default = function (prop) {
 };
 
 /***/ }),
-/* 72 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2394,7 +3556,7 @@ exports.default = function (prop) {
 };
 
 /***/ }),
-/* 73 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2413,7 +3575,7 @@ exports.default = function (equalTo) {
 };
 
 /***/ }),
-/* 74 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2430,7 +3592,7 @@ var urlRegex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\
 exports.default = (0, _common.regex)('url', urlRegex);
 
 /***/ }),
-/* 75 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2585,7 +3747,7 @@ function h(tag, key, args) {
 }
 
 /***/ }),
-/* 76 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2600,8 +3762,8 @@ var withParams =  false ? require('./withParamsBrowser').withParams : __webpack_
 exports.default = withParams;
 
 /***/ }),
-/* 77 */,
-/* 78 */
+/* 81 */,
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
@@ -2609,4 +3771,4 @@ module.exports = __webpack_require__(16);
 
 
 /***/ })
-],[78]);
+],[82]);

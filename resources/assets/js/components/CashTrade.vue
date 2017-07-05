@@ -8,8 +8,8 @@
                 <div class="col-xs-7">
                     <div class="input-group">
                         <span class="input-group-addon">EUR</span>
-                        <input type="text" id="value" name="value" :class="classObject" v-model="form.value"
-                               placeholder="Betrag">
+                        <cleave type="text" id="value" name="value" :class="classObject" v-model="form.value"
+                               placeholder="Betrag" :options="cleave"></cleave>
                     </div>
                     <p class="error-text">
                         <span v-if="error">Ungültiger Wert.</span>
@@ -29,10 +29,15 @@
 <script>
     import {required, between} from 'vuelidate/lib/validators';
     import Input from '../mixins/Input.js';
+    import Cleave from 'vue-cleave';
 
     export default {
 
-        mixins: [ Input ],
+        mixins: [Input],
+
+        components: {
+            Cleave
+        },
 
         props: {
             route: String,
@@ -50,9 +55,15 @@
                     cls: null,
                     title: null
                 },
-                decimal: ','
+                decimal: ',',
+                cleave: {
+                    numeral: true,
+                    numeralDecimalMark: ',',
+                    delimiter: '.'
+                }
             }
         },
+
 
         validations: {
             form: {
@@ -63,14 +74,16 @@
         },
 
         methods: {
-            onSubmit() {
+            onSubmit()
+            {
                 this.form.post(this.route)
                     .then(Event.fire(this.eventName, this.form.amount));
             }
         },
 
         computed: {
-            classObject() {
+            classObject()
+            {
                 if (this.error) {
                     return 'form-control error'
                 } else {
@@ -78,19 +91,23 @@
                 }
             },
 
-            error() {
-                let match = this.floatMatchesString(this.form.amount, this.form.value);
-                return (this.form.amount !== null && (this.$v.form.amount.$invalid || !match))
+            error()
+            {
+                //let match = this.floatMatchesString(this.form.amount, this.form.value);
+                //return (this.form.amount !== null && (this.$v.form.amount.$invalid || !match))
+                return (this.form.amount !== null && (this.$v.form.amount.$invalid))
             },
 
-            eventName() {
+            eventName()
+            {
                 return (this.deposit) ? 'deposit-success' : 'withdraw-success';
             }
         },
 
         watch: {
             form: {
-                handler() {
+                handler()
+                {
                     if (this.form.value === '') {
                         this.form.amount = null;
                     } else {
@@ -101,8 +118,7 @@
             }
         },
 
-        created()
-        {
+        created() {
             if (this.deposit) {
                 this.title = 'Cash einzahlen';
                 this.btn.title = 'Einzahlen';
