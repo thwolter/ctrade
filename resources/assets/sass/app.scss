@@ -5,26 +5,21 @@
 //@import "node_modules/bootstrap/scss/variables";
 //@import "node_modules/bootstrap/scss/mixins";
 
-
 // Custom Variables & Mixins **************************** /
 
 //@import "variables";
 //@import "mixins";
 
-
 // Color Variables Override ***************************** /
 
 //@import "skins/slate";
 
-
 // Defaults ********************************************* /
 //@import "templates/defaults";
-
 
 // Bootstrap Overrides ********************************** /
 
 //@import "bootstrap";
-
 
 // mvp theme
 //@import "components/layout";
@@ -55,7 +50,6 @@
 //@import "components/team-member";
 //@import "components/testimonials";
 
-
 // Plugins ********************************************** /
 
 //@import "plugins/datatables";
@@ -68,7 +62,6 @@
 //@import "plugins/summernote";
 //@import "plugins/datatable-helper";
 
-
 // Template Specific ************************************ /
 
 //@import "templates/admin/navbar";
@@ -79,28 +72,30 @@
 //@import "templates/admin/sticky-footer";
 //@import "templates/landing/navbar";
 
-
 // Demo Styles ****************************************** /
 
 //@import "components/demo";
 
-
-
 // Custom *********************************************** /
 //@import "hero";
 //@import "wrapper";
-
 
 .separator {
 	border-bottom: 1px solid #ddd;
 }
 
 [v-cloak] {
-  display: none;
+	display: none;
 }
 
-.space-20 {
-	padding-top: 20px;
+.error {
+	background-color: rgba(215, 75, 75, 0.18);
+	border-color: #d74b4b;
+}
+
+.error-text {
+	color: #d74b4b;
+	padding-top: 10px;
 }
 
 .transaction-dialog {
@@ -127,9 +122,11 @@
 .bounce-enter-active {
 	animation: bounce-in .5s;
 }
+
 .bounce-leave-active {
 	animation: bounce-in .5s reverse;
 }
+
 @keyframes bounce-in {
 	0% {
 		transform: scale(0);

@@ -40,12 +40,16 @@ new Chart(context, {
 
 import axios from 'axios';
 import Form from './core/Form';
+import Vuelidate from 'vuelidate';
 
 
 window.Vue = require('vue');
+Vue.use(Vuelidate);
 
 window.axios = axios;
 window.Form = Form;
+
+
 
 
 

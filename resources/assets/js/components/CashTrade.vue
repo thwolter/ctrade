@@ -8,24 +8,15 @@
                 <div class="col-xs-7">
                     <div class="input-group">
                         <span class="input-group-addon">EUR</span>
-                        <vue-numeric
-                            id="cash"
-                            name="cash"
-                            min=0
-                            placeholder="only number allowed"
-                            separator="."
-                            :minus="false"
-                            :precision="2"
-                            v-model="form.amount"
-                            class="form-control">
-                        </vue-numeric>
+                        <input type="text" id="value" name="value" :class="classObject" v-model="form.value" placeholder="Betrag">
                     </div>
-
-                    <input v-model="form.amount" type="hidden" name="amount">
+                    <p v-if="error" class="error-text">Bitte einen gültigen Wert eingebenen.</p>
+                    <p v-if="!$v.form.amount.between" class="error-text">Wert muss positiv sein.</p>
+                    <input :amount="form.amount" type="hidden" name="cash" id="cash">
 
                 </div>
                 <div class="col-xs-2">
-                    <button :class="btnClass">{{ btnTitle }}</button>
+                    <button :class="btn.cls">{{ btn.title }}</button>
                 </div>
             </div>
         </form>
@@ -33,7 +24,8 @@
 </template>
 
 <script>
-    import VueNumeric from 'vue-numeric'
+    import {required, between} from 'vuelidate/lib/validators';
+    import accounting from 'accounting-js'
 
     export default {
         props: {
@@ -41,19 +33,27 @@
             deposit: Boolean
         },
 
-        components: {
-            VueNumeric
-        },
-
         data() {
             return {
                 form: new Form({
-                    amount: null,
+                    value: '',
+                    amount: null
                 }),
                 title: null,
-                btnTitle: null,
-                btnClass: null,
-                price: 0
+                btn: {
+                    cls: null,
+                    title: null
+                },
+                separator: '.'
+            }
+        },
+
+        validations: {
+            form: {
+                amount: {
+                    required,
+                    between: between(0, Infinity)
+                }
             }
         },
 
@@ -61,18 +61,73 @@
             onSubmit() {
                 this.form.post(this.route)
                     .then(response => alert('Wahoo!'));
+            },
+
+            /**
+             * Format provided value to number type.
+             * @param {String} value
+             * @return {Number}
+             */
+            formatToNumber (value) {
+                let number = 0;
+                if (this.separator === '.') {
+                    number = Number(String(value).replace(/[^0-9-,]+/g, '').replace(',', '.'))
+                } else {
+                    number = Number(String(value).replace(/[^0-9-.]+/g, ''))
+                }
+                return number
             }
         },
 
-        created() {
+        computed: {
+            classObject() {
+                if (this.error) {
+                    return 'form-control error'
+                } else {
+                    return 'form-control'
+                }
+            },
+
+            valueMatch() {
+                let rounded = Math.round(this.form.amount * 100) / 100;
+                let a = rounded.toString().replace('.', ',').replace(/,\s*$/, '');
+
+                let b = this.form.value;
+                if (b.includes(',')) b = b.replace(/((,0*)|,?0*)$/, '');
+
+                console.log('a=' + a);
+                console.log('b=' + b);
+                return (a === b);
+            },
+
+            error() {
+                return (this.form.amount !== null && (this.$v.form.amount.$invalid || !this.valueMatch))
+            }
+        },
+
+        watch: {
+            form: {
+                handler() {
+                    if (this.form.value === '') {
+                        this.form.amount = null;
+                    } else {
+                        this.form.amount = this.formatToNumber(this.form.value)
+                    }
+                },
+                deep: true
+            }
+        },
+
+        created()
+        {
             if (this.deposit) {
                 this.title = 'Cash einzahlen';
-                this.btnTitle = 'Einzahlen';
-                this.btnClass = 'btn btn-secondary';
+                this.btn.title = 'Einzahlen';
+                this.btn.cls = 'btn btn-secondary';
             } else {
                 this.title = 'Cash auszahlen';
-                this.btnTitle = 'Auszahlen';
-                this.btnClass = 'btn btn-primary'
+                this.btn.title = 'Auszahlen';
+                this.btn.cls = 'btn btn-primary'
             }
         }
     }
