@@ -158,5 +158,14 @@ class PortfoliosController extends Controller
         Portfolio::whereId($id)->first()->deposit($request->amount);
         return redirect()->route('positions.index', $id);
     }
+
+    public function withdraw(Request $request, $id) {
+
+        $this->validate($request, [
+            'amount' => 'required|min:0.01'
+        ]);
+        Portfolio::whereId($id)->first()->withdraw($request->amount);
+        return redirect()->route('positions.index', $id);
+    }
 }
 

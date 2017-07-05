@@ -49,5 +49,10 @@
 
         </div>
     </buy-sell-btn>
-
 </portlet>
+
+<cash-success
+        route="{{ route('positions.index', $portfolio->id, false)}}"
+        currency="EUR"
+        decimal=",">
+</cash-success>

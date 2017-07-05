@@ -28,8 +28,12 @@
 
 <script>
     import {required, between} from 'vuelidate/lib/validators';
+    import Input from '../mixins/Input.js';
 
     export default {
+
+        mixins: [ Input ],
+
         props: {
             route: String,
             deposit: Boolean
@@ -46,14 +50,13 @@
                     cls: null,
                     title: null
                 },
-                separator: '.'
+                decimal: ','
             }
         },
 
         validations: {
             form: {
                 amount: {
-                    required,
                     between: between(0, Infinity)
                 }
             }
@@ -62,43 +65,7 @@
         methods: {
             onSubmit() {
                 this.form.post(this.route)
-                    .then(response => alert('Wahoo!'));
-            },
-
-            /**
-             * Format provided value to number type.
-             * @param {String} value
-             * @return {Number}
-             */
-            formatToNumber (value) {
-                let number = 0;
-                if (this.separator === '.') {
-                    number = Number(String(value).replace(/[^0-9-,]+/g, '').replace(',', '.'))
-                } else {
-                    number = Number(String(value).replace(/[^0-9-.]+/g, ''))
-                }
-                return number
-            },
-
-            /**
-             * test if a string value corresponds the float Value
-             *
-             * @param floatVal
-             * @param stringVal
-             * @returns {boolean}
-             */
-            floatMatchString(floatVal, stringVal) {
-                let a = floatVal;
-                let b = stringVal;
-
-                let rounded = Math.round(a * 100) / 100;
-                a = rounded.toString().replace('.', ',').replace(/,\s*$/, '');
-
-                if (b.includes(',')) b = b.replace(/((,0*)|,?0*)$/, '');
-
-                console.log('a=' + a);
-                console.log('b=' + b);
-                return (a === b);
+                    .then(Event.fire(this.eventName, this.form.amount));
             }
         },
 
@@ -112,8 +79,12 @@
             },
 
             error() {
-                let match = this.floatMatchString(this.form.amount, this.form.value);
+                let match = this.floatMatchesString(this.form.amount, this.form.value);
                 return (this.form.amount !== null && (this.$v.form.amount.$invalid || !match))
+            },
+
+            eventName() {
+                return (this.deposit) ? 'deposit-success' : 'withdraw-success';
             }
         },
 
@@ -123,7 +94,7 @@
                     if (this.form.value === '') {
                         this.form.amount = null;
                     } else {
-                        this.form.amount = this.formatToNumber(this.form.value)
+                        this.form.amount = this.formatToNumber(this.form.value, this.decimal)
                     }
                 },
                 deep: true

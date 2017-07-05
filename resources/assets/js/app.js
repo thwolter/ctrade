@@ -50,11 +50,6 @@ window.axios = axios;
 window.Form = Form;
 
 
-
-
-
-
-
 /**
  * vue components
  */
@@ -65,9 +60,10 @@ Vue.component('inputPrice', require('./components/InputPrice.vue'));
 Vue.component('icon-stat', require('./components/IconStat.vue'));
 Vue.component('cash-trade', require('./components/CashTrade.vue'));
 Vue.component('buy-sell-btn', require('./components/BuySellBtn.vue'));
+Vue.component('cash-success', require('./components/CashSuccess.vue'));
 
 
-Event = new class {
+window.Event = new class {
     constructor() {
         this.vue = new Vue();
     }
@@ -77,7 +73,7 @@ Event = new class {
     listen(event, callback) {
         this.vue.$on(event, callback);
     }
-}
+};
 
 const app = new Vue({
     el: '#wrapper'
