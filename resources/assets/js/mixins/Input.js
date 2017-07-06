@@ -47,12 +47,16 @@ var Input = {
          * @returns {string}
          */
         formatMoney(value, currency, decimal = ',') {
-            let amount = value.toFixed(2) + ' ' + currency;
-
-            if (decimal = ',') {
-                amount = amount.replace('.', ',')
+            
+            if (value !== null) {
+            
+                let amount = value.toFixed(2) + ' ' + currency;
+    
+                if (decimal = ',') {
+                    amount = amount.replace('.', ',')
+                }
+                return amount;
             }
-            return amount;
         }
     }
 };

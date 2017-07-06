@@ -1,56 +1,71 @@
 <template>
     <div>
         <div class="input-form">
-
             <form @submit.prevent="onSubmit">
-                <!-- portfolio name -->
-                <div class="form-group row">
-                    <label for="name" class="col-md-2 col-md-offset-1 col-form-label">Bezeichnung</label>
-                    <div class="col-md-3">
-
-                        <div>
-                            <input type="text" name="name" placeholder="z.B. Deutsche Standardwerte" class="form-control">
+        
+                <div class="col-md-8">
+            
+                    <!-- portfolio name -->
+                    <div class="form-group row">
+                        <label for="name" class="col-md-3 col-md-offset-1 col-form-label">Bezeichnung</label>
+                        <div class="col-md-7">
+    
+                            <div>
+                                <input type="text" name="name" placeholder="z.B. Deutsche Standardwerte" 
+                                    class="form-control" v-model="form.name" @keydown="form.errors.clear('name')">
+                            </div>
+                            
+                            <p  v-if="form.errors.has('name')" class="error-text">
+                                <span v-text="form.errors.get('name')"></span>
+                            </p>
+    
                         </div>
-
-                    </div>
-                </div><!-- /portfolio name -->
-
-                <!-- currency -->
-                <div class="form-group row">
-                    <label for="currency" class="col-md-2 col-md-offset-1 col-form-label">Währung</label>
-                    <div class="col-md-3">
-
-                        <select name="currency" v-model="currency" class="form-control">
-                            <option value="" disabled selected hidden>Währung</option>
-                            <option v-for="currency in currencies" :value="currency">
-                                {{ currency }}
-                            </option>
-                        </select>
-
-                    </div>
-                </div><!-- /currency -->
-
-                <!-- cash -->
-                <div class="form-group row">
-                    <label for="cash" class="col-md-2 col-md-offset-1 col-form-label">Barbestand</label>
-                    <div class="col-md-3">
-
-                        <div class="input-group">
-                            <span class="input-group-addon">{{ currency }}</span>
-                            <cleave type="text" id="cash" name="cash" class="form-control" v-model="form.cash"
-                                placeholder="Betrag" :options="cleave"></cleave>
+                    </div><!-- /portfolio name -->
+    
+                    <!-- currency -->
+                    <div class="form-group row">
+                        <label for="currency" class="col-md-3 col-md-offset-1 col-form-label">Währung</label>
+                        <div class="col-md-7">
+    
+                            <select name="currency" v-model="form.currency" class="form-control">
+                                <option value="" disabled selected hidden>Währung</option>
+                                <option v-for="currency in currencies" :value="currency">
+                                    {{ currency }}
+                                </option>
+                            </select>
+    
                         </div>
-
+                    </div><!-- /currency -->
+    
+                    <!-- cash -->
+                    <div class="form-group row">
+                        <label for="cash" class="col-md-3 col-md-offset-1 col-form-label">Barbestand</label>
+                        <div class="col-md-7">
+    
+                            <div class="input-group">
+                                <span class="input-group-addon">{{ form.currency }}</span>
+                                <cleave type="text" id="cash" name="cash" class="form-control" v-model="cash"
+                                    placeholder="Betrag" :options="cleave" @rawValueChanged="form.errors.clear('amount')"> </cleave>
+                            </div>
+                            
+                            <p  v-if="form.errors.has('amount')" class="error-text">
+                                <span v-text="form.errors.get('amount')"></span>
+                            </p>
+    
+                        </div>
+                    </div><!-- /cash -->
+                    
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="pull-right">
+                                <button type="reset" class="btn btn-default">Abbrechen</button>
+                                <button class="btn btn-primary">Erstellen</button>
+                            </div>
+                        </div>
                     </div>
-                </div><!-- /cash -->
-
-                <div class="pull-right">
-                    <button type="reset" class="btn btn-default">Abbrechen</button>
-                    <button class="btn btn-primary">Erstellen</button>
                 </div>
+            
             </form>
-
-
         </div>
     </div>
 
@@ -62,6 +77,7 @@
     import Cleave from 'vue-cleave';
 
     export default {
+    
         mixins: [Input],
 
         components: {
@@ -70,19 +86,20 @@
 
         props: {
             route: String,
+            redirect: String,
             currencies: Object
         },
 
         data() {
             return {
                 form: new Form({
-                    cash: null,
-                    currency: null,
-                    amount: null
+                    currency: 'EUR',
+                    amount: null,
+                    name: null
                 }),
 
                 decimal: ',',
-                currency: 'EUR',
+                cash: null,
 
                 cleave: {
                     numeral: true,
@@ -103,36 +120,22 @@
         methods: {
             onSubmit()
             {
-                this.form.currency = this.currency;
                 this.form.post(this.route)
-                    .then(Event.fire('portfolio-created', this.form));
-            }
-        },
-
-        computed: {
-            classObject()
-            {
-                if (this.error) {
-                    return 'form-control error'
-                } else {
-                    return 'form-control'
-                }
-            },
-
-            error()
-            {
-                return (this.form.cash !== null && (this.$v.form.amount.$invalid))
+                    .then(data => {
+                        Event.fire('portfolio-created', data),
+                        window.location = data.redirect;
+                    });
             }
         },
 
         watch: {
-            form: {
+            cash: {
                 handler()
                 {
-                    if (this.form.cash === '') {
+                    if (this.cash === '') {
                         this.form.amount = null;
                     } else {
-                        this.form.amount = this.formatToNumber(this.form.cash, this.decimal)
+                        this.form.amount = this.formatToNumber(this.cash, this.decimal)
                     }
                 },
                 deep: true

@@ -1,5 +1,4 @@
 <!-- help section -->
-<div class="row">
     <portlet title="Hinweise">
         <div class="panel-group accordion-panel" id="accordion-paneled">
 
@@ -102,4 +101,3 @@
 
         </div> <!-- /.accordion -->
     </portlet>
-</div> <!-- /.row -->

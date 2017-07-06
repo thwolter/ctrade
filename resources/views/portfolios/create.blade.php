@@ -18,16 +18,16 @@
 
 
             <div class="row">
-                <portlet title="Portfolio erstellen">
-
-                    <create-portfolio
-                            route="{{ route('portfolios.store', true) }}"
-                            :currencies="{{ json_encode($currencies) }}">
-                    </create-portfolio>
-
-
-
-                </portlet> <!-- /portlet -->
+                <div class ="col-md-12">
+                    <portlet title="Portfolio erstellen">
+    
+                        <create-portfolio
+                                route="{{ route('portfolios.store', [], true) }}"
+                                :currencies="{{ json_encode($currencies) }}">
+                        </create-portfolio>
+    
+                    </portlet> <!-- /portlet -->
+                </div>
             </div> <!-- /.row -->
 
             @include('portfolios.partials.help')
