@@ -9,50 +9,6 @@
         <nav class="collapse mainnav-collapse" role="navigation">
             <ul class="mainnav-menu">
 
-                <li class="dropdown pull-right {{ active_class(if_route_pattern(['portfolios.index'])) }}">
-                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-                        @if (if_route(['portfolios.index']))
-                            Meine Portfolios
-                        @elseif (isset($focus)) 
-                            {{ $focus }} 
-                        @elseif (isset($portfolio)) 
-                            {{ $portfolio->name }}
-                        @endif
-                        <i class="mainnav-caret"></i>
-                    </a>
-
-                    <ul class="dropdown-menu" role="menu">
-
-                        <li>
-                            <a href="{{ route('portfolios.create') }}">
-                                <i class="fa fa-plus dropdown-icon "></i>
-                                Neues Portfolio
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="{{ route('portfolios.index') }}">
-                                <i class="fa fa-edit dropdown-icon "></i>
-                                Übersicht
-                            </a>
-                        </li>
-
-                        @if (Auth::user()->portfolios->count())
-                            <div class="separator"></div>
-                        @endif
-
-                        @foreach (Auth::user()->portfolios as $items)
-                            <li>
-                                <a href="{{ route('portfolios.show', $items->id) }}">
-                                    <i class="fa fa-angle-double-right dropdown-icon "></i>
-                                    {{ $items->name }}
-                                </a>
-                            </li>
-                        @endforeach
-
-                    </ul>
-                </li>
-
                 @if ((!isset($focus)) and isset($portfolio))
 
                     <li class="{{ active_class(if_route(['portfolios.show'])) }}">
@@ -85,6 +41,51 @@
                         </a>
                     </li>
                 @endif
+
+                <li class="dropdown pull-right-lg {{ active_class(if_route_pattern(['portfolios.index'])) }}">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                            @if (if_route(['portfolios.index']))
+                                Meine Portfolios
+                            @elseif (isset($focus))
+                                {{ $focus }}
+                            @elseif (isset($portfolio))
+                                {{ $portfolio->name }}
+                            @endif
+                            <i class="mainnav-caret"></i>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+
+                            <li>
+                                <a href="{{ route('portfolios.create') }}">
+                                    <i class="fa fa-plus dropdown-icon "></i>
+                                    Neues Portfolio
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('portfolios.index') }}">
+                                    <i class="fa fa-edit dropdown-icon "></i>
+                                    Übersicht
+                                </a>
+                            </li>
+
+                            @if (Auth::user()->portfolios->count())
+                                <div class="separator"></div>
+                            @endif
+
+                            @foreach (Auth::user()->portfolios as $items)
+                                <li>
+                                    <a href="{{ route('portfolios.show', $items->id) }}">
+                                        <i class="fa fa-angle-double-right dropdown-icon "></i>
+                                        {{ $items->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+
+                        </ul>
+                    </li>
+
             </ul>
 
         </nav>
