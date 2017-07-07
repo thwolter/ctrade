@@ -51,11 +51,10 @@
         </tbody>
     </table>
 
-    <!-- Form with method Post -->
-    {!! Form::open(['route' => ['positions.create', $portfolio->id], 'method' => 'Get']) !!}
-    <div>
-        {!! Form::submit('Position hinzufügen', ['class' => 'btn btn-default']) !!}
-    </div>
-    {!! Form::close() !!}
+    <a data-toggle="modal" href="#searchStocks" class="btn btn-default">Neue Position</a>
 
 </portlet>
+
+<div id="searchStocks" class="modal fade">
+    <search-stock route="{{ route('search.stock', [], false) }}"></search-stock>
+</div>

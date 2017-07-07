@@ -66,5 +66,9 @@ class SearchController extends Controller
 
         return view('search.show', compact('portfolio', 'item'));
     }
- 
+
+    public function searchStock(SearchRequest $request)
+    {
+        return json_encode(Stock::search($request->get('query'))->get());
+    }
 }

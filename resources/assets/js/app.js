@@ -62,6 +62,7 @@ Vue.component('cash-trade', require('./components/CashTrade.vue'));
 Vue.component('buy-sell-btn', require('./components/BuySellBtn.vue'));
 Vue.component('cash-success', require('./components/CashSuccess.vue'));
 Vue.component('create-portfolio', require('./components/CreatePortfolio.vue'));
+Vue.component('search-stock', require('./components/SearchStock.vue'));
 
 
 window.Event = new class {

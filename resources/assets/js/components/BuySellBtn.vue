@@ -4,9 +4,7 @@
         data() {
             return {
                 show: false,
-                direction: null,
-                buy: false,
-                sell: false
+                direction: null
             }
         },
 

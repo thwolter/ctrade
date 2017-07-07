@@ -6,7 +6,7 @@ class Form {
      *
      * @param {object} data
      */
-    constructor(data) {
+    constructor(data, doReset=true) {
         this.originalData = data;
 
         for (let field in data) {
@@ -14,6 +14,8 @@ class Form {
         }
 
         this.errors = new Errors();
+
+        this.doReset = doReset;
     }
 
 
@@ -26,6 +28,8 @@ class Form {
         for (let property in this.originalData) {
             data[property] = this[property];
         }
+
+        let doReset = true;
 
         return data;
     }
@@ -112,7 +116,7 @@ class Form {
      * @param {object} data
      */
     onSuccess(data) {
-        this.reset();
+        if (this.doReset) { this.reset(); }
     }
 
 
