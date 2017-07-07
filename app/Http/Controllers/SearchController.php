@@ -26,32 +26,6 @@ class SearchController extends Controller
 
 
     /**
-     * Display the search field and list of suggested items
-     * if a search string was delivered
-     *
-     * @param Request $request
-     * @param int $id the portfolio id
-     * @return \Illuminate\Http\Response
-     */
-    public function index(SearchRequest $request, $id)
-    {
-        $portfolio = Portfolio::findOrFail($id);
-        $types = $this->types;
-        $search = $request->search;
-        $type = $request->type;
-
-        if (array_key_exists($request->type, $this->types)) {
-
-            $suggest = resolve(array_get($this->typesMap, $request->type))
-                ->search($search)->get();
-        }
-
-        return view ('search.index',
-            compact('portfolio', 'suggest', 'types', 'type', 'search'));
-    }
-
-    
-    /**
      * Display the specified resource.
      *
      * @param int $id of the portfolio
