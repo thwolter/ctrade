@@ -31,9 +31,7 @@
         mixins: [ Input ],
 
         props: [
-            'route',
-            'decimal',
-            'currency'
+            'decimal'
         ],
 
         data() {
@@ -56,15 +54,8 @@
         created() {
             var vm = this;
 
-            Event.listen('deposit-success', function (amount) {
-                console.log('deposit confirmed with amount ' + amount);
-                vm.setText('deposit', amount);
-                vm.showModal();
-            });
-
-            Event.listen('withdraw-success', function (amount) {
-                console.log('withdrawal confirmed with amount ' + amount);
-                vm.setText('withdraw', amount);
+            Event.listen('cashSuccess', function (data) {
+                vm.setText(data);
                 vm.showModal();
             });
         },
@@ -76,13 +67,13 @@
 
             hide() {
                 this.show = false;
-                location.reload(true);
+                location.reload(true)
             },
 
-            setText(direction, amount) {
-                let amountString = this.formatMoney(amount, this.currency, this.decimal);
+            setText(data) {
+                let amountString = this.formatMoney(data.amount, data.currency, this.decimal);
 
-                if (direction === 'deposit') {
+                if (data.direction === 'deposit') {
                     this.title = this.textDeposit.title;
                     this.body = this.textDeposit.body.replace('%s', amountString);
                 }

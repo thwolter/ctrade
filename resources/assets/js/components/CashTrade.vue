@@ -9,7 +9,7 @@
                     <div class="input-group">
                         <span class="input-group-addon">EUR</span>
                         <cleave type="text" id="value" name="value" :class="classObject" v-model="form.value"
-                               placeholder="Betrag" :options="cleave"></cleave>
+                               placeholder="Betrag" :options="cleave" @rawValueChanged="form.errors.clear('amount')"></cleave>
                     </div>
                     <p class="error-text">
                         <span v-if="error">Ungültiger Wert.</span>
@@ -77,7 +77,7 @@
             onSubmit()
             {
                 this.form.post(this.route)
-                    .then(Event.fire(this.eventName, this.form.amount));
+                    .then(data => Event.fire('cashSuccess', data))
             }
         },
 
@@ -96,11 +96,6 @@
                 //let match = this.floatMatchesString(this.form.amount, this.form.value);
                 //return (this.form.amount !== null && (this.$v.form.amount.$invalid || !match))
                 return (this.form.amount !== null && (this.$v.form.amount.$invalid))
-            },
-
-            eventName()
-            {
-                return (this.deposit) ? 'deposit-success' : 'withdraw-success';
             }
         },
 

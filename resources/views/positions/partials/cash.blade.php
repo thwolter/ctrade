@@ -33,11 +33,11 @@
 
             <transition name="none">
                 <div v-if="show" class="transaction-dialog">
-                    <div v-if="buy">
+                    <template v-if="buy">
                         <cash-trade route="{{ route('portfolios.deposit', $portfolio->id, false) }}"
                                     :deposit="true">
                         </cash-trade>
-                    </div>
+                    </template>
 
                     <div v-else>
                         <cash-trade route="{{ route('portfolios.withdraw', $portfolio->id, false) }}"
@@ -51,8 +51,4 @@
     </buy-sell-btn>
 </portlet>
 
-<cash-success
-        route="{{ route('positions.index', $portfolio->id, false)}}"
-        currency="EUR"
-        decimal=",">
-</cash-success>
+<cash-success decimal=","></cash-success>

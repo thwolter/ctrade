@@ -160,8 +160,17 @@ class PortfoliosController extends Controller
         $this->validate($request, [
             'amount' => 'required|min:0.01'
         ]);
-        Portfolio::whereId($id)->first()->deposit($request->amount);
-        return redirect()->route('positions.index', $id);
+
+        $portfolio = Portfolio::whereId($id)->first();
+        $portfolio->deposit($request->amount);
+
+        return [
+            'redirect' => route('positions.index', $id),
+            'amount' => $request->amount,
+            'currency' => $portfolio->currencyCode(),
+            'id' => $portfolio->id,
+            'direction' => 'deposit'
+        ];
     }
 
     public function withdraw(Request $request, $id) {
@@ -169,8 +178,18 @@ class PortfoliosController extends Controller
         $this->validate($request, [
             'amount' => 'required|min:0.01'
         ]);
-        Portfolio::whereId($id)->first()->withdraw($request->amount);
-        return redirect()->route('positions.index', $id);
+
+        $portfolio = Portfolio::whereId($id)->first();
+
+        $portfolio->withdraw($request->amount);
+
+        return [
+            'redirect' => route('positions.index', $id),
+            'amount' => $request->amount,
+            'currency' => $portfolio->currencyCode(),
+            'id' => $portfolio->id,
+            'direction' => 'withdraw'
+        ];
     }
 }
 

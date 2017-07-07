@@ -5,6 +5,8 @@
             return {
                 show: false,
                 direction: null,
+                buy: false,
+                sell: false
             }
         },
 
@@ -39,10 +41,12 @@
 
         computed: {
             buy() {
-                return (this.direction === 'buy')
+                return (this.direction === 'buy');
+                this.$nextTick();
             },
             sell() {
-                return (this.direction === 'sell')
+                return (this.direction === 'sell');
+                this.$nextTick();
             }
         }
     }

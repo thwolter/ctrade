@@ -613,9 +613,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         buy: function buy() {
             return this.direction === 'buy';
+            this.$nextTick();
         },
         sell: function sell() {
             return this.direction === 'sell';
+            this.$nextTick();
         }
     }
 });
@@ -659,7 +661,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
 
-    props: ['route', 'decimal', 'currency'],
+    props: ['decimal'],
 
     data: function data() {
         return {
@@ -680,15 +682,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var vm = this;
 
-        Event.listen('deposit-success', function (amount) {
-            console.log('deposit confirmed with amount ' + amount);
-            vm.setText('deposit', amount);
-            vm.showModal();
-        });
-
-        Event.listen('withdraw-success', function (amount) {
-            console.log('withdrawal confirmed with amount ' + amount);
-            vm.setText('withdraw', amount);
+        Event.listen('cashSuccess', function (data) {
+            vm.setText(data);
             vm.showModal();
         });
     },
@@ -702,10 +697,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.show = false;
             location.reload(true);
         },
-        setText: function setText(direction, amount) {
-            var amountString = this.formatMoney(amount, this.currency, this.decimal);
+        setText: function setText(data) {
+            var amountString = this.formatMoney(data.amount, data.currency, this.decimal);
 
-            if (direction === 'deposit') {
+            if (data.direction === 'deposit') {
                 this.title = this.textDeposit.title;
                 this.body = this.textDeposit.body.replace('%s', amountString);
             } else {
@@ -804,7 +799,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         onSubmit: function onSubmit() {
-            this.form.post(this.route).then(Event.fire(this.eventName, this.form.amount));
+            this.form.post(this.route).then(function (data) {
+                return Event.fire('cashSuccess', data);
+            });
         }
     },
 
@@ -820,9 +817,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //let match = this.floatMatchesString(this.form.amount, this.form.value);
             //return (this.form.amount !== null && (this.$v.form.amount.$invalid || !match))
             return this.form.amount !== null && this.$v.form.amount.$invalid;
-        },
-        eventName: function eventName() {
-            return this.deposit ? 'deposit-success' : 'withdraw-success';
         }
     },
 
@@ -2778,6 +2772,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "value",
       "placeholder": "Betrag",
       "options": _vm.cleave
+    },
+    on: {
+      "rawValueChanged": function($event) {
+        _vm.form.errors.clear('amount')
+      }
     },
     model: {
       value: (_vm.form.value),
