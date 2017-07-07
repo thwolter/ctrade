@@ -1,101 +1,113 @@
-@extends('layouts.portfolio')
+@extends('layouts.master')
 
-@section('container-content')
+@section('content')
 
-    <div id="searchForm" class="input-form">
-        <div class="form-title">Suchen</div>
+    <div class="content">
+        <div class="container">
 
-        <!-- Form with method Get -->
-        {!! Form::open([
-            'route' => ['search.index', $portfolio->id],
-             'method' => 'Get', 'class' => 'form-horizontal']) !!}
+            <div id="styledModal" class="modal show">
+                <div class="modal-dialog">
+                    <div class="modal-content">
 
-            @include('partials.errors')
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h3 class="modal-title">Styled Modal</h3>
+                        </div> <!-- /.modal-header -->
 
-            <!-- select type -->
-            <div class="form-group row">
-                {!! Form::label('type', 'Typ:', ['class' => 'col-md-2 col-form-label']) !!}
-                <div class="col-md-10">
-                    {!! Form::select('type', $types, null, ['class' => 'form-control']) !!}
-                    <span class="help-block">
-                        Momentan auf Aktien beschränkt; bald gibt's mehr!
-                    </span>
-                </div>
-            </div><!-- /select type -->
+                        <div class="modal-body">
 
-            <!-- search form input -->
-            <div class="form-group row">
-                {!! Form::label('search', 'Suchen:', ['class' => 'col-md-2 col-form-label']) !!}
-                <div class="col-md-10">
-                    {!! Form::text('search', $search, ['placeholder' => 'Name, WKN, ISIN, ...', 'class' => 'form-control']) !!}
-                    <span class="help-block">
-                        Suche nach Namen oder Branche
-                    </span>
-                </div>
-            </div>
+                            <!-- Search input -->
+                            <div id="searchForm" class="input-form">
 
-            @if (isset($suggest) and count($suggest) == 0)
-                <div class="col-md-10 offset-md-2">
-                    <div class="alert alert-info">
-                        <p>Leider keine Ergebnisse gefunden.</p>
-                        <p>Versuche es mit der WKN oder der ISIN oder gib
-                            nur einen Teil des Namens ein.</p>
-                    </div>
-                </div>
-            @endif
+                                <!-- Form with method Get -->
+                                {!! Form::open([
+                                    'route' => ['search.index', $portfolio->id],
+                                    'method' => 'Get', 'class' => 'form-horizontal']) !!}
 
-            <!-- submit button -->
-            <div class="row buttons-row">
-                <div class="col-md-10 offset-md-2">
-                    {!! Form::submit('Suchen', ['class' => 'btn theme-btn-color']) !!}
-                </div>
-            </div>
+                                @include('partials.errors')
+                                @include('search.partials.resultsError')
 
-        {!! Form::close() !!}
-    </div>
+                                <div class="row">
+                                    <!-- select type -->
+                                    <div class="form-group row">
+                                        {!! Form::label('type', 'Typ:', ['class' => 'control-label col-sm-2 col-sm-offset-1']) !!}
+                                        <div class="col-sm-8">
+                                            {!! Form::select('type', $types, null, ['class' => 'form-control']) !!}
+                                            <span class="help-block">
+                                    Momentan auf Aktien beschränkt; bald gibt's mehr!
+                                </span>
+                                        </div>
+                                    </div><!-- /select type -->
 
-    @if(isset($suggest) and count($suggest) > 0)
-    <div id="searchResults" class="space-70"></div>
-        <div>
-            <h4>Suchergebnisse</h4>
-            <div class="space-20"></div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nr.</th>
-                        <th>Tpye</th>
-                        <th>Währung</th>
-                        <th>Name/Sektor</th>
-                        <th>WKN</th>
-                        <th>ISIN</th>
-                        <th>Kurs</th>
-                    </tr>
-                </thead>
+                                    <!-- search form input -->
+                                    <div class="form-group row">
+                                        {!! Form::label('search', 'Suchen:', ['class' => 'control-label col-sm-2 col-sm-offset-1']) !!}
+                                        <div class="col-sm-8">
+                                            {!! Form::text('search', $search, ['placeholder' => 'Name, WKN, ISIN, ...', 'class' => 'form-control']) !!}
+                                            <span class="help-block">
+                                    Suche nach Namen oder Branche
+                                </span>
+                                        </div>
+                                    </div>
 
-                <tbody>
-                     @php( $count = 0)
-                     @foreach($suggest as $item)
-                         @php ($sector = is_null($item->sector) ? '' : $item->sector->name)
-                         <tr>
-                             <td class="align-middle">{{ ++$count }}</td>
-                             <td class="align-middle">{{ $item['typeDisp'] }}</td>
-                             <td class="align-middle">{{ $item->currencyCode() }}</td>
-                             <td class="align-middle">
+                                    <!-- submit button -->
+                                    <div class="col-sm-offset-3">
+                                        {!! Form::submit('Suchen', ['class' => 'btn btn-primary']) !!}
+                                    </div>
+
+                                    {!! Form::close() !!}
+                                </div>
+
+                                <!-- Search results -->
+                                @if(isset($suggest) and count($suggest) > 0)
+                                    <div>
+                                        <table class="table table-striped table-hover positions-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Nr.</th>
+                                                <th>Tpye</th>
+                                                <th>Währung</th>
+                                                <th>Name/Sektor</th>
+                                                <th>WKN</th>
+                                                <th>ISIN</th>
+                                                <th>Kurs</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            @php( $count = 0)
+                                            @foreach($suggest as $item)
+                                                @php ($sector = is_null($item->sector) ? '' : $item->sector->name)
+                                                <tr>
+                                                    <td class="align-middle">{{ ++$count }}</td>
+                                                    <td class="align-middle">{{ $item['typeDisp'] }}</td>
+                                                    <td class="align-middle">{{ $item->currencyCode() }}</td>
+                                                    <td class="align-middle">
                                  <span style="display:block">
                                      <a href="{{ route('search.show', [$portfolio->id, 'type' => $type, 'id' => $item->id]) }}">
                                          {{ $item['name'] }}</a>
                                  </span>
-                                 <span>{{ $sector }}</span>
-                             </td>
-                             <td>{{ $item->wkn }}</td>
-                             <td>{{ $item->isin }}</td>
-                             <td>{{ $item->present()->price() }}</td>
-                         </tr>
-                     @endforeach
-                </tbody>
-            </table>
+                                                        <span>{{ $sector }}</span>
+                                                    </td>
+                                                    <td>{{ $item->wkn }}</td>
+                                                    <td>{{ $item->isin }}</td>
+                                                    <td>{{ $item->present()->price() }}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </portlet>
+                                @endif
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    @endif
+    </div>
+
 
 @endsection
 
@@ -120,11 +132,4 @@
             });
         </script>
     @endif
-@endsection
-
-@section('scripts.footer')
-
-@endsection
-
-
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Stock;
+use App\Http\Requests\SearchRequest;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 
@@ -32,7 +33,7 @@ class SearchController extends Controller
      * @param int $id the portfolio id
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $id)
+    public function index(SearchRequest $request, $id)
     {
         $portfolio = Portfolio::findOrFail($id);
         $types = $this->types;
