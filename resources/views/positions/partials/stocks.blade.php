@@ -58,3 +58,11 @@
 <div id="searchStocks" class="modal fade">
     <search-stock route="{{ route('search.stock', [], false) }}"></search-stock>
 </div>
+
+@section('scripts.footer')
+    <script>
+        $('#searchStocks').on('hidden.bs.modal', function () {
+            Event.fire('resetSearch');
+        });
+    </script>
+@endsection

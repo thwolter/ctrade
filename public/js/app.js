@@ -1189,6 +1189,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         assign: function assign(data) {
             this.results = data;
+        },
+        reset: function reset() {
+            this.form.reset();
+            this.results = [];
         }
     },
 
@@ -1198,7 +1202,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
-    created: function created() {}
+    created: function created() {
+        var _this2 = this;
+
+        Event.listen('resetSearch', function () {
+            _this2.reset();
+        });
+    }
 });
 
 /***/ }),
@@ -3047,7 +3057,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "modal-dialog inline-template"
+    staticClass: "modal-dialog"
   }, [_c('div', {
     staticClass: "modal-content"
   }, [_vm._m(0), _vm._v(" "), _c('div', {

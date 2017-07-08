@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-dialog inline-template">
+    <div class="modal-dialog">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -102,6 +102,11 @@
 
             assign(data) {
                 this.results = data
+            },
+
+            reset() {
+                this.form.reset();
+                this.results = [];
             }
         },
 
@@ -112,7 +117,9 @@
         },
 
         created() {
-
+            Event.listen('resetSearch', () => {
+                this.reset();
+            })
         }
     }
 </script>
