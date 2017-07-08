@@ -39,18 +39,19 @@ var Input = {
         },
 
         /**
-         * Returns a string formated as a Price.
+         * Returns a string format as a price.
          *
          * @param {float} value
          * @param {string} currency
          *
          * @returns {string}
          */
-        formatMoney(value, currency, decimal = ',') {
+        formatMoney(value, currency = '', decimal = ',') {
             
             if (value !== null) {
             
-                let amount = value.toFixed(2) + ' ' + currency;
+                let amount = value.toFixed(2);
+                if (currency != '') { amount = amount + ' ' + currency}
     
                 if (decimal = ',') {
                     amount = amount.replace('.', ',')

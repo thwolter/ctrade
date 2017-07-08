@@ -4,66 +4,74 @@
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title">Suche</h3>
+                <h3 class="modal-title">Wertpapier hinzufügen</h3>
             </div> <!-- /.modal-header -->
 
             <div class="modal-body">
 
-                <!-- Search input -->
-                <div class="row">
-                    <form @submit.prevent="onSubmit">
+                <!-- initiate search dialog -->
+                <div v-if="doSearch">
+                    <!-- Search input -->
+                    <div class="row">
+                        <form @submit.prevent="onSubmit">
 
-                        <!-- search form input -->
-                        <div class="form-group row">
-                            <label for="query" class="control-label col-sm-2 col-sm-offset-1">Suchen</label>
-                            <div class="col-sm-8">
+                            <!-- search form input -->
+                            <div class="form-group row">
+                                <label for="query" class="control-label col-sm-2 col-sm-offset-1">Suchen</label>
+                                <div class="col-sm-8">
 
-                                <input type="text" class="form-control" v-model="form.query" @keyup="onRefresh"
-                                       placeholder="Name, WKN, ISIN, ..." >
-                                <span class="help-block">
+                                    <input type="text" class="form-control" v-model="form.query" @keyup="onRefresh"
+                                           placeholder="Name, WKN, ISIN, ..." >
+                                    <span class="help-block">
                                     Suche nach Namen oder Branche
                                 </span>
 
-                                <p  v-if="form.errors.has('query')" class="error-text">
-                                    <span v-text="form.errors.get('query')"></span>
-                                </p>
+                                    <p  v-if="form.errors.has('query')" class="error-text">
+                                        <span v-text="form.errors.get('query')"></span>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- submit button -->
-                        <div class="col-sm-offset-3">
-                            <button class="btn btn-primary">Suchen</button>
-                        </div>
-                    </form>
-                </div> <!-- /.row -->
+                            <!-- submit button -->
+                            <div class="col-sm-offset-3">
+                                <button class="btn btn-primary">Suchen</button>
+                            </div>
+                        </form>
+                    </div> <!-- /.row -->
 
-                <!-- Search results -->
-                <div v-if="isResult">
-                    <table class="table table-striped table-hover positions-table">
-                        <thead>
+                    <!-- Search results -->
+                    <div v-if="isResult">
+                        <table class="table table-striped table-hover positions-table">
+                            <thead>
                             <tr>
                                 <th>Nr.</th>
                                 <th>Name/Sektor</th>
                                 <th>WKN</th>
                                 <th>ISIN</th>
                             </tr>
-                        </thead>
+                            </thead>
 
-                        <tbody>
+                            <tbody>
                             <tr v-for="(item, index) in results">
                                 <td class="align-middle"> {{ parseInt(index)+1 }} </td>
                                 <td class="align-middle">
                                      <span style="display:block">
-                                         <a href="#">{{ item.name }}</a>
+                                         <a href="#" @click.prevent="onClickLink(item.id)">{{ item.name }}</a>
                                      </span>
                                     <span>{{ item.sector }}</span>
                                 </td>
                                 <td>{{ item.wkn }}</td>
                                 <td>{{ item.isin }}</td>
                             </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <div v-else>
+                    <add-stock :id="id" :lookup="lookup"></add-stock>
+                </div>
+
 
             </div> <!-- /.modal-content -->
         </div> <!-- /.modal-content -->
@@ -73,7 +81,7 @@
 <script>
     export default {
 
-        props: ['route'],
+        props: ['route', 'lookup'],
 
         data() {
             return {
@@ -81,7 +89,9 @@
                     query: null
                 }, false),
 
-                results: []
+                results: [],
+                doSearch: true,
+                id: null
             }
         },
 
@@ -100,6 +110,11 @@
                 }
             },
 
+            onClickLink(id) {
+                this.id = id;
+                this.doSearch = false;
+            },
+
             assign(data) {
                 this.results = data
             },
@@ -107,6 +122,7 @@
             reset() {
                 this.form.reset();
                 this.results = [];
+                this.doSearch = true;
             }
         },
 

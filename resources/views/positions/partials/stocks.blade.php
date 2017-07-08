@@ -56,7 +56,10 @@
 </portlet>
 
 <div id="searchStocks" class="modal fade">
-    <search-stock route="{{ route('search.stock', [], false) }}"></search-stock>
+    <search-stock
+            route="{{ route('search.stock', [], false) }}"
+            lookup="{{ route('search.lookup', [], false) }}">
+    </search-stock>
 </div>
 
 @section('scripts.footer')

@@ -25,24 +25,25 @@ class SearchController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id of the portfolio
-     * @param Request $request
-     * @param int $id the portfolio's id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, $id)
-    {
-        $portfolio = Portfolio::find($id);
-        $item = resolve($this->typesMap[$request->type])->find($request->id);
-
-        return view('search.show', compact('portfolio', 'item'));
-    }
-
-    public function searchStock(SearchRequest $request)
+    public function search(SearchRequest $request)
     {
         return json_encode(Stock::search($request->get('query'))->get());
+    }
+
+
+    public function lookup(Request $request)
+    {
+        $stock = Stock::find($request->id);
+
+        $prices = [
+            ['exchange' => 'Stuttgart', 'price' => $stock->price()],
+            ['exchange' => 'FakeExchange', 'price' => $stock->price()]
+        ];
+
+        return json_encode([
+            'item' => $stock->toReadableArray(),
+            'prices' => $prices,
+            'history' => $stock->history()
+        ]);
     }
 }
