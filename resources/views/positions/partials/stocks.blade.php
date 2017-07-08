@@ -58,7 +58,8 @@
 <div id="searchStocks" class="modal fade">
     <search-stock
             route="{{ route('search.stock', [], false) }}"
-            lookup="{{ route('search.lookup', [], false) }}">
+            lookup="{{ route('search.lookup', [], false) }}"
+            cash="{{ $portfolio->cash }}">
     </search-stock>
 </div>
 

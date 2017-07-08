@@ -648,12 +648,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['id', 'lookup'],
+    props: ['id', 'lookup', 'cash'],
 
     mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
 
@@ -737,6 +745,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.updateTotal();
         }
 
+    },
+
+    computed: {
+        exceedCash: function exceedCash() {
+            return parseFloat(this.cash) < this.form.price * this.form.amount;
+        },
+        clsTotal: function clsTotal() {
+            if (this.exceedCash) {
+                return 'form-control error';
+            } else {
+                return 'form-control';
+            }
+        },
+        clsAmount: function clsAmount() {
+            if (this.form.errors.has('amount')) {
+                return 'form-control error';
+            } else {
+                return 'form-control';
+            }
+        }
     },
 
     created: function created() {
@@ -1380,7 +1408,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['route', 'lookup'],
+    props: ['route', 'lookup', 'cash'],
 
     data: function data() {
         return {
@@ -3369,7 +3397,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "query"
     }
   }, [_vm._v("Anzahl")]), _vm._v(" "), _c('div', [_c('cleave', {
-    staticClass: "form-control",
+    class: _vm.clsAmount,
     attrs: {
       "options": _vm.cleaveAmount,
       "placeholder": "Anzahl"
@@ -3381,7 +3409,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "amount"
     }
-  })], 1)])])]), _vm._v(" "), _c('div', {
+  })], 1), _vm._v(" "), (_vm.form.errors.has('amount')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('amount'))
+    }
+  })]) : _vm._e()])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-6"
@@ -3422,7 +3456,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('span', {
     staticClass: "input-group-addon"
   }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
-    staticClass: "form-control",
+    class: _vm.clsTotal,
     attrs: {
       "options": _vm.cleavePrice,
       "readonly": ""
@@ -3434,20 +3468,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "total"
     }
-  })], 1)])])]), _vm._v(" "), _vm._m(0)])
+  })], 1)])])]), _vm._v(" "), (_vm.exceedCash) ? _c('div', [_c('p', {
+    staticClass: "error-text"
+  }, [_vm._v("\n            Betrag übersteigt verfügbaren Barbestand.\n        ")])]) : _vm._e(), _vm._v(" "), _vm._m(0)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [_c('div', {
+    staticClass: "modal-footer"
+  }, [_c('div', [_c('div', {
     staticClass: "pull-right"
   }, [_c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "type": "reset"
-    }
-  }, [_vm._v("Abbrechen")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary"
   }, [_vm._v("Hinzufügen")])])])])
 }]}
@@ -3605,7 +3634,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }))])]) : _vm._e()]) : _c('div', [_c('add-stock', {
     attrs: {
       "id": _vm.id,
-      "lookup": _vm.lookup
+      "lookup": _vm.lookup,
+      "cash": _vm.cash
     }
   })], 1)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

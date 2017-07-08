@@ -21,9 +21,12 @@
                 <div class="form-group">
                     <label for="query" class="control-label">Anzahl</label>
                     <div>
-                        <cleave v-model="amount" :options="cleaveAmount" class="form-control"
+                        <cleave v-model="amount" :options="cleaveAmount" :class="clsAmount"
                             placeholder="Anzahl"></cleave>
                     </div>
+                    <p  v-if="form.errors.has('amount')" class="error-text">
+                        <span v-text="form.errors.get('amount')"></span>
+                    </p>
                 </div>
             </div>
         </div> <!-- /.row -->
@@ -47,17 +50,22 @@
                     <label for="query" class="control-label">Gesamt</label>
                     <div class="input-group">
                         <span class="input-group-addon">{{ form.currency }}</span>
-                        <cleave v-model="total" :options="cleavePrice" class="form-control"
+                        <cleave v-model="total" :options="cleavePrice" :class="clsTotal"
                             readonly></cleave>
                     </div>
                 </div>
             </div>
         </div><!-- /.row -->
 
-        <div class="row">
-            <div class="col-md-12">
+        <div v-if="exceedCash">
+            <p  class="error-text">
+                Betrag übersteigt verfügbaren Barbestand.
+            </p>
+        </div>
+
+        <div class="modal-footer">
+            <div>
                 <div class="pull-right">
-                    <button type="reset" class="btn btn-default">Abbrechen</button>
                     <button class="btn btn-primary">Hinzufügen</button>
                 </div>
             </div>
@@ -72,7 +80,7 @@
 
     export default {
 
-        props: ['id', 'lookup'],
+        props: ['id', 'lookup', 'cash'],
 
         mixins: [Input],
 
@@ -156,6 +164,28 @@
                 this.updateTotal();
             }
 
+        },
+
+        computed: {
+            exceedCash() {
+                return (parseFloat(this.cash) < this.form.price * this.form.amount)
+            },
+
+            clsTotal() {
+                if (this.exceedCash) {
+                    return 'form-control error';
+                } else {
+                    return 'form-control';
+                }
+            },
+
+            clsAmount() {
+                if (this.form.errors.has('amount')) {
+                    return 'form-control error';
+                } else {
+                    return 'form-control';
+                }
+            }
         },
 
         created() {
