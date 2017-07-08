@@ -123,7 +123,9 @@
 
             onSubmit() {
                 this.form.post(this.store)
-                    .then(data => alert('created'));
+                    .then(data => {
+                        window.location = data.redirect;
+                    });
 
             },
 

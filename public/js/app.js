@@ -704,7 +704,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         onSubmit: function onSubmit() {
             this.form.post(this.store).then(function (data) {
-                return alert('created');
+                window.location = data.redirect;
             });
         },
         fetch: function fetch() {
