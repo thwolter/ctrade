@@ -21,7 +21,8 @@
                 <div class="form-group">
                     <label for="query" class="control-label">Anzahl</label>
                     <div>
-                        <cleave v-model="amount" :options="cleave" class="form-control"></cleave>
+                        <cleave v-model="amount" :options="cleaveAmount" class="form-control"
+                            placeholder="Anzahl"></cleave>
                     </div>
                 </div>
             </div>
@@ -35,7 +36,7 @@
                     <label for="query" class="control-label">Preis</label>
                     <div class="input-group">
                         <span class="input-group-addon">{{ form.currency }}</span>
-                        <cleave v-model="price" :options="cleave" class="form-control" ></cleave>
+                        <cleave v-model="price" :options="cleavePrice" class="form-control" ></cleave>
                     </div>
                 </div>
             </div>
@@ -46,11 +47,22 @@
                     <label for="query" class="control-label">Gesamt</label>
                     <div class="input-group">
                         <span class="input-group-addon">{{ form.currency }}</span>
-                        <input type="text" class="form-control">
+                        <cleave v-model="total" :options="cleavePrice" class="form-control"
+                            readonly></cleave>
                     </div>
                 </div>
             </div>
         </div><!-- /.row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <button type="reset" class="btn btn-default">Abbrechen</button>
+                    <button class="btn btn-primary">Hinzufügen</button>
+                </div>
+            </div>
+        </div>
+
     </form>
 </template>
 
@@ -78,7 +90,13 @@
                 amount: '',
                 total: '',
 
-                cleave: {
+                cleavePrice: {
+                    numeral: true,
+                    numeralDecimalMark: ',',
+                    delimiter: '.'
+                },
+
+                cleaveAmount: {
                     numeral: true,
                     numeralDecimalMark: ',',
                     delimiter: '.'
@@ -114,7 +132,8 @@
             },
 
             updateTotal() {
-
+                this.total = this.formatMoney(this.form.price * this.form.amount);
+                if (this.total === '') { this.total = '0'; }
             }
         },
 
@@ -123,15 +142,19 @@
                 this.updateExchange(index);
             },
 
-            price: (value) => {
-                this.form.price = this.formatToNumber(this.price, this.cleave.numeralDecimalMark);
-                this.updateTotal();
+            price: function(value) {
+                if (value !== '') {
+                    this.form.price = parseFloat(value);
+                    this.updateTotal();
+                } else {
+                    this.updateExchange(this.exchange);
+                }
             },
 
-            amount: (value) => {
-                this.form.amount = this.formatToNumber(this.amount, this.cleave.numeralDecimalMark);
+            amount: function(value) {
+                this.form.amount = parseFloat(value);
                 this.updateTotal();
-            },
+            }
 
         },
 

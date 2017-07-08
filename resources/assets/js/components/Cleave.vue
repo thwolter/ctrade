@@ -9,7 +9,6 @@
 
         mounted() {
             this.cleave = new Cleave(this.$el, this.options)
-            this.cleave.setRawValue(10)
         },
 
         destroyed() {

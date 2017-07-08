@@ -59,7 +59,8 @@ var regex = exports.regex = function regex(type, expr) {
 /***/ }),
 /* 1 */,
 /* 2 */,
-/* 3 */
+/* 3 */,
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -139,7 +140,6 @@ var Input = {
 /* harmony default export */ __webpack_exports__["a"] = (Input);
 
 /***/ }),
-/* 4 */,
 /* 5 */,
 /* 6 */,
 /* 7 */,
@@ -579,9 +579,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(3);
-var _this2 = this;
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(4);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -661,7 +671,13 @@ var _this2 = this;
             amount: '',
             total: '',
 
-            cleave: {
+            cleavePrice: {
+                numeral: true,
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            },
+
+            cleaveAmount: {
                 numeral: true,
                 numeralDecimalMark: ',',
                 delimiter: '.'
@@ -694,7 +710,12 @@ var _this2 = this;
 
             this.price = this.formatMoney(this.form.price);
         },
-        updateTotal: function updateTotal() {}
+        updateTotal: function updateTotal() {
+            this.total = this.formatMoney(this.form.price * this.form.amount);
+            if (this.total === '') {
+                this.total = '0';
+            }
+        }
     },
 
     watch: {
@@ -703,13 +724,17 @@ var _this2 = this;
         },
 
         price: function price(value) {
-            _this2.form.price = _this2.formatToNumber(_this2.price, _this2.cleave.numeralDecimalMark);
-            _this2.updateTotal();
+            if (value !== '') {
+                this.form.price = parseFloat(value);
+                this.updateTotal();
+            } else {
+                this.updateExchange(this.exchange);
+            }
         },
 
         amount: function amount(value) {
-            _this2.form.amount = _this2.formatToNumber(_this2.amount, _this2.cleave.numeralDecimalMark);
-            _this2.updateTotal();
+            this.form.amount = parseFloat(value);
+            this.updateTotal();
         }
 
     },
@@ -779,7 +804,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(4);
 //
 //
 //
@@ -870,7 +895,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_cleave__);
 //
@@ -1015,7 +1040,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     mounted: function mounted() {
         this.cleave = new Cleave(this.$el, this.options);
-        this.cleave.setRawValue(10);
     },
     destroyed: function destroyed() {
         this.cleave.destroy();
@@ -1046,7 +1070,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_cleave__);
 //
@@ -3347,7 +3371,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Anzahl")]), _vm._v(" "), _c('div', [_c('cleave', {
     staticClass: "form-control",
     attrs: {
-      "options": _vm.cleave
+      "options": _vm.cleaveAmount,
+      "placeholder": "Anzahl"
     },
     model: {
       value: (_vm.amount),
@@ -3374,7 +3399,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
     staticClass: "form-control",
     attrs: {
-      "options": _vm.cleave
+      "options": _vm.cleavePrice
     },
     model: {
       value: (_vm.price),
@@ -3396,13 +3421,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input-group"
   }, [_c('span', {
     staticClass: "input-group-addon"
-  }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('input', {
+  }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
     staticClass: "form-control",
     attrs: {
-      "type": "text"
+      "options": _vm.cleavePrice,
+      "readonly": ""
+    },
+    model: {
+      value: (_vm.total),
+      callback: function($$v) {
+        _vm.total = $$v
+      },
+      expression: "total"
     }
-  })])])])])])
-},staticRenderFns: []}
+  })], 1)])])]), _vm._v(" "), _vm._m(0)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [_c('div', {
+    staticClass: "pull-right"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "reset"
+    }
+  }, [_vm._v("Abbrechen")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary"
+  }, [_vm._v("Hinzufügen")])])])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
