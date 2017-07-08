@@ -83,6 +83,7 @@ class Stock extends Instrument
                 'sector' => ($this->sector) ? $this->sector->name : '',
                 'industry' => ($this->industry) ? $this->industry->name : '',
                 'currency' => $this->currencyCode(),
+                'type' => get_class($this)
             ]);
     }
 }

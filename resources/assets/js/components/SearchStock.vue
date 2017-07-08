@@ -69,7 +69,7 @@
                 </div>
 
                 <div v-else>
-                    <add-stock :id="id" :lookup="lookup" :cash="cash"></add-stock>
+                    <add-stock :id="id" :lookup="lookup" :cash="cash" :store="store"></add-stock>
                 </div>
 
 
@@ -81,7 +81,7 @@
 <script>
     export default {
 
-        props: ['route', 'lookup', 'cash'],
+        props: ['route', 'lookup', 'store', 'cash'],
 
         data() {
             return {

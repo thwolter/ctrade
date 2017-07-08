@@ -656,12 +656,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['id', 'lookup', 'cash'],
+    props: ['id', 'lookup', 'store', 'cash'],
 
     mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
 
@@ -671,13 +672,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 exchange: 'Stuttgart',
                 price: null,
                 amount: null,
-                currency: null
+                currency: null,
+                id: null,
+                type: null,
+                portfolioId: null
             }),
+
             stock: [],
             exchange: 0,
             price: '',
             amount: '',
             total: '',
+
+            hasFormError: false,
 
             cleavePrice: {
                 numeral: true,
@@ -695,7 +702,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        onSubmit: function onSubmit() {},
+        onSubmit: function onSubmit() {
+            this.form.post(this.store).then(function (data) {
+                return alert('created');
+            });
+        },
         fetch: function fetch() {
             var _this = this;
 
@@ -714,6 +725,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var price = this.stock.prices[index];
 
             this.form.exchange = price.exchange;
+            this.form.type = this.stock.item.type;
             this.form.price = Object.values(price.price)[0];
 
             this.price = this.formatMoney(this.form.price);
@@ -743,8 +755,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         amount: function amount(value) {
             this.form.amount = parseFloat(value);
             this.updateTotal();
-        }
+        },
 
+        form: {
+            deep: true,
+            handler: function handler() {
+                this.hasFormError = this.form.errors.any();
+            }
+        }
     },
 
     computed: {
@@ -758,17 +776,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return 'form-control';
             }
         },
-        clsAmount: function clsAmount() {
-            if (this.form.errors.has('amount')) {
-                return 'form-control error';
-            } else {
-                return 'form-control';
-            }
+        hasError: function hasError() {
+            return this.hasFormError || this.exceedCash;
         }
     },
 
     created: function created() {
         this.fetch();
+        this.form.id = this.id;
     }
 });
 
@@ -1408,7 +1423,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['route', 'lookup', 'cash'],
+    props: ['route', 'lookup', 'store', 'cash'],
 
     data: function data() {
         return {
@@ -3345,7 +3360,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "submit": function($event) {
         $event.preventDefault();
-        _vm.onSubmis($event)
+        _vm.onSubmit($event)
       }
     }
   }, [_c('div', {
@@ -3397,10 +3412,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "query"
     }
   }, [_vm._v("Anzahl")]), _vm._v(" "), _c('div', [_c('cleave', {
-    class: _vm.clsAmount,
+    class: ['form-control', {
+      'error': _vm.form.errors.has('amount')
+    }],
     attrs: {
       "options": _vm.cleaveAmount,
       "placeholder": "Anzahl"
+    },
+    on: {
+      "input": function($event) {
+        _vm.form.errors.clear('amount')
+      }
     },
     model: {
       value: (_vm.amount),
@@ -3470,16 +3492,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)])])]), _vm._v(" "), (_vm.exceedCash) ? _c('div', [_c('p', {
     staticClass: "error-text"
-  }, [_vm._v("\n            Betrag übersteigt verfügbaren Barbestand.\n        ")])]) : _vm._e(), _vm._v(" "), _vm._m(0)])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }, [_vm._v("\n            Betrag übersteigt verfügbaren Barbestand.\n        ")])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
   }, [_c('div', [_c('div', {
     staticClass: "pull-right"
   }, [_c('button', {
-    staticClass: "btn btn-primary"
-  }, [_vm._v("Hinzufügen")])])])])
-}]}
+    staticClass: "btn btn-primary",
+    attrs: {
+      "disabled": _vm.hasError
+    }
+  }, [_vm._v("Hinzufügen")])])])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -3635,7 +3658,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": _vm.id,
       "lookup": _vm.lookup,
-      "cash": _vm.cash
+      "cash": _vm.cash,
+      "store": _vm.store
     }
   })], 1)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

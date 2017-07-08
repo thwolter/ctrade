@@ -59,6 +59,7 @@
     <search-stock
             route="{{ route('search.stock', [], false) }}"
             lookup="{{ route('search.lookup', [], false) }}"
+            store="{{ route('positions.store', $portfolio->id, false) }}"
             cash="{{ $portfolio->cash }}">
     </search-stock>
 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Transaction;
+use App\Http\Requests\PositionStore;
 use App\Repositories\FinancialMapping;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -50,19 +51,19 @@ class PositionsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int $id the portfolio id
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function store(Request $request, $id)
+    public function store(PositionStore $request, $id)
     {
         $amount = $request->amount;
-        $instrument = resolve($request->itemType)->find($request->itemId);
+        $instrument = resolve($request->type)->find($request->id);
 
         $position = Portfolio::find($id)->makePosition($instrument);
         $portfolio = Portfolio::buy($position->id, $amount);
 
         Transaction::buy($portfolio, new \DateTime(), $position, $amount);
 
-        return redirect(route('positions.index', $id));
+        return ['redirect' => route('positions.index', $id)];
 
     }
 

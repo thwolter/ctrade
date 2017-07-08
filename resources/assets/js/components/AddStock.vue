@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="onSubmis">
+    <form @submit.prevent="onSubmit">
         <div class="row">
             <div class="col-md-6">
 
@@ -21,8 +21,9 @@
                 <div class="form-group">
                     <label for="query" class="control-label">Anzahl</label>
                     <div>
-                        <cleave v-model="amount" :options="cleaveAmount" :class="clsAmount"
-                            placeholder="Anzahl"></cleave>
+                        <cleave v-model="amount" :options="cleaveAmount" placeholder="Anzahl"
+                                :class="['form-control', { 'error': form.errors.has('amount') }]"
+                                @input="form.errors.clear('amount')"></cleave>
                     </div>
                     <p  v-if="form.errors.has('amount')" class="error-text">
                         <span v-text="form.errors.get('amount')"></span>
@@ -66,7 +67,7 @@
         <div class="modal-footer">
             <div>
                 <div class="pull-right">
-                    <button class="btn btn-primary">Hinzufügen</button>
+                    <button class="btn btn-primary" :disabled="hasError">Hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -80,7 +81,7 @@
 
     export default {
 
-        props: ['id', 'lookup', 'cash'],
+        props: ['id', 'lookup', 'store', 'cash'],
 
         mixins: [Input],
 
@@ -90,13 +91,19 @@
                     exchange: 'Stuttgart',
                     price: null,
                     amount: null,
-                    currency: null
+                    currency: null,
+                    id: null,
+                    type: null,
+                    portfolioId: null
                 }),
+
                 stock: [],
                 exchange: 0,
                 price: '',
                 amount: '',
                 total: '',
+
+                hasFormError: false,
 
                 cleavePrice: {
                     numeral: true,
@@ -115,6 +122,9 @@
         methods: {
 
             onSubmit() {
+                this.form.post(this.store)
+                    .then(data => alert('created'));
+
             },
 
             fetch() {
@@ -134,6 +144,7 @@
                 let price = this.stock.prices[index];
 
                 this.form.exchange = price.exchange;
+                this.form.type = this.stock.item.type;
                 this.form.price = Object.values(price.price)[0];
 
                 this.price = this.formatMoney(this.form.price);
@@ -162,8 +173,14 @@
             amount: function(value) {
                 this.form.amount = parseFloat(value);
                 this.updateTotal();
-            }
+            },
 
+            form: {
+                deep: true,
+                handler() {
+                    this.hasFormError = this.form.errors.any();
+                }
+            }
         },
 
         computed: {
@@ -179,17 +196,14 @@
                 }
             },
 
-            clsAmount() {
-                if (this.form.errors.has('amount')) {
-                    return 'form-control error';
-                } else {
-                    return 'form-control';
-                }
+            hasError() {
+                return (this.hasFormError || this.exceedCash);
             }
         },
 
         created() {
-            this.fetch()
+            this.fetch();
+            this.form.id = this.id;
         }
     }
 </script>
