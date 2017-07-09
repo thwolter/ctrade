@@ -1,10 +1,17 @@
 <script>
     export default {
 
+        props: ['id', 'eventBuy', 'eventSell', 'toggle'],
+
         data() {
             return {
                 show: false,
-                direction: null
+                direction: null,
+                event: {
+                    buy: 'onBuy',
+                    sell: 'onSell'
+                },
+                doToggle: true
             }
         },
 
@@ -18,7 +25,7 @@
             },
 
             setFocus(direction) {
-                if (this.direction !== direction) {
+                if (this.direction !== direction  || !this.doToggle) {
                     this.show = true;
                     this.direction = direction;
                     this.fireEvent();
@@ -30,9 +37,9 @@
 
             fireEvent() {
                if (this.buy) {
-                   Event.fire('onBuy')
+                   Event.fire(this.event.buy, this.id)
                } else {
-                   Event.fire('onSell')
+                   Event.fire(this.event.sell, this.id)
                }
             }
         },
@@ -46,6 +53,13 @@
                 return (this.direction === 'sell');
                 this.$nextTick();
             }
+        },
+
+        mounted() {
+            if (this.eventBuy) { this.event.buy = this.eventBuy; }
+            if (this.eventSell) { this.event.sell = this.eventSell; }
+
+            if (this.toggle === 'false') { this.doToggle = false; }
         }
     }
 </script>

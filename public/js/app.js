@@ -796,10 +796,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['id', 'eventBuy', 'eventSell', 'toggle'],
+
     data: function data() {
         return {
             show: false,
-            direction: null
+            direction: null,
+            event: {
+                buy: 'onBuy',
+                sell: 'onSell'
+            },
+            doToggle: true
         };
     },
 
@@ -812,7 +820,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.setFocus('sell');
         },
         setFocus: function setFocus(direction) {
-            if (this.direction !== direction) {
+            if (this.direction !== direction || !this.doToggle) {
                 this.show = true;
                 this.direction = direction;
                 this.fireEvent();
@@ -823,9 +831,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         fireEvent: function fireEvent() {
             if (this.buy) {
-                Event.fire('onBuy');
+                Event.fire(this.event.buy, this.id);
             } else {
-                Event.fire('onSell');
+                Event.fire(this.event.sell, this.id);
             }
         }
     },
@@ -838,6 +846,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         sell: function sell() {
             return this.direction === 'sell';
             this.$nextTick();
+        }
+    },
+
+    mounted: function mounted() {
+        if (this.eventBuy) {
+            this.event.buy = this.eventBuy;
+        }
+        if (this.eventSell) {
+            this.event.sell = this.eventSell;
+        }
+
+        if (this.toggle === 'false') {
+            this.doToggle = false;
         }
     }
 });
@@ -4740,7 +4761,62 @@ module.exports = __webpack_require__(17);
 /***/ }),
 /* 89 */,
 /* 90 */,
-/* 91 */,
+/* 91 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
 /* 92 */,
 /* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -4836,21 +4912,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['id', 'amount', 'route', 'cash', 'item', 'direction', 'price'],
+    props: ['route', 'lookup'],
 
     mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
 
     data: function data() {
         return {
             form: new Form({
-                price: 0,
-                amount: 0,
-                id: null
+                price: null,
+                amount: null,
+                id: null,
+                direction: null
             }),
 
             total: '',
@@ -4867,19 +4956,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 numeralDecimalMark: ',',
                 delimiter: '.'
             },
-
             cleaveAmount: {
                 numeral: true,
                 numeralDecimalMark: ',',
                 delimiter: '.'
-            }
+            },
+
+            showDialog: false
         };
     },
 
 
     methods: {
         onSubmit: function onSubmit() {
-            this.form.post(this.route).then(function (data) {
+            var route = this.route.replace('%s', this.form.id);
+            console.log(route);
+            this.form.put(route).then(function (data) {
                 window.location = data.redirect;
             });
         },
@@ -4889,6 +4981,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         originalPrice: function originalPrice() {
             return Object.values(this.store.price)[0].toFixed(2);
+        },
+        hide: function hide() {
+            this.form.reset();
+            this.showDialog = false;
+            this.form.price = null; // why is price not reset with form?
+        },
+        show: function show(id, direction) {
+            this.form.direction = direction;
+            this.form.id = id;
+
+            this.fetch();
+            this.showDialog = true;
+        },
+        fetch: function fetch() {
+            var _this = this;
+
+            var lookupForm = new Form({ id: this.form.id });
+            lookupForm.post(this.lookup).then(function (data) {
+                return _this.setData(data);
+            });
+        },
+        setData: function setData(data) {
+            this.store.item = data.item;
+            this.store.price = data.price;
+
+            this.form.price = this.originalPrice();
+
+            this.cash = data.cash;
+
+            if (this.form.direction === 'sell') {
+                this.form.amount = data.amount;
+            }
         }
     },
 
@@ -4918,13 +5042,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
-    created: function created() {
-        this.store.item = JSON.parse(this.item);
-        this.store.price = JSON.parse(this.price);
-        this.form.id = this.id;
-    },
     mounted: function mounted() {
-        this.form.price = this.originalPrice();
+        var vm = this;
+
+        Event.listen('buyStock', function (id) {
+            vm.show(id, 'buy');
+        });
+
+        Event.listen('sellStock', function (id) {
+            vm.show(id, 'sell');
+        });
     }
 });
 
@@ -4932,13 +5059,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(102)
+
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(93),
   /* template */
   __webpack_require__(95),
   /* scopeId */
-  null,
+  "data-v-2e004f07",
   /* cssModules */
   null
 )
@@ -4967,13 +5098,41 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  return (_vm.showDialog) ? _c('div', [_c('div', {
+    staticClass: "modal-backdrop fade in",
+    on: {
+      "click": _vm.hide
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "modal show",
+    attrs: {
+      "id": "trade-dialog",
+      "role": "dialog",
+      "aria-labelledby": "trade-dialog"
+    }
+  }, [_c('div', {
     staticClass: "modal-dialog"
   }, [_c('div', {
     staticClass: "modal-content"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-hidden": "true"
+    },
+    on: {
+      "click": _vm.hide
+    }
+  }, [_vm._v("×")]), _vm._v(" "), _c('h3', {
+    staticClass: "modal-title"
+  }, [_vm._v("Wertpapier kaufen")])]), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
-  }, [_c('form', {
+  }, [_c('div', {
+    staticClass: "form-title"
+  }, [_c('h5', [_vm._v(_vm._s(_vm.store.item.name))]), _vm._v(" "), _c('h6', [_vm._v(" ISIN " + _vm._s(_vm.store.item.isin) + " / WKN " + _vm._s(_vm.store.item.wkn))])]), _vm._v(" "), _c('form', {
     on: {
       "submit": function($event) {
         $event.preventDefault();
@@ -4982,8 +5141,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "row"
-  }, [_vm._m(1), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -5020,7 +5179,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]) : _vm._e()])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-md-6"
+    staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -5045,7 +5204,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "form.price"
     }
   })], 1)])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
+    staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -5072,7 +5231,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)])])]), _vm._v(" "), (_vm.exceedCash) ? _c('div', [_c('p', {
     staticClass: "error-text"
-  }, [_vm._v("\n                        Betrag übersteigt verfügbaren Barbestand.\n                    ")])]) : _vm._e(), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                                Betrag übersteigt verfügbaren Barbestand.\n                            ")])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
   }, [_c('div', [_c('div', {
     staticClass: "pull-right"
@@ -5080,29 +5239,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "btn btn-default",
     attrs: {
       "type": "reset"
+    },
+    on: {
+      "click": _vm.hide
     }
   }, [_vm._v("Abbrechen")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
       "disabled": _vm.hasError
     }
-  }, [_vm._v("Hinzufügen")])])])])])])])])
+  }, [_vm._v("Hinzufügen")])])])])])])])])])]) : _vm._e()
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")]), _vm._v(" "), _c('h3', {
-    staticClass: "modal-title"
-  }, [_vm._v("Wertpapier kaufen")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-md-6"
+    staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -5127,6 +5276,296 @@ if (false) {
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-2e004f07", module.exports)
   }
+}
+
+/***/ }),
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(100)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(91)();
+exports.push([module.i, "\n.form-title[data-v-2e004f07] {\n    margin-bottom: 30px;\n}\n", ""]);
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(101);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(99)("3dd87698", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2e004f07&scoped=true!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TradeStock.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2e004f07&scoped=true!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TradeStock.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
 }
 
 /***/ })

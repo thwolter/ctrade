@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Entities\Transaction;
 use App\Http\Requests\PositionStore;
+use App\Http\Requests\PositionUpdate;
 use App\Repositories\FinancialMapping;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -109,5 +110,22 @@ class PositionsController extends Controller
         $position = Position::find($id)->delete();
 
         return redirect(route('positions.index', $position->portfolio->id));
+    }
+
+    public function fetch(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required'
+        ]);
+
+        $position = Position::find($request->id);
+
+        $item = $position->positionable->toReadableArray();
+        $price = $position->price();
+        $amount = $position->amount;
+        $cash = $position->portfolio->cash();
+
+        return compact('item', 'price', 'amount', 'cash');
+
     }
 }
