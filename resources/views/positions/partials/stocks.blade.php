@@ -16,10 +16,11 @@
         </thead>
         <tbody>
         @foreach($positions as $position)
+
             <tr class="h5">
                 <td class="align-middle">{{ $loop->iteration }}</td>
                 <td class="align-middle">
-                    <a href="{{ route('positions.show', ['id' => $position->id]) }}">
+                    <a href="{{ route('positions.show', [$portfolio->id, $position->id]) }}">
                         {{ $position->name() }}</a>
                     <span>
                             ({{ $position->present()->priceDate() }})
@@ -38,23 +39,50 @@
 
                 <td class="align-middle">
                     <div class="buy-sell-icons text-center">
-                        <a href="{{ route('positions.buy', ['id' => $position->id]) }}">
+                        <a data-toggle="modal" href="{{ '#buy'.$position->id }}" class="btn-link">
                             <i class="fa fa-plus-square buy-icon" aria-hidden="true"></i>
                         </a>
-                        <a href="{{ route('positions.sell', ['id' => $position->id]) }}">
+                        <a data-tobble="modal" href="{{ '#sell'.$position->id }}" class="btn-link">
                             <i class="fa fa-minus-square sell-icon" aria-hidden="true"></i>
                         </a>
                     </div>
                 </td>
             </tr>
+
+            <div id="{{ 'buy'.$position->id }}" class="modal fade">
+                <trade-stock id="{{ $position->id}}"
+                             amount="{{ $position->amount() }}"
+                             route="{{ route('positions.update', [$portfolio->id, $position->id], false) }}"
+                             cash="{{ $portfolio->cash }}"
+                             item="{{ json_encode($position->positionable->toReadableArray()) }}"
+                             price="{{ json_encode($position->price()) }}"
+                             direction="buy">
+                </trade-stock>
+            </div>
+
+            <div id="{{ 'sell'.$position->id }}" class="modal fade">
+                <trade-stock id="{{ $position->id}}"
+                             amount="{{ $position->amount() }}"
+                             route="{{ route('positions.update', [$portfolio->id, $position->id], false) }}"
+                             cash="{{ $portfolio->cash }}"
+                             item="{{ json_encode($position->positionable->toReadableArray()) }}"
+                             price="{{ json_encode($position->price()) }}"
+                             direction="sell">
+                </trade-stock>
+            </div>
+
+
+
+
         @endforeach
         </tbody>
     </table>
 
-    <a data-toggle="modal" href="#searchStocks" class="btn btn-default">Neue Position</a>
+    <a data-toggle="modal" href="#searchStocks" class="btn btn-default ">Neue Position</a>
 
 </portlet>
 
+<!-- Search container -->
 <div id="searchStocks" class="modal fade">
     <search-stock
             route="{{ route('search.stock', [], false) }}"

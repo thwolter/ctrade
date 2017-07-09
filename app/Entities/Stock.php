@@ -78,7 +78,7 @@ class Stock extends Instrument
     public function toReadableArray()
     {
         return array_merge(
-            array_except($this->toArray(), ['currency_id', 'sector_id', 'industry_id']),
+            array_except($this->toArray(), ['currency_id', 'sector_id', 'industry_id', 'datasources']),
             [
                 'sector' => ($this->sector) ? $this->sector->name : '',
                 'industry' => ($this->industry) ? $this->industry->name : '',

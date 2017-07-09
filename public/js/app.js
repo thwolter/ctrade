@@ -433,6 +433,7 @@ Vue.component('create-portfolio', __webpack_require__(56));
 Vue.component('search-stock', __webpack_require__(59));
 Vue.component('add-stock', __webpack_require__(51));
 Vue.component('cleave', __webpack_require__(55));
+Vue.component('trade-stock', __webpack_require__(94));
 
 window.Event = new (function () {
     function _class() {
@@ -4735,6 +4736,398 @@ exports.default = withParams;
 __webpack_require__(16);
 module.exports = __webpack_require__(17);
 
+
+/***/ }),
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(4);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['id', 'amount', 'route', 'cash', 'item', 'direction', 'price'],
+
+    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
+
+    data: function data() {
+        return {
+            form: new Form({
+                price: 0,
+                amount: 0,
+                id: null
+            }),
+
+            total: '',
+
+            store: {
+                item: [],
+                price: []
+            },
+
+            hasFormError: false,
+
+            cleavePrice: {
+                numeral: true,
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            },
+
+            cleaveAmount: {
+                numeral: true,
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            }
+        };
+    },
+
+
+    methods: {
+        onSubmit: function onSubmit() {
+            this.form.post(this.route).then(function (data) {
+                window.location = data.redirect;
+            });
+        },
+        updateTotal: function updateTotal() {
+            var total = this.form.price * this.form.amount;
+            this.total = isNaN(total) ? 0 .toFixed(2) : total.toFixed(2);
+        },
+        originalPrice: function originalPrice() {
+            return Object.values(this.store.price)[0].toFixed(2);
+        }
+    },
+
+    watch: {
+
+        form: {
+            deep: true,
+            handler: function handler() {
+                this.hasFormError = this.form.errors.any();
+                if (this.form.price === '') {
+                    this.form.price = this.originalPrice();
+                }
+                this.updateTotal();
+            }
+        }
+    },
+
+    computed: {
+        exceedCash: function exceedCash() {
+            return parseFloat(this.cash) < this.form.price * this.form.amount;
+        },
+        classTotal: function classTotal() {
+            return ['form-control', this.exceedCash ? 'error' : ''];
+        },
+        hasError: function hasError() {
+            return this.hasFormError || this.exceedCash;
+        }
+    },
+
+    created: function created() {
+        this.store.item = JSON.parse(this.item);
+        this.store.price = JSON.parse(this.price);
+        this.form.id = this.id;
+    },
+    mounted: function mounted() {
+        this.form.price = this.originalPrice();
+    }
+});
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(93),
+  /* template */
+  __webpack_require__(95),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/TradeStock.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] TradeStock.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2e004f07", Component.options)
+  } else {
+    hotAPI.reload("data-v-2e004f07", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-dialog"
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "amount"
+    }
+  }, [_vm._v("Anzahl")]), _vm._v(" "), _c('div', [_c('cleave', {
+    class: ['form-control', {
+      'error': _vm.form.errors.has('amount')
+    }],
+    attrs: {
+      "options": _vm.cleaveAmount,
+      "placeholder": "Anzahl"
+    },
+    on: {
+      "input": function($event) {
+        _vm.form.errors.clear('amount')
+      }
+    },
+    model: {
+      value: (_vm.form.amount),
+      callback: function($$v) {
+        _vm.form.amount = $$v
+      },
+      expression: "form.amount"
+    }
+  })], 1), _vm._v(" "), (_vm.form.errors.has('amount')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('amount'))
+    }
+  })]) : _vm._e()])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "price"
+    }
+  }, [_vm._v("Preis")]), _vm._v(" "), _c('div', {
+    staticClass: "input-group"
+  }, [_c('span', {
+    staticClass: "input-group-addon"
+  }, [_vm._v(_vm._s(_vm.store.item.currency))]), _vm._v(" "), _c('cleave', {
+    staticClass: "form-control",
+    attrs: {
+      "options": _vm.cleavePrice
+    },
+    model: {
+      value: (_vm.form.price),
+      callback: function($$v) {
+        _vm.form.price = $$v
+      },
+      expression: "form.price"
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "total"
+    }
+  }, [_vm._v("Gesamt")]), _vm._v(" "), _c('div', {
+    staticClass: "input-group"
+  }, [_c('span', {
+    staticClass: "input-group-addon"
+  }, [_vm._v(_vm._s(_vm.store.item.currency))]), _vm._v(" "), _c('cleave', {
+    class: _vm.classTotal,
+    attrs: {
+      "options": _vm.cleavePrice,
+      "readonly": ""
+    },
+    model: {
+      value: (_vm.total),
+      callback: function($$v) {
+        _vm.total = $$v
+      },
+      expression: "total"
+    }
+  })], 1)])])]), _vm._v(" "), (_vm.exceedCash) ? _c('div', [_c('p', {
+    staticClass: "error-text"
+  }, [_vm._v("\n                        Betrag übersteigt verfügbaren Barbestand.\n                    ")])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('div', [_c('div', {
+    staticClass: "pull-right"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "reset"
+    }
+  }, [_vm._v("Abbrechen")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "disabled": _vm.hasError
+    }
+  }, [_vm._v("Hinzufügen")])])])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")]), _vm._v(" "), _c('h3', {
+    staticClass: "modal-title"
+  }, [_vm._v("Wertpapier kaufen")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "exchange"
+    }
+  }, [_vm._v("Handelsplatz")]), _vm._v(" "), _c('div', [_c('select', {
+    staticClass: "form-control",
+    attrs: {
+      "name": "exchange"
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "0"
+    }
+  }, [_vm._v("Stuttgart")])])])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2e004f07", module.exports)
+  }
+}
 
 /***/ })
 ],[88]);

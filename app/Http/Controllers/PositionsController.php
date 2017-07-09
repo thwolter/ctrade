@@ -33,18 +33,6 @@ class PositionsController extends Controller
         return view('positions.index', compact('portfolio'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function create($id)
-    {
-        //return app(SearchController::class)->index(new Request(), $id);
-        return redirect(route('search.index', $id));
-    }
-
 
     /**
      * Store a newly created resource in storage.
@@ -74,7 +62,7 @@ class PositionsController extends Controller
      * @return \Illuminate\Http\Response
      *
      */
-    public function show($id)
+    public function show($pid, $id)
     {
         $position = Position::find($id);
         $portfolio = $position->portfolio;
@@ -122,41 +110,4 @@ class PositionsController extends Controller
 
         return redirect(route('positions.index', $position->portfolio->id));
     }
-
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function new(Request $request, $id)
-    {
-        $item = resolve($request->itemType)::find($request->itemId);
-        $portfolio = Portfolio::find($id);
-
-        $position = $portfolio->positions()
-            ->where('positionable_id', $request->itemId)
-            ->where('positionable_type', $request->itemType)
-            ->get();
-
-        return count($position)
-            ? redirect(route('positions.buy', $position->id))
-            : view('positions.new', compact('portfolio', 'item', 'position'));
-    }
-
-    public function buy($id)
-    {
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
-
-        return view('positions.buy', compact('position', 'portfolio'));
-    }
-
-    public function sell($id)
-    {
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
-
-        return view('positions.sell', compact('position', 'portfolio'));
-    }
-
 }

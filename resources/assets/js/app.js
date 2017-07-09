@@ -63,6 +63,7 @@ Vue.component('create-portfolio', require('./components/CreatePortfolio.vue'));
 Vue.component('search-stock', require('./components/SearchStock.vue'));
 Vue.component('add-stock', require('./components/AddStock.vue'));
 Vue.component('cleave', require('./components/Cleave.vue'));
+Vue.component('trade-stock', require('./components/TradeStock.vue'));
 
 
 window.Event = new class {

@@ -78,7 +78,6 @@
 <script>
     import Input from '../mixins/Input.js';
 
-
     export default {
 
         props: ['id', 'lookup', 'store', 'cash'],

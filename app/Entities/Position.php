@@ -137,7 +137,7 @@ class Position extends Model implements PresentableInterface
             'type' => implode(array_slice(explode('\\', $this->type()),-1)),
             'symbol' => "{$type}{$this->positionable_id}",
             'currency' => $this->currencyCode(),
-            'amount' => $this->amount
+            'amount' => $this->amount,
         ];
     }
 
