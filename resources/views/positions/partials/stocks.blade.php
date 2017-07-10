@@ -22,7 +22,7 @@
                 <td class="align-middle">
                     <a href="{{ route('positions.show', [$portfolio->id, $position->id]) }}">
                         {{ $position->name() }}</a>
-                    <span>
+                        <span>
                             ({{ $position->present()->priceDate() }})
                         </span>
                 </td>

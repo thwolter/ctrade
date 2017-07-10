@@ -1541,7 +1541,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         onSubmit: function onSubmit() {
             this.form.put(this.route).then(function (data) {
                 window.location = data.redirect;
-            });
+            }).catch(function (data) {});
         },
         updateTotal: function updateTotal() {
             var total = this.form.price * this.form.amount;

@@ -50,6 +50,8 @@
                                 {{ $focus }}
                             @elseif (isset($portfolio))
                                 {{ $portfolio->name }}
+                            @else
+                                Meine Portfolios
                             @endif
                             <i class="mainnav-caret"></i>
                         </a>

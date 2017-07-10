@@ -149,8 +149,10 @@
                 this.form.put(this.route)
                     .then(data => {
                         window.location = data.redirect;
-                    });
+                    })
+                    .catch(data => {
 
+                    });
             },
 
             updateTotal() {
