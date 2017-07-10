@@ -1,10 +1,20 @@
 <?php
 
 // Position resources
-Route::resource('/portfolios/{portfolio}/positions', 'PositionsController',
-    ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+Route::resource('/positions', 'PositionsController',
+    ['only' => ['store', 'show', 'destroy']]);
 
 Route::post('/positions/fetch', [
     'as' => 'positions.fetch',
     'uses' => 'PositionsController@fetch'
+]);
+
+Route::match(['put', 'patch'], '/positions/update', [
+    'as' => 'positions.update',
+    'uses' => 'PositionsController@update'
+]);
+
+Route::get('/positions/index/{Portfolio}', [
+    'as' => 'positions.index',
+    'uses' => 'PositionsController@index'
 ]);

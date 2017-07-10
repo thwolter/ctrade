@@ -25,7 +25,8 @@ class PositionUpdate extends FormRequest
     {
         return [
             'amount' => 'required',
-            'direction' => 'required'
+            'direction' => 'required',
+            'id' => 'required'
         ];
     }
 }

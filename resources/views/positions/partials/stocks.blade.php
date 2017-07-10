@@ -72,7 +72,7 @@
 </div>
 
 <trade-stock
-        route="{{ route('positions.update', [$portfolio->id, '%s'], false) }}"
+        route="{{ route('positions.update', [], false) }}"
         lookup="{{ route('positions.fetch', [], false) }}">
 </trade-stock>
 

@@ -75,28 +75,28 @@ class PositionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int $id the position id
-     * @return \Illuminate\Http\Response
+     * @param PositionUpdate $request
+     * @return array
      */
-    public function update(Request $request, $portfolioId, $positionId)
+    public function update(PositionUpdate $request)
     {
         $amount = $request->amount;
-        $position = Position::find($positionId);
+        $id = $request->id;
+        $position = Position::find($id);
 
         if ($request->get('direction') == 'buy') {
 
-            $portfolio = Portfolio::buy($positionId, $amount);
+            $portfolio = Portfolio::buy($id, $amount);
             Transaction::buy($portfolio, new \DateTime(), $position, $amount);
         }
         else {
 
-            $portfolio = Portfolio::sell($positionId, $amount);
+            $portfolio = Portfolio::sell($id, $amount);
             Transaction::sell($portfolio, new \DateTime(), $position, $amount);
 
         }
 
-        return redirect(route('positions.index', $portfolio->id));
+        return ['redirect' => route('positions.index', $portfolio->id)];
     }
 
     /**
