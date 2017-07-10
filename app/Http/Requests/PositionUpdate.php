@@ -24,9 +24,9 @@ class PositionUpdate extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required',
-            'direction' => 'required',
-            'id' => 'required'
+            'amount' => 'required|min:0.001',
+            'transaction' => 'required|in:buy,sell',
+            'id' => 'required|exists:positions,id'
         ];
     }
 }

@@ -208,12 +208,10 @@ class Portfolio extends Model
      * @param float $amount the transaction's amount
      * @return Portfolio
      */
-    public static function buy($id, $amount)
+    public function buy($id, $amount)
     {
-        $portfolio = (new self)->makeTrade($id, $amount);
-        $portfolio->save();
-
-        return $portfolio;
+        $this->makeTrade($id, $amount)->save();
+        return $this;
     }
 
 
@@ -224,12 +222,10 @@ class Portfolio extends Model
      * @param $amount
      * @return mixed
      */
-    public static function sell($id, $amount)
+    public function sell($id, $amount)
     {
-        $portfolio = (new self)->makeTrade($id, -$amount);
-        $portfolio->save();
-
-        return $portfolio;
+        $this->makeTrade($id, -$amount)->save();
+        return $this;
     }
 
 

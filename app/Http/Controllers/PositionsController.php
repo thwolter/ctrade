@@ -82,18 +82,19 @@ class PositionsController extends Controller
     {
         $amount = $request->amount;
         $id = $request->id;
+
         $position = Position::find($id);
+        $portfolio = $position->portfolio;
 
-        if ($request->get('direction') == 'buy') {
-
-            $portfolio = Portfolio::buy($id, $amount);
-            Transaction::buy($portfolio, new \DateTime(), $position, $amount);
-        }
-        else {
-
-            $portfolio = Portfolio::sell($id, $amount);
-            Transaction::sell($portfolio, new \DateTime(), $position, $amount);
-
+        switch ($request->transaction) {
+            case 'buy':
+                $portfolio->buy($id, $amount);
+                Transaction::buy($portfolio, new \DateTime(), $position, $amount);
+                break;
+            case 'sell':
+                $portfolio->sell($id, $amount);
+                Transaction::sell($portfolio, new \DateTime(), $position, $amount);
+                break;
         }
 
         return ['redirect' => route('positions.index', $portfolio->id)];

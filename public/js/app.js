@@ -4823,7 +4823,6 @@ module.exports = function() {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(4);
 //
 //
 //
@@ -4924,14 +4923,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
     props: ['route', 'lookup'],
-
-    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
 
     data: function data() {
         return {
@@ -4939,27 +4940,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 price: null,
                 amount: null,
                 id: null,
-                direction: null
+                transaction: null
             }),
 
             total: '',
+            originalAmount: null,
 
-            store: {
-                item: [],
-                price: []
-            },
+            item: [],
+            price: [],
 
             hasFormError: false,
 
             cleavePrice: {
                 numeral: true,
                 numeralDecimalMark: ',',
-                delimiter: '.'
+                delimiter: '.',
+                numeralPositiveOnly: true
             },
             cleaveAmount: {
                 numeral: true,
                 numeralDecimalMark: ',',
-                delimiter: '.'
+                delimiter: '.',
+                numeralPositiveOnly: true
             },
 
             showDialog: false
@@ -4980,15 +4982,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.total = isNaN(total) ? 0 .toFixed(2) : total.toFixed(2);
         },
         originalPrice: function originalPrice() {
-            return Object.values(this.store.price)[0].toFixed(2);
+            return Object.values(this.price)[0].toFixed(2);
         },
         hide: function hide() {
             this.form.reset();
             this.showDialog = false;
             this.form.price = null; // why is price not reset with form?
         },
-        show: function show(id, direction) {
-            this.form.direction = direction;
+        show: function show(id, transaction) {
+            this.form.transaction = transaction;
             this.form.id = id;
 
             this.fetch();
@@ -5003,14 +5005,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         setData: function setData(data) {
-            this.store.item = data.item;
-            this.store.price = data.price;
+            this.item = data.item;
+            this.price = data.price;
 
             this.form.price = this.originalPrice();
 
             this.cash = data.cash;
 
-            if (this.form.direction === 'sell') {
+            this.originalAmount = data.amount;
+            if (this.form.transaction === 'sell') {
                 this.form.amount = data.amount;
             }
         }
@@ -5034,11 +5037,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         exceedCash: function exceedCash() {
             return parseFloat(this.cash) < this.form.price * this.form.amount;
         },
+        exceedInventory: function exceedInventory() {
+            return this.form.amount > this.originalAmount;
+        },
         classTotal: function classTotal() {
             return ['form-control', this.exceedCash ? 'error' : ''];
         },
         hasError: function hasError() {
-            return this.hasFormError || this.exceedCash;
+            return this.hasFormError || this.exceedCash || this.exceedInventory && this.sell;
+        },
+        buy: function buy() {
+            return this.form.transaction === 'buy';
+        },
+        sell: function sell() {
+            return this.form.transaction === 'sell';
         }
     },
 
@@ -5126,13 +5138,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.hide
     }
-  }, [_vm._v("×")]), _vm._v(" "), _c('h3', {
+  }, [_vm._v("×")]), _vm._v(" "), (_vm.buy) ? _c('h3', {
     staticClass: "modal-title"
-  }, [_vm._v("Wertpapier kaufen")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Wertpapier kaufen")]) : _vm._e(), _vm._v(" "), (_vm.sell) ? _c('h3', {
+    staticClass: "modal-title"
+  }, [_vm._v("Wertpapier verkaufen")]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
   }, [_c('div', {
     staticClass: "form-title"
-  }, [_c('h5', [_vm._v(_vm._s(_vm.store.item.name))]), _vm._v(" "), _c('h6', [_vm._v(" ISIN " + _vm._s(_vm.store.item.isin) + " / WKN " + _vm._s(_vm.store.item.wkn))])]), _vm._v(" "), _c('form', {
+  }, [_c('h5', [_vm._v(_vm._s(_vm.item.name))]), _vm._v(" "), _c('h6', [_vm._v(" ISIN " + _vm._s(_vm.item.isin) + " / WKN " + _vm._s(_vm.item.wkn))])]), _vm._v(" "), _c('form', {
     on: {
       "submit": function($event) {
         $event.preventDefault();
@@ -5176,7 +5190,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "textContent": _vm._s(_vm.form.errors.get('amount'))
     }
-  })]) : _vm._e()])])]), _vm._v(" "), _c('div', {
+  })]) : _vm._e(), _vm._v(" "), (_vm.exceedInventory) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', [_vm._v("Anzahl übersteigt verfügbaren Bestand.")])]) : _vm._e()])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
@@ -5191,7 +5207,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input-group"
   }, [_c('span', {
     staticClass: "input-group-addon"
-  }, [_vm._v(_vm._s(_vm.store.item.currency))]), _vm._v(" "), _c('cleave', {
+  }, [_vm._v(_vm._s(_vm.item.currency))]), _vm._v(" "), _c('cleave', {
     staticClass: "form-control",
     attrs: {
       "options": _vm.cleavePrice
@@ -5216,7 +5232,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input-group"
   }, [_c('span', {
     staticClass: "input-group-addon"
-  }, [_vm._v(_vm._s(_vm.store.item.currency))]), _vm._v(" "), _c('cleave', {
+  }, [_vm._v(_vm._s(_vm.item.currency))]), _vm._v(" "), _c('cleave', {
     class: _vm.classTotal,
     attrs: {
       "options": _vm.cleavePrice,
@@ -5243,12 +5259,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.hide
     }
-  }, [_vm._v("Abbrechen")]), _vm._v(" "), _c('button', {
+  }, [_vm._v("Abbrechen")]), _vm._v(" "), (_vm.buy) ? _c('button', {
+    staticClass: "btn btn-success",
+    attrs: {
+      "disabled": _vm.hasError
+    }
+  }, [_vm._v("Kaufen")]) : _vm._e(), _vm._v(" "), (_vm.sell) ? _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
       "disabled": _vm.hasError
     }
-  }, [_vm._v("Hinzufügen")])])])])])])])])])]) : _vm._e()
+  }, [_vm._v("Verkaufen")]) : _vm._e()])])])])])])])])]) : _vm._e()
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-sm-6"
