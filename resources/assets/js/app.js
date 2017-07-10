@@ -42,6 +42,12 @@ import axios from 'axios';
 import Form from './core/Form';
 import Vuelidate from 'vuelidate';
 
+/**
+ * components from VueStrap
+ * 
+ */ 
+import popover from 'vue-strap'
+
 
 window.Vue = require('vue');
 Vue.use(Vuelidate);
@@ -79,7 +85,11 @@ window.Event = new class {
 };
 
 const app = new Vue({
-    el: '#wrapper'
+    el: '#wrapper',
+    
+    components: {
+        popover
+    }
 });
 
 

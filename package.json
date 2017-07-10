@@ -28,6 +28,7 @@
     "sprintf-js": "^1.1.1",
     "vue-cleave": "^1.2.2",
     "vue-numeric": "^1.5.5",
+    "vue-strap": "^1.1.37",
     "vuelidate": "^0.5.0"
   }
 }
