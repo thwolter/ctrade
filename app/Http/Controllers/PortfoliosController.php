@@ -13,6 +13,7 @@ namespace App\Http\Controllers;
 use App\Entities\Currency;
 use App\Entities\PortfolioImage;
 use App\Http\Requests\CreatePortfolio;
+use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -155,15 +156,9 @@ class PortfoliosController extends Controller
 
     }
 
-    public function pay(Request $request) {
-
-        $this->validate($request, [
-            'amount' => 'required|min:0.01',
-            'transaction' => 'required:in:deposit,withdraw',
-            'id' => 'required:exist:portfolios,id'
-        ]);
-
-        $portfolio = Portfolio::whereId($id)->first();
+    public function pay(PayRequest $request)
+    {
+        $portfolio = Portfolio::whereId($request->id)->first();
         
         switch($request->transaction) {
             

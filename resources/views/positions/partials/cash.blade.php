@@ -20,21 +20,19 @@
                     <td class="align-middle">
                         <buy-sell-btn 
                             event-buy="depositCash" event-sell="withdrawCash"
-                            toggle="false">
+                            id="{{ $portfolio->id }}" toggle="false">
                         </buy-sell-btn>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <cash-trade 
-                id="{{ $portfolio->id }}"
-                route="{{ route('portfolios.pay', [], false) }}">
+            <cash-trade
+                route="{{ route('portfolios.pay', [], false) }}"
+                cash="{{ $portfolio->cash }}">
             </cash-trade>
                    
 
         </div>
     </buy-sell-btn>
 </portlet>
-
-<cash-success decimal=","></cash-success>

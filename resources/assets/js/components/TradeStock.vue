@@ -40,13 +40,13 @@
                                         <label for="amount" class="control-label">Anzahl</label>
                                         <div>
                                             <cleave v-model="form.amount" :options="cleaveAmount" placeholder="Anzahl"
-                                                    :class="['form-control', { 'error': form.errors.has('amount') }]"
+                                                    :class="['form-control', { 'error': form.errors.has('amount') }, {'error': exceedInventory && sell}]"
                                                     @input="form.errors.clear('amount')"></cleave>
                                         </div>
                                         <p v-if="form.errors.has('amount')" class="error-text">
                                             <span v-text="form.errors.get('amount')"></span>
                                         </p>
-                                        <p v-if="exceedInventory" class="error-text">
+                                        <p v-if="exceedInventory && sell" class="error-text">
                                             <span>Anzahl übersteigt verfügbaren Bestand.</span>
                                         </p>
                                     </div>
@@ -146,9 +146,7 @@
         methods: {
 
             onSubmit() {
-                let route = this.route.replace('%s', this.form.id);
-                console.log(route);
-                this.form.put(route)
+                this.form.put(this.route)
                     .then(data => {
                         window.location = data.redirect;
                     });
