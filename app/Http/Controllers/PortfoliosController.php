@@ -155,41 +155,29 @@ class PortfoliosController extends Controller
 
     }
 
-    public function deposit(Request $request, $id) {
+    public function pay(Request $request) {
 
         $this->validate($request, [
-            'amount' => 'required|min:0.01'
+            'amount' => 'required|min:0.01',
+            'transaction' => 'required:in:deposit,withdraw',
+            'id' => 'required:exist:portfolios,id'
         ]);
 
         $portfolio = Portfolio::whereId($id)->first();
-        $portfolio->deposit($request->amount);
-
-        return [
-            'redirect' => route('positions.index', $id),
-            'amount' => $request->amount,
-            'currency' => $portfolio->currencyCode(),
-            'id' => $portfolio->id,
-            'direction' => 'deposit'
-        ];
+        
+        switch($request->transaction) {
+            
+            case 'deposit':
+                $portfolio->deposit($request->amount);
+                break;
+            case 'withdraw':
+                $portfolio->withdraw($request->amount);
+                break;
+        }
+        
+        return ['redirect' => route('positions.index', $portfolio->id)];
     }
 
-    public function withdraw(Request $request, $id) {
-
-        $this->validate($request, [
-            'amount' => 'required|min:0.01'
-        ]);
-
-        $portfolio = Portfolio::whereId($id)->first();
-
-        $portfolio->withdraw($request->amount);
-
-        return [
-            'redirect' => route('positions.index', $id),
-            'amount' => $request->amount,
-            'currency' => $portfolio->currencyCode(),
-            'id' => $portfolio->id,
-            'direction' => 'withdraw'
-        ];
-    }
+   
 }
 

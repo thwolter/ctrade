@@ -1,3 +1,14 @@
+<template>
+    <div class="buy-sell-icons text-center">
+        <a href="#" class="btn-link" @click="doBuy">
+            <i class="fa fa-plus-square buy-icon" aria-hidden="true"></i>
+        </a>
+        <a href="#" class="btn-link" @click="doSell">
+            <i class="fa fa-minus-square sell-icon" aria-hidden="true"></i>
+        </a>
+    </div>
+</template>
+
 <script>
     export default {
 

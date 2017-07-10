@@ -1,5 +1,5 @@
 <portlet id="cash-container" title="Barbestand">
-    <buy-sell-btn inline-template>
+    
         <div>
             <table class="table table-striped table-hover positions-table">
                 <thead>
@@ -18,34 +18,20 @@
                     <td></td>
 
                     <td class="align-middle">
-                        <div class="buy-sell-icons text-center">
-                            <a href="#" class="btn-link" @click="doBuy">
-                                <i class="fa fa-plus-square buy-icon" aria-hidden="true"></i>
-                            </a>
-                            <a href="#" class="btn-link" @click="doSell">
-                                <i class="fa fa-minus-square sell-icon" aria-hidden="true"></i>
-                            </a>
-                        </div>
+                        <buy-sell-btn 
+                            event-buy="depositCash" event-sell="withdrawCash"
+                            toggle="false">
+                        </buy-sell-btn>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <transition name="none">
-                <div v-if="show" class="transaction-dialog">
-                    <template v-if="buy">
-                        <cash-trade route="{{ route('portfolios.deposit', $portfolio->id, false) }}"
-                                    :deposit="true">
-                        </cash-trade>
-                    </template>
-
-                    <div v-else>
-                        <cash-trade route="{{ route('portfolios.withdraw', $portfolio->id, false) }}"
-                                    :deposit="false">
-                        </cash-trade>
-                    </div>
-                </div>
-            </transition>
+            <cash-trade 
+                id="{{ $portfolio->id }}"
+                route="{{ route('portfolios.pay', [], false) }}">
+            </cash-trade>
+                   
 
         </div>
     </buy-sell-btn>

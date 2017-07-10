@@ -816,7 +816,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -981,11 +980,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_cleave__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_cleave__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_cleave___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_cleave__);
 //
 //
 //
@@ -1014,58 +1011,84 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__["a" /* default */]],
+    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
 
     components: {
-        Cleave: __WEBPACK_IMPORTED_MODULE_2_vue_cleave___default.a
+        Cleave: __WEBPACK_IMPORTED_MODULE_1_vue_cleave___default.a
     },
 
-    props: {
-        route: String,
-        deposit: Boolean
-    },
+    props: ['route', 'id'],
 
     data: function data() {
         return {
             form: new Form({
                 value: '',
-                amount: null
+                amount: null,
+                transaction: null,
+                id: null
             }),
-            title: null,
-            btn: {
-                cls: null,
-                title: null
-            },
-            decimal: ',',
+
             cleave: {
                 numeral: true,
                 numeralDecimalMark: ',',
                 delimiter: '.'
-            }
+            },
+
+            showDialog: false
         };
     },
 
 
-    validations: {
-        form: {
-            amount: {
-                between: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__["between"])(0, Infinity)
-            }
-        }
-    },
-
     methods: {
         onSubmit: function onSubmit() {
+            console.log('hi');
             this.form.post(this.route).then(function (data) {
                 return Event.fire('cashSuccess', data);
             });
+        },
+        show: function show(id, transaction) {
+            this.form.transaction = transaction;
+            this.showDialog = true;
+        },
+        hide: function hide() {
+            this.form.reset();
+            this.showDialog = false;
         }
     },
 
@@ -1077,10 +1100,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return 'form-control';
             }
         },
-        error: function error() {
-            //let match = this.floatMatchesString(this.form.amount, this.form.value);
-            //return (this.form.amount !== null && (this.$v.form.amount.$invalid || !match))
-            return this.form.amount !== null && this.$v.form.amount.$invalid;
+        hasError: function hasError() {
+            return this.form.errors.any();
+        },
+        deposit: function deposit() {
+            return this.form.transaction === 'deposit';
+        },
+        withdraw: function withdraw() {
+            return this.form.transaction === 'withdraw';
         }
     },
 
@@ -1098,16 +1125,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
-    created: function created() {
-        if (this.deposit) {
-            this.title = 'Cash einzahlen';
-            this.btn.title = 'Einzahlen';
-            this.btn.cls = 'btn btn-secondary';
-        } else {
-            this.title = 'Cash auszahlen';
-            this.btn.title = 'Auszahlen';
-            this.btn.cls = 'btn btn-primary';
-        }
+    mounted: function mounted() {
+        var vm = this;
+
+        this.form.id = this.id;
+
+        Event.listen('depositCash', function (id) {
+            vm.show(id, 'deposit');
+        });
+
+        Event.listen('withdrawCash', function (id) {
+            vm.show(id, 'withdraw');
+        });
     }
 });
 
@@ -3930,8 +3959,11 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "buy-sell-icons text-center"
-  }, [_c('button', {
+  }, [_c('a', {
     staticClass: "btn-link",
+    attrs: {
+      "href": "#"
+    },
     on: {
       "click": _vm.doBuy
     }
@@ -3940,8 +3972,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "aria-hidden": "true"
     }
-  })]), _vm._v(" "), _c('button', {
+  })]), _vm._v(" "), _c('a', {
     staticClass: "btn-link",
+    attrs: {
+      "href": "#"
+    },
     on: {
       "click": _vm.doSell
     }
@@ -4312,15 +4347,51 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h4', {
-    staticClass: "title"
-  }, [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('form', {
+  return (_vm.showDialog) ? _c('div', [_c('div', {
+    staticClass: "modal-backdrop fade in",
+    on: {
+      "click": _vm.hide
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "modal show",
+    attrs: {
+      "id": "cash-dialog",
+      "role": "dialog",
+      "aria-labelledby": "trade-dialog"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog"
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-hidden": "true"
+    },
+    on: {
+      "click": _vm.hide
+    }
+  }, [_vm._v("×")]), _vm._v(" "), (_vm.deposit) ? _c('h3', {
+    staticClass: "modal-title"
+  }, [_vm._v("Cash einzahlen")]) : _vm._e(), _vm._v(" "), (_vm.withdraw) ? _c('h3', {
+    staticClass: "modal-title"
+  }, [_vm._v("Cash auszahlen")]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_c('form', {
     on: {
       "submit": function($event) {
         $event.preventDefault();
         _vm.onSubmit($event)
       }
     }
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -4337,8 +4408,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("EUR")]), _vm._v(" "), _c('cleave', {
     class: _vm.classObject,
     attrs: {
-      "type": "text",
-      "id": "value",
       "name": "value",
       "placeholder": "Betrag",
       "options": _vm.cleave
@@ -4357,22 +4426,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('p', {
     staticClass: "error-text"
-  }, [(_vm.error) ? _c('span', [_vm._v("Ungültiger Wert.")]) : _vm._e(), _vm._v(" "), (_vm.form.errors.has('amount')) ? _c('span', {
+  }, [(_vm.form.errors.has('amount')) ? _c('span', {
     domProps: {
       "textContent": _vm._s(_vm.form.errors.get('amount'))
     }
-  }) : _vm._e()]), _vm._v(" "), _c('input', {
-    attrs: {
-      "amount": _vm.form.amount,
-      "type": "hidden",
-      "name": "cash",
-      "id": "cash"
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-2"
+  }) : _vm._e()])])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('div', {
+    staticClass: "pull-right"
   }, [_c('button', {
-    class: _vm.btn.cls
-  }, [_vm._v(_vm._s(_vm.btn.title))])])])])])
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "reset"
+    },
+    on: {
+      "click": _vm.hide
+    }
+  }, [_vm._v("Abbrechen")]), _vm._v(" "), (_vm.deposit) ? _c('button', {
+    staticClass: "btn btn-success",
+    attrs: {
+      "type": "submit",
+      "disabled": _vm.hasError
+    }
+  }, [_vm._v("Einzahlen")]) : _vm._e(), _vm._v(" "), (_vm.withdraw) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "disabled": _vm.hasError
+    }
+  }, [_vm._v("Auszahlen")]) : _vm._e()])])])])])]) : _vm._e()
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
