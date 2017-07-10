@@ -202,7 +202,7 @@
             }
         },
 
-        created() {
+        mounted() {
             this.fetch();
             this.form.id = this.id;
         }
