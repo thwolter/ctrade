@@ -4,7 +4,7 @@
 
     <div class="content">
         <div class="container">
-
+            
             <div class="row">
 
                 <div class="col-md-3 col-sm-6">
@@ -35,33 +35,29 @@
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
 
-            </div> <!-- /.row -->
-
-            <div class="row">
-                <div class="container">
-                    @component('partials.portlet-boxed')
-                        @slot('title', 'Positions')
-                        <p>present a positions table</p>
-                    @endcomponent
-                </div>
-            </div> <!-- /.row -->
-
-            <div class="row">
+               <div class="col-md-6">
+                   <portlet title="Positionen">
+                       <p>bar chart with top 5 positions</p>
+                   </portlet>
+               </div>
+               
 
                 <div class="col-md-6">
-                    @component('partials.portlet-boxed')
-                        @slot('title', 'Entwicklung')
-                        <p>the graph:</p>
-                        <graph></graph>
-                        <p>a line chart</p>
-                    @endcomponent
+                    <portlet title="Wertentwicklung">
+                         <graph></graph>
+                    </portlet>
                 </div>
 
                 <div class="col-md-6">
-                    @component('partials.portlet-boxed')
-                        @slot('title', 'Entwicklung')
+                    <portlet title="Risikoentwicklung">
                         <p>a line chart</p>
-                    @endcomponent
+                    </portlet>
+                </div>
+                
+                 <div class="col-md-6">
+                    <portlet title="Verteilung des Risikos">
+                        <p>a donut chart</p>
+                    </portlet>
                 </div>
 
             </div> <!-- /.row -->
@@ -70,5 +66,11 @@
     </div> <!-- /.content -->
 
 
+
+@endsection
+
+
+
+@section('scripts.footer')
 
 @endsection

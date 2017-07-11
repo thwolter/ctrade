@@ -1,10 +1,13 @@
 
+
+
 /**
  * The nvpready theme brings its own bootstrap based on version 3
  *
  * require('./bootstrap');
  */
 
+import Vue from 'vue'
 import axios from 'axios';
 import Form from './core/Form';
 import Vuelidate from 'vuelidate';
@@ -16,12 +19,11 @@ import Vuelidate from 'vuelidate';
 import popover from 'vue-strap'
 
 
-window.Vue = require('vue');
-Vue.use(Vuelidate);
-
+window.Vue = Vue;
 window.axios = axios;
 window.Form = Form;
 
+Vue.use(Vuelidate);
 
 /**
  * vue components
@@ -52,6 +54,7 @@ window.Event = new class {
         this.vue.$on(event, callback);
     }
 };
+
 
 const app = new Vue({
     el: '#wrapper',
