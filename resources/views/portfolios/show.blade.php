@@ -51,6 +51,8 @@
                 <div class="col-md-6">
                     @component('partials.portlet-boxed')
                         @slot('title', 'Entwicklung')
+                        <p>the graph:</p>
+                        <graph></graph>
                         <p>a line chart</p>
                     @endcomponent
                 </div>
