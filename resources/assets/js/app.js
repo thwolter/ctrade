@@ -1,6 +1,4 @@
 
-
-
 /**
  * The nvpready theme brings its own bootstrap based on version 3
  *
@@ -9,8 +7,10 @@
 
 import Vue from 'vue'
 import axios from 'axios';
-import Form from './core/Form';
 import Vuelidate from 'vuelidate';
+
+import Form from './core/Form';
+import Event from './core/Event';
 
 /**
  * components from VueStrap
@@ -22,6 +22,7 @@ import popover from 'vue-strap'
 window.Vue = Vue;
 window.axios = axios;
 window.Form = Form;
+window.Event = Event;
 
 Vue.use(Vuelidate);
 
@@ -42,7 +43,7 @@ Vue.component('trade-stock', require('./components/TradeStock.vue'));
 
 Vue.component('graph', require('./components/Graph.vue'));
 
-
+/*
 window.Event = new class {
     constructor() {
         this.vue = new Vue();
@@ -54,7 +55,7 @@ window.Event = new class {
         this.vue.$on(event, callback);
     }
 };
-
+*/
 
 const app = new Vue({
     el: '#wrapper',

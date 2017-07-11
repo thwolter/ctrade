@@ -276,20 +276,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_Form__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuelidate__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuelidate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vuelidate__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_strap__ = __webpack_require__(244);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_strap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_strap__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vuelidate__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_Form__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_Event__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_strap__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_strap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_strap__);
 
 /**
  * The nvpready theme brings its own bootstrap based on version 3
  *
  * require('./bootstrap');
  */
+
+
 
 
 
@@ -304,9 +304,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
 window.axios = __WEBPACK_IMPORTED_MODULE_1_axios___default.a;
-window.Form = __WEBPACK_IMPORTED_MODULE_2__core_Form__["a" /* default */];
+window.Form = __WEBPACK_IMPORTED_MODULE_3__core_Form__["a" /* default */];
+window.Event = __WEBPACK_IMPORTED_MODULE_4__core_Event__["a" /* default */];
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3_vuelidate___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuelidate___default.a);
 
 /**
  * vue components
@@ -325,35 +326,25 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('trade-stock', __webpack_r
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('graph', __webpack_require__(226));
 
-window.Event = new (function () {
-    function _class() {
-        _classCallCheck(this, _class);
-
-        this.vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
+/*
+window.Event = new class {
+    constructor() {
+        this.vue = new Vue();
     }
-
-    _createClass(_class, [{
-        key: 'fire',
-        value: function fire(event) {
-            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-            this.vue.$emit(event, data);
-        }
-    }, {
-        key: 'listen',
-        value: function listen(event, callback) {
-            this.vue.$on(event, callback);
-        }
-    }]);
-
-    return _class;
-}())();
+    fire(event, data = null) {
+        this.vue.$emit(event, data);
+    }
+    listen(event, callback) {
+        this.vue.$on(event, callback);
+    }
+};
+*/
 
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#wrapper',
 
     components: {
-        popover: __WEBPACK_IMPORTED_MODULE_4_vue_strap___default.a
+        popover: __WEBPACK_IMPORTED_MODULE_5_vue_strap___default.a
     }
 });
 
@@ -14787,6 +14778,46 @@ exports.default = withParams;
 __webpack_require__(132);
 module.exports = __webpack_require__(133);
 
+
+/***/ }),
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Event = function () {
+    function Event() {
+        _classCallCheck(this, Event);
+
+        this.vue = new Vue();
+    }
+
+    _createClass(Event, [{
+        key: "fire",
+        value: function fire(event) {
+            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            this.vue.$emit(event, data);
+        }
+    }, {
+        key: "listen",
+        value: function listen(event, callback) {
+            this.vue.$on(event, callback);
+        }
+    }]);
+
+    return Event;
+}();
+
+;
+
+/* harmony default export */ __webpack_exports__["a"] = (Event);
 
 /***/ })
 ],[267]);
