@@ -76,16 +76,14 @@
 </template>
 
 <script>
-    import Input from '../mixins/Input.js';
-
     export default {
 
-        props: ['id', 'lookup', 'store', 'cash'],
-
-        mixins: [Input],
+        props: ['pid', 'id', 'store', 'cash'],
 
         data() {
             return {
+                lookup: '/api/lookup',
+
                 form: new Form({
                     exchange: 'Stuttgart',
                     price: null,
@@ -93,7 +91,7 @@
                     currency: null,
                     id: null,
                     type: null,
-                    portfolioId: null
+                    pid: null
                 }),
 
                 stock: [],
@@ -129,9 +127,12 @@
             },
 
             fetch() {
-                let lookupForm = new Form({id: this.id});
-                lookupForm.post(this.lookup)
-                    .then(data => this.add(data))
+                axios.get(this.lookup, {
+                    params: {
+                        id: this.id
+                    }
+                })
+                    .then(data => this.add(data.data))
             },
 
             add(data) {
@@ -148,11 +149,11 @@
                 this.form.type = this.stock.item.type;
                 this.form.price = Object.values(price.price)[0];
 
-                this.price = this.formatMoney(this.form.price);
+                this.price = this.form.price.toFixed(2);
             },
 
             updateTotal() {
-                this.total = this.formatMoney(this.form.price * this.form.amount);
+                this.total = (this.form.price * this.form.amount).toFixed(2);
                 if (this.total === '') { this.total = '0'; }
             }
         },
@@ -205,6 +206,7 @@
         mounted() {
             this.fetch();
             this.form.id = this.id;
+            this.form.pid = this.pid;
         }
     }
 </script>

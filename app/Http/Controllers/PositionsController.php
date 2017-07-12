@@ -38,21 +38,21 @@ class PositionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int $id the portfolio id
+     * @param PositionStore|Request $request
      * @return array
      */
-    public function store(PositionStore $request, $id)
+    public function store(PositionStore $request)
     {
         $amount = $request->amount;
         $instrument = resolve($request->type)->find($request->id);
 
-        $position = Portfolio::find($id)->makePosition($instrument);
-        $portfolio = Portfolio::buy($position->id, $amount);
+        $portfolio = Portfolio::find($request->pid);
+        $position = $portfolio->makePosition($instrument);
+        $portfolio = $portfolio->buy($position->id, $amount);
 
         Transaction::buy($portfolio, new \DateTime(), $position, $amount);
 
-        return ['redirect' => route('positions.index', $id)];
+        return ['redirect' => route('positions.index', $request->pid)];
 
     }
 

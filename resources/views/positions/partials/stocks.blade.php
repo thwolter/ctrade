@@ -55,10 +55,9 @@
 <!-- Search container -->
 <div id="searchStocks" class="modal fade">
     <search-stock
-            route="{{ route('search.stock', [], false) }}"
-            lookup="{{ route('search.lookup', [], false) }}"
-            store="{{ route('positions.store', $portfolio->id, false) }}"
-            cash="{{ $portfolio->cash }}">
+            store="{{ route('positions.store', [], false) }}"
+            cash="{{ $portfolio->cash }}"
+            pid="{{ $portfolio->id }}">
     </search-stock>
 </div>
 

@@ -16,26 +16,27 @@
                         <form @submit.prevent="onSubmit">
 
                             <!-- search form input -->
-                            <div class="form-group row">
+                            <div class="form-group">
                                 <label for="query" class="control-label col-sm-2 col-sm-offset-1">Suchen</label>
                                 <div class="col-sm-8">
 
-                                    <input type="text" class="form-control" v-model="form.query" @keyup="onRefresh"
-                                           placeholder="Name, WKN, ISIN, ..." >
+                                    <input type="text" class="form-control" v-model="query" @keyup="onRefresh"
+                                           placeholder="Name, WKN, ISIN, ...">
                                     <span class="help-block">
                                     Suche nach Namen oder Branche
                                 </span>
 
-                                    <p  v-if="form.errors.has('query')" class="error-text">
-                                        <span v-text="form.errors.get('query')"></span>
+                                    <p v-if="noResult" class="error-text">
+                                        Keine Ergebnisse gefunden.
                                     </p>
                                 </div>
                             </div>
 
                             <!-- submit button -->
-                            <div class="col-sm-offset-3">
+                            <div class="col-sm-offset-3 col-sm-8">
                                 <button class="btn btn-primary">Suchen</button>
                             </div>
+
                         </form>
                     </div> <!-- /.row -->
 
@@ -53,7 +54,7 @@
 
                             <tbody>
                             <tr v-for="(item, index) in results">
-                                <td class="align-middle"> {{ parseInt(index)+1 }} </td>
+                                <td class="align-middle"> {{ parseInt(index)+1 }}</td>
                                 <td class="align-middle">
                                      <span style="display:block">
                                          <a href="#" @click.prevent="onClickLink(item.id)">{{ item.name }}</a>
@@ -69,7 +70,7 @@
                 </div>
 
                 <div v-else>
-                    <add-stock :id="id" :lookup="lookup" :cash="cash" :store="store"></add-stock>
+                    <add-stock :id="id" :pid="pid" :cash="cash" :store="store"></add-stock>
                 </div>
 
 
@@ -81,15 +82,17 @@
 <script>
     export default {
 
-        props: ['route', 'lookup', 'store', 'cash'],
+        props: ['store', 'cash', 'pid'],
 
         data() {
             return {
-                form: new Form({
-                    query: null
-                }, false),
+                route: '/api/search',
+                type: 'App/Entities/Stock',
 
+                query: null,
                 results: [],
+                error: false,
+
                 doSearch: true,
                 id: null
             }
@@ -97,13 +100,18 @@
 
         methods: {
             onSubmit() {
-                this.form.post(this.route)
-                    .then(data => this.assign(data));
+                axios.get(this.route, {
+                    params: {
+                        query: this.query,
+                        type: this.type
+                    }
+                })
+                    .then(data => this.assign(data.data));
             },
 
             onRefresh() {
-                this.form.errors.clear('query');
-                if (this.form.query == '') {
+                this.error = false;
+                if (this.query === '') {
                     this.assign([]);
                 } else {
                     this.onSubmit();
@@ -116,11 +124,12 @@
             },
 
             assign(data) {
-                this.results = data
+                this.results = data;
+                this.error = (this.result.length === 0);
             },
 
             reset() {
-                this.form.reset();
+                this.query = null;
                 this.results = [];
                 this.doSearch = true;
             }
@@ -128,7 +137,7 @@
 
         computed: {
             isResult() {
-                return (this.results[0] != null)
+                return (this.results.length !== 0)
             }
         },
 

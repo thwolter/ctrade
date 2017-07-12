@@ -27,6 +27,7 @@ class PositionStore extends FormRequest
             'type' => 'required',
             'id' => 'required',
             'amount' => 'required|min:0.01',
+            'pid' => 'required|exists:portfolios,id'
         ];
     }
 }

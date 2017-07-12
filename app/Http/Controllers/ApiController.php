@@ -10,6 +10,12 @@ use App\Entities\Portfolio;
 class ApiController extends Controller
 {
 
+    /**
+     * Receive search results from entities.
+     *
+     * @param SearchRequest $request
+     * @return string
+     */
     public function search(SearchRequest $request)
     {
         return json_encode(Stock::search($request->get('query'))->get());

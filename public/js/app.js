@@ -453,7 +453,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(4);
 //
 //
 //
@@ -531,17 +530,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['id', 'lookup', 'store', 'cash'],
-
-    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
+    props: ['pid', 'id', 'store', 'cash'],
 
     data: function data() {
         return {
+            lookup: '/api/lookup',
+
             form: new Form({
                 exchange: 'Stuttgart',
                 price: null,
@@ -549,7 +546,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 currency: null,
                 id: null,
                 type: null,
-                portfolioId: null
+                pid: null
             }),
 
             stock: [],
@@ -584,9 +581,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fetch: function fetch() {
             var _this = this;
 
-            var lookupForm = new Form({ id: this.id });
-            lookupForm.post(this.lookup).then(function (data) {
-                return _this.add(data);
+            axios.get(this.lookup, {
+                params: {
+                    id: this.id
+                }
+            }).then(function (data) {
+                return _this.add(data.data);
             });
         },
         add: function add(data) {
@@ -602,10 +602,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.form.type = this.stock.item.type;
             this.form.price = Object.values(price.price)[0];
 
-            this.price = this.formatMoney(this.form.price);
+            this.price = this.form.price.toFixed(2);
         },
         updateTotal: function updateTotal() {
-            this.total = this.formatMoney(this.form.price * this.form.amount);
+            this.total = (this.form.price * this.form.amount).toFixed(2);
             if (this.total === '') {
                 this.total = '0';
             }
@@ -658,6 +658,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         this.fetch();
         this.form.id = this.id;
+        this.form.pid = this.pid;
     }
 });
 
@@ -1423,18 +1424,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['route', 'lookup', 'store', 'cash'],
+    props: ['store', 'cash', 'pid'],
 
     data: function data() {
         return {
-            form: new Form({
-                query: null
-            }, false),
+            route: '/api/search',
+            type: 'App/Entities/Stock',
 
+            query: null,
             results: [],
+            error: false,
+
             doSearch: true,
             id: null
         };
@@ -1445,13 +1449,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         onSubmit: function onSubmit() {
             var _this = this;
 
-            this.form.post(this.route).then(function (data) {
-                return _this.assign(data);
+            axios.get(this.route, {
+                params: {
+                    query: this.query,
+                    type: this.type
+                }
+            }).then(function (data) {
+                return _this.assign(data.data);
             });
         },
         onRefresh: function onRefresh() {
-            this.form.errors.clear('query');
-            if (this.form.query == '') {
+            this.error = false;
+            if (this.query === '') {
                 this.assign([]);
             } else {
                 this.onSubmit();
@@ -1463,9 +1472,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         assign: function assign(data) {
             this.results = data;
+            this.error = this.result.length === 0;
         },
         reset: function reset() {
-            this.form.reset();
+            this.query = null;
             this.results = [];
             this.doSearch = true;
         }
@@ -1473,7 +1483,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         isResult: function isResult() {
-            return this.results[0] != null;
+            return this.results.length !== 0;
         }
     },
 
@@ -4407,7 +4417,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('div', {
-    staticClass: "form-group row"
+    staticClass: "form-group"
   }, [_c('label', {
     staticClass: "control-label col-sm-2 col-sm-offset-1",
     attrs: {
@@ -4419,8 +4429,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.form.query),
-      expression: "form.query"
+      value: (_vm.query),
+      expression: "query"
     }],
     staticClass: "form-control",
     attrs: {
@@ -4428,29 +4438,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "Name, WKN, ISIN, ..."
     },
     domProps: {
-      "value": (_vm.form.query)
+      "value": (_vm.query)
     },
     on: {
       "keyup": _vm.onRefresh,
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.form.query = $event.target.value
+        _vm.query = $event.target.value
       }
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "help-block"
-  }, [_vm._v("\n                                Suche nach Namen oder Branche\n                            ")]), _vm._v(" "), (_vm.form.errors.has('query')) ? _c('p', {
+  }, [_vm._v("\n                                Suche nach Namen oder Branche\n                            ")]), _vm._v(" "), (_vm.noResult) ? _c('p', {
     staticClass: "error-text"
-  }, [_c('span', {
-    domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('query'))
-    }
-  })]) : _vm._e()])]), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), (_vm.isResult) ? _c('div', [_c('table', {
+  }, [_vm._v("\n                                    Keine Ergebnisse gefunden.\n                                ")]) : _vm._e()])]), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), (_vm.isResult) ? _c('div', [_c('table', {
     staticClass: "table table-striped table-hover positions-table"
   }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(item, index) {
     return _c('tr', [_c('td', {
       staticClass: "align-middle"
-    }, [_vm._v(" " + _vm._s(parseInt(index) + 1) + " ")]), _vm._v(" "), _c('td', {
+    }, [_vm._v(" " + _vm._s(parseInt(index) + 1))]), _vm._v(" "), _c('td', {
       staticClass: "align-middle"
     }, [_c('span', {
       staticStyle: {
@@ -4470,7 +4476,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }))])]) : _vm._e()]) : _c('div', [_c('add-stock', {
     attrs: {
       "id": _vm.id,
-      "lookup": _vm.lookup,
+      "pid": _vm.pid,
       "cash": _vm.cash,
       "store": _vm.store
     }
@@ -4490,7 +4496,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Wertpapier hinzufügen")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "col-sm-offset-3"
+    staticClass: "col-sm-offset-3 col-sm-8"
   }, [_c('button', {
     staticClass: "btn btn-primary"
   }, [_vm._v("Suchen")])])
