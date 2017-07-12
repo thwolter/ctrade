@@ -37,14 +37,14 @@
 
                <div class="col-md-6">
                    <portlet title="Positionen">
-                       <positions-chart></positions-chart>
+                       <positions-chart pid="{{ $portfolio->id }}"></positions-chart>
                    </portlet>
                </div>
                
 
                 <div class="col-md-6">
                     <portlet title="Wertentwicklung">
-                         <graph></graph>
+
                     </portlet>
                 </div>
 

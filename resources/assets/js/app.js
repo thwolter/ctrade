@@ -8,6 +8,7 @@
 import Vue from 'vue'
 import axios from 'axios';
 import Vuelidate from 'vuelidate';
+import VueResource from 'vue-resource';
 
 import Form from './core/Form';
 import Event from './core/Event';
@@ -25,6 +26,7 @@ window.Form = Form;
 window.Event = new Event;
 
 Vue.use(Vuelidate);
+Vue.use(VueResource);
 
 /**
  * vue components

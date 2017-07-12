@@ -23,3 +23,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/search', 'ApiController@search');
 Route::get('/lookup', 'ApiController@lookup');
 
+Route::get('/positions', 'ApiController@positions');
+
