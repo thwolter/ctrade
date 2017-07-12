@@ -48,7 +48,7 @@ class PositionsController extends Controller
 
         $portfolio = Portfolio::find($request->pid);
         $position = $portfolio->makePosition($instrument);
-        $portfolio = $portfolio->buy($position->id, $amount);
+        $portfolio->buy($position->id, $amount);
 
         Transaction::buy($portfolio, new \DateTime(), $position, $amount);
 

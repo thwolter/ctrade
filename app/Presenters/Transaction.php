@@ -16,14 +16,20 @@ class Transaction extends Presenter
 
     public function total()
     {
-        $total = $this->entity->amount * $this->entity->price;
+        if ($this->isCash()) {
+            $total = $this->entity->cash;
+        } else {
+            $total = $this->entity->amount * $this->entity->price;
+        }
         return $this->formatPrice($total, $this->entity->portfolio->currencyCode());
     }
 
     public function price()
     {
-        $price = $this->entity->price;
-        return $this->formatPrice($price, $this->entity->portfolio->currencyCode());
+        if (!$this->isCash()) {
+            $price = $this->entity->price;
+            return $this->formatPrice($price, $this->entity->portfolio->currencyCode());
+        }
     }
 
     public function date()
@@ -38,6 +44,14 @@ class Transaction extends Presenter
 
     public function name()
     {
-        return $this->entity->instrumentable->name;
+        $instrument = $this->entity->instrumentable;
+
+        if (!is_null($instrument))
+            return $instrument->name;
+    }
+
+    private function isCash()
+    {
+        return in_array($this->entity->type->code, ['deposit', 'withdraw']);
     }
 }

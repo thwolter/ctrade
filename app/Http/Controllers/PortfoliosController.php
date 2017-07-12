@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 
 use App\Entities\Currency;
 use App\Entities\PortfolioImage;
+use App\Entities\Transaction;
 use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
@@ -58,7 +59,7 @@ class PortfoliosController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  CreatePortfolio  $request
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function store(CreatePortfolio $request)
     {
@@ -70,6 +71,8 @@ class PortfoliosController extends Controller
             ->associate(Currency::whereCode($request->get('currency'))->first());
 
         auth()->user()->obtain($portfolio);
+
+        Transaction::deposit($portfolio, new \DateTime(), $request->get('amount'));
 
         return [
             'redirect' => route('portfolios.show', $portfolio->id),
@@ -164,9 +167,12 @@ class PortfoliosController extends Controller
             
             case 'deposit':
                 $portfolio->deposit($request->amount);
+                Transaction::deposit($portfolio, new \DateTime(), $request->amount);
+
                 break;
             case 'withdraw':
                 $portfolio->withdraw($request->amount);
+                Transaction::withdraw($portfolio, new \DateTime(), $request->amount);
                 break;
         }
         

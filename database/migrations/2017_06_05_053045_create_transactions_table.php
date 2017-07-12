@@ -21,9 +21,10 @@ class CreateTransactionsTable extends Migration
             $table->integer('type_id');
             $table->integer('instrumentable_id')->nullable();
             $table->string('instrumentable_type')->nullable();
-            $table->integer('position_id');
-            $table->float('amount');
+            $table->integer('position_id')->nullable();
+            $table->float('amount')->nullable();
             $table->float('price')->nullable();
+            $table->float('cash')->nullable();
             $table->timestamps();
         });
     }

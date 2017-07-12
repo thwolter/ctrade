@@ -28,7 +28,6 @@
                     <tbody>
 
                         @foreach(array_reverse($portfolio->transactions->all()) as $transaction)
-                            @php ($instrument = $transaction->instrumentable)
                             <tr class="h5">
                                 <td class="align-middle">{{ $loop->iteration }}</td>
                                 <td class="align-middle">{{ $transaction->present()->date }}</td>
@@ -37,10 +36,13 @@
                                 <td class="align-middle">
                                     <a href="{{ route('transactions.show', [$portfolio->id, 'id' => $transaction->id]) }}">
                                             {{ $transaction->present()->name}}</a>
-                                    <span>
-                                        {{ $instrument->typeDisp}} | {{ $instrument->wkn }}
-                                        | {{ $instrument->isin }}
-                                    </span>
+                                    @php ($instrument = $transaction->instrumentable)
+                                    @if( !is_null($instrument) )
+                                        <span>
+                                            {{ $instrument->typeDisp}} | {{ $instrument->wkn }}
+                                            | {{ $instrument->isin }}
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="align-middle text-right">{{ $transaction->present()->price() }}</td>
                                 <td class="align-middle text-right">{{ $transaction->present()->total() }}</td>

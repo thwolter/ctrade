@@ -45,7 +45,8 @@ class Transaction extends Model
     protected $fillable = [
         'date',
         'amount',
-        'price'
+        'price',
+        'cash'
     ];
 
     public function type()
@@ -138,7 +139,7 @@ class Transaction extends Model
     {
         $transaction = new self([
             'date' => $date,
-            'amount' => $amount
+            'cash' => $amount
         ]);
 
         $transaction->portfolio()->associate($portfolio);
