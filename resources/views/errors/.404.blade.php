@@ -2,7 +2,8 @@
 
 @section('content')
 
-    @php( Auth::user()->portfolios )
+    @php( $user = Auth::user() )
+    @php( $portfolios = (is_null($user)) ? null : $user->portfolios )
     <div class="content">
         <div class="container">
             <br class="sm-50 md-100">
