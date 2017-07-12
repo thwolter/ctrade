@@ -61,9 +61,16 @@
         },
         
         mounted() {
-          
           this.draw();
-            
+        },
+
+        created() {
+            axios.get('/api/portfolio/history/value', {
+                params: {
+                    id: 1,
+                    symbol: 'x'
+                }
+            })
         }
     }
 </script>

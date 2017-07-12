@@ -22,7 +22,7 @@ import popover from 'vue-strap'
 window.Vue = Vue;
 window.axios = axios;
 window.Form = Form;
-window.Event = Event;
+window.Event = new Event;
 
 Vue.use(Vuelidate);
 
@@ -42,20 +42,8 @@ Vue.component('cleave', require('./components/Cleave.vue'));
 Vue.component('trade-stock', require('./components/TradeStock.vue'));
 
 Vue.component('graph', require('./components/Graph.vue'));
+Vue.component('positions-chart', require('./components/PositionsChart.vue'));
 
-/*
-window.Event = new class {
-    constructor() {
-        this.vue = new Vue();
-    }
-    fire(event, data = null) {
-        this.vue.$emit(event, data);
-    }
-    listen(event, callback) {
-        this.vue.$on(event, callback);
-    }
-};
-*/
 
 const app = new Vue({
     el: '#wrapper',

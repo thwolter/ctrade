@@ -1,10 +1,10 @@
 <?php
 
 use App\Entities\Portfolio;
+use Illuminate\Http\Request;
 
-Route::get('/api/portfolio/history/value', function($id, $ccy, $form = 0, $to = 0) 
+Route::get('api/portfolio/history/value', function(Request $request)
 {
-    dd($id);
     $portfolio = Portfolio::find($id)->first();
     $symbol = $portfolio->currencyCode().$ccy;
     
@@ -16,10 +16,15 @@ Route::get('/api/portfolio/history/risk', function($id)
 
 });
 
-Route::get('/api/portfolio/positions', function($id) 
+
+
+Route::get('api/portfolio/positions', function(Request $request)
 {
+    $portfolio = Portfolio::find($request->id);
 
 });
+
+
 
 Route::get('/api/instrument/history', function($id) 
 {

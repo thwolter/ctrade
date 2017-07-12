@@ -37,7 +37,7 @@
 
                <div class="col-md-6">
                    <portlet title="Positionen">
-                       <p>bar chart with top 5 positions</p>
+                       <positions-chart></positions-chart>
                    </portlet>
                </div>
                
