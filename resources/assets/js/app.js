@@ -12,6 +12,7 @@ import VueResource from 'vue-resource';
 
 import Form from './core/Form';
 import Event from './core/Event';
+import Colors from './core/Colors';
 
 /**
  * components from VueStrap
@@ -24,6 +25,7 @@ window.Vue = Vue;
 window.axios = axios;
 window.Form = Form;
 window.Event = new Event;
+window.Colors = new Colors;
 
 Vue.use(Vuelidate);
 Vue.use(VueResource);

@@ -130,7 +130,7 @@
             },
 
             exceedCash() {
-                return (parseFloat(this.cash) < this.form.amount)
+                return ((parseFloat(this.cash) < this.form.amount) && this.withdraw)
             },
 
             deposit() {

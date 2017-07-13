@@ -23,12 +23,8 @@
                                     <input type="text" class="form-control" v-model="query" @keyup="onRefresh"
                                            placeholder="Name, WKN, ISIN, ...">
                                     <span class="help-block">
-                                    Suche nach Namen oder Branche
-                                </span>
-
-                                    <p v-if="noResult" class="error-text">
-                                        Keine Ergebnisse gefunden.
-                                    </p>
+                                        Suche nach Namen oder Branche
+                                    </span>
                                 </div>
                             </div>
 
@@ -125,7 +121,6 @@
 
             assign(data) {
                 this.results = data;
-                this.error = (this.result.length === 0);
             },
 
             reset() {

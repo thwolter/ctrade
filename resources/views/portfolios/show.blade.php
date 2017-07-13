@@ -4,7 +4,7 @@
 
     <div class="content">
         <div class="container">
-            
+
             <div class="row">
 
                 <div class="col-md-3 col-sm-6">
@@ -34,13 +34,16 @@
                         @slot('value', $portfolio->present()->total())
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
+            </div>
 
-               <div class="col-md-6">
-                   <portlet title="Positionen">
-                       <positions-chart pid="{{ $portfolio->id }}"></positions-chart>
-                   </portlet>
-               </div>
-               
+            <div class="row">
+
+                <div class="col-md-6">
+                    <portlet title="Positionen">
+                        <positions-chart pid="{{ $portfolio->id }}"></positions-chart>
+                    </portlet>
+                </div>
+
 
                 <div class="col-md-6">
                     <portlet title="Wertentwicklung">
@@ -53,8 +56,8 @@
                         <p>a line chart</p>
                     </portlet>
                 </div>
-                
-                 <div class="col-md-6">
+
+                <div class="col-md-6">
                     <portlet title="Verteilung des Risikos">
                         <p>a donut chart</p>
                     </portlet>

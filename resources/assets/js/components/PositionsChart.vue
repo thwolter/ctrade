@@ -1,9 +1,12 @@
 <template>
-    <div>
-        <h5>show a graph</h5>
-        <button @click="doDraw">Draw</button>
-        <canvas id="positions-chart"></canvas>
+
+    <div v-cloak>
+        <div class="chart-canvas col-xs-7">
+            <canvas width="400" id="positions-chart" ref="canvas"></canvas>
+        </div>
+        <div v-html="legend" class="chart-legend col-xs-5"></div>
     </div>
+
 </template>
 
 <script>
@@ -20,6 +23,7 @@
 
                 share: [],
                 labels: [],
+                legend: '',
             }
         },
 
@@ -31,9 +35,7 @@
                         this.assign(response.data);
                         this.render();
                     })
-                    .catch(function (error) {
-                        console.debug(error);
-                    });
+                    .catch(error => alert(error));
             },
 
             assign(data) {
@@ -49,8 +51,8 @@
                 {
                     let item = items[i];
 
-                    this.share[i] = item.share;
-                    this.labels[i] = item.name + item.total;
+                    this.share[i] = (100 * item.share).toFixed(0);
+                    this.labels[i] = item.name;
 
                     sum =+ item.share;
                     i++;
@@ -60,30 +62,31 @@
                     this.share[i] = data.total - sum;
                     this.labels[i] = 'Andere' + this.share[i];
                 }
-
             },
             
             render() {
                 
                 var ctx = document.getElementById("positions-chart");
 
-                new Chart(ctx, {
+                var chart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
                         datasets: [{
                             data: this.share,
 
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)'
-                            ]
+                            backgroundColor: Colors.standard()
                         }],
 
                         labels: this.labels
                     },
-                    options: this.options
+                    options: {
+                        legend: {
+                            display: false
+                        }
+                    }
                 });
+
+                this.legend = chart.generateLegend();
             }
         },
         
@@ -92,3 +95,20 @@
         }
     }
 </script>
+
+<style>
+    .chart-legend span {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .chart-legend li {
+        list-style-type: none;
+        text-indent: -20px;
+    }
+
+    .chart-canvas {
+        float: left;
+    }
+</style>

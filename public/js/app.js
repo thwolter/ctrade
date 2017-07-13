@@ -281,14 +281,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_resource__ = __webpack_require__(275);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_Form__ = __webpack_require__(169);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_Event__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_strap__ = __webpack_require__(245);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_strap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vue_strap__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_Colors__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_strap__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_strap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vue_strap__);
 
 /**
  * The nvpready theme brings its own bootstrap based on version 3
  *
  * require('./bootstrap');
  */
+
 
 
 
@@ -308,6 +310,7 @@ window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
 window.axios = __WEBPACK_IMPORTED_MODULE_1_axios___default.a;
 window.Form = __WEBPACK_IMPORTED_MODULE_4__core_Form__["a" /* default */];
 window.Event = new __WEBPACK_IMPORTED_MODULE_5__core_Event__["a" /* default */]();
+window.Colors = new __WEBPACK_IMPORTED_MODULE_6__core_Colors__["a" /* default */]();
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuelidate___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3_vue_resource__["a" /* default */]);
@@ -334,7 +337,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   el: '#wrapper',
 
   components: {
-    popover: __WEBPACK_IMPORTED_MODULE_6_vue_strap___default.a
+    popover: __WEBPACK_IMPORTED_MODULE_7_vue_strap___default.a
   }
 });
 
@@ -972,7 +975,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.hasFormError || this.exceedCash && this.withdraw;
         },
         exceedCash: function exceedCash() {
-            return parseFloat(this.cash) < this.form.amount;
+            return parseFloat(this.cash) < this.form.amount && this.withdraw;
         },
         deposit: function deposit() {
             return this.form.transaction === 'deposit';
@@ -1424,10 +1427,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -1475,7 +1474,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         assign: function assign(data) {
             this.results = data;
-            this.error = this.result.length === 0;
         },
         reset: function reset() {
             this.query = null;
@@ -4452,9 +4450,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "help-block"
-  }, [_vm._v("\n                                Suche nach Namen oder Branche\n                            ")]), _vm._v(" "), (_vm.noResult) ? _c('p', {
-    staticClass: "error-text"
-  }, [_vm._v("\n                                    Keine Ergebnisse gefunden.\n                                ")]) : _vm._e()])]), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), (_vm.isResult) ? _c('div', [_c('table', {
+  }, [_vm._v("\n                                    Suche nach Namen oder Branche\n                                ")])])]), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), (_vm.isResult) ? _c('div', [_c('table', {
     staticClass: "table table-striped table-hover positions-table"
   }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(item, index) {
     return _c('tr', [_c('td', {
@@ -14838,6 +14834,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -14851,7 +14850,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             segments: 5,
 
             share: [],
-            labels: []
+            labels: [],
+            legend: ''
         };
     },
 
@@ -14864,7 +14864,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.assign(response.data);
                 _this.render();
             }).catch(function (error) {
-                console.debug(error);
+                return alert(error);
             });
         },
         assign: function assign(data) {
@@ -14879,8 +14879,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             while (i < Math.min(n, this.segments)) {
                 var item = items[i];
 
-                this.share[i] = item.share;
-                this.labels[i] = item.name + item.total;
+                this.share[i] = (100 * item.share).toFixed(0);
+                this.labels[i] = item.name;
 
                 sum = +item.share;
                 i++;
@@ -14895,19 +14895,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var ctx = document.getElementById("positions-chart");
 
-            new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(ctx, {
+            var chart = new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(ctx, {
                 type: 'doughnut',
                 data: {
                     datasets: [{
                         data: this.share,
 
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
+                        backgroundColor: Colors.standard()
                     }],
 
                     labels: this.labels
                 },
-                options: this.options
+                options: {
+                    legend: {
+                        display: false
+                    }
+                }
             });
+
+            this.legend = chart.generateLegend();
         }
     },
 
@@ -14919,6 +14925,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ }),
 /* 273 */
 /***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(278)
 
 var Component = __webpack_require__(2)(
   /* script */
@@ -14955,13 +14965,18 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h5', [_vm._v("show a graph")]), _vm._v(" "), _c('button', {
-    on: {
-      "click": _vm.doDraw
-    }
-  }, [_vm._v("Draw")]), _vm._v(" "), _c('canvas', {
+  return _c('div', {}, [_c('div', {
+    staticClass: "chart-canvas col-xs-7"
+  }, [_c('canvas', {
+    ref: "canvas",
     attrs: {
+      "width": "400",
       "id": "positions-chart"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "chart-legend col-xs-5",
+    domProps: {
+      "innerHTML": _vm._s(_vm.legend)
     }
   })])
 },staticRenderFns: []}
@@ -16555,6 +16570,65 @@ if (typeof window !== 'undefined' && window.Vue) {
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(217)();
+exports.push([module.i, "\n.chart-legend span {\n    width: 10px;\n    height: 10px;\n    display: inline-block;\n    margin-right: 10px;\n}\n.chart-legend li {\n    list-style-type: none;\n    text-indent: -20px;\n}\n.chart-canvas {\n    float: left;\n}\n", ""]);
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(277);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(247)("4b3e1390", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-68a00109!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PositionsChart.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-68a00109!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PositionsChart.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 279 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Colors = function () {
+    function Colors() {
+        _classCallCheck(this, Colors);
+    }
+
+    _createClass(Colors, [{
+        key: 'standard',
+        value: function standard() {
+            return ['#034e7b', '#0570b0', '#3690c0', '#74a9cf', '#a6bddb', '#d0d1e6', '#f1eef6'];
+        }
+    }]);
+
+    return Colors;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Colors);
 
 /***/ })
 ],[268]);

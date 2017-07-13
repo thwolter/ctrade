@@ -63,7 +63,8 @@ class ApiController extends Controller
             $items[] = array_merge($array, [
                 'price' => head($price),
                 'total' => head($price) * $array['amount'],
-                'date' => key($price)
+                'date' => key($price),
+                'currency' => $position->currencyCode()
             ]);
         }
 

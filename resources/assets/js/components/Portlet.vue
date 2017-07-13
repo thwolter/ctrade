@@ -1,5 +1,5 @@
 <template>
-    <div class="portlet portlet-boxed">
+    <div class="portlet portlet-boxed" v-cloak>
         <div class="portlet-header">
             <h3 class="portlet-title"><u>{{ title }}</u></h3>
         </div> <!-- /.portlet-header -->
