@@ -14,11 +14,11 @@ use Illuminate\Http\UploadedFile;
 
 class Portfolio extends Model
 {
-    use Financable;
     use Presentable;
+    use Rscriptable;
 
     protected $presenter = 'App\Presenters\Portfolio';
-    protected $financial = 'App\Repositories\Yahoo\PortfolioFinancial';
+    protected $rscriptable = \App\Models\Rscript\Portfolio::class;
 
     protected $fillable = [
         'name', 'cash', 'description', 'settings', 'img_url'
@@ -149,16 +149,6 @@ class Portfolio extends Model
     }
     
     
-    public function history(String $currency, Carbon $from = null, Carbon $to = null)
-    {
-        $symbol = $this->currency().$currency;
-
-        $json = $this->financial()->history($symbol, $from, $to);
-
-        return $json;
-    }
-    
-    
     public function makePosition($instrument)
     {
         $position = $this->positionWith($instrument);
@@ -173,33 +163,7 @@ class Portfolio extends Model
         return $position;
     }
 
-    /**
-     * Make a Trade without persisting
-     *
-     * @param int $id of position
-     * @param $amount
-     * @return mixed
-     */
-    private function makeTrade($id, $amount)
-    {
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
 
-        $position->update(['amount' => $position->amount + $amount]);
-
-        $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
-        return $portfolio;
-    }
-
-    private function revertTrade($id, $value)
-    {
-        $position = $this->positions()->find($id);
-
-        $position->amount = $position->amount + $value;
-        $this->cash = $this->cash - $value;
-
-        return $this;
-    }
 
     /**
      * A buy transaction for position with a given id.
@@ -318,5 +282,39 @@ class Portfolio extends Model
             }
         }
         return $portfolio;
+    }
+
+
+
+    /*
+     * private functions
+     */
+
+    /**
+     * Make a Trade without persisting
+     *
+     * @param int $id of position
+     * @param $amount
+     * @return mixed
+     */
+    private function makeTrade($id, $amount)
+    {
+        $position = Position::find($id);
+        $portfolio = $position->portfolio;
+
+        $position->update(['amount' => $position->amount + $amount]);
+
+        $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
+        return $portfolio;
+    }
+
+    private function revertTrade($id, $value)
+    {
+        $position = $this->positions()->find($id);
+
+        $position->amount = $position->amount + $value;
+        $this->cash = $this->cash - $value;
+
+        return $this;
     }
 }

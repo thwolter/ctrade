@@ -3,17 +3,12 @@
 
 namespace App\Models\Rscript;
 
-use App\Entities\Currency;
 use App\Facades\Helpers;
 use App\Facades\Mapping;
 use App\Models\Exceptions\RscriptException;
-use App\Models\QuantModel;
 use Carbon\Carbon;
-use Faker\Provider\DateTime;
 use Illuminate\Support\Facades\Storage;
-use Khill\Lavacharts\Lavacharts;
 use App\Repositories\CurrencyRepository;
-use When\When;
 
 
 class Portfolio extends Rscripter

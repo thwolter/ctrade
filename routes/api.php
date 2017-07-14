@@ -25,3 +25,7 @@ Route::get('/lookup', 'ApiController@lookup');
 
 Route::get('/positions', 'ApiController@positions');
 
+Route::get('/summary', 'ApiController@summary');
+Route::get('/histories', 'ApiController@histories');
+Route::get('/portfolio', 'ApiController@portfolio');
+
