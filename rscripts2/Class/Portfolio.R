@@ -1,6 +1,5 @@
 library(R6)
 require(xts)
-## https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html
 
 
 Portfolio <- R6Class('Portfolio',
@@ -12,77 +11,61 @@ Portfolio <- R6Class('Portfolio',
         hist = NULL,
         
         
-        initialize = function(filename, directory)
+        initialize = function(portfolio, histories)
         {
-            if (!requireNamespace("jsonlite", quietly = TRUE)) 
-                stop("package:", dQuote("jsonlite"), "cannot be loaded.")
-            
-            if (!requireNamespace("xts", quietly = TRUE)) 
-                stop("package:", dQuote("xts"), "cannot be loaded.")
-            
-            if (!requireNamespace("quantmod", quietly = TRUE)) 
-                stop("package:", dQuote("quantmod"), "cannot be loaded.")
-
-
-            private$load(paste(directory, filename, sep="/"))
-
-            private$loadHistories(directory)
+           self$currency <- portfolio$meta$currency
+           self$cash <- portfolio$meta$cash
+           self$items <- portfolio$items
+           
+           self$hist <- histories
         },
         
         
-        add = function(item)
-        {
-            self$items = c(self$items, item)
-        },
-        
-        
-        delta = function(current = TRUE)
+        ##
+        # Returns the absolute deltas of the portfolio positions
+        # 
+        # @return vector
+        ##
+        delta = function()
         {
             delta = c()
-            for (i in 1:length(self$items))
+            for (i in 1:dim(self$items)[1])
             {
-                item <- self$items[[i]]
+                item <- self$items[i,]
+                position <- Stock$new(item$symbol, item$amount, item$currency)
                 
-                ccy <- private$currencyPair(item$currency)
-                dates <- zoo::index(self$hist[[1]])
-                
-                quote <- self$hist[[item$symbol]]
-                fxrate <- self$hist[[ccy]]
-                amount <- item$amountHistory(dates)
-                
-                dat <- private$merge(list(quote, fxrate, amount))
-                
-                delta <- c(delta, item$delta(quote, fxrate, amount))
-                
+                quote <- private$quote(item$symbol)
+                fxrate <- private$fxrate(item$currency)
+
+                delta <- c(delta, position$delta(quote, fxrate))
             }
+            
             names(delta) <- gsub('___', self$currency, names(delta))
                                
             nm <- unique(names(delta))
-            nm <- nm[nm != private$currencyPair(self$currency)]
+            nm <- nm[nm != private$domestic()]
             
-            nms <- sapply(nm, function(x) which(names(delta) == x))
+            nms <- names(sapply(nm, function(x) which(names(delta) == x)))
             
-            xtssum <- function(nm)
+            total <- function(nm)
             {
-                join <- private$merge(lapply(unlist(nm), function(x) delta[[x]]))
-                sums <- rowSums(join)
-                xtsjoin <- xts::as.xts(sums, zoo::index(delta[[nm[1]]]))
-                names(xtsjoin) <- names(delta[nm[1]])
-                return(xtsjoin)
+                return(sum(unlist(delta[names(delta) == nm])))
             }
-           
-            res <- private$merge(lapply(nms, xtssum))
-            res <- res[!apply(res[] == 0, 1, any),]
             
-            n <- ifelse(current, 1, Inf)
-            return (tail(res, n))
+            res <- unlist(lapply(nms, total))
+            names(res) <- nms
             
+            return(res)
         },
         
-        
-        weights = function(current = TRUE)
+        ##
+        # Returns the positions weights as a percentage to total delta.
+        #
+        # @return vector
+        ##
+        weights = function()
         {
-            delta = self$delta(current)
+            delta = self$delta()
             return(delta/sum(delta))
         },
         
@@ -90,9 +73,9 @@ Portfolio <- R6Class('Portfolio',
         risk.factors = function()
         {
             rfs = c()
-            for (i in 1:length(self$items))
+            for (i in 1:dim(self$items)[1])
             {
-                item = self$items[[i]]
+                item = self$items[i,]
                 
                 symbol <- item$symbol
                 if (! symbol %in% rfs) rfs <- c(rfs, item$symbol)
@@ -106,6 +89,12 @@ Portfolio <- R6Class('Portfolio',
         },
         
         
+        ##
+        # Returns the daily returns of the historicy values based on model implemented
+        # in package 'quantmode'.
+        #
+        # @return xts
+        ##
         returns = function()
         {
             nms <- names(self$delta())
@@ -131,27 +120,20 @@ Portfolio <- R6Class('Portfolio',
             val <- 0
             for (i in 1:length(self$items))
             {
-                item <- self$items[[i]]
+                item <- self$items[i,]
+                position <- Stock$new(item$symbol, item$amount, item$currency)
                 
-                symbol <- item$symbol
-                ccy <- private$currencyPair(item$currency)
-                
-                dates <- zoo::index(self$hist[[1]])
-                
-                quote <- self$hist[[symbol]]
-                fxrate <- self$hist[[ccy]]
-                amount <- item$amountHistory(dates)
-                
-                dat <- private$merge(list(quote, fxrate, amount))
-                
-                val <- val + item$value(quote, fxrate, amount)
+                quote <- private$quote(item$symbol)
+                fxrate <- private$fxrate(item$currency)
+             
+                val <- val + position$value(quote, fxrate)
             }
 
             val <- val + self$cash
             
-            colnames(val) <- "Value"
+            names(val) <- "Value"
             
-            return(tail(val, n))
+            return(val)
         }
         
         
@@ -159,92 +141,38 @@ Portfolio <- R6Class('Portfolio',
     
     
     private = list(
-
-        load = function(filename) 
+        
+        ##
+        # Return the fxrate for a given currency in relation to portfolio currency.
+        # 
+        # @param string currency
+        # @return int   
+        ##
+        fxrate = function(currency)
         {
-            if (! file.exists(filename))
-            stop(paste0("Missing Portfolio JSON file '", filename, "'."))
-
-            self$items <- NULL;
-            json <- jsonlite::fromJSON(filename)
+            fxrate <- 1
             
-            self$currency <- json$currency
-            self$cash <- json$cash
-           
-            items <- as.data.frame(json$item)
-            
-            if (dim(items)[1]) {
-                for (i in 1:dim(items)[1]) {
-                    
-                    item <- items[i,]
-                    self$add(Stock$new(item$symbol, item$amount, item$currency))
-                }
-            } else {
-                stop(paste("Task cannot be performed for empty portfolio ", json$name))
-            }
-        },
-        
-        loadHistories = function(directory)
-        {
-            rfs <- self$risk.factors()
-            for (rf in rfs) {
-                
-                jsonfile = paste0(directory, '/', rf, ".json")
-                
-                if (! file.exists(jsonfile))
-                    stop(paste0("Missing JSON file '", jsonfile, "'."))
-                
-                dat <- try(jsonlite::fromJSON(jsonfile), silent = TRUE)
-
-                if (class(dat) == 'try-error')
-                    stop(paste0("JSON file for symbol '", rf, "' with inappropriate format."))
-
-                df <- data.frame(value = unlist(dat))
-                colnames(df) <- rf
-
-                dat <- xts::xts(df[,1], do.call("as.Date", list(x = rownames(df))),
-                    src = "json", updated = Sys.time())
-
-                self$hist <- c(self$hist, list(dat))
-            }
-            
-            self$hist <- c(self$hist, list(private$fakeHist()))
-            names(self$hist) = c(rfs, private$currencyPair(self$currency))
+            if (self$currency != currency)
+            {
+                ccy <- paste0(self$currency, currency)
+                fxrate <- self$hist[[ccy]]
+            } 
+            return (fxrate)
         },
         
         
-        
-        currencyPair = function(currency)
+        quote = function(symbol)
         {
-            return(paste0(self$currency, currency))
+            return(as.numeric(tail(self$hist[[symbol]], 1)))
         },
         
         
-        
-        quote = function(symbol, current = TRUE)
+        ##
+        # Returns a currency symbol with portfolio currency only.
+        ##
+        domestic = function()
         {
-            quotes <- as.numeric(self$hist[[symbol]])
-            if (current) return(tail(quotes,1)) else quotes
-        },
-        
-        
-        
-        fakeHist = function()
-        {
-            ccy <- private$currencyPair(self$currency)
-            ref <- self$hist[[1]]
-            res <- xts::as.xts(rep(1, times=dim(ref)[1]), zoo::index(ref))
-            
-            colnames(res) <- toupper(ccy)
-            return(res)
-        },
-        
-        
-        
-        merge = function(histories)
-        {
-            res <- do.call("merge.xts", c(histories, fill = 0))
-            return(res)
+            return(paste(self$currency, self$currency, sep='.'))
         }
         
     )

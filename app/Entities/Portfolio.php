@@ -41,7 +41,7 @@ class Portfolio extends Model
     public function getImageUrlAttribute()
     {
         $file = $this->image;
-        return (! is_null($file)) ? 'images/'.$file->path : null;
+        return (!is_null($file)) ? 'images/' . $file->path : null;
 
     }
 
@@ -116,8 +116,8 @@ class Portfolio extends Model
     {
         return $this->total() + $this->cash();
     }
-    
-    
+
+
     public function setCurrency($code)
     {
         $this->currency()->associate(Currency::firstOrCreate(['code' => $code]));
@@ -131,30 +131,31 @@ class Portfolio extends Model
 
         return $this;
     }
-    
+
     public function toArray()
     {
         $array = [
-            'name' => $this->name,
-            'currency' => $this->currencyCode(),
-            'cash' => $this->cash,
-            'item' => []
+            'meta' => [
+                'name' => $this->name,
+                'currency' => $this->currencyCode(),
+                'cash' => $this->cash
+            ],
+            'items' => []
         ];
-        $i = 0;
-        foreach($this->positions as $position) {
 
-            $array['item'][$i++] = $position->toArray();
+        foreach ($this->positions as $position) {
+
+            $array['items'][$position->id] = $position->toArray();
         }
         return $array;
     }
-    
-    
+
+
     public function makePosition($instrument)
     {
         $position = $this->positionWith($instrument);
 
-        if (is_null($position))
-        {
+        if (is_null($position)) {
             $position = new Position(['amount' => 0]);
             $position->positionable()->associate($instrument);
             $this->positions()->save($position);
@@ -162,7 +163,6 @@ class Portfolio extends Model
 
         return $position;
     }
-
 
 
     /**
@@ -242,7 +242,7 @@ class Portfolio extends Model
     {
         $image = PortfolioImage::fromForm($file);
 
-        \Storage::delete($this->imagesPath.$this->image->path);
+        \Storage::delete($this->imagesPath . $this->image->path);
 
         $file->storeAs($this->imagesPath, $image->path);
         $this->image->path = $image->path;
@@ -254,7 +254,7 @@ class Portfolio extends Model
 
     public function deleteImage()
     {
-        \Storage::delete('public/images/'.$this->image->path);
+        \Storage::delete('public/images/' . $this->image->path);
 
     }
 
@@ -272,7 +272,7 @@ class Portfolio extends Model
         foreach (array_reverse($transactions) as $transaction) {
 
             $value = $transaction->amount * $transaction->price;
-            switch($transaction->type->code) {
+            switch ($transaction->type->code) {
                 case 'buy':
                     $portfolio->revertTrade($transaction->position->id, -$value);
                     break;

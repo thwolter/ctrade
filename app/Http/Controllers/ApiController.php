@@ -83,6 +83,13 @@ class ApiController extends Controller
     }
 
 
+    /**
+     * Provides a collection of histories for the portfolio's risk factors.
+     * Request requires the portfolio $id.
+     *
+     * @param Request $request
+     * @return \Illuminate\Support\Collection
+     */
     public function histories(Request $request)
     {
         $portfolio = $this->getPortfolio($request);
@@ -105,6 +112,12 @@ class ApiController extends Controller
         return collect($result);
     }
 
+    /**
+     * Provides the portfolio data including positions details.
+     *
+     * @param Request $request
+     * @return \Illuminate\Support\Collection
+     */
     public function portfolio(Request $request)
     {
         return collect($this->getPortfolio($request)->toArray());
@@ -126,8 +139,10 @@ class ApiController extends Controller
     }
 
     /**
+     * Returns the portfolio for a requested id.
+     *
      * @param Request $request
-     * @return mixed
+     * @return Portfolio
      */
     private function getPortfolio(Request $request)
     {

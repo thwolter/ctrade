@@ -130,12 +130,12 @@ class Position extends Model implements PresentableInterface
 
     public function toArray() {
 
-        $type = strtoupper($this->positionable_type);
+        $type = $this->positionable_type;
 
         return [
             'name' => $this->name(),
-            'type' => implode(array_slice(explode('\\', $this->type()),-1)),
-            'symbol' => "{$type}{$this->positionable_id}",
+            'type' => $type,
+            'symbol' => "{$type}_{$this->positionable_id}",
             'currency' => $this->currencyCode(),
             'amount' => $this->amount,
         ];
