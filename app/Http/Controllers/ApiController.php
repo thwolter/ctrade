@@ -134,7 +134,7 @@ class ApiController extends Controller
         ]);*/
 
         $rscript = new Rscript($this->getPortfolio($request));
-        $risk = $rscript->portfolioRisk($request->conf);
+        $risk = $rscript->portfolioRisk($request->conf, $request->from, $request->to);
 
         return $risk;
     }

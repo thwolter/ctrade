@@ -3,6 +3,9 @@
 namespace App\Models;
 
 
+use App\Models\Exceptions\RscriptException;
+use Illuminate\Support\Facades\Storage;
+
 class Rscript
 {
     protected $entity;
@@ -12,13 +15,17 @@ class Rscript
         $this->entity = $entity;
     }
 
-    public function portfolioRisk($conf)
+    public function portfolioRisk($conf, $from, $to)
     {
         $file = uniqid('app/tmp/rscript');
         $script = 'Risk.R';
 
-        $args = ['conf' => $conf];
-
+        $args = [
+            'id' => $this->entity->id,
+            'conf' => $conf,
+            'from' => $from,
+            'to' => $to
+        ];
         return $this->execute($script, $file, $args);
     }
 
@@ -56,8 +63,30 @@ class Rscript
 
         shell_exec("Rscript {$scriptFile} {$argsString} > {$result} 2> {$log}");
 
-        return file_get_contents($result);
-}
+        $this->cleanup($result, $log);
 
+        return file_get_contents($result);
+    }
+
+
+    /**
+     * Delete the 'json' and 'log' files use for calling rscript and throw an error message
+     * if an error occurred during calculation.
+     *
+     * @param string $result
+     * @param string $log
+     * @throws RscriptException
+     */
+    private function cleanup($result, $log)
+    {
+        $logtext = file_get_contents($log);
+        $pos = stripos($logtext, 'ERROR');
+
+        unlink($log);
+        unlink($result);
+
+        if ($pos !== false)
+            throw new RscriptException(substr($logtext, $pos));
+    }
 
 }
