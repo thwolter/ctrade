@@ -1,17 +1,26 @@
-#setwd('/Code/ctrade/rscripts2')
-
 library(R6)
 library(httr)
 
-source('Class/Instrument.R')
-source('Class/Stock.R')
-source('Class/Portfolio.R')
+parameter <- function(id, args) {
+    prefix <- paste0('--', id, '=')
+    return(sub(prefix, "", args[grep(prefix, args)]))
+}
+
+args <- commandArgs()
+base <- dirname(parameter('file', args))
+
+conf <- as.numeric(parameter('conf', args))
+
+
+source(paste(base, 'Class/Instrument.R', sep='/'))
+source(paste(base, 'Class/Stock.R', sep='/'))
+source(paste(base, 'Class/Portfolio.R', sep='/'))
+
 
 url.hist <- 'http://ctrade.dev/api/histories?id=1&from=2017-06-30&to=2017-07-10'
 url.pf <- 'http://ctrade.dev/api/portfolio?id=1'
 
-fetchHistories = function(url)
-{
+fetchHistories <- function(url) {
     dat <- content(GET(url))
     len <- length(dat)
     dimnames = list(names(dat[[1]]), names(dat))
@@ -31,7 +40,7 @@ fetchHistories = function(url)
     return(hist)
 }
 
-fetchPortfolio = function(url) {
+fetchPortfolio <- function(url) {
     data <- content(GET(url))
     
     items <- as.data.frame(t(matrix(unlist(data$items), ncol=length(data$items))), stringsAsFactors = FALSE)
@@ -47,13 +56,15 @@ histories <- fetchHistories(url.hist)
 pf <- Portfolio$new(pfdata, histories)
 
 
-
 require(methods) #for PerformanceAnalytics
 output <- PerformanceAnalytics::VaR(
     R = pf$returns(),
-    p = 0.95,
+    p = conf,
     weights = pf$delta(),
     portfolio_method = 'component'
 )
 
-result = c(as.list(output$contribution), total = as.numeric(output$MVaR))
+
+result <- c(as.list(output$contribution), total = as.numeric(output$MVaR))
+
+jsonlite::toJSON(result)

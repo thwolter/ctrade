@@ -2,7 +2,6 @@
 
 namespace App\Entities;
 
-use App\Models\Rscript\Rscriptable;
 use App\Presenters\Presentable;
 use App\Settings\PortfolioSettings;
 use Carbon\Carbon;
@@ -15,10 +14,8 @@ use Illuminate\Http\UploadedFile;
 class Portfolio extends Model
 {
     use Presentable;
-    use Rscriptable;
 
     protected $presenter = 'App\Presenters\Portfolio';
-    protected $rscriptable = \App\Models\Rscript\Portfolio::class;
 
     protected $fillable = [
         'name', 'cash', 'description', 'settings', 'img_url'

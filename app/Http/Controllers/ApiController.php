@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Facades\Helpers;
 use App\Entities\Stock;
 use App\Http\Requests\SearchRequest;
+use App\Models\Exceptions\RscriptException;
+use App\Models\Rscript;
 use App\Repositories\CurrencyRepository;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -124,19 +126,21 @@ class ApiController extends Controller
     }
 
 
-    public function summary(Request $request)
+    public function portfolioRisk(Request $request)
     {
-        $portfolio = $this->getPortfolio($request);
+        /*$this->validate($request, [
+            'id' => 'required|exists:portfolios,id',
+            'conf' => 'required|between:0,1'
+        ]);*/
 
-        $key = 'summary'.$portfolio->id;
-        if (\Cache::has($key)) {
-            $summary = \Cache::get($key);
-        } else {
-            $summary = $portfolio->rscript()->summary(60);
-            \Cache::put($key, $summary, 0);
-        }
-        return collect($summary);
+        $rscript = new Rscript($this->getPortfolio($request));
+        $risk = $rscript->portfolioRisk($request->conf);
+
+        return $risk;
     }
+
+
+
 
     /**
      * Returns the portfolio for a requested id.

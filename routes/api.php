@@ -29,3 +29,5 @@ Route::get('/summary', 'ApiController@summary');
 Route::get('/histories', 'ApiController@histories');
 Route::get('/portfolio', 'ApiController@portfolio');
 
+Route::get('/portfolio/risk', 'ApiController@portfolioRisk');
+
