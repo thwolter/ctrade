@@ -63,9 +63,10 @@ class Rscript
 
         shell_exec("Rscript {$scriptFile} {$argsString} > {$result} 2> {$log}");
 
+        $json = file_get_contents($result);
         $this->cleanup($result, $log);
 
-        return file_get_contents($result);
+        return $json;
     }
 
 

@@ -68,6 +68,10 @@ output <- PerformanceAnalytics::VaR(
 )
 
 
-result <- c(as.list(output$contribution), total = as.numeric(output$MVaR))
+result <- c(
+    as.list(output$contribution),
+    total = as.numeric(output$MVaR),
+    date = toString(index(tail(histories[[1]],1)))
+)
 
 jsonlite::toJSON(result)
