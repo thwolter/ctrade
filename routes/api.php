@@ -31,4 +31,4 @@ Route::get('/portfolio', 'ApiController@portfolio');
 
 Route::get('/portfolio/risk', 'ApiController@portfolioRisk');
 
-Route::get('/test', Artisan::call('calculate:risk'));
+//Route::get('/test', Artisan::call('calculate:risk'));

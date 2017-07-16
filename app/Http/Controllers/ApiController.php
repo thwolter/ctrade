@@ -78,7 +78,7 @@ class ApiController extends Controller
         $positions = $collection->toArray();
 
         foreach ($positions as &$record) {
-            $record['share'] = $record['total']/$total;
+            $record['share'] = $record['total'] / $total;
         }
 
         return collect(['positions' => $positions, 'total' => $total]);
@@ -108,7 +108,7 @@ class ApiController extends Controller
             $target = $position->currencyCode();
 
             if ($origin != $target)
-                $result[$origin.$target] = (new CurrencyRepository($origin, $target))->history($days);
+                $result[$origin . $target] = (new CurrencyRepository($origin, $target))->history($days);
         }
 
         return collect($result);
@@ -126,6 +126,13 @@ class ApiController extends Controller
     }
 
 
+    /**
+     * Calculate the risk for given portfolio.
+     * e.g. api/portfolio/risk?id=1&conf=0.95&from=2016-06-30&to=2017-06-30
+     *
+     * @param Request $request
+     * @return string
+     */
     public function portfolioRisk(Request $request)
     {
         /*$this->validate($request, [
@@ -133,13 +140,11 @@ class ApiController extends Controller
             'conf' => 'required|between:0,1'
         ]);*/
 
+
         $rscript = new Rscript($this->getPortfolio($request));
         $risk = $rscript->portfolioRisk($request->conf, $request->from, $request->to);
-
         return $risk;
     }
-
-
 
 
     /**

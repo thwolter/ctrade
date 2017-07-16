@@ -17,16 +17,22 @@ class Rscript
 
     public function portfolioRisk($conf, $from, $to)
     {
-        $file = uniqid('app/tmp/rscript');
-        $script = 'Risk.R';
+        $risk = null;
 
-        $args = [
-            'id' => $this->entity->id,
-            'conf' => $conf,
-            'from' => $from,
-            'to' => $to
-        ];
-        return $this->execute($script, $file, $args);
+        if ($this->entity->positions->count() != 0) {
+
+            $file = uniqid('app/tmp/rscript');
+            $script = 'Risk.R';
+
+            $args = [
+                'id' => $this->entity->id,
+                'conf' => $conf,
+                'from' => $from,
+                'to' => $to
+            ];
+            $risk = $this->execute($script, $file, $args);
+        }
+        return $risk;
     }
 
     /**
