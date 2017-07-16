@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use App\Presenters\Presentable;
 use App\Settings\PortfolioSettings;
+use App\Settings\Settings;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
@@ -68,6 +69,21 @@ class Portfolio extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function getKeyFigure($code)
+    {
+        $type = KeyfigureType::whereCode($code)->first();
+        return $this->keyFigures()->whereTypeId($type->id)->first();
+    }
+
+    public function createKeyFigure($parameter)
+    {
+        $type = KeyfigureType::firstOrCreate($parameter);
+        $keyfigure = new Keyfigure();
+
+        $keyfigure->type()->associate($type)->portfolio()->associate($this)->save();
+
+        return $keyfigure;
+    }
 
     public function currency()
     {
@@ -95,7 +111,6 @@ class Portfolio extends Model
     {
         return $this->cash;
     }
-
 
     public function stockTotal()
     {

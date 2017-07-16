@@ -29,16 +29,16 @@ use Illuminate\Database\Eloquent\Model;
 class Keyfigure extends Model
 {
 
-    protected $fillable = ['value'];
+    protected $fillable = ['values'];
 
-    public function key()
+    protected $casts = [
+        'values' => 'json'
+    ];
+
+
+    public function type()
     {
         return $this->belongsTo(KeyfigureType::class);
-    }
-
-    public function date()
-    {
-        return $this->belongsTo(KeyfigureDate::class);
     }
 
     public function portfolio()
@@ -46,19 +46,22 @@ class Keyfigure extends Model
         return $this->belongsTo(Portfolio::class);
     }
 
-    /**
-     * @param $key
-     * @param $value
-     * @param $date
-     * @return Keyfigure
-     */
-    static public function set($key, $value, $date)
+
+    public function get($key)
     {
-        $keyFigure = new self(['value' => $value]);
+        return array_get($this->values, $key);
+    }
 
-        $keyFigure->key()->associate(KeyfigureType::firstOrCreate(['code' => $key]));
-        $keyFigure->date()->associate(KeyfigureDate::firstOrCreate(['date' => $date]));
+    public function set($key, $value)
+    {
+        $values = $this->values;
+        $values[$key] = $value;
 
-        return $keyFigure;
+        $this->update(['values' => $values]);
+    }
+
+    public function has($key)
+    {
+        return array_key_exists($key, $this->values);
     }
 }

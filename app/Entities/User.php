@@ -2,7 +2,8 @@
 
 namespace App\Entities;
 
-use App\Settings\UserSettings;
+use App\Settings\InitialSettings;
+use App\Settings\Settings;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -52,7 +53,7 @@ class User extends Authenticatable
 
     public function settings($key = null)
     {
-        $settings = new UserSettings($this);
+        $settings = new Settings($this);
 
         return $key ? $settings->get($key) : $settings;
     }

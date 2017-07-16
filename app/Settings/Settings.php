@@ -13,13 +13,11 @@ class Settings
 
     public function __construct($entity)
     {
-        $this->portfolio = $entity;
+        $this->entity = $entity;
         $settings = $entity->settings;
 
         $this->settings = array_merge(
-            $this->settings,
-            is_null($settings) ? [] : $settings);
-
+            $this->settings, is_null($settings) ? [] : $settings);
     }
 
     public function get($key)
@@ -30,7 +28,6 @@ class Settings
     public function set($key, $value)
     {
         $this->settings[$key] = $value;
-
         $this->persist();
     }
 
@@ -51,7 +48,7 @@ class Settings
 
     public function persist()
     {
-        return $this->portfolio->update(['settings' => $this->settings]);
+        return $this->entity->update(['settings' => $this->settings]);
     }
 
     public function __get($key)
@@ -59,9 +56,7 @@ class Settings
         if ($this->has($key)) {
             return $this->get($key);
         }
-
         throw new \Exception("The {$key} settings does not exist.");
-
     }
 
     protected function has($key)

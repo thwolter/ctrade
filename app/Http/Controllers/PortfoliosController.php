@@ -16,6 +16,7 @@ use App\Entities\Transaction;
 use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
+use App\Settings\InitialSettings;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
