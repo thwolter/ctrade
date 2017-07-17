@@ -76,9 +76,9 @@ class Portfolio extends Model
         return $this->keyFigures()->first();
     }
 
-    public function createKeyFigure($parameter)
+    public function createKeyFigure($code, $name)
     {
-        $type = KeyfigureType::firstOrCreate($parameter);
+        $type = KeyfigureType::firstOrCreate(['code' => $code, 'name' => $name]);
         $keyfigure = new Keyfigure();
 
         $keyfigure->type()->associate($type)->portfolio()->associate($this)->save();

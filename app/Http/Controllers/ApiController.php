@@ -96,7 +96,8 @@ class ApiController extends Controller
     {
         $portfolio = $this->getPortfolio($request);
 
-        $days = Helpers::allWeekDaysBetween($request->from, $request->to);
+        $days = $this->getWeekDaysSeries($request);
+
         $result = [];
 
         foreach ($portfolio->positions as $position) {
@@ -122,6 +123,7 @@ class ApiController extends Controller
      */
     public function portfolio(Request $request)
     {
+        //Todo: get portfolio for a specified day in the past based on transactions analysis
         return collect($this->getPortfolio($request)->toArray());
     }
 
@@ -140,11 +142,15 @@ class ApiController extends Controller
             'conf' => 'required|between:0,1'
         ]);*/
 
-
         $rscript = new Rscript($this->getPortfolio($request));
-        $risk = $rscript->portfolioRisk($request->conf, $request->from, $request->to);
+        $risk = $rscript->portfolioRisk($request->conf, $request->date, $request->count);
         return $risk;
     }
+
+
+    // ---------------------------------------------
+    // private functions
+    // ---------------------------------------------
 
 
     /**
@@ -157,5 +163,27 @@ class ApiController extends Controller
     {
         $portfolio = Portfolio::findOrFail($request->get('id'));
         return $portfolio;
+    }
+
+    /**
+     * Return all week days either within a period or as number up to set date.
+     *
+     * @param Request $request
+     * @return array
+     * @throws \Exception
+     */
+    private function getWeekDaysSeries(Request $request): array
+    {
+        if (isset($request->date) && isset($request->count)) {
+            $days = Helpers::allWeekDays($request->date, $request->count);
+        }
+        elseif (isset($request->from) && isset($request->to)) {
+            $days = Helpers::allWeekDaysBetween($request->from, $request->to);
+        }
+        else {
+            throw new \Exception("Parameter ['date' and 'count'] or ['from' and 'to'] must be set.");
+        }
+
+        return $days;
     }
 }

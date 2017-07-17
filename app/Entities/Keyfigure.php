@@ -64,4 +64,12 @@ class Keyfigure extends Model
     {
         return array_key_exists($key, $this->values);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($keyfigures) {
+            $keyfigures->values = [];
+        });
+    }
 }

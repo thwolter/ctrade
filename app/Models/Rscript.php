@@ -15,23 +15,23 @@ class Rscript
         $this->entity = $entity;
     }
 
-    public function portfolioRisk($conf, $from, $to)
+    public function portfolioRisk($conf, $date, $count)
     {
-        $risk = null;
-
-        if ($this->entity->positions->count() != 0) {
-
-            $file = uniqid('app/tmp/rscript');
-            $script = 'Risk.R';
-
-            $args = [
-                'id' => $this->entity->id,
-                'conf' => $conf,
-                'from' => $from,
-                'to' => $to
-            ];
-            $risk = $this->execute($script, $file, $args);
+        if ($this->entity->positions->count() == 0) {
+            return ['total' => [0]];
         }
+
+        $file = uniqid('app/tmp/rscript');
+        $script = 'Risk.R';
+
+        $args = [
+            'id' => $this->entity->id,
+            'conf' => $conf,
+            'date' => $date,
+            'count' => $count
+        ];
+        $risk = $this->execute($script, $file, $args);
+
         return $risk;
     }
 
@@ -41,12 +41,12 @@ class Rscript
      * @param array $args representing named parameters
      * @return string with Rscript arguments
      */
-    private function argsImplode($args) {
+    private function argsImplode($args)
+    {
 
         $s = null;
-        foreach ($args as $key => $value)
-        {
-            $s = $s."--{$key}={$value} ";
+        foreach ($args as $key => $value) {
+            $s = $s . "--{$key}={$value} ";
         }
         return trim($s);
     }
@@ -57,7 +57,7 @@ class Rscript
      * @param string $script
      * @param string $file
      * @param array $args
-     * @return string
+     * @return array
      */
     private function execute($script, $file, $args)
     {
@@ -65,14 +65,14 @@ class Rscript
         $log = storage_path($file . '.log');
 
         $argsString = $this->argsImplode($args);
-        $scriptFile = base_path('rscripts/'.$script);
+        $scriptFile = base_path('rscripts/' . $script);
 
         shell_exec("Rscript {$scriptFile} {$argsString} > {$result} 2> {$log}");
 
         $json = file_get_contents($result);
         $this->cleanup($result, $log);
 
-        return $json;
+        return json_decode($json, true);
     }
 
 
