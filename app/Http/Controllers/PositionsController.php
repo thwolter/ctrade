@@ -51,7 +51,7 @@ class PositionsController extends Controller
         $position = $portfolio->makePosition($instrument);
         $portfolio->buy($position->id, $amount);
 
-        Transaction::buy($portfolio, new \DateTime(), $position, $amount);
+        Transaction::buy($portfolio, Carbon::now(), $position, $amount);
 
         return ['redirect' => route('positions.index', $request->pid)];
 
