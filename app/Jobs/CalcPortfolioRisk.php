@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Entities\Keyfigure;
 use App\Entities\Portfolio;
 use App\Models\Rscript;
 use Carbon\Carbon;
@@ -21,7 +22,7 @@ class CalcPortfolioRisk implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param Portfolio $portfolio
      */
     public function __construct(Portfolio $portfolio)
     {
@@ -35,41 +36,105 @@ class CalcPortfolioRisk implements ShouldQueue
      */
     public function handle()
     {
-        $keyFigure = $this->portfolio->getKeyFigure('risk');
+        $kfRisk = $this->keyFigureRisk();
+        $kfContrib = $this->keyFigureContribution();
 
-        if (is_null($keyFigure)) {
-            $keyFigure = $this->portfolio->createKeyFigure('risk', 'Value at Risk');
-        }
-
-        $start = $this->startDate($keyFigure);
+        $start = $this->startDate($kfRisk); // it is sufficient to check only one keyFigure
         $today = Carbon::now()->endOfDay();
 
         for ($date = clone $start; $date->diffInDays($today) > 0; $date->addDay()) {
-            if (!$keyFigure->has($date->toDateString())) {
 
-                $rscript = new Rscript($this->portfolio);
-                $risk = $rscript->portfolioRisk(0.95, $date->toDateString(), 250);
+            $rscript = new Rscript($this->portfolio);
+            $risk = $rscript->portfolioRisk(0.95, $date->toDateString(), 250);
 
-                $keyFigure->set(array_first($risk['date']), array_first($risk['total']));
-            }
+            $kfRisk->set($date->toDateString(), $this->toRiskArray($risk));
+            $kfContrib->set($date->toDateString(), $this->toContribArray($risk));
         }
     }
 
     /**
      * Return the start date for calculations as the latest date of already calculated values.
      *
-     * @param $keyFigure
+     * @param KeyFigure
      * @return Carbon
      */
     private function startDate($keyFigure)
     {
-        $date = $this->portfolio->created_at->endOfDay();
+        $date = $this->portfolio->created_at;
 
-        if (count($keyFigure->values) != 0) {
-            $updated = max(max(array_keys($keyFigure->values)), $date);
-            $date = Carbon::parse($updated)->addDay()->endOfDay();
+        if (count($keyFigure->values) > 0) {
+            $date = Carbon::parse(max(max(array_keys($keyFigure->values)), $date))->addDay();
+
+            $invalidated = $keyFigure->invalidated_at;
+            if (!is_null($invalidated)) {
+                $date = Carbon::parse(min($date, $invalidated));
+            }
         }
-        return $date;
+        return $date->endOfDay();
     }
 
+
+    /**
+     * Returns a formatted array with risk figures per confidence level.
+     *
+     * @param $risk
+     * @return array
+     */
+    private function toRiskArray($risk)
+    {
+        return [
+            '95' => array_first($risk['total95']),
+            '97' => array_first($risk['total97']),
+            '99' => array_first($risk['total99'])
+        ];
+    }
+
+
+    /**
+     * Returns a formatted array with risk contributions for required confidence levels.
+     *
+     * @param $risk
+     * @param $conf
+     * @return mixed
+     */
+    private function toContribArray($risk)
+    {
+        return [
+            '95' => $risk['contrib95'],
+            '97' => $risk['contrib97'],
+            '99' => $risk['contrib99']
+        ];
+    }
+
+
+    /**
+     * Find/create and returns the keyFigures for risk time series.
+     *
+     * @return Keyfigure
+     */
+    private function keyFigureRisk()
+    {
+        $keyFigure = $this->portfolio->keyFigure('risk');
+
+        if (is_null($keyFigure)) {
+            $keyFigure = $this->portfolio->createKeyFigure('risk', 'Value at Risk');
+        }
+        return $keyFigure;
+    }
+
+
+    /**
+     * Find/create and returns the keyFigures for risk contribution.
+     *
+     * @return Keyfigure
+     */
+    private function keyFigureContribution()
+    {
+        $keyFigure = $this->portfolio->keyFigure('contribution');
+
+        if (is_null($keyFigure)) {
+            $keyFigure = $this->portfolio->createKeyFigure('contribution', 'Risk contribution');
+        }
+        return $keyFigure;
+    }
 }

@@ -57,7 +57,7 @@ class Keyfigure extends Model
         $values = $this->values;
         $values[$key] = $value;
 
-        $this->update(['values' => $values]);
+        $this->update(['values' => $values, 'invalidated_at' => null]);
     }
 
     public function has($key)

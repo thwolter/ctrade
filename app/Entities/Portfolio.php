@@ -69,11 +69,12 @@ class Portfolio extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function getKeyFigure($code)
+    public function keyFigure($code)
     {
         $type = KeyfigureType::whereCode($code)->first();
-        //return $this->keyFigures()->whereTypeId($type->id)->first();
-        return $this->keyFigures()->first();
+
+        if (!is_null($type))
+            return $this->keyFigures()->whereTypeId($type->id)->first();
     }
 
     public function createKeyFigure($code, $name)

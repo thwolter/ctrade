@@ -60,17 +60,23 @@ pf <- Portfolio$new(pfdata, histories)
 
 
 require(methods) #for PerformanceAnalytics
-output <- PerformanceAnalytics::VaR(
-    R = pf$returns(),
-    p = conf,
-    weights = pf$delta(),
-    portfolio_method = 'component'
-)
+output950 <- PerformanceAnalytics::VaR(
+    R = pf$returns(), p = 0.95, weights = pf$delta(), portfolio_method = 'component')
+
+output975 <- PerformanceAnalytics::VaR(
+    R = pf$returns(), p = 0.975, weights = pf$delta(), portfolio_method = 'component')
+
+output990 <- PerformanceAnalytics::VaR(
+    R = pf$returns(), p = 0.99, weights = pf$delta(), portfolio_method = 'component')
 
 
-result <- c(
-    as.list(output$contribution),
-    total = as.numeric(output$MVaR),
+result <- list(
+    contrib95 = as.list(output950$contribution),
+    contrib97 = as.list(output975$contribution),
+    contrib99 = as.list(output990$contribution),
+    total95 = as.numeric(output950$MVaR),
+    total97 = as.numeric(output975$MVaR),
+    total99 = as.numeric(output990$MVaR),
     date = toString(index(tail(histories[[1]],1)))
 )
 

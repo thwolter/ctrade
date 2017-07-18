@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Presenters\Presentable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -46,7 +47,8 @@ class Transaction extends Model
         'date',
         'amount',
         'price',
-        'cash'
+        'cash',
+        'executed_at'
     ];
 
     public function type()
@@ -115,7 +117,7 @@ class Transaction extends Model
     private static function saveTransaction($portfolio, $date, $position, $amount, $type)
     {
         $transaction = new self([
-            'date' => $date,
+            'executed_at' => $date,
             'amount' => $amount,
             'price' => array_first($position->price())
         ]);
@@ -138,7 +140,7 @@ class Transaction extends Model
     private static function payment($portfolio, $date, $amount, $type): bool
     {
         $transaction = new self([
-            'date' => $date,
+            'executed_at' => $date,
             'cash' => $amount
         ]);
 
