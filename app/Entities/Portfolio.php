@@ -281,7 +281,7 @@ class Portfolio extends Model
     public function rollbackToDate($date)
     {
         $portfolio = clone $this;
-        $transactions = $this->transactions->where('date', '>', $date)->all();
+        $transactions = $this->transactions->where('executed_at', '>', $date)->all();
 
         foreach (array_reverse($transactions) as $transaction) {
 
@@ -293,6 +293,12 @@ class Portfolio extends Model
                 case 'sell':
                     $portfolio->revertTrade($transaction->position->id, +$value);
                     break;
+                case 'deposit':
+                    $portfolio->cash -= $value;
+                    break;
+                case 'withdrawal':
+                    $this->cash += $value;
+
             }
         }
         return $portfolio;
@@ -330,5 +336,10 @@ class Portfolio extends Model
         $this->cash = $this->cash - $value;
 
         return $this;
+    }
+
+    private function revertPayment($value)
+    {
+        return $this->cash -= $value;
     }
 }

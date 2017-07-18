@@ -12,6 +12,16 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
+/**
+ * Calculate the risk and risk distribution for a given portfolio based on the composition
+ * at the time of calculation. It is expected to be started after change of the portfolio
+ * and on a regular basis to build a time series of risk.
+ *
+ * To ensure a calculation based on daily period, a retrograde calculation is required if the
+ * portfolio has changed after the due date (e.g. at midnight).
+ *
+ * @package App\Jobs
+ */
 class CalcPortfolioRisk implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -30,7 +40,10 @@ class CalcPortfolioRisk implements ShouldQueue
     }
 
     /**
-     * Execute the job.
+     * Call the rscript for risk calculation for each date between last calculation and today.
+     * If no calculations are done yet, take the date of portfolio creation as the first date.
+     * To ensure that the portfolio at the due date is taken as a basis, the portfolio trades
+     * conducted after the due date have to be rewind for calculation purposes.
      *
      * @return void
      */
@@ -39,17 +52,22 @@ class CalcPortfolioRisk implements ShouldQueue
         $kfRisk = $this->keyFigureRisk();
         $kfContrib = $this->keyFigureContribution();
 
-        $start = $this->startDate($kfRisk); // it is sufficient to check only one keyFigure
+        // perhaps it is sufficient to check only one keyFigure
+        $start = $this->startDate($kfRisk);
         $today = Carbon::now()->endOfDay();
 
-        for ($date = clone $start; $date->diffInDays($today) > 0; $date->addDay()) {
+        for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {
 
-            $rscript = new Rscript($this->portfolio);
-            $risk = $rscript->portfolioRisk(0.95, $date->toDateString(), 250);
+            $portfolio = $this->portfolio->rollbackToDate($date);
+
+            $rscript = new Rscript($portfolio);
+            $risk = $rscript->portfolioRisk($date->toDateString(), 250);
 
             $kfRisk->set($date->toDateString(), $this->toRiskArray($risk));
             $kfContrib->set($date->toDateString(), $this->toContribArray($risk));
         }
+
+        $kfRisk->validUntil($today->startOfDay());
     }
 
     /**
@@ -83,9 +101,9 @@ class CalcPortfolioRisk implements ShouldQueue
     private function toRiskArray($risk)
     {
         return [
-            '95' => array_first($risk['total95']),
-            '97' => array_first($risk['total97']),
-            '99' => array_first($risk['total99'])
+            '95' => $this->array_first_or_null($risk['total95']),
+            '97' => $this->array_first_or_null($risk['total97']),
+            '99' => $this->array_first_or_null($risk['total99'])
         ];
     }
 
@@ -136,5 +154,17 @@ class CalcPortfolioRisk implements ShouldQueue
             $keyFigure = $this->portfolio->createKeyFigure('contribution', 'Risk contribution');
         }
         return $keyFigure;
+    }
+
+
+    /**
+     * Return the array's value or 0 in case of null value.
+     *
+     * @param $value
+     * @return int|mixed
+     */
+    private function array_first_or_null($value)
+    {
+        return is_null($value) ? 0 : array_first($value);
     }
 }

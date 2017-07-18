@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -29,7 +30,7 @@ use Illuminate\Database\Eloquent\Model;
 class Keyfigure extends Model
 {
 
-    protected $fillable = ['values'];
+    protected $fillable = ['values', 'invalidated_at'];
 
     protected $casts = [
         'values' => 'json'
@@ -58,6 +59,11 @@ class Keyfigure extends Model
         $values[$key] = $value;
 
         $this->update(['values' => $values, 'invalidated_at' => null]);
+    }
+
+    public function validUntil(Carbon $date)
+    {
+        $this->update(['invalidated_at' => $date->toDateTimeString()]);
     }
 
     public function has($key)

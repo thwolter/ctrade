@@ -15,10 +15,10 @@ class Rscript
         $this->entity = $entity;
     }
 
-    public function portfolioRisk($conf, $date, $count)
+    public function portfolioRisk($date, $count)
     {
         if ($this->entity->positions->count() == 0) {
-            return ['total' => [0]];
+            return null;
         }
 
         $file = uniqid('app/tmp/rscript');
@@ -26,7 +26,6 @@ class Rscript
 
         $args = [
             'id' => $this->entity->id,
-            'conf' => $conf,
             'date' => $date,
             'count' => $count
         ];
