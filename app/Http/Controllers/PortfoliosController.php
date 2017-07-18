@@ -17,6 +17,7 @@ use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
 use App\Settings\InitialSettings;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
@@ -73,7 +74,7 @@ class PortfoliosController extends Controller
 
         auth()->user()->obtain($portfolio);
 
-        Transaction::deposit($portfolio, new \DateTime(), $request->get('amount'));
+        Transaction::deposit($portfolio, Carbon::now(), $request->get('amount'));
 
         return [
             'redirect' => route('portfolios.show', $portfolio->id),
@@ -168,12 +169,12 @@ class PortfoliosController extends Controller
             
             case 'deposit':
                 $portfolio->deposit($request->amount);
-                Transaction::deposit($portfolio, new \DateTime(), $request->amount);
+                Transaction::deposit($portfolio, Carbon::now(), $request->amount);
 
                 break;
             case 'withdraw':
                 $portfolio->withdraw($request->amount);
-                Transaction::withdraw($portfolio, new \DateTime(), $request->amount);
+                Transaction::withdraw($portfolio, Carbon::now(), $request->amount);
                 break;
         }
         

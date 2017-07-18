@@ -49,8 +49,8 @@ class CalcPortfolioRisk implements ShouldQueue
      */
     public function handle()
     {
-        $kfRisk = $this->keyFigureRisk();
-        $kfContrib = $this->keyFigureContribution();
+        $kfRisk = $this->portfolio->keyFigure('risk');
+        $kfContrib = $this->portfolio->keyFigure('contribution');
 
         // perhaps it is sufficient to check only one keyFigure
         $start = $this->startDate($kfRisk);
@@ -122,38 +122,6 @@ class CalcPortfolioRisk implements ShouldQueue
             '97' => $risk['contrib97'],
             '99' => $risk['contrib99']
         ];
-    }
-
-
-    /**
-     * Find/create and returns the keyFigures for risk time series.
-     *
-     * @return Keyfigure
-     */
-    private function keyFigureRisk()
-    {
-        $keyFigure = $this->portfolio->keyFigure('risk');
-
-        if (is_null($keyFigure)) {
-            $keyFigure = $this->portfolio->createKeyFigure('risk', 'Value at Risk');
-        }
-        return $keyFigure;
-    }
-
-
-    /**
-     * Find/create and returns the keyFigures for risk contribution.
-     *
-     * @return Keyfigure
-     */
-    private function keyFigureContribution()
-    {
-        $keyFigure = $this->portfolio->keyFigure('contribution');
-
-        if (is_null($keyFigure)) {
-            $keyFigure = $this->portfolio->createKeyFigure('contribution', 'Risk contribution');
-        }
-        return $keyFigure;
     }
 
 

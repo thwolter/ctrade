@@ -6,6 +6,7 @@ use App\Entities\Transaction;
 use App\Http\Requests\PositionStore;
 use App\Http\Requests\PositionUpdate;
 use App\Repositories\FinancialMapping;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\Position;
@@ -89,11 +90,11 @@ class PositionsController extends Controller
         switch ($request->transaction) {
             case 'buy':
                 $portfolio->buy($id, $amount);
-                Transaction::buy($portfolio, new \DateTime(), $position, $amount);
+                Transaction::buy($portfolio, Carbon::now(), $position, $amount);
                 break;
             case 'sell':
                 $portfolio->sell($id, $amount);
-                Transaction::sell($portfolio, new \DateTime(), $position, $amount);
+                Transaction::sell($portfolio, Carbon::now(), $position, $amount);
                 break;
         }
 

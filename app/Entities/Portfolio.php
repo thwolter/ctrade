@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Events\PortfolioChanged;
 use App\Presenters\Presentable;
 use App\Settings\PortfolioSettings;
 use App\Settings\Settings;
@@ -69,33 +70,24 @@ class Portfolio extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function keyFigures()
+    {
+        return $this->hasMany(Keyfigure::class);
+    }
+
+
     public function keyFigure($code)
     {
         $type = KeyfigureType::whereCode($code)->first();
-
-        if (!is_null($type))
-            return $this->keyFigures()->whereTypeId($type->id)->first();
+        return $this->keyFigures()->whereTypeId($type->id)->first();
     }
 
-    public function createKeyFigure($code, $name)
-    {
-        $type = KeyfigureType::firstOrCreate(['code' => $code, 'name' => $name]);
-        $keyfigure = new Keyfigure();
-
-        $keyfigure->type()->associate($type)->portfolio()->associate($this)->save();
-
-        return $keyfigure;
-    }
 
     public function currency()
     {
         return $this->belongsTo(Currency::class);
     }
 
-    public function keyFigures()
-    {
-        return $this->hasMany(Keyfigure::class);
-    }
 
     public function settings($key = null)
     {
@@ -325,6 +317,7 @@ class Portfolio extends Model
         $position->update(['amount' => $position->amount + $amount]);
 
         $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
+
         return $portfolio;
     }
 
@@ -336,10 +329,5 @@ class Portfolio extends Model
         $this->cash = $this->cash - $value;
 
         return $this;
-    }
-
-    private function revertPayment($value)
-    {
-        return $this->cash -= $value;
     }
 }

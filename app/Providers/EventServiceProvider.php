@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\MetadataUpdateHasFinished' => [
             'App\Listeners\NotifyMetadataUpdatedHasFinished'
+        ],
+        'App\Events\PortfolioChanged' => [
+            'App\Listeners\CalculatePortfolioRisk'
         ]
     ];
 

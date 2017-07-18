@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CacheQuandlSSE;
+use App\Console\Commands\CalculateRisk;
 use App\Console\Commands\UpdateMetadata;
 use App\Console\Commands\UpdateQuandlSSE;
 use Illuminate\Console\Scheduling\Schedule;
@@ -33,8 +34,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command(UpdateMetadata::class)->hourly();
         //$schedule->command(CacheQuandlSSE::class)->dailyAt('00:00');
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command(CalculateRisk::class)->dailyAt('02:00');
     }
 
     /**

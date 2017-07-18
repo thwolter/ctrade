@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Events\PortfolioChanged;
 use App\Presenters\Presentable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -73,7 +74,7 @@ class Transaction extends Model
 
     /**
      * @param Portfolio $portfolio
-     * @param \DateTime $date
+     * @param Carbon $date
      * @param Position $position
      * @param float $amount
      * @return bool
@@ -108,7 +109,7 @@ class Transaction extends Model
 
     /**
      * @param Portfolio $portfolio
-     * @param \DateTime $date
+     * @param Carbon $date
      * @param Position $position
      * @param float $amount
      * @param string $type
@@ -127,6 +128,7 @@ class Transaction extends Model
         $transaction->instrumentable()->associate($position->positionable);
         $transaction->type()->associate(TransactionType::firstOrCreate(['code' => $type]));
 
+        event(new PortfolioChanged($portfolio, $date));
         return $transaction->save();
     }
 
@@ -137,7 +139,7 @@ class Transaction extends Model
      * @param $type
      * @return bool
      */
-    private static function payment($portfolio, $date, $amount, $type): bool
+    private static function payment($portfolio, $date, $amount, $type)
     {
         $transaction = new self([
             'executed_at' => $date,
@@ -147,6 +149,7 @@ class Transaction extends Model
         $transaction->portfolio()->associate($portfolio);
         $transaction->type()->associate(TransactionType::firstOrCreate(['code' => $type]));
 
+        event(new PortfolioChanged($portfolio, $date));
         return $transaction->save();
     }
 
