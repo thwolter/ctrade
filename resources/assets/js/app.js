@@ -18,8 +18,7 @@ import Colors from './core/Colors';
  * components from VueStrap
  * 
  */ 
-import popover from 'vue-strap'
-
+import popover from 'vue-strap';
 
 window.Vue = Vue;
 window.axios = axios;
@@ -47,6 +46,7 @@ Vue.component('trade-stock', require('./components/TradeStock.vue'));
 
 Vue.component('graph', require('./components/Graph.vue'));
 Vue.component('positions-chart', require('./components/PositionsChart.vue'));
+Vue.component('spinner', require('./components/Spinner.vue'));
 
 
 const app = new Vue({

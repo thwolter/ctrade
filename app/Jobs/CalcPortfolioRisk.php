@@ -83,7 +83,7 @@ class CalcPortfolioRisk implements ShouldQueue
         if (count($keyFigure->values) > 0) {
             $date = Carbon::parse(max(max(array_keys($keyFigure->values)), $date))->addDay();
 
-            $invalidated = $keyFigure->invalidated_at;
+            $invalidated = $keyFigure->expires_at;
             if (!is_null($invalidated)) {
                 $date = Carbon::parse(min($date, $invalidated));
             }

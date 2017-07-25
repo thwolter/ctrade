@@ -30,7 +30,7 @@ use Illuminate\Database\Eloquent\Model;
 class Keyfigure extends Model
 {
 
-    protected $fillable = ['values', 'invalidated_at'];
+    protected $fillable = ['values', 'expires_at'];
 
     protected $casts = [
         'values' => 'json'
@@ -58,12 +58,12 @@ class Keyfigure extends Model
         $values = $this->values;
         $values[$key] = $value;
 
-        $this->update(['values' => $values, 'invalidated_at' => null]);
+        $this->update(['values' => $values, 'expires_at' => null]);
     }
 
     public function validUntil(Carbon $date)
     {
-        $this->update(['invalidated_at' => $date->toDateTimeString()]);
+        $this->update(['expires_at' => $date->toDateTimeString()]);
     }
 
     public function has($key)

@@ -29,9 +29,13 @@
                             </div>
 
                             <!-- submit button -->
-                            <div class="col-sm-offset-3 col-sm-8">
-                                <button class="btn btn-primary">Suchen</button>
+                            <div>
+                                <div class="col-sm-offset-3 col-sm-8">
+                                    <button class="btn btn-primary">Suchen</button>
+                                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
+                                </div>
                             </div>
+
 
                         </form>
                     </div> <!-- /.row -->
@@ -139,6 +143,10 @@
         created() {
             Event.listen('resetSearch', () => {
                 this.reset();
+            });
+
+            Event.listen('backToSearch', () => {
+                this.doSearch = true;
             })
         }
     }

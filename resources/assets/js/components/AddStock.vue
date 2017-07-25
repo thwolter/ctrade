@@ -1,5 +1,12 @@
 <template>
     <form @submit.prevent="onSubmit">
+
+        <!-- Spinner -->
+        <div v-if="showSpinner">
+            <spinner class="spinner-overlay"></spinner>
+        </div>
+
+        <!-- Form -->
         <div class="row">
             <div class="col-md-6">
 
@@ -67,6 +74,7 @@
         <div class="modal-footer">
             <div>
                 <div class="pull-right">
+                    <button class="btn btn-default" type="reset" @click="onCancel">Zurück</button>
                     <button class="btn btn-primary" :disabled="hasError">Hinzufügen</button>
                 </div>
             </div>
@@ -76,6 +84,7 @@
 </template>
 
 <script>
+
     export default {
 
         props: ['pid', 'id', 'store', 'cash'],
@@ -101,6 +110,7 @@
                 total: '',
 
                 hasFormError: false,
+                showSpinner: true,
 
                 cleavePrice: {
                     numeral: true,
@@ -119,11 +129,16 @@
         methods: {
 
             onSubmit() {
+                this.showSpinner = true;
                 this.form.post(this.store)
                     .then(data => {
                         window.location = data.redirect;
                     });
 
+            },
+
+            onCancel() {
+                Event.fire('backToSearch');
             },
 
             fetch() {
@@ -132,7 +147,10 @@
                         id: this.id
                     }
                 })
-                    .then(data => this.add(data.data))
+                    .then(data => {
+                        this.add(data.data);
+                        this.showSpinner = false;
+                    })
             },
 
             add(data) {
@@ -210,3 +228,18 @@
         }
     }
 </script>
+
+<style>
+    .spinner-overlay {
+        text-align: center;
+        align-items: center;
+        position: fixed;
+        background-color: rgba(255, 255, 255, 0.80);
+        z-index: 999;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+    }
+</style>

@@ -8,7 +8,7 @@
         <div class="container">
 
             @if (count(Auth::user()->portfolios) == 0)
-                <div class="row">
+                <div>
                     <div class="alert alert-success">
                         <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
                         <strong>Willkommen!</strong> Du bist dabei, dein erstes Portfolio anzulegen.
