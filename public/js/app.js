@@ -1592,20 +1592,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            iconClass: 'fa icon-stat-visual '
-        };
-    },
-
     props: {
         label: { required: true },
         icon: { default: 'fa-dollar bg-primary' }
     },
+
+    data: function data() {
+        return {
+            iconClass: 'fa icon-stat-visual',
+            showSpinner: true
+        };
+    },
     created: function created() {
         this.iconClass = this.iconClass + this.icon;
+    },
+    updated: function updated() {
+        this.showSpinner = false;
     }
 });
 
@@ -1656,6 +1665,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -1670,7 +1684,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             share: [],
             labels: [],
-            legend: ''
+            legend: '',
+
+            showSpinner: true
         };
     },
 
@@ -1738,6 +1754,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     mounted: function mounted() {
         this.fetch();
+    },
+    updated: function updated() {
+        this.showSpinner = false;
     }
 });
 
@@ -4951,7 +4970,9 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {}, [_c('div', {
+  return _c('div', {}, [(_vm.showSpinner) ? _c('div', [_c('spinner', {
+    staticClass: "spinner-overlay"
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "chart-canvas col-xs-7"
   }, [_c('canvas', {
     ref: "canvas",
@@ -5007,7 +5028,9 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "icon-stat"
-  }, [_c('div', {
+  }, [(_vm.showSpinner) ? _c('div', [_c('spinner', {
+    staticClass: "spinner-overlay"
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-8 text-left"

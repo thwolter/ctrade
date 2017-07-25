@@ -1,6 +1,11 @@
 <template>
-
     <div v-cloak>
+
+        <!-- Spinner -->
+        <div v-if="showSpinner">
+            <spinner class="spinner-overlay"></spinner>
+        </div>
+
         <div class="chart-canvas col-xs-7">
             <canvas width="400" id="positions-chart" ref="canvas"></canvas>
         </div>
@@ -24,6 +29,8 @@
                 share: [],
                 labels: [],
                 legend: '',
+
+                showSpinner: true
             }
         },
 
@@ -92,6 +99,10 @@
         
         mounted() {
             this.fetch()
+        },
+
+        updated() {
+            this.showSpinner = false;
         }
     }
 </script>

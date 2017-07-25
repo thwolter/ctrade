@@ -1,6 +1,11 @@
 <template>
     <div class="icon-stat">
 
+        <!-- Spinner -->
+        <div v-if="showSpinner">
+            <spinner class="spinner-overlay"></spinner>
+        </div>
+
         <div class="row">
             <div class="col-xs-8 text-left">
                 <span class="icon-stat-label">{{ label }}</span> <!-- /.icon-stat-label -->
@@ -24,17 +29,24 @@
 
 <script>
     export default {
-        data() {
-            return {
-                iconClass: 'fa icon-stat-visual '
-            }
-        },
         props: {
             label: { required: true },
             icon: { default: 'fa-dollar bg-primary'}
         },
+
+        data() {
+            return {
+                iconClass: 'fa icon-stat-visual',
+                showSpinner: true
+            }
+        },
+
         created() {
             this.iconClass = this.iconClass + this.icon
+        },
+
+        updated() {
+            this.showSpinner = false;
         }
     }
 </script>
