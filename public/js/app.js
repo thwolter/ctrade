@@ -3593,10 +3593,6 @@ module.exports = Component.exports
 /* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/* styles */
-__webpack_require__(287)
-
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(158),
@@ -16913,39 +16909,6 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-14b85818!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Spinner.vue", function() {
      var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-14b85818!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Spinner.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 286 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(17)();
-exports.push([module.i, "\n.spinner-overlay {\n    text-align: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    position: fixed;\n    background-color: rgba(255, 255, 255, 0.80);\n    z-index: 999;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n", ""]);
-
-/***/ }),
-/* 287 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(286);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(133)("463a0aa0", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-3ae14faa!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddStock.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-3ae14faa!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddStock.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
