@@ -1,0 +1,350 @@
+// ****************** WRAPPER STYLES & WRAPPER MODIFIER ****************** //
+
+$wrapper-bg:		#fff;
+
+
+// Global wrapper settings
+.wrapper {
+  float:left;
+  width:100%;
+  display:block;
+  color:$gray-dark;
+  position:relative;
+}
+
+// All sourrounding wrapper - Just use once to wrapp everything in it
+.wrapper-super {
+  background-color:$wrapper-bg;
+}
+
+// Primary Wrapper styles - the default Wrapper
+.wrapper-primary {
+  background-color:$wrapper-bg;
+}
+
+// Contrast Wrapper styles - Wrapper with primary color as background as contrast to wrapper-primary
+.wrapper-contrast {
+  background-color:$brand-primary;
+  color:$contrast-text-color;
+}
+
+// Secondary Wrapper - Wrapper for "not-so-important" content like footer section
+.wrapper-secondary {
+  background-color: $secondary-bg;
+  color: $secondary-text-color;
+}
+
+// Sub Wrapper styles  - Subsidiary Wrapper for "not-so-important" content like footer section
+.wrapper-dark {
+  background-color:$gray-dark;
+  color:$gray-lighter;
+}
+
+// Hero Wrapper styles - A very important wrapper - stand out of the crowd - for example for the header area
+.wrapper-hero {
+  color: $secondary-text-color;
+  background-color:$gray-lighter;
+}
+
+// Wrapper links
+
+a {font-weight:normal;}
+.wrapper-navbar a {text-decoration:none;font-weight:lighter;}
+
+.wrapper-primary a {color:$brand-primary;}
+.wrapper-primary a:hover {background-color:$brand-primary; color:$gray;text-decoration:none;}
+
+.wrapper-contrast a {color:$contrast-text-color;text-decoration:underline;}
+.wrapper-contrast a:hover {background-color:$gray; color:$brand-primary;text-decoration:none;}
+
+.wrapper-dark a {color:$secondary-text-color;text-decoration:none;}
+.wrapper-dark a:hover {background-color:$brand-primary; color:$gray;text-decoration:none;}
+
+.wrapper-secondary a {color:$secondary-text-color;}
+.wrapper-secondary a:hover {background-color:$brand-primary; color:$gray;text-decoration:none;}
+
+.wrapper-trans a {color:$gray-light;text-decoration:none;}
+.wrapper-trans a:hover {color:$gray-lighter;}
+
+a i:hover {background:none;}
+
+
+// Wrapper Buttons - Modifies the default Bootstrap button style
+
+
+.wrapper {
+  .btn {
+    text-decoration:none;
+    font-size:$font-size-small;
+    font-weight:lighter;
+    background:none;
+  }
+  .btn-lg {
+    font-size:$font-size-large;
+  }
+  .btn-sm {
+    font-size:$font-size-small;
+  }
+
+  .btn-primary {
+    color:$contrast-text-color;
+    border:1px solid $brand-primary;
+    background-color:$brand-primary;
+  }
+
+  .btn-primary:hover {
+    background:none;
+    color:$brand-primary;
+    text-decoration:none;
+    border:1px solid $brand-primary;
+  }
+
+  .wrapper-primary .btn-default,  .wrapper-contrast .btn-default {
+    color:$gray;
+    border:1px solid $gray;
+  }
+
+  .wrapper-primary .btn-default:hover {
+    background-color:$brand-primary;
+    color:$gray;
+    text-decoration:none;
+    border:1px solid $brand-primary;
+  }
+
+  .wrapper-contrast .btn-default:hover {
+    background-color:$gray;
+    color:$brand-primary;
+    text-decoration:none;
+    border:1px solid $gray;
+  }
+
+  .wrapper-dark .btn-default, .secondary-text-color .btn-default{
+    color:$gray-lighter;
+    border:1px solid $gray-lighter;
+  }
+
+  .wrapper-dark .btn-default:hover, .secondary-text-color .btn-default:hover {
+    background-color:$brand-primary;
+    color:$gray;
+    text-decoration:none;
+    border:1px solid $brand-primary;
+  }
+
+  .wrapper-dark .btn-primary {
+    color:$contrast-text-color;
+    border:1px solid $brand-primary;
+    background-color:$brand-primary;
+  }
+
+  .wrapper-dark .btn-primary:hover {
+    background:none;
+    color:$brand-primary;
+    text-decoration:none;
+    border:1px solid $brand-primary;
+  }
+
+  .wrapper-hero .btn-primary {
+    background-color:$brand-primary;
+    color:$contrast-text-color;
+    text-decoration:none;
+    border:1px solid $brand-primary;
+    font-weight:normal;
+  }
+
+  .wrapper-hero .btn-primary:hover {
+    background-color:$gray;
+    color:$brand-primary;
+    text-decoration:none;
+    border:1px solid $gray;
+  }
+
+  .wrapper-secondary .btn-primary {
+    background-color:$brand-primary;
+    color:$contrast-text-color;
+    text-decoration:none;
+    border:1px solid $brand-primary;
+    font-weight:normal;
+  }
+
+  .wrapper-secondary .btn-primary:hover {
+    background-color:$gray;
+    color:$brand-primary;
+    text-decoration:none;
+    border:1px solid $gray;
+  }
+
+  .wrapper-secondary .btn-default {
+    color:$secondary-text-color;
+    text-decoration:none;
+    border:1px solid $secondary-text-color;
+  }
+
+  .wrapper-secondary .btn-default:hover {
+    background-color:$secondary-text-color;
+    color:$secondary-bg;
+    text-decoration:none;
+    border:1px solid $secondary-text-color;
+  }
+}
+
+// Wrapper nav
+.wrapper ul.nav.subnav li a:link {
+  color:$gray;
+  text-decoration:none;
+  padding:5px;
+  font-weight:normal;
+}
+
+.wrapper.wrapper-trans ul.nav.subnav {
+  li a:link {
+    color:$gray-light;
+    padding:0px;
+  }
+  li a:hover {
+    background:none;
+    color:$gray-lighter;
+  }
+}
+
+//*** WRAPPER FORMS ***//
+
+
+//*** WRAPPER MODIFIER ***//
+.wrapper-trans {
+  background:none;
+  color:$gray;
+}
+.wrapper-xl {
+  font-size: $font-size-large;
+}
+
+.wrapper-sm, .wrapper-xs {
+  font-size: $font-size-small;
+}
+
+.wrapper-bck-image-full{
+  background-size:cover;
+  background-position:center center;
+}
+
+.wrapper-navbar-light {background-color:#fff;}
+
+.wrapper-vid-bck {
+  overflow:hidden;
+  height:auto;
+}
+
+.wrapper-bck-image-full::before {
+  content:"";
+  top:0;
+  left:0;
+  position:absolute;
+  width:100%;
+  background-color: $overlay-dark;
+  height:100%;
+}
+
+.wrapper-half-left::before {
+  content:"";
+  top:0;
+  left:0;
+  position:absolute;
+  width:50%;
+  background-color: $gray-lighter;
+  color: $secondary-text-color;
+  height:100%;
+  background-position:center center;
+}
+
+.wrapper-half-right::before {
+  content:"";
+  top:0;
+  right:0;
+  position:absolute;
+  width:50%;
+  background-color: $gray-lighter;
+  color: $secondary-text-color;
+  height:100%;
+  background-position:center center;
+}
+
+.wrapper-contrast.wrapper-half-left::before, .wrapper-contrast.wrapper-half-right::before {
+  background-color: $gray-dark;
+}
+
+.wrapper-primary.wrapper-half-left::before, .wrapper-primary.wrapper-half-right::before {
+  background-color: $gray-lighter;
+}
+
+// ****************** BACKGROUND IMAGES ****************** //
+
+#bck-img1.wrapper-half-left::before {
+  background-image: url(../img/hero4.jpg);
+  background-size:cover;
+}
+
+#bck-img2.wrapper-half-right::before {
+  background-image: url(../img/bck3.jpg);
+  background-size:cover;
+}
+
+#bck-img3.wrapper-half-left::before {
+  background-image: url(../img/hero11.jpg);
+  background-size:cover;
+}
+
+// ****************** CONTAINER STYLES ****************** //
+//Container basics
+.wrapper .container {
+  padding-top:$wrapper-padding;
+  padding-bottom:$wrapper-padding;
+}
+
+
+.wrapper-xs .container, .wrapper-xs .container-fluid {
+  padding-top:($wrapper-padding * 0.5);
+  padding-bottom:($wrapper-padding * 0.5);
+}
+
+.wrapper-sm .container, .wrapper-sm .container-fluid {
+  padding-top:($wrapper-padding * 0.75);
+  padding-bottom:($wrapper-padding * 0.75);
+}
+
+.wrapper-md .container, .wrapper-md .container-fluid {
+  padding-top:($wrapper-padding * 1.25);
+  padding-bottom:($wrapper-padding * 1.25);
+}
+
+.wrapper-lg .container, .wrapper-lg .container-fluid {
+  padding-top:($wrapper-padding * 1.5);
+  padding-bottom:($wrapper-padding * 1.5);
+}
+
+.wrapper-xl .container, .wrapper-xl .container-fluid {
+  padding-top:($wrapper-padding * 2);
+  padding-bottom:($wrapper-padding * 2);
+}
+
+.wrapper-big-top .container{
+  padding-top:($wrapper-padding * 1);
+  padding-bottom:0px;
+}
+
+// Responsive
+@media(max-width:768px) {
+  .wrapper .h1 {
+    font-size: 2em;
+    line-height: 32pt;
+  }
+  .wrapper-half-left::before {
+    width: 0;
+  }
+  .wrapper-half-right::before {
+    width: 0;
+  }
+  p, h4 {
+    text-align: center;
+  }
+
+}

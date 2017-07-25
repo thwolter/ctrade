@@ -13,6 +13,27 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 
+/**
+ * App\Entities\Position
+ *
+ * @property int $id
+ * @property int $portfolio_id
+ * @property int $positionable_id
+ * @property string $positionable_type
+ * @property float $amount
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Entities\Portfolio $portfolio
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $positionable
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Position whereAmount($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Position whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Position whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Position wherePortfolioId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Position wherePositionableId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Position wherePositionableType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entities\Position whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Position extends Model implements PresentableInterface
 {
 
@@ -109,20 +130,20 @@ class Position extends Model implements PresentableInterface
 
     public function toArray() {
 
-        $type = strtoupper($this->positionable_type);
+        $type = $this->positionable_type;
 
         return [
             'name' => $this->name(),
-            'type' => implode(array_slice(explode('\\', $this->type()),-1)),
-            'symbol' => "{$type}.{$this->positionable_id}",
+            'type' => $type,
+            'symbol' => "{$type}_{$this->positionable_id}",
             'currency' => $this->currencyCode(),
-            'amount' => $this->amount
+            'amount' => $this->amount,
         ];
     }
 
-    public function history()
+    public function history($dates)
     {
-        return $this->positionable->history();
+        return $this->positionable->history($dates);
     }
 }
 

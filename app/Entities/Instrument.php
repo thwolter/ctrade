@@ -70,21 +70,20 @@ abstract class Instrument extends Model
     }
 
 
-    public function history($parameter = ['limit' => 250])
+    public function history($dates = null)
     {
-        return $this->financial()->history($parameter);
+        return $this->financial()->history($dates);
     }
 
 
-    public function ValueAtRisk()
+    public function ValueAtRisk($dates = null)
     {
-        return QuantModel::ValueAtRisk($this->history(['limit' => 250]));
+        return QuantModel::ValueAtRisk($this->history($dates));
     }
 
-    public function percentRisk()
+    public function percentRisk($dates = null)
     {
-        return array_first($this->price()) / $this->ValueAtRisk();
+        return array_first($this->price()) / $this->ValueAtRisk($dates);
     }
-   
 
 }

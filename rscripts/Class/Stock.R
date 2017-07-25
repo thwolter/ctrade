@@ -7,17 +7,16 @@ Stock <- R6Class('Stock',
                  
     public = list(
         
-        delta = function(price, fxrate, amount)
+        delta = function(price, fxrate)
         {
-            res <- list(price * amount, fxrate * price * amount)
-            names(res) <- c(self$symbol, paste0('___',self$currency))
+            res <- list(price * self$amount, fxrate * price * self$amount)
+            names(res) <- c(self$symbol, paste('___', self$currency, sep='.'))
             return(res)
         },
         
-        value = function(price, fxrate, amount = NULL)
+        value = function(price, fxrate)
         {
-            if (is.null(amount)) amount <- self$amount
-            return(price * fxrate * amount)
+            return(as.numeric(price) * as.numeric(fxrate) * self$amount)
         }
             
     )

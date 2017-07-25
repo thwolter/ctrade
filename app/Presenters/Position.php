@@ -14,4 +14,9 @@ class Position extends Presenter
             return $this->formatPrice($this->entity->total($currencyCode), $currencyCode);
         }
     }
+
+    public function name()
+    {
+        return $this->entity->name();
+    }
 }

@@ -1,0 +1,40 @@
+/********************************************************
+/* Landing page
+*********************************************************/
+
+.header-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('../img/portfolio.jpg') center;
+  background-size: cover;
+  height: 100vh;
+
+    .title-box {
+      position: absolute;
+      width: 100%;
+      top: 70%;
+      left: 55%;
+      transform: translate(-50%, -50%);
+    }
+
+    h1 {
+      color: #ddd;
+      font-size: 45px;
+      font-weight: 300;
+      line-height: 50pt;
+      /*text-transform: uppercase;*/
+      letter-spacing: 2px;
+      word-spacing: 3px;
+    }
+
+    .button-group {
+      margin: 10px;
+      a {
+        margin: 10px;
+      }
+    }
+
+    .highlight {
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+}

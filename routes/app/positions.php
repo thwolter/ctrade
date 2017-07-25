@@ -1,31 +1,20 @@
 <?php
 
 // Position resources
-Route::resource('/portfolios/{portfolio}/positions', 'PositionsController',
-    ['except' => ['show', 'edit']]);
+Route::resource('/positions', 'PositionsController',
+    ['only' => ['store', 'show', 'destroy']]);
 
-Route::post('/portfolios/{portfolio}/positions/new', [
-    'as' => 'positions.new',
-    'uses' => 'PositionsController@new'
+Route::post('/positions/fetch', [
+    'as' => 'positions.fetch',
+    'uses' => 'PositionsController@fetch'
 ]);
 
-Route::get('positions/buy/{position}', [
-    'as' => 'positions.buy',
-    'uses' => 'PositionsController@buy'
-]);
-
-Route::get('positions/sell/{position}', [
-    'as' => 'positions.sell',
-    'uses' => 'PositionsController@sell'
-]);
-
-/*
-Route::put('positions/update/{position}', [
+Route::match(['put', 'patch'], '/positions/update', [
     'as' => 'positions.update',
     'uses' => 'PositionsController@update'
 ]);
-*/
-Route::get('positions/{position}', [
-    'as' => 'positions.show',
-    'uses' => 'PositionsController@show'
+
+Route::get('/positions/index/{Portfolio}', [
+    'as' => 'positions.index',
+    'uses' => 'PositionsController@index'
 ]);

@@ -2,10 +2,8 @@
 
 namespace App\Repositories\Quandl;
 
-use App\Entities\Database;
-use App\Entities\Dataset;
 use App\Models\Exceptions\QuandlException;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use Carbon\Carbon;
 use App\Models\PriceHistory;
 
@@ -20,7 +18,7 @@ class Quandldata
     protected $history;
     
     protected $relax = true;
-    protected $limit = 250;
+    protected $limit = INF;
 
 
     /**
@@ -29,7 +27,7 @@ class Quandldata
      * @param string $code of a dataset
      * @param array $parameter
      */
-    public function __construct(String $code, $parameter = ['limit' => 250])
+    public function __construct(String $code, $parameter = [])
     {
         if (!array_has($parameter, 'limit')) 
             $parameter['limit'] = $this->limit;
@@ -47,9 +45,9 @@ class Quandldata
     }
 
    
-    public function history($dates = null)
+    public function history($dates)
     {
-        return $this->history->data($dates);
+        return $this->history->history($dates);
     }
 
 
@@ -69,7 +67,7 @@ class Quandldata
     
     private function fetchCachedHistory($parameter)
     {
-        $key = "Quandl/{$this->quandlCode()}";
+        $key = sprintf('%s/%s/%s', 'Quandl', $this->quandlCode(), array_get($parameter, 'limit'));
         
         if (\Cache::store('database')->has($key) and $this->relax) {
             

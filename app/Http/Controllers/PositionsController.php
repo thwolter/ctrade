@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Transaction;
+use App\Http\Requests\PositionStore;
+use App\Http\Requests\PositionUpdate;
 use App\Repositories\FinancialMapping;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\Position;
@@ -32,36 +35,25 @@ class PositionsController extends Controller
         return view('positions.index', compact('portfolio'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function create($id)
-    {
-        return app(SearchController::class)->index(new Request(), $id);
-    }
-
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int $id the portfolio id
-     * @return \Illuminate\Http\Response
+     * @param PositionStore|Request $request
+     * @return array
      */
-    public function store(Request $request, $id)
+    public function store(PositionStore $request)
     {
         $amount = $request->amount;
-        $instrument = resolve($request->itemType)->find($request->itemId);
+        $instrument = resolve($request->type)->find($request->id);
 
-        $position = Portfolio::find($id)->makePosition($instrument);
-        $portfolio = Portfolio::buy($position->id, $amount);
+        $portfolio = Portfolio::find($request->pid);
+        $position = $portfolio->makePosition($instrument);
+        $portfolio->buy($position->id, $amount);
 
-        Transaction::buy($portfolio, new \DateTime(), $position, $amount);
+        Transaction::buy($portfolio, Carbon::now(), $position, $amount);
 
-        return redirect(route('positions.index', $id));
+        return ['redirect' => route('positions.index', $request->pid)];
 
     }
 
@@ -72,7 +64,7 @@ class PositionsController extends Controller
      * @return \Illuminate\Http\Response
      *
      */
-    public function show($id)
+    public function show($pid, $id)
     {
         $position = Position::find($id);
         $portfolio = $position->portfolio;
@@ -84,28 +76,29 @@ class PositionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int $id the position id
-     * @return \Illuminate\Http\Response
+     * @param PositionUpdate $request
+     * @return array
      */
-    public function update(Request $request, $id)
+    public function update(PositionUpdate $request)
     {
         $amount = $request->amount;
+        $id = $request->id;
+
         $position = Position::find($id);
+        $portfolio = $position->portfolio;
 
-        if ($request->get('direction') == 'buy') {
-
-            $portfolio = Portfolio::buy($id, $amount);
-            Transaction::buy($portfolio, new \DateTime(), $position, $amount);
+        switch ($request->transaction) {
+            case 'buy':
+                $portfolio->buy($id, $amount);
+                Transaction::buy($portfolio, Carbon::now(), $position, $amount);
+                break;
+            case 'sell':
+                $portfolio->sell($id, $amount);
+                Transaction::sell($portfolio, Carbon::now(), $position, $amount);
+                break;
         }
-        else {
 
-            $portfolio = Portfolio::sell($id, $amount);
-            Transaction::sell($portfolio, new \DateTime(), $position, $amount);
-
-        }
-
-        return redirect(route('positions.index', $portfolio->id));
+        return ['redirect' => route('positions.index', $portfolio->id)];
     }
 
     /**
@@ -121,40 +114,20 @@ class PositionsController extends Controller
         return redirect(route('positions.index', $position->portfolio->id));
     }
 
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function new(Request $request, $id)
+    public function fetch(Request $request)
     {
-        $item = resolve($request->itemType)::find($request->itemId);
-        $portfolio = Portfolio::find($id);
+        $this->validate($request, [
+            'id' => 'required'
+        ]);
 
-        $position = $portfolio->positions()
-            ->where('positionable_id', $request->itemId)
-            ->where('positionable_type', $request->itemType)
-            ->get();
+        $position = Position::find($request->id);
 
-        return count($position)
-            ? redirect(route('positions.buy', $position->id))
-            : view('positions.new', compact('portfolio', 'item', 'position'));
+        $item = $position->positionable->toReadableArray();
+        $price = $position->price();
+        $amount = $position->amount;
+        $cash = $position->portfolio->cash();
+
+        return compact('item', 'price', 'amount', 'cash');
+
     }
-
-    public function buy($id)
-    {
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
-
-        return view('positions.buy', compact('position', 'portfolio'));
-    }
-
-    public function sell($id)
-    {
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
-
-        return view('positions.sell', compact('position', 'portfolio'));
-    }
-
 }

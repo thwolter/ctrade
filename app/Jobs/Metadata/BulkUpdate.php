@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Events\MetadataUpdateHasStarted;
 use App\Events\MetadataUpdateHasFinished;
 use Carbon\Carbon;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use Illuminate\Support\Facades\Log;
 
 
@@ -77,8 +77,11 @@ class BulkUpdate implements ShouldQueue
             $i++;
         }
 
-        $this->invalidated += Datasource::where('updated_at','<', $this->started_at)
-                                ->whereValid(true)->update(['valid' => false]);
+        $this->invalidated += Datasource::whereProviderAndDatabase(
+            $this->repository->provider, $this->repository->database)
+            ->where('updated_at','<', $this->started_at)
+            ->whereValid(true)
+            ->update(['valid' => false]);
 
         event(new MetadataUpdateHasFinished($this->repository->provider, $this->repository->database, $this->countersToArray()));
     }

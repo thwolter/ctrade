@@ -6,7 +6,7 @@ namespace App\Repositories\Metadata;
 
 use App\Entities\CcyPair;
 use App\Entities\Currency;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use App\Repositories\Exceptions\MetadataException;
 
 

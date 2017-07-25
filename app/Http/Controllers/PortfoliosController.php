@@ -12,11 +12,16 @@ namespace App\Http\Controllers;
 
 use App\Entities\Currency;
 use App\Entities\PortfolioImage;
+use App\Entities\Transaction;
 use App\Http\Requests\CreatePortfolio;
+use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
+use App\Settings\InitialSettings;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 class PortfoliosController extends Controller
@@ -56,20 +61,27 @@ class PortfoliosController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  CreatePortfolio  $request
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function store(CreatePortfolio $request)
     {
         $portfolio = new Portfolio([
             'name' => $request->get('name'),
-            'cash' => $request->get('cash')
+            'cash' => $request->get('amount')
         ]);
         $portfolio->currency()
-            ->associate(Currency::find($request->get('currency')));
+            ->associate(Currency::whereCode($request->get('currency'))->first());
 
         auth()->user()->obtain($portfolio);
 
-        return redirect(route('portfolios.show', $portfolio->id));
+        Transaction::deposit($portfolio, Carbon::now(), $request->get('amount'));
+
+        return [
+            'redirect' => route('portfolios.show', $portfolio->id),
+            'cash' => $portfolio->cash,
+            'currency' => $portfolio->currencyCode(),
+            'id' => $portfolio->id
+        ];
     }
 
     /**
@@ -93,7 +105,7 @@ class PortfoliosController extends Controller
     public function edit($id)
     {
         $portfolio = Portfolio::findOrFail($id);
-        return view('portfolios.edit', compact('portfolio'));
+        return view('portfolios.edit', compact('portfolio', 'url'));
     }
 
     /**
@@ -108,9 +120,11 @@ class PortfoliosController extends Controller
         if ( $request->delete == 'yes')
             return view('portfolios.delete', compact('id'));
 
-        Portfolio::whereId($id)->first()->settings()->merge($request->all());
+        $portfolio = Portfolio::whereId($id)->first();
+        $portfolio->settings()->merge($request->all());
+        $portfolio->update(['name' => $request->name]);
 
-        return redirect(route('portfolios.show', $id));
+        return redirect()->back();
     }
 
     /**
@@ -147,5 +161,26 @@ class PortfoliosController extends Controller
 
     }
 
+    public function pay(PayRequest $request)
+    {
+        $portfolio = Portfolio::whereId($request->id)->first();
+        
+        switch($request->transaction) {
+            
+            case 'deposit':
+                $portfolio->deposit($request->amount);
+                Transaction::deposit($portfolio, Carbon::now(), $request->amount);
+
+                break;
+            case 'withdraw':
+                $portfolio->withdraw($request->amount);
+                Transaction::withdraw($portfolio, Carbon::now(), $request->amount);
+                break;
+        }
+        
+        return ['redirect' => route('positions.index', $portfolio->id)];
+    }
+
+   
 }
 

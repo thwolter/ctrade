@@ -3,11 +3,8 @@
 namespace App\Repositories\Metadata;
 
 
-use App\Entities\Datasource;
-use App\Entities\Provider;
-use App\Repositories\Quandl\Quandldata;
+use App\Facades\Datasource;
 use App\Repositories\Exceptions\MetadataException;
-use Illuminate\Console\OutputStyle;
 use Illuminate\Support\Facades\Log;
 
 abstract class QuandlMetadata

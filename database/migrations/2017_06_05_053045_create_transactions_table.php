@@ -15,14 +15,16 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
             $table->integer('type_id');
             $table->integer('instrumentable_id')->nullable();
             $table->string('instrumentable_type')->nullable();
-            $table->float('amount');
+            $table->integer('position_id')->nullable();
+            $table->float('amount')->nullable();
             $table->float('price')->nullable();
+            $table->float('cash')->nullable();
+            $table->dateTime('executed_at');
             $table->timestamps();
         });
     }

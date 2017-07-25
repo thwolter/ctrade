@@ -8,7 +8,7 @@ use App\Entities\Stock;
 use App\Entities\Portfolio;
 use App\Entities\Currency;
 use App\Models\QuantModel;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use App\Repositories\Metadata\QuandlECB;
 use App\Repositories\Quandl\Quandldata;
 use App\Repositories\Yahoo\CurrencyFinancial;

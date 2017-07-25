@@ -8,6 +8,9 @@ class PortfolioSettings extends Settings
 {
     protected $settings = [
         'levelConfidence' => 2,
-        'horizon' => 20
+        'horizon' => '2',
+        'email_frequency' => 'daily',
+        'threshold' => 0,
+        'historyLength' => 250
     ];
 }

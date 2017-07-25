@@ -1,0 +1,160 @@
+//@import "font-awesome/scss/font-awesome";
+
+// Bootstrap Variables & Mixins ************************* /
+
+//@import "node_modules/bootstrap/scss/variables";
+//@import "node_modules/bootstrap/scss/mixins";
+
+// Custom Variables & Mixins **************************** /
+
+//@import "variables";
+//@import "mixins";
+
+// Color Variables Override ***************************** /
+
+//@import "skins/slate";
+
+// Defaults ********************************************* /
+//@import "templates/defaults";
+
+// Bootstrap Overrides ********************************** /
+
+//@import "bootstrap";
+
+// mvp theme
+//@import "components/layout";
+//@import "components/mega-menu";
+//@import "components/portlet";
+//@import "components/icons-list";
+//@import "components/validation";
+//@import "components/backtotop";
+//@import "components/notifications-list";
+//@import "components/pricing-plans";
+//@import "components/pricing-table";
+//@import "components/share-widget";
+//@import "components/social-feed";
+//@import "components/stats";
+//@import "components/headings";
+//@import "components/blank-slate";
+//@import "components/sitemap";
+//@import "components/account";
+//@import "components/error";
+//@import "components/maintenance";
+//@import "components/social-icon";
+//@import "components/utilities";
+
+//@import "components/blog";
+//@import "components/clients";
+//@import "components/comment-list";
+//@import "components/features";
+//@import "components/team-member";
+//@import "components/testimonials";
+
+// Plugins ********************************************** /
+
+//@import "plugins/datatables";
+//@import "plugins/flot";
+//@import "plugins/select2";
+//@import "plugins/icheck";
+//@import "plugins/steps";
+//@import "plugins/simplecolorpicker";
+//@import "plugins/jquery-ui/slider";
+//@import "plugins/summernote";
+//@import "plugins/datatable-helper";
+
+// Template Specific ************************************ /
+
+//@import "templates/admin/navbar";
+//@import "templates/admin/navbar-notifications";
+//@import "templates/admin/mainnav";
+//@import "templates/admin/content";
+//@import "templates/admin/footer";
+//@import "templates/admin/sticky-footer";
+//@import "templates/landing/navbar";
+
+// Demo Styles ****************************************** /
+
+//@import "components/demo";
+
+// Custom *********************************************** /
+//@import "hero";
+//@import "wrapper";
+
+.separator {
+	border-bottom: 1px solid #ddd;
+}
+
+[v-cloak] {
+	display: none;
+}
+
+.error {
+	background-color: rgba(215, 75, 75, 0.18);
+	border-color: #d74b4b;
+}
+
+.error-text {
+	color: #d74b4b;
+	padding-top: 10px;
+}
+
+.transaction-dialog {
+	.title {
+		padding: 15px 0;
+		border-bottom: 1px solid #ddd;
+		margin-bottom: 30px;
+	}
+}
+
+.buy-sell-icons {
+	font-size: 20px;
+	line-height: 0px;
+	word-spacing: 5px;
+
+	.buy-icon {
+		color: #5f9c5f;
+	}
+	.sell-icon {
+		color: #e06464;
+	}
+}
+
+.bounce-enter-active {
+	animation: bounce-in .5s;
+}
+
+.bounce-leave-active {
+	animation: bounce-in .5s reverse;
+}
+
+@keyframes bounce-in {
+	0% {
+		transform: scale(0);
+	}
+	50% {
+		transform: scale(1.5);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@media (min-width: 768px) {
+	.pull-right-lg {
+		float: right !important;
+	}
+}
+
+.spinner-overlay {
+	text-align: center;
+	align-items: center;
+	position: absolute;
+	background-color: rgba(255, 255, 255, 0.80);
+	z-index: 999;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+}
+

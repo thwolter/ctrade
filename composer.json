@@ -11,6 +11,7 @@
         "barryvdh/laravel-ide-helper": "^2.3",
         "dannyben/php-quandl": "^0.5.2",
         "dirkolbrich/yahoo-finance-query": "dev-master",
+        "doctrine/dbal": "^2.5",
         "hieu-le/active": "^3.4",
         "itsgoingd/clockwork": "~1.13",
         "khill/lavacharts": "^3.1",
@@ -63,6 +64,8 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:meta",
             "php artisan optimize"
         ]
     },

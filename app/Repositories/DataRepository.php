@@ -13,8 +13,8 @@ class DataRepository
 
     protected $provider;
     
-    protected $paramter = [
-        'limit' => 250
+    protected $parameter = [
+        'limit' => 500
     ];
     
 
@@ -43,7 +43,7 @@ class DataRepository
 
         switch ($code) {
             case 'Quandl':
-                return new Quandldata($source->dataset->code, $this->paramter);
+                return new Quandldata($source->dataset->code, $this->parameter);
                 break;
             case 'others':
                 // define other data providers

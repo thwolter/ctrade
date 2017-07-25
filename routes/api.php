@@ -16,3 +16,21 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/*
+ * Search requests
+ */
+Route::get('/search', 'ApiController@search');
+Route::get('/lookup', 'ApiController@lookup');
+
+Route::get('/positions', 'ApiController@positions');
+
+Route::get('/summary', 'ApiController@summary');
+Route::get('/histories', 'ApiController@histories');
+Route::get('/portfolio', 'ApiController@portfolio');
+
+Route::get('/portfolio/risk', 'ApiController@portfolioRisk');
+
+Route::get('/test', function() {
+    Artisan::call('calculate:risk');
+});

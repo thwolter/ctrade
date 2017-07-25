@@ -7,7 +7,7 @@ use App\Entities\User;
 use App\Entities\Currency;
 use App\Entities\PortfolioImage;
 use App\Entities\Stock;
-use App\Entities\Datasource;
+use App\Facades\Datasource;
 use Illuminate\Support\Facades\Log;
 
 class PortfolioSeeder extends Seeder

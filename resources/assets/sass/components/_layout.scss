@@ -1,0 +1,13 @@
+//* !Layout */
+//* ----------------------------------------------- */
+
+.container {
+  position: relative;
+}
+
+.content {
+  position: relative;
+  margin-bottom: 2em;
+}
+
+@include make-layout ($layout-top-margin);

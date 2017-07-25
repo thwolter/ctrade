@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CacheQuandlSSE;
+use App\Console\Commands\CalculateRisk;
 use App\Console\Commands\UpdateMetadata;
 use App\Console\Commands\UpdateQuandlSSE;
 use Illuminate\Console\Scheduling\Schedule;
@@ -16,24 +17,24 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-       Commands\DeleteTemp::class,
-       Commands\CacheQuandlSSE::class,
-       Commands\UpdateMetadata::class,
-       Commands\TestMail::class
+        Commands\DeleteTemp::class,
+        Commands\CacheQuandlSSE::class,
+        Commands\UpdateMetadata::class,
+        Commands\TestMail::class,
+        Commands\CalculateRisk::class
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(UpdateMetadata::class)->hourly();
         //$schedule->command(CacheQuandlSSE::class)->dailyAt('00:00');
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command(CalculateRisk::class)->dailyAt('02:00');
     }
 
     /**

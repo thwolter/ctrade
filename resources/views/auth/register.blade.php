@@ -2,70 +2,72 @@
 
 @section('content')
 
-    <section id="content-region-3" class="padding-40 page-tree-bg">
-        <div class="container">
-            <h3 class="page-tree-text">
-                Account erstellen
-            </h3>
-        </div>
-    </section><!--page-tree end here-->
-    <div class="space-70"></div>
-    
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-                <div class="panel panel-default">
-                    <div class="my-login-form">
-                        
-                        <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
-                            {{ csrf_field() }}
-                            
-                            <h4 class="text-uppercase">Registrieren</h4><hr>
-    
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <input id="name" type="text" class="form-control" name="name" placeholder="Name.." value="{{ old('name') }}" required autofocus>
-    
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-    
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <input id="email" type="email" class="form-control" name="email" placeholder="Email.." value="{{ old('email') }}" required>
-    
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-    
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <input id="password" type="password" class="form-control" name="password" placeholder="Passwort.." required>
-    
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-    
-                            <div class="form-group">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Passwort bestätigen.." required>
-                            </div>
-    
-                            <div class="text-right">
-                                <button type="submit" class="btn theme-btn-color">
-                                    Registrieren
-                                </button>
-                            </div>
-                            
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+   @include('auth.partials.header')
+
+    <div class="account-wrapper">
+        <div class="account-body">
+            
+            <h3>Kostenlosen Account erstellen.</h3>
+           
+            <form class="form account-form" role="form" method="POST" action="{{ route('register') }}">
+
+                {{ csrf_field() }}
+                
+                @include('partials.errors')
+
+                <!-- name input-->
+                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                    <label for="name" class="placeholder-hidden">Name</label>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Name"
+                           tabindex="1" value="{{ old('name') }}" required autofocus>
+                </div> <!-- /name input-->
+
+                <!-- email input -->
+                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                    <label for="email" class="placeholder-hidden">Email</label>
+                    <input type="text" name="email" class="form-control" id="email" placeholder="Email"
+                           tabindex="2" value="{{ old('email') }}" required>
+                </div> <!-- /email input -->
+
+                <!-- password input -->
+                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                    <label for="password" class="placeholder-hidden">Passwort</label>
+                    <input type="password" name="password" class="form-control" id="password"
+                           placeholder="Passwort" tabindex="3" required>
+                </div> <!-- /password input -->
+
+                <!-- password confirmation -->
+                <div class="form-group">
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
+                           placeholder="Passwort bestätigen" tabindex="4" required>
+                </div> <!--/password confirmation -->
+
+                <!-- checkbox -->
+                <div class="form-group">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="agree" name="checkbox" class="" tabindex="5"
+                               value="true" {{ old('checkbox') ? 'checked' : '' }}>
+                        Ich akzeptiere <a href="javascript:;" target="_blank">Terms of Service</a> &amp; <a href="javascript:;" target="_blank">Privacy Policy</a>
+                    </label>
+                </div> <!-- /checkbox -->
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-secondary btn-block btn-lg" tabindex="6">
+                        Account erstellen &nbsp; <i class="fa fa-play-circle"></i>
+                    </button>
+                </div> <!-- /.form-group -->
+
+            </form>
+
+        </div> <!-- /.account-body -->
+
+        <div class="account-footer">
+            <p>
+                Du hast schon einen Account? &nbsp;
+                <a href="{{ route('login') }}" class="">Hier Einloggen!</a>
+            </p>
+        </div> <!-- /.account-footer -->
+        
+    </div> <!-- /.account-wrapper -->
 @endsection
+

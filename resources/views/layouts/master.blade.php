@@ -1,60 +1,79 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 <head>
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400,300,700">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/fontawesome/css/font-awesome.min.css') }}">
 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
 
-    <!-- facicon -->
-    <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
-
-    <!--plugins-->
-    <link href="{{ asset('css/plugins/plugins.css') }}" rel="stylesheet">
-
-    <!--Custom css-->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/mystyles.css') }}" rel="stylesheet">
-
-    @yield('css.header')
-
-    <!-- Scripts -->
-    <script> window.Laravel = {!! json_encode(['csrfToken' => csrf_token(), ]) !!} </script>
+    <!-- App CSS -->
+    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/admin-1/css/mvpready-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
 
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
-<body>
-    <div id="preloader">
-        <div id="preloader-inner"></div>
-    </div><!--/preloader-->
+<body class="layout-fixed">
 
-    <div id="app">
-        @include('partials.appbar')
+<div id="wrapper">
 
-        @yield('content')
+   @if (Auth::check())
 
-        @include('partials.footer')
+        @include('layouts.partials.appbar')
+        @include('layouts.partials.mainnav')
 
-        <!--back to top-->
-        <a href="#" class="scrollToTop"><i class="ion-android-arrow-dropup-circle"></i></a>
-        <!--back to top end-->
-    </div>
+    @endif
 
-    <!-- jQuery plugins. -->
-    <script src="{{ asset('js/plugins/plugins.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
-    
-    <!-- enable Vue -->
-    <script src="https://unpkg.com/vue"></script>
+    @yield('content')
 
-    @yield('scripts.footer')
-    
+</div> <!-- /#wrapper -->
+@include('layouts.partials.footer')
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Core JS -->
+<script src="{{ asset('vendor/mvp-theme/bower_components/jquery/dist/jquery.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/bower_components/slimscroll/jquery.slimscroll.js') }}"></script>
+
+
+<!-- App JS -->
+<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/templates/admin-1/js/mvpready-admin.js') }}"></script>
+
+<script src="{{ asset('js/manifest.js') }}"></script>
+<script src="{{ asset('js/vendor.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+
+@yield('scripts.footer')
+
 </body>
 </html>
-

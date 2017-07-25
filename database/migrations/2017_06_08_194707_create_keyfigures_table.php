@@ -17,9 +17,10 @@ class CreateKeyfiguresTable extends Migration
             $table->increments('id');
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
-            $table->integer('key_id');
-            $table->integer('date_id');
-            $table->float('value');
+            $table->integer('type_id');
+            $table->unique(array('portfolio_id', 'type_id'));
+            $table->json('values')->nullable();
+            $table->dateTime('expires_at')->nullable();
             $table->timestamps();
         });
     }
