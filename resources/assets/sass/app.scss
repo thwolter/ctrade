@@ -158,3 +158,10 @@
 	display: flex;
 }
 
+.portfolio-dropdown {
+	min-width: 200px;
+	.portfolio-dropdown-toggle {
+		text-align: right;
+	}
+}
+

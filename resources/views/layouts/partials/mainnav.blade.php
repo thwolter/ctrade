@@ -42,8 +42,8 @@
                     </li>
                 @endif
 
-                <li class="dropdown pull-right-lg {{ active_class(if_route_pattern(['portfolios.index'])) }}">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                <li class="dropdown portfolio-dropdown pull-right-lg {{ active_class(if_route_pattern(['portfolios.index'])) }}">
+                        <a href="javascript:;" class="dropdown-toggle portfolio-dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                             @if (if_route(['portfolios.index']))
                                 Meine Portfolios
                             @elseif (isset($focus))
