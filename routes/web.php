@@ -20,3 +20,4 @@ Route::get('/rollback/{id}/{date}', function($id, $date) {
 Route::get('/index', function() {
     return view('layouts.master');
 });
+

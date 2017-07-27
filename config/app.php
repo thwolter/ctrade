@@ -193,6 +193,7 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         anlutro\LaravelSettings\ServiceProvider::class,
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
         * Custom Service Providers...
@@ -262,6 +263,7 @@ return [
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Setting' => anlutro\LaravelSettings\Facade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
         /*
          * Custom Classes

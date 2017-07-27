@@ -11,17 +11,12 @@
         <h5>Bitte melde dich an.</h5>
         <br>
         <div class="row">
-            <div class="col-sm-6">
-                <a href="javascript:;" class="btn btn-twitter btn-block">
-                    <i class="fa fa-twitter"></i>
-                    &nbsp;&nbsp;Login with Twitter
-                </a>
-            </div> <!-- /.col -->
 
-            <div class="col-sm-6">
-                <a href="javascript:;" class="btn btn-facebook btn-block">
+            <!-- Facebook login -->
+            <div class="col-sm-8 col-sm-offset-2">
+                <a href="{{ route('social.login', ['facebook']) }}" class="btn btn-facebook btn-block">
                     <i class="fa fa-facebook"></i>
-                    &nbsp;&nbsp;Login with Facebook
+                    &nbsp;&nbsp;Mit Facebook anmelden
                 </a>
             </div> <!-- /.col -->
 
@@ -58,7 +53,7 @@
             </div> <!-- /.form-group -->
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="4">Einloggen &nbsp; <i class="fa fa-play-circle"></i></button>
+                <button type="submit" class="btn btn-primary btn-block" tabindex="4">Einloggen &nbsp; <i class="fa fa-play-circle"></i></button>
             </div> <!-- /.form-group -->
 
         </form>
@@ -73,5 +68,9 @@
     </div> <!-- /.account-footer -->
 
 </div> <!-- /.account-wrapper -->
+
+@endsection
+
+@section('scripts.footer')
 
 @endsection

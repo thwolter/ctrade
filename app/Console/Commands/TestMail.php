@@ -45,6 +45,7 @@ class TestMail extends Command
                 'created' => 100,
                 'updated' => 0,
                 'invalidated' => 2,
+                'validated' => 0,
                 'total' => 100,
                 'valid' => 100
             ]

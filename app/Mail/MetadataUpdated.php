@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MetadataUpdated extends Mailable
 {
-    use Queueable, SerializesModels;
+    //use Queueable, SerializesModels;
 
 
     public $results;
