@@ -2,10 +2,10 @@
 
 /**
  * @purpose
- * 
- * Provides CRUD for 
+ *
+ * Provides CRUD for
  * portfolio with name and currency
- *  
+ *
  */
 
 namespace App\Http\Controllers;
@@ -39,7 +39,14 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        $examples = User::whereName('examples')->first()->portfolios;
+        $examplesUser = User::whereName('examples')->first();
+
+        if ($examplesUser) {
+            $examples = $examplesUser->portfolios;
+        } else {
+            $examples = null;
+        }
+
         $portfolios = User::findOrFail(auth()->id())->portfolios;
 
         return view('portfolios.index', compact('portfolios', 'examples'));
@@ -60,7 +67,7 @@ class PortfoliosController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreatePortfolio  $request
+     * @param  CreatePortfolio $request
      * @return array
      */
     public function store(CreatePortfolio $request)
@@ -87,7 +94,7 @@ class PortfoliosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -111,13 +118,13 @@ class PortfoliosController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        if ( $request->delete == 'yes')
+        if ($request->delete == 'yes')
             return view('portfolios.delete', compact('id'));
 
         $portfolio = Portfolio::whereId($id)->first();
@@ -130,7 +137,7 @@ class PortfoliosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -164,9 +171,9 @@ class PortfoliosController extends Controller
     public function pay(PayRequest $request)
     {
         $portfolio = Portfolio::whereId($request->id)->first();
-        
-        switch($request->transaction) {
-            
+
+        switch ($request->transaction) {
+
             case 'deposit':
                 $portfolio->deposit($request->amount);
                 Transaction::deposit($portfolio, Carbon::now(), $request->amount);
@@ -177,10 +184,10 @@ class PortfoliosController extends Controller
                 Transaction::withdraw($portfolio, Carbon::now(), $request->amount);
                 break;
         }
-        
+
         return ['redirect' => route('positions.index', $portfolio->id)];
     }
 
-   
+
 }
 

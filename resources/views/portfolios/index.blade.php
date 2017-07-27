@@ -11,14 +11,15 @@
             
                 <portlet title="Portfolio anlegen">    
                     @include('portfolios.partials.welcome')
-                    @php ($portfolios = $examples)
                 </portlet>
-                
-                <portlet id="examples" title="Beispiele">
-                     @foreach($examples as $portfolio)
-                        @include('portfolios.partials.item')
-                    @endforeach
-                </portlet>
+
+                @if ($examples)
+                    <portlet id="examples" title="Beispiele">
+                         @foreach($examples as $portfolio)
+                            @include('portfolios.partials.item')
+                        @endforeach
+                    </portlet>
+                @endif
             
             @else
                 
