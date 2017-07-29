@@ -135,11 +135,7 @@ class ApiController extends Controller
 
     public function portfolioValue(Request $request)
     {
-        $values = [
-            '2017-06-30' => 100,
-            '2017-07-01' => 105,
-            '2017-07-02' => 97
-        ];
+        $values = Portfolio::find($request->id)->keyFigure('value')->values;
         return collect(['values' => $values]);
     }
 

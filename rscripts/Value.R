@@ -57,7 +57,7 @@ pf <- Portfolio$new(pfdata, histories)
 
 
 result <- list(
-    value = as.list(pf$value()),
+    value = pf$value(),
     date = toString(index(tail(histories[[1]],1)))
 )
 
