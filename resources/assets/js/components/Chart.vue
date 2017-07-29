@@ -6,10 +6,10 @@
             <spinner class="spinner-overlay"></spinner>
         </div>
 
-        <div class="chart-container">
-            <canvas id="chart" ref="canvas"></canvas>
+        <div :class="clsContainer">
+            <canvas ref="canvas"></canvas>
         </div>
-        <div v-html="legend" class="chart-legend"></div>
+        <div v-html="legend" :class="clsLegend"></div>
     </div>
 </template>
 
@@ -31,6 +31,9 @@
                 options: null,
 
                 backgroundColor: Colors.standard(),
+
+                clsContainer: null,
+                clsLegend: 'display-hidden'
             }
         },
 
@@ -45,9 +48,9 @@
             },
 
             render() {
-                var ctx = document.getElementById("chart");
+                let ctx = this.$refs.canvas.getContext('2d');
 
-                var chart = new Chart(ctx, {
+                let chart = new Chart(ctx, {
                     type: this.type,
                     data: this.data,
                     options: this.options,
@@ -68,7 +71,8 @@
 </script>
 
 <style>
-    .chart-container {
-        padding: 0 20px;
+    .display-hidden {
+        display: none;
     }
 </style>
+

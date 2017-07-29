@@ -18,7 +18,6 @@ import Colors from './core/Colors';
 import popover from 'vue-strap';
 
 window.Vue = Vue;
-/*window.axios = axios;*/
 window.Form = Form;
 window.Event = new Event;
 window.Colors = new Colors;

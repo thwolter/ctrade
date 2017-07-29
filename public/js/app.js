@@ -581,7 +581,6 @@ __webpack_require__(292);
 
 
 window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
-/*window.axios = axios;*/
 window.Form = __WEBPACK_IMPORTED_MODULE_4__core_Form__["a" /* default */];
 window.Event = new __WEBPACK_IMPORTED_MODULE_5__core_Event__["a" /* default */]();
 window.Colors = new __WEBPACK_IMPORTED_MODULE_6__core_Colors__["a" /* default */]();
@@ -1340,7 +1339,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             data: null,
             options: null,
 
-            backgroundColor: Colors.standard()
+            backgroundColor: Colors.standard(),
+
+            clsContainer: null,
+            clsLegend: 'display-hidden'
         };
     },
 
@@ -1357,7 +1359,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         render: function render() {
-            var ctx = document.getElementById("chart");
+            var ctx = this.$refs.canvas.getContext('2d');
 
             var chart = new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(ctx, {
                 type: this.type,
@@ -1727,58 +1729,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_chart_js__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue__ = __webpack_require__(232);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Chart_vue__);
 //
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
+    extends: __WEBPACK_IMPORTED_MODULE_0__Chart_vue___default.a,
+
     props: ['pid'],
 
     data: function data() {
         return {
             route: '/api/positions',
+
+            type: 'doughnut',
             segments: 5,
 
-            share: [],
-            labels: [],
-            legend: '',
-
-            showSpinner: true
+            clsContainer: 'chart-container col-xs-7',
+            clsLegend: 'chart-legend col-xs-5'
         };
     },
 
 
     methods: {
-        fetch: function fetch() {
-            var _this = this;
-
-            axios.get(this.route, { params: { id: this.pid } }).then(function (response) {
-                _this.assign(response.data);
-                _this.render();
-            }).catch(function (error) {
-                return alert(error);
-            });
-        },
         assign: function assign(data) {
 
             var items = data.positions;
+            var share = [];
+            var labels = [];
 
             var i = 0;
             var sum = 0;
@@ -1788,49 +1769,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             while (i < Math.min(n, this.segments)) {
                 var item = items[i];
 
-                this.share[i] = (100 * item.share).toFixed(0);
-                this.labels[i] = item.name;
+                share[i] = (100 * item.share).toFixed(0);
+                labels[i] = item.name;
 
                 sum = +item.share;
                 i++;
             }
 
             if (n > this.segements) {
-                this.share[i] = data.total - sum;
-                this.labels[i] = 'Andere' + this.share[i];
+                share[i] = data.total - sum;
+                labels[i] = 'Andere' + share[i];
             }
-        },
-        render: function render() {
 
-            var ctx = document.getElementById("positions-chart");
+            this.data = {
+                datasets: [{
+                    data: share,
+                    backgroundColor: this.backgroundColor
+                }],
 
-            var chart = new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(ctx, {
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: this.share,
+                labels: labels
+            };
 
-                        backgroundColor: Colors.standard()
-                    }],
-
-                    labels: this.labels
-                },
-                options: {
-                    legend: {
-                        display: false
-                    }
+            this.options = {
+                legend: {
+                    display: false
                 }
-            });
-
-            this.legend = chart.generateLegend();
+            };
         }
-    },
-
-    mounted: function mounted() {
-        this.fetch();
-    },
-    updated: function updated() {
-        this.showSpinner = false;
     }
 });
 
@@ -2785,7 +2750,7 @@ exports.push([module.i, "\n.form-title[data-v-2e004f07] {\n    margin-bottom: 30
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(7)();
-exports.push([module.i, "\n.chart-legend span {\n    width: 10px;\n    height: 10px;\n    display: inline-block;\n    margin-right: 10px;\n}\n.chart-legend li {\n    list-style-type: none;\n    text-indent: -20px;\n}\n.chart-canvas {\n    float: left;\n}\n", ""]);
+exports.push([module.i, "\n.chart-container {\n    padding: 0 20px;\n}\n.chart-legend span {\n    width: 10px;\n    height: 10px;\n    display: inline-block;\n    margin-right: 10px;\n}\n.chart-legend li {\n    list-style-type: none;\n    text-indent: -20px;\n}\n", ""]);
 
 /***/ }),
 /* 225 */,
@@ -4195,7 +4160,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(168),
   /* template */
-  __webpack_require__(254),
+  null,
   /* scopeId */
   null,
   /* cssModules */
@@ -4203,7 +4168,6 @@ var Component = __webpack_require__(1)(
 )
 Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/PositionsChart.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] PositionsChart.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -5186,14 +5150,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {}, [(_vm.showSpinner) ? _c('div', [_c('spinner', {
     staticClass: "spinner-overlay"
   })], 1) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "chart-container"
+    class: _vm.clsContainer
   }, [_c('canvas', {
-    ref: "canvas",
-    attrs: {
-      "id": "chart"
-    }
+    ref: "canvas"
   })]), _vm._v(" "), _c('div', {
-    staticClass: "chart-legend",
+    class: _vm.clsLegend,
     domProps: {
       "innerHTML": _vm._s(_vm.legend)
     }
@@ -5327,36 +5288,7 @@ if (false) {
 }
 
 /***/ }),
-/* 254 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {}, [(_vm.showSpinner) ? _c('div', [_c('spinner', {
-    staticClass: "spinner-overlay"
-  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "chart-canvas col-xs-7"
-  }, [_c('canvas', {
-    ref: "canvas",
-    attrs: {
-      "width": "400",
-      "id": "positions-chart"
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "chart-legend col-xs-5",
-    domProps: {
-      "innerHTML": _vm._s(_vm.legend)
-    }
-  })])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-68a00109", module.exports)
-  }
-}
-
-/***/ }),
+/* 254 */,
 /* 255 */,
 /* 256 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -48115,7 +48047,7 @@ var Popover = function ($) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(7)();
-exports.push([module.i, "\n.chart-container {\n    padding: 0 20px;\n}\n", ""]);
+exports.push([module.i, "\n.display-hidden {\n    display: none;\n}\n", ""]);
 
 /***/ }),
 /* 296 */
