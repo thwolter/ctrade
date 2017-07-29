@@ -36,6 +36,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(UpdateMetadata::class)->hourly();
         //$schedule->command(CacheQuandlSSE::class)->dailyAt('00:00');
         $schedule->command(CalculateRisk::class)->dailyAt('02:00');
+        $schedule->command(CalculateRisk::class)->dailyAt('02:05');
     }
 
     /**

@@ -72,7 +72,14 @@ Route::get('/histories', 'Api\ApiDataController@histories');
 Route::get('/portfolio', 'Api\ApiDataController@portfolio');
 
 
-
+/*
+|--------------------------------------------------------------------------
+| For test purpose only
+|--------------------------------------------------------------------------
+|
+| This routes can be used for debugging as it allows to set break points.
+|
+*/
 Route::get('/test', function() {
     Artisan::call('calculate:value');
 });
