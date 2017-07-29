@@ -1,9 +1,6 @@
 
-/**
- * The nvpready theme brings its own bootstrap based on version 3
- *
- * require('./bootstrap');
- */
+require('./bootstrap');
+
 
 import Vue from 'vue'
 import axios from 'axios';
@@ -21,7 +18,7 @@ import Colors from './core/Colors';
 import popover from 'vue-strap';
 
 window.Vue = Vue;
-window.axios = axios;
+/*window.axios = axios;*/
 window.Form = Form;
 window.Event = new Event;
 window.Colors = new Colors;
@@ -45,7 +42,9 @@ Vue.component('cleave', require('./components/Cleave.vue'));
 Vue.component('trade-stock', require('./components/TradeStock.vue'));
 
 Vue.component('graph', require('./components/Graph.vue'));
+Vue.component('chart', require('./components/Chart.vue'));
 Vue.component('positions-chart', require('./components/PositionsChart.vue'));
+Vue.component('value-chart', require('./components/ValueChart.vue'));
 Vue.component('spinner', require('./components/Spinner.vue'));
 
 

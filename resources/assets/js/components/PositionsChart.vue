@@ -11,7 +11,6 @@
         </div>
         <div v-html="legend" class="chart-legend col-xs-5"></div>
     </div>
-
 </template>
 
 <script>

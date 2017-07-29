@@ -47,7 +47,7 @@
 
                 <div class="col-md-6">
                     <portlet title="Wertentwicklung">
-
+                        <value-chart pid="{{ $portfolio->id }}"></value-chart>
                     </portlet>
                 </div>
 

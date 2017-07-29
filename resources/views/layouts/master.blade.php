@@ -65,9 +65,9 @@
 
 
 <!-- App JS -->
-<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
+{{--<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/templates/admin-1/js/mvpready-admin.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/templates/admin-1/js/mvpready-admin.js') }}"></script>--}}
 
 <script src="{{ asset('js/manifest.js') }}"></script>
 <script src="{{ asset('js/vendor.js') }}"></script>

@@ -84,6 +84,15 @@ class ApiController extends Controller
         return collect(['positions' => $positions, 'total' => $total]);
     }
 
+    public function valueHistory(Request $request)
+    {
+        $values = [
+            '2017-06-30' => 100,
+            '2017-07-01' => 105,
+            '2017-07-02' => 97
+        ];
+        return collect(['values' => $values]);
+    }
 
     /**
      * Provides a collection of histories for the portfolio's risk factors.
@@ -176,11 +185,9 @@ class ApiController extends Controller
     {
         if (isset($request->date) && isset($request->count)) {
             $days = Helpers::allWeekDays($request->date, $request->count);
-        }
-        elseif (isset($request->from) && isset($request->to)) {
+        } elseif (isset($request->from) && isset($request->to)) {
             $days = Helpers::allWeekDaysBetween($request->from, $request->to);
-        }
-        else {
+        } else {
             throw new \Exception("Parameter ['date' and 'count'] or ['from' and 'to'] must be set.");
         }
 

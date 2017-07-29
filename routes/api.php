@@ -24,6 +24,7 @@ Route::get('/search', 'ApiController@search');
 Route::get('/lookup', 'ApiController@lookup');
 
 Route::get('/positions', 'ApiController@positions');
+Route::get('/valueHistory', 'ApiController@valueHistory');
 
 Route::get('/summary', 'ApiController@summary');
 Route::get('/histories', 'ApiController@histories');
