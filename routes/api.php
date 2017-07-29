@@ -27,13 +27,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 | The lookup route delivers the parameter to a specified instrument.
 |
 */
-Route::get('/search', 'ApiController@search');
-Route::get('/lookup', 'ApiController@lookup');
+Route::get('/search', 'Api\ApiSearchController@search');
+Route::get('/lookup', 'Api\ApiSearchController@lookup');
 
 
 /*
 |--------------------------------------------------------------------------
-| API Portfolio Routes
+| API Database Routes
 |--------------------------------------------------------------------------
 |
 | This routes provide information to the specified portfolio, like positions
@@ -41,9 +41,9 @@ Route::get('/lookup', 'ApiController@lookup');
 | provides the historic values of the portfolio.
 |
 */
-Route::get('/portfolio/positions', 'ApiController@positions');
-Route::get('/portfolio/value', 'ApiController@portfolioValue');
-Route::get('/portfolio/risk', 'ApiController@portfolioRisk');
+Route::get('/portfolio/positions', 'Api\ApiDatabaseController@positions');
+Route::get('/portfolio/value', 'Api\ApiDatabaseController@value');
+Route::get('/portfolio/risk', 'Api\ApiDatabaseController@risk');
 
 /*
 |--------------------------------------------------------------------------
@@ -55,21 +55,21 @@ Route::get('/portfolio/risk', 'ApiController@portfolioRisk');
 | provides the historic values of the portfolio.
 |
 */
-Route::get('/portfolio/calc/value', 'ApiController@portfolioCalculateValue');
-Route::get('/portfolio/calc/risk', 'ApiController@portfolioCalculateRisk');
+Route::get('/portfolio/calc/value', 'Api\ApiCalculationController@portfolioCalculateValue');
+Route::get('/portfolio/calc/risk', 'Api\ApiCalculationController@portfolioCalculateRisk');
 Route::get('/summary', 'ApiController@summary');
 
 /*
 |--------------------------------------------------------------------------
-| API Raw Data Routes (typically used for R scripts)
+| API Raw Data Routes
 |--------------------------------------------------------------------------
 |
 | This routes enable R scripts to receive data on portfolio and market data
 | histories and are called directly from within the R scripts.
 |
 */
-Route::get('/histories', 'ApiController@histories');
-Route::get('/portfolio', 'ApiController@portfolio');
+Route::get('/histories', 'Api\ApiDataController@histories');
+Route::get('/portfolio', 'Api\ApiDataController@portfolio');
 
 
 
