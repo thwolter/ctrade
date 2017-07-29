@@ -8,7 +8,7 @@
 
         data() {
             return {
-                route: '/api/valueHistory',
+                route: '/api/portfolio/value',
                 type: 'line',
             }
         },

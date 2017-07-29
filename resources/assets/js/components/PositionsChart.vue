@@ -10,7 +10,7 @@
 
         data() {
             return {
-                route: '/api/positions',
+                route: '/api/portfolio/positions',
 
                 type: 'doughnut',
                 segments: 5,

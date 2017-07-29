@@ -8,6 +8,7 @@ use App\Http\Requests\SearchRequest;
 use App\Models\Exceptions\RscriptException;
 use App\Models\Rscript;
 use App\Repositories\CurrencyRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 
@@ -84,15 +85,6 @@ class ApiController extends Controller
         return collect(['positions' => $positions, 'total' => $total]);
     }
 
-    public function valueHistory(Request $request)
-    {
-        $values = [
-            '2017-06-30' => 100,
-            '2017-07-01' => 105,
-            '2017-07-02' => 97
-        ];
-        return collect(['values' => $values]);
-    }
 
     /**
      * Provides a collection of histories for the portfolio's risk factors.
@@ -136,24 +128,67 @@ class ApiController extends Controller
         return collect($this->getPortfolio($request)->toArray());
     }
 
+    public function portfolioRisk(Request $request)
+    {
+
+    }
+
+    public function portfolioValue(Request $request)
+    {
+        $values = [
+            '2017-06-30' => 100,
+            '2017-07-01' => 105,
+            '2017-07-02' => 97
+        ];
+        return collect(['values' => $values]);
+    }
+
+    // ---------------------------------------------
+    // call the calculation method
+    // ---------------------------------------------
 
     /**
      * Calculate the risk for given portfolio.
-     * e.g. api/portfolio/risk?id=1&conf=0.95&from=2016-06-30&to=2017-06-30
+     * e.g. api/portfolio/risk?id=1&date=2016-06-30&count=250
      *
      * @param Request $request
-     * @return string
+     * @return array
      */
-    public function portfolioRisk(Request $request)
+    public function portfolioCalculateRisk(Request $request)
     {
-        /*$this->validate($request, [
+        $this->validate($request, [
             'id' => 'required|exists:portfolios,id',
-            'conf' => 'required|between:0,1'
-        ]);*/
+            'date' => 'required|date',
+            'count' => 'required|numeric'
+        ]);
+
+        $date = Carbon::createFromFormat('Y-m-d', $request->date);
 
         $rscript = new Rscript($this->getPortfolio($request));
-        $risk = $rscript->portfolioRisk($request->conf, $request->date, $request->count);
+        $risk = $rscript->portfolioRisk($date, $request->count);
         return $risk;
+    }
+
+    /**
+     * Calculate the value for given portfolio.
+     * e.g. api/portfolio/value?id=1&date=2016-06-30
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function portfolioCalculateValue(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|exists:portfolios,id',
+            'date' => 'required|date'
+        ]);
+
+        $date = Carbon::createFromFormat('Y-m-d', $request->date);
+
+        $rscript = new Rscript($this->getPortfolio($request));
+        $value = $rscript->portfolioValue($date);
+
+        return $value;
     }
 
 

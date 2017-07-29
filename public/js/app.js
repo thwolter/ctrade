@@ -1743,7 +1743,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
-            route: '/api/positions',
+            route: '/api/portfolio/positions',
 
             type: 'doughnut',
             segments: 5,
@@ -17030,7 +17030,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
-            route: '/api/valueHistory',
+            route: '/api/portfolio/value',
             type: 'line'
         };
     },
