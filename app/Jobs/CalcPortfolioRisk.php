@@ -53,6 +53,7 @@ class CalcPortfolioRisk implements ShouldQueue
         $kfContrib = $this->portfolio->keyFigure('contribution');
 
         // perhaps it is sufficient to check only one keyFigure
+        // $start = $kfRisk->startFromDate()
         $start = $this->startDate($kfRisk);
         $today = Carbon::now()->endOfDay();
 
@@ -131,8 +132,8 @@ class CalcPortfolioRisk implements ShouldQueue
      * @param $value
      * @return int|mixed
      */
-    private function array_first_or_null($value)
+  /*  private function array_first_or_null($value)
     {
         return is_null($value) ? 0 : array_first($value);
-    }
+    }*/
 }

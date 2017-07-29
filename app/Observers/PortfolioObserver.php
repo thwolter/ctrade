@@ -18,7 +18,8 @@ class PortfolioObserver
 
     protected $keyfigures = [
         ['code' => 'risk', 'name' => 'Value at Risk'],
-        ['code' => 'contribution', 'name' => 'Risk contribution']
+        ['code' => 'contribution', 'name' => 'Risk contribution'],
+        ['code' => 'value', 'name' => 'Portfolio value']
     ];
 
     public function created(Portfolio $portfolio)

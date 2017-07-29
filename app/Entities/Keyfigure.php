@@ -71,6 +71,28 @@ class Keyfigure extends Model
         return array_key_exists($key, $this->values);
     }
 
+    /**
+     * Return the start date for calculations as the latest date of already calculated values.
+     *
+     * @param KeyFigure
+     * @return Carbon
+     */
+    public function calculateFromDate()
+    {
+        $date = $this->portfolio->created_at;
+
+        if (count($this->values) > 0) {
+            $date = Carbon::parse(max(max(array_keys($this->values)), $date))->addDay();
+
+            $invalidated = $this->expires_at;
+            if (!is_null($invalidated)) {
+                $date = Carbon::parse(min($date, $invalidated));
+            }
+        }
+        return $date->endOfDay();
+    }
+
+
     public static function boot()
     {
         parent::boot();

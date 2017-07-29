@@ -21,7 +21,8 @@ class Kernel extends ConsoleKernel
         Commands\CacheQuandlSSE::class,
         Commands\UpdateMetadata::class,
         Commands\TestMail::class,
-        Commands\CalculateRisk::class
+        Commands\CalculateRisk::class,
+        Commands\CalculateValue::class
     ];
 
     /**

@@ -74,5 +74,5 @@ Route::get('/portfolio', 'ApiController@portfolio');
 
 
 Route::get('/test', function() {
-    Artisan::call('calculate:risk');
+    Artisan::call('calculate:value');
 });
