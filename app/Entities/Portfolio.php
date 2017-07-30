@@ -300,41 +300,6 @@ class Portfolio extends Model
         return $portfolio;
     }
 
-
-
-    /*
-     * private functions
-     */
-
-    /**
-     * Make a Trade without persisting
-     *
-     * @param int $id of position
-     * @param $amount
-     * @return mixed
-     */
-    private function makeTrade($id, $amount)
-    {
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
-
-        $position->update(['amount' => $position->amount + $amount]);
-
-        $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
-
-        return $portfolio;
-    }
-
-    private function revertTrade($id, $value)
-    {
-        $position = $this->positions()->find($id);
-
-        $position->amount = $position->amount + $value;
-        $this->cash = $this->cash - $value;
-
-        return $this;
-    }
-
     /**
      * Set of receive the current absolute limit of the portfolios.
      *
@@ -369,5 +334,38 @@ class Portfolio extends Model
             $this->limits()->create(['type' => 'relative', 'limit' => $value]);
             return $this;
         }
+    }
+
+    /*
+     * private functions
+     */
+
+    /**
+     * Make a Trade without persisting
+     *
+     * @param int $id of position
+     * @param $amount
+     * @return mixed
+     */
+    private function makeTrade($id, $amount)
+    {
+        $position = Position::find($id);
+        $portfolio = $position->portfolio;
+
+        $position->update(['amount' => $position->amount + $amount]);
+
+        $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
+
+        return $portfolio;
+    }
+
+    private function revertTrade($id, $value)
+    {
+        $position = $this->positions()->find($id);
+
+        $position->amount = $position->amount + $value;
+        $this->cash = $this->cash - $value;
+
+        return $this;
     }
 }
