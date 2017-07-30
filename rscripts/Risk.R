@@ -72,10 +72,10 @@ output990 <- PerformanceAnalytics::VaR(
 
 result <- list(
     contrib95 = as.list(output950$contribution),
-    contrib97 = as.list(output975$contribution),
+    contrib975 = as.list(output975$contribution),
     contrib99 = as.list(output990$contribution),
     total95 = as.numeric(output950$MVaR),
-    total97 = as.numeric(output975$MVaR),
+    total975 = as.numeric(output975$MVaR),
     total99 = as.numeric(output990$MVaR),
     date = toString(index(tail(histories[[1]],1)))
 )

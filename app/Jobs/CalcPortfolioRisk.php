@@ -22,7 +22,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
  *
  * @package App\Jobs
  */
-class CalcPortfolioRisk implements ShouldQueue
+class CalcPortfolioRisk //implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -53,7 +53,7 @@ class CalcPortfolioRisk implements ShouldQueue
         $kfContrib = $this->portfolio->keyFigure('contribution');
 
         // perhaps it is sufficient to check only one keyFigure
-        $start = $kfRisk->startFromDate();
+        $start = $kfRisk->calculateFromDate();
         $today = Carbon::now()->endOfDay();
 
         for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {
@@ -80,9 +80,9 @@ class CalcPortfolioRisk implements ShouldQueue
     private function toRiskArray($risk)
     {
         return [
-            '95' => array_first_or_null($risk['total95']),
-            '97' => array_first_or_null($risk['total97']),
-            '99' => array_first_or_null($risk['total99'])
+            '0.95' => array_first_or_null($risk['total95']),
+            '0.975' => array_first_or_null($risk['total975']),
+            '0.99' => array_first_or_null($risk['total99'])
         ];
     }
 
@@ -96,9 +96,9 @@ class CalcPortfolioRisk implements ShouldQueue
     private function toContribArray($risk)
     {
         return [
-            '95' => $risk['contrib95'],
-            '97' => $risk['contrib97'],
-            '99' => $risk['contrib99']
+            '0.95' => $risk['contrib95'],
+            '0.975' => $risk['contrib975'],
+            '0.99' => $risk['contrib99']
         ];
     }
 }

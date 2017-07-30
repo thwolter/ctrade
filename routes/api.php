@@ -44,6 +44,7 @@ Route::get('/lookup', 'Api\ApiSearchController@lookup');
 Route::get('/portfolio/positions', 'Api\ApiDatabaseController@positions');
 Route::get('/portfolio/value', 'Api\ApiDatabaseController@value');
 Route::get('/portfolio/risk', 'Api\ApiDatabaseController@risk');
+Route::get('/portfolio/contribution', 'Api\ApiDatabaseController@contribution');
 
 /*
 |--------------------------------------------------------------------------
@@ -81,5 +82,5 @@ Route::get('/portfolio', 'Api\ApiDataController@portfolio');
 |
 */
 Route::get('/test', function() {
-    Artisan::call('calculate:value');
+    Artisan::call('calculate:risk');
 });
