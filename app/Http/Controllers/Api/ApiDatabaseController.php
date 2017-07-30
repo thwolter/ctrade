@@ -45,16 +45,37 @@ class ApiDatabaseController extends ApiBaseController
     }
 
 
+    /**
+     * Returns the time series of risk for a given portfolio and confidence level
+     * from database. Confidence levels can be 0.95, 0.975, or 0.99.
+     *
+     * @param Request $request
+     * @return array
+     */
     public function risk(Request $request)
     {
         $this->validate($request, [
             'id' => 'required|exists:portfolios,id',
+            'conf' => 'required|numeric'
         ]);
 
-        return $this->getPortfolio($request)->keyFigure('risk')->values;
+        $values = $this->getPortfolio($request)->keyFigure('risk')->values;
+
+        $result = [];
+        for ($i = 0; $i < count($values); $i++) {
+            $result[array_keys($values)[$i]] = array_get($values[array_keys($values)[$i]], $request->conf);
+        }
+
+        return $result;
     }
 
 
+    /**
+     * Returns the historic values of a given portfolio from database.
+     *
+     * @param Request $request
+     * @return \Illuminate\Support\Collection
+     */
     public function value(Request $request)
     {
         $this->validate($request, [

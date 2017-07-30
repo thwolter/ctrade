@@ -75,6 +75,10 @@ class Portfolio extends Model
         return $this->hasMany(Keyfigure::class);
     }
 
+    public function limits()
+    {
+        return $this->hasMany(Limit::class);
+    }
 
     public function keyFigure($code)
     {
@@ -329,5 +333,41 @@ class Portfolio extends Model
         $this->cash = $this->cash - $value;
 
         return $this;
+    }
+
+    /**
+     * Set of receive the current absolute limit of the portfolios.
+     *
+     * @param null $value
+     * @return Portfolio
+     */
+    public function absoluteLimit($value = null)
+    {
+        if (! $value) {
+            $limit = $this->limits()->absolute()->get()->last();
+            if ($limit) return $limit->toArray();
+
+        } else {
+            $this->limits()->create(['type' => 'absolute', 'limit' => $value]);
+            return $this;
+        }
+    }
+
+    /**
+     * Set or receive the current absolute limit of the portfolio.
+     *
+     * @param null $value
+     * @return Portfolio
+     */
+    public function relativeLimit($value = null)
+    {
+        if (! $value) {
+            $limit = $this->limits()->relative()->get()->last();
+            if ($limit) return $limit->toArray();
+
+        } else {
+            $this->limits()->create(['type' => 'relative', 'limit' => $value]);
+            return $this;
+        }
     }
 }
