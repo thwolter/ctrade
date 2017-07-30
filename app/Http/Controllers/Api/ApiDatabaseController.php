@@ -47,13 +47,20 @@ class ApiDatabaseController extends ApiBaseController
 
     public function risk(Request $request)
     {
-        $risk = $this->getPortfolio($request)->keyFigure('risk')->values;
-        return collect(['risk' => $risk]);
+        $this->validate($request, [
+            'id' => 'required|exists:portfolios,id',
+        ]);
+
+        return $this->getPortfolio($request)->keyFigure('risk')->values;
     }
 
 
     public function value(Request $request)
     {
+        $this->validate($request, [
+            'id' => 'required|exists:portfolios,id',
+        ]);
+
         $values = $this->getPortfolio($request)->keyFigure('value')->values;
         return collect(['values' => $values]);
     }
@@ -68,7 +75,8 @@ class ApiDatabaseController extends ApiBaseController
         ]);
 
         $contribution = $this->getPortfolio($request)->keyFigure('contribution')->values;
-        return $contribution[$request->date][$request->conf];
+
+        return array_get(array_get($contribution, $request->date), $request->conf);
     }
 
 }
