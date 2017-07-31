@@ -44,6 +44,7 @@ Route::get('/lookup', 'Api\ApiSearchController@lookup');
 Route::get('/portfolio/positions', 'Api\ApiDatabaseController@positions');
 Route::get('/portfolio/value', 'Api\ApiDatabaseController@value');
 Route::get('/portfolio/risk', 'Api\ApiDatabaseController@risk');
+Route::get('/portfolio/limits', 'Api\ApiDatabaseController@limits');
 Route::get('/portfolio/contribution', 'Api\ApiDatabaseController@contribution');
 
 /*

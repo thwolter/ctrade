@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Entities\Portfolio;
 use App\Repositories\CurrencyRepository;
+use App\Repositories\LimitRepository;
 use Illuminate\Http\Request;
 
 class ApiDatabaseController extends ApiBaseController
@@ -98,6 +99,18 @@ class ApiDatabaseController extends ApiBaseController
         $contribution = $this->getPortfolio($request)->keyFigure('contribution')->values;
 
         return array_get(array_get($contribution, $request->date), $request->conf);
+    }
+
+    public function limits(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|exists:portfolios,id',
+            'date' => 'required|date',
+            'count' => 'sometimes|required|numeric'
+        ]);
+
+        $limits = new LimitRepository($this->getPortfolio($request));
+        return $limits->limitHistory($request->type, $request->date, $request->count);
     }
 
 }
