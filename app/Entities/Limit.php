@@ -15,20 +15,12 @@ class Limit extends Model
     }
 
 
+    public function type() {
+        return $this->belongsTo(LimitType::class);
+    }
+
     public function toArray()
     {
         return [$this->updated_at->toDateString() => $this->limit];
-    }
-
-
-    public function scopeAbsolute($query)
-    {
-        return $query->whereType('absolute');
-    }
-
-
-    public function scopeRelative($query)
-    {
-        return $query->whereType('relative');
     }
 }

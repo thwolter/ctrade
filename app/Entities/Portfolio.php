@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Entities\Exceptions\LimitTypeException;
 use App\Events\PortfolioChanged;
 use App\Presenters\Presentable;
 use App\Settings\PortfolioSettings;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\UploadedFile;
+use Psy\Readline\Libedit;
 
 
 class Portfolio extends Model
@@ -300,39 +302,25 @@ class Portfolio extends Model
         return $portfolio;
     }
 
-    /**
-     * Set of receive the current absolute limit of the portfolios.
-     *
-     * @param null $value
-     * @return Portfolio
-     */
-    public function absoluteLimit($value = null)
+    public function limit($type, $value = null)
     {
         if (! $value) {
-            $limit = $this->limits()->absolute()->get()->last();
+
+            if (! LimitType::whereCode($type)->exists()) {
+                throw new LimitTypeException("Limit type '{$type}' doesn't exist.");
+            }
+
+            $limit = $this->limits()->whereHas('type', function($query) use ($type) {
+                $query->whereCode($type); })->get()->last();
+
             if ($limit) return $limit->toArray();
 
         } else {
-            $this->limits()->create(['type' => 'absolute', 'limit' => $value]);
-            return $this;
-        }
-    }
+            $limit = new Limit(['limit' => $value]);
+            $limit->type()->associate(LimitType::firstOrCreate(['code' => $type]));
+            $this->limits()->save($limit);
 
-    /**
-     * Set or receive the current absolute limit of the portfolio.
-     *
-     * @param null $value
-     * @return Portfolio
-     */
-    public function relativeLimit($value = null)
-    {
-        if (! $value) {
-            $limit = $this->limits()->relative()->get()->last();
-            if ($limit) return $limit->toArray();
-
-        } else {
-            $this->limits()->create(['type' => 'relative', 'limit' => $value]);
-            return $this;
+            return $limit->toArray();
         }
     }
 

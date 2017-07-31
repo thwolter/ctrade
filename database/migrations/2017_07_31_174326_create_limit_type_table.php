@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLimitsTable extends Migration
+class CreateLimitTypeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateLimitsTable extends Migration
      */
     public function up()
     {
-        Schema::create('limits', function (Blueprint $table) {
+        Schema::create('limit_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('portfolio_id')->unsigned();
-            $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
-            $table->integer('type_id');
-            $table->float('limit');
+            $table->string('code');
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateLimitsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('limits');
+        //
     }
 }
