@@ -300,7 +300,7 @@ class Portfolio extends Model
     public function keyFigure($type)
     {
         $keyFigure = $this->keyfigures()->whereHas('type', function($query) use($type) {
-            $query->whereCode($type); })->get();
+            $query->whereCode($type); })->first();
 
         if (count($keyFigure) == 0) {
             $type = KeyfigureType::firstOrCreate(['code' => $type]);
