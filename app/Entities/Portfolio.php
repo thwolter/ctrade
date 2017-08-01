@@ -82,12 +82,6 @@ class Portfolio extends Model
         return $this->hasMany(Limit::class);
     }
 
-    public function keyFigure($code)
-    {
-        $type = KeyfigureType::whereCode($code)->first();
-        return $this->keyFigures()->whereTypeId($type->id)->first();
-    }
-
 
     public function currency()
     {
@@ -302,6 +296,23 @@ class Portfolio extends Model
         return $portfolio;
     }
 
+
+    public function keyFigure($type)
+    {
+        $keyFigure = $this->keyfigures()->whereHas('type', function($query) use($type) {
+            $query->whereCode($type); })->get();
+
+        if (count($keyFigure) == 0) {
+            $type = KeyfigureType::firstOrCreate(['code' => $type]);
+            $keyFigure = new Keyfigure();
+            $keyFigure->type()->associate($type);
+            $this->keyFigures()->save($keyFigure);
+        }
+
+        return $keyFigure;
+    }
+
+
     public function limit($type, $value = null)
     {
         if (! $value) {
@@ -310,7 +321,7 @@ class Portfolio extends Model
                 throw new LimitTypeException("Limit type '{$type}' doesn't exist.");
             }
 
-            $limit = $this->limits()->whereHas('type', function($query) use ($type) {
+            $limit = $this->limits()->whereHas('type', function($query) use($type) {
                 $query->whereCode($type); })->get()->last();
 
             if ($limit) return $limit->toArray();

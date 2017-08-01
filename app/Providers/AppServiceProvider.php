@@ -25,8 +25,6 @@ class AppServiceProvider extends ServiceProvider
             'stock' => \App\Entities\Stock::class,
             'ccyPair' => \App\Entities\CcyPair::class
         ]);
-
-        Portfolio::observe(PortfolioObserver::class);
     }
 
     /**
