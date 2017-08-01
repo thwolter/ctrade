@@ -34,7 +34,7 @@ class LimitRepository
      * @return array
      * @throws LimitException
      */
-    public function limitHistory($type, $date, $count)
+    public function limitHistory($type, $date, $count = 250)
     {
         if (! LimitType::whereCode($type)->exists())
             throw new LimitException("Parameter 'type' doesn't exist");
