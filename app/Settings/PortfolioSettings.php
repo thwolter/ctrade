@@ -8,7 +8,7 @@ class PortfolioSettings extends Settings
 {
     protected $settings = [
         'confidence' => 0.95,
-        'horizon' => 20,
+        'period' => 20,
         'history' => 250,
         'email_frequency' => 'daily',
         'threshold' => 0
@@ -20,7 +20,7 @@ class PortfolioSettings extends Settings
         'risikofreudig' => 0.95,
     ];
 
-    public $horizon = [
+    public $period = [
         '1 Tag' => 1,
         '1 Woche' => 5,
         '1 Monat' => 20,

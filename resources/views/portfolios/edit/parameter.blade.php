@@ -45,17 +45,17 @@
         <label class="col-md-3 control-label">Periode</label>
         <div class="col-md-7">
             @php
-                $keys = $portfolio->settings()->keys('horizon');
-                $value = $portfolio->settings()->index()->get('horizon');
+                $keys = $portfolio->settings()->keys('period');
+                $value = $portfolio->settings()->index()->get('period');
             @endphp
-            {!! Form::select('horizon', $keys, $value, ['class' => 'form-control']) !!}
+            {!! Form::select('period', $keys, $value, ['class' => 'form-control']) !!}
             <span class="help-block">Der Betrachtungszeitraum ...</span>
         </div>
     </div>
 
     <!-- History -->
     <div class="form-group">
-        <label class="col-md-3 control-label">Periode</label>
+        <label class="col-md-3 control-label">Historie</label>
         <div class="col-md-7">
             @php
                 $keys = $portfolio->settings()->keys('history');

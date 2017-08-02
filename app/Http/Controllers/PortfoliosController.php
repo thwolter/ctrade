@@ -138,7 +138,7 @@ class PortfoliosController extends Controller
 
         $settings = $portfolio->settings();
         $settings->set('confidence', $portfolio->settings()->toValue($request->confidence, 'confidence'));
-        $settings->set('horizon', $portfolio->settings()->toValue($request->horizon, 'horizon'));
+        $settings->set('period', $portfolio->settings()->toValue($request->period, 'period'));
         $settings->set('history', $portfolio->settings()->toValue($request->history, 'history'));
 
         return redirect(route('portfolios.edit', $id))

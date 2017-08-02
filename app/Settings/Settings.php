@@ -4,6 +4,8 @@
 namespace App\Settings;
 
 
+use App\Models\Exceptions\SettingsException;
+
 class Settings
 {
 
@@ -23,6 +25,9 @@ class Settings
 
     public function get($key)
     {
+        if (!isset($this->{$key}))
+            throw new SettingsException("Requested index {$key} does not exist.");
+
         $value = array_get($this->settings, $key);
 
         if (! $this->index) {
