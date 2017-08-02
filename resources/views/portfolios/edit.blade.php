@@ -32,23 +32,30 @@
 
                             <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
 
-                                <li class="{{ active_tab(session('active'), 'portfolio') }}">
-                                    <a href="#portfolio" data-toggle="tab">
-                                        <i class="fa fa-lock"></i>
+                                <li role="presentation" class="{{ active_tab(session('active'), 'portfolio') }}">
+                                    <a href="#portfolio" data-toggle="tab" role="tab">
+                                        <i class="fa fa-pie-chart"></i>
                                         &nbsp;&nbsp;Portfolio
                                     </a>
                                 </li>
 
-                                <li class="{{ active_tab(session('active'), 'limits') }}">
-                                    <a href="#limits" data-toggle="tab">
-                                        <i class="fa fa-signal"></i>
+                                <li role="presentation" class="{{ active_tab(session('active'), 'parameter') }}">
+                                    <a href="#parameter" data-toggle="tab" role="tab">
+                                        <i class="fa fa-calculator"></i>
+                                        &nbsp;&nbsp;Parameter
+                                    </a>
+                                </li>
+
+                                <li role="presentation" class="{{ active_tab(session('active'), 'limits') }}">
+                                    <a href="#limits" data-toggle="tab" role="tab">
+                                        <i class="fa fa-bar-chart"></i>
                                         &nbsp;&nbsp;Limite
                                     </a>
                                 </li>
 
-                                <li class="{{ active_tab(session('active'), 'notification') }}">
-                                    <a href="#notification" data-toggle="tab">
-                                        <i class="fa fa-bullhorn"></i>
+                                <li role="presentation" class="{{ active_tab(session('active'), 'notification') }}">
+                                    <a href="#notification" data-toggle="tab" role="tab">
+                                        <i class="fa fa-envelope"></i>
                                         &nbsp;&nbsp;Benachrichtigungen
                                     </a>
                                 </li>
@@ -63,6 +70,8 @@
                             <div id="settings-content" class="tab-content stacked-content">
 
                                 @include('portfolios.edit.portfolio')
+
+                                @include('portfolios.edit.parameter')
 
                                 @include('portfolios.edit.limits')
 

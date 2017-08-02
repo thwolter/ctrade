@@ -1,4 +1,4 @@
-<div class="tab-pane fade in active" id="portfolio">
+<div class="tab-pane fade in {{ active_tab(session('active'), 'portfolio') }}" id="portfolio">
 
     <div class="heading-block">
         <h3>

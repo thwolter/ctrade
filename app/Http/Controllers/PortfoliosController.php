@@ -136,7 +136,10 @@ class PortfoliosController extends Controller
 
         $portfolio->save();
 
-        $portfolio->settings()->merge($request->all());
+        $settings = $portfolio->settings();
+        $settings->set('confidence', $portfolio->settings()->toValue($request->confidence, 'confidence'));
+        $settings->set('horizon', $portfolio->settings()->toValue($request->horizon, 'horizon'));
+        $settings->set('history', $portfolio->settings()->toValue($request->history, 'history'));
 
         return redirect(route('portfolios.edit', $id))
             ->with('message', 'Portfolio erfolgreich geändert.')

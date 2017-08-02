@@ -29,3 +29,11 @@ function array_first_or_null($value)
     return is_null($value) ? 0 : array_first($value);
 }
 
+
+function array_index($needle, $array)
+{
+    for ($i = 0; $i < count($array); $i++)
+    {
+        if (array_values($array)[$i] == $needle) return $i;
+    }
+}

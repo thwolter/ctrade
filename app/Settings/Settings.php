@@ -9,6 +9,7 @@ class Settings
 
     protected $settings = [];
     protected $entity;
+    protected $index = null;
 
 
     public function __construct($entity)
@@ -22,7 +23,18 @@ class Settings
 
     public function get($key)
     {
-        return array_get($this->settings, $key);
+        $value = array_get($this->settings, $key);
+
+        if (is_null($this->index)) {
+            $result = $value;
+
+        } else {
+            $result = array_index($value, $this->{$this->index});
+            $this->index = null;
+        }
+
+        return $result;
+
     }
 
     public function set($key, $value)
@@ -62,5 +74,27 @@ class Settings
     protected function has($key)
     {
         return array_key_exists($key, $this->settings);
+    }
+
+    public function toHuman($value, $array)
+    {
+        $key = array_search($value, $this->$array);
+        return ($key) ? $key : $value;
+    }
+
+    public function toValue($i, $array)
+    {
+        return array_values($this->$array)[$i];
+    }
+
+    public function keys($array)
+    {
+        return array_keys($this->$array);
+    }
+
+    public function withIndex($index)
+    {
+        $this->index = $index;
+        return $this;
     }
 }

@@ -28,7 +28,7 @@ class UpdatePortfolio extends FormRequest
     {
         return [
             'id' => 'required|exists:portfolios,id',
-            'name' => 'required|min:1|max:60',
+            'name' => 'min:1|max:60',
             'category' => 'string|nullable',
             'description' => 'string|nullable'
         ];
@@ -66,7 +66,6 @@ class UpdatePortfolio extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Wie soll dein Portfolio heißen?',
             'name.max' => 'Bezeichung ist zu lang (max 60 Zeichen).'
         ];
     }
