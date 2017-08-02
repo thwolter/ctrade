@@ -33,7 +33,7 @@
         <div class="col-md-7">
             @php
                 $keys = $portfolio->settings()->keys('confidence');
-                $value = $portfolio->settings()->withIndex('confidence')->get('confidence');
+                $value = $portfolio->settings()->index()->get('confidence');
             @endphp
             {!! Form::select('confidence', $keys, $value, ['class' => 'form-control']) !!}
             <span class="help-block">Das Sicherheitsniveau ...</span>
@@ -46,7 +46,7 @@
         <div class="col-md-7">
             @php
                 $keys = $portfolio->settings()->keys('horizon');
-                $value = $portfolio->settings()->withIndex('horizon')->get('horizon');
+                $value = $portfolio->settings()->index()->get('horizon');
             @endphp
             {!! Form::select('horizon', $keys, $value, ['class' => 'form-control']) !!}
             <span class="help-block">Der Betrachtungszeitraum ...</span>
@@ -59,7 +59,7 @@
         <div class="col-md-7">
             @php
                 $keys = $portfolio->settings()->keys('history');
-                $value = $portfolio->settings()->withIndex('history')->get('history');
+                $value = $portfolio->settings()->index()->get('history');
             @endphp
             {!! Form::select('history', $keys, $value, ['class' => 'form-control']) !!}
             <span class="help-block">Die Historie ...</span>

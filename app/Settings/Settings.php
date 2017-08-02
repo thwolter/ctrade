@@ -9,7 +9,7 @@ class Settings
 
     protected $settings = [];
     protected $entity;
-    protected $index = null;
+    protected $index = false;
 
 
     public function __construct($entity)
@@ -25,11 +25,11 @@ class Settings
     {
         $value = array_get($this->settings, $key);
 
-        if (is_null($this->index)) {
+        if (! $this->index) {
             $result = $value;
 
         } else {
-            $result = array_index($value, $this->{$this->index});
+            $result = array_index($value, $this->{$key});
             $this->index = null;
         }
 
@@ -92,9 +92,9 @@ class Settings
         return array_keys($this->$array);
     }
 
-    public function withIndex($index)
+    public function index()
     {
-        $this->index = $index;
+        $this->index = true;
         return $this;
     }
 }
