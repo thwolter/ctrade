@@ -6,6 +6,11 @@ function set_active($path, $active = 'active') {
     return Request::is($path) ? $active : '';
 }
 
+function active_tab($name, $compare, $active = 'active') {
+
+    return $name === $compare ? $active : '';
+}
+
 function format_price($value)
 {
     $fmt = numfmt_create( 'de_DE', NumberFormatter::CURRENCY );

@@ -14,6 +14,7 @@ use App\Entities\Currency;
 use App\Entities\PortfolioImage;
 use App\Entities\Transaction;
 use App\Http\Requests\CreatePortfolio;
+use App\Http\Requests\DeletePortfolio;
 use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
 use App\Settings\InitialSettings;
@@ -112,7 +113,8 @@ class PortfoliosController extends Controller
     public function edit($id)
     {
         $portfolio = Portfolio::findOrFail($id);
-        return view('portfolios.edit', compact('portfolio', 'url'));
+        $user = $portfolio->user;
+        return view('portfolios.edit', compact('portfolio', 'user'));
     }
 
     /**
@@ -122,16 +124,23 @@ class PortfoliosController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePortfolio $request, $id)
     {
-        if ($request->delete == 'yes')
-            return view('portfolios.delete', compact('id'));
+        $portfolio = Portfolio::findOrFail($id);
 
-        $portfolio = Portfolio::whereId($id)->first();
+        if ($request->get('name'))
+            $portfolio->update(['name' => $request->name]);
+
+        if ($request->get('description'))
+            $portfolio->update(['description' => $request->description]);
+
+        $portfolio->save();
+
         $portfolio->settings()->merge($request->all());
-        $portfolio->update(['name' => $request->name]);
 
-        return redirect()->back();
+        return redirect(route('portfolios.edit', $id))
+            ->with('message', 'Portfolio erfolgreich geändert.')
+            ->with('active', $request->active);
     }
 
     /**
@@ -140,15 +149,16 @@ class PortfoliosController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $portfolio = Portfolio::whereId($id);
-
-        //$portfolio->deleteImage();
-        $portfolio->delete($id);
-
-
-        return redirect(route('portfolios.index'));
+        if (!$request->confirmed) {
+            return redirect(route('portfolios.edit', $id))->with('delete', 'confirm');
+        }
+        else {
+            $portfolio = Portfolio::findOrFail($id);
+            $portfolio->delete($id);
+            return redirect(route('portfolios.index'));
+        }
     }
 
     public function addImage(Request $request, $id)

@@ -40,7 +40,7 @@
                         </li>
 
                         <li>
-                            <a href="#">
+                            <a href="{{ route('users.edit', Auth()->id()) }}">
                                 <i class="fa fa-cogs"></i>
                                 &nbsp;&nbsp;Einstellungen
                             </a>

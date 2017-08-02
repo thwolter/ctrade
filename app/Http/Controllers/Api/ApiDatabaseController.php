@@ -113,4 +113,16 @@ class ApiDatabaseController extends ApiBaseController
         return $limits->limitHistory($request->type, $request->date, $request->count);
     }
 
+    public function graph(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|exists:portfolios,id',
+            'date' => 'required|date',
+            'conf' => 'required|numeric',
+            'count' => 'required|numeric'
+        ]);
+
+        $values = $this->getPortfolio($request)->keyFigure('value')->values;
+        return $limits->limitHistory($request->type, $request->date, $request->count);
+    }
 }

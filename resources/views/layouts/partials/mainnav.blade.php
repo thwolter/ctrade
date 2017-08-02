@@ -40,6 +40,13 @@
                             Optimieren
                         </a>
                     </li>
+
+                    <li class="">
+                        <a href="{{ route('portfolios.edit', $portfolio->id) }}">
+                            <i class="fa fa-sliders" aria-hidden="true"></i>
+                            Einstellungen
+                        </a>
+                    </li>
                 @endif
 
                 <li class="dropdown portfolio-dropdown pull-right-lg {{ active_class(if_route_pattern(['portfolios.index'])) }}">

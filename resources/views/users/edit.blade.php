@@ -26,28 +26,23 @@
                                 <strong>Tab Navigation</strong> / <a href="#settings-content">Skip to Content</a>
                             </div>
 
-                            @php
-                                if (!session('active')) session(['active' => 'portfolio'])
-                            @endphp
-
                             <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
+                                <li class="active">
+                                    <a href="#profile-tab" data-toggle="tab">
+                                        <i class="fa fa-user"></i>
+                                        &nbsp;&nbsp;Mein Profil
+                                    </a>
+                                </li>
 
-                                <li class="{{ active_tab(session('active'), 'portfolio') }}">
-                                    <a href="#portfolio" data-toggle="tab">
+                                <li>
+                                    <a href="#password-tab" data-toggle="tab">
                                         <i class="fa fa-lock"></i>
-                                        &nbsp;&nbsp;Portfolio
+                                        &nbsp;&nbsp;Passwort ändern
                                     </a>
                                 </li>
 
-                                <li class="{{ active_tab(session('active'), 'limits') }}">
-                                    <a href="#limits" data-toggle="tab">
-                                        <i class="fa fa-signal"></i>
-                                        &nbsp;&nbsp;Limite
-                                    </a>
-                                </li>
-
-                                <li class="{{ active_tab(session('active'), 'notification') }}">
-                                    <a href="#notification" data-toggle="tab">
+                                <li>
+                                    <a href="#messaging" data-toggle="tab">
                                         <i class="fa fa-bullhorn"></i>
                                         &nbsp;&nbsp;Benachrichtigungen
                                     </a>
@@ -62,11 +57,11 @@
 
                             <div id="settings-content" class="tab-content stacked-content">
 
-                                @include('portfolios.edit.portfolio')
+                               @include('users.edit.profile')
 
-                                @include('portfolios.edit.limits')
+                               @include('users.edit.password')
 
-                                @include('portfolios.edit.notification')
+                               @include('users.edit.notification')
 
                             </div> <!-- /.tab-content -->
 

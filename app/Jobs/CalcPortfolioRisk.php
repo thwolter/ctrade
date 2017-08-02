@@ -22,7 +22,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
  *
  * @package App\Jobs
  */
-class CalcPortfolioRisk implements ShouldQueue
+class CalcPortfolioRisk //implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

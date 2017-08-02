@@ -24,7 +24,10 @@ url.hist <- sprintf('http://ctrade.dev/api/histories?id=%s&date=%s&count=%s', id
 url.pf <- sprintf('http://ctrade.dev/api/portfolio?id=%s', id)
 
 fetchHistories <- function(url) {
-    dat <- content(GET(url))
+    request <- GET(url)
+    stop_for_status(request, url)
+    
+    dat <- content(request)
     len <- length(dat)
     dimnames = list(names(dat[[1]]), names(dat))
     m <- matrix(unlist(dat), ncol=len, dimnames=dimnames)
@@ -44,7 +47,10 @@ fetchHistories <- function(url) {
 }
 
 fetchPortfolio <- function(url) {
-    data <- content(GET(url))
+    request <- GET(url)
+    stop_for_status(request, url)
+    
+    data <- content(request)
     
     items <- as.data.frame(t(matrix(unlist(data$items), ncol=length(data$items))), stringsAsFactors = FALSE)
     names(items) <- names(data$items[[1]])

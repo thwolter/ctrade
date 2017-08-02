@@ -46,6 +46,7 @@ Route::get('/portfolio/value', 'Api\ApiDatabaseController@value');
 Route::get('/portfolio/risk', 'Api\ApiDatabaseController@risk');
 Route::get('/portfolio/limits', 'Api\ApiDatabaseController@limits');
 Route::get('/portfolio/contribution', 'Api\ApiDatabaseController@contribution');
+Route::get('/portfolio/graph', 'Api\ApiDatabaseController@graph');
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,6 @@ Route::get('/portfolio/contribution', 'Api\ApiDatabaseController@contribution');
 */
 Route::get('/portfolio/calc/value', 'Api\ApiCalculationController@portfolioCalculateValue');
 Route::get('/portfolio/calc/risk', 'Api\ApiCalculationController@portfolioCalculateRisk');
-Route::get('/summary', 'ApiController@summary');
 
 /*
 |--------------------------------------------------------------------------
