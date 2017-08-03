@@ -39,7 +39,7 @@
             <label class="col-md-3 control-label limit-label">Absolutes Limit</label>
             <div class="col-md-7">
                 <div class="checkbox">
-                    <label><input type="checkbox" name="abs_limit" value="absolute" {{ $checked }}>aktivieren</label>
+                    <label><input type="checkbox" name="abs_limit" value="absolute" {{ $checked }}>Aktivieren</label>
                 </div>
                 <span class="help-block">Der maximal akzeptierte Verlust in der Portfoliowährung innerhalb
                     eines Zeitraumes von {{ $portfolio->settings()->human()->get('period') }}. Der Zeitraum
@@ -73,7 +73,7 @@
             <label class="col-md-3 control-label limit-label">Relatives Limit</label>
             <div class="col-md-7">
                 <div class="checkbox">
-                    <label><input type="checkbox" name="rel_limit" value="relative" {{ $checked }}>aktivieren</label>
+                    <label><input type="checkbox" name="rel_limit" value="relative" {{ $checked }}>Aktivieren</label>
                 </div>
                 <span class="help-block">Der maximal akzeptierte Verlust in Prozent vom Portfoliowert innerhalb
                     eines Zeitraumes von {{ $portfolio->settings()->human()->get('period') }}. Der Zeitraum
@@ -107,7 +107,7 @@
             <label class="col-md-3 control-label limit-label">Mindestwert</label>
             <div class="col-md-7">
                 <div class="checkbox">
-                    <label><input type="checkbox" name="floor_limit" value="floor" {{ $checked }}>aktivieren</label>
+                    <label><input type="checkbox" name="floor_limit" value="floor" {{ $checked }}>Aktivieren</label>
                 </div>
                 <span class="help-block">Der Mindestwert, den das Portfolio jederzeit aufweisen soll.
                     Bei dieser Limitart wird angenommen, dass das Portfolio am Ende
@@ -144,7 +144,7 @@
             <label class="col-md-3 control-label limit-label">Zielwert</label>
             <div class="col-md-7">
                 <div class="checkbox">
-                    <label><input type="checkbox" name="target_limit" value="target" {{ $checked }}>aktivieren</label>
+                    <label><input type="checkbox" name="target_limit" value="target" {{ $checked }}>Aktivieren</label>
                 </div>
                 <span class="help-block">Der Mindestwert, den das Portfolio am Ende einer festgelegten
                     Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine
