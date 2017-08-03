@@ -136,10 +136,8 @@ class PortfoliosController extends Controller
 
         $portfolio->save();
 
-        $settings = $portfolio->settings();
-        $settings->set('confidence', $portfolio->settings()->toValue($request->confidence, 'confidence'));
-        $settings->set('period', $portfolio->settings()->toValue($request->period, 'period'));
-        $settings->set('history', $portfolio->settings()->toValue($request->history, 'history'));
+        $portfolio->settings()->merge($request->all());
+        $portfolio->settings()->setLimitDeactivation($request->all());
 
         return redirect(route('portfolios.edit', $id))
             ->with('message', 'Portfolio erfolgreich geändert.')
@@ -200,7 +198,5 @@ class PortfoliosController extends Controller
 
         return ['redirect' => route('positions.index', $portfolio->id)];
     }
-
-
 }
 

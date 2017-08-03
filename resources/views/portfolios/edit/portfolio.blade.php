@@ -39,7 +39,7 @@
     <div class="form-group">
         <label class="col-md-3 control-label">Portfolio Name</label>
         <div class="col-md-7">
-            <input type="text" name="name" , value="{{ $portfolio->name }}" class="form-control">
+            <input type="text" name="name" value="{{ $portfolio->name }}" class="form-control">
         </div>
     </div>
 

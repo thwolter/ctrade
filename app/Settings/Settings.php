@@ -55,6 +55,8 @@ class Settings
 
     public function merge(array $attributes)
     {
+        $attributes = $this->mapAttributes($attributes);
+
         $this->settings = array_merge(
             $this->settings,
             array_only($attributes, array_keys($this->settings))
@@ -87,6 +89,7 @@ class Settings
         return array_values($this->$array)[$i];
     }
 
+
     public function keys($array)
     {
         return array_keys($this->$array);
@@ -108,6 +111,21 @@ class Settings
     //
     // private functions
     //
+
+    private function mapAttributes($attributes)
+    {
+        $result = [];
+        foreach (array_keys($attributes) as $key)
+        {
+            if (isset($this->{$key})) {
+                $result[$key] = array_values($this->{$key})[$attributes[$key]];
+            } else {
+                $result[$key] = $attributes[$key];
+            }
+        }
+        return $result;
+    }
+
 
     private function mapToIndex($map, $value)
     {

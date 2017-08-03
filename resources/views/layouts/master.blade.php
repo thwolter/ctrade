@@ -59,9 +59,11 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Core JS -->
+{{--
 <script src="{{ asset('vendor/mvp-theme/bower_components/jquery/dist/jquery.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/bower_components/slimscroll/jquery.slimscroll.js') }}"></script>
+--}}
 
 
 <!-- App JS -->
