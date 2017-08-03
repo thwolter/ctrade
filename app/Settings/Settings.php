@@ -4,7 +4,6 @@
 namespace App\Settings;
 
 
-use App\Models\Exceptions\SettingsException;
 
 class Settings
 {
@@ -12,6 +11,7 @@ class Settings
     protected $settings = [];
     protected $entity;
     protected $index = false;
+    protected $human = false;
 
 
     public function __construct($entity)
@@ -25,21 +25,21 @@ class Settings
 
     public function get($key)
     {
-        if (!isset($this->{$key}))
-            throw new SettingsException("Requested index {$key} does not exist.");
-
         $value = array_get($this->settings, $key);
 
-        if (! $this->index) {
-            $result = $value;
+        if ($this->index) {
+            $result = $this->mapToIndex($key, $value);
+        }
 
-        } else {
-            $result = array_index($value, $this->{$key});
-            $this->index = null;
+        elseif ($this->human) {
+            $result = $this->mapToHuman($key, $value);
+        }
+
+        else {
+            $result = $value;
         }
 
         return $result;
-
     }
 
     public function set($key, $value)
@@ -81,11 +81,6 @@ class Settings
         return array_key_exists($key, $this->settings);
     }
 
-    public function toHuman($value, $array)
-    {
-        $key = array_search($value, $this->$array);
-        return ($key) ? $key : $value;
-    }
 
     public function toValue($i, $array)
     {
@@ -101,5 +96,39 @@ class Settings
     {
         $this->index = true;
         return $this;
+    }
+
+    public function human()
+    {
+        $this->human = true;
+        return $this;
+    }
+
+
+    //
+    // private functions
+    //
+
+    private function mapToIndex($map, $value)
+    {
+        if (!isset($this->{$map}))
+            throw new SettingsException("A mapping array '{$map}' is required.");
+
+        $result = array_index($value, $this->{$map});
+        $this->index = false;
+
+        return $result;
+    }
+
+    private function mapToHuman($map, $value)
+    {
+        if (!isset($this->{$map}))
+            throw new SettingsException("A mapping array '{$map}' is required.");
+
+        $found = array_search($value, $this->{$map});
+        $result = ($found) ? $found : $map;
+        $this->human = false;
+
+        return $result;
     }
 }

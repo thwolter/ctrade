@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Exceptions;
+namespace App\Settings;
 
 
 class SettingsException extends \Exception
