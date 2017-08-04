@@ -45,6 +45,7 @@ Vue.component('chart', require('./components/Chart.vue'));
 Vue.component('positions-chart', require('./components/PositionsChart.vue'));
 Vue.component('value-chart', require('./components/ValueChart.vue'));
 Vue.component('spinner', require('./components/Spinner.vue'));
+Vue.component('limit-stats', require('./components/LimitsStats.vue'));
 
 
 const app = new Vue({

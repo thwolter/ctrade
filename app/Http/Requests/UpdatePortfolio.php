@@ -53,7 +53,7 @@ class UpdatePortfolio extends FormRequest
             if (count($sameNamedPortfolios)) {
                 $validator->errors()->add('name', 'Ein Portfolio mit diesem Namen existiert bereits.');
             };
-        
+
         });
     }
 
