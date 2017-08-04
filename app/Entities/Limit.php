@@ -46,4 +46,21 @@ class Limit extends Model
         return [$this->updated_at->toDateString() => $this->limit];
     }
 
+
+    public function scopeActive($query)
+    {
+        return $query->whereActive(true);
+    }
+
+
+    public function scopeFinite($query)
+    {
+        return $query->where('date', '!=', null);
+    }
+
+    public function scopeInfinite($query)
+    {
+        return $query->where('date', null);
+    }
+
 }

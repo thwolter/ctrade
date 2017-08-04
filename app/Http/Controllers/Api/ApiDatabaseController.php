@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Entities\LimitType;
 use App\Entities\Portfolio;
 use App\Repositories\CurrencyRepository;
 use App\Repositories\LimitRepository;
+use App\Repositories\RiskRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ApiDatabaseController extends ApiBaseController
@@ -115,7 +118,52 @@ class ApiDatabaseController extends ApiBaseController
 
     public function utilisation(Request $request)
     {
+        $this->validate($request, [
+            'id' => 'required|exists:portfolios,id',
+            'conf' => 'required|numeric',
+            'period' => 'required|numeric',
+            'reference' => 'required|date'
+        ]);
 
+        $portfolio = $this->getPortfolio($request);
+
+        $limits = new LimitRepository($portfolio);
+        $risks = new RiskRepository($portfolio, Carbon::parse($request->reference));
+
+        $risk = $risks->portfolioRisk($request->conf, $request->period);
+
+        $result = [];
+        foreach ($portfolio->limits()->active()->get() as $type)
+        {
+            $limit = $limits->get($type->type->code)->value;
+            $date = $limits->get($type->type->code)->date;
+
+            switch($type->type->code) {
+                case 'absolute':
+                    $quota = $risk / $limit;
+                    break;
+                case 'relative':
+                    $quota = $risk / ($limit * $portfolio->value() / 100);
+                    break;
+                case 'floor':
+                    $quota = $risk / ($portfolio->value() - $limit);
+                    break;
+                case 'target':
+                    $riskToTarget = $risks->portfolioRisk($request->conf, null, Carbon::parse($date));
+                    $quota = $risk / ($portfolio->value() - $limit);
+                    break;
+                default:
+                    $quota = null;
+            }
+            $result[$type->type->code] = [
+                'quota' => $quota,
+                'risk' => $risk,
+                'limit' => $limit,
+                'date' => $date
+            ];
+        };
+
+        return $result;
     }
 
     public function graph(Request $request)
@@ -127,7 +175,7 @@ class ApiDatabaseController extends ApiBaseController
             'count' => 'required|numeric'
         ]);
 
-        $values = $this->getPortfolio($request)->keyFigure('value')->values;
-        return $limits->limitHistory($request->type, $request->date, $request->count);
+        //$values = $this->getPortfolio($request)->keyFigure('value')->values;
+        //return $limits->limitHistory($request->type, $request->date, $request->count);
     }
 }

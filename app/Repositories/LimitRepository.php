@@ -44,6 +44,8 @@ class LimitRepository
      *
      * @param string $type
      * @param array $attributes
+     *
+     * @return bool
      */
     public function set($type, array $attributes)
     {

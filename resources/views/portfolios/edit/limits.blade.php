@@ -169,7 +169,7 @@
 
             <!-- Limit amount -->
             <div class="form-group">
-                <label class="col-md-3 control-label">Betrag</label>
+                <label class="col-md-3 control-label">Mindestwert</label>
                 <div class="col-md-7">
                     <div class="input-group">
                         <span class="input-group-addon">{{ $portfolio->currencyCode() }}</span>
