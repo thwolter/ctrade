@@ -59,7 +59,11 @@ class LimitRepository
         $limit->date = array_get($attributes, $type.'_date');
         $limit->active = true;
 
-        $limit->save();
+        if (!($limit->value > 0) || !($limit->date > 0)) {
+            return false;
+        } else {
+            return $limit->save();
+        }
     }
 
 

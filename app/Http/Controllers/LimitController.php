@@ -19,15 +19,21 @@ class LimitController extends Controller
        foreach (LimitType::all() as $type) {
 
            if ($request->exists($type->code)) {
-               $repo->set($type->code, $request->all());
+               $success = $repo->set($type->code, $request->all());
 
            } else {
                $repo->inactivate($type->code);
            }
        }
 
-       return redirect(route('portfolios.edit', $request->id))
-           ->with('message', 'Limite erfolgreich geändert.')
-           ->with('active', $request->active);
+       if ($success) {
+           return redirect(route('portfolios.edit', $request->id))
+               ->with('message', 'Limite erfolgreich geändert.')
+               ->with('active', $request->active);
+       } else {
+           return redirect(route('portfolios.edit', $request->id))
+               ->with('error', 'Limite konnten nicht angepasst werden. Bitte überprüfe die Werte.')
+               ->with('active', $request->active);
+       }
    }
 }
