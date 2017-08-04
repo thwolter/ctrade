@@ -18,7 +18,9 @@ class CreateLimitsTable extends Migration
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
             $table->integer('type_id');
-            $table->float('limit');
+            $table->float('value');
+            $table->date('date')->nullable();
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

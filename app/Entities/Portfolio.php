@@ -15,6 +15,43 @@ use Illuminate\Http\UploadedFile;
 use Psy\Readline\Libedit;
 
 
+/**
+ * App\Entities\Portfolio
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $name
+ * @property string|null $description
+ * @property int|null $category_id
+ * @property float $cash
+ * @property int $currency_id
+ * @property array $settings
+ * @property int $public
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Entities\Category|null $category
+ * @property-read \App\Entities\Currency $currency
+ * @property-read mixed $category_name
+ * @property-read mixed $image_url
+ * @property-read \App\Entities\PortfolioImage $image
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Keyfigure[] $keyFigures
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Limit[] $limits
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Position[] $positions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Transaction[] $transactions
+ * @property-read \App\Entities\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereCash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereCurrencyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio wherePublic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereSettings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Portfolio extends Model
 {
     use Presentable;
@@ -299,8 +336,9 @@ class Portfolio extends Model
 
     public function keyFigure($type)
     {
-        $keyFigure = $this->keyfigures()->whereHas('type', function($query) use($type) {
-            $query->whereCode($type); })->first();
+        $keyFigure = $this->keyfigures()->whereHas('type', function ($query) use ($type) {
+            $query->whereCode($type);
+        })->first();
 
         if (count($keyFigure) == 0) {
             $type = KeyfigureType::firstOrCreate(['code' => $type]);
@@ -313,27 +351,6 @@ class Portfolio extends Model
     }
 
 
-    public function limit($type, $value = null)
-    {
-        if (! $value) {
-
-            if (! LimitType::whereCode($type)->exists()) {
-                throw new LimitTypeException("Limit type '{$type}' doesn't exist.");
-            }
-
-            $limit = $this->limits()->whereHas('type', function($query) use($type) {
-                $query->whereCode($type); })->get()->last();
-
-            if ($limit) return $limit->toArray();
-
-        } else {
-            $limit = new Limit(['limit' => $value]);
-            $limit->type()->associate(LimitType::firstOrCreate(['code' => $type]));
-            $this->limits()->save($limit);
-
-            return $limit->toArray();
-        }
-    }
 
     /*
      * private functions

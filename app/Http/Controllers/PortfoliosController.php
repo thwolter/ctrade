@@ -17,6 +17,7 @@ use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\DeletePortfolio;
 use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
+use App\Repositories\LimitRepository;
 use App\Settings\InitialSettings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -114,7 +115,10 @@ class PortfoliosController extends Controller
     {
         $portfolio = Portfolio::findOrFail($id);
         $user = $portfolio->user;
-        return view('portfolios.edit', compact('portfolio', 'user'));
+        $limit = new LimitRepository($portfolio);
+
+        return view('portfolios.edit',
+            compact('portfolio', 'user', 'limit'));
     }
 
     /**
@@ -137,7 +141,6 @@ class PortfoliosController extends Controller
         $portfolio->save();
 
         $portfolio->settings()->merge($request->all());
-        $portfolio->settings()->setLimitDeactivation($request->all());
 
         return redirect(route('portfolios.edit', $id))
             ->with('message', 'Portfolio erfolgreich geändert.')

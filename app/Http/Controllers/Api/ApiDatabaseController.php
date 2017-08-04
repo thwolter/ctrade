@@ -113,6 +113,11 @@ class ApiDatabaseController extends ApiBaseController
         return $limits->limitHistory($request->type, $request->date, $request->count);
     }
 
+    public function utilisation(Request $request)
+    {
+
+    }
+
     public function graph(Request $request)
     {
         $this->validate($request, [

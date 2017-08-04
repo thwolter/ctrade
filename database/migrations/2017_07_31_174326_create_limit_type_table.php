@@ -28,6 +28,6 @@ class CreateLimitTypeTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('limit_types');
     }
 }

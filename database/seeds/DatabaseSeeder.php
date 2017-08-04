@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CurrencySeeder::class);
         $this->call(TransactionTypeSeeder::class);
+        $this->call(LimitTypeSeeder::class);
     }
 }

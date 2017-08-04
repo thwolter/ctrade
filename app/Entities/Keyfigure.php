@@ -26,6 +26,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Keyfigure whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Keyfigure whereValue($value)
  * @mixin \Eloquent
+ * @property int $type_id
+ * @property array $values
+ * @property string|null $expires_at
+ * @property-read \App\Entities\KeyfigureType $type
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Keyfigure whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Keyfigure whereTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Keyfigure whereValues($value)
  */
 class Keyfigure extends Model
 {

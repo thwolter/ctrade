@@ -37,6 +37,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereTypeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property float|null $cash
+ * @property string $executed_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Transaction whereCash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Transaction whereExecutedAt($value)
  */
 class Transaction extends Model
 {

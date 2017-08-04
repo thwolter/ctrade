@@ -21,7 +21,7 @@
     <br><br>
 
     <div id="form">
-        {!! Form::open(['route' => ['portfolios.update', $portfolio->id], 'method' => 'PUT',
+        {!! Form::open(['route' => ['limits.set', $portfolio->id], 'method' => 'POST',
             'class' => 'form form-horizontal']) !!}
 
         <input type="hidden" name="active" value="limits">
@@ -30,16 +30,17 @@
 
         <!-- Absolute limit -->
         @php
-            $checked = is_null($portfolio->settings('abs_limit')) ? "" : "checked";
+            $type = 'absolute';
+            $checked = ($limit->active($type)) ? "checked" : "";
             $visible = ($checked) ? "inherit" : "none";
-            $value = (string)$portfolio->settings('abs_limit_value')
+            $value = ($checked) ? (string)$limit->get($type)->value : null;
         @endphp
 
         <div class="form-group">
             <label class="col-md-3 control-label limit-label">Absolutes Limit</label>
             <div class="col-md-7">
                 <div class="checkbox">
-                    <label><input type="checkbox" name="abs_limit" value="absolute" {{ $checked }}>Aktivieren</label>
+                    <label><input type="checkbox" name="absolute" value="absolute" {{ $checked }}>Aktivieren</label>
                 </div>
                 <span class="help-block">Der maximal akzeptierte Verlust in der Portfoliowährung innerhalb
                     eines Zeitraumes von {{ $portfolio->settings()->human()->get('period') }}. Der Zeitraum
@@ -54,7 +55,7 @@
                 <div class="col-md-7">
                     <div class="input-group">
                         <span class="input-group-addon">{{ $portfolio->currencyCode() }}</span>
-                        <input type="number" name="abs_limit_value" placeholder="Betrag"
+                        <input type="number" name="absolute_value" placeholder="Betrag"
                                class="form-control" step="0.01" min="0" value="{{ $value }}">
                     </div>
                 </div>
@@ -64,16 +65,18 @@
 
         <!-- Relative limit -->
         @php
-            $checked = is_null($portfolio->settings('rel_limit')) ? "" : "checked";
+            $type = 'relative';
+            $checked = ($limit->active($type)) ? "checked" : "";
             $visible = ($checked) ? "inherit" : "none";
-            $value = (string)$portfolio->settings('rel_limit_value')
+            $value = ($checked) ? (string)$limit->get($type)->value : null;
+
         @endphp
 
         <div class="form-group">
             <label class="col-md-3 control-label limit-label">Relatives Limit</label>
             <div class="col-md-7">
                 <div class="checkbox">
-                    <label><input type="checkbox" name="rel_limit" value="relative" {{ $checked }}>Aktivieren</label>
+                    <label><input type="checkbox" name="{{ $type }}" value="{{ $type }}" {{ $checked }}>Aktivieren</label>
                 </div>
                 <span class="help-block">Der maximal akzeptierte Verlust in Prozent vom Portfoliowert innerhalb
                     eines Zeitraumes von {{ $portfolio->settings()->human()->get('period') }}. Der Zeitraum
@@ -88,7 +91,7 @@
                 <div class="col-md-7">
                     <div class="input-group">
                         <span class="input-group-addon">%</span>
-                        <input type="number" name="rel_limit_value" placeholder="Betrag"
+                        <input type="number" name="{{ $type.'_value'}}" placeholder="Betrag"
                                class="form-control" step="0.01" min="0" max="100" value="{{ $value }}">
                     </div>
                 </div>
@@ -98,16 +101,18 @@
 
         <!-- Floor limit -->
         @php
-            $checked = is_null($portfolio->settings('floor_limit')) ? "" : "checked";
+            $type = 'floor';
+            $checked = ($limit->active($type)) ? "checked" : "";
             $visible = ($checked) ? "inherit" : "none";
-            $value = (string)$portfolio->settings('floor_limit_value')
+            $value = ($checked) ? (string)$limit->get($type)->value : null;
+
         @endphp
 
         <div class="form-group">
             <label class="col-md-3 control-label limit-label">Mindestwert</label>
             <div class="col-md-7">
                 <div class="checkbox">
-                    <label><input type="checkbox" name="floor_limit" value="floor" {{ $checked }}>Aktivieren</label>
+                    <label><input type="checkbox" name="{{ $type }}" value="{{ $type }}" {{ $checked }}>Aktivieren</label>
                 </div>
                 <span class="help-block">Der Mindestwert, den das Portfolio jederzeit aufweisen soll.
                     Bei dieser Limitart wird angenommen, dass das Portfolio am Ende
@@ -124,7 +129,7 @@
                 <div class="col-md-7">
                     <div class="input-group">
                         <span class="input-group-addon">{{ $portfolio->currencyCode() }}</span>
-                        <input type="number" name="floor_limit_value" placeholder="Betrag"
+                        <input type="number" name="{{ $type.'_value' }}" placeholder="Betrag"
                                class="form-control" step="0.01" min="0" value="{{ $value }}">
                     </div>
                 </div>
@@ -134,17 +139,18 @@
 
         <!-- Target limit -->
         @php
-            $checked = is_null($portfolio->settings('target_limit')) ? "" : "checked";
+            $type = 'target';
+            $checked = ($limit->active($type)) ? "checked" : "";
             $visible = ($checked) ? "inherit" : "none";
-            $valueAmount = (string)$portfolio->settings('target_limit_value');
-            $valueDate = (string)$portfolio->settings('target_limit_date');
+            $value = ($checked) ? (string)$limit->get($type)->value : null;
+            $date = ($checked) ? $limit->get($type)->date : null;
         @endphp
 
         <div class="form-group">
             <label class="col-md-3 control-label limit-label">Zielwert</label>
             <div class="col-md-7">
                 <div class="checkbox">
-                    <label><input type="checkbox" name="target_limit" value="target" {{ $checked }}>Aktivieren</label>
+                    <label><input type="checkbox" name="{{ $type }}" value="{{ $type }}" {{ $checked }}>Aktivieren</label>
                 </div>
                 <span class="help-block">Der Mindestwert, den das Portfolio am Ende einer festgelegten
                     Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine
@@ -161,8 +167,8 @@
                 <div class="col-md-7">
                     <div class="input-group">
                         <span class="input-group-addon">{{ $portfolio->currencyCode() }}</span>
-                        <input type="number" name="target_limit_value" placeholder="Betrag"
-                               class="form-control" step="0.01" min="0" value="{{ $valueAmount }}">
+                        <input type="number" name="{{ $type.'_value' }}" placeholder="Betrag"
+                               class="form-control" step="0.01" min="0" value="{{ $value }}">
                     </div>
                 </div>
             </div>
@@ -174,8 +180,8 @@
                     <div class="input-group">
                         <div id="datepicker" class="input-group date" data-provide="datepicker">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input type="date" name="target_limit_date" class="form-control"
-                                   placeholder="Datum" value="{{ $valueDate }}">
+                            <input type="date" name="{{ $type.'_date' }}" class="form-control"
+                                   placeholder="Datum" value="{{ $date }}">
                         </div>
                     </div>
                 </div>
