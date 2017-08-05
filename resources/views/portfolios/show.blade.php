@@ -57,8 +57,7 @@
                         <limit-stats
                                 pid="{{ $portfolio->id }}"
                                 conf="{{ $portfolio->settings('confidence') }}"
-                                period="{{ $portfolio->settings('period') }}"
-                                reference="2017-08-02">
+                                period="{{ $portfolio->settings('period') }}">
                         </limit-stats>
                     </portlet>
                 </div>

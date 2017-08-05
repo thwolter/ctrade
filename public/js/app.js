@@ -12120,8 +12120,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             routeParams: {
                 id: this.pid,
                 conf: this.conf,
-                period: this.period,
-                reference: this.reference
+                period: this.period
             }
         };
     },

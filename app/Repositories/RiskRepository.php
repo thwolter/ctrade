@@ -14,26 +14,25 @@ class RiskRepository
     protected $portfolio;
 
     protected $daysPerYear = 250;
-    protected $referenceDate;
 
 
-    public function __construct(Portfolio $portfolio, Carbon $referenceDate = null)
+    public function __construct(Portfolio $portfolio)
     {
         $this->portfolio = $portfolio;
-        $this->referenceDate = $referenceDate;
     }
 
 
     public function portfolioRisk($conf, $period, $date = null)
     {
         $risks = $this->portfolio->keyFigure('risk')->values;
+        $referenceDate = Carbon::parse(key($risks));
         $dailyRisk = array_get(head($risks), $conf);
 
         if (is_null($date)) {
             $factor = sqrt($period);
 
         } else {
-            $factor = sqrt(max(0, $this->referenceDate->diffInDays($date, false)));
+            $factor = sqrt(max(0, $referenceDate->diffInDays($date, false)));
         }
 
         return $dailyRisk * $factor;

@@ -121,14 +121,13 @@ class ApiDatabaseController extends ApiBaseController
         $this->validate($request, [
             'id' => 'required|exists:portfolios,id',
             'conf' => 'required|numeric',
-            'period' => 'required|numeric',
-            'reference' => 'required|date'
+            'period' => 'required|numeric'
         ]);
 
         $portfolio = $this->getPortfolio($request);
 
         $limits = new LimitRepository($portfolio);
-        $risks = new RiskRepository($portfolio, Carbon::parse($request->reference));
+        $risks = new RiskRepository($portfolio);
 
         $risk = $risks->portfolioRisk($request->conf, $request->period);
 
@@ -150,7 +149,7 @@ class ApiDatabaseController extends ApiBaseController
                     break;
                 case 'target':
                     $riskToTarget = $risks->portfolioRisk($request->conf, null, Carbon::parse($date));
-                    $quota = $risk / ($portfolio->total() - $limit);
+                    $quota = $riskToTarget / ($portfolio->total() - $limit);
                     break;
                 default:
                     $quota = null;
