@@ -9,7 +9,7 @@
         data() {
             return {
                 route: '/api/portfolio/value',
-                type: 'line',
+                type: 'line'
             }
         },
 
@@ -28,7 +28,9 @@
                 this.options = {
                     legend: {
                         display: false
-                    }
+                    },
+                    //responsive: false,
+                    //maintainAspectRatio: false,
                 }
             }
         }

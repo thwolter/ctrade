@@ -11628,7 +11628,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = (Vue.extend({
 
-    props: ['pid'],
+    props: ['pid', 'height'],
 
     data: function data() {
         return {
@@ -12872,6 +12872,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 legend: {
                     display: false
                 }
+                //responsive: false,
+                //maintainAspectRatio: false,
             };
         }
     }
@@ -16876,7 +16878,7 @@ exports.push([module.i, "\n.display-hidden {\n    display: none;\n}\n", ""]);
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n.chart-container {\n    padding: 0 20px;\n}\n.chart-legend span {\n    width: 10px;\n    height: 10px;\n    display: inline-block;\n    margin-right: 10px;\n}\n.chart-legend li {\n    list-style-type: none;\n    text-indent: -20px;\n}\n", ""]);
+exports.push([module.i, "\n@media (min-width: 992px) {\n.chart-container {\n        height: 257px;\n}\n}\n@media (min-width: 1200px) {\n.chart-container {\n        height: 315px;\n}\n}\n.chart-container {\n    padding: 0 20px;\n}\n.chart-legend {\n}\n.chart-legend span {\n    width: 10px;\n    height: 10px;\n    display: inline-block;\n    margin-right: 10px;\n}\n.chart-legend li {\n    list-style-type: none;\n    text-indent: -20px;\n}\n", ""]);
 
 /***/ }),
 /* 234 */
@@ -36510,7 +36512,10 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {}, [(_vm.showSpinner) ? _c('div', [_c('spinner', {
-    staticClass: "spinner-overlay"
+    staticClass: "spinner-overlay",
+    attrs: {
+      "height": this.height
+    }
   })], 1) : _vm._e(), _vm._v(" "), _c('div', {
     class: _vm.clsContainer
   }, [_c('canvas', {

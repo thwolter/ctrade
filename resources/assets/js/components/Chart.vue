@@ -3,7 +3,7 @@
 
         <!-- Spinner -->
         <div v-if="showSpinner">
-            <spinner class="spinner-overlay"></spinner>
+            <spinner class="spinner-overlay" :height="this.height"></spinner>
         </div>
 
         <div :class="clsContainer">
@@ -18,7 +18,7 @@
 
     export default Vue.extend({
 
-        props: ['pid'],
+        props: ['pid', 'height'],
 
         data() {
             return {

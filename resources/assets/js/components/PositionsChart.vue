@@ -68,8 +68,24 @@
 </script>
 
 <style>
+
+    @media (min-width: 992px) {
+        .chart-container {
+            height: 257px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .chart-container {
+            height: 315px;
+        }
+    }
     .chart-container {
         padding: 0 20px;
+    }
+
+    .chart-legend {
+
     }
 
     .chart-legend span {
