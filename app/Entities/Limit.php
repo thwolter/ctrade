@@ -2,6 +2,8 @@
 
 namespace App\Entities;
 
+use App\Presenters\LimitPresenter;
+use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -27,6 +29,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Limit extends Model
 {
+    use Presentable;
+
+    protected $presenter = LimitPresenter::class;
     protected $fillable = ['type', 'limit', 'date'];
 
 
@@ -44,7 +49,6 @@ class Limit extends Model
     public function toArray()
     {
         return $this->getAttributes();
-        //return [$this->updated_at->toDateString() => $this->limit];
     }
 
 

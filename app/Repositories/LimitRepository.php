@@ -95,6 +95,8 @@ class LimitRepository
         if (! is_null($limit)) {
             $limit->active = false;
             $limit->save();
+
+            $this->portfolio->user->notify(new LimitChanged($limit));
         }
     }
 

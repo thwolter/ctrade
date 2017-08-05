@@ -58,6 +58,19 @@ class LimitChanged extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->limit->toArray();
+        if ($this->limit->active) {
+            $present = [
+                'title' => $this->limit->present()->type().' angepasst',
+                'message' => 'Limit wurde auf '.$this->limit->present()->value().' gesetzt.',
+            ];
+
+        } else {
+            $present = [
+                'title' => $this->limit->present()->type().' deaktiviert',
+                'message' => 'Limit wird nicht mehr überwacht.'
+            ];
+        }
+
+        return array_merge($this->limit->toArray(), $present);
     }
 }
