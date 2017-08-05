@@ -59,9 +59,11 @@ class LimitRepository
 
         $limit->value = array_get($attributes, $type.'_value');
         $limit->date = array_get($attributes, $type.'_date');
+        $dateMissing = array_key_exists($type.'_date', $attributes) && is_null($limit->date);
+
         $limit->active = true;
 
-        if (!($limit->value > 0) || !($limit->date > 0)) {
+        if (!($limit->value > 0) || $dateMissing) {
             return false;
         } else {
             return $limit->save();
