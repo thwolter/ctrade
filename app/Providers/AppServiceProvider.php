@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use App\Entities\Limit;
 use App\Entities\Portfolio;
-use App\Observers\PortfolioObserver;
+use App\Observers\LimitObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
             'stock' => \App\Entities\Stock::class,
             'ccyPair' => \App\Entities\CcyPair::class
         ]);
+
+        Limit::observe(LimitObserver::class);
     }
 
     /**

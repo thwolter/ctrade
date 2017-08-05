@@ -32,7 +32,8 @@ class Limit extends Model
     use Presentable;
 
     protected $presenter = LimitPresenter::class;
-    protected $fillable = ['type', 'limit', 'date'];
+
+    protected $fillable = ['type', 'value', 'date', 'active'];
 
 
     public function portfolio()

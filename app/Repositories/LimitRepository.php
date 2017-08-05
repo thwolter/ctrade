@@ -25,22 +25,6 @@ class LimitRepository
 
 
     /**
-     * Create an array with date and limit value for all dates on which a limit was defined.
-     *
-     * @param  $limits
-     * @return array
-     */
-    public function limitsArray($limits)
-    {
-        $result = [];
-        foreach ($limits as $limit) {
-            $value = $limit->toArray();
-            $result[key($value)] = array_first($value);
-        }
-        return $result;
-    }
-
-    /**
      * Set a limit for the portfolio an specified limit type based on request array.
      *
      * @param string $type
@@ -58,30 +42,34 @@ class LimitRepository
             $limit->type()->associate(LimitType::whereCode($type)->first());
         }
 
-        $currentLimit = [$limit->value, $limit->date, $limit->active];
+        if ($this->isValid($attributes, $type)) {
 
-        $limit->value = array_get($attributes, $type.'_value');
-        $limit->date = array_get($attributes, $type.'_date');
-        $dateMissing = array_key_exists($type.'_date', $attributes) && is_null($limit->date);
-
-        $limit->active = true;
-
-        $newLimit = [$limit->value, $limit->date, $limit->active];
-
-        if (!($limit->value > 0) || $dateMissing) {
-            return false;
+            $value = (float)array_get($attributes, $type.'_value');
+            $date = array_get($attributes, $type.'_date');
+            return $limit->update(['value' => $value, 'date' => $date, 'active' => 1]);
 
         } else {
-            $saved = $limit->save();
-
-            if ($saved && ($currentLimit != $newLimit)) {
-                $this->portfolio->user->notify(new LimitChanged($limit));
-            }
-
-            return $saved;
+            return false;
         }
     }
 
+
+    /**
+     * Check if a value for the specified type if provided and if date is not null if the
+     * the date is provided for this type.
+     *
+     * @param array $attributes
+     * @param string $type
+     * @return bool
+     */
+    public function isValid($attributes, $type)
+    {
+        $date = array_get($attributes, $type.'_date');
+        $value = array_get($attributes, $type.'_value');
+        $missingDate = array_key_exists($type.'_date', $attributes) && is_null($date);
+
+        return ($value !== null && !$missingDate);
+    }
 
     /**
      * Inactivates the limit of a given type.
@@ -92,15 +80,8 @@ class LimitRepository
     {
         $limit = $this->get($type);
 
-        if (! is_null($limit)) {
-
-            $wasActive = $limit->getAttribute('active');
-            $limit->active = false;
-            $limit->save();
-
-            if ($wasActive != $limit->active) {
-                $this->portfolio->user->notify(new LimitChanged($limit));
-            }
+        if ($limit) {
+            $limit->update(['active' => 0]);
         }
     }
 
@@ -120,7 +101,7 @@ class LimitRepository
 
 
     /**
-     * Return true if the portfolo has an active limit of specified type or false otherwise.
+     * Return true if the portfolio has an active limit of specified type or false otherwise.
      *
      * @param string $type
      * @return bool

@@ -17,27 +17,25 @@ class LimitController extends Controller
         $portfolio = Portfolio::findOrFail($request->id)->first();
         $repo = new LimitRepository($portfolio);
 
-        $allSuccess = [];
+        $success = [];
         foreach (LimitType::all() as $type) {
 
             if ($request->exists($type->code)) {
-                $success = $repo->set($type->code, $request->all());
-                $allSuccess[] = $success;
+                $success[] = $repo->set($type->code, $request->all());
 
             } else {
                 $repo->inactivate($type->code);
             }
         }
 
-        if (array_search(false, $allSuccess)) {
-            return redirect(route('portfolios.edit', $request->id))
-                ->with('error', 'Limite konnten nicht angepasst werden. Bitte überprüfe die Werte.')
-                ->with('active', $request->active);
+        $redirect = redirect(route('portfolios.edit', $request->id))
+            ->with('active', $request->active);
+
+        if (array_search(false, $success)) {
+            return $redirect->with('error', 'Limite konnten nicht angepasst werden. Bitte überprüfe die Werte.');
 
         } else {
-            return redirect(route('portfolios.edit', $request->id))
-                ->with('message', 'Limite erfolgreich geändert.')
-                ->with('active', $request->active);
+            return $redirect->with('message', 'Limite erfolgreich geändert.');
         }
     }
 }

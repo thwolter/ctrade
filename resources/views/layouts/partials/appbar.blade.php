@@ -133,6 +133,7 @@
                             @foreach(Auth::user()->unreadNotifications as $notification)
 
                                 @include ('notifications.'.snake_case(class_basename($notification->type)))
+                                @php $notification->markAsRead() @endphp
 
                             @endforeach
 
