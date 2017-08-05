@@ -43,7 +43,8 @@ class Limit extends Model
 
     public function toArray()
     {
-        return [$this->updated_at->toDateString() => $this->limit];
+        return $this->getAttributes();
+        //return [$this->updated_at->toDateString() => $this->limit];
     }
 
 

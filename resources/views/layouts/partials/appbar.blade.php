@@ -116,7 +116,12 @@
                        data-hover="dropdown">
                         <i class="fa fa-bell navbar-notification-icon"></i>
                         <span class="visible-xs-inline">&nbsp;Notifications</span>
-                        <b class="badge badge-primary">3</b>
+                        @php
+                            $count = count(Auth::user()->unreadNotifications)
+                        @endphp
+                        @if ($count)
+                            <b class="badge badge-primary">{{ $count }}</b>
+                        @endif
                     </a>
 
                     <div class="dropdown-menu">
@@ -125,33 +130,11 @@
 
                         <div class="notification-list">
 
-                            <a href="./page-notifications.html" class="notification">
-                                <span class="notification-icon"><i class="fa fa-cloud-upload text-primary"></i></span>
-                                <span class="notification-title">Notification Title</span>
-                                <span class="notification-description">Praesent dictum nisl non est sagittis luctus.</span>
-                                <span class="notification-time">20 minutes ago</span>
-                            </a> <!-- / .notification -->
+                            @foreach(Auth::user()->unreadNotifications as $notification)
 
-                            <a href="./page-notifications.html" class="notification">
-                                <span class="notification-icon"><i class="fa fa-ban text-secondary"></i></span>
-                                <span class="notification-title">Notification Title</span>
-                                <span class="notification-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</span>
-                                <span class="notification-time">20 minutes ago</span>
-                            </a> <!-- / .notification -->
+                                @include ('notifications.'.snake_case(class_basename($notification->type)))
 
-                            <a href="./page-notifications.html" class="notification">
-                                <span class="notification-icon"><i class="fa fa-warning text-tertiary"></i></span>
-                                <span class="notification-title">Storage Space Almost Full!</span>
-                                <span class="notification-description">Praesent dictum nisl non est sagittis luctus.</span>
-                                <span class="notification-time">20 minutes ago</span>
-                            </a> <!-- / .notification -->
-
-                            <a href="./page-notifications.html" class="notification">
-                                <span class="notification-icon"><i class="fa fa-ban text-danger"></i></span>
-                                <span class="notification-title">Sync Error</span>
-                                <span class="notification-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</span>
-                                <span class="notification-time">20 minutes ago</span>
-                            </a> <!-- / .notification -->
+                            @endforeach
 
                         </div> <!-- / .notification-list -->
 

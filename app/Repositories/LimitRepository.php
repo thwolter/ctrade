@@ -8,6 +8,7 @@ use App\Classes\Helpers;
 use App\Entities\Limit;
 use App\Entities\LimitType;
 use App\Entities\Portfolio;
+use App\Notifications\LimitChanged;
 use App\Repositories\Exceptions\LimitException;
 use Carbon\Carbon;
 
@@ -57,16 +58,27 @@ class LimitRepository
             $limit->type()->associate(LimitType::whereCode($type)->first());
         }
 
+        $currentLimit = [$limit->value, $limit->date, $limit->active];
+
         $limit->value = array_get($attributes, $type.'_value');
         $limit->date = array_get($attributes, $type.'_date');
         $dateMissing = array_key_exists($type.'_date', $attributes) && is_null($limit->date);
 
         $limit->active = true;
 
+        $newLimit = [$limit->value, $limit->date, $limit->active];
+
         if (!($limit->value > 0) || $dateMissing) {
             return false;
+
         } else {
-            return $limit->save();
+            $saved = $limit->save();
+
+            if ($saved && ($currentLimit != $newLimit)) {
+                $this->portfolio->user->notify(new LimitChanged($limit));
+            }
+
+            return $saved;
         }
     }
 
