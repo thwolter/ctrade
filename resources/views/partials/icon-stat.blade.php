@@ -7,12 +7,12 @@
         </div><!-- /.col-xs-8 -->
 
         <div class="col-xs-4 text-center">
-            <i class="fa fa-dollar icon-stat-visual bg-primary"></i> <!-- /.icon-stat-visual -->
+            <i class="fa {{ $icon }} icon-stat-visual bg-primary"></i> <!-- /.icon-stat-visual -->
         </div><!-- /.col-xs-4 -->
     </div><!-- /.row -->
 
     <div class="icon-stat-footer">
-        <i class="fa fa-clock-o"></i> Updated Now
+        <i class="fa fa-clock-o"></i> Updated {{ $date }}
     </div>
 
 </div> <!-- /.icon-stat -->

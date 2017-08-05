@@ -26,7 +26,7 @@ class RiskRepository
     {
         $risks = $this->portfolio->keyFigure('risk')->values;
         $referenceDate = Carbon::parse(key($risks));
-        $dailyRisk = array_get(head($risks), $conf);
+        $dailyRisk = array_get(head($risks), (string)$conf);
 
         if (is_null($date)) {
             $factor = sqrt($period);

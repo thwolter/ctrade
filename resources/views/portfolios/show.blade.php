@@ -9,8 +9,10 @@
 
                 <div class="col-md-3 col-sm-6">
                     @component('partials.icon-stat')
-                        @slot('label', 'Wert')
+                        @slot('label', 'Portfoliowert')
                         @slot('value', $portfolio->present()->total())
+                        @slot('date', $portfolio->present()->updatedValue());
+                        @slot('icon', 'fa-pie-chart');
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
 
@@ -18,13 +20,17 @@
                     @component('partials.icon-stat')
                         @slot('label', 'Barbestand')
                         @slot('value', $portfolio->present()->cash())
+                        @slot('date', $portfolio->present()->updatedToday());
+                        @slot('icon', 'fa-university');
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
 
                 <div class="col-md-3 col-sm-6">
                     @component('partials.icon-stat')
-                        @slot('label', 'Risiko (30 Tage)')
-                        @slot('value', $portfolio->present()->total())
+                        @slot('label', 'Risiko ('.$portfolio->settings()->human()->get('period').')')
+                        @slot('value', $portfolio->present()->risk())
+                        @slot('date', $portfolio->present()->updatedRisk());
+                        @slot('icon', 'fa-tachometer');
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
 
@@ -32,6 +38,8 @@
                     @component('partials.icon-stat')
                         @slot('label', 'Entwicklung (30 Tage)')
                         @slot('value', $portfolio->present()->total())
+                        @slot('date', 'now');
+                        @slot('icon', 'fa-line-chart');
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
             </div>
