@@ -11,7 +11,14 @@ class LimitPresenter extends Presenter
 
     public function value()
     {
-        return $this->formatPrice($this->entity->value, $this->entity->portfolio->currencyCode());
+        if ($this->entity->type->code == 'relative') {
+            $string = $this->entity->value. '%';
+
+        } else {
+            $string = $this->formatPrice($this->entity->value, $this->entity->portfolio->currencyCode());
+
+        }
+        return $string;
     }
 
 

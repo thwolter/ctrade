@@ -93,10 +93,14 @@ class LimitRepository
         $limit = $this->get($type);
 
         if (! is_null($limit)) {
+
+            $wasActive = $limit->getAttribute('active');
             $limit->active = false;
             $limit->save();
 
-            $this->portfolio->user->notify(new LimitChanged($limit));
+            if ($wasActive != $limit->active) {
+                $this->portfolio->user->notify(new LimitChanged($limit));
+            }
         }
     }
 
