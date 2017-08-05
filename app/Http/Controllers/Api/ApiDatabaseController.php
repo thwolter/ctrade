@@ -143,14 +143,14 @@ class ApiDatabaseController extends ApiBaseController
                     $quota = $risk / $limit;
                     break;
                 case 'relative':
-                    $quota = $risk / ($limit * $portfolio->value() / 100);
+                    $quota = $risk / ($limit * $portfolio->total() / 100);
                     break;
                 case 'floor':
-                    $quota = $risk / ($portfolio->value() - $limit);
+                    $quota = $risk / ($portfolio->total() - $limit);
                     break;
                 case 'target':
                     $riskToTarget = $risks->portfolioRisk($request->conf, null, Carbon::parse($date));
-                    $quota = $risk / ($portfolio->value() - $limit);
+                    $quota = $risk / ($portfolio->total() - $limit);
                     break;
                 default:
                     $quota = null;
@@ -159,7 +159,8 @@ class ApiDatabaseController extends ApiBaseController
                 'quota' => $quota,
                 'risk' => $risk,
                 'limit' => $limit,
-                'date' => $date
+                'date' => $date,
+                'ccy' => $portfolio->currencyCode()
             ];
         };
 
@@ -174,8 +175,9 @@ class ApiDatabaseController extends ApiBaseController
             'conf' => 'required|numeric',
             'count' => 'required|numeric'
         ]);
+        //todo: return both value and risk history
+        $values = $this->getPortfolio($request)->keyFigure('value')->values;
 
-        //$values = $this->getPortfolio($request)->keyFigure('value')->values;
-        //return $limits->limitHistory($request->type, $request->date, $request->count);
+        return $values;
     }
 }

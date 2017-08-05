@@ -54,7 +54,12 @@
 
                 <div class="col-md-4">
                     <portlet title="Limitauslastung">
-                        <limit-stats pid="{{ $portfolio->id }}"></limit-stats>
+                        <limit-stats
+                                pid="{{ $portfolio->id }}"
+                                conf="{{ $portfolio->settings('confidence') }}"
+                                period="{{ $portfolio->settings('period') }}"
+                                reference="2017-08-02">
+                        </limit-stats>
                     </portlet>
                 </div>
 

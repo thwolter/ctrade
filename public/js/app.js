@@ -119,6 +119,44 @@ module.exports = function() {
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(273)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(166),
+  /* template */
+  __webpack_require__(264),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/Chart.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Chart.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5b2ab80e", Component.options)
+  } else {
+    hotAPI.reload("data-v-5b2ab80e", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*
   MIT License http://www.opensource.org/licenses/mit-license.php
   Author Tobias Koppers @sokra
@@ -337,10 +375,10 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 6 */,
 /* 7 */,
 /* 8 */,
-/* 9 */
+/* 9 */,
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -420,45 +458,7 @@ var Input = {
 /* harmony default export */ __webpack_exports__["a"] = (Input);
 
 /***/ }),
-/* 10 */,
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(273)
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(166),
-  /* template */
-  __webpack_require__(264),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/Chart.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Chart.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5b2ab80e", Component.options)
-  } else {
-    hotAPI.reload("data-v-5b2ab80e", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 11 */,
 /* 12 */,
 /* 13 */,
 /* 14 */,
@@ -10852,7 +10852,7 @@ return jQuery;
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vuelidate__);
@@ -10904,7 +10904,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('cleave', __webpack_requir
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('trade-stock', __webpack_require__(251));
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('graph', __webpack_require__(244));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('chart', __webpack_require__(11));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('chart', __webpack_require__(5));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('positions-chart', __webpack_require__(248));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('value-chart', __webpack_require__(252));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('spinner', __webpack_require__(250));
@@ -11351,7 +11351,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(10);
 //
 //
 //
@@ -11440,7 +11440,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(10);
 //
 //
 //
@@ -11606,7 +11606,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_chart_js__);
 //
 //
@@ -11643,7 +11643,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             backgroundColor: Colors.standard(),
 
             clsContainer: null,
-            clsLegend: 'display-hidden'
+            clsLegend: 'display-hidden',
+
+            routeParams: {
+                id: this.pid
+            }
         };
     },
 
@@ -11652,7 +11656,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fetch: function fetch() {
             var _this = this;
 
-            axios.get(this.route, { params: { id: this.pid } }).then(function (response) {
+            axios.get(this.route, { params: this.routeParams }).then(function (response) {
                 _this.assign(response.data);
                 _this.render();
             }).catch(function (error) {
@@ -11727,7 +11731,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__ = __webpack_require__(281);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave__ = __webpack_require__(237);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_cleave__);
 //
@@ -11879,7 +11883,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_chart_js__);
 //
 //
@@ -12023,18 +12027,138 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['pid'],
+    props: ['pid', 'conf', 'period', 'reference'],
 
     data: function data() {
         return {
-            route: '/api/portfolio/positions'
+            showSpinner: true,
+            data: null,
+
+            route: '/api/portfolio/utilisation',
+
+            routeParams: {
+                id: this.pid,
+                conf: this.conf,
+                period: this.period,
+                reference: this.reference
+            }
         };
     },
+
+
+    methods: {
+        fetch: function fetch() {
+            var _this = this;
+
+            axios.get(this.route, { params: this.routeParams }).then(function (response) {
+                _this.assign(response.data);
+            }).catch(function (error) {
+                return alert(error);
+            });
+        },
+        assign: function assign(data) {
+            this.data = data;
+        },
+        barCls: function barCls(quota) {
+            var base = 'progress-bar progress-bar-';
+            if (quota <= 0.8) {
+                return base + 'success';
+            }
+            if (quota > 0.8 && quota <= 0.95) {
+                return base + 'warning';
+            }
+            if (quota > 0.95) {
+                return base + 'danger';
+            }
+        }
+    },
+
     mounted: function mounted() {
-        console.log('Component mounted.');
+        this.fetch();
+    },
+    updated: function updated() {
+        this.showSpinner = false;
     }
 });
 
@@ -12072,7 +12196,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Chart_vue__);
 //
 
@@ -12716,7 +12840,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Chart_vue__);
 //
 
@@ -12779,7 +12903,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(6);
+window.axios = __webpack_require__(7);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -35175,6 +35299,10 @@ module.exports = Component.exports
 /* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(302)
+
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(171),
@@ -35424,31 +35552,102 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
+  return _c('div', {}, [(_vm.showSpinner) ? _c('div', [_c('spinner', {
+    staticClass: "spinner-overlay"
+  })], 1) : _vm._e(), _vm._v(" "), (_vm.data) ? _c('div', [(_vm.data.absolute) ? _c('div', {
     staticClass: "progress-stat"
   }, [_c('div', {
     staticClass: "progress-stat-label"
-  }, [_vm._v("Absolut Limit")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Absolutes Limit "), _c('span', {
+    staticClass: "label-detail"
+  }, [_vm._v("(" + _vm._s(_vm.data.absolute.limit.toFixed(2) + ' ' + _vm.data.absolute.ccy) + ")")])]), _vm._v(" "), _c('div', {
     staticClass: "progress-stat-value"
-  }, [_vm._v("77.7%")]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s((_vm.data.absolute.quota * 100).toFixed(0)) + "%")]), _vm._v(" "), _c('div', {
     staticClass: "progress progress-striped progress-sm active"
   }, [_c('div', {
-    staticClass: "progress-bar progress-bar-primary",
-    staticStyle: {
-      "width": "77%"
-    },
+    class: this.barCls(_vm.data.absolute.quota),
+    style: ({
+      width: _vm.data.absolute.quota * 100 + '%'
+    }),
     attrs: {
       "role": "progressbar",
-      "aria-valuenow": "77",
+      "aria-valuenow": _vm.data.absolute.risk,
       "aria-valuemin": "0",
-      "aria-valuemax": "100"
+      "aria-valuemax": _vm.data.absolute.limit
     }
   }, [_c('span', {
     staticClass: "sr-only"
-  }, [_vm._v("77.74% Visit Rate")])])])])])
-}]}
+  }, [_vm._v(_vm._s((_vm.data.absolute.quota * 100).toFixed(0)) + " Auslastung")])])])]) : _vm._e(), _vm._v(" "), (_vm.data.relative) ? _c('div', {
+    staticClass: "progress-stat"
+  }, [_c('div', {
+    staticClass: "progress-stat-label"
+  }, [_vm._v("\n                Relatives Limit "), _c('span', {
+    staticClass: "label-detail"
+  }, [_vm._v("(" + _vm._s(_vm.data.relative.limit.toFixed(1)) + " % vom Portfoliowert)")])]), _vm._v(" "), _c('div', {
+    staticClass: "progress-stat-value"
+  }, [_vm._v(_vm._s((_vm.data.relative.quota * 100).toFixed(0)) + "%")]), _vm._v(" "), _c('div', {
+    staticClass: "progress progress-striped progress-sm active"
+  }, [_c('div', {
+    class: this.barCls(_vm.data.relative.quota),
+    style: ({
+      width: _vm.data.relative.quota * 100 + '%'
+    }),
+    attrs: {
+      "role": "progressbar",
+      "aria-valuenow": _vm.data.relative.risk,
+      "aria-valuemin": "0",
+      "aria-valuemax": _vm.data.relative.limit
+    }
+  }, [_c('span', {
+    staticClass: "sr-only"
+  }, [_vm._v(_vm._s((_vm.data.relative.quota * 100).toFixed(0)) + " Auslastung")])])])]) : _vm._e(), _vm._v(" "), (_vm.data.floor) ? _c('div', {
+    staticClass: "progress-stat"
+  }, [_c('div', {
+    staticClass: "progress-stat-label"
+  }, [_vm._v("\n                Mindestwert Limit "), _c('span', {
+    staticClass: "label-detail"
+  }, [_vm._v("(" + _vm._s(_vm.data.floor.limit.toFixed(2) + ' ' + _vm.data.floor.ccy) + ")")])]), _vm._v(" "), _c('div', {
+    staticClass: "progress-stat-value"
+  }, [_vm._v(_vm._s((_vm.data.floor.quota * 100).toFixed(0)) + "%")]), _vm._v(" "), _c('div', {
+    staticClass: "progress progress-striped progress-sm active"
+  }, [_c('div', {
+    class: this.barCls(_vm.data.floor.quota),
+    style: ({
+      width: _vm.data.floor.quota * 100 + '%'
+    }),
+    attrs: {
+      "role": "progressbar",
+      "aria-valuenow": _vm.data.floor.risk,
+      "aria-valuemin": "0",
+      "aria-valuemax": _vm.data.floor.limit
+    }
+  }, [_c('span', {
+    staticClass: "sr-only"
+  }, [_vm._v(_vm._s((_vm.data.floor.quota * 100).toFixed(0)) + " Auslastung")])])])]) : _vm._e(), _vm._v(" "), (_vm.data.target) ? _c('div', {
+    staticClass: "progress-stat"
+  }, [_c('div', {
+    staticClass: "progress-stat-label"
+  }, [_vm._v("\n                Zielwert Limit "), _c('span', {
+    staticClass: "label-detail"
+  }, [_vm._v("(" + _vm._s(_vm.data.target.limit.toFixed(2) + ' ' + _vm.data.target.ccy) + ")")])]), _vm._v(" "), _c('div', {
+    staticClass: "progress-stat-value"
+  }, [_vm._v(_vm._s((_vm.data.target.quota * 100).toFixed(0)) + "%")]), _vm._v(" "), _c('div', {
+    staticClass: "progress progress-striped progress-sm active"
+  }, [_c('div', {
+    class: this.barCls(_vm.data.target.quota),
+    style: ({
+      width: _vm.data.target.quota * 100 + '%'
+    }),
+    attrs: {
+      "role": "progressbar",
+      "aria-valuenow": _vm.data.target.risk,
+      "aria-valuemin": "0",
+      "aria-valuemax": _vm.data.target.limit
+    }
+  }, [_c('span', {
+    staticClass: "sr-only"
+  }, [_vm._v(_vm._s((_vm.data.target.quota * 100).toFixed(0)) + " Auslastung")])])])]) : _vm._e()]) : _vm._e()])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -47685,7 +47884,7 @@ var content = __webpack_require__(230);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("1fbedaaf", content, false);
+var update = __webpack_require__(6)("1fbedaaf", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -47711,7 +47910,7 @@ var content = __webpack_require__(231);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("3dd87698", content, false);
+var update = __webpack_require__(6)("3dd87698", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -47737,7 +47936,7 @@ var content = __webpack_require__(232);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("26d40646", content, false);
+var update = __webpack_require__(6)("26d40646", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -47763,7 +47962,7 @@ var content = __webpack_require__(233);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("4b3e1390", content, false);
+var update = __webpack_require__(6)("4b3e1390", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -48195,6 +48394,45 @@ exports.default = withParams;
 __webpack_require__(139);
 module.exports = __webpack_require__(140);
 
+
+/***/ }),
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)();
+exports.push([module.i, "\n.progress-stat-label {\n    width: 70%;\n}\n.progress-stat-value {\n    width: 30%;\n}\n.label-detail {\n    text-transform: none;\n}\n", ""]);
+
+/***/ }),
+/* 302 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(301);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("4a2b2fdf", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-053cae7c!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LimitsStats.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-053cae7c!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LimitsStats.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 ],[294]);

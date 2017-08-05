@@ -33,13 +33,17 @@
                 backgroundColor: Colors.standard(),
 
                 clsContainer: null,
-                clsLegend: 'display-hidden'
+                clsLegend: 'display-hidden',
+
+                routeParams: {
+                    id: this.pid
+                }
             }
         },
 
         methods: {
             fetch() {
-                axios.get(this.route, {params: {id: this.pid}})
+                axios.get(this.route, {params: this.routeParams})
                     .then(response => {
                         this.assign(response.data);
                         this.render();
