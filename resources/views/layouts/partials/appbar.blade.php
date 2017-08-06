@@ -132,14 +132,14 @@
 
                             @foreach(Auth::user()->unreadNotifications as $notification)
 
-                                @include ('notifications.'.snake_case(class_basename($notification->type)))
+                                @include ('notifications.unread.'.snake_case(class_basename($notification->type)))
                                 @php $notification->markAsRead() @endphp
 
                             @endforeach
 
                         </div> <!-- / .notification-list -->
 
-                        <a href="./page-notifications.html" class="notification-link">View All Notifications</a>
+                        <a href="{{ route('notifications.index') }}" class="notification-link">Alle Benachichtigungen</a>
 
                     </div> <!-- / .dropdown-menu -->
 

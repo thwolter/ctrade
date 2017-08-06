@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 
 class LimitController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function set(Request $request)
     {
