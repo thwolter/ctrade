@@ -100,7 +100,7 @@
 <script>
     export default {
 
-        props: ['pid', 'conf', 'period', 'reference'],
+        props: ['pid', 'reference'],
 
         data() {
             return {
@@ -110,9 +110,7 @@
                 route: '/api/portfolio/utilisation',
 
                 routeParams: {
-                    id: this.pid,
-                    conf: this.conf,
-                    period: this.period
+                    id: this.pid
                 }
             }
         },

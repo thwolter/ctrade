@@ -67,6 +67,8 @@ abstract class Presenter
 
     public function formatDate($date)
     {
-        return Carbon::parse($date)->formatLocalized('%d.%m.%Y');
+        if ($date) {
+            return Carbon::parse($date)->formatLocalized('%d.%m.%Y');
+        }
     }
 }

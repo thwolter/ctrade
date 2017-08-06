@@ -12108,7 +12108,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['pid', 'conf', 'period', 'reference'],
+    props: ['pid', 'reference'],
 
     data: function data() {
         return {
@@ -12118,9 +12118,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             route: '/api/portfolio/utilisation',
 
             routeParams: {
-                id: this.pid,
-                conf: this.conf,
-                period: this.period
+                id: this.pid
             }
         };
     },

@@ -58,16 +58,25 @@ class LimitChanged extends Notification
      */
     public function toArray($notifiable)
     {
+        $value = $this->limit->present()->value();
+        $type = $this->limit->present()->type();
+        $portfolio = $this->limit->portfolio->name;
+        $date = $this->limit->present()->date();
+
+        $message = ($date)
+            ? "Neues Limit für Portfolio $portfolio ist $value bis $date"
+            : "Neues Limit für Portfolio $portfolio ist $value.";
+
         if ($this->limit->active) {
             $present = [
-                'title' => $this->limit->present()->type().' angepasst',
-                'message' => 'Limit wurde auf '.$this->limit->present()->value().' gesetzt.',
+                'title' => "$type angepasst",
+                'message' => $message,
             ];
 
         } else {
             $present = [
-                'title' => $this->limit->present()->type().' deaktiviert',
-                'message' => 'Limit wird nicht mehr überwacht.'
+                'title' => "$type deaktiviert",
+                'message' => "Limit für Portfolio $portfolio wird nicht mehr überwacht."
             ];
         }
 

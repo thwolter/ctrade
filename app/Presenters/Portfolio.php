@@ -27,7 +27,7 @@ class Portfolio extends Presenter
     public function risk()
     {
         $repo = new RiskRepository($this->entity);
-        $risk = $repo->portfolioRisk($this->entity->settings('confidence'), $this->entity->settings('period'));
+        $risk = $repo->portfolioRisk();
 
         return $this->formatPrice($risk, $this->entity->currencyCode());
     }

@@ -120,48 +120,12 @@ class ApiDatabaseController extends ApiBaseController
     {
         $this->validate($request, [
             'id' => 'required|exists:portfolios,id',
-            'conf' => 'required|numeric',
-            'period' => 'required|numeric'
         ]);
 
         $portfolio = $this->getPortfolio($request);
 
         $limits = new LimitRepository($portfolio);
-        $risks = new RiskRepository($portfolio);
-
-        $risk = $risks->portfolioRisk($request->conf, $request->period);
-
-        $result = [];
-        foreach ($portfolio->limits()->active()->get() as $type)
-        {
-            $limit = $limits->get($type->type->code)->value;
-            $date = $limits->get($type->type->code)->date;
-
-            switch($type->type->code) {
-                case 'absolute':
-                    $quota = $risk / $limit;
-                    break;
-                case 'relative':
-                    $quota = $risk / ($limit * $portfolio->total() / 100);
-                    break;
-                case 'floor':
-                    $quota = $risk / ($portfolio->total() - $limit);
-                    break;
-                case 'target':
-                    $riskToTarget = $risks->portfolioRisk($request->conf, null, Carbon::parse($date));
-                    $quota = $riskToTarget / ($portfolio->total() - $limit);
-                    break;
-                default:
-                    $quota = null;
-            }
-            $result[$type->type->code] = [
-                'quota' => $quota,
-                'risk' => $risk,
-                'limit' => $limit,
-                'date' => $date,
-                'ccy' => $portfolio->currencyCode()
-            ];
-        };
+        $result = $limits->utilisation();
 
         return $result;
     }
@@ -179,4 +143,5 @@ class ApiDatabaseController extends ApiBaseController
 
         return $values;
     }
+
 }

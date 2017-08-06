@@ -36,17 +36,11 @@ class LimitPresenter extends Presenter
             default:
                 $string = 'Limit';
         }
-
         return $string;
     }
 
-   public function activated()
-   {
-       if ($this->entity->active) {
-           return 'aktiviert';
-
-       } else {
-           return 'deaktiviert';
-       }
-   }
+    public function date()
+    {
+        return $this->formatDate($this->entity->date);
+    }
 }

@@ -111,4 +111,49 @@ class LimitRepository
         $limit = $this->get($type);
         return (is_null($limit)) ? false : $limit->active;
     }
+
+
+    /**
+     * Return the utilisation for each limit.
+     *
+     * @return array
+     */
+    public function utilisation()
+    {
+        $risks = new RiskRepository($this->portfolio);
+
+        $risk = $risks->portfolioRisk();
+
+        $result = [];
+        foreach ($this->portfolio->limits()->active()->get() as $type) {
+            $limit = $this->get($type->type->code)->value;
+            $date = $this->get($type->type->code)->date;
+
+            switch ($type->type->code) {
+                case 'absolute':
+                    $quota = $risk / $limit;
+                    break;
+                case 'relative':
+                    $quota = $risk / ($limit * $this->portfolio->total() / 100);
+                    break;
+                case 'floor':
+                    $quota = $risk / ($this->portfolio->total() - $limit);
+                    break;
+                case 'target':
+                    $riskToTarget = $risks->portfolioRisk(Carbon::parse($date));
+                    $quota = $riskToTarget / ($this->portfolio->total() - $limit);
+                    break;
+                default:
+                    $quota = null;
+            }
+            $result[$type->type->code] = [
+                'quota' => $quota,
+                'risk' => $risk,
+                'limit' => $limit,
+                'date' => $date,
+                'ccy' => $this->portfolio->currencyCode()
+            ];
+        };
+        return $result;
+    }
 }
