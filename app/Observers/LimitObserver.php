@@ -13,7 +13,6 @@ class LimitObserver
 
     public function updated(Limit $limit)
     {
-        $limit->portfolio->user->notify(new LimitChanged($limit));
-        dispatch(new CheckLimits($limit->portfolio));
+        event(new \App\Events\LimitHasChanged($limit));
     }
 }

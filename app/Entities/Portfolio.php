@@ -3,7 +3,7 @@
 namespace App\Entities;
 
 use App\Entities\Exceptions\LimitTypeException;
-use App\Events\PortfolioChanged;
+use App\Events\PortfolioHasChanged;
 use App\Presenters\Presentable;
 use App\Settings\PortfolioSettings;
 use App\Settings\Settings;

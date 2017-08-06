@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Entities\Keyfigure;
 use App\Entities\Portfolio;
+use App\Events\PortfolioRiskWasCalculated;
 use App\Models\Rscript;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -68,6 +69,8 @@ class CalcPortfolioRisk implements ShouldQueue
         }
 
         $kfRisk->validUntil($today->startOfDay());
+
+        event(new PortfolioRiskWasCalculated($this->portfolio));
     }
 
 

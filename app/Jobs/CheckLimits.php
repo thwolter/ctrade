@@ -3,15 +3,19 @@
 namespace App\Jobs;
 
 use App\Entities\Portfolio;
+use App\Events\LimitHasBreached;
 use App\Notifications\LimitBreached;
 use App\Repositories\LimitRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class CheckLimits //implements ShouldQueue
+class CheckLimits implements ShouldQueue
 {
-    use Dispatchable, Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $portfolio;
 
@@ -40,7 +44,7 @@ class CheckLimits //implements ShouldQueue
             if (array_get($value, 'quota') >= 1) {
 
                 $limit = $repo->get($key);
-                $this->portfolio->user->notify(new LimitBreached($limit));
+                event(new LimitHasBreached($limit));
             }
         }
     }

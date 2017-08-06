@@ -17,12 +17,38 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\NotifyMetadataUpdatedHasStarted'
         ],
         'App\Events\MetadataUpdateHasFinished' => [
-            'App\Listeners\NotifyMetadataUpdatedHasFinished'
+            'App\Listeners\NotifyMetadataUpdatedHasFinished',
         ],
-        'App\Events\PortfolioChanged' => [
-            'App\Listeners\CalculatePortfolioRisk'
+        'App\Events\PortfolioHasChanged' => [
+            'App\Listeners\Portfolio\CalculatePortfolioRisk',
+            'App\Listeners\Portfolio\CalculatePortfolioValue'
+        ],
+        'App\Events\LimitHasChanged' => [
+            'App\Listeners\Limit\NotifyLimitHasChanged',
+            'App\Listeners\Limit\CheckLimit'
+        ],
+        'App\Events\LimitHasBreached' => [
+            'App\Listeners\Limit\NotifyLimitHasBreached'
+        ],
+        'App\Events\PortfolioRiskWasCalculated' => [
+            'App\Listeners\Portfolio\RecalculatedUtilisation'
+        ],
+        'App\Events\PortfolioValueWasCalculated' => [
+            'App\Listeners\Portfolio\RecalculatedUtilisation'
         ]
     ];
+
+
+    /**
+     * The subscriber classes to register.
+     *
+     * @var array
+     */
+    protected $subscribe = [
+
+    ];
+
+
 
     /**
      * Register any events for your application.
