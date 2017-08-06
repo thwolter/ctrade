@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Metadata;
 
 use App\Events\MetadataUpdateHasFinished;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,7 +12,7 @@ use App\Entities\Database;
 use App\Facades\Datasource;
 
 
-class NotifyMetadataUpdatedHasFinished
+class NotifyUpdatedHasFinished implements ShouldQueue
 {
     /**
      * Create the event listener.

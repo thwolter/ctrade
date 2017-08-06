@@ -93,8 +93,7 @@ class BulkUpdate implements ShouldQueue
             Log::warning('Unable to load data from Quandl.');
             return false;
         }
-            
-        
+
         foreach ($items as $item) {
 
             $refreshed_at = $this->repository->refreshed($item);

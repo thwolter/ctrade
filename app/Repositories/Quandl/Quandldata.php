@@ -67,18 +67,25 @@ class Quandldata
     
     private function fetchCachedHistory($parameter)
     {
-        $key = sprintf('%s/%s/%s', 'Quandl', $this->quandlCode(), array_get($parameter, 'limit'));
+        $key = sprintf('%s/%s/%s', $this->database(), $this->quandlCode(), array_get($parameter, 'limit'));
         
-        if (\Cache::store('database')->has($key) and $this->relax) {
+        if (\Cache::store('redis')
+                ->tags([$this->provider(), $this->database()])
+                ->has($key) and $this->relax) {
             
-            $data = \Cache::store('database')->get($key);
+            $data = \Cache::store('redis')
+                ->tags([$this->provider(), $this->database()])
+                ->get($key);
             
         } else { 
         
             $data = $this->fetchHistory($parameter);
             
             $expiresAt = Carbon::now()->endOfDay();
-            \Cache::store('database')->put($key, $data, $expiresAt);
+            \Cache::store('redis')
+                ->tags([$this->provider(), $this->database()])
+                //->put($key, $data, $expiresAt);
+                ->forever($key, $data);
         }
         
         return $data;
@@ -103,10 +110,9 @@ class Quandldata
 
     private function quandlCode()
     {
-        $database_code = $this->source->first()->database->code;
         $dataset_code = $this->source->first()->dataset->code;
 
-        return "{$database_code}/{$dataset_code}";
+        return "{$this->database()}/{$dataset_code}";
     }
     
     
@@ -120,5 +126,18 @@ class Quandldata
         }
 
         return ($column) ? $column : 1;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function database()
+    {
+        return $this->source->first()->database->code;
+    }
+
+    private function provider()
+    {
+        return $this->source->first()->provider->code;
     }
 }

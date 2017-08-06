@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Metadata;
 
 use App\Events\MetadataUpdateHasStarted;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-class NotifyMetadataUpdatedHasStarted
+class NotifyUpdatedHasStarted implements ShouldQueue
 {
     /**
      * Create the event listener.

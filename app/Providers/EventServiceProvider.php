@@ -14,10 +14,11 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\MetadataUpdateHasStarted' => [
-            'App\Listeners\NotifyMetadataUpdatedHasStarted'
+            'App\Listeners\Metadata\NotifyUpdatedHasStarted'
         ],
         'App\Events\MetadataUpdateHasFinished' => [
-            'App\Listeners\NotifyMetadataUpdatedHasFinished',
+            'App\Listeners\Metadata\NotifyUpdatedHasFinished',
+            'App\Listeners\Metadata\InvalidateCachedHistories'
         ],
         'App\Events\PortfolioHasChanged' => [
             'App\Listeners\Portfolio\CalculatePortfolioRisk',
