@@ -86,7 +86,7 @@ class BulkUpdate implements ShouldQueue
         event(new MetadataUpdateHasFinished($this->repository->provider, $this->repository->database, $this->countersToArray()));
     }
 
-
+    //todo: check that the function delivers true only if realy updates are there.
     private function someAreFresh($items)
     {
         if (is_null($items)) {

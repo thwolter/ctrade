@@ -18,7 +18,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\MetadataUpdateHasFinished' => [
             'App\Listeners\Metadata\NotifyUpdatedHasFinished',
-            'App\Listeners\Metadata\InvalidateCachedHistories'
+            'App\Listeners\Metadata\InvalidateCachedHistories',
+            'App\Listeners\Overall\UpdateRiskCalculations',
+            'App\Listeners\Overall\UpdateValueCalculations',
         ],
         'App\Events\PortfolioHasChanged' => [
             'App\Listeners\Portfolio\CalculatePortfolioRisk',
