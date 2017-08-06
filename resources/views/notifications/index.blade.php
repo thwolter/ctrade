@@ -23,7 +23,6 @@
                         @foreach($notifications as $notification)
 
                             @include ('notifications.complete.'.snake_case(class_basename($notification->type)))
-                            @php $notification->markAsRead() @endphp
 
                         @endforeach
                     </table>

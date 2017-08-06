@@ -1,21 +1,23 @@
 <?php
 
 
-function set_active($path, $active = 'active') {
+function set_active($path, $active = 'active')
+{
 
     return Request::is($path) ? $active : '';
 }
 
-function active_tab($name, $compare, $active = 'active') {
+function active_tab($name, $compare, $active = 'active')
+{
 
     return $name === $compare ? $active : '';
 }
 
 function format_price($value)
 {
-    $fmt = numfmt_create( 'de_DE', NumberFormatter::CURRENCY );
+    $fmt = numfmt_create('de_DE', NumberFormatter::CURRENCY);
 
-    return numfmt_format_currency($fmt, $value, "EUR")."\n";
+    return numfmt_format_currency($fmt, $value, "EUR") . "\n";
 }
 
 /**
@@ -32,8 +34,16 @@ function array_first_or_null($value)
 
 function array_index($needle, $array)
 {
-    for ($i = 0; $i < count($array); $i++)
-    {
+    for ($i = 0; $i < count($array); $i++) {
         if (array_values($array)[$i] == $needle) return $i;
     }
 }
+
+
+function doneInfo($portfolios, $name)
+{
+    $count = count($portfolios);
+
+    return sprintf("Done (%s %s). \n", $count, str_plural($name, $count));
+}
+

@@ -212,6 +212,9 @@
                        data-hover="dropdown">
                         <i class="fa fa-warning navbar-notification-icon"></i>
                         <span class="visible-xs-inline">&nbsp;&nbsp;Alerts</span>
+
+
+
                     </a>
 
                     <div class="dropdown-menu">
