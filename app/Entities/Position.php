@@ -42,8 +42,6 @@ class Position extends Model implements PresentableInterface
     use Presentable;
 
     protected $presenter = \App\Presenters\Position::class;
-    
-    protected $financial = DataRepository::class;
 
     protected $fillable = [
         'positionable_type',

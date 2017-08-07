@@ -200,6 +200,7 @@ return [
         */
         App\Providers\DatasourceServiceProvider::class,
         App\Providers\HelpersServiceProvider::class,
+        App\Providers\DataServiceProvider::class
 
     ],
 

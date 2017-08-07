@@ -5,11 +5,6 @@ namespace App\Repositories;
 
 use App\Facades\Datasource;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
-use App\Repositories\Exceptions\MetadataException;
-use App\Repositories\Quandl\Quandldata;
-use MathPHP\Exception\BadDataException;
-use MathPHP\Functions\Map;
 
 
 class CurrencyRepository

@@ -43,7 +43,6 @@ class Stock extends Instrument
 
     protected $fillable = ['name', 'wkn', 'isin'];
 
-    protected $financial = DataRepository::class;
     protected $presenter = \App\Presenters\Stock::class;
 
     public $typeDisp = 'Aktie';
@@ -74,6 +73,7 @@ class Stock extends Instrument
     {
         return $this->toReadableArray();
     }
+
 
     public function toReadableArray()
     {

@@ -19,12 +19,12 @@ class PriceHistory
     }
 
     
-    public function history($dates = INF)
+    public function history($dates = null)
     {
         if (is_array($dates))
             return $this->historyWithDates($dates);
         else
-            return array_slice($this->data, 0, $dates);
+            return array_slice($this->data, 0);
     }
     
     public function price()
