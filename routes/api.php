@@ -84,6 +84,6 @@ Route::get('/portfolio', 'Api\ApiDataController@portfolio');
 | This routes can be used for debugging as it allows to set break points.
 |
 */
-Route::get('/test', function() {
-    Artisan::call('calculate:risk');
+Route::get('/metadata/update', function() {
+    Artisan::call('metadata:update', ['--test' => true]);
 });

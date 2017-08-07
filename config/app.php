@@ -199,7 +199,6 @@ return [
         * Custom Service Providers...
         */
         App\Providers\DatasourceServiceProvider::class,
-        App\Providers\MappingServiceProvider::class,
         App\Providers\HelpersServiceProvider::class,
 
     ],

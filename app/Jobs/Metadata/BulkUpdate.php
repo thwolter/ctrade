@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 
 
 
-class BulkUpdate implements ShouldQueue
+class BulkUpdate //implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -97,6 +97,11 @@ class BulkUpdate implements ShouldQueue
         foreach ($items as $item) {
 
             $refreshed_at = $this->repository->refreshed($item);
+            $stored = (new Datasource)->get(
+                $this->repository->provider,
+                $this->repository->database,
+                $this->repository->symbol($item));
+
 
             if (Datasource::where('updated_at', '>', $refreshed_at)->count() != 0)
                 return true;
