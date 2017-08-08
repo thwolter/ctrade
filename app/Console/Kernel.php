@@ -22,7 +22,8 @@ class Kernel extends ConsoleKernel
         Commands\TestMail::class,
         Commands\CalculateRisk::class,
         Commands\CalculateValue::class,
-        Commands\CheckLimits::class
+        Commands\CheckLimits::class,
+        Commands\UpdateMetadataTest::class
     ];
 
     /**

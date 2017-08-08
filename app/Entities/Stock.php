@@ -54,15 +54,14 @@ class Stock extends Instrument
     {
         $stock = Stock::firstOrNew(array_only($parameter, ['name', 'wkn', 'isin']));
 
-        Currency::firstOrCreate(['code' => $parameter['currency']])
-            ->stocks()->save($stock);
+        $stock->currency()->associate(Currency::firstOrCreate(['code' => $parameter['currency']]));
+        $stock->exchange()->associate(Exchange::firstOrCreate(['name' => $parameter['exchange']]));
 
         if (!is_null(array_get($parameter, 'sector')))
-            Sector::firstOrCreate(['name' => $parameter['sector']])->stocks()->save($stock);
+            $stock->sector()->associate(Sector::firstOrCreate(['name' => $parameter['sector']]));
 
         if (!is_null(array_get($parameter, 'industry')))
-            Industry::firstOrCreate(['name' => $parameter['industry']])->stocks()->save($stock);
-
+            $stock->industry()->associate(Industry::firstOrCreate(['name' => $parameter['industry']]));
 
         $stock->save();
         return $stock;

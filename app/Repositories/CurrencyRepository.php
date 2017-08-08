@@ -4,18 +4,15 @@
 namespace App\Repositories;
 
 use App\Facades\Datasource;
+use App\Repositories\Contracts\DataInterface;
 use Carbon\Carbon;
 
 
-class CurrencyRepository
+class CurrencyRepository implements DataInterface
 {
 
     protected $origin;
-    protected $tarbet;
-
-    protected $parameter = [
-        'limit' => INF
-    ];
+    protected $target;
 
     protected $baseCurrency = 'EUR';
 
@@ -41,26 +38,6 @@ class CurrencyRepository
     }
 
 
-   private function cachedHistory()
-   {
-       $key = $this->origin.$this->target;
-
-       if (\Cache::store('database')->has($key)) {
-
-           $data = \Cache::store('database')->get($key);
-
-       } else {
-
-           $data = $this->getHistory();
-
-           $expiresAt = Carbon::now()->endOfDay();
-           \Cache::store('database')->put($key, $data, $expiresAt);
-       }
-
-       return $data;
-   }
-
-
     private function getHistory()
     {
         if ($this->origin == $this->target):
@@ -84,13 +61,13 @@ class CurrencyRepository
 
     private function direct()
     {
-        return new DataRepository(Datasource::withDataset($this->origin.$this->target));
+        return new DataRepository(Datasource::withDataset($this->origin.$this->target)->first());
     }
 
 
     private function oblique($currency)
     {
-        return new DataRepository(Datasource::withDataset($this->baseCurrency.$currency));
+        return new DataRepository(Datasource::withDataset($this->baseCurrency.$currency)->first());
     }
 
 

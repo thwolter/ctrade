@@ -55,15 +55,9 @@ abstract class Instrument extends Model
     }
 
 
-    public function ValueAtRisk($dates = null)
+    public function exchange()
     {
-        return QuantModel::ValueAtRisk($this->history($dates));
-    }
-
-
-    public function percentRisk($dates = null)
-    {
-        return array_first($this->price()) / $this->ValueAtRisk($dates);
+        return $this->belongsTo(Exchange::class);
     }
 
 }

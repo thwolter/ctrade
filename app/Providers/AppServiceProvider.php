@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Entities\Datasource;
 use App\Entities\Limit;
 use App\Entities\Portfolio;
+use App\Observers\DatasourceObserver;
 use App\Observers\LimitObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
@@ -28,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         Limit::observe(LimitObserver::class);
+        Datasource::observe(DatasourceObserver::class);
     }
 
     /**

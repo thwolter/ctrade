@@ -117,9 +117,9 @@ class BulkUpdate //implements ShouldQueue
     {
         foreach ($items as $item) {
 
-            if ($this->repository->hasDatasource($item)) {
+            if ($this->repository->exists($item)) {
                 
-                $updated = $this->repository->updateItem($item);
+                $updated = $this->repository->update($item);
                     
                 if ($updated == 'invalidated'):
                     $this->invalidated++;
@@ -133,7 +133,7 @@ class BulkUpdate //implements ShouldQueue
             }
             else {
                 
-                if ($this->repository->createItemWithSource($item))
+                if ($this->repository->create($item))
                     $this->created++;
             }
         }

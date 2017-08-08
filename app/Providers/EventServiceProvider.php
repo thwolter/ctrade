@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\MetadataUpdateHasStarted' => [
             'App\Listeners\Metadata\NotifyUpdatedHasStarted'
         ],
+        'App\Events\MetadataUpdateHasCanceled' => [
+
+        ],
         'App\Events\MetadataUpdateHasFinished' => [
             'App\Listeners\Metadata\NotifyUpdatedHasFinished',
             'App\Listeners\Metadata\InvalidateCachedHistories',

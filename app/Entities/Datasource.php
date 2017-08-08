@@ -36,7 +36,7 @@ use anlutro\LaravelSettings\Facade as Setting;
 class Datasource extends Model
 {
     protected $fillable = [
-        'valid'
+        'valid', 'refreshed_at'
     ];
 
     public function provider()
@@ -81,9 +81,9 @@ class Datasource extends Model
         return $this->save();
     }
 
-    public function make($provider, $database, $dataset)
+    public function make($provider, $database, $dataset, $attributes = [])
     {
-        $source = new Datasource();
+        $source = new Datasource($attributes);
         $source
             ->provider()->associate(Provider::firstOrCreate(['code' => $provider]))
             ->database()->associate(Database::firstOrCreate(['code' => $database]))
@@ -175,5 +175,11 @@ class Datasource extends Model
 
         return $this->whereProviderId($providerId)->whereDatabaseId($databaseId);
 
+    }
+
+    public function key()
+    {
+        return sprintf('%s/%s/%s',
+            $this->provider->code, $this->database->code, $this->dataset->code);
     }
 }

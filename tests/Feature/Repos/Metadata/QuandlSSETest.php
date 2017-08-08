@@ -32,7 +32,7 @@ class QuandlSSETest extends TestCase
     {
         $items = $this->meta->getItems(1);
 
-        $this->meta->createItemWithSource($items[0]);
+        $this->meta->create($items[0]);
 
     }
 

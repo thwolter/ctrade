@@ -2,15 +2,11 @@
 
 namespace App\Entities;
 
-use App\Models\QuantModel;
 use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
 use App\Repositories\CurrencyRepository;
 use App\Repositories\Financable;
-use App\Entities\Portfolio;
-use App\Repositories\DataRepository;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 
 /**
