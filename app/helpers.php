@@ -40,9 +40,9 @@ function array_index($needle, $array)
 }
 
 
-function doneInfo($portfolios, $name)
+function doneInfo($entities, $name)
 {
-    $count = count($portfolios);
+    $count = count($entities);
 
     return sprintf("Done (%s %s). \n", $count, str_plural($name, $count));
 }

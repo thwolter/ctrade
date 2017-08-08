@@ -5,6 +5,7 @@ namespace App\Repositories\Metadata;
 
 
 use App\Events\MetadataUpdateHasCanceled;
+use App\Events\MetadataUpdateHasFinished;
 use App\Events\MetadataUpdateHasStarted;
 use App\Facades\Datasource;
 use App\Repositories\Exceptions\MetadataException;
@@ -99,6 +100,8 @@ abstract class BaseMetadata
             $items = $this->getNextItems($this->chunk);
             $i++;
         }
+
+        event(new MetadataUpdateHasFinished($this->provider, $this->database));
     }
 
 

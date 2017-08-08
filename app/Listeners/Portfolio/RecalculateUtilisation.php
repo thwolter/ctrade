@@ -7,7 +7,7 @@ use App\Jobs\CheckLimits;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RecalculatedUtilisation
+class RecalculateUtilisation
 {
     /**
      * Create the event listener.

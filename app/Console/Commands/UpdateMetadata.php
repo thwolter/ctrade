@@ -3,25 +3,19 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Metadata\BulkUpdate;
+use App\Jobs\Metadata\UpdateQuandlSSE;
 use Illuminate\Console\Command;
 
 
 class UpdateMetadata extends Command
 {
-   
-    protected $reposets = [
-        ['repo' => \App\Repositories\Metadata\QuandlSSE::class, 'chunk' => 100, 'queue' => 'quandl'],
-        //
-    ];
-
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'metadata:update
-                            {--test : load only one item from each Repository}';
+    protected $signature = 'metadata:update';
 
     /**
      * The console command description.
@@ -38,13 +32,9 @@ class UpdateMetadata extends Command
      */
     public function handle()
     {
-        $limit = ($this->option('test')) ? 1 : INF;
 
-        foreach ($this->reposets as $set)
-        {
-            dispatch(new BulkUpdate($set['repo'], $set['chunk'], $set['queue'], $limit));
-        }
-        
+        dispatch(new UpdateQuandlSSE());
+
         $this->info("Done. \n");
         return;
 

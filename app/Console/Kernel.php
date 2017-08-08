@@ -23,7 +23,6 @@ class Kernel extends ConsoleKernel
         Commands\CalculateRisk::class,
         Commands\CalculateValue::class,
         Commands\CheckLimits::class,
-        Commands\UpdateMetadataTest::class
     ];
 
     /**

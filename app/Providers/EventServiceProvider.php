@@ -21,7 +21,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\MetadataUpdateHasFinished' => [
             'App\Listeners\Metadata\NotifyUpdatedHasFinished',
-            'App\Listeners\Metadata\InvalidateCachedHistories',
             'App\Listeners\Overall\UpdateRiskCalculations',
             'App\Listeners\Overall\UpdateValueCalculations',
         ],
@@ -37,10 +36,10 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Limit\NotifyLimitHasBreached'
         ],
         'App\Events\PortfolioRiskWasCalculated' => [
-            'App\Listeners\Portfolio\RecalculatedUtilisation'
+            'App\Listeners\Portfolio\RecalculateUtilisation'
         ],
         'App\Events\PortfolioValueWasCalculated' => [
-            'App\Listeners\Portfolio\RecalculatedUtilisation'
+            'App\Listeners\Portfolio\RecalculateUtilisation'
         ]
     ];
 
