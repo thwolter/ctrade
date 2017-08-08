@@ -18,7 +18,7 @@ class MetadataUpdateHasFinished
    
     public $provider;
     public $database;
-    public $timestamp;
+    public $started_at;
 
 
     /**
@@ -26,12 +26,12 @@ class MetadataUpdateHasFinished
      *
      * @return void
      */
-    public function __construct($provider, $database)
+    public function __construct($provider, $database, $started_at)
     {
         $this->provider = $provider;
         $this->database = $database;
 
-        $this->timestamp = Carbon::now();
+        $this->started_at = $started_at;
     }
 
     /**

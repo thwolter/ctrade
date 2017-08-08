@@ -81,6 +81,7 @@ class Datasource extends Model
         return $this->save();
     }
 
+    //todo: change to use the function from repository
     public function make($provider, $database, $dataset, $attributes = [])
     {
         $source = new Datasource($attributes);
@@ -93,13 +94,13 @@ class Datasource extends Model
         return $source;
     }
 
-
+    //todo: change to use the function from repository
     public function exist($provider, $database, $dataset)
     {
         return is_null(self::get($provider, $database, $dataset)) ? false : true;
     }
 
-
+    //todo: change to use the function from repository
     public function get($provider, $database, $dataset)
     {
         $datasetCol = Dataset::whereCode($dataset)->first();
@@ -114,16 +115,16 @@ class Datasource extends Model
 
         return is_null($source) ? null : $source;
     }
-    
-    
+
+    //todo: change to use the function from repository
     public function withDataset($dataset)
     {
         $set = Dataset::whereCode($dataset)->first();
     
         return (count($set)) ? self::where('dataset_id', $set->id)->get() : null;
     }
-    
-    
+
+    //todo: change to use the function from repository
     public function withDatasetOrFail($dataset)
     {
         $set = Dataset::whereCode($dataset)->first();
@@ -134,52 +135,15 @@ class Datasource extends Model
         return self::where('dataset_id', $set->id)->get();
     }
 
-    public function isValid()
-    {
-        $updated = Setting::get($this->provider.$this->database.'updated');
-
-        return ($this->updated_at->lte(Carbon::parse($updated)) and $this->valid);
-    }
-
-    public function whereProvider($provider)
-    {
-        $collection = Provider::whereCode($provider);
-        $id = ($collection->count()) ? $collection->first()->id : null;
-
-        return $this->whereProviderId($id);
-    }
-
-    public function whereDatabase($database)
-    {
-        $collection = Database::whereCode($database);
-        $id = ($collection->count()) ? $collection->first()->id : null;
-
-        return $this->whereDatabaseId($id);
-    }
-
-    public function whereDataset($dataset)
-    {
-        $collection = Dataset::whereCode($dataset);
-        $id = ($collection->count()) ? $collection->first()->id : null;
-
-        return $this->whereDatasetId($id);
-    }
-
-    public function whereProviderAndDatabase($provider, $database)
-    {
-        $collection = Provider::whereCode($provider);
-        $providerId = ($collection->count()) ? $collection->first()->id : null;
-
-        $collection= Database::whereCode($database);
-        $databaseId = ($collection->count()) ? $collection->first()->id : null;
-
-        return $this->whereProviderId($providerId)->whereDatabaseId($databaseId);
-
-    }
 
     public function key()
     {
         return sprintf('%s/%s/%s',
             $this->provider->code, $this->database->code, $this->dataset->code);
+    }
+
+    public function scopeValid($query)
+    {
+        return $query->whereValid(true);
     }
 }

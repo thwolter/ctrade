@@ -73,11 +73,18 @@ abstract class BaseMetadata
         $this->started_at = Carbon::now();
         event(new MetadataUpdateHasStarted($this->provider, $this->database));
 
-        $items = Cache::get('items');
-        if (!$items) {
+
+        if ($this->local()) {
+            $items = Cache::get($this->provider.$this->database);
+            if (!$items) {
+                $items = $this->getFirstItems($this->chunk);
+                Cache::forever($this->provider.$this->database, $items);
+            }
+
+        } else {
             $items = $this->getFirstItems($this->chunk);
-            Cache::forever('items', $items);
         }
+
 
         if (!$items) {
             event(new MetadataUpdateHasCanceled($this->provider, $this->database));
@@ -97,11 +104,13 @@ abstract class BaseMetadata
                 }
             }
 
+            if ($this->local()) break;
+
             $items = $this->getNextItems($this->chunk);
             $i++;
         }
 
-        event(new MetadataUpdateHasFinished($this->provider, $this->database));
+        event(new MetadataUpdateHasFinished($this->provider, $this->database, $this->started_at));
     }
 
 
@@ -116,4 +125,9 @@ abstract class BaseMetadata
         return Datasource::get($this->provider, $this->database, $this->dataset($item));
     }
 
+
+    private function local()
+    {
+        return (env('APP_ENV') == 'local');
+    }
 }
