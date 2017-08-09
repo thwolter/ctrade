@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Metadata\BulkUpdate;
+use App\Jobs\Metadata\UpdateQuandlFSE;
 use App\Jobs\Metadata\UpdateQuandlSSE;
 use Illuminate\Console\Command;
 
@@ -34,6 +35,7 @@ class UpdateMetadata extends Command
     {
 
         dispatch(new UpdateQuandlSSE());
+        dispatch(new UpdateQuandlFSE());
 
         $this->info("Done. \n");
         return;

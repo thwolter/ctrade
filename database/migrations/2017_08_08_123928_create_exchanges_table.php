@@ -15,7 +15,8 @@ class CreateExchangesTable extends Migration
     {
         Schema::create('exchanges', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('code');
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

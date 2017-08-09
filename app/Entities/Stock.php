@@ -42,30 +42,13 @@ class Stock extends Instrument
     use Searchable, Presentable;
 
     protected $fillable = ['name', 'wkn', 'isin'];
+    protected $dates = ['created_at', 'updated_at', 'checked_at'];
 
     protected $presenter = \App\Presenters\Stock::class;
 
     public $typeDisp = 'Aktie';
 
     public $asYouType = true;
-
-
-    static public function saveWithParameter($parameter)
-    {
-        $stock = Stock::firstOrNew(array_only($parameter, ['name', 'wkn', 'isin']));
-
-        $stock->currency()->associate(Currency::firstOrCreate(['code' => $parameter['currency']]));
-        $stock->exchange()->associate(Exchange::firstOrCreate(['name' => $parameter['exchange']]));
-
-        if (!is_null(array_get($parameter, 'sector')))
-            $stock->sector()->associate(Sector::firstOrCreate(['name' => $parameter['sector']]));
-
-        if (!is_null(array_get($parameter, 'industry')))
-            $stock->industry()->associate(Industry::firstOrCreate(['name' => $parameter['industry']]));
-
-        $stock->save();
-        return $stock;
-    }
 
 
     public function toSearchableArray()
