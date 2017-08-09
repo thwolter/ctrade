@@ -53,11 +53,4 @@ abstract class Instrument extends Model
     {
         return $this->morphToMany(Datasource::class, 'sourcable')->withTimestamps();
     }
-
-
-    public function exchange()
-    {
-        return $this->belongsTo(Exchange::class);
-    }
-
 }

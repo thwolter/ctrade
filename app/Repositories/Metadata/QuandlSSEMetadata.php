@@ -29,6 +29,7 @@ class QuandlSSEMetadata extends QuandlMetadata
         'symbol'    => ['dataset_code', '/.*/', 0],
         'sector'    => ['description', '/(?i)(?<=Sector: )(.*(?= -))/', 0],
         'industry'  => ['description', '/(?i)(?<=Sector: ).*(?<=-)(.*)/', 1],
+        'exchange'  => ['name', '/- (.*)/', 1],
         'description'   => ['description', '/.*/', 0]
     ];
 

@@ -8,8 +8,8 @@ class Exchange extends Model
 {
     protected $fillable = ['code','name'];
 
-    public function stocks()
+    public function datasources()
     {
-        return $this->hasMany(Stock::class);
+        return $this->hasMany(Datasource::class);
     }
 }

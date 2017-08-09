@@ -30,13 +30,20 @@ trait StockMetadata
 
             $instrument = $this->persistStock($this->toArray($item));
 
-            (new DatasourceRepository())
-                ->make($this->provider, $this->database, $this->symbol($item), [
-                    'valid' => (int)$this->valid($item),
-                    'refreshed_at' => $this->refreshed($item)
-                ])->assign($instrument);
+            $repo = new DatasourceRepository();
+            $datasource = $repo->create([
+                'provider' => $this->provider,
+                'database' => $this->database,
+                'dataset' => $this->symbol($item),
+                'exchange' => $this->exchange($item),
+                'valid' => (int)$this->valid($item),
+                'refreshed_at' => $this->refreshed($item)
+            ]);
+
+            $datasource->assign($instrument);
         }
     }
+
 
     public function update($item)
     {
@@ -63,7 +70,8 @@ trait StockMetadata
 
     protected function valid($item)
     {
-        return $this->isIdentifiable($item) && $this->hasCurrency($item) && $this->hasIsin($item);
+        return $this->isIdentifiable($item) && $this->hasCurrency($item) &&
+            $this->hasIsin($item) && $this->hasExchange($item);
     }
 
     /**
@@ -78,8 +86,7 @@ trait StockMetadata
             'wkn' => $this->wkn($item),
             'isin' => $this->isin($item),
             'sector' => $this->sector($item),
-            'industry' => $this->industry($item),
-            'exchange' => $this->exchange
+            'industry' => $this->industry($item)
         ];
         return $parameter;
     }
@@ -130,6 +137,17 @@ trait StockMetadata
     }
 
 
+    protected function hasExchange($item)
+    {
+        if ($this->exchange($item)) {
+            return true;
+        } else {
+            Log::notice(sprintf('%s skipped (exchange not defined)', $this->symbol($item)));
+            return false;
+        }
+    }
+
+
     public function persistStock($parameter)
     {
         $stock = Stock::firstOrNew(array_only($parameter, ['isin']));
@@ -141,7 +159,6 @@ trait StockMetadata
         }
 
         $stock->currency()->associate(Currency::firstOrCreate(['code' => $parameter['currency']]));
-        $stock->exchange()->associate(Exchange::firstOrCreate(['code' => $parameter['exchange']]));
 
         if (!is_null(array_get($parameter, 'sector')))
             $stock->sector()->associate(Sector::firstOrCreate(['name' => $parameter['sector']]));

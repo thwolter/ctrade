@@ -69,6 +69,12 @@ class Datasource extends Model
     }
 
 
+    public function exchange()
+    {
+        return $this->belongsTo(Exchange::class);
+    }
+
+
     public function assign($instrument)
     {
         $rc = new \ReflectionClass($instrument);

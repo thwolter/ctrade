@@ -2,22 +2,45 @@
 
 use Illuminate\Database\Seeder;
 use App\Entities\Currency;
-use App\Facades\Datasource;
+use App\Repositories\DatasourceRepository;
+use App\Entities\CcyPair;
 
 class CurrencySeeder extends Seeder
 {
 
+    protected $repo;
+
+    protected $baseCurrency = 'EUR';
+
+
+    public function __construct()
+    {
+        $this->repo = new DatasourceRepository();
+    }
+
+
     public function run()
     {
-        Currency::firstOrCreate(['code' => 'EUR']);
+        Currency::firstOrCreate(['code' => $this->baseCurrency]);
 
-        $usd = Currency::firstOrCreate(['code' => 'USD']);
-        $chf = Currency::firstOrCreate(['code' => 'CHF']);
+        $this->createForeignCurrency('USD');
+        $this->createForeignCurrency('CHF');
 
-        $eurusd = \App\Entities\CcyPair::firstOrCreate(['origin' => 'EUR', 'target' => 'USD']);
-        $eurchf = \App\Entities\CcyPair::firstOrCreate(['origin' => 'EUR', 'target' => 'CHF']);
+    }
 
-        Datasource::make('Quandl', 'ECB', 'EURUSD')->assign($eurusd);
-        Datasource::make('Quandl', 'ECB', 'EURCHF')->assign($eurchf);
+    public function createForeignCurrency($code)
+    {
+        Currency::firstOrCreate(['code' => $code]);
+
+        $datasource = $this->repo->create([
+            'provider' => 'Quandl',
+            'database' => 'ECB',
+            'dataset' => $this->baseCurrency.$code,
+            'exchange' => 'ECB'
+        ]);
+
+        $datasource->assign(CcyPair::firstOrCreate([
+            'origin' => $this->baseCurrency, 'target' => $code
+        ]));
     }
 }

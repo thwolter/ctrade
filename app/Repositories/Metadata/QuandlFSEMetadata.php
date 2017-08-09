@@ -24,6 +24,7 @@ class QuandlFSEMetadata extends QuandlMetadata
     protected $keys =[
         'isin'      => ['description', '/(?:ISIN:\s([[:alnum:]]*))/', 1],
         'name'      => ['name', '/(.*)(\([^()]*\))/', 1],
+        'exchange'  => ['description', '/Trading System: (\w*)/', 1],
         'description'   => ['description', '/.*/', 0]
     ];
 
