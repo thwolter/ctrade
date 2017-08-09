@@ -17,7 +17,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Metadata\NotifyUpdatedHasStarted'
         ],
         'App\Events\MetadataUpdateHasCanceled' => [
-
+            'App\Listeners\Metadata\NotifyUpdatedHasCanceled'
         ],
         'App\Events\MetadataUpdateHasFinished' => [
             'App\Listeners\Metadata\NotifyUpdatedHasFinished',

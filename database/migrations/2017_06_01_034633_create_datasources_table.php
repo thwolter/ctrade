@@ -19,7 +19,7 @@ class CreateDatasourcesTable extends Migration
             $table->integer('database_id')->nullable();
             $table->integer('dataset_id');
             $table->boolean('valid')->default(true);
-            $table->dateTime('refreshed_at')->nullable();
+            $table->timestamp('refreshed_at')->nullable();
             $table->unique(['provider_id', 'database_id', 'dataset_id']);
             $table->timestamps();
         });

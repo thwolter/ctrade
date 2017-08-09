@@ -2,12 +2,12 @@
 
 namespace App\Listeners\Metadata;
 
-use App\Events\MetadataUpdateHasStarted;
+use App\Events\MetadataUpdateHasCanceled;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-class NotifyUpdatedHasStarted implements ShouldQueue
+class NotifyUpdatedHasCanceled implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -22,10 +22,10 @@ class NotifyUpdatedHasStarted implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  MetadataUpdateHasStarted  $event
+     * @param  MetadataUpdateHasCanceled  $event
      * @return void
      */
-    public function handle(MetadataUpdateHasStarted $event)
+    public function handle(MetadataUpdateHasCanceled $event)
     {
 
     }

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 
 
-class NotifyUpdatedHasFinished //implements ShouldQueue
+class NotifyUpdatedHasFinished implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -31,11 +31,8 @@ class NotifyUpdatedHasFinished //implements ShouldQueue
      */
     public function handle(MetadataUpdateHasFinished $event)
     {
-        Log::info(sprintf('update finished for provider %s and database %s',
-            $event->provider, $event->database));
-
         User::whereEmail('thwolter@gmail.com')->first()
-            ->notify(new MetadataUpdated($event->provider, $event->database, $event->started_at));
+            ->notify(new MetadataUpdated($event->provider, $event->database, $event->attributes));
         
 
     }

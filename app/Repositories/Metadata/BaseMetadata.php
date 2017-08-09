@@ -22,8 +22,6 @@ abstract class BaseMetadata
 
     protected $database;
 
-    protected $started_at;
-
     protected $keys =[];
 
     abstract function getFirstItems();
@@ -36,6 +34,12 @@ abstract class BaseMetadata
 
     abstract function dataset($item);
 
+    /**
+     * Get the DateTime when the item was refreshed on provider side.
+     *
+     * @param array $item
+     * @return Carbon
+     */
     abstract function refreshed($item);
 
 
@@ -70,9 +74,12 @@ abstract class BaseMetadata
 
     public function updateDatabase()
     {
-        $this->started_at = Carbon::now();
-        event(new MetadataUpdateHasStarted($this->provider, $this->database));
+        $updated = $created = 0;
 
+        Log::info(sprintf('update started for provider %s and database %s',
+            $this->provider, $this->database));
+
+        event(new MetadataUpdateHasStarted($this->provider, $this->database));
 
         if ($this->local()) {
             $items = Cache::get($this->provider.$this->database);
@@ -85,9 +92,12 @@ abstract class BaseMetadata
             $items = $this->getFirstItems($this->chunk);
         }
 
-
         if (!$items) {
             event(new MetadataUpdateHasCanceled($this->provider, $this->database));
+
+            Log::info(sprintf('update canceled for provider %s and database %s',
+                $this->provider, $this->database));
+
             return false;
         }
 
@@ -97,10 +107,15 @@ abstract class BaseMetadata
             foreach ($items as $item) {
 
                 if ($this->datasource($item)) {
-                    $this->update($item);
+
+                    if ($this->existUpdate($item)) {
+                        $this->update($item);
+                        $updated++;
+                    }
 
                 } else {
                     $this->create($item);
+                    $created++;
                 }
             }
 
@@ -110,7 +125,13 @@ abstract class BaseMetadata
             $i++;
         }
 
-        event(new MetadataUpdateHasFinished($this->provider, $this->database, $this->started_at));
+        event(new MetadataUpdateHasFinished($this->provider, $this->database, [
+            'created' => $created, 'updated' => $updated
+        ]));
+
+        Log::info(sprintf('update finished for provider %s and database %s: %s created, %s updated',
+            $this->provider, $this->database, $created, $updated
+        ));
     }
 
 
@@ -126,8 +147,28 @@ abstract class BaseMetadata
     }
 
 
+    /**
+     * Returns true if the environment is in development stage.
+     *
+     * @return bool
+     */
     private function local()
     {
         return (env('APP_ENV') == 'local');
+    }
+
+
+    /**
+     * Returns true if the received item was updated on provider level.
+     *
+     * @param array $item
+     * @return bool
+     */
+    private function existUpdate($item)
+    {
+        $current = $this->datasource($item)->refreshed_at->timestamp;
+        $updated = $this->refreshed($item)->timestamp;
+
+        return $current < $updated;
     }
 }

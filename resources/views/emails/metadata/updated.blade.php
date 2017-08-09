@@ -3,11 +3,12 @@
 
 Database {{ $results['provider'] }}/{{ $results['database'] }} was updated.
 
+- {{ $results['created'] }} created items;
+- {{ $results['updated'] }} updated items;
+
+Summary
 - {{ $results['total'] }} total items;
 - {{ $results['valid'] }} valid items;
-- {{ $results['updated'] }} updated items;
-- start: {{ $results['started'] }};
-
 
 <br>
 Best,<br>

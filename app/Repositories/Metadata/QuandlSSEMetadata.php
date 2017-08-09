@@ -43,7 +43,7 @@ class QuandlSSEMetadata extends QuandlMetadata
 
             Datasource::make($this->provider, $this->database, $this->symbol($item), [
                 'valid' => (int)$this->valid($item),
-                'refreshed_at' => $this->refreshed($item)->toDateTimeString()
+                'refreshed_at' => $this->refreshed($item)
             ])->assign($instrument);
         }
     }
@@ -53,7 +53,7 @@ class QuandlSSEMetadata extends QuandlMetadata
     {
        $this->datasource($item)->update([
            'valid' => (int)$this->valid($item),
-           'refreshed_at' => $this->refreshed($item)->toDateTimeString()
+           'refreshed_at' => $this->refreshed($item)
        ]);
 
        $this->model($item)->update([

@@ -14,6 +14,10 @@ class MetadataUpdateHasCanceled
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $provider;
+    public $database;
+
+
     /**
      * Create a new event instance.
      *
@@ -21,7 +25,8 @@ class MetadataUpdateHasCanceled
      */
     public function __construct($provider, $database)
     {
-        //
+        $this->provider = $provider;
+        $this->database = $database;
     }
 
     /**

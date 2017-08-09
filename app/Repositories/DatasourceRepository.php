@@ -15,6 +15,7 @@ use App\Entities\Provider;
 use App\Notifications\LimitChanged;
 use App\Repositories\Exceptions\LimitException;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DatasourceRepository
 {
@@ -70,6 +71,13 @@ class DatasourceRepository
             ->save();
 
         return $datasource;
+    }
+
+
+    public function updatedAfter($timestamp)
+    {
+        return DB::table('datasources')
+            ->where('updated_at', '>', $timestamp);
     }
 
 }

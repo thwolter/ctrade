@@ -18,7 +18,8 @@ class MetadataUpdateHasFinished
    
     public $provider;
     public $database;
-    public $started_at;
+
+    public $attributes;
 
 
     /**
@@ -26,12 +27,12 @@ class MetadataUpdateHasFinished
      *
      * @return void
      */
-    public function __construct($provider, $database, $started_at)
+    public function __construct($provider, $database, $attributes)
     {
         $this->provider = $provider;
         $this->database = $database;
 
-        $this->started_at = $started_at;
+       $this->attributes = $attributes;
     }
 
     /**

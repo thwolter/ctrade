@@ -35,9 +35,9 @@ use anlutro\LaravelSettings\Facade as Setting;
  */
 class Datasource extends Model
 {
-    protected $fillable = [
-        'valid', 'refreshed_at'
-    ];
+    protected $fillable = ['valid', 'refreshed_at'];
+
+    protected $dates = ['created_at', 'updated_at', 'refreshed_at'];
 
     public function provider()
     {

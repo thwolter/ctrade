@@ -7,7 +7,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\DB;
 
 class MetadataUpdated extends Notification
 {
@@ -15,21 +14,20 @@ class MetadataUpdated extends Notification
 
     protected $provider;
     protected $database;
-    protected $started_at;
+
+    protected $attributes;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($provider, $database, $started_at)
+    public function __construct($provider, $database, $attributes)
     {
         $this->provider = $provider;
         $this->database = $database;
 
-        $this->started_at = $started_at;
-
-
+        $this->attributes = $attributes;
     }
 
     /**
@@ -75,8 +73,8 @@ class MetadataUpdated extends Notification
             'database' => $this->database,
             'total' => $datasources->count(),
             'valid' => $datasources->valid()->count(),
-            'updated' => DB::table('datasources')->where('updated_at', '>', $this->started_at)->count(),
-            'started' => $this->started_at->toDateTimeString(),
+            'updated' => array_get($this->attributes, 'updated'),
+            'created' => array_get($this->attributes, 'created'),
         ];
     }
 }
