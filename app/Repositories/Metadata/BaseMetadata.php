@@ -65,7 +65,6 @@ abstract class BaseMetadata
 
         } else {
             $result = null;
-            Log::warning("'{$key}' could not be evaluated for {$this->database}.");
         }
 
         return $result;
