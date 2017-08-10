@@ -24,27 +24,26 @@
                 <li class="divider"></li>
 
                 <li class="dropdown navbar-profile">
+
                     <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="javascript:;">
-                        <img src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-6-sm.jpg') }}" class="navbar-profile-avatar" alt="">
-                        <span class="visible-xs-inline">@peterlandt &nbsp;</span>
+                        Mein Account
                         <i class="fa fa-caret-down"></i>
                     </a>
 
                     <ul class="dropdown-menu" role="menu">
 
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-user"></i>
-                                &nbsp;&nbsp;Mein Profil
-                            </a>
-                        </li>
+                        <!-- My profil -->
+                        <li><a href="{{ route('users.edit', Auth()->id()) }}">
+                            <i class="fa fa-user"></i> Mein Profil
+                        </a></li>
 
-                        <li>
-                            <a href="{{ route('users.edit', Auth()->id()) }}">
-                                <i class="fa fa-cogs"></i>
-                                &nbsp;&nbsp;Einstellungen
-                            </a>
-                        </li>
+                        <!-- Admin dashboard -->
+                        @role('admin')
+                        <li><a href="/admin/dashboard">
+                                <i class="fa fa-globe"></i> Dashboard
+                            </a></li>
+                        @endrole
+
 
                         <li class="divider"></li>
 
@@ -52,12 +51,15 @@
                             <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                         @else
                             <li>
+
                                 <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="fa fa-sign-out"></i>
                                     Abmelden
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                      style="display: none;">
                                     {{ csrf_field() }}
                                 </form>
                             </li>
@@ -67,6 +69,7 @@
 
             </ul>
 
+            <!-- page links -->
             <ul class="nav  navbar-nav navbar-right">
                 <li class="navbar-item">
                     <a href="javsacript:;">Blog</a>
@@ -82,6 +85,7 @@
 
             </ul>
 
+            <!-- portfolio menu -->
             <ul class="nav navbar-nav navbar-left">
 
                 <li class="dropdown">
@@ -110,6 +114,7 @@
 
                 <li class="navbar-divider"></li><!-- /.navbar-divider -->
 
+                <!-- notifications -->
                 <li class="dropdown navbar-notification">
 
                     <a href="./page-notifications.html" class="dropdown-toggle" data-toggle="dropdown"
@@ -139,12 +144,14 @@
 
                         </div> <!-- / .notification-list -->
 
-                        <a href="{{ route('notifications.index') }}" class="notification-link">Alle Benachichtigungen</a>
+                        <a href="{{ route('notifications.index') }}" class="notification-link">Alle
+                            Benachichtigungen</a>
 
                     </div> <!-- / .dropdown-menu -->
 
                 </li>
 
+                <!-- second notifications -->
                 <li class="dropdown navbar-notification">
 
                     <a href="./page-notifications.html" class="dropdown-toggle" data-toggle="dropdown"
@@ -160,8 +167,9 @@
                         <div class="notification-list">
 
                             <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-3-md.jpg') }}"
-                                                                    alt=""></div>
+                                <div class="notification-icon"><img
+                                            src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-3-md.jpg') }}"
+                                            alt=""></div>
                                 <div class="notification-title">New Message</div>
                                 <div class="notification-description">Praesent dictum nisl non est sagittis luctus.
                                 </div>
@@ -169,8 +177,9 @@
                             </a> <!-- / .notification -->
 
                             <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-3-sm.jpg') }}"
-                                                                    alt=""></div>
+                                <div class="notification-icon"><img
+                                            src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-3-sm.jpg') }}"
+                                            alt=""></div>
                                 <div class="notification-title">New Message</div>
                                 <div class="notification-description">Lorem ipsum dolor sit amet, consectetur
                                     adipisicing elit...
@@ -179,8 +188,9 @@
                             </a> <!-- / .notification -->
 
                             <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-4-md.jpg') }}"
-                                                                    alt=""></div>
+                                <div class="notification-icon"><img
+                                            src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-4-md.jpg') }}"
+                                            alt=""></div>
                                 <div class="notification-title">New Message</div>
                                 <div class="notification-description">Lorem ipsum dolor sit amet, consectetur
                                     adipisicing elit...
@@ -189,8 +199,9 @@
                             </a> <!-- / .notification -->
 
                             <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-5-md.jpg') }}"
-                                                                    alt=""></div>
+                                <div class="notification-icon"><img
+                                            src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-5-md.jpg') }}"
+                                            alt=""></div>
                                 <div class="notification-title">New Message</div>
                                 <div class="notification-description">Lorem ipsum dolor sit amet, consectetur
                                     adipisicing elit...
@@ -206,13 +217,13 @@
 
                 </li>
 
+                <!-- third notifications -->
                 <li class="dropdown navbar-notification empty">
 
                     <a href="./page-notifications.html" class="dropdown-toggle" data-toggle="dropdown"
                        data-hover="dropdown">
                         <i class="fa fa-warning navbar-notification-icon"></i>
                         <span class="visible-xs-inline">&nbsp;&nbsp;Alerts</span>
-
 
 
                     </a>

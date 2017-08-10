@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Backpack\Settings\database\seeds\SettingsTableSeeder;
 
 
 class DatabaseSeeder extends Seeder
@@ -15,7 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CurrencySeeder::class);
         $this->call(TransactionTypeSeeder::class);
         $this->call(LimitTypeSeeder::class);
-        $this->call(\Backpack\Settings\database\seeds\SettingsTableSeeder::class);
+        $this->call(SettingsTableSeeder::class);
+        $this->call(RolesSeeder::class);
 
         $this->dev();
     }

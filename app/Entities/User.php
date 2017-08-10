@@ -97,12 +97,4 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
-
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($user) {
-            $user->email_token = str_random(30);
-        });
-    }
 }
