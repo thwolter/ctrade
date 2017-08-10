@@ -16,6 +16,10 @@ import Colors from './core/Colors';
  * 
  */ 
 import popover from 'vue-strap';
+import InstantSearch from 'vue-instantsearch';
+
+//import 'vue-instant/dist/vue-instant.css';
+//import VueInstant from 'vue-instant';
 
 window.Vue = Vue;
 window.Form = Form;
@@ -24,6 +28,8 @@ window.Colors = new Colors;
 
 Vue.use(Vuelidate);
 Vue.use(VueResource);
+Vue.use(InstantSearch);
+//Vue.use(VueInstant);
 
 /**
  * vue components

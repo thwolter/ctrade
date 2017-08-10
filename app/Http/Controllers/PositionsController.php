@@ -122,7 +122,7 @@ class PositionsController extends Controller
 
         $position = Position::find($request->id);
 
-        $item = $position->positionable->toReadableArray();
+        $item = $position->positionable->toArray();
         $price = $position->price();
         $amount = $position->amount;
         $cash = $position->portfolio->cash();

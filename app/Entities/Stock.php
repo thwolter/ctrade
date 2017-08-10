@@ -53,14 +53,14 @@ class Stock extends Instrument
 
     public function toSearchableArray()
     {
-        return $this->toReadableArray();
+        return $this->toArray();
     }
 
 
-    public function toReadableArray()
+    public function toArray()
     {
         return array_merge(
-            array_except($this->toArray(), ['currency_id', 'sector_id', 'industry_id', 'datasources']),
+            array_except(parent::toArray(), ['currency_id', 'sector_id', 'industry_id', 'datasources']),
             [
                 'sector' => ($this->sector) ? $this->sector->name : '',
                 'industry' => ($this->industry) ? $this->industry->name : '',

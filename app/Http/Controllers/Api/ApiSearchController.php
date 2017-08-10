@@ -4,10 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Entities\Stock;
 use App\Http\Requests\SearchRequest;
+use App\Repositories\SearchRepository;
 use Illuminate\Http\Request;
 
 class ApiSearchController extends ApiBaseController
 {
+
+    protected $repo;
+
+    public function __construct(SearchRepository $repo)
+    {
+        $this->repo = $repo;
+    }
 
     /**
      * Receive search results from entities.
@@ -17,7 +25,9 @@ class ApiSearchController extends ApiBaseController
      */
     public function search(SearchRequest $request)
     {
-        return json_encode(Stock::search($request->get('query'))->get());
+        return json_encode($this->repo
+            ->search($request->get('entity'), $request->get('query'))
+        );
     }
 
 
@@ -29,17 +39,8 @@ class ApiSearchController extends ApiBaseController
      */
     public function lookup(Request $request)
     {
-        $stock = Stock::find($request->id);
-
-        $prices = [
-            ['exchange' => 'Stuttgart', 'price' => $stock->price()],
-            // define further exchanges
-        ];
-
-        return json_encode([
-            'item' => $stock->toReadableArray(),
-            'prices' => $prices,
-            'history' => $stock->history()
-        ]);
+        return json_encode($this->repo
+            ->lookup($request->get('entity'), $request->get('id'))
+        );
     }
 }

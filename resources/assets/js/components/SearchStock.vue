@@ -47,8 +47,8 @@
                             <tr>
                                 <th>Nr.</th>
                                 <th>Name/Sektor</th>
-                                <th>WKN</th>
                                 <th>ISIN</th>
+                                <th>Währung</th>
                             </tr>
                             </thead>
 
@@ -59,18 +59,20 @@
                                      <span style="display:block">
                                          <a href="#" @click.prevent="onClickLink(item.id)">{{ item.name }}</a>
                                      </span>
-                                    <span>{{ item.sector }}</span>
+                                    <span>{{ item.industry }} | {{ item.sector }}</span>
+
                                 </td>
-                                <td>{{ item.wkn }}</td>
                                 <td>{{ item.isin }}</td>
+                                <td>{{ item.currency }}</td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 <div v-else>
-                    <add-stock :id="id" :pid="pid" :cash="cash" :store="store"></add-stock>
+                    <add-stock :id="id" :pid="pid" :cash="cash" :store="store" :entity="entity"></add-stock>
                 </div>
 
 
@@ -82,12 +84,12 @@
 <script>
     export default {
 
-        props: ['store', 'cash', 'pid'],
+        props: [
+            'store', 'cash', 'pid', 'entity'],
 
         data() {
             return {
                 route: '/api/search',
-                type: 'App/Entities/Stock',
 
                 query: null,
                 results: [],
@@ -103,7 +105,7 @@
                 axios.get(this.route, {
                     params: {
                         query: this.query,
-                        type: this.type
+                        entity: this.entity
                     }
                 })
                     .then(data => this.assign(data.data));

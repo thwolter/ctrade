@@ -87,7 +87,7 @@
 
     export default {
 
-        props: ['pid', 'id', 'store', 'cash'],
+        props: ['pid', 'id', 'store', 'cash', 'entity'],
 
         data() {
             return {
@@ -100,7 +100,8 @@
                     currency: null,
                     id: null,
                     type: null,
-                    pid: null
+                    pid: null,
+                    entity: this.entity
                 }),
 
                 stock: [],
@@ -144,7 +145,8 @@
             fetch() {
                 axios.get(this.lookup, {
                     params: {
-                        id: this.id
+                        id: this.id,
+                        entity: this.entity
                     }
                 })
                     .then(data => {
