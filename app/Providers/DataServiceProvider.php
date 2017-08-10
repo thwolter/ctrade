@@ -15,7 +15,7 @@ class DataServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind('QuandlPriceData', function ($app, $parameter) {
-            return new QuandlPriceData(...$parameter);
+            return new QuandlPriceData($parameter[0]);
         });
 
     }

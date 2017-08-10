@@ -191,9 +191,20 @@ return [
         \Laravel\Scout\ScoutServiceProvider::class,
         LaravelPropertyBag\ServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
-        anlutro\LaravelSettings\ServiceProvider::class,
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+
+
+        /*
+        * Backpack Service Providers...
+        */
+        Backpack\Base\BaseServiceProvider::class,
+        Backpack\CRUD\CrudServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
+        Backpack\BackupManager\BackupManagerServiceProvider::class,
+        Backpack\LogManager\LogManagerServiceProvider::class,
+        Backpack\Settings\SettingsServiceProvider::class,
+
 
         /*
         * Custom Service Providers...
@@ -262,7 +273,6 @@ return [
         'Lava' => Khill\Lavacharts\Laravel\LavachartsFacade::class,
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
-        'Setting' => anlutro\LaravelSettings\Facade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
         /*

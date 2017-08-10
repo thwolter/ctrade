@@ -63,6 +63,23 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
+        'uploads' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+        ],
+
+        // used for Backpack/BackupManager
+        'backups' => [
+            'driver' => 'local',
+            'root'   => storage_path('backups'),
+        ],
+
+        // used for Backpack/LogManager
+        'storage' => [
+            'driver' => 'local',
+            'root'   => storage_path(),
+        ],
+
     ],
 
 ];

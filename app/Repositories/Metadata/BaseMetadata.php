@@ -76,7 +76,7 @@ abstract class BaseMetadata
     {
         $updated = $created = 0;
 
-        Log::info(sprintf('update started for provider %s and database %s',
+        Log::info(sprintf('update started for %s/%s',
             $this->provider, $this->database));
 
         event(new MetadataUpdateHasStarted($this->provider, $this->database));
@@ -95,7 +95,7 @@ abstract class BaseMetadata
         if (!$items) {
             event(new MetadataUpdateHasCanceled($this->provider, $this->database));
 
-            Log::info(sprintf('update canceled for provider %s and database %s',
+            Log::info(sprintf('update canceled for %s/%s',
                 $this->provider, $this->database));
 
             return false;
@@ -129,7 +129,7 @@ abstract class BaseMetadata
             'created' => $created, 'updated' => $updated
         ]));
 
-        Log::info(sprintf('update finished for provider %s and database %s: %s created, %s updated',
+        Log::info(sprintf('update finished for %s/%s: %s created, %s updated',
             $this->provider, $this->database, $created, $updated
         ));
     }

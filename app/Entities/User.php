@@ -6,6 +6,7 @@ use App\Settings\InitialSettings;
 use App\Settings\Settings;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
 
 /**
  * App\Entities\User
@@ -87,6 +88,18 @@ class User extends Authenticatable
 
         return $key ? $settings->get($key) : $settings;
     }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
+
 
     public static function boot()
     {

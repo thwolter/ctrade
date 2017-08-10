@@ -34,8 +34,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(UpdateMetadata::class)->hourly();
-        $schedule->command(CalculateRisk::class)->dailyAt('02:00');
-        $schedule->command(CalculateRisk::class)->dailyAt('02:05');
+
+        $schedule->command('backup:clean')->daily()->at('04:00');
+        $schedule->command('backup:run')->daily()->at('05:00');
     }
 
     /**
