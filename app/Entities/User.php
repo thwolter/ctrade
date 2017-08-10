@@ -7,6 +7,8 @@ use App\Settings\Settings;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
+use Backpack\CRUD\CrudTrait;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * App\Entities\User
@@ -40,7 +42,7 @@ use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNo
  */
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, CrudTrait, HasRoles;
 
     /**
      * The attributes that are mass assignable.

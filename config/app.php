@@ -204,6 +204,8 @@ return [
         Backpack\BackupManager\BackupManagerServiceProvider::class,
         Backpack\LogManager\LogManagerServiceProvider::class,
         Backpack\Settings\SettingsServiceProvider::class,
+        Backpack\PermissionManager\PermissionManagerServiceProvider::class,
+        Backpack\LangFileManager\LangFileManagerServiceProvider::class,
 
 
         /*
