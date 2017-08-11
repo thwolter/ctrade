@@ -16,8 +16,9 @@ class UserController extends Controller
     public function edit(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        return view('users.edit', compact('user'))
-            ->with('tab', $request->get('active', 'profile'));
+        session(['active_tab' => $request->get('tab', 'profile')]);
+
+        return view('users.edit', compact('user'));
     }
 
 
@@ -30,6 +31,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect('users.edit')->with('message', 'User updated.');
+        return redirect('users.edit')->with('message', 'User updated.')
+            ->with('active_tab', $request->get('tab'));
     }
 }

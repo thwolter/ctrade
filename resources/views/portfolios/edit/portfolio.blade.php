@@ -31,7 +31,7 @@
     {!! Form::open(['route' => ['portfolios.update', $portfolio->id], 'method' => 'PUT',
      'class' => 'form form-horizontal']) !!}
 
-    <input type="hidden" name="active" value="portfolio">
+    <input type="hidden" name="tab" value="portfolio">
     <input type="hidden" name="id" value="{{ $portfolio->id }}">
 
 

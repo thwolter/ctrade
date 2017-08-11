@@ -33,13 +33,18 @@
                     <ul class="dropdown-menu" role="menu">
 
                         <!-- My profil -->
-                        <li><a href="{{ route('users.edit', ['id' => Auth()->id(), 'active' => 'profile']) }}">
+                        <li><a href="{{ route('users.edit', ['id' => Auth()->id(), 'tab' => 'profile']) }}">
                             <i class="fa fa-user"></i> Mein Profil
                         </a></li>
 
                         <!-- Password -->
-                        <li><a href="{{ route('users.edit', ['id' => Auth()->id(), 'active' => 'password']) }}">
-                                <i class="fa fa-user"></i> Passwort ändern
+                        <li><a href="{{ route('users.edit', ['id' => Auth()->id(), 'tab' => 'password']) }}">
+                                <i class="fa fa-lock"></i> Passwort
+                            </a></li>
+
+                        <!-- Password -->
+                        <li><a href="{{ route('users.edit', ['id' => Auth()->id(), 'tab' => 'messaging']) }}">
+                                <i class="fa fa-bullhorn"></i> Benachichtigungen
                             </a></li>
 
                         <!-- Admin dashboard -->

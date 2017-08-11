@@ -30,7 +30,7 @@
         {!! Form::open(['route' => ['limits.set', $portfolio->id], 'method' => 'POST',
             'class' => 'form form-horizontal']) !!}
 
-        <input type="hidden" name="active" value="limits">
+        <input type="hidden" name="tab" value="limits">
         <input type="hidden" name="id" value="{{ $portfolio->id }}">
 
 
