@@ -62,12 +62,13 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $cast =[
+    protected $cast = [
         'settings' => 'json'
     ];
 
 
-    public function portfolios() {
+    public function portfolios()
+    {
 
         return $this->hasMany(Portfolio::class);
 
@@ -89,7 +90,7 @@ class User extends Authenticatable
     /**
      * Send the password reset notification.
      *
-     * @param  string  $token
+     * @param  string $token
      * @return void
      */
     public function sendPasswordResetNotification($token)
@@ -97,4 +98,15 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
+
+
+    public function scopeUnverified($query)
+    {
+        return $query->where('verified', 0);
+    }
+
+    public function scopeVerified($query)
+    {
+        return $query->where('verified', 1);
+    }
 }

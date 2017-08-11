@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="notification">
+<div class="tab-pane fade in {{ active_tab('notifications') }}" id="notifications">
 
     <div class="heading-block">
         <h3>

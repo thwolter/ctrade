@@ -13,10 +13,11 @@ class UserController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        return view('users.edit', compact('user'));
+        return view('users.edit', compact('user'))
+            ->with('tab', $request->get('active', 'profile'));
     }
 
 

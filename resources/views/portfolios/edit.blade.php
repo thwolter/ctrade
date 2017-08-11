@@ -20,35 +20,31 @@
                                 <strong>Tab Navigation</strong> / <a href="#settings-content">Skip to Content</a>
                             </div>
 
-                            @php
-                                if (!session('active')) session(['active' => 'portfolio'])
-                            @endphp
-
                             <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
 
-                                <li role="presentation" class="{{ active_tab(session('active'), 'portfolio') }}">
+                                <li role="presentation" class="{{ active_tab('portfolio') }}">
                                     <a href="#portfolio" data-toggle="tab" role="tab">
                                         <i class="fa fa-pie-chart"></i>
                                         &nbsp;&nbsp;Portfolio
                                     </a>
                                 </li>
 
-                                <li role="presentation" class="{{ active_tab(session('active'), 'parameter') }}">
+                                <li role="presentation" class="{{ active_tab('parameter') }}">
                                     <a href="#parameter" data-toggle="tab" role="tab">
                                         <i class="fa fa-calculator"></i>
                                         &nbsp;&nbsp;Parameter
                                     </a>
                                 </li>
 
-                                <li role="presentation" class="{{ active_tab(session('active'), 'limits') }}">
+                                <li role="presentation" class="{{ active_tab('limits') }}">
                                     <a href="#limits" data-toggle="tab" role="tab">
                                         <i class="fa fa-bar-chart"></i>
                                         &nbsp;&nbsp;Limite
                                     </a>
                                 </li>
 
-                                <li role="presentation" class="{{ active_tab(session('active'), 'notification') }}">
-                                    <a href="#notification" data-toggle="tab" role="tab">
+                                <li role="presentation" class="{{ active_tab('notifications') }}">
+                                    <a href="#notifications" data-toggle="tab" role="tab">
                                         <i class="fa fa-envelope"></i>
                                         &nbsp;&nbsp;Benachrichtigungen
                                     </a>
@@ -69,7 +65,7 @@
 
                                 @include('portfolios.edit.limits')
 
-                                @include('portfolios.edit.notification')
+                                @include('portfolios.edit.notifications')
 
                             </div> <!-- /.tab-content -->
 

@@ -21,21 +21,22 @@
                             </div>
 
                             <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
-                                <li class="{{ active_tab(session('active'), 'profile') }}">
+
+                                <li role="presentation" class="{{ active_tab(session('active'), 'profile') }}">
                                     <a href="#profile" data-toggle="tab" role="tab">
                                         <i class="fa fa-user"></i>
                                         &nbsp;&nbsp;Mein Profil
                                     </a>
                                 </li>
 
-                                <li class="{{ active_tab(session('active'), 'password') }}">
+                                <li role="presentation" class="{{ active_tab(session('active'), 'password') }}">
                                     <a href="#password" data-toggle="tab" role="tab">
                                         <i class="fa fa-lock"></i>
                                         &nbsp;&nbsp;Passwort ändern
                                     </a>
                                 </li>
 
-                                <li class="{{ active_tab(session('active'), 'messaging') }}">
+                                <li role="presentation" class="{{ active_tab(session('active'), 'messaging') }}">
                                     <a href="#messaging" data-toggle="tab" role="tab">
                                         <i class="fa fa-bullhorn"></i>
                                         &nbsp;&nbsp;Benachrichtigungen

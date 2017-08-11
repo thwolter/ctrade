@@ -35,11 +35,44 @@
                         </a>
                     </li>
 
-                    <li class="">
-                        <a href="{{ route('portfolios.edit', $portfolio->id) }}">
-                            {{--<i class="fa fa-wrench" aria-hidden="true"></i>--}}
-                        Einstellungen
+                    <li class="dropdown">
+                        <a href="./index.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                            Einstellungen
+                            <i class="mainnav-caret"></i>
                         </a>
+
+                        <ul class="dropdown-menu" role="menu">
+
+                            <li>
+                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->id, 'tab' => 'portfolio']) }}">
+                                    <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                                Portfolio
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->id, 'tab' => 'parameter']) }}">
+                                    <i class="fa fa-calculator" aria-hidden="true"></i>
+                                    Parameter
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->id, 'tab' => 'limits']) }}">
+                                    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                                    Limite
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->id, 'tab' => 'notifications']) }}">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    Benachichtigungen
+                                </a>
+                            </li>
+
+                        </ul>
+
                     </li>
                 @endif
 

@@ -7,10 +7,10 @@ function set_active($path, $active = 'active')
     return Request::is($path) ? $active : '';
 }
 
-function active_tab($name, $compare, $active = 'active')
+function active_tab($tab, $active = 'active')
 {
 
-    return $name === $compare ? $active : '';
+    return session('active_tab') === $tab ? $active : '';
 }
 
 function format_price($value)

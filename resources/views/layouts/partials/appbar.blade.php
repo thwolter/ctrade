@@ -33,9 +33,14 @@
                     <ul class="dropdown-menu" role="menu">
 
                         <!-- My profil -->
-                        <li><a href="{{ route('users.edit', Auth()->id()) }}">
+                        <li><a href="{{ route('users.edit', ['id' => Auth()->id(), 'active' => 'profile']) }}">
                             <i class="fa fa-user"></i> Mein Profil
                         </a></li>
+
+                        <!-- Password -->
+                        <li><a href="{{ route('users.edit', ['id' => Auth()->id(), 'active' => 'password']) }}">
+                                <i class="fa fa-user"></i> Passwort ändern
+                            </a></li>
 
                         <!-- Admin dashboard -->
                         @role('admin')
