@@ -22,3 +22,8 @@ Route::get('/social/{provider}/callback', [
     'uses' => 'Auth\SocialAuthController@callback'
 ]);
 
+Route::put('users/password', [
+    'as' => 'users.password',
+    'uses' => 'UserController@password'
+]);
+

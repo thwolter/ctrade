@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Entities\User;
+use App\Http\Requests\ChangePassword;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -33,5 +35,17 @@ class UserController extends Controller
 
         return redirect('users.edit')->with('message', 'User updated.')
             ->with('active_tab', $request->get('tab'));
+    }
+
+
+    public function password(ChangePassword $request)
+    {
+        $request->user()->fill([
+            'password' => Hash::make($request->newPassword)
+        ])->save();
+
+        return redirect()->route('users.edit', $request->user()->id)
+            ->with('message', 'Passwort erfolgreich geändert')
+            ->with('active_tab', 'password');
     }
 }
