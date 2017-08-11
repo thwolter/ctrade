@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Entities\User;
 use App\Http\Requests\ChangePassword;
+use App\Http\Requests\UpdateProfile;
+use App\Jobs\Auth\NewEmailVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,16 +26,29 @@ class UserController extends Controller
     }
 
 
-    public function update(Request $request)
+    public function update(UpdateProfile $request)
     {
-        $request->user()->update([
-            'name' => $request->get('name'),
-            'email' => $request->get('email')
-        ]);
+        $message = null;
 
-        return redirect('users.edit')
-            ->with('message', 'Profil erfolgreich aktualisiert.')
-            ->with('active_tab', $request->get('tab'));
+        $user = $request->user();
+        $user->name = $request->get('name');
+        $user->save();
+
+
+        if ($user->email != $request->get('email'))
+        {
+            $user->email_new = $request->get('email');
+            $user->save();
+
+            dispatch(new NewEmailVerification($user));
+            $message = "\nBitte bestätige deine neue Email-Adresse über den Link, den wir dir per Email geschickt haben.";
+        }
+
+
+        return redirect()->route('users.edit')
+            ->with('message', 'Profil erfolgreich aktualisiert.'.$message)
+            ->with('active_tab', $request->get('tab'))
+            ->with('email_new', $user->email_new);
     }
 
 
@@ -43,8 +58,25 @@ class UserController extends Controller
             'password' => Hash::make($request->newPassword)
         ])->save();
 
-        return redirect()->route('users.edit', $request->user()->id)
+        return redirect()->route('users.edit')
             ->with('message', 'Passwort erfolgreich geändert')
             ->with('active_tab', 'password');
+    }
+
+    public function verifyEmail($token)
+    {
+        $user = User::where('email_token', $token)->verified()->first();
+
+        if ($user) {
+            $user->email = $user->email_new;
+            $user->email_new = null;
+            $user->email_token = null;
+            $user->save();
+
+            return view('auth.confirmed.email', compact('user'));
+
+        } else {
+            return view('auth.invalid_token');
+        }
     }
 }

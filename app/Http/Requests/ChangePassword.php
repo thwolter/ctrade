@@ -40,7 +40,6 @@ class ChangePassword extends FormRequest
      */
     public function withValidator($validator)
     {
-
         $validator->after(function ($validator) {
 
             $hasher = app('hash');

@@ -12,14 +12,19 @@
         </div>
     @endif
 
+    @include('partials.errors')
+
+
     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
         eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
         montes. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
 
     <br><br>
 
-    {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'PUT',
-        'class' => 'form-horizontal']) !!}
+    {!! Form::open(['route' => ['users.update'], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+
+    <input type="hidden" name="tab" value="profile">
+    <input type="hidden" name="id" value="{{ $user->id }}">
 
         <div class="form-group">
 
@@ -33,19 +38,18 @@
         </div> <!-- /.form-group -->
 
 
+        @php($email = (session('email_new')) ? $user->email_new : $user->email)
 
         <div class="form-group">
 
             <label class="col-md-3 control-label">Email Addresse</label>
 
             <div class="col-md-7">
-                <input type="text" name="email-address" value="{{ $user->email }}"
+                <input type="text" name="email" value="{{ $email}}"
                        class="form-control"/>
             </div> <!-- /.col -->
 
         </div> <!-- /.form-group -->
-
-
 
         <div class="form-group">
             <div class="col-md-7 col-md-push-3">

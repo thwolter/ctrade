@@ -21,8 +21,7 @@
 
     <br><br>
 
-    {!! Form::open(['route' => ['users.password'], 'method' => 'PUT',
-     'class' => 'form form-horizontal']) !!}
+    {!! Form::open(['route' => ['users.password'], 'method' => 'PUT', 'class' => 'form form-horizontal']) !!}
 
     <input type="hidden" name="tab" value="password">
     <input type="hidden" name="id" value="{{ $user->id }}">

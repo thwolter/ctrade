@@ -10,17 +10,14 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
 
-                    <portlet title="Email Token existiert nicht">
-
+                    <portlet title="Neue Email Adresse">
                         <p class="text-center lead">
-                            Dieser Link ist nicht mehr gültig.
+                            Deine neue Email {{ $user->email }} wurde erfolgreich bestätigt.
                         </p>
-
+                        <a href="{{ route('login') }}" class="btn btn-default">Login</a>
                     </portlet>
-
                 </div>
             </div>
-
         </div>
     </div>
 

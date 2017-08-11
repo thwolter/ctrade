@@ -18,4 +18,9 @@ Route::prefix('users')->group(function() {
         'uses' => 'UserController@password'
     ]);
 
+    Route::get('verify/{token}', [
+        'as' => 'users.verify',
+        'uses' => 'VerificationController@verifyEmail'
+    ]);
+
 });

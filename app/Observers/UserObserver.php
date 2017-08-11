@@ -12,4 +12,10 @@ class UserObserver
     {
         $user->email_token = str_random(30);
     }
+
+    public function updating(User $user)
+    {
+        if ($user->email_new)
+            $user->email_token = str_random(30);
+    }
 }
