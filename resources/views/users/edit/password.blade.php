@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="password-tab">
+<div class="tab-pane fade {{ active_tab(session('active'), 'profile') }}" id="password">
 
     <div class="heading-block">
         <h3>

@@ -6,13 +6,7 @@
         <div class="container">
 
             <div class="page-header">
-                <h3 class="page-title">Einstellungen</h3>
-
-               {{-- <ol class="breadcrumb">
-                    <li><a href="./">Dashboard</a></li>
-                    <li><a href="#">Demo Pages</a></li>
-                    <li class="active">Settings</li>
-                </ol>--}}
+                <h3 class="page-title">Portfolio Einstellungen</h3>
             </div> <!-- /.page-header -->
 
             <div class="portlet portlet-boxed">

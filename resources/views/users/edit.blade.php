@@ -7,12 +7,6 @@
 
             <div class="page-header">
                 <h3 class="page-title">Einstellungen</h3>
-
-               {{-- <ol class="breadcrumb">
-                    <li><a href="./">Dashboard</a></li>
-                    <li><a href="#">Demo Pages</a></li>
-                    <li class="active">Settings</li>
-                </ol>--}}
             </div> <!-- /.page-header -->
 
             <div class="portlet portlet-boxed">
@@ -27,22 +21,22 @@
                             </div>
 
                             <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
-                                <li class="active">
-                                    <a href="#profile-tab" data-toggle="tab">
+                                <li class="{{ active_tab(session('active'), 'profile') }}">
+                                    <a href="#profile" data-toggle="tab" role="tab">
                                         <i class="fa fa-user"></i>
                                         &nbsp;&nbsp;Mein Profil
                                     </a>
                                 </li>
 
-                                <li>
-                                    <a href="#password-tab" data-toggle="tab">
+                                <li class="{{ active_tab(session('active'), 'password') }}">
+                                    <a href="#password" data-toggle="tab" role="tab">
                                         <i class="fa fa-lock"></i>
                                         &nbsp;&nbsp;Passwort ändern
                                     </a>
                                 </li>
 
-                                <li>
-                                    <a href="#messaging" data-toggle="tab">
+                                <li class="{{ active_tab(session('active'), 'messaging') }}">
+                                    <a href="#messaging" data-toggle="tab" role="tab">
                                         <i class="fa fa-bullhorn"></i>
                                         &nbsp;&nbsp;Benachrichtigungen
                                     </a>
@@ -57,11 +51,11 @@
 
                             <div id="settings-content" class="tab-content stacked-content">
 
-                               @include('users.edit.profile')
+                                @include('users.edit.profile')
 
-                               @include('users.edit.password')
+                                @include('users.edit.password')
 
-                               @include('users.edit.notification')
+                                @include('users.edit.notification')
 
                             </div> <!-- /.tab-content -->
 
