@@ -1,5 +1,21 @@
 <?php
 
-Route::resource('/users', 'UserController');
 
+Route::prefix('users')->group(function() {
 
+    Route::get('edit', [
+        'as' => 'users.edit',
+        'uses' => 'UserController@edit'
+    ]);
+
+    Route::put('update', [
+        'as' => 'users.update',
+        'uses' => 'UserController@update'
+    ]);
+
+    Route::put('password', [
+        'as' => 'users.password',
+        'uses' => 'UserController@password'
+    ]);
+
+});
