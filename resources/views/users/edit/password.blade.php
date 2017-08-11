@@ -14,11 +14,6 @@
 
     @include('partials.errors')
 
-
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
-        eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
-        montes.</p>
-
     <br><br>
 
     {!! Form::open(['route' => ['users.password'], 'method' => 'PUT', 'class' => 'form form-horizontal']) !!}

@@ -15,9 +15,8 @@
     @include('partials.errors')
 
 
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
-        eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
-        montes. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+    <p>Hier kannst du deinen Namen und deine Email-Adresse ändern. Zur Bestätigung deiner neuen
+        Email-Adresse senden wir dir einen Bestätigungslink an deine neue Email.</p>
 
     <br><br>
 
