@@ -36,12 +36,12 @@
                                     </a>
                                 </li>
 
-                                <li role="presentation" class="{{ active_tab('messaging') }}">
+                              {{--  <li role="presentation" class="{{ active_tab('messaging') }}">
                                     <a href="#messaging" data-toggle="tab" role="tab">
                                         <i class="fa fa-bullhorn"></i>
                                         &nbsp;&nbsp;Benachrichtigungen
                                     </a>
-                                </li>
+                                </li>--}}
 
                             </ul>
 
@@ -56,7 +56,7 @@
 
                                 @include('users.edit.password')
 
-                                @include('users.edit.messaging')
+                               {{-- @include('users.edit.messaging')--}}
 
                             </div> <!-- /.tab-content -->
 

@@ -9,6 +9,8 @@
         <nav class="collapse mainnav-collapse" role="navigation">
             <ul class="mainnav-menu">
 
+                @include('layouts.dropdowns.portfolios')
+
                 @if ((!isset($focus)) and isset($portfolio))
 
                     <li class="{{ active_class(if_route(['portfolios.show'])) }}">
@@ -35,7 +37,7 @@
                         </a>
                     </li>
 
-                    <li class="dropdown">
+                    <li class="dropdown {{ active_class(if_route_pattern(['*/edit'])) }}">
                         <a href="./index.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                             Einstellungen
                             <i class="mainnav-caret"></i>
@@ -46,7 +48,7 @@
                             <li>
                                 <a href="{{ route('portfolios.edit', ['id' => $portfolio->id, 'tab' => 'portfolio']) }}">
                                     <i class="fa fa-pie-chart" aria-hidden="true"></i>
-                                Portfolio
+                                    Portfolio
                                 </a>
                             </li>
 
@@ -75,52 +77,6 @@
 
                     </li>
                 @endif
-
-                <li class="dropdown portfolio-dropdown pull-right-lg {{ active_class(if_route_pattern(['portfolios.index'])) }}">
-                        <a href="javascript:;" class="dropdown-toggle portfolio-dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-                            @if (if_route(['portfolios.index']))
-                                Meine Portfolios
-                            @elseif (isset($focus))
-                                {{ $focus }}
-                            @elseif (isset($portfolio))
-                                {{ $portfolio->name }}
-                            @else
-                                Meine Portfolios
-                            @endif
-                            <i class="mainnav-caret"></i>
-                        </a>
-
-                        <ul class="dropdown-menu" role="menu">
-
-                            <li>
-                                <a href="{{ route('portfolios.create') }}">
-                                    <i class="fa fa-plus dropdown-icon "></i>
-                                    Neues Portfolio
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="{{ route('portfolios.index') }}">
-                                    <i class="fa fa-edit dropdown-icon "></i>
-                                    Übersicht
-                                </a>
-                            </li>
-
-                            @if (Auth::user()->portfolios->count())
-                                <div class="separator"></div>
-                            @endif
-
-                            @foreach (Auth::user()->portfolios as $items)
-                                <li>
-                                    <a href="{{ route('portfolios.show', $items->id) }}">
-                                        <i class="fa fa-angle-double-right dropdown-icon "></i>
-                                        {{ $items->name }}
-                                    </a>
-                                </li>
-                            @endforeach
-
-                        </ul>
-                    </li>
 
             </ul>
 

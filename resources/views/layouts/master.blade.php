@@ -45,8 +45,8 @@
 
    @if (Auth::check())
 
-        @include('layouts.partials.appbar')
-        @include('layouts.partials.mainnav')
+        @include('layouts.navigation.appbar')
+        @include('layouts.navigation.mainnav')
 
     @endif
 

@@ -5,7 +5,7 @@
 
         <div class="navbar-header">
             <div class="navbar-brand">
-                <a href="index.html" class="logo">
+                <a href="/" class="logo">
                     <img src="http://metarocket.space/mockups/mvpready-2.3.2/templates/admin/img/logo.png" alt="">
                 </a>
             </div>
@@ -42,7 +42,7 @@
                                 <i class="fa fa-lock"></i> Passwort
                             </a></li>
 
-                        <!-- Password -->
+                        <!-- Messaging -->
                         <li><a href="{{ route('users.edit', ['tab' => 'messaging']) }}">
                                 <i class="fa fa-bullhorn"></i> Benachichtigungen
                             </a></li>
@@ -120,7 +120,6 @@
 
                     </ul>
                 </li>
-
 
                 <li class="navbar-divider"></li><!-- /.navbar-divider -->
 
