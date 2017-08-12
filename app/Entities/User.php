@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use App\Settings\InitialSettings;
 use App\Settings\Settings;
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
@@ -108,5 +109,20 @@ class User extends Authenticatable
     public function scopeVerified($query)
     {
         return $query->where('verified', 1);
+    }
+
+    public function scopeValidToken($query)
+    {
+        return $query->where('token_expires_at', '>=', Carbon::now());
+    }
+
+    public function scopeExpiredToken($query)
+    {
+        return $query->where('token_expires_at', '<', Carbon::now());
+    }
+
+    public function hasNewEmail()
+    {
+        return ($this->validToken()->count() && ($this->email_new));
     }
 }

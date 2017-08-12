@@ -48,6 +48,10 @@
         @include('layouts.navigation.appbar')
         @include('layouts.navigation.mainnav')
 
+    @else
+
+       @include('layouts.navigation.guest')
+
     @endif
 
     @yield('content')

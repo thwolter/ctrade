@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Entities\User;
+use App\Events\Verification\EmailHasChanged;
 use App\Http\Requests\ChangePassword;
 use App\Http\Requests\UpdateProfile;
 use App\Jobs\Auth\NewEmailVerification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -40,7 +42,7 @@ class UserController extends Controller
             $user->email_new = $request->get('email');
             $user->save();
 
-            dispatch(new NewEmailVerification($user));
+            event(new EmailHasChanged($user));
             $message = "\nBitte bestätige deine neue Email-Adresse über den Link, den wir dir per Email geschickt haben.";
         }
 
@@ -65,7 +67,7 @@ class UserController extends Controller
 
     public function verifyEmail($token)
     {
-        $user = User::where('email_token', $token)->verified()->first();
+        $user = User::where('email_token', $token)->verified()->validToken()->first();
 
         if ($user) {
             $user->email = $user->email_new;

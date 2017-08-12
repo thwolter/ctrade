@@ -11,7 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 
-class NewEmailVerification //implements ShouldQueue
+class NewEmailVerification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -35,7 +35,10 @@ class NewEmailVerification //implements ShouldQueue
      */
     public function handle()
     {
-        $email = new EmailVerification($this->user);
-        Mail::to($this->user->email_new)->send($email);
+        if ($this->user->validToken()->count()) {
+
+            $email = new EmailVerification($this->user);
+            Mail::to($this->user->email_new)->send($email);
+        }
     }
 }

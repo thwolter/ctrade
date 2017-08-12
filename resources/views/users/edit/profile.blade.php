@@ -37,7 +37,7 @@
         </div> <!-- /.form-group -->
 
 
-        @php($email = (session('email_new')) ? $user->email_new : $user->email)
+        @php($email = $user->hasNewEmail() ? $user->email_new : $user->email)
 
         <div class="form-group">
 
@@ -46,9 +46,16 @@
             <div class="col-md-7">
                 <input type="text" name="email" value="{{ $email}}"
                        class="form-control"/>
+
+                @if ($user->hasNewEmail())
+                    <span class="help-block alert alert-info">Bitte bestätige deine Email-Adresse über den Link, den wir dir per Email
+                        geschickt haben.</span>
+                @endif
             </div> <!-- /.col -->
 
         </div> <!-- /.form-group -->
+
+
 
         <div class="form-group">
             <div class="col-md-7 col-md-push-3">

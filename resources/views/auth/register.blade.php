@@ -2,8 +2,6 @@
 
 @section('content')
 
-   @include('auth.partials.header')
-
     <div class="account-wrapper">
         <div class="account-body">
             

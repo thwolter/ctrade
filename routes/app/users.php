@@ -1,6 +1,5 @@
 <?php
 
-
 Route::prefix('users')->group(function() {
 
     Route::get('edit', [

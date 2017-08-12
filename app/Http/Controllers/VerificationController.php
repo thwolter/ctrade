@@ -11,10 +11,6 @@ use Illuminate\Support\Facades\Hash;
 
 class VerificationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
 
 
     public function verifyEmail($token)

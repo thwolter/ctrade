@@ -13,7 +13,7 @@
 
                 @if ((!isset($focus)) and isset($portfolio))
 
-                    <li class="{{ active_class(if_route(['portfolios.show'])) }}">
+                    <li class="{{ active_class(if_route('portfolios.show')) }}">
                         <a href="{{ route('portfolios.show', $portfolio->id) }}">
                             Dashboard
                         </a>
@@ -37,7 +37,7 @@
                         </a>
                     </li>
 
-                    <li class="dropdown {{ active_class(if_route_pattern(['*/edit'])) }}">
+                    <li class="dropdown {{ active_class(if_route('portfolios.edit')) }}">
                         <a href="./index.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                             Einstellungen
                             <i class="mainnav-caret"></i>
