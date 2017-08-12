@@ -29,3 +29,13 @@ Route::get('admin/register', 'Auth\RegisterController@register');
 Route::get('test', function() {
     return view('auth.confirmed.email', ['user' => \App\Entities\User::first()]);
 });
+
+
+Route::get('event', function(Request $request) {
+
+    $limit = \App\Entities\Limit::firstOrFail();
+
+    event(new \App\Events\Limits\LimitHasChanged($limit));
+
+
+});

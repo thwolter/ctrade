@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Entities\Limit;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -33,7 +34,7 @@ class LimitChanged extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['broadcast', 'database'];
     }
 
     /**
@@ -48,6 +49,17 @@ class LimitChanged extends Notification
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
+    }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return BroadcastMessage
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage($this->toArray($notifiable));
     }
 
     /**
