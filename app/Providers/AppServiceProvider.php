@@ -2,19 +2,10 @@
 
 namespace App\Providers;
 
-use App\Entities\Datasource;
-use App\Entities\Limit;
-use App\Entities\Portfolio;
-use App\Entities\User;
-use App\Entities\UUIDModel;
-use App\Observers\DatasourceObserver;
-use App\Observers\LimitObserver;
-use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Dusk\DuskServiceProvider;
-use Observers\UUIDModelObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,9 +24,7 @@ class AppServiceProvider extends ServiceProvider
             'ccyPair' => \App\Entities\CcyPair::class
         ]);
 
-        Limit::observe(LimitObserver::class);
-        Datasource::observe(DatasourceObserver::class);
-        User::observe(UserObserver::class);
+
     }
 
     /**
