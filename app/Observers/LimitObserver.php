@@ -13,6 +13,11 @@ class LimitObserver
 
     public function updated(Limit $limit)
     {
-        event(new \App\Events\LimitHasChanged($limit));
+        event(new \App\Events\Limits\LimitHasChanged($limit));
+    }
+
+    public function created(Limit $limit)
+    {
+        event(new \App\Events\Limits\LimitHasChanged($limit));
     }
 }

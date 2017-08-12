@@ -111,13 +111,14 @@ class PortfoliosController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit($id, Request $request)
     {
         $portfolio = Portfolio::findOrFail($id);
         $user = $portfolio->user;
         $limit = new LimitRepository($portfolio);
 
-        session(['active_tab' => $request->get('tab', 'portfolio')]);
+        if (! session('active_tab'))
+            session(['active_tab' => $request->get('tab')]);
 
         return view('portfolios.edit',
             compact('portfolio', 'user', 'limit'));
@@ -146,7 +147,7 @@ class PortfoliosController extends Controller
 
         return redirect(route('portfolios.edit', $id))
             ->with('message', 'Portfolio erfolgreich geändert.')
-            ->with('active_tab', $request->get('tab'));
+            ->with('active_tab', $request->get('active_tab'));
     }
 
     /**

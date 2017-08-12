@@ -12,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 
 
-class UpdateQuandlFSE //implements ShouldQueue
+class UpdateQuandlFSE implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\Limits;
 
 use App\Entities\Limit;
 use Illuminate\Broadcasting\Channel;

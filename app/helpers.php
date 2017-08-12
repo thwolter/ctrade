@@ -9,7 +9,6 @@ function set_active($path, $active = 'active')
 
 function active_tab($tab, $active = 'active')
 {
-
     return session('active_tab') === $tab ? $active : '';
 }
 

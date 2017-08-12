@@ -2,7 +2,7 @@
 
 namespace App\Listeners\Limit;
 
-use App\Events\LimitHasChanged;
+use App\Events\Limits\LimitHasChanged;
 use App\Jobs\CheckLimits;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

@@ -81,84 +81,32 @@
 
             <!-- page links -->
             <ul class="nav  navbar-nav navbar-right">
+
+                <li class="navbar-divider"></li><!-- /.navbar-divider -->
+
                 <li class="navbar-item">
-                    <a href="javsacript:;">Blog</a>
+                    <a href="#">Blog</a>
                 </li>
 
                 <li class="navbar-item">
-                    <a href="javsacript:;">Kontakt</a>
+                    <a href="#">Kontakt</a>
                 </li>
 
                 <li class="navbar-item">
-                    <a href="javsacript:;">Über uns</a>
-                </li>
-
-            </ul>
-
-            <!-- portfolio menu -->
-            <ul class="nav navbar-nav navbar-left">
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="javascript:;">
-                        Portfolios
-                        <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-edit dropdown-icon "></i>
-                                Neues Portfolio
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-edit dropdown-icon "></i>
-                                Übersicht
-                            </a>
-                        </li>
-
-                    </ul>
+                    <a href="#">Über uns</a>
                 </li>
 
                 <li class="navbar-divider"></li><!-- /.navbar-divider -->
 
+            </ul>
+
+            <!-- notifications bar -->
+            <ul class="nav navbar-nav navbar-left">
+
+                <li class="navbar-divider"></li><!-- /.navbar-divider -->
+
                 <!-- notifications -->
-                <li class="dropdown navbar-notification">
-
-                    <a href="./page-notifications.html" class="dropdown-toggle" data-toggle="dropdown"
-                       data-hover="dropdown">
-                        <i class="fa fa-bell navbar-notification-icon"></i>
-                        <span class="visible-xs-inline">&nbsp;Notifications</span>
-                        @php
-                            $count = count(Auth::user()->unreadNotifications)
-                        @endphp
-                        @if ($count)
-                            <b class="badge badge-primary">{{ $count }}</b>
-                        @endif
-                    </a>
-
-                    <div class="dropdown-menu">
-
-                        <div class="dropdown-header">&nbsp;Notifications</div>
-
-                        <div class="notification-list">
-
-                            @foreach(Auth::user()->unreadNotifications as $notification)
-
-                                @include ('notifications.unread.'.snake_case(class_basename($notification->type)))
-                                @php $notification->markAsRead() @endphp
-
-                            @endforeach
-
-                        </div> <!-- / .notification-list -->
-
-                        <a href="{{ route('notifications.index') }}" class="notification-link">Alle
-                            Benachichtigungen</a>
-
-                    </div> <!-- / .dropdown-menu -->
-
-                </li>
+               @include('layouts.notification.standard')
 
                 <!-- second notifications -->
                 <li class="dropdown navbar-notification">

@@ -43,9 +43,10 @@ class LimitRepository
 
         if ($this->isValid($attributes, $type)) {
 
-            $value = (float)array_get($attributes, $type.'_value');
-            $date = array_get($attributes, $type.'_date');
-            return $limit->update(['value' => $value, 'date' => $date, 'active' => 1]);
+            $limit->value = (float)array_get($attributes, $type.'_value');
+            $limit->date = array_get($attributes, $type.'_date');
+            $limit->active = 1;
+            return $limit->save();
 
         } else {
             return false;

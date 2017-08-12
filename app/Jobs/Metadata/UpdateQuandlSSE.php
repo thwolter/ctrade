@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 
 
-class UpdateQuandlSSE //implements ShouldQueue
+class UpdateQuandlSSE implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

@@ -14,6 +14,10 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+
+        /*
+         * Metadata events
+         */
         'App\Events\MetadataUpdateHasStarted' => [
             'App\Listeners\Metadata\NotifyUpdatedHasStarted'
         ],
@@ -25,17 +29,29 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Overall\UpdateRiskCalculations',
             'App\Listeners\Overall\UpdateValueCalculations',
         ],
+
+        /*
+         * Portfolio events
+         */
         'App\Events\PortfolioHasChanged' => [
             'App\Listeners\Portfolio\CalculatePortfolioRisk',
             'App\Listeners\Portfolio\CalculatePortfolioValue'
         ],
-        'App\Events\LimitHasChanged' => [
+
+        /*
+         * Limit events
+         */
+        'App\Events\Limits\LimitHasChanged' => [
             'App\Listeners\Limit\NotifyLimitHasChanged',
             'App\Listeners\Limit\CheckLimit'
         ],
-        'App\Events\LimitHasBreached' => [
+        'App\Events\Limits\LimitHasBreached' => [
             'App\Listeners\Limit\NotifyLimitHasBreached'
         ],
+
+        /*
+         * Calculation events
+         */
         'App\Events\PortfolioRiskWasCalculated' => [
             'App\Listeners\Portfolio\RecalculateUtilisation'
         ],
@@ -43,8 +59,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Portfolio\RecalculateUtilisation'
         ],
 
-
-        /* Email verifications */
+        /*
+         * Email verification events
+         */
         'App\Events\Verification\EmailHasChanged' => [
             'App\Listeners\Verification\SendNewEmailVerificationReminder'
         ]
