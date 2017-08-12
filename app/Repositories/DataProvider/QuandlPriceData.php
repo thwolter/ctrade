@@ -33,9 +33,9 @@ class QuandlPriceData implements DataInterface
     }
 
 
-    public function history()
+    public function history($dates = null)
     {
-        return $this->fetchHistory()->history();
+        return $this->fetchHistory()->history($dates);
     }
 
 

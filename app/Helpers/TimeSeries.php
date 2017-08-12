@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Classes;
+namespace App\Helpers;
 
 
 use Carbon\Carbon;
 
-class Helpers
+class TimeSeries
 {
     public function allWeekDays($date, $count)
     {

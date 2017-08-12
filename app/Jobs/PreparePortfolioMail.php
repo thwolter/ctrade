@@ -8,8 +8,8 @@
 namespace App\Jobs;
 
 use App\Entities\Portfolio;
-use App\Facades\Helpers;
 use App\Facades\Mapping;
+use App\Facades\TimeSeries;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -45,7 +45,7 @@ class PreparePortfolioMail implements ShouldQueue
     {
         $confidence = Mapping::confidence($this->portfolio->settings('levelConfidence'));
 
-        $days = Helpers::allWeekDaysBetween($this->portfolio->created_at, Carbon::now());
+        $days = TimeSeries::allWeekDaysBetween($this->portfolio->created_at, Carbon::now());
 
         $r = new Rscript($this->portfolio);
 

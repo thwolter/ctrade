@@ -5,10 +5,10 @@ namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Helpers extends Facade
+class TimeSeries extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'helpers';
+        return 'TimeSeries';
     }
 }

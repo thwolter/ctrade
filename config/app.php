@@ -282,7 +282,6 @@ return [
          */
         'Datasource' => App\Facades\Datasource::class,
         'Mapping' => App\Facades\Mapping::class,
-        'Helpers' => App\Facades\Helpers::class,
 
     ],
 

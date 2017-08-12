@@ -3,8 +3,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Classes\Helpers;
 use App\Entities\Portfolio;
+use App\Facades\TimeSeries;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -33,11 +33,12 @@ class ApiBaseController extends Controller
      */
     public function getWeekDaysSeries(Request $request): array
     {
-        $helper = new Helpers();
         if (isset($request->date) && isset($request->count)) {
-            $days = $helper->allWeekDays($request->date, $request->count);
+            $days = TimeSeries::allWeekDays($request->date, $request->count);
+
         } elseif (isset($request->from) && isset($request->to)) {
-            $days = $helper->allWeekDaysBetween($request->from, $request->to);
+            $days = TimeSeries::allWeekDaysBetween($request->from, $request->to);
+
         } else {
             throw new \Exception("Parameter ['date' and 'count'] or ['from' and 'to'] must be set.");
         }
