@@ -3,7 +3,7 @@
         <div class="input-form">
             <form @submit.prevent="onSubmit">
         
-                <div class="col-md-8">
+                <div>
             
                     <!-- portfolio name -->
                     <div class="form-group row">

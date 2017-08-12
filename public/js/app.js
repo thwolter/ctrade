@@ -58091,9 +58091,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.onSubmit($event)
       }
     }
-  }, [_c('div', {
-    staticClass: "col-md-8"
-  }, [_c('div', {
+  }, [_c('div', [_c('div', {
     staticClass: "form-group row"
   }, [_c('label', {
     staticClass: "col-md-3 col-md-offset-1 col-form-label",
