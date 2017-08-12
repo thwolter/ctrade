@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Entities\Exceptions\LimitTypeException;
+use App\Entities\Traits\UuidModel;
 use App\Events\PortfolioHasChanged;
 use App\Presenters\Presentable;
 use App\Settings\PortfolioSettings;
@@ -54,18 +55,16 @@ use Psy\Readline\Libedit;
  */
 class Portfolio extends Model
 {
-    use Presentable;
+    use Presentable, UuidModel;
 
     protected $presenter = 'App\Presenters\Portfolio';
 
-    protected $fillable = [
-        'name', 'cash', 'description', 'settings', 'img_url'
-    ];
 
+    protected $fillable = ['name', 'cash', 'description', 'settings', 'img_url'];
 
-    protected $casts = [
-        'settings' => 'json'
-    ];
+    protected $casts = ['settings' => 'json'];
+
+    protected $hidden = ['id'];
 
     public $imagesPath = 'public/images';
 

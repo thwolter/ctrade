@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Entities\Traits\UuidModel;
 use App\Settings\InitialSettings;
 use App\Settings\Settings;
 use Carbon\Carbon;
@@ -43,7 +44,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable
 {
-    use Notifiable, CrudTrait, HasRoles;
+    use Notifiable, CrudTrait, HasRoles, UuidModel;
 
     /**
      * The attributes that are mass assignable.
@@ -60,12 +61,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'id'
     ];
 
     protected $cast = [
         'settings' => 'json'
     ];
+
 
 
     public function portfolios()
@@ -113,16 +115,17 @@ class User extends Authenticatable
 
     public function scopeValidToken($query)
     {
-        return $query->where('token_expires_at', '>=', Carbon::now());
+        return $query->where('email_token_expires_at', '>=', Carbon::now());
     }
 
     public function scopeExpiredToken($query)
     {
-        return $query->where('token_expires_at', '<', Carbon::now());
+        return $query->where('email_token_expires_at', '<', Carbon::now());
     }
 
     public function hasNewEmail()
     {
         return ($this->validToken()->count() && ($this->email_new));
     }
+
 }
