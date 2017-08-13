@@ -83,12 +83,16 @@ class LimitChanged extends Notification
             $present = [
                 'title' => "$type angepasst",
                 'message' => $message,
+                'icon' => 'fa-envelope-o',
+                'icon_class' => 'text-secondary'
             ];
 
         } else {
             $present = [
                 'title' => "$type deaktiviert",
-                'message' => "Limit für Portfolio $portfolio wird nicht mehr überwacht."
+                'message' => "Limit für Portfolio $portfolio wird nicht mehr überwacht.",
+                'icon' => 'fa-envelope-o',
+                'icon_class' => 'text-info'
             ];
         }
 

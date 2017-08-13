@@ -21736,6 +21736,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_clickaway__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_clickaway___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_clickaway__);
+//
+//
 //
 //
 //
@@ -21771,7 +21775,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var moment = __webpack_require__(0);
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+
+    directives: {
+        onClickaway: __WEBPACK_IMPORTED_MODULE_0_vue_clickaway__["directive"]
+    },
 
     props: ['user_id', 'unread', 'show_url'],
 
@@ -21803,7 +21812,7 @@ var moment = __webpack_require__(0);
         }(function (item) {
             return _.snakeCase(type.substring(item.type.lastIndexOf('/') + 1));
         }),
-        toggle: function toggle(event) {
+        toggle: function toggle() {
             this.show = !this.show;
 
             if (this.show) {
@@ -21811,6 +21820,14 @@ var moment = __webpack_require__(0);
             } else {
                 this.notifications = [];
             }
+        },
+        away: function away() {
+            if (this.show) {
+                this.toggle();
+            }
+        },
+        onShowAll: function onShowAll() {
+            window.location = this.show_url;
         },
         markNotificationsRead: function markNotificationsRead() {
             axios.post('/api/notifications/read', {
@@ -21825,6 +21842,8 @@ var moment = __webpack_require__(0);
                 result.push({
                     'title': item.data.title,
                     'message': item.data.message,
+                    'icon': item.data.icon,
+                    'icon_class': item.data.icon_class,
                     'type': item.type,
                     'updated': item.updated_at
                 });
@@ -21833,6 +21852,14 @@ var moment = __webpack_require__(0);
         },
         ago: function ago(item) {
             return moment(item.updated, "YYYYMMDD hh:mm:ss").fromNow();
+        },
+        notificationClass: function notificationClass(item) {
+
+            if (item.icon) {
+                return item.icon + ' ' + item.icon_class;
+            } else {
+                return 'fa-info-circle text-secondary';
+            }
         }
     },
 
@@ -21846,6 +21873,8 @@ var moment = __webpack_require__(0);
             _this.notifications.push({
                 'title': data.title,
                 'message': data.message,
+                'icon': data.icon,
+                'icon_class': data.icon_class,
                 'type': data.type,
                 'updated': data.updated_at
             });
@@ -51418,6 +51447,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('li', {
     staticClass: "dropdown navbar-notification"
   }, [_c('a', {
+    directives: [{
+      name: "on-clickaway",
+      rawName: "v-on-clickaway",
+      value: (_vm.away),
+      expression: "away"
+    }],
     staticClass: "dropdown-toggle",
     class: {
       open: _vm.show
@@ -51445,7 +51480,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.notifications), function(notification) {
     return _c('li', {
       staticClass: "notification"
-    }, [_vm._m(0, true), _vm._v(" "), _c('span', {
+    }, [_c('span', {
+      staticClass: "notification-icon"
+    }, [_c('i', {
+      staticClass: "fa",
+      class: _vm.notificationClass(notification)
+    })]), _vm._v(" "), _c('span', {
       staticClass: "notification-title"
     }, [_vm._v(_vm._s(notification.title))]), _vm._v(" "), _c('span', {
       staticClass: "notification-description"
@@ -51454,17 +51494,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(_vm._s(_vm.ago(notification)))])])
   })), _vm._v(" "), _c('a', {
     staticClass: "notification-link",
-    attrs: {
-      "href": _vm.show_url
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.onShowAll($event)
+      }
     }
   }, [_vm._v("Alle Benachichtigungen")])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "notification-icon"
-  }, [_c('i', {
-    staticClass: "fa fa-cloud-upload text-primary"
-  })])
-}]}
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -53598,6 +53635,93 @@ exports.default = withParams;
 __webpack_require__(140);
 module.exports = __webpack_require__(141);
 
+
+/***/ }),
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var Vue = __webpack_require__(13);
+Vue = 'default' in Vue ? Vue['default'] : Vue;
+
+var version = '2.1.0';
+
+var compatible = (/^2\./).test(Vue.version);
+if (!compatible) {
+  Vue.util.warn('VueClickaway ' + version + ' only supports Vue 2.x, and does not support Vue ' + Vue.version);
+}
+
+
+
+// @SECTION: implementation
+
+var HANDLER = '_vue_clickaway_handler';
+
+function bind(el, binding) {
+  unbind(el);
+
+  var callback = binding.value;
+  if (typeof callback !== 'function') {
+    if (process.env.NODE_ENV !== 'production') {
+      Vue.util.warn(
+        'v-' + binding.name + '="' +
+        binding.expression + '" expects a function value, ' +
+        'got ' + callback
+      );
+    }
+    return;
+  }
+
+  // @NOTE: Vue binds directives in microtasks, while UI events are dispatched
+  //        in macrotasks. This causes the listener to be set up before
+  //        the "origin" click event (the event that lead to the binding of
+  //        the directive) arrives at the document root. To work around that,
+  //        we ignore events until the end of the "initial" macrotask.
+  // @REFERENCE: https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
+  // @REFERENCE: https://github.com/simplesmiler/vue-clickaway/issues/8
+  var initialMacrotaskEnded = false;
+  setTimeout(function() {
+    initialMacrotaskEnded = true;
+  }, 0);
+
+  el[HANDLER] = function(ev) {
+    // @NOTE: IE 5.0+
+    // @REFERENCE: https://developer.mozilla.org/en/docs/Web/API/Node/contains
+    if (initialMacrotaskEnded && !el.contains(ev.target)) {
+      return callback(ev);
+    }
+  };
+
+  document.documentElement.addEventListener('click', el[HANDLER], false);
+}
+
+function unbind(el) {
+  document.documentElement.removeEventListener('click', el[HANDLER], false);
+  delete el[HANDLER];
+}
+
+var directive = {
+  bind: bind,
+  update: function(el, binding) {
+    if (binding.value === binding.oldValue) return;
+    bind(el, binding);
+  },
+  unbind: unbind,
+};
+
+var mixin = {
+  directives: { onClickaway: directive },
+};
+
+exports.version = version;
+exports.directive = directive;
+exports.mixin = mixin;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ })
 ],[304]);

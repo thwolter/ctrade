@@ -32,6 +32,7 @@
     "sprintf-js": "^1.1.1",
     "vue-chartjs": "^2.7.1",
     "vue-cleave": "^1.2.2",
+    "vue-clickaway": "^2.1.0",
     "vue-instant": "^1.0.1",
     "vue-instantsearch": "^0.6.0",
     "vue-numeric": "^1.5.5",
