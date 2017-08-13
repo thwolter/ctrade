@@ -53,3 +53,4 @@ window.Echo = new Echo({
     cluster: 'eu',
     encrypted: true
 });
+

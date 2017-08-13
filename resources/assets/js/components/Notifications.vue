@@ -14,16 +14,16 @@
 
                 <div class="notification-list">
 
-                    <li v-for="(notification, index) in notifications" class="notification" :class="itemClass(index)">
+                    <li v-for="notification in notifications" class="notification">
                         <span class="notification-icon"><i class="fa fa-cloud-upload text-primary"></i></span>
                         <span class="notification-title">{{ notification.title }}</span>
                         <span class="notification-description">{{ notification.message }}</span>
-                        <span class="notification-time">ago</span>
+                        <span class="notification-time">{{ ago(notification) }}</span>
                     </li>
 
                 </div>
 
-                <a href="#" class="notification-link">Alle Benachichtigungen</a>
+                <a :href="show_url" class="notification-link">Alle Benachichtigungen</a>
             </ul>
         </a>
     </li>
@@ -31,22 +31,22 @@
 </template>
 
 <script>
+    var moment = require('moment');
 
     export default {
 
-        props: ['user_id', 'unread'],
+        props: ['user_id', 'unread', 'show_url'],
 
         data() {
             return {
                 notifications: [],
                 show: false,
-                seen: 0
             }
         },
 
         computed: {
             count() {
-                return this.notifications.length - this.seen;
+                return this.notifications.length;
             }
         },
 
@@ -56,28 +56,25 @@
                 return _.snakeCase(type.substring(item.type.lastIndexOf('/') + 1));
             },
 
-            hasSeen(index) {
-                return index <= this.seen;
-            },
-
             toggle(event) {
                 this.show = !this.show;
 
                 if (this.show) {
-                    this.seen = Math.max(this.count, this.seen);
+                    this.markNotificationsRead();
+                } else {
+                    this.notifications = [];
                 }
             },
 
             markNotificationsRead() {
-                this.axios.post('/api/notifications/read')
+                axios.post('/api/notifications/read', {
+                    'id': this.user_id
+                })
                     .then(()=>{
-                        this.notifications = [];
+                        //this.notifications = [];
                     });
             },
 
-            itemClass(index) {
-                return (this.hasSeen(index)) ? 'notification-seen' : ''
-            },
 
             assign(data) {
                 let result = [];
@@ -85,10 +82,15 @@
                     result.push({
                         'title': item.data.title,
                         'message': item.data.message,
-                        'type': item.type
+                        'type': item.type,
+                        'updated': item.updated_at
                     });
                 });
                 this.notifications = result;
+            },
+
+            ago(item) {
+                return moment(item.updated, "YYYYMMDD hh:mm:ss").fromNow()
             }
         },
 
@@ -104,22 +106,11 @@
                     this.notifications.push({
                         'title': data.title,
                         'message': data.message,
-                        'type': data.type
+                        'type': data.type,
+                        'updated': data.updated_at,
                     });
-                    console.log(data);
                 });
-        },
-
-        beforeDestroy() {
-            this.markNotificationsRead();
         }
-
     };
 
 </script>
-
-<style>
-    .notification-seen {
-        color: dimgrey;
-    }
-</style>
