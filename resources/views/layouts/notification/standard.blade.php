@@ -1,7 +1,6 @@
 <li class="dropdown navbar-notification">
 
-    <a href="./page-notifications.html" class="dropdown-toggle" data-toggle="dropdown"
-       data-hover="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
         <i class="fa fa-bell navbar-notification-icon"></i>
         <span class="visible-xs-inline">&nbsp;Notifications</span>
         @php
@@ -13,9 +12,7 @@
     </a>
 
     <div class="dropdown-menu">
-
         <div class="dropdown-header">&nbsp;Notifications</div>
-
         <div class="notification-list">
 
             @foreach(Auth::user()->unreadNotifications as $notification)
@@ -25,11 +22,10 @@
 
             @endforeach
 
-        </div> <!-- / .notification-list -->
+        </div>
 
         <a href="{{ route('notifications.index') }}" class="notification-link">Alle
             Benachichtigungen</a>
 
-    </div> <!-- / .dropdown-menu -->
-
+    </div>
 </li>

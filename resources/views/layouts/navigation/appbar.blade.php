@@ -106,7 +106,7 @@
                 <li class="navbar-divider"></li><!-- /.navbar-divider -->
 
                 <!-- notifications -->
-               @include('layouts.notification.standard')
+               {{--@include('layouts.notification.standard')--}}
 
                 <!-- second notifications -->
                 <li class="dropdown navbar-notification">
@@ -175,32 +175,7 @@
                 </li>
 
                 <!-- third notifications -->
-                <li class="dropdown navbar-notification empty">
-
-                    <a href="./page-notifications.html" class="dropdown-toggle" data-toggle="dropdown"
-                       data-hover="dropdown">
-                        <i class="fa fa-warning navbar-notification-icon"></i>
-                        <span class="visible-xs-inline">&nbsp;&nbsp;Alerts</span>
-
-
-                    </a>
-
-                    <div class="dropdown-menu">
-
-                        <div class="dropdown-header">Alerts</div>
-
-                        <div class="notification-list">
-
-                            <h4 class="notification-empty-title">No alerts here.</h4>
-                            <p class="notification-empty-text">Check out what other makers are doing on Explore!</p>
-
-                        </div> <!-- / .notification-list -->
-
-                        <a href="./page-notifications.html" class="notification-link">View All Alerts</a>
-
-                    </div> <!-- / .dropdown-menu -->
-
-                </li>
+               @include('layouts.notification.alarm')
 
                 <li class="navbar-divider"></li><!-- /.navbar-divider -->
 

@@ -16,7 +16,9 @@ import Colors from './core/Colors';
  * 
  */ 
 import popover from 'vue-strap';
-import InstantSearch from 'vue-instantsearch';
+import { dropdown } from 'vue-strap';
+
+
 
 //import 'vue-instant/dist/vue-instant.css';
 //import VueInstant from 'vue-instant';
@@ -37,7 +39,8 @@ const app = new Vue({
     el: '#wrapper',
     
     components: {
-        popover
+        popover,
+        //dropdown
     }
 });
 
