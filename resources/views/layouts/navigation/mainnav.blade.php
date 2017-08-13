@@ -33,7 +33,7 @@
 
                     <li class="">
                         <a href="{{ route('risks.index', $portfolio->id) }}">
-                            Risiko
+                            Optimieren
                         </a>
                     </li>
 

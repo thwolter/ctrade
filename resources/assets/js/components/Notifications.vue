@@ -4,7 +4,7 @@
         <a href="#" class="dropdown-toggle" :class="{open: show}" @click="toggle" v-on-clickaway="away"
            data-toggle="dropdown" data-hover="dropdown">
 
-            <i class="fa fa-warning navbar-notification-icon"></i>
+            <i class="fa navbar-notification-icon" :class="icon"></i>
             <span class="visible-xs-inline">&nbsp;Alerts</span>
 
             <b v-if="count > 0" class="badge badge-primary">{{ count }}</b>
@@ -42,7 +42,7 @@
             onClickaway: onClickaway,
         },
 
-        props: ['user_id', 'unread', 'show_url'],
+        props: ['user_id', 'unread', 'show_url', 'icon'],
 
         data() {
             return {

@@ -5,9 +5,11 @@
 
         <div class="navbar-header">
             <div class="navbar-brand">
-                <a href="/" class="logo">
-                    <img src="http://metarocket.space/mockups/mvpready-2.3.2/templates/admin/img/logo.png" alt="">
-                </a>
+                <div class="brand-name">
+                    <a href="/">
+                        CapMyRisk
+                    </a>
+                </div>
             </div>
 
             <button class="navbar-toggle pull-right" type="button" data-toggle="collapse"
@@ -19,13 +21,36 @@
 
         <div class="navbar-collapse collapse">
 
+            <!-- page links -->
+            <ul class="nav  navbar-nav">
+
+                <li class="navbar-divider"></li><!-- /.navbar-divider -->
+
+                <li class="navbar-item">
+                    <a href="{{ route('home.blog') }}">Blog</a>
+                </li>
+
+                <li class="navbar-item">
+                    <a href="{{ route('home.contact') }}">Kontakt</a>
+                </li>
+
+                <li class="navbar-item">
+                    <a href="{{ route('home.about') }}">Über uns</a>
+                </li>
+
+                <li class="navbar-divider"></li><!-- /.navbar-divider -->
+
+            </ul>
+
+            <ul>
+            <!-- user menu -->
             <ul class="nav navbar-nav navbar-right">
 
                 <li class="divider"></li>
 
                 <li class="dropdown navbar-profile">
 
-                    <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="javascript:;">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="#">
                         Mein Account
                         <i class="fa fa-caret-down"></i>
                     </a>
@@ -79,105 +104,18 @@
 
             </ul>
 
-            <!-- page links -->
-            <ul class="nav  navbar-nav navbar-right">
-
-                <li class="navbar-divider"></li><!-- /.navbar-divider -->
-
-                <li class="navbar-item">
-                    <a href="#">Blog</a>
-                </li>
-
-                <li class="navbar-item">
-                    <a href="#">Kontakt</a>
-                </li>
-
-                <li class="navbar-item">
-                    <a href="#">Über uns</a>
-                </li>
-
-                <li class="navbar-divider"></li><!-- /.navbar-divider -->
-
-            </ul>
-
             <!-- notifications bar -->
-            <ul class="nav navbar-nav navbar-left">
-
-                <li class="navbar-divider"></li><!-- /.navbar-divider -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="navbar-divider"></li>
 
                 <!-- notifications -->
-               {{--@include('layouts.notification.standard')--}}
-
-                <!-- second notifications -->
-                <li class="dropdown navbar-notification">
-
-                    <a href="./page-notifications.html" class="dropdown-toggle" data-toggle="dropdown"
-                       data-hover="dropdown">
-                        <i class="fa fa-envelope navbar-notification-icon"></i>
-                        <span class="visible-xs-inline">&nbsp;Messages</span>
-                    </a>
-
-                    <div class="dropdown-menu">
-
-                        <div class="dropdown-header">Messages</div>
-
-                        <div class="notification-list">
-
-                            <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img
-                                            src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-3-md.jpg') }}"
-                                            alt=""></div>
-                                <div class="notification-title">New Message</div>
-                                <div class="notification-description">Praesent dictum nisl non est sagittis luctus.
-                                </div>
-                                <div class="notification-time">20 minutes ago</div>
-                            </a> <!-- / .notification -->
-
-                            <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img
-                                            src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-3-sm.jpg') }}"
-                                            alt=""></div>
-                                <div class="notification-title">New Message</div>
-                                <div class="notification-description">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit...
-                                </div>
-                                <div class="notification-time">20 minutes ago</div>
-                            </a> <!-- / .notification -->
-
-                            <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img
-                                            src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-4-md.jpg') }}"
-                                            alt=""></div>
-                                <div class="notification-title">New Message</div>
-                                <div class="notification-description">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit...
-                                </div>
-                                <div class="notification-time">20 minutes ago</div>
-                            </a> <!-- / .notification -->
-
-                            <a href="./page-notifications.html" class="notification">
-                                <div class="notification-icon"><img
-                                            src="{{ asset('vendor/mvp-theme/global/img/avatars/avatar-5-md.jpg') }}"
-                                            alt=""></div>
-                                <div class="notification-title">New Message</div>
-                                <div class="notification-description">Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit...
-                                </div>
-                                <div class="notification-time">20 minutes ago</div>
-                            </a> <!-- / .notification -->
-
-                        </div> <!-- / .notification-list -->
-
-                        <a href="./page-notifications.html" class="notification-link">View All Messages</a>
-
-                    </div> <!-- / .dropdown-menu -->
-
-                </li>
-
-                <!-- third notifications -->
-               @include('layouts.notification.alarm')
-
-                <li class="navbar-divider"></li><!-- /.navbar-divider -->
+                <notifications
+                        :user_id="{{ Auth::user()->id }}"
+                        :unread="{{ json_encode(Auth::user()->unreadNotifications) }}"
+                        show_url="{{ route('notifications.index') }}"
+                        icon="fa-envelope">
+                </notifications>
+            </ul>
 
             </ul>
 

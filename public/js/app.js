@@ -21782,7 +21782,7 @@ var moment = __webpack_require__(0);
         onClickaway: __WEBPACK_IMPORTED_MODULE_0_vue_clickaway__["directive"]
     },
 
-    props: ['user_id', 'unread', 'show_url'],
+    props: ['user_id', 'unread', 'show_url', 'icon'],
 
     data: function data() {
         return {
@@ -51466,7 +51466,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "click": _vm.toggle
     }
   }, [_c('i', {
-    staticClass: "fa fa-warning navbar-notification-icon"
+    staticClass: "fa navbar-notification-icon",
+    class: _vm.icon
   }), _vm._v(" "), _c('span', {
     staticClass: "visible-xs-inline"
   }, [_vm._v(" Alerts")]), _vm._v(" "), (_vm.count > 0) ? _c('b', {

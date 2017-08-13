@@ -158,13 +158,21 @@
 	display: flex;
 }
 
+.mainnav-menu {
+	a {
+		font-size: 14px;
+	}
+}
+
 .portfolio-dropdown {
 	min-width: 200px;
+	padding-left: 20px;
 
 	.portfolio-name {
-		background: #eee;
 		margin: 10px 0;
-		padding: 11px;
+		border-right: 1px solid #ddd;
+		padding: 11px 25px 11px 0;
+		color: #6685a4;
 	}
 
 	.portfolio-caret {
@@ -181,3 +189,16 @@
 	text-transform: uppercase;
 }
 
+.brand-name {
+	a {
+		color: #dddddd;
+		display: inline-block;
+		margin: 15px 0px;
+		font-size: x-large;
+	}
+
+	a:hover, a:active, a:focus {
+		color: #dddddd !important;
+		text-decoration: inherit !important;
+	}
+}
