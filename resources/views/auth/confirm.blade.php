@@ -2,8 +2,6 @@
 
 @section('content')
 
-    @include('auth.partials.header')
-
     <div class="container" style="height: 100vH">
         <div class="space-70"></div>
         <div class="row">

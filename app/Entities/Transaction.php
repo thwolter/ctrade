@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-use App\Events\PortfolioChanged;
+use App\Events\PortfolioHasChanged;
 use App\Presenters\Presentable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +37,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereTypeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Transaction whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property float|null $cash
+ * @property string $executed_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Transaction whereCash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Transaction whereExecutedAt($value)
  */
 class Transaction extends Model
 {
@@ -128,7 +132,7 @@ class Transaction extends Model
         $transaction->instrumentable()->associate($position->positionable);
         $transaction->type()->associate(TransactionType::firstOrCreate(['code' => $type]));
 
-        event(new PortfolioChanged($portfolio, $date));
+        event(new PortfolioHasChanged($portfolio, $date));
         return $transaction->save();
     }
 
@@ -149,7 +153,7 @@ class Transaction extends Model
         $transaction->portfolio()->associate($portfolio);
         $transaction->type()->associate(TransactionType::firstOrCreate(['code' => $type]));
 
-        event(new PortfolioChanged($portfolio, $date));
+        event(new PortfolioHasChanged($portfolio, $date));
         return $transaction->save();
     }
 

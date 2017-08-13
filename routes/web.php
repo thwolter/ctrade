@@ -21,3 +21,21 @@ Route::get('/index', function() {
     return view('layouts.master');
 });
 
+Route::get('admin/login', 'Auth\LoginController@login');
+Route::get('admin/logout', 'Auth\LoginController@logout');
+Route::get('admin/register', 'Auth\RegisterController@register');
+
+
+Route::get('test', function() {
+    return view('auth.confirmed.email', ['user' => \App\Entities\User::first()]);
+});
+
+
+Route::get('event', function(Request $request) {
+
+    $limit = \App\Entities\Limit::firstOrFail();
+
+    event(new \App\Events\Limits\LimitHasChanged($limit));
+
+
+});

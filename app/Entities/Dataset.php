@@ -24,6 +24,11 @@ class Dataset extends Model
         'code'
     ];
 
+    public function datasource()
+    {
+        return $this->hasOne(Datasource::class);
+    }
+
    
 
 }

@@ -42,8 +42,8 @@ class Stock extends Instrument
     use Searchable, Presentable;
 
     protected $fillable = ['name', 'wkn', 'isin'];
+    protected $dates = ['created_at', 'updated_at', 'checked_at'];
 
-    protected $financial = DataRepository::class;
     protected $presenter = \App\Presenters\Stock::class;
 
     public $typeDisp = 'Aktie';
@@ -51,34 +51,16 @@ class Stock extends Instrument
     public $asYouType = true;
 
 
-    static public function saveWithParameter($parameter)
-    {
-        $stock = Stock::firstOrNew(array_only($parameter, ['name', 'wkn', 'isin']));
-
-        Currency::firstOrCreate(['code' => $parameter['currency']])
-            ->stocks()->save($stock);
-
-        if (!is_null(array_get($parameter, 'sector')))
-            Sector::firstOrCreate(['name' => $parameter['sector']])->stocks()->save($stock);
-
-        if (!is_null(array_get($parameter, 'industry')))
-            Industry::firstOrCreate(['name' => $parameter['industry']])->stocks()->save($stock);
-
-
-        $stock->save();
-        return $stock;
-    }
-
-
     public function toSearchableArray()
     {
-        return $this->toReadableArray();
+        return $this->toArray();
     }
 
-    public function toReadableArray()
+
+    public function toArray()
     {
         return array_merge(
-            array_except($this->toArray(), ['currency_id', 'sector_id', 'industry_id', 'datasources']),
+            array_except(parent::toArray(), ['currency_id', 'sector_id', 'industry_id', 'datasources']),
             [
                 'sector' => ($this->sector) ? $this->sector->name : '',
                 'industry' => ($this->industry) ? $this->industry->name : '',

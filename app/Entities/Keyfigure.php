@@ -26,6 +26,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Keyfigure whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Keyfigure whereValue($value)
  * @mixin \Eloquent
+ * @property int $type_id
+ * @property array $values
+ * @property string|null $expires_at
+ * @property-read \App\Entities\KeyfigureType $type
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Keyfigure whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Keyfigure whereTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Keyfigure whereValues($value)
  */
 class Keyfigure extends Model
 {
@@ -70,6 +77,28 @@ class Keyfigure extends Model
     {
         return array_key_exists($key, $this->values);
     }
+
+    /**
+     * Return the start date for calculations as the latest date of already calculated values.
+     *
+     * @param KeyFigure
+     * @return Carbon
+     */
+    public function calculateFromDate()
+    {
+        $date = $this->portfolio->created_at;
+
+        if (count($this->values) > 0) {
+            $date = Carbon::parse(max(max(array_keys($this->values)), $date))->addDay();
+
+            $invalidated = $this->expires_at;
+            if (!is_null($invalidated)) {
+                $date = Carbon::parse(min($date, $invalidated));
+            }
+        }
+        return $date->endOfDay();
+    }
+
 
     public static function boot()
     {

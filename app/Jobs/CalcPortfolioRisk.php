@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Entities\Keyfigure;
 use App\Entities\Portfolio;
+use App\Events\PortfolioRiskWasCalculated;
 use App\Models\Rscript;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -53,7 +54,7 @@ class CalcPortfolioRisk implements ShouldQueue
         $kfContrib = $this->portfolio->keyFigure('contribution');
 
         // perhaps it is sufficient to check only one keyFigure
-        $start = $this->startDate($kfRisk);
+        $start = $kfRisk->calculateFromDate();
         $today = Carbon::now()->endOfDay();
 
         for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {
@@ -68,27 +69,8 @@ class CalcPortfolioRisk implements ShouldQueue
         }
 
         $kfRisk->validUntil($today->startOfDay());
-    }
 
-    /**
-     * Return the start date for calculations as the latest date of already calculated values.
-     *
-     * @param KeyFigure
-     * @return Carbon
-     */
-    private function startDate($keyFigure)
-    {
-        $date = $this->portfolio->created_at;
-
-        if (count($keyFigure->values) > 0) {
-            $date = Carbon::parse(max(max(array_keys($keyFigure->values)), $date))->addDay();
-
-            $invalidated = $keyFigure->expires_at;
-            if (!is_null($invalidated)) {
-                $date = Carbon::parse(min($date, $invalidated));
-            }
-        }
-        return $date->endOfDay();
+        event(new PortfolioRiskWasCalculated($this->portfolio));
     }
 
 
@@ -101,9 +83,9 @@ class CalcPortfolioRisk implements ShouldQueue
     private function toRiskArray($risk)
     {
         return [
-            '95' => $this->array_first_or_null($risk['total95']),
-            '97' => $this->array_first_or_null($risk['total97']),
-            '99' => $this->array_first_or_null($risk['total99'])
+            '0.95' => array_first_or_null($risk['total95']),
+            '0.975' => array_first_or_null($risk['total975']),
+            '0.99' => array_first_or_null($risk['total99'])
         ];
     }
 
@@ -112,27 +94,14 @@ class CalcPortfolioRisk implements ShouldQueue
      * Returns a formatted array with risk contributions for required confidence levels.
      *
      * @param $risk
-     * @param $conf
      * @return mixed
      */
     private function toContribArray($risk)
     {
         return [
-            '95' => $risk['contrib95'],
-            '97' => $risk['contrib97'],
-            '99' => $risk['contrib99']
+            '0.95' => $risk['contrib95'],
+            '0.975' => $risk['contrib975'],
+            '0.99' => $risk['contrib99']
         ];
-    }
-
-
-    /**
-     * Return the array's value or 0 in case of null value.
-     *
-     * @param $value
-     * @return int|mixed
-     */
-    private function array_first_or_null($value)
-    {
-        return is_null($value) ? 0 : array_first($value);
     }
 }

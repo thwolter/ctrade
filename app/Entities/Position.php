@@ -2,15 +2,11 @@
 
 namespace App\Entities;
 
-use App\Models\QuantModel;
 use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
 use App\Repositories\CurrencyRepository;
 use App\Repositories\Financable;
-use App\Entities\Portfolio;
-use App\Repositories\DataRepository;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 
 /**
@@ -42,8 +38,6 @@ class Position extends Model implements PresentableInterface
     use Presentable;
 
     protected $presenter = \App\Presenters\Position::class;
-    
-    protected $financial = DataRepository::class;
 
     protected $fillable = [
         'positionable_type',

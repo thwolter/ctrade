@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'CleverTrade',
+    'name' => 'CapMyRisk.com',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Berlin',
 
     /*
     |--------------------------------------------------------------------------
@@ -174,7 +174,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
@@ -191,16 +191,30 @@ return [
         \Laravel\Scout\ScoutServiceProvider::class,
         LaravelPropertyBag\ServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
-        anlutro\LaravelSettings\ServiceProvider::class,
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+
+
+        /*
+        * Backpack Service Providers...
+        */
+        Backpack\Base\BaseServiceProvider::class,
+        Backpack\CRUD\CrudServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
+        Backpack\BackupManager\BackupManagerServiceProvider::class,
+        Backpack\LogManager\LogManagerServiceProvider::class,
+        Backpack\Settings\SettingsServiceProvider::class,
+        Backpack\PermissionManager\PermissionManagerServiceProvider::class,
+        Backpack\LangFileManager\LangFileManagerServiceProvider::class,
+
 
         /*
         * Custom Service Providers...
         */
         App\Providers\DatasourceServiceProvider::class,
-        App\Providers\MappingServiceProvider::class,
         App\Providers\HelpersServiceProvider::class,
+        App\Providers\DataServiceProvider::class,
+        App\Providers\ObserverServiceProvider::class
 
     ],
 
@@ -262,7 +276,6 @@ return [
         'Lava' => Khill\Lavacharts\Laravel\LavachartsFacade::class,
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
-        'Setting' => anlutro\LaravelSettings\Facade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
         /*
@@ -270,7 +283,6 @@ return [
          */
         'Datasource' => App\Facades\Datasource::class,
         'Mapping' => App\Facades\Mapping::class,
-        'Helpers' => App\Facades\Helpers::class,
 
     ],
 

@@ -118,7 +118,7 @@ Portfolio <- R6Class('Portfolio',
         value = function(n = 1)
         {
             val <- 0
-            for (i in 1:length(self$items))
+            for (i in 1:dim(self$items)[1])
             {
                 item <- self$items[i,]
                 position <- Stock$new(item$symbol, item$amount, item$currency)

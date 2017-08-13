@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Entities\Portfolio;
-use App\Observers\PortfolioObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -26,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
             'ccyPair' => \App\Entities\CcyPair::class
         ]);
 
-        Portfolio::observe(PortfolioObserver::class);
+
     }
 
     /**

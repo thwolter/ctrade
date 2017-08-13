@@ -5,7 +5,6 @@ namespace App\Entities;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Entities\Exceptions\DatasourceException;
-use anlutro\LaravelSettings\Facade as Setting;
 
 
 
@@ -35,9 +34,9 @@ use anlutro\LaravelSettings\Facade as Setting;
  */
 class Datasource extends Model
 {
-    protected $fillable = [
-        'valid'
-    ];
+    protected $fillable = ['valid', 'refreshed_at'];
+
+    protected $dates = ['created_at', 'updated_at', 'refreshed_at'];
 
     public function provider()
     {
@@ -69,6 +68,12 @@ class Datasource extends Model
     }
 
 
+    public function exchange()
+    {
+        return $this->belongsTo(Exchange::class);
+    }
+
+
     public function assign($instrument)
     {
         $rc = new \ReflectionClass($instrument);
@@ -81,9 +86,10 @@ class Datasource extends Model
         return $this->save();
     }
 
-    public function make($provider, $database, $dataset)
+    //todo: change to use the function from repository
+    public function make($provider, $database, $dataset, $attributes = [])
     {
-        $source = new Datasource();
+        $source = new Datasource($attributes);
         $source
             ->provider()->associate(Provider::firstOrCreate(['code' => $provider]))
             ->database()->associate(Database::firstOrCreate(['code' => $database]))
@@ -93,13 +99,13 @@ class Datasource extends Model
         return $source;
     }
 
-
+    //todo: change to use the function from repository
     public function exist($provider, $database, $dataset)
     {
         return is_null(self::get($provider, $database, $dataset)) ? false : true;
     }
 
-
+    //todo: change to use the function from repository
     public function get($provider, $database, $dataset)
     {
         $datasetCol = Dataset::whereCode($dataset)->first();
@@ -114,16 +120,16 @@ class Datasource extends Model
 
         return is_null($source) ? null : $source;
     }
-    
-    
+
+    //todo: change to use the function from repository
     public function withDataset($dataset)
     {
         $set = Dataset::whereCode($dataset)->first();
     
         return (count($set)) ? self::where('dataset_id', $set->id)->get() : null;
     }
-    
-    
+
+    //todo: change to use the function from repository
     public function withDatasetOrFail($dataset)
     {
         $set = Dataset::whereCode($dataset)->first();
@@ -134,46 +140,15 @@ class Datasource extends Model
         return self::where('dataset_id', $set->id)->get();
     }
 
-    public function isValid()
-    {
-        $updated = Setting::get($this->provider.$this->database.'updated');
 
-        return ($this->updated_at->lte(Carbon::parse($updated)) and $this->valid);
+    public function key()
+    {
+        return sprintf('%s/%s/%s',
+            $this->provider->code, $this->database->code, $this->dataset->code);
     }
 
-    public function whereProvider($provider)
+    public function scopeValid($query)
     {
-        $collection = Provider::whereCode($provider);
-        $id = ($collection->count()) ? $collection->first()->id : null;
-
-        return $this->whereProviderId($id);
-    }
-
-    public function whereDatabase($database)
-    {
-        $collection = Database::whereCode($database);
-        $id = ($collection->count()) ? $collection->first()->id : null;
-
-        return $this->whereDatabaseId($id);
-    }
-
-    public function whereDataset($dataset)
-    {
-        $collection = Dataset::whereCode($dataset);
-        $id = ($collection->count()) ? $collection->first()->id : null;
-
-        return $this->whereDatasetId($id);
-    }
-
-    public function whereProviderAndDatabase($provider, $database)
-    {
-        $collection = Provider::whereCode($provider);
-        $providerId = ($collection->count()) ? $collection->first()->id : null;
-
-        $collection= Database::whereCode($database);
-        $databaseId = ($collection->count()) ? $collection->first()->id : null;
-
-        return $this->whereProviderId($providerId)->whereDatabaseId($databaseId);
-
+        return $query->whereValid(true);
     }
 }

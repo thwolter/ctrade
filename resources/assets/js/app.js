@@ -1,9 +1,6 @@
 
-/**
- * The nvpready theme brings its own bootstrap based on version 3
- *
- * require('./bootstrap');
- */
+require('./bootstrap');
+
 
 import Vue from 'vue'
 import axios from 'axios';
@@ -19,41 +16,31 @@ import Colors from './core/Colors';
  * 
  */ 
 import popover from 'vue-strap';
+import { dropdown } from 'vue-strap';
+
+
+
+//import 'vue-instant/dist/vue-instant.css';
+//import VueInstant from 'vue-instant';
 
 window.Vue = Vue;
-window.axios = axios;
 window.Form = Form;
 window.Event = new Event;
 window.Colors = new Colors;
 
 Vue.use(Vuelidate);
 Vue.use(VueResource);
+//Vue.use(InstantSearch);
 
-/**
- * vue components
- */
-
-Vue.component('portlet', require('./components/Portlet.vue'));
-Vue.component('icon-stat', require('./components/IconStat.vue'));
-Vue.component('cash-trade', require('./components/CashTrade.vue'));
-Vue.component('buy-sell-btn', require('./components/BuySellBtn.vue'));
-Vue.component('cash-success', require('./components/CashSuccess.vue'));
-Vue.component('create-portfolio', require('./components/CreatePortfolio.vue'));
-Vue.component('search-stock', require('./components/SearchStock.vue'));
-Vue.component('add-stock', require('./components/AddStock.vue'));
-Vue.component('cleave', require('./components/Cleave.vue'));
-Vue.component('trade-stock', require('./components/TradeStock.vue'));
-
-Vue.component('graph', require('./components/Graph.vue'));
-Vue.component('positions-chart', require('./components/PositionsChart.vue'));
-Vue.component('spinner', require('./components/Spinner.vue'));
+require('./components');
 
 
 const app = new Vue({
     el: '#wrapper',
     
     components: {
-        popover
+        popover,
+        //dropdown
     }
 });
 

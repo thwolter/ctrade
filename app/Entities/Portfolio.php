@@ -2,7 +2,9 @@
 
 namespace App\Entities;
 
-use App\Events\PortfolioChanged;
+use App\Entities\Exceptions\LimitTypeException;
+use App\Entities\Traits\UuidModel;
+use App\Events\PortfolioHasChanged;
 use App\Presenters\Presentable;
 use App\Settings\PortfolioSettings;
 use App\Settings\Settings;
@@ -11,22 +13,58 @@ use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\UploadedFile;
+use Psy\Readline\Libedit;
 
 
+/**
+ * App\Entities\Portfolio
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $name
+ * @property string|null $description
+ * @property int|null $category_id
+ * @property float $cash
+ * @property int $currency_id
+ * @property array $settings
+ * @property int $public
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Entities\Category|null $category
+ * @property-read \App\Entities\Currency $currency
+ * @property-read mixed $category_name
+ * @property-read mixed $image_url
+ * @property-read \App\Entities\PortfolioImage $image
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Keyfigure[] $keyFigures
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Limit[] $limits
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Position[] $positions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Transaction[] $transactions
+ * @property-read \App\Entities\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereCash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereCurrencyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio wherePublic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereSettings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Portfolio whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Portfolio extends Model
 {
-    use Presentable;
+    use Presentable, UuidModel;
 
     protected $presenter = 'App\Presenters\Portfolio';
 
-    protected $fillable = [
-        'name', 'cash', 'description', 'settings', 'img_url'
-    ];
 
+    protected $fillable = ['name', 'cash', 'description', 'settings', 'img_url'];
 
-    protected $casts = [
-        'settings' => 'json'
-    ];
+    protected $casts = ['settings' => 'json'];
+
+    protected $hidden = ['id'];
 
     public $imagesPath = 'public/images';
 
@@ -75,11 +113,9 @@ class Portfolio extends Model
         return $this->hasMany(Keyfigure::class);
     }
 
-
-    public function keyFigure($code)
+    public function limits()
     {
-        $type = KeyfigureType::whereCode($code)->first();
-        return $this->keyFigures()->whereTypeId($type->id)->first();
+        return $this->hasMany(Limit::class);
     }
 
 
@@ -294,6 +330,23 @@ class Portfolio extends Model
             }
         }
         return $portfolio;
+    }
+
+
+    public function keyFigure($type)
+    {
+        $keyFigure = $this->keyfigures()->whereHas('type', function ($query) use ($type) {
+            $query->whereCode($type);
+        })->first();
+
+        if (count($keyFigure) == 0) {
+            $type = KeyfigureType::firstOrCreate(['code' => $type]);
+            $keyFigure = new Keyfigure();
+            $keyFigure->type()->associate($type);
+            $this->keyFigures()->save($keyFigure);
+        }
+
+        return $keyFigure;
     }
 
 

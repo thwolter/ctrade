@@ -16,12 +16,9 @@ use App\Models\QuantModel;
 
 abstract class Instrument extends Model
 {
-
-    protected $financial;
     
     use Financable;
-    
-   
+
     public function positions()
     {
         return $this->morphMany(Position::class, 'positionable');
@@ -56,34 +53,4 @@ abstract class Instrument extends Model
     {
         return $this->morphToMany(Datasource::class, 'sourcable')->withTimestamps();
     }
-
-    
-    public function type()
-    {
-        return $this->financial()->type();
-    }
-
-
-    public function price()
-    {
-        return $this->financial()->price();
-    }
-
-
-    public function history($dates = null)
-    {
-        return $this->financial()->history($dates);
-    }
-
-
-    public function ValueAtRisk($dates = null)
-    {
-        return QuantModel::ValueAtRisk($this->history($dates));
-    }
-
-    public function percentRisk($dates = null)
-    {
-        return array_first($this->price()) / $this->ValueAtRisk($dates);
-    }
-
 }

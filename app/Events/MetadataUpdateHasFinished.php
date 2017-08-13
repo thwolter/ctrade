@@ -18,28 +18,21 @@ class MetadataUpdateHasFinished
    
     public $provider;
     public $database;
-    public $timestamp;
 
-    public $created;
-    public $updated;
-    public $invalidated;
-    public $validated;
+    public $attributes;
+
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($provider, $database, $parameter)
+    public function __construct($provider, $database, $attributes)
     {
         $this->provider = $provider;
         $this->database = $database;
-        $this->created = array_get($parameter, 'created');
-        $this->updated = array_get($parameter, 'updated');
-        $this->invalidated = array_get($parameter, 'invalidated');
-        $this->validated = array_get($parameter, 'validated');
 
-        $this->timestamp = Carbon::now();
+       $this->attributes = $attributes;
     }
 
     /**

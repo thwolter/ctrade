@@ -18,10 +18,11 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\DeleteTemp::class,
-        Commands\CacheQuandlSSE::class,
         Commands\UpdateMetadata::class,
         Commands\TestMail::class,
-        Commands\CalculateRisk::class
+        Commands\CalculateRisk::class,
+        Commands\CalculateValue::class,
+        Commands\CheckLimits::class,
     ];
 
     /**
@@ -33,8 +34,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(UpdateMetadata::class)->hourly();
-        //$schedule->command(CacheQuandlSSE::class)->dailyAt('00:00');
-        $schedule->command(CalculateRisk::class)->dailyAt('02:00');
+
+        $schedule->command('backup:clean')->daily()->at('04:00');
+        $schedule->command('backup:run')->daily()->at('05:00');
     }
 
     /**

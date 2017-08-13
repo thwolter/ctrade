@@ -14,8 +14,10 @@ use App\Entities\Currency;
 use App\Entities\PortfolioImage;
 use App\Entities\Transaction;
 use App\Http\Requests\CreatePortfolio;
+use App\Http\Requests\DeletePortfolio;
 use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
+use App\Repositories\LimitRepository;
 use App\Settings\InitialSettings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -109,10 +111,17 @@ class PortfoliosController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $portfolio = Portfolio::findOrFail($id);
-        return view('portfolios.edit', compact('portfolio', 'url'));
+        $user = $portfolio->user;
+        $limit = new LimitRepository($portfolio);
+
+        if (! session('active_tab'))
+            session(['active_tab' => $request->get('tab')]);
+
+        return view('portfolios.edit',
+            compact('portfolio', 'user', 'limit'));
     }
 
     /**
@@ -122,16 +131,23 @@ class PortfoliosController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePortfolio $request, $id)
     {
-        if ($request->delete == 'yes')
-            return view('portfolios.delete', compact('id'));
+        $portfolio = Portfolio::findOrFail($id);
 
-        $portfolio = Portfolio::whereId($id)->first();
+        if ($request->get('name'))
+            $portfolio->update(['name' => $request->name]);
+
+        if ($request->get('description'))
+            $portfolio->update(['description' => $request->description]);
+
+        $portfolio->save();
+
         $portfolio->settings()->merge($request->all());
-        $portfolio->update(['name' => $request->name]);
 
-        return redirect()->back();
+        return redirect(route('portfolios.edit', $id))
+            ->with('message', 'Portfolio erfolgreich geändert.')
+            ->with('active_tab', $request->get('active_tab'));
     }
 
     /**
@@ -140,15 +156,16 @@ class PortfoliosController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $portfolio = Portfolio::whereId($id);
-
-        //$portfolio->deleteImage();
-        $portfolio->delete($id);
-
-
-        return redirect(route('portfolios.index'));
+        if (!$request->confirmed) {
+            return redirect(route('portfolios.edit', $id))->with('delete', 'confirm');
+        }
+        else {
+            $portfolio = Portfolio::findOrFail($id);
+            $portfolio->delete($id);
+            return redirect(route('portfolios.index'));
+        }
     }
 
     public function addImage(Request $request, $id)
@@ -187,7 +204,5 @@ class PortfoliosController extends Controller
 
         return ['redirect' => route('positions.index', $portfolio->id)];
     }
-
-
 }
 

@@ -18,7 +18,6 @@ class MetadataUpdateHasStarted
     
     public $provider;
     public $database;
-    public $timestammp;
 
     /**
      * Create a new event instance.
@@ -29,8 +28,6 @@ class MetadataUpdateHasStarted
     {
         $this->provider = $provider;
         $this->database = $database;
-        
-        $this->timestamp = Carbon::now();
     }
 
     /**

@@ -45,8 +45,12 @@
 
    @if (Auth::check())
 
-        @include('layouts.partials.appbar')
-        @include('layouts.partials.mainnav')
+        @include('layouts.navigation.appbar')
+        @include('layouts.navigation.mainnav')
+
+    @else
+
+       @include('layouts.navigation.guest')
 
     @endif
 
@@ -59,15 +63,17 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Core JS -->
+
 <script src="{{ asset('vendor/mvp-theme/bower_components/jquery/dist/jquery.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/bower_components/slimscroll/jquery.slimscroll.js') }}"></script>
 
 
+
 <!-- App JS -->
-<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
+{{--<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/templates/admin-1/js/mvpready-admin.js') }}"></script>
+<script src="{{ asset('vendor/mvp-theme/templates/admin-1/js/mvpready-admin.js') }}"></script>--}}
 
 <script src="{{ asset('js/manifest.js') }}"></script>
 <script src="{{ asset('js/vendor.js') }}"></script>

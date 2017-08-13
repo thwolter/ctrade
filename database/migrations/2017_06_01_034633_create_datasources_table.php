@@ -17,9 +17,10 @@ class CreateDatasourcesTable extends Migration
             $table->increments('id');
             $table->integer('provider_id');
             $table->integer('database_id')->nullable();
+            $table->string('exchange_id');
             $table->integer('dataset_id');
             $table->boolean('valid')->default(true);
-            $table->dateTime('checked_at')->nullable();
+            $table->timestamp('refreshed_at')->nullable();
             $table->unique(['provider_id', 'database_id', 'dataset_id']);
             $table->timestamps();
         });

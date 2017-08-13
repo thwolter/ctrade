@@ -20,6 +20,12 @@
                         </div>
 
                         <form @submit.prevent="onSubmit">
+
+                            <!-- Spinner -->
+                            <div v-if="showSpinner">
+                                <spinner class="spinner-overlay"></spinner>
+                            </div>
+
                             <div class="row">
                                 <div class="col-sm-6">
 
@@ -125,6 +131,7 @@
                 price: [],
 
                 hasFormError: false,
+                showSpinner: true,
 
                 cleavePrice: {
                     numeral: true,
@@ -168,6 +175,7 @@
                 this.form.reset();
                 this.showDialog = false;
                 this.form.price = null; // why is price not reset with form?
+                this.showSpinner = true;
             },
 
             show(id, transaction) {
@@ -181,7 +189,10 @@
             fetch() {
                 let lookupForm = new Form({ id: this.form.id });
                 lookupForm.post(this.lookup)
-                    .then(data => this.setData(data))
+                    .then(data => {
+                        this.setData(data);
+                        this.showSpinner = false;
+                    })
             },
 
             setData(data) {

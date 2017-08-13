@@ -31,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/register/success';
 
     /**
      * Create a new controller instance.
@@ -99,11 +99,16 @@ class RegisterController extends Controller
     */
     public function verify($token)
     {
-        $user = User::where('email_token', $token)->first();
-        $user->verified = true;
+        $user = User::where('email_token', $token)->unverified()->first();
 
-        if($user->save()){
+        if ($user) {
+            $user->verified = 1;
+            $user->email_token = null;
+            $user->save();
             return view('auth.confirm', compact('user'));
+
+        } else {
+            return view('auth.invalid_token');
         }
     }
 

@@ -30,7 +30,7 @@ class QuandlECB extends QuandlMetadata
     }
     
     
-    public function updateItem($item)
+    public function update($item)
     {
         //Todo: check for security type, for now assume all are stocks
         //Todo: check whether stock should be updated based on wkn, isin, name
