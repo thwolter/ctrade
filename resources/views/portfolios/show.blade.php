@@ -36,7 +36,7 @@
 
                 <div class="col-md-3 col-sm-6">
                     @component('partials.icon-stat')
-                        @slot('label', 'Entwicklung (30 Tage)')
+                        @slot('label', 'Rendite (30 Tage)')
                         @slot('value', $portfolio->present()->total())
                         @slot('date', 'now');
                         @slot('icon', 'fa-line-chart');

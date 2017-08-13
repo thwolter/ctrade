@@ -17,6 +17,30 @@ class HomeController extends Controller
             return redirect(route('portfolios.index'));
         else
             return view('home.home');
+    }
 
+    public function contact()
+    {
+        return view('contact.contact');
+    }
+
+    public function about()
+    {
+        return view('contact.about');
+    }
+
+    public function blog()
+    {
+        return redirect(env('BLOG_URL', route('home.coming')));
+    }
+
+    public function coming()
+    {
+        return view('contact.coming');
+    }
+
+    public function legal()
+    {
+        return view('contact.legal');
     }
 }
