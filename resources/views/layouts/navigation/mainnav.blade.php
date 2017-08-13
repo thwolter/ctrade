@@ -32,7 +32,7 @@
                     </li>
 
                     <li class="">
-                        <a href="{{ route('risks.index', $portfolio->id) }}">
+                        <a href="{{ route('home.coming', $portfolio->id) }}">
                             Optimieren
                         </a>
                     </li>
