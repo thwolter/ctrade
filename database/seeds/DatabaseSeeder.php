@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(LimitTypeSeeder::class);
         $this->call(SettingsTableSeeder::class);
         $this->call(RolesSeeder::class);
+        $this->call(ExchangeSeeder::class);
+        $this->call(UserSeeder::class);
 
         $this->dev();
     }
@@ -25,9 +27,7 @@ class DatabaseSeeder extends Seeder
     private function dev()
     {
         if (env('APP_ENV') == 'local') {
-
-            $this->call(UserSeeder::class);
-
+            //
         }
     }
 }

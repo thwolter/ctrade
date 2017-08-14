@@ -37,5 +37,8 @@ Route::get('event', function(Request $request) {
 
     event(new \App\Events\Limits\LimitHasChanged($limit));
 
+});
 
+Route::get('metadata', function() {
+    \Illuminate\Support\Facades\Artisan::call('metadata:update');
 });

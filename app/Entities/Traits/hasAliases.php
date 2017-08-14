@@ -9,34 +9,6 @@ use App\Entities\Exchange;
 
 trait hasAliases
 {
-    public static function whereAlias($alias)
-    {
-        return self::whereHas('mappings', function ($query) use ($alias) {
-            $query->where('alias', '=', $alias);
-        })->get();
-    }
-
-    public static function whereCodeOrAlias($alias)
-    {
-        $result = self::whereCode($alias)->get();
-
-        if (!$result->count()) {
-            $result = self::whereAlias($alias);
-        }
-
-        return $result;
-    }
-
-    public static function whereNameOrAlias($alias)
-    {
-        $result = self::whereName($alias)->get();
-
-        if (!$result->count()) {
-            $result = self::whereAlias($alias);
-        }
-
-        return $result;
-    }
 
     /**
      * Assign and persist an alias for the current entity.
@@ -52,4 +24,35 @@ trait hasAliases
         }
         return $this;
     }
+
+
+    public static function whereAlias($alias)
+    {
+        return self::whereHas('mappings', function ($query) use ($alias) {
+            $query->where('alias', '=', $alias);
+        });
+    }
+
+    public static function whereCodeOrAlias($alias)
+    {
+        $result = self::whereCode($alias);
+
+        if (!$result->count()) {
+            $result = self::whereAlias($alias);
+        }
+
+        return $result;
+    }
+
+    public static function whereNameOrAlias($alias)
+    {
+        $result = self::whereName($alias);
+
+        if (!$result->count()) {
+            $result = self::whereAlias($alias);
+        }
+
+        return $result;
+    }
+
 }

@@ -68,6 +68,14 @@ trait StockMetadata
         return resolve(Stock::class);
     }
 
+
+    protected function exchange($item)
+    {
+        $exchange = Exchange::whereCodeOrAlias(parent::exchange($item));
+        return ($exchange->count()) ? $exchange->first()->code : null;
+    }
+
+
     protected function valid($item)
     {
         return $this->isIdentifiable($item) && $this->hasCurrency($item) &&
@@ -139,10 +147,14 @@ trait StockMetadata
 
     protected function hasExchange($item)
     {
-        if ($this->exchange($item)) {
+        $exchange = $this->exchange($item);
+
+        if ($exchange) {
             return true;
+
         } else {
-            Log::notice(sprintf('%s skipped (exchange not defined)', $this->symbol($item)));
+            Log::notice(sprintf('%s skipped (exchange [%s] not defined)',
+                $this->symbol($item), parent::exchange($item)));
             return false;
         }
     }
