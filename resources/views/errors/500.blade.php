@@ -4,7 +4,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="title">Something went wrong.</div>
+            <div class="title" style="font-size: 40px; color: grey">Ein Fehler ist aufgetreten.</div>
         @unless(empty($sentryID))
             <!-- Sentry JS SDK 2.1.+ required -->
                 <script src="https://cdn.ravenjs.com/3.3.0/raven.min.js"></script>
@@ -19,7 +19,6 @@
                 </script>
             @endunless
         </div>
-        </div>
-
+    </div>
 
 @endsection
