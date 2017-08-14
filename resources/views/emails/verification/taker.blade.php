@@ -5,7 +5,7 @@
 
 Bitte klicke den folgenden Link, um deine Email Adresse zu bestätigen.
 
-{{ route('subscribe.verify', [$user->email_token]) }}
+{{ route('taker.verify', [$taker->email_token]) }}
 
 
 Danke,<br>

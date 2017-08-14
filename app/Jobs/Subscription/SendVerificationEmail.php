@@ -2,8 +2,8 @@
 
 namespace App\Jobs\Subscription;
 
-use App\Entities\User;
-use App\Mail\Verification\SubscriptionEmail;
+use App\Entities\Taker;
+use App\Mail\Verification\TakerEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -15,7 +15,7 @@ class SendVerificationEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $user;
+    protected $taker;
 
 
     /**
@@ -23,9 +23,9 @@ class SendVerificationEmail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(Taker $taker)
     {
-        $this->user = $user;
+        $this->taker = $taker;
     }
 
     /**
@@ -35,7 +35,7 @@ class SendVerificationEmail implements ShouldQueue
      */
     public function handle()
     {
-        $email = new SubscriptionEmail($this->user);
-        Mail::to($this->user->email)->send($email);
+        $email = new TakerEmail($this->taker);
+        Mail::to($this->taker->email)->send($email);
     }
 }

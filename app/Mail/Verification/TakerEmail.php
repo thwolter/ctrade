@@ -2,17 +2,17 @@
 
 namespace App\Mail\Verification;
 
-use App\Entities\User;
+use App\Entities\Taker;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SubscriptionEmail extends Mailable
+class TakerEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public $taker;
 
 
     /**
@@ -20,9 +20,9 @@ class SubscriptionEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(Taker $taker)
     {
-        $this->user = $user;
+        $this->taker = $taker;
     }
 
     /**
@@ -32,6 +32,6 @@ class SubscriptionEmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.verification.subscription');
+        return $this->markdown('emails.verification.taker');
     }
 }

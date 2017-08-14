@@ -45,8 +45,9 @@
 <div class="container">
     <div class="content">
         <div class="title">Email-Adresse bestätigt</div>
-        <div class="quote">Vielen Dank für die Bestätigung deiner Email-Adresse {{ $user->email }}.
-            Wir informieren dich gern, wenn unsere Seite aktiv ist.
+        <div class="quote">
+            <p>Vielen Dank für die Bestätigung deiner Email-Adresse {{ $taker->email }}.</p>
+            <p>Wir informieren dich gern, wenn unsere Seite aktiv ist.</p>
         </div>
     </div>
 </div>

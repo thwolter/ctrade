@@ -84,7 +84,7 @@
 
         </div> <!-- /.content -->
 
-        <form role="form" class="newsletter" method="post" action="{{ route('subscribe') }}">
+        <form role="form" class="newsletter" method="post" action="{{ route('taker.subscribe') }}">
 
             {{ csrf_field() }}
 

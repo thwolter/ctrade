@@ -9,6 +9,6 @@ Route::get('/legal', ['as' => 'home.legal', 'uses' => 'HomeController@legal']);
 
 Route::get('/launch', ['as' => 'home.launch', 'uses' => 'HomeController@launch']);
 
-Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'SubscriptionController@subscribe']);
-Route::get('/verify/{token}', ['as' => 'subscribe.verify', 'uses' => 'SubscriptionController@verify']);
+Route::post('/subscribe', ['as' => 'taker.subscribe', 'uses' => 'TakerController@subscribe']);
+Route::get('/verify/{token}', ['as' => 'taker.verify', 'uses' => 'TakerController@verify']);
 
