@@ -19,6 +19,7 @@
         "dannyben/php-quandl": "^0.5.2",
         "dirkolbrich/yahoo-finance-query": "dev-master",
         "doctrine/dbal": "^2.5",
+        "filp/whoops": "^2.1",
         "google/apiclient": "^2.2",
         "guzzlehttp/guzzle": "^6.3",
         "hieu-le/active": "^3.4",
