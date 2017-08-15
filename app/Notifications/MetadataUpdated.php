@@ -73,6 +73,7 @@ class MetadataUpdated extends Notification
             'database' => $this->database,
             'total' => $datasources->count(),
             'valid' => $datasources->valid()->count(),
+            'available' => array_get($this->attributes, 'available'),
             'updated' => array_get($this->attributes, 'updated'),
             'created' => array_get($this->attributes, 'created'),
         ];

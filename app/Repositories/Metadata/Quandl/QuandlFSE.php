@@ -6,7 +6,7 @@ use App\Repositories\Contracts\MetadataInterface;
 use App\Repositories\Metadata\Traits\StockMetadata;
 
 
-class QuandlFSEMetadata extends QuandlMetadata
+class QuandlFSE extends QuandlMetadata implements MetadataInterface
 {
     use StockMetadata;
 

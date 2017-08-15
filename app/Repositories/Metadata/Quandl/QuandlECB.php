@@ -5,9 +5,10 @@ namespace App\Repositories\Metadata\Quandl;
 
 
 use App\Entities\CcyPair;
+use App\Repositories\Contracts\MetadataInterface;
 
 
-class QuandlECB extends QuandlMetadata
+class QuandlECB extends QuandlMetadata implements MetadataInterface
 {
 
     public $database = 'ECB';
@@ -37,4 +38,15 @@ class QuandlECB extends QuandlMetadata
         //return true if updated
     }
 
+    /**
+     * Persist the item to the database. To decide which tables are effected and trait could be
+     * use for various asset classes. The function should return true when successfully persisted.
+     *
+     * @param $item
+     * @return mixed
+     */
+    function create($item)
+    {
+        // TODO: Implement create() method.
+    }
 }

@@ -1,8 +1,9 @@
 @component('mail::message')
 # Metadata successfully updated
 
-Database {{ $results['provider'] }}/{{ $results['database'] }} was updated.
+Database *{{ $results['provider'] }}/{{ $results['database'] }}* was updated.
 
+- {{ $results['available'] }} available items;
 - {{ $results['created'] }} created items;
 - {{ $results['updated'] }} updated items;
 

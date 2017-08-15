@@ -55,14 +55,17 @@ trait StockMetadata
         ]);
 
         $stock = Stock::whereIsin($this->isin($item))->first();
-        $stock->propsedName = $this->name($item);
-        $stock->wkn = $this->wkn($item);
+        $stock->proposed_name = $this->name($item);
+
+        $wkn = $this->wkn($item);
+        if ($wkn)
+            $stock->wkn = $this->wkn($item);
 
         if (!$stock->checked_at) {
             $stock->name = $stock->proposed_name;
         }
 
-       $stock->update();
+        return ($stock->isDirty()) ? $stock->update() : false;
     }
 
     protected function model($item)

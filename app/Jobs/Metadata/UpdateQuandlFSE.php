@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Metadata;
 
-use App\Repositories\Metadata\Quandl\QuandlFSEMetadata;
+use App\Repositories\Metadata\Quandl\QuandlFSE;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -21,7 +21,7 @@ class UpdateQuandlFSE implements ShouldQueue
 
     public function __construct()
     {
-        $this->repo = new QuandlFSEMetadata();
+        $this->repo = new QuandlFSE();
     }
 
 

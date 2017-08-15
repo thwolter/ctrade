@@ -80,7 +80,7 @@ abstract class BaseMetadata
 
     public function updateDatabase()
     {
-        $updated = $created = 0;
+        $updated = $created = $available = 0;
 
         Log::info(sprintf('update started for %s/%s',
             $this->provider, $this->database));
@@ -111,12 +111,13 @@ abstract class BaseMetadata
         while ($items) {
 
             foreach ($items as $item) {
+                $available++;
 
                 if ($this->datasource($item)) {
 
                     if ($this->existUpdate($item)) {
-                        $this->update($item);
-                        $updated++;
+                        $success = $this->update($item);
+                        if ($success) $updated++;
                     }
 
                 } else {
@@ -132,11 +133,11 @@ abstract class BaseMetadata
         }
 
         event(new MetadataUpdateHasFinished($this->provider, $this->database, [
-            'created' => $created, 'updated' => $updated
+            'created' => $created, 'updated' => $updated, 'available' => $available
         ]));
 
-        Log::info(sprintf('update finished for %s/%s: %s created, %s updated',
-            $this->provider, $this->database, $created, $updated
+        Log::info(sprintf('update finished for %s/%s: %s created, %s updated (%s available)',
+            $this->provider, $this->database, $created, $updated, $available
         ));
     }
 
@@ -170,7 +171,7 @@ abstract class BaseMetadata
      * @param array $item
      * @return bool
      */
-    private function existUpdate($item)
+    public function existUpdate($item)
     {
         $current = $this->datasource($item)->refreshed_at->timestamp;
         $updated = $this->refreshed($item)->timestamp;

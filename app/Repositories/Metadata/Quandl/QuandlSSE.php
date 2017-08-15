@@ -6,7 +6,7 @@ use App\Repositories\Contracts\MetadataInterface;
 use App\Repositories\Metadata\Traits\StockMetadata;
 
 
-class QuandlSSEMetadata extends QuandlMetadata
+class QuandlSSE extends QuandlMetadata implements MetadataInterface
 {
     use StockMetadata;
 
@@ -28,7 +28,7 @@ class QuandlSSEMetadata extends QuandlMetadata
     public function name($item)
     {
         $name = parent::name($item);
-        $name = title_case(str_replace('STOCK', '', $name));
+        $name = trim(title_case(str_replace('STOCK', '', $name)));
         $name = $this->correctLegalForm($name);
 
         return $name;
