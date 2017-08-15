@@ -71,14 +71,26 @@ return [
 
         // used for Backpack/BackupManager
         'backups' => [
-            'driver' => 'local',
-            'root'   => storage_path('backups'),
+            'driver' => 'ftp',
+            'root'   => 'backups'
         ],
 
         // used for Backpack/LogManager
         'storage' => [
             'driver' => 'local',
             'root'   => storage_path(),
+        ],
+
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'port' => 21,
+            'root' => 'capmyrisk',
+            'passive' => true,
+            'ssl' => false,
+            'timeout' => 30,
         ],
 
     ],

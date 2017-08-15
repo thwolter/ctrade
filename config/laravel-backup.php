@@ -19,7 +19,9 @@ return [
                  * specify individual files as well.
                  */
                 'include' => [
-                    base_path(),
+                    base_path('.env'),
+                    base_path('public'),
+
                 ],
 
                 /*
@@ -47,7 +49,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'backups',
+                'ftp',
             ],
         ],
     ],
@@ -143,8 +145,8 @@ return [
          * Here you can specify how emails should be sent.
          */
         'mail' => [
-            'from' => 'your@email.com',
-            'to'   => 'your@email.com',
+            'from' => 'capmyrisk@gmail.com',
+            'to'   => 'thwolter@gmail.com',
         ],
 
         /*
