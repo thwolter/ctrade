@@ -43,7 +43,7 @@ class UpdateProfile extends FormRequest
             $user = User::find($this->id);
 
             if (User::whereEmail($this->email)->where('id', '!=', $user->id)->count()) {
-                $validator->errors()->add('email', 'The email has already been taken.');
+                $validator->errors()->add('email',trans('profile.email'));
             }
         });
     }

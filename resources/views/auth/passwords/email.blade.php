@@ -1,4 +1,4 @@
-@extends('layouts.master_old')
+@extends('layouts.master')
 
 @section('content')
 <div class="container">

@@ -51,22 +51,10 @@ class UpdatePortfolio extends FormRequest
                 ->whereName($this->name)->where('id', '!=', $this->id)->get();
 
             if (count($sameNamedPortfolios)) {
-                $validator->errors()->add('name', 'Ein Portfolio mit diesem Namen existiert bereits.');
+                $validator->errors()->add('name', trans('portfolio.name'));
             };
 
         });
     }
 
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name.max' => 'Bezeichung ist zu lang (max 60 Zeichen).'
-        ];
-    }
 }

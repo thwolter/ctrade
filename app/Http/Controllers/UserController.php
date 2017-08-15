@@ -57,7 +57,7 @@ class UserController extends Controller
     public function password(ChangePassword $request)
     {
         $request->user()->fill([
-            'password' => Hash::make($request->newPassword)
+            'password' => Hash::make($request->password)
         ])->save();
 
         return redirect()->route('users.edit')

@@ -26,7 +26,7 @@
             <label class="col-md-3 control-label">Password</label>
 
             <div class="col-md-7">
-                <input type="password" name="password" class="form-control"
+                <input type="password" name="oldpassword" class="form-control"
                 placeholder="akutelles Passwort"/>
             </div> <!-- /.col -->
 
@@ -41,7 +41,7 @@
             <label class="col-md-3 control-label">Neues Password</label>
 
             <div class="col-md-7">
-                <input type="password" name="new_password" class="form-control" placeholder="Passwort" />
+                <input type="password" name="password" class="form-control" placeholder="Passwort" />
             </div> <!-- /.col -->
 
         </div> <!-- /.form-group -->
@@ -52,7 +52,7 @@
             <label class="col-md-3 control-label">Password bestätigen</label>
 
             <div class="col-md-7">
-                <input type="password" name="new_password_confirmation" class="form-control"
+                <input type="password" name="password_confirmation" class="form-control"
                        placeholder="Passwort bestätigen" />
             </div> <!-- /.col -->
 

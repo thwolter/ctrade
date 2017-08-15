@@ -29,15 +29,4 @@ class SearchRequest extends FormRequest
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'query.required' => 'Bitte gib einen Text oder eine Zahl ein.'
-        ];
-    }
 }

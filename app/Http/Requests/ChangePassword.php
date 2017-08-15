@@ -27,8 +27,8 @@ class ChangePassword extends FormRequest
     public function rules()
     {
         return [
-            'password' => 'required_with:new_password',
-            'new_password' => 'required|confirmed|min:6',
+            'oldpassword' => 'required_with:password',
+            'password' => 'required|confirmed|min:6',
         ];
     }
 
@@ -44,8 +44,8 @@ class ChangePassword extends FormRequest
 
             $hasher = app('hash');
 
-            if (! $hasher->check($this->password, User::find($this->id)->password)) {
-                $validator->errors()->add('old-password', 'Current password invalid.');
+            if (! $hasher->check($this->oldpassword, User::find($this->id)->password)) {
+                $validator->errors()->add('oldpassword', trans('profile.password'));
             }
         });
     }
