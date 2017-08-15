@@ -8,6 +8,7 @@ use App\Console\Commands\UpdateMetadata;
 use App\Console\Commands\UpdateQuandlSSE;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Foundation\Inspiring;
 
 class Kernel extends ConsoleKernel
 {
@@ -22,7 +23,7 @@ class Kernel extends ConsoleKernel
         Commands\TestMail::class,
         Commands\CalculateRisk::class,
         Commands\CalculateValue::class,
-        Commands\CheckLimits::class,
+        Commands\CheckLimits::class, Ins
     ];
 
     /**
@@ -38,7 +39,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:clean')->daily()->at('04:00');
         $schedule->command('backup:run')->daily()->at('05:00');
 
-        $schedule->command('inspire')->everyMinute();
+        $schedule->exec('echo "hi"')->everyMinute();
+
     }
 
     /**
