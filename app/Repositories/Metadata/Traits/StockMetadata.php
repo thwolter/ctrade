@@ -41,6 +41,8 @@ trait StockMetadata
             ]);
 
             $datasource->assign($instrument);
+
+            return true;
         }
     }
 

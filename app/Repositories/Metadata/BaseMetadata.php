@@ -30,6 +30,13 @@ abstract class BaseMetadata
 
     abstract function update($item);
 
+    /**
+     * Persist the item to the database. To decide which tables are effected and trait could be
+     * use for various asset classes. The function should return true when successfully persisted.
+     *
+     * @param $item
+     * @return mixed
+     */
     abstract function create($item);
 
     abstract function dataset($item);
@@ -113,8 +120,8 @@ abstract class BaseMetadata
                     }
 
                 } else {
-                    $this->create($item);
-                    $created++;
+                    $success = $this->create($item);
+                    if ($success) $created++;
                 }
             }
 
