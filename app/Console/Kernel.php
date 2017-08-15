@@ -2,13 +2,9 @@
 
 namespace App\Console;
 
-use App\Console\Commands\CacheQuandlSSE;
-use App\Console\Commands\CalculateRisk;
 use App\Console\Commands\UpdateMetadata;
-use App\Console\Commands\UpdateQuandlSSE;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Foundation\Inspiring;
 
 class Kernel extends ConsoleKernel
 {
@@ -23,7 +19,7 @@ class Kernel extends ConsoleKernel
         Commands\TestMail::class,
         Commands\CalculateRisk::class,
         Commands\CalculateValue::class,
-        Commands\CheckLimits::class, Ins
+        Commands\CheckLimits::class,
     ];
 
     /**
