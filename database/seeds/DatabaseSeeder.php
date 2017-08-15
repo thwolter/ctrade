@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesSeeder::class);
         $this->call(ExchangeSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(LanguageTableSeeder::class);
 
         $this->dev();
     }
