@@ -4,7 +4,7 @@ namespace Tests\Feature\Repos\Metadata;
 
 use App\Entities\Currency;
 use App\Facades\Datasource;
-use App\Repositories\Metadata\QuandlECB;
+use App\Repositories\Metadata\Quandl\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

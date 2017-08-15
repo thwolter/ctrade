@@ -1,13 +1,10 @@
 <?php
 
 
-namespace App\Repositories\Metadata;
+namespace App\Repositories\Metadata\Quandl;
 
 
 use App\Entities\CcyPair;
-use App\Entities\Currency;
-use App\Facades\Datasource;
-use App\Repositories\Exceptions\MetadataException;
 
 
 class QuandlECB extends QuandlMetadata

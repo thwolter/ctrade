@@ -22,7 +22,7 @@ return [
     'developer_name' => 'Thomas Wolter',
 
     // Developer website. Link in footer.
-    'developer_link' => 'https://capmyrisk.com',
+    'developer_link' => 'https://www.capmyrisk.com',
 
     // Show powered by Laravel Backpack in the footer?
     'show_powered_by' => true,
