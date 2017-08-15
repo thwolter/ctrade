@@ -42,3 +42,7 @@ Route::get('event', function(Request $request) {
 Route::get('metadata', function() {
     \Illuminate\Support\Facades\Artisan::call('metadata:update');
 });
+
+Route::get('temp', function() {
+    \Illuminate\Support\Facades\Artisan::call('temp:delete');
+});
