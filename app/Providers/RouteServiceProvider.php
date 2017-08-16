@@ -41,7 +41,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapAdminRoutes();
 
-        //
+        $this->mapDebugRoutes();
     }
 
     /**
@@ -87,5 +87,21 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware(['web', 'admin'])
             ->namespace($this->namespace.'\Admin')
             ->group(base_path('routes/admin.php'));
+    }
+
+
+    /**
+     * Define the "testing" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapDebugRoutes()
+    {
+        Route::prefix('debug')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/debug.php'));
     }
 }

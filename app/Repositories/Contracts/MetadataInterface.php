@@ -67,4 +67,12 @@ interface MetadataInterface
      * @return bool
      */
     public function existUpdate($item);
+
+    /**
+     * Fetch details for a given symbol from the provider's database.
+     *
+     * @param $symbol
+     * @return array
+     */
+    public function getSymbol($symbol);
 }

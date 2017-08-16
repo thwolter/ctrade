@@ -214,7 +214,8 @@ return [
         App\Providers\DatasourceServiceProvider::class,
         App\Providers\HelpersServiceProvider::class,
         App\Providers\DataServiceProvider::class,
-        App\Providers\ObserverServiceProvider::class
+        App\Providers\ObserverServiceProvider::class,
+        \App\Providers\MetadataServiceProvider::class,
 
     ],
 

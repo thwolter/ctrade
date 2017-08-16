@@ -55,4 +55,17 @@ abstract class QuandlMetadata extends BaseMetadata
     {
         return Carbon::parse(array_get($item, 'refreshed_at'));
     }
+
+    /**
+     * Fetch details for a given symbol from the provider's database.
+     *
+     * @param $symbol
+     * @return mixed
+     */
+    public function getSymbol($symbol)
+    {
+        $item = $this->client->getSymbol($this->database . '/' . $symbol);
+        return json_decode($item, true);
+    }
+
 }

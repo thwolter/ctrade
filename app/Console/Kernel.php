@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\UpdateMetadata;
+use App\Console\Commands\Metadata\UpdateMetadata;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,11 +15,15 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\DeleteTemp::class,
-        Commands\UpdateMetadata::class,
+
+        Commands\Metadata\UpdateMetadata::class,
+        Commands\Metadata\CheckMetadata::class,
+
         Commands\TestMail::class,
         Commands\CalculateRisk::class,
         Commands\CalculateValue::class,
         Commands\CheckLimits::class,
+
     ];
 
     /**
@@ -30,7 +34,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(UpdateMetadata::class)->hourly();
+        $schedule->command('inspire')->hourly();
+
+        $schedule->command(UpdateMetadata::class)->daily('02:00');
 
         $schedule->command('backup:clean')->daily()->at('04:00');
         $schedule->command('backup:run')->daily()->at('05:00');

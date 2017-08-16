@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Metadata;
 
-use App\Jobs\Metadata\BulkUpdate;
 use App\Jobs\Metadata\UpdateQuandlFSE;
 use App\Jobs\Metadata\UpdateQuandlSSE;
 use Illuminate\Console\Command;
