@@ -83,7 +83,7 @@ trait StockMetadata
 
     protected function valid($item)
     {
-        return $this->isIdentifiable($item) && $this->hasCurrency($item) &&
+        return $this->tradable($item) and $this->isIdentifiable($item) && $this->hasCurrency($item) &&
             $this->hasIsin($item) && $this->hasExchange($item);
     }
 

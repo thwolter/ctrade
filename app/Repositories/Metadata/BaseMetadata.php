@@ -113,6 +113,8 @@ abstract class BaseMetadata
             foreach ($items as $item) {
                 $available++;
 
+                $this->cacheItem($item);
+
                 if ($this->datasource($item)) {
 
                     if ($this->existUpdate($item)) {
@@ -177,5 +179,20 @@ abstract class BaseMetadata
         $updated = $this->refreshed($item)->timestamp;
 
         return $current < $updated;
+    }
+
+    /**
+     * Cache a json representation of all items within a given items' array.
+     * This seems reasonable as by fetching of an item to check parameters,
+     * the history is fetched as well.
+     *
+     * @param $array
+     */
+    private function cacheItem($item)
+    {
+        $expires = Carbon::now()->endOfDay();
+        $tags = [$this->provider, $this->database];
+
+        \Cache::tags($tags)->put('json.' . $this->dataset($item), $item, $expires);
     }
 }

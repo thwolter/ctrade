@@ -47,7 +47,11 @@ class QuandlPriceData implements DataInterface
         $data = \Cache::tags($tags)->get($key);
 
         if (!$data) {
-            $json = $this->client->getSymbol($this->symbol($this->datasource), ['limit' => $this->length]);
+            //$json = \Cache::tags($tags)->get('json.'.$key);
+
+            //if (!$json) {
+                $json = $this->client->getSymbol($this->symbol($this->datasource), ['limit' => $this->length]);
+            //}
 
             if (!is_null($this->client->error))
                 throw new PriceDataException($this->client->error);

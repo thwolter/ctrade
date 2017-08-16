@@ -21,7 +21,8 @@ class QuandlSSE extends QuandlMetadata implements MetadataInterface
         'symbol'    => ['dataset_code', '/.*/', 0],
         'sector'    => ['description', '/(?i)(?<=Sector: )(.*(?= -))/', 0],
         'industry'  => ['description', '/(?i)(?<=Sector: ).*(?<=-)(.*)/', 1],
-        'exchange'  => ['name', '/- (.*)/', 1],
+        'exchange'  => ['name', '/- ([\w|\s]*)$/', 1],
+        'exchange2'  => ['description', '/(Boerse )(\w*)/', 2],
         'description'   => ['description', '/.*/', 0]
     ];
 
@@ -34,5 +35,10 @@ class QuandlSSE extends QuandlMetadata implements MetadataInterface
         return $name;
     }
 
+    public function exchange($item)
+    {
+        $exchange = parent::exchange($item);
+        return ($exchange) ? $exchange : parent::exchange2($item);
+    }
 }
 

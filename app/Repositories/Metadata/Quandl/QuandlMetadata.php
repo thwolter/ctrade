@@ -10,6 +10,8 @@ abstract class QuandlMetadata extends BaseMetadata
 
     protected $provider = 'Quandl';
 
+    protected $maxLagging = 30;
+
     protected $perPage;
     protected $nextPage = 0;
     protected $totalPages = 2;
@@ -56,6 +58,18 @@ abstract class QuandlMetadata extends BaseMetadata
         return Carbon::parse(array_get($item, 'refreshed_at'));
     }
 
+
+    public function newestPrice($item)
+    {
+        return Carbon::parse(array_get($item, 'newest_available_date'));
+    }
+
+
+    public function tradable($item)
+    {
+        return $this->newestPrice($item)->diffInDays(Carbon::now()) <= $this->maxLagging;
+    }
+
     /**
      * Fetch details for a given symbol from the provider's database.
      *
@@ -65,7 +79,7 @@ abstract class QuandlMetadata extends BaseMetadata
     public function getSymbol($symbol)
     {
         $item = $this->client->getSymbol($this->database . '/' . $symbol);
-        return json_decode($item, true);
+        return array_get(json_decode($item, true), 'dataset');
     }
 
 }
