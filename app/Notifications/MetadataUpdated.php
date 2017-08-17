@@ -15,19 +15,16 @@ class MetadataUpdated extends Notification
     protected $provider;
     protected $database;
 
-    protected $attributes;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($provider, $database, $attributes)
+    public function __construct($provider, $database)
     {
         $this->provider = $provider;
         $this->database = $database;
-
-        $this->attributes = $attributes;
     }
 
     /**
@@ -73,9 +70,6 @@ class MetadataUpdated extends Notification
             'database' => $this->database,
             'total' => $datasources->count(),
             'valid' => $datasources->valid()->count(),
-            'available' => array_get($this->attributes, 'available'),
-            'updated' => array_get($this->attributes, 'updated'),
-            'created' => array_get($this->attributes, 'created'),
         ];
     }
 }

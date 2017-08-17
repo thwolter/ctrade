@@ -3,10 +3,6 @@
 
 Database *{{ $results['provider'] }}/{{ $results['database'] }}* was updated.
 
-- {{ $results['available'] }} available items;
-- {{ $results['created'] }} created items;
-- {{ $results['updated'] }} updated items;
-
 Summary
 - {{ $results['total'] }} total items;
 - {{ $results['valid'] }} valid items;

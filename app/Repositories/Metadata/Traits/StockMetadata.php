@@ -65,7 +65,7 @@ trait StockMetadata
             $stock->name = $stock->proposed_name;
         }
 
-        return ($stock->isDirty()) ? $stock->update() : false;
+       $stock->update();
     }
 
     protected function model($item)

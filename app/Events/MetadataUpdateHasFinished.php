@@ -9,7 +9,6 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Carbon\Carbon;
 
 
 class MetadataUpdateHasFinished
@@ -27,12 +26,10 @@ class MetadataUpdateHasFinished
      *
      * @return void
      */
-    public function __construct($provider, $database, $attributes)
+    public function __construct($provider, $database)
     {
         $this->provider = $provider;
         $this->database = $database;
-
-       $this->attributes = $attributes;
     }
 
     /**

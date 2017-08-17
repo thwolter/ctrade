@@ -82,7 +82,7 @@ abstract class BaseMetadata
     {
         $updated = $created = $available = 0;
 
-        Log::info(sprintf('update started for %s/%s',
+        Log::info(sprintf('Update started for %s/%s ...',
             $this->provider, $this->database));
 
         event(new MetadataUpdateHasStarted($this->provider, $this->database));
@@ -101,7 +101,7 @@ abstract class BaseMetadata
         if (!$items) {
             event(new MetadataUpdateHasCanceled($this->provider, $this->database));
 
-            Log::info(sprintf('update canceled for %s/%s',
+            Log::warning(sprintf('Update canceled for %s/%s.',
                 $this->provider, $this->database));
 
             return false;
@@ -118,13 +118,11 @@ abstract class BaseMetadata
                 if ($this->datasource($item)) {
 
                     if ($this->existUpdate($item)) {
-                        $success = $this->update($item);
-                        if ($success) $updated++;
+                        $this->update($item);
                     }
 
                 } else {
-                    $success = $this->create($item);
-                    if ($success) $created++;
+                    $this->create($item);
                 }
             }
 
@@ -134,13 +132,9 @@ abstract class BaseMetadata
             $i++;
         }
 
-        event(new MetadataUpdateHasFinished($this->provider, $this->database, [
-            'created' => $created, 'updated' => $updated, 'available' => $available
-        ]));
+        event(new MetadataUpdateHasFinished($this->provider, $this->database));
 
-        Log::info(sprintf('update finished for %s/%s: %s created, %s updated (%s available)',
-            $this->provider, $this->database, $created, $updated, $available
-        ));
+        Log::info(sprintf('Update finished for %s/%s.', $this->provider, $this->database));
     }
 
 

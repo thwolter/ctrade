@@ -32,7 +32,7 @@ class NotifyUpdatedHasFinished implements ShouldQueue
     public function handle(MetadataUpdateHasFinished $event)
     {
         User::whereEmail('thwolter@gmail.com')->first()
-            ->notify(new MetadataUpdated($event->provider, $event->database, $event->attributes));
+            ->notify(new MetadataUpdated($event->provider, $event->database));
         
 
     }
