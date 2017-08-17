@@ -32,6 +32,6 @@ class TakerEmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.verification.taker');
+        return $this->subject(trans('email.confirm_subject'))->markdown('emails.verification.taker');
     }
 }
