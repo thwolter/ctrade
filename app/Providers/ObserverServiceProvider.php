@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Entities\CcyPair;
 use App\Entities\Dataset;
 use App\Entities\Datasource;
 use App\Entities\Limit;
 use App\Entities\Stock;
 use App\Entities\Taker;
 use App\Entities\User;
+use App\Observers\CcyPairObserver;
 use App\Observers\DatasourceObserver;
 use App\Observers\LimitObserver;
 use App\Observers\StockObserver;
@@ -29,6 +31,7 @@ class ObserverServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Taker::observe(TakerObserver::class);
         Stock::observe(StockObserver::class);
+        CcyPair::observe(CcyPairObserver::class);
     }
 
     /**

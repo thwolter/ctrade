@@ -107,8 +107,6 @@ abstract class BaseMetadata
 
             foreach ($items as $item) {
 
-                $this->cacheItem($item);
-
                 if ($this->datasource($item)) {
 
                     if ($this->existUpdate($item)) {
@@ -118,6 +116,8 @@ abstract class BaseMetadata
                 } else {
                     $this->create($item);
                 }
+
+                $this->cacheItem($item);
             }
 
             if ($this->local()) break;
@@ -162,7 +162,7 @@ abstract class BaseMetadata
      */
     public function existUpdate($item)
     {
-        $current = $this->datasource($item)->refreshed_at->timestamp;
+        $current = @($this->datasource($item)->refreshed_at->timestamp);
         $updated = $this->refreshed($item)->timestamp;
 
         return $current < $updated;
@@ -177,7 +177,7 @@ abstract class BaseMetadata
      *
      * @return void
      */
-    private function cacheItem($item)
+    protected function cacheItem($item)
     {
         $key = 'ITEM.' . $this->dataset($item);
         $tags = [$this->provider, $this->database];

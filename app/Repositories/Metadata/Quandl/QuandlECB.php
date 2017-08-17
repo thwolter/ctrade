@@ -3,50 +3,81 @@
 
 namespace App\Repositories\Metadata\Quandl;
 
-
-use App\Entities\CcyPair;
+use App\Events\MetadataUpdateHasFinished;
+use App\Events\MetadataUpdateHasStarted;
+use App\Entities\Currency;
 use App\Repositories\Contracts\MetadataInterface;
+use App\Repositories\Metadata\Traits\CcyPairMetadata;
+use Illuminate\Support\Facades\Log;
 
 
 class QuandlECB extends QuandlMetadata implements MetadataInterface
 {
+    use CcyPairMetadata;
 
     public $database = 'ECB';
+
     protected $origin = 'EUR';
-    protected $baseCcy = ['USD', 'CHF'];
+    protected $maxLagging = 5;
+
+    protected $keys =[
+        'symbol'    => ['dataset_code', '/.*/', 0],
+    ];
 
 
-   
-    public function saveItem($item)
+    protected function exchange($item)
     {
-        $currency = CcyPair::firstOrCreate([
-            'origin' => $this->origin,
-            'target' => $item,
-        ]);
-
-        return $currency;
-    }
-    
-    
-    public function update($item)
-    {
-        //Todo: check for security type, for now assume all are stocks
-        //Todo: check whether stock should be updated based on wkn, isin, name
-
-        return false;
-
-        //return true if updated
+        return 'ECB';
     }
 
-    /**
-     * Persist the item to the database. To decide which tables are effected and trait could be
-     * use for various asset classes. The function should return true when successfully persisted.
-     *
-     * @param $item
-     * @return mixed
-     */
-    function create($item)
+    public function updateDatabase()
     {
-        // TODO: Implement create() method.
+        Log::info(sprintf('Update started for %s/%s ...', $this->provider, $this->database));
+        event(new MetadataUpdateHasStarted($this->provider, $this->database));
+
+        foreach (Currency::all() as $currency) {
+
+            if ($this->origin === $currency->code) continue;
+
+            $symbol = $this->origin.$currency->code;
+            $dataset = $this->database . '/' . $symbol;
+
+            $data = $this->client->getSymbol($dataset);
+
+            if (!$data) {
+                Log::warning(sprintf('Could not fetch %s from %s/%s: %s',
+                    $symbol, $this->provider, $this->database, $this->client->error));
+                continue;
+            }
+
+            $item = array_get(json_decode($data, true), 'dataset');
+
+            if ($this->datasource($item)) {
+
+                if ($this->existUpdate($item))
+                    $this->update($item);
+
+            } else {
+
+                $this->create($item);
+            }
+
+            $this->cacheItem($item);
+
+        }
+
+        event(new MetadataUpdateHasFinished($this->provider, $this->database));
+        Log::info(sprintf('Update finished for %s/%s.', $this->provider, $this->database));
     }
+
+
+    protected function cacheItem($item)
+    {
+        $key = 'ITEM.' . $this->symbol($item);
+        $tags = [$this->provider, $this->database];
+
+        \Cache::tags($tags)->forever($key, $item);
+        Log::debug(sprintf('Cached %s with tags %s', $key, implode(',', $tags)));
+    }
+
 }

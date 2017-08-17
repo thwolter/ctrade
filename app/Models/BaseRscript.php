@@ -5,6 +5,7 @@ namespace App\Models;
 
 
 use App\Models\Exceptions\RscriptException;
+use Illuminate\Support\Facades\Log;
 
 class BaseRscript
 {
@@ -53,7 +54,10 @@ class BaseRscript
         $argsString = $this->argsImplode($args);
         $scriptFile = base_path('rscripts/' . $script);
 
-        shell_exec("Rscript {$scriptFile} {$argsString} > {$result} 2> {$log}");
+        $execute = "Rscript {$scriptFile} {$argsString} > {$result} 2> {$log}";
+        Log::debug("Executing '{$execute}'");
+
+        shell_exec($execute);
 
         $json = file_get_contents($result);
         $this->cleanup($result, $log);

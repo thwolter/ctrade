@@ -45,6 +45,7 @@ class QuandlPriceData implements DataInterface
         $key = 'ITEM.'.$this->datasource->dataset->first()->code;
         $tags = [$this->datasource->provider->code, $this->datasource->database->code];
 
+        Log::debug(sprintf('Requesting %s from %s', $key, implode(',', $tags)));
         $item = \Cache::tags($tags)->get($key);
 
         if (!$item) {
