@@ -14,7 +14,7 @@ class DatasourceObserver
 
     public function created(Datasource $datasource)
     {
-        Log::notice(sprintf('Datasource %s created', $datasource->key()));
+        Log::notice(sprintf('Create datasource %s.', $datasource->key()));
     }
 
     public function updating(Datasource $datasource)

@@ -80,11 +80,7 @@ abstract class BaseMetadata
 
     public function updateDatabase()
     {
-        $updated = $created = $available = 0;
-
-        Log::info(sprintf('Update started for %s/%s ...',
-            $this->provider, $this->database));
-
+        Log::info(sprintf('Update started for %s/%s ...', $this->provider, $this->database));
         event(new MetadataUpdateHasStarted($this->provider, $this->database));
 
         if ($this->local()) {
@@ -99,10 +95,9 @@ abstract class BaseMetadata
         }
 
         if (!$items) {
-            event(new MetadataUpdateHasCanceled($this->provider, $this->database));
 
-            Log::warning(sprintf('Update canceled for %s/%s.',
-                $this->provider, $this->database));
+            Log::warning(sprintf('Update canceled for %s/%s.', $this->provider, $this->database));
+            event(new MetadataUpdateHasCanceled($this->provider, $this->database));
 
             return false;
         }
@@ -111,7 +106,6 @@ abstract class BaseMetadata
         while ($items) {
 
             foreach ($items as $item) {
-                $available++;
 
                 $this->cacheItem($item);
 
@@ -133,7 +127,6 @@ abstract class BaseMetadata
         }
 
         event(new MetadataUpdateHasFinished($this->provider, $this->database));
-
         Log::info(sprintf('Update finished for %s/%s.', $this->provider, $this->database));
     }
 
@@ -180,13 +173,16 @@ abstract class BaseMetadata
      * This seems reasonable as by fetching of an item to check parameters,
      * the history is fetched as well.
      *
-     * @param $array
+     * @param array $item
+     *
+     * @return void
      */
     private function cacheItem($item)
     {
-        $expires = Carbon::now()->endOfDay();
+        $key = 'ITEM.' . $this->dataset($item);
         $tags = [$this->provider, $this->database];
 
-        \Cache::tags($tags)->put('json.' . $this->dataset($item), $item, $expires);
+        \Cache::tags($tags)->forever($key, $item);
+        Log::debug(sprintf('Cached %s with tags %s', $key, implode(',', $tags)));
     }
 }

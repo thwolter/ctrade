@@ -3,9 +3,11 @@
 namespace App\Repositories\DataProvider;
 
 use App\Entities\Datasource;
+use App\Events\PriceData\FetchingFailed;
 use App\Repositories\Contracts\DataInterface;
 use App\Repositories\Exceptions\PriceDataException;
 use App\Models\PriceHistory;
+use Illuminate\Support\Facades\Log;
 
 class QuandlPriceData implements DataInterface
 {
@@ -15,7 +17,6 @@ class QuandlPriceData implements DataInterface
     protected $datasource;
     protected $client;
     protected $length;
-
 
 
     public function __construct(Datasource $datasource)
@@ -41,31 +42,30 @@ class QuandlPriceData implements DataInterface
 
     private function fetchHistory()
     {
-        $key = $this->symbol($this->datasource);
+        $key = 'ITEM.'.$this->datasource->dataset->first()->code;
         $tags = [$this->datasource->provider->code, $this->datasource->database->code];
 
-        $data = \Cache::tags($tags)->get($key);
+        $item = \Cache::tags($tags)->get($key);
 
-        if (!$data) {
-            //$json = \Cache::tags($tags)->get('json.'.$key);
+        if (!$item) {
 
-            //if (!$json) {
-                $json = $this->client->getSymbol($this->symbol($this->datasource), ['limit' => $this->length]);
-            //}
+            Log::debug(sprintf('Fetching %s from %s', $key, implode(',', $tags)));
+            $json = $this->client->getSymbol($this->symbol($this->datasource), ['limit' => $this->length]);
 
-            if (!is_null($this->client->error))
+            if (!is_null($this->client->error)) {
+
+                event(new FetchingFailed($this->datasource, $this->client->last_url, $this->client->error));
                 throw new PriceDataException($this->client->error);
+            }
 
-            $array = json_decode($json, true);
-
-            $prices = array_get($array, 'dataset.data');
-            $column = $this->priceColumn(array_get($array, 'dataset.column_names'));
-
-            $data = new PriceHistory($prices, $column);
-
-            \Cache::tags($tags)->forever($key, $data);
+            $item = array_get(json_decode($json, true), 'dataset');
         }
-        
+
+        $prices = array_get($item, 'data');
+        $column = $this->priceColumn(array_get($item, 'column_names'));
+
+        $data = new PriceHistory($prices, $column);
+
         return $data;
     }
 
@@ -75,7 +75,7 @@ class QuandlPriceData implements DataInterface
         $i = 0;
         $count = count($this->priceColumnNames);
 
-        while (! isset($column) and $i < $count) {
+        while (!isset($column) and $i < $count) {
             $column = array_search($this->priceColumnNames[$i++], $columnNames);
         }
 

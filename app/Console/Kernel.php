@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('inspire')->hourly();
 
-        $schedule->command(UpdateMetadata::class)->daily('02:00');
+        $schedule->command(UpdateMetadata::class)->daily('23:00');
 
         $schedule->command('backup:clean')->daily()->at('04:00');
         $schedule->command('backup:run')->daily()->at('05:00');

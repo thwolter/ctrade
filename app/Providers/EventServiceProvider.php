@@ -50,6 +50,13 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         /*
+         * Price data events
+         */
+        'App\Events\PriceData\FetchingFailed' => [
+            'App\Listeners\PriceData\NotifyFetchingFailed'
+        ],
+
+        /*
          * Calculation events
          */
         'App\Events\PortfolioRiskWasCalculated' => [
