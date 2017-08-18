@@ -21,7 +21,7 @@ $brand-twitter                         : #00acee;
 //## []
 
 $font-stack-text                       : 'Roboto Condensed', sans-serif;
-$font-stack-heading                    : 'Oswald', 'Trebuchet MS', 'Open Sans', arial, sans-serif;
+$font-stack-heading                    : 'Roboto Slab', serif;
 $font-stack-icon                       : 'FontAwesome';
 
 
@@ -29,7 +29,7 @@ $font-stack-icon                       : 'FontAwesome';
 //
 //## []
 
-$layout-bg : #fff;
+$layout-bg : #f5f5f5;
 $navbar-admin-bg: #000;
 $navbar-bg: #000;
 
@@ -276,7 +276,7 @@ $account-body-border-color             : #ddd;
 //
 //## [.heading-block]
 
-$heading-color                         : $brand-layout;
+$heading-color                         : #555;
 $heading-bar-color                     : #e6e6e6;
 $heading-bar-highlight-color           : $brand-secondary;
 

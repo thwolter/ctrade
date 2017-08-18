@@ -22710,7 +22710,7 @@ var Colors = function () {
     _createClass(Colors, [{
         key: 'standard',
         value: function standard() {
-            return ['#034e7b', '#0570b0', '#3690c0', '#74a9cf', '#a6bddb', '#d0d1e6', '#f1eef6'];
+            return ['#5F8FCD', '#527BB0', '#3B434D', '#A3B9D5', '#365275', '#6B7A8C', '#6B7A8C'];
         }
     }]);
 
