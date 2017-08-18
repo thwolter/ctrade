@@ -1,80 +1,82 @@
-@import "font-awesome/scss/font-awesome";
+//@import "font-awesome/scss/font-awesome";
 
 // Bootstrap Variables & Mixins ************************* /
 
-//@import "node_modules/bootstrap/scss/variables";
-//@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
 
 // Custom Variables & Mixins **************************** /
 
-//@import "variables";
-//@import "mixins";
+$navbar-admin-bg: #000;
+@import "variables";
+@import "mixins";
 
 // Color Variables Override ***************************** /
 
-//@import "skins/slate";
+$layout-bg: #f4f4f4;
+@import "skins/slate";
 
 // Defaults ********************************************* /
-//@import "templates/defaults";
+@import "templates/defaults";
 
 // Bootstrap Overrides ********************************** /
 
-//@import "bootstrap";
+@import "bootstrap-custom";
 
 // mvp theme
-//@import "components/layout";
-//@import "components/mega-menu";
-//@import "components/portlet";
-//@import "components/icons-list";
-//@import "components/validation";
-//@import "components/backtotop";
-//@import "components/notifications-list";
-//@import "components/pricing-plans";
-//@import "components/pricing-table";
-//@import "components/share-widget";
-//@import "components/social-feed";
-//@import "components/stats";
-//@import "components/headings";
-//@import "components/blank-slate";
-//@import "components/sitemap";
-//@import "components/account";
-//@import "components/error";
-//@import "components/maintenance";
-//@import "components/social-icon";
-//@import "components/utilities";
+@import "components/layout";
+@import "components/mega-menu";
+@import "components/portlet";
+@import "components/icons-list";
+@import "components/validation";
+@import "components/backtotop";
+@import "components/notifications-list";
+@import "components/pricing-plans";
+@import "components/pricing-table";
+@import "components/share-widget";
+@import "components/social-feed";
+@import "components/stats";
+@import "components/headings";
+@import "components/blank-slate";
+@import "components/sitemap";
+@import "components/account";
+@import "components/error";
+@import "components/maintenance";
+@import "components/social-icon";
+@import "components/utilities";
 
-//@import "components/blog";
-//@import "components/clients";
-//@import "components/comment-list";
-//@import "components/features";
-//@import "components/team-member";
-//@import "components/testimonials";
+@import "components/blog";
+@import "components/clients";
+@import "components/comment-list";
+@import "components/features";
+@import "components/team-member";
+@import "components/testimonials";
 
 // Plugins ********************************************** /
 
-//@import "plugins/datatables";
-//@import "plugins/flot";
-//@import "plugins/select2";
-//@import "plugins/icheck";
-//@import "plugins/steps";
-//@import "plugins/simplecolorpicker";
-//@import "plugins/jquery-ui/slider";
-//@import "plugins/summernote";
-//@import "plugins/datatable-helper";
+@import "plugins/datatables";
+@import "plugins/flot";
+@import "plugins/select2";
+@import "plugins/icheck";
+@import "plugins/steps";
+@import "plugins/simplecolorpicker";
+@import "plugins/jquery-ui/slider";
+@import "plugins/summernote";
+@import "plugins/datatable-helper";
 
 // Template Specific ************************************ /
 
-//@import "templates/admin/navbar";
-//@import "templates/admin/navbar-notifications";
-//@import "templates/admin/mainnav";
-//@import "templates/admin/content";
-//@import "templates/admin/footer";
-//@import "templates/admin/sticky-footer";
+@import "templates/admin/navbar";
+@import "templates/admin/navbar-notifications";
+@import "templates/admin/mainnav";
+@import "templates/admin/content";
+@import "templates/admin/footer";
+@import "templates/admin/sticky-footer";
 //@import "templates/landing/navbar";
 
 // Demo Styles ****************************************** /
 
-//@import "components/demo";
+@import "components/demo";
 
 // Custom *********************************************** /
 //@import "hero";

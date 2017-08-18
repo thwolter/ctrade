@@ -1,3 +1,19 @@
+@mixin flatten-dropdown () {
+	position: static;
+	float: none;
+	width: auto;
+	margin-top: 0;
+	background-color: transparent;
+	border: 0;
+	box-shadow: none;
+
+	& > li {
+		& > a {
+			//padding-left: 25px;
+		}
+	}
+}
+
 //* !Mainnav */
 //* ----------------------------------------------- */
 
@@ -369,21 +385,7 @@
   }
 }
 
-@mixin flatten-dropdown () {
-  position: static;
-  float: none;
-  width: auto;
-  margin-top: 0;
-  background-color: transparent;
-  border: 0;
-  box-shadow: none;
 
-  & > li {
-    & > a {
-      //padding-left: 25px;
-    }
-  }
-}
 
 
 

@@ -22,10 +22,10 @@
     <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/fontawesome/css/font-awesome.min.css') }}">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">--}}
 
     <!-- App CSS -->
-    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/admin-1/css/mvpready-admin.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/admin-1/css/mvpready-admin.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     
     

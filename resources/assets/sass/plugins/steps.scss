@@ -1,3 +1,21 @@
+//* !Wizard Mixins */
+//* ----------------------------------------------- */
+
+@mixin wizard-button-variant ($color, $bg, $border) {
+  color: $color;
+
+  background: $bg;
+
+  border: 1px solid darken($border, 0%);
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: darken($bg, 8%);
+  }
+}
+
+
 //* !Wizard */
 //* ----------------------------------------------- */
 
@@ -195,8 +213,8 @@
         &:focus {
           border-color: #66afe9;
           outline: 0;
-          -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,@mixin 075),0 0 8px rgba(102,175,233,.6);
-          box-shadow: inset 0 1px 1px rgba(0,0,0,@mixin 075),0 0 8px rgba(102,175,233,.6);
+          -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.75),0 0 8px rgba(102,175,233,.6);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.75),0 0 8px rgba(102,175,233,.6);
         }
       }
 
@@ -323,23 +341,4 @@
     top: -1px;
   }
 
-}
-
-
-
-//* !Wizard Mixins */
-//* ----------------------------------------------- */
-
-@mixin wizard-button-variant ($color, $bg, $border) {
-  color: $color;
-
-  background: $bg;
-
-  border: 1px solid darken($border, 0%);
-
-  &:hover,
-  &:focus,
-  &:active {
-    background: darken($bg, 8%);
-  }
 }
