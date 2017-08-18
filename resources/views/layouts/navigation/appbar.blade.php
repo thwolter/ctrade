@@ -22,7 +22,7 @@
         <div class="navbar-collapse collapse">
 
             <!-- page links -->
-            <ul class="nav  navbar-nav">
+            <ul class="nav navbar-nav navbar-small">
 
                 <li class="navbar-divider"></li><!-- /.navbar-divider -->
 
@@ -46,7 +46,7 @@
             <!-- user menu -->
             <ul class="nav navbar-nav navbar-right">
 
-                <li class="divider"></li>
+                {{--<li class="divider"></li>--}}
 
                 <li class="dropdown navbar-profile">
 

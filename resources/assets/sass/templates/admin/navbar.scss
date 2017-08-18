@@ -3,13 +3,11 @@
 
 .navbar {
   margin-bottom: 0;
-
   border-radius: 0;
 }
 
 .navbar .navbar-brand {
   height: $navbar-admin-height;
-
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -63,7 +61,6 @@
 }
 
 
-
 .navbar {
   background-color: $navbar-admin-bg;
   border-color: $navbar-admin-border;
@@ -77,6 +74,12 @@
     }
   }
 
+  .navbar-small {
+    > li > a {
+      font-size: 15px !important;
+    }
+  }
+
   .navbar-text {
     color: $navbar-admin-color;
   }
@@ -84,7 +87,6 @@
   .navbar-nav {
     > li > a {
       color: $navbar-admin-link-color;
-
       font-weight: 600;
 
       &:hover,

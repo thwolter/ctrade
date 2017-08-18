@@ -1,0 +1,14 @@
+// Facebook
+.btn-facebook {
+	@include button-variant($btn-facebook-color, $btn-facebook-bg, $btn-facebook-border-color);
+}
+
+.navbar .navbar-nav > li > a {
+	color: #fafcfe;
+	font-weight: 300;
+	font-size: 20px;
+
+	.small {
+		font-size: 16px;
+	}
+}

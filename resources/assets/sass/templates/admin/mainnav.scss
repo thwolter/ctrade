@@ -19,59 +19,45 @@
 
 .mainnav {
 	position: relative;
-
 	background-color: $mainnav-bg;
 
-	//border-bottom: 1px solid $mainnav-border-color;
-
-  box-shadow: 1px 0 6px 0 rgba(0, 0, 0, 0.2);
 
   .dropdown-menu {
     min-width: 200px;
   }
+
 }
 
 .mainnav-toggle {
 	display: block;
-
 	padding: 12px 0;
 	margin: 0 -15px;
-
 	color: $mainnav-toggle-color;
-
 	font-size: 18px;
 	text-align: center;
-
 	cursor: pointer;
-
 	background: $mainnav-toggle-bg;
 
 	&:hover {
 		color: $mainnav-toggle-hover-color;
-
 		background: $mainnav-toggle-hover-bg;
 	}
 }
 
 .mainnav-form {
 	position: relative;
-
 	padding-top: 15px;
-  padding-bottom: 15px;
-
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  	padding-bottom: 15px;
+  	border-top: 1px solid #ddd;
+  	border-bottom: 1px solid #ddd;
 }
 
 .mainnav-form-btn {
 	position: absolute;
 	top: 17px;
 	right: 2px;
-
 	color: $brand-primary;
-
 	background-color: transparent;
-
 	@include border-left-radius (0);
 
 	&:hover {
@@ -82,7 +68,6 @@
 .mainnav-menu {
 	padding: 0;
 	margin: 0 -15px;
-
 	list-style-type: none;
 
 	& > li {
@@ -90,21 +75,15 @@
 
 		& > a {
 			position: relative;
-
 			display: block;
-
 			padding: 10px 15px;
-
 			color: $mainnav-link-color;
-
-      font-size: 14px;
-			font-weight: 600;
+      	font-size: 14px;
 
 			background: $mainnav-link-bg;
 
 			&:hover {
 				text-decoration: none;
-
 				background-color: #f6f6f6;
 			}
 		}
@@ -240,21 +219,16 @@
 
     & > li {
       float: left;
-
       margin-right: 0;
 
       & > a {
         padding: 21px 15px;
-
         font-size: 16px;
-        letter-spacing: -1px;
-
         border-bottom: 1px solid transparent;
         border-bottom-color: $mainnav-link-border-color;
 
         &:hover {
           background-color: $mainnav-link-hover-bg;
-
           border-bottom-color: $mainnav-link-border-hover-color;
         }
       }
@@ -315,8 +289,6 @@
 }
 
 
-
-
 @media (min-width: $screen-md-min) {
   .mainnav-search-query {
     width: 225px;
@@ -364,13 +336,6 @@
     }
   }
 }
-
-
-
-
-
-
-
 
 
 @media (max-width: $screen-xs-max) {

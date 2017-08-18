@@ -4,9 +4,7 @@
 .navbar .navbar-nav > .navbar-notification {
   & > .dropdown-toggle {
     color: $notification-link-color;
-
     background-color: $notification-link-bg;
-
     font-size: 13px;
 
     .badge {

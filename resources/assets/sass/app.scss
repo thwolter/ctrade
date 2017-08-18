@@ -1,27 +1,26 @@
-//@import "font-awesome/scss/font-awesome";
+@import "font-awesome/scss/font-awesome";
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 
 // Bootstrap Variables & Mixins ************************* /
 
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
 
+
 // Custom Variables & Mixins **************************** /
 
-$navbar-admin-bg: #000;
 @import "variables";
 @import "mixins";
 
-// Color Variables Override ***************************** /
 
-$layout-bg: #f4f4f4;
-@import "skins/slate";
+// Bootstrap Overrides ********************************** /
+
+@import "bootstrap";
+
 
 // Defaults ********************************************* /
 @import "templates/defaults";
 
-// Bootstrap Overrides ********************************** /
-
-@import "bootstrap-custom";
 
 // mvp theme
 @import "components/layout";
@@ -72,13 +71,17 @@ $layout-bg: #f4f4f4;
 @import "templates/admin/content";
 @import "templates/admin/footer";
 @import "templates/admin/sticky-footer";
-//@import "templates/landing/navbar";
+@import "components/buttons";
+@import "components/dropdown";
 
 // Demo Styles ****************************************** /
 
-@import "components/demo";
+//@import "components/demo";
 
 // Custom *********************************************** /
+
+
+
 //@import "hero";
 //@import "wrapper";
 
@@ -160,25 +163,20 @@ $layout-bg: #f4f4f4;
 	display: flex;
 }
 
-.mainnav-menu {
-	a {
-		font-size: 14px;
-	}
-}
 
 .portfolio-dropdown {
-	min-width: 200px;
-	padding-left: 20px;
+	padding: 0 20px;
 
 	.portfolio-name {
 		margin: 10px 0;
 		border-right: 1px solid #ddd;
 		padding: 11px 25px 11px 0;
-		color: #6685a4;
+		color: $brand-layout;
+		font-weight: bold;
 	}
 
 	.portfolio-caret {
-		float: right;
+
 	}
 
 }
@@ -193,10 +191,13 @@ $layout-bg: #f4f4f4;
 
 .brand-name {
 	a {
-		color: #dddddd;
 		display: inline-block;
-		margin: 15px 0px;
-		font-size: x-large;
+		padding: 8px;
+		margin: 9px 0;
+		color: #4a80c6;
+		background-color: rgba(229, 229, 229, 0.32);
+		font-size: 32px;
+		font-weight: bold;
 	}
 
 	a:hover, a:active, a:focus {
