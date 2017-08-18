@@ -30,7 +30,7 @@
   text-align: center;
 }
 
-@include media-breakpoint-up(sm) {
+@media (min-width: $screen-sm-min) {
   .maintenance {
     //width: 500px;
     height: 440px;

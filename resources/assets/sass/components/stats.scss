@@ -60,7 +60,7 @@
 
   border: 1px solid #ddd;
 
-  @include border-top-radius(3px);
+  @include border-top-radius (3px);
   @include border-bottom-radius (3px);
 }
 
@@ -100,29 +100,41 @@
 
 .icon-stat {
   display: block;
+
   overflow: hidden;
+
   position: relative;
+
   padding: 15px;
   margin-bottom: 1em;
+
   background-color: #fff;
+
   border-radius: 4px;
+
   border: 1px solid #ddd;
 }
 
 .icon-stat-details {
   position: relative;
+
   text-align: left;
-  @include clearfix();
+
+  @include clearfix ();
 }
 
 .icon-stat-label {
   display: block;
+
   color: #999;
+
   font-size: 13px;
 }
 
 .icon-stat-value {
   display: block;
+
+
   font-size: 28px;
   font-weight: 600;
 }
@@ -130,24 +142,34 @@
 .icon-stat-visual {
   position: relative;
   top: 22px;
+
   display: inline-block;
+
+
   width: 32px;
   height: 32px;
+
   border-radius: 4px;
+
   text-align: center;
+
   font-size: 16px;
+
   line-height: 30px;
 }
 
 .icon-stat-footer {
   padding: 10px 0 0;
   margin-top: 10px;
+
   color: #aaa;
+
   font-size: 12px;
+
   border-top: 1px solid #eee;
 }
 
-@include media-breakpoint-up(sm) {
+@media (min-width: $screen-sm-min) {
   .icon-stat {
     margin-bottom: 2em;
   }

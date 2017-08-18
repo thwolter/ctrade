@@ -20,7 +20,7 @@
 
   background-color: $backtotop-bg;
 
-  @include border-top-radius(3px);
+  @include border-top-radius (3px);
   @include border-bottom-radius (3px);
 
   cursor: pointer;
@@ -41,7 +41,7 @@
 
 }
 
-@include media-breakpoint-up(sm) {
+@media (min-width: $screen-sm) {
   #back-to-top {
     width: 45px;
     height: 45px;

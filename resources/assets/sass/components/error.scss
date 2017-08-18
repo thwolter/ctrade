@@ -26,7 +26,7 @@
 	}
 }
 
-@include media-breakpoint-up(sm) {
+@media (min-width: $screen-sm) {
 
 	.error-container {
 		margin-top: 2.5em;
@@ -46,7 +46,7 @@
 
 }
 
-@include media-breakpoint-up(md) {
+@media (min-width: $screen-md) {
 
 	.error-container {
 		margin-top: 5em;

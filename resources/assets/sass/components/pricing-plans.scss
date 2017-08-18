@@ -153,7 +153,7 @@
 .pricing-plan-ribbon-tertiary { background-color: $brand-tertiary; }
 .pricing-plan-ribbon-current { background-color: lighten($pricing-header-bg, 5%); color: $brand-primary; }
 
-@include media-breakpoint-only(sm) {
+@media (min-width: $screen-sm) {
 
 	.pricing-plan {
 		//max-width: 300px;

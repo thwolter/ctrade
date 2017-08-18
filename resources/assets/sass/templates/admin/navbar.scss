@@ -3,11 +3,13 @@
 
 .navbar {
   margin-bottom: 0;
+
   border-radius: 0;
 }
 
 .navbar .navbar-brand {
   height: $navbar-admin-height;
+
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -15,6 +17,7 @@
 .navbar-profile-avatar {
   position: relative;
   top: -1px;
+
   width: 30px;
   margin-right: .65em;
   border: 2px solid $navbar-admin-link-color;
@@ -136,7 +139,7 @@
       }
     }
 
-    @include media-breakpoint-up(md) {
+    @media (max-width: $grid-float-breakpoint-max) {
       // Dropdowns get custom display
       .open .dropdown-menu {
         > .dropdown-header {
@@ -210,7 +213,7 @@
   border-color: transparent;
 }
 
-@include media-breakpoint-up(sm) {
+@media (min-width: $screen-sm-min) {
   .navbar-collapse .navbar-nav.navbar-left:first-child {
     margin-left: 0;
   }
@@ -219,12 +222,17 @@
 
     .navbar-divider {
       position: relative;
+
       float: left;
+
       overflow: hidden;
       z-index: 101;
+
       width: 1px;
       height: $navbar-admin-height;
+
       margin: 0;
+
       background-color: darken($navbar-admin-bg, 5%);
     }
 

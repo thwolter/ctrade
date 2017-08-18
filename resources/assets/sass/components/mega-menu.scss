@@ -50,7 +50,7 @@
   }
 }
 
-@include media-breakpoint-up(sm){
+@media (min-width: $screen-sm-min) {
   .mega-menu-header {
     margin-right: 0;
     margin-left: 0;

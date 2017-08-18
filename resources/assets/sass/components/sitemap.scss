@@ -134,7 +134,7 @@
   color: #ccc;
 }
 
-@include media-breakpoint-down(sm) {
+@media (max-width: $screen-xs-max) {
   .sitemap {
     ul {
       padding-right: 12px;

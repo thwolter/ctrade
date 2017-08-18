@@ -117,8 +117,8 @@ h6.masthead-title { font-size: 26px; }
 
   filter: none;
 
-  @mixin border-top-radius(3px),
-  .border-bottom-radius (3px),
+  @include border-top-radius (3px);
+  @include border-bottom-radius (3px);
 }
 
 @media (max-width: $screen-sm-max) {

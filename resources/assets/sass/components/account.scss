@@ -56,7 +56,7 @@
 	@include border-top-radius (4px);
 	@include border-bottom-radius (4px);
 
-	@include box-shadow (1px 1px 1px rgba(0,0,0,.15));
+	@mixin box-shadow (1px 1px 1px rgba(0,0,0,.15));
 	
 }
 
@@ -71,7 +71,7 @@
 	margin-top: 1em;
 }
 
-@include media-breakpoint-up(sm) {
+@media (min-width: $screen-sm) {
 	.account-wrapper {
 		width: 450px;
 		padding: 0;

@@ -22,21 +22,26 @@
     text-align: center;
     line-height: 36px;
 
-    @include border-top-radius(3px);
+    @include border-top-radius (3px);
     @include border-bottom-radius (3px);
 
     i {
       color: #fff;
+
       font-size: 18px;
     }
   }
 
   .testimonial-content {
     position: relative;
+
     padding: 30px 15px 25px;
+
     text-align: center;
     line-height: 1.75em;
+
     border: 1px solid #ddd;
+
     @include border-top-radius (5px);
     @include border-bottom-radius (5px);
 
@@ -49,6 +54,7 @@
       z-index: 21;
       width: 0;
       height: 0;
+      display: n;
       border-left: 11px solid transparent;
       border-top: 12px solid white;
     }
@@ -68,21 +74,27 @@
 
   .testimonial-author {
     display: table;
+
     margin: 25px 0 0 4px;
   }
 
   .testimonial-image {
     display: table-cell;
     vertical-align: middle;
+
     position: relative;
+
     width: auto;
     height: auto;
 
     img {
       width: 60px;
       height: 60px;
+      
       padding: 4px;
+
       border: 1px solid #ddd;
+
       border-radius: 50px;
     }
   }
@@ -90,6 +102,7 @@
   .testimonial-author-info {
     display: table-cell;
     vertical-align: middle;
+
     padding-top: 0;
     padding-left: 15px;
 
@@ -98,7 +111,7 @@
     }
   }
 
-@include media-breakpoint-up(sm) {
+@media (min-width: $screen-sm-min) {
   .testimonial {
     margin-bottom: 0;
   }
