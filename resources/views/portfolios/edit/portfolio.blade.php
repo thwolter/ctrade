@@ -78,9 +78,9 @@
 
     @if (!session('delete'))
         <div class="form-group">
-            <label class="col-md-3 control-label">Portfolio löschen</label>
-            <div class="col-md-7">
-                <button type="submit" class="btn btn-tertiary">Ja, Portfolio löschen</button>
+            {{--<label class="col-md-3 control-label">Portfolio löschen</label>--}}
+            <div class="col-md-7>
+                <button type="submit" class="btn btn-link">Portfolio löschen</button>
             </div>
         </div>
     @else
