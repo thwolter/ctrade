@@ -19,7 +19,7 @@
 
 
 // Defaults ********************************************* /
-@import "templates/defaults";
+@import "defaults";
 
 
 // mvp theme
@@ -51,6 +51,17 @@
 @import "components/team-member";
 @import "components/testimonials";
 
+@import "components/navbar";
+@import "components/navbar-notifications";
+@import "components/mainnav";
+@import "components/content";
+@import "components/footer";
+@import "components/sticky-footer";
+@import "components/buttons";
+@import "components/dropdown";
+
+@import "components/brand";
+
 // Plugins ********************************************** /
 
 @import "plugins/datatables";
@@ -63,27 +74,6 @@
 @import "plugins/summernote";
 @import "plugins/datatable-helper";
 
-// Template Specific ************************************ /
-
-@import "templates/admin/navbar";
-@import "templates/admin/navbar-notifications";
-@import "templates/admin/mainnav";
-@import "templates/admin/content";
-@import "templates/admin/footer";
-@import "templates/admin/sticky-footer";
-@import "components/buttons";
-@import "components/dropdown";
-
-// Demo Styles ****************************************** /
-
-//@import "components/demo";
-
-// Custom *********************************************** /
-
-
-
-//@import "hero";
-//@import "wrapper";
 
 .separator {
 	border-bottom: 1px solid #ddd;
@@ -189,19 +179,3 @@
 	text-transform: uppercase;
 }
 
-.brand-name {
-	a {
-		display: inline-block;
-		padding: 8px;
-		margin: 9px 0;
-		color: #4a80c6;
-		background-color: rgba(229, 229, 229, 0.32);
-		font-size: 32px;
-		font-weight: bold;
-	}
-
-	a:hover, a:active, a:focus {
-		color: #dddddd !important;
-		text-decoration: inherit !important;
-	}
-}
