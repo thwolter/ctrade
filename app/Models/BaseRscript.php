@@ -5,6 +5,7 @@ namespace App\Models;
 
 
 use App\Models\Exceptions\RscriptException;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
 class BaseRscript
@@ -46,6 +47,7 @@ class BaseRscript
             return null;
         }
 
+        File::makeDirectory(storage_path('app/tmp'));
         $file = uniqid('app/tmp/rscript');
 
         $result = storage_path($file . '.json');

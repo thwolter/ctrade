@@ -2,16 +2,13 @@
 //* ----------------------------------------------- */
 
 .brand-name {
-	a {
+	a, a:hover, a:active, a:focus {
 		display: inline-block;
 		padding: 8px;
 		margin: 9px 0;
 		color: rgba(238, 238, 238, 0.33);
 		font-size: 32px;
+		text-decoration: none;
 	}
 
-	a:hover, a:active, a:focus {
-		color: #4a80c6 !important;
-		text-decoration: inherit !important;
-	}
 }
