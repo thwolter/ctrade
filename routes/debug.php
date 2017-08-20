@@ -13,13 +13,12 @@ Route::get('event', function(Request $request) {
     event(new \App\Events\Limits\LimitHasChanged($limit));
 });
 
-Route::get('metadata', function() {
-    Artisan::call('metadata:update');
-});
+Route::get('metadata/update', function() { Artisan::call('metadata:update'); });
 
-Route::get('temp', function() {
-    Artisan::call('temp:delete');
-});
+Route::get('temp/delete', function() { Artisan::call('temp:delete'); });
+
+Route::get('calculate/risk', function() { Artisan::call('calculate:risk'); });
+Route::get('calculate/value', function() { Artisan::call('calculate:value'); });
 
 Route::get('quandl/{database}/{symbol}', function($database, $symbol) {
     Artisan::call('metadata:check', [

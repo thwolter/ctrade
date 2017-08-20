@@ -193,6 +193,7 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        \Morrislaptop\LaravelQueueClear\LaravelQueueClearServiceProvider::class,
 
 
         /*

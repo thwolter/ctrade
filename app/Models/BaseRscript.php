@@ -62,6 +62,7 @@ class BaseRscript
         $json = file_get_contents($result);
         $this->cleanup($result, $log);
 
+        Log::debug("Finished RScript calculation.");
         return json_decode($json, true);
     }
 

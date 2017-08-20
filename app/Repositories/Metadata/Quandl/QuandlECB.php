@@ -6,6 +6,7 @@ namespace App\Repositories\Metadata\Quandl;
 use App\Events\MetadataUpdateHasFinished;
 use App\Events\MetadataUpdateHasStarted;
 use App\Entities\Currency;
+use App\Models\PriceHistory;
 use App\Repositories\Contracts\MetadataInterface;
 use App\Repositories\Metadata\Traits\CcyPairMetadata;
 use Illuminate\Support\Facades\Log;
@@ -73,11 +74,14 @@ class QuandlECB extends QuandlMetadata implements MetadataInterface
 
     protected function cacheItem($item)
     {
-        $key = 'ITEM.' . $this->symbol($item);
+        $key = $this->symbol($item);
         $tags = [$this->provider, $this->database];
 
-        \Cache::tags($tags)->forever($key, $item);
-        Log::debug(sprintf('Cached %s with tags %s', $key, implode(',', $tags)));
+        $prices = array_get($item, 'data');
+        $history = new PriceHistory($prices, 1);
+
+        Log::debug(sprintf('Caching %s with tags %s', $key, implode(', ', $tags)));
+        \Cache::tags($tags)->forever($key, $history);
     }
 
 }

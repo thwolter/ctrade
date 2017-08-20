@@ -32,10 +32,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Position extends Model implements PresentableInterface
 {
+    use Financable, Presentable;
 
-    use Financable;
-    
-    use Presentable;
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
 
     protected $presenter = \App\Presenters\Position::class;
 
@@ -46,9 +49,15 @@ class Position extends Model implements PresentableInterface
     ];
 
 
-    public function positionable() {
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
 
-       return $this->morphTo();
+    public function positionable()
+    {
+        return $this->morphTo();
     }
 
 
@@ -57,6 +66,18 @@ class Position extends Model implements PresentableInterface
         return $this->belongsTo(Portfolio::class);
     }
 
+
+    public function datasource()
+    {
+        return $this->belongsTo(Datasource::class)->withDefault();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
 
     public function price()
     {
@@ -78,7 +99,7 @@ class Position extends Model implements PresentableInterface
     {
         return get_class($this->positionable);
     }
-    
+
     public function typeDisp()
     {
         return $this->positionable->typeDisp;
@@ -89,27 +110,26 @@ class Position extends Model implements PresentableInterface
         return $this->amount;
     }
 
-    public function name() 
+    public function name()
     {
         return $this->positionable->name;
     }
 
 
-
-    public function symbol() 
+    public function symbol()
     {
         return $this->positionable->symbol;
     }
 
-    
-    public function total($currency = null) 
+    public function total($currency = null)
     {
         return $this->amount() * array_first($this->price()) * $this->convert($currency);
     }
- 
-    
-    public function convert($currencyCode = null) {
-        
+
+
+    public function convert($currencyCode = null)
+    {
+
         if (is_null($currencyCode) or $this->currencyCode() == $currencyCode) return 1;
 
         return array_first((new CurrencyRepository($this->currencyCode(), $currencyCode))->price());
@@ -122,7 +142,8 @@ class Position extends Model implements PresentableInterface
     }
 
 
-    public function toArray() {
+    public function toArray()
+    {
 
         $type = $this->positionable_type;
 
@@ -139,5 +160,24 @@ class Position extends Model implements PresentableInterface
     {
         return $this->positionable->history($dates);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
+
 }
 

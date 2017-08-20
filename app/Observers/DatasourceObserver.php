@@ -25,6 +25,7 @@ class DatasourceObserver
         if ($datasource->getDirty('refreshed_at'))
             Log::info(sprintf('%s - refreshed at: %s', $datasource->key(), $datasource->refreshed_at));
 
+        Log::debug("Delete Cached for {$datasource->key()}");
         Cache::forget($datasource->key());
     }
 }

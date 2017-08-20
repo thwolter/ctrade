@@ -26,8 +26,8 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\MetadataUpdateHasFinished' => [
             'App\Listeners\Metadata\NotifyUpdatedHasFinished',
-            'App\Listeners\Overall\UpdateRiskCalculations',
-            'App\Listeners\Overall\UpdateValueCalculations',
+            //'App\Listeners\Overall\UpdateRiskCalculations',
+            //'App\Listeners\Overall\UpdateValueCalculations',
         ],
 
         /*

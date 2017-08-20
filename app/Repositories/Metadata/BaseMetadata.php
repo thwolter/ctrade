@@ -117,7 +117,6 @@ abstract class BaseMetadata
                     $this->create($item);
                 }
 
-                $this->cacheItem($item);
             }
 
             if ($this->local()) break;
@@ -168,21 +167,4 @@ abstract class BaseMetadata
         return $current < $updated;
     }
 
-    /**
-     * Cache a json representation of all items within a given items' array.
-     * This seems reasonable as by fetching of an item to check parameters,
-     * the history is fetched as well.
-     *
-     * @param array $item
-     *
-     * @return void
-     */
-    protected function cacheItem($item)
-    {
-        $key = 'ITEM.' . $this->dataset($item);
-        $tags = [$this->provider, $this->database];
-
-        \Cache::tags($tags)->forever($key, $item);
-        Log::debug(sprintf('Cached %s with tags %s', $key, implode(',', $tags)));
-    }
 }

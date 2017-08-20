@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b3edc9ac35dbe98acc3a226ba2a918e",
+    "content-hash": "9ee53dcfe16b669f1815560d825ec4ab",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -3239,6 +3239,40 @@
             "time": "2017-06-19T01:22:40+00:00"
         },
         {
+            "name": "morrislaptop/laravel-queue-clear",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/morrislaptop/laravel-queue-clear.git",
+                "reference": "027691d85e64d94bc04c3dd44aa9c6e90c1d8554"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/morrislaptop/laravel-queue-clear/zipball/027691d85e64d94bc04c3dd44aa9c6e90c1d8554",
+                "reference": "027691d85e64d94bc04c3dd44aa9c6e90c1d8554",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.0.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Morrislaptop\\LaravelQueueClear\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Craig Morris",
+                    "email": "craig.michael.morris@gmail.com"
+                }
+            ],
+            "description": "Command for wiping your queues clear",
+            "time": "2015-05-25T16:58:10+00:00"
+        },
+        {
             "name": "mtdowling/cron-expression",
             "version": "v1.2.0",
             "source": {
@@ -4410,16 +4444,16 @@
         },
         {
             "name": "studio-42/elfinder",
-            "version": "2.1.27",
+            "version": "2.1.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "9a2f021a6285d04412bae1caf2400f6ff7b578a7"
+                "reference": "a301fae6d57a3b2b7663ebaef094720a4690291d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/9a2f021a6285d04412bae1caf2400f6ff7b578a7",
-                "reference": "9a2f021a6285d04412bae1caf2400f6ff7b578a7",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/a301fae6d57a3b2b7663ebaef094720a4690291d",
+                "reference": "a301fae6d57a3b2b7663ebaef094720a4690291d",
                 "shasum": ""
             },
             "require": {
@@ -4464,7 +4498,7 @@
             ],
             "description": "File manager for web",
             "homepage": "http://elfinder.org",
-            "time": "2017-08-10T00:50:52+00:00"
+            "time": "2017-08-16T15:03:29+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

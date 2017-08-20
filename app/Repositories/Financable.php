@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Entities\Datasource;
 use App\Repositories\Exceptions\FinancialException;
 
 trait Financable
@@ -17,7 +18,13 @@ trait Financable
         }
 
         if (! isset($financialInstance)) {
-            $this->financialInstance = new DataRepository($this->datasources->first());
+
+            $datasource = Datasource::find($this->datasource);
+            if (! $datasource) {
+                $datasource = $this->datasources->first();
+            }
+
+            $this->financialInstance = new DataRepository($datasource);
         }
         
         return $this->financialInstance;

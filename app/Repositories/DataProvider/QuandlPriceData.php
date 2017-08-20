@@ -42,32 +42,34 @@ class QuandlPriceData implements DataInterface
 
     private function fetchHistory()
     {
-        $key = 'ITEM.'.$this->datasource->dataset->first()->code;
+        $key = $this->datasource->dataset->code;
         $tags = [$this->datasource->provider->code, $this->datasource->database->code];
 
-        Log::debug(sprintf('Requesting %s from %s', $key, implode(',', $tags)));
-        $item = \Cache::tags($tags)->get($key);
+        Log::debug(sprintf('Check cache for %s from %s', $key, implode(', ', $tags)));
+        $history = \Cache::tags($tags)->get($key);
 
-        if (!$item) {
+        if (!$history) {
 
-            Log::debug(sprintf('Fetching %s from %s', $key, implode(',', $tags)));
+            Log::debug(sprintf('Fetching %s from %s', $key, implode(', ', $tags)));
             $json = $this->client->getSymbol($this->symbol($this->datasource), ['limit' => $this->length]);
 
-            if (!is_null($this->client->error)) {
-
+            if ($this->client->error) {
                 event(new FetchingFailed($this->datasource, $this->client->last_url, $this->client->error));
                 throw new PriceDataException($this->client->error);
             }
 
             $item = array_get(json_decode($json, true), 'dataset');
+
+            $prices = array_get($item, 'data');
+            $column = $this->priceColumn(array_get($item, 'column_names'));
+
+            $history = new PriceHistory($prices, $column);
+
+            Log::debug(sprintf('Caching %s from %s', $key, implode(', ', $tags)));
+            \Cache::tags($tags)->forever($key, $history);
         }
 
-        $prices = array_get($item, 'data');
-        $column = $this->priceColumn(array_get($item, 'column_names'));
-
-        $data = new PriceHistory($prices, $column);
-
-        return $data;
+        return $history;
     }
 
 
