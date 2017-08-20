@@ -4,13 +4,7 @@
 
 
         <div class="navbar-header">
-            <div class="navbar-brand">
-                <div class="brand-name">
-                    <a href="/">
-                        CapMyRisk
-                    </a>
-                </div>
-            </div>
+            @include('layouts.navigation.brand')
 
             <button class="navbar-toggle pull-right" type="button" data-toggle="collapse"
                     data-target=".navbar-collapse">

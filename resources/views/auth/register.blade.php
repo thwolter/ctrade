@@ -50,7 +50,7 @@
                 </div> <!-- /checkbox -->
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-secondary btn-block btn-lg" tabindex="6">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="6">
                         Account erstellen &nbsp; <i class="fa fa-play-circle"></i>
                     </button>
                 </div> <!-- /.form-group -->

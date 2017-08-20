@@ -19,7 +19,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/fontawesome/css/font-awesome.min.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/fontawesome/css/font-awesome.min.css') }}">--}}
 
     <!-- Bootstrap CSS -->
     {{--<link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">--}}
@@ -60,20 +60,7 @@
 @include('layouts.partials.footer')
 
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Core JS -->
-
-<script src="{{ asset('vendor/mvp-theme/bower_components/jquery/dist/jquery.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/bower_components/slimscroll/jquery.slimscroll.js') }}"></script>
-
-
-
 <!-- App JS -->
-{{--<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/templates/admin-1/js/mvpready-admin.js') }}"></script>--}}
 
 <script src="{{ asset('js/manifest.js') }}"></script>
 <script src="{{ asset('js/vendor.js') }}"></script>

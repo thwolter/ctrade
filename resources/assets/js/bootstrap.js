@@ -8,10 +8,16 @@ window._ = require('lodash');
  */
 
 try {
-    window.$ = window.jQuery = require('jquery');
+    //window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap');
+    //require('bootstrap');
 } catch (e) {}
+
+window.$ = window.jQuery = require('../../../node_modules/jquery/dist/jquery');
+require('../../../node_modules/bootstrap-sass/assets/javascripts/bootstrap');
+require('../../../node_modules/jquery-slimscroll/jquery.slimscroll');
+
+
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

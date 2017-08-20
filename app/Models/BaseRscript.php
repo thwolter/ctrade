@@ -47,7 +47,9 @@ class BaseRscript
             return null;
         }
 
-        File::makeDirectory(storage_path('app/tmp'));
+        if (!File::exists((storage_path('app/tmp')))) {
+            File::makeDirectory(storage_path('app/tmp'));
+        }
         $file = uniqid('app/tmp/rscript');
 
         $result = storage_path($file . '.json');

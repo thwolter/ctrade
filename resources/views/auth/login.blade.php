@@ -5,7 +5,7 @@
     <div class="account-wrapper">
 
     <div class="account-body">
-        <h3>Willkommen bei ctrade.</h3>
+        <h3>CapMyRisk.</h3>
         <h5>Bitte melde dich an.</h5>
         <br>
         <div class="row">
@@ -51,7 +51,7 @@
             </div> <!-- /.form-group -->
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block" tabindex="4">Einloggen &nbsp; <i class="fa fa-play-circle"></i></button>
+                <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="4">Einloggen &nbsp; <i class="fa fa-play-circle"></i></button>
             </div> <!-- /.form-group -->
 
         </form>

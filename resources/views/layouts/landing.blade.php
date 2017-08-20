@@ -55,17 +55,19 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Core JS -->
-<script src="{{ asset('vendor/mvp-theme/bower_components/jquery/dist/jquery.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('vendor/jquery/dist/jquery.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script src="http://preview.oklerthemes.com/porto/4.1.0/vendor/jquery.gmap/jquery.gmap.js"></script>
 
 
 <!-- App JS -->
+{{--
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
 <script src="{{ asset('vendor/mvp-theme/templates/landing/js/mvpready-landing.js') }}"></script>
+--}}
 
 
 </body>

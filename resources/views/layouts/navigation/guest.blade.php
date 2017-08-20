@@ -1,14 +1,14 @@
 <header class="navbar" role="banner">
     <div class="container">
         <div class="navbar-header">
+
+            @include('layouts.navigation.brand')
+
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fa fa-cog"></i>
             </button>
 
-            <a href="/" class="navbar-brand navbar-brand-img">
-                <img src="{{ asset('vendor/mvp-theme/templates/landing/img/logo.png') }}" alt="MVP Ready">
-            </a>
         </div> <!-- /.navbar-header -->
 
         <nav class="collapse navbar-collapse" role="navigation">
