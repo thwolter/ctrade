@@ -19,11 +19,7 @@ trait Financable
 
         if (! isset($financialInstance)) {
 
-            $datasource = Datasource::find($this->datasource);
-            if (! $datasource) {
-                $datasource = $this->datasources->first();
-            }
-
+            $datasource = Datasource::find($this->datasources->first());
             $this->financialInstance = new DataRepository($datasource);
         }
         

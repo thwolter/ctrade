@@ -15,6 +15,7 @@ class DatasourceObserver
     public function created(Datasource $datasource)
     {
         Log::notice(sprintf('Create datasource %s.', $datasource->key()));
+        Cache::forget($datasource->key());
     }
 
     public function updating(Datasource $datasource)
@@ -25,7 +26,7 @@ class DatasourceObserver
         if ($datasource->getDirty('refreshed_at'))
             Log::info(sprintf('%s - refreshed at: %s', $datasource->key(), $datasource->refreshed_at));
 
-        Log::debug("Delete Cached for {$datasource->key()}");
+        Log::debug("Delete cache for {$datasource->key()}");
         Cache::forget($datasource->key());
     }
 }

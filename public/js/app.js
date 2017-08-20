@@ -20700,7 +20700,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             lookup: '/api/lookup',
 
             form: new Form({
-                exchange: 'Stuttgart',
+                exchange: null,
                 price: null,
                 amount: null,
                 currency: null,
