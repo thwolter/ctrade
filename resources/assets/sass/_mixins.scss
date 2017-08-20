@@ -19,9 +19,7 @@
 
 @mixin make-alert ($bg, $text) {
   color: $text;
-
   background-color: darken($bg, 4%);
-
   border-color: darken($bg, 15%);
 }
 

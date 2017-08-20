@@ -2,11 +2,9 @@
 //* ----------------------------------------------- */
 
 .footer {
-  padding: 20px 0;
-
+  	padding: 20px 0;
 	color: $footer-admin-color;
-
-	background-color: $navbar-bg;	
+	background-color: $footer-admin-bg;
 
 	@include clearfix ();
 

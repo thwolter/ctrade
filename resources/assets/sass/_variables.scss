@@ -15,6 +15,11 @@ $brand-tertiary                        : #888;
 $brand-facebook                        : #3b5998;
 $brand-twitter                         : #00acee;
 
+$brand-success:         #5cb85c !default;
+$brand-info:            $brand-layout !default;
+$brand-warning:         #f0ad4e !default;
+$brand-danger:          #d9534f !default;
+
 
 //== Fonts
 //
@@ -161,21 +166,21 @@ $text-info-color                       : $brand-info;
 //
 //## [.alert-*]
 
-$alert-success-bg                      : $brand-success;
-$alert-success-text                    : #fff;
-$alert-success-border-color            : $alert-success-bg;
+$alert-success-bg                      : lighten($brand-success, 40%);
+$alert-success-text                    : $brand-success;
+$alert-success-border            		: $brand-success;
 
-$alert-info-bg                         : $brand-info;
-$alert-info-text                       : #fff;
-$alert-info-border-color               : $alert-info-bg;
+$alert-info-bg                         : lighten($brand-info, 40%);
+$alert-info-text                       : $brand-info;
+$alert-info-border              			: $brand-info;
 
-$alert-warning-bg                      : $brand-warning;
-$alert-warning-text                    : #fff;
-$alert-warning-border-color            : $alert-warning-bg;
+$alert-warning-bg                      : lighten($brand-warning, 40%);
+$alert-warning-text                    : $brand-warning;
+$alert-warning-border          			: $brand-warning;
 
-$alert-danger-bg                       : $brand-danger;
-$alert-danger-text                     : #fff;
-$alert-danger-border-color             : $alert-danger-bg;
+$alert-danger-bg                       : lighten($brand-danger, 40%);
+$alert-danger-text                     : $brand-danger;
+$alert-danger-border            			: $brand-danger;
 
 
 //== Pagination
@@ -633,11 +638,11 @@ $notification-icon-open-color          : #fff;
 //
 //## [.footer]
 
-$footer-admin-bg                       : $navbar-admin-bg;
-$footer-admin-color                    : #fff;
+$footer-admin-bg                       : #555;
+$footer-admin-color                    : #999;
 
-$footer-admin-link-color               : lighten($navbar-admin-bg, 45%);
-$footer-admin-link-hover-color         : #fff;
+$footer-admin-link-color               : $footer-admin-color;
+$footer-admin-link-hover-color         : lighten($footer-admin-color, 10%);
 
 
 //== Admin Sidebar

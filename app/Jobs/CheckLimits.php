@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Entities\Portfolio;
-use App\Events\LimitHasBreached;
+use App\Events\Limits\LimitHasBreached;
 use App\Notifications\LimitBreached;
 use App\Repositories\LimitRepository;
 use Illuminate\Bus\Queueable;

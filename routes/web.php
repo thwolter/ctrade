@@ -12,7 +12,4 @@ App::bind(
     'App\Repositories\InstrumentRepository'
 );
 
-Route::get('admin/login', 'Auth\LoginController@login');
-Route::get('admin/logout', 'Auth\LoginController@logout');
-Route::get('admin/register', 'Auth\RegisterController@register');
 
