@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Backpack\Settings\database\seeds\SettingsTableSeeder;
+use Illuminate\Support\Facades\App;
 
 
 class DatabaseSeeder extends Seeder
@@ -27,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
     private function dev()
     {
-        if (env('APP_ENV') == 'local') {
+        if (App::environment('local')) {
             //
         }
     }

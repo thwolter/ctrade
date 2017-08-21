@@ -10,13 +10,14 @@ use App\Events\MetadataUpdateHasStarted;
 use App\Facades\Datasource;
 use App\Repositories\Exceptions\MetadataException;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 abstract class BaseMetadata
 {
 
-    protected $chunk = 100;
+    protected $chunk;
 
     protected $provider;
 
@@ -49,6 +50,11 @@ abstract class BaseMetadata
      */
     abstract function refreshed($item);
 
+
+    public function __construct()
+    {
+        $this->chunk = config('quandl.per_page');
+    }
 
     /**
      * Define a function for each key in $keys via a magical function and returns the parsed value.
@@ -83,7 +89,7 @@ abstract class BaseMetadata
         Log::info(sprintf('Update started for %s/%s ...', $this->provider, $this->database));
         event(new MetadataUpdateHasStarted($this->provider, $this->database));
 
-        if ($this->local()) {
+        if (App::environment('local')) {
             $items = Cache::get($this->provider.$this->database);
             if (!$items) {
                 $items = $this->getFirstItems($this->chunk);
@@ -119,7 +125,7 @@ abstract class BaseMetadata
 
             }
 
-            if ($this->local()) break;
+            if (App::environment('local')) break;
 
             $items = $this->getNextItems($this->chunk);
             $i++;
@@ -141,16 +147,6 @@ abstract class BaseMetadata
         return Datasource::get($this->provider, $this->database, $this->dataset($item));
     }
 
-
-    /**
-     * Returns true if the environment is in development stage.
-     *
-     * @return bool
-     */
-    private function local()
-    {
-        return (env('APP_ENV') == 'local');
-    }
 
 
     /**

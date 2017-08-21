@@ -23,8 +23,8 @@ class QuandlPriceData implements DataInterface
     {
         $this->datasource = $datasource;
 
-        $this->length = env('LENGTH_HISTORIC_PRICE', 500);
-        $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
+        $this->length = config('quandl.length');
+        $this->client = new \Quandl(config('quandl.api_key'), 'json');
     }
 
 

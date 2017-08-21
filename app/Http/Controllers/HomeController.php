@@ -38,7 +38,7 @@ class HomeController extends Controller
 
     public function blog()
     {
-        return redirect(env('BLOG_URL', route('home.coming')));
+        return redirect(config('links.blog', route('home.coming')));
     }
 
     public function coming()

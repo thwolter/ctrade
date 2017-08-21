@@ -20,8 +20,10 @@ abstract class QuandlMetadata extends BaseMetadata
 
     public function __construct()
     {
-        $this->client = new \Quandl(env('QUANDL_API_KEY'), 'json');
-        $this->client->timeout = 60;
+        parent::__construct();
+
+        $this->client = new \Quandl(config('quandl.api_key'),'json');
+        $this->client->timeout = config('quandl.timeout');
     }
 
 

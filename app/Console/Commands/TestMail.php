@@ -39,7 +39,7 @@ class TestMail extends Command
      */
     public function handle()
     {
-        \Mail::to(env('MAIL_ADMIN'))->queue(new MetadataUpdated([
+        \Mail::to(config('mail.admin'))->queue(new MetadataUpdated([
                 'provider' => 'Quandl',
                 'database' => 'SSE',
                 'created' => 100,
