@@ -3,7 +3,7 @@
 namespace App\Listeners\Portfolio;
 
 use App\Events\PortfolioHasChanged;
-use App\Jobs\CalcPortfolioValue;
+use App\Jobs\Calculations\CalcPortfolioValue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

@@ -3,8 +3,6 @@
 namespace App\Console;
 
 use App\Console\Commands\Metadata\UpdateMetadata;
-use App\Jobs\CalcPortfolioRisk;
-use App\Jobs\CalcPortfolioValue;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
