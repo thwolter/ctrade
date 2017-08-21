@@ -3,7 +3,7 @@
 namespace App\Listeners\Portfolio;
 
 use App\Events\PortfolioRiskWasCalculated;
-use App\Jobs\CheckLimits;
+use App\Jobs\Calculations\CheckLimits;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

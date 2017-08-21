@@ -4,11 +4,13 @@ namespace App\Listeners\Overall;
 
 use App\Entities\Portfolio;
 use App\Events\MetadataUpdateHasFinished;
-use App\Jobs\CalcPortfolioRisk;
+use App\Jobs\Calculations\CalcPortfolioRisk;
+use App\Jobs\Calculations\CalcPortfolioValue;
+use App\Jobs\Calculations\CheckLimits;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UpdateRiskCalculations implements ShouldQueue
+class CalculatePortfolios implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -28,9 +30,12 @@ class UpdateRiskCalculations implements ShouldQueue
      */
     public function handle(MetadataUpdateHasFinished $event)
     {
+        //Todo: check with provided event data on provider and database, which portfolios requires update.
         foreach (Portfolio::all() as $portfolio)
         {
+            dispatch(new CalcPortfolioValue($portfolio));
             dispatch(new CalcPortfolioRisk($portfolio));
+            dispatch(new CheckLimits($portfolio));
         }
     }
 }

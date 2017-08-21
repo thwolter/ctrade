@@ -34,9 +34,10 @@ class UpdateMetadata extends Command
     public function handle()
     {
 
+        dispatch(new UpdateQuandlECB());
+
         dispatch(new UpdateQuandlSSE());
         dispatch(new UpdateQuandlFSE());
-        dispatch(new UpdateQuandlECB());
 
         $this->info("Done. \n");
         return;

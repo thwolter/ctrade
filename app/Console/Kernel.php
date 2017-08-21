@@ -22,8 +22,9 @@ class Kernel extends ConsoleKernel
         Commands\Metadata\CheckMetadata::class,
 
         Commands\TestMail::class,
-        Commands\CalculateRisk::class,
-        Commands\CalculateValue::class,
+
+        Commands\Calculations\CalculateRisk::class,
+        Commands\Calculations\CalculateValue::class,
         Commands\CheckLimits::class,
 
     ];
@@ -39,6 +40,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('inspire')->hourly();
 
         $schedule->command(UpdateMetadata::class)->daily('23:00');
+
+        //$schedule->command(CalcPortfolioValue::class)->daily('01:00');
+        //$schedule->command(CalcPortfolioRisk::class)->daily('01:30');
 
         $schedule->command('backup:clean')->daily()->at('04:00');
         $schedule->command('backup:run')->daily()->at('05:00');

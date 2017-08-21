@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Calculations;
 
 use App\Entities\Portfolio;
-use App\Jobs\CalcPortfolioValue;
+use App\Jobs\Calculations\CalcPortfolioValue;
 use Illuminate\Console\Command;
 
 class CalculateValue extends Command

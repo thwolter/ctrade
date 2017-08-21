@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Calculations;
 
 use App\Entities\Keyfigure;
 use App\Entities\Portfolio;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Calculations;
 
 use App\Entities\Portfolio;
-use App\Jobs\CalcPortfolioRisk;
+use App\Jobs\Calculations\CalcPortfolioRisk;
 use Illuminate\Console\Command;
 
 class CalculateRisk extends Command
