@@ -80,12 +80,12 @@ class BaseRscript
      */
     protected function cleanup($result, $log)
     {
-        $keys = ['error', 'fehler'];
+        $keys = ['Error', 'Fehler'];
         $logtext = file_get_contents($log);
 
         $pos = false;
         foreach ($keys as $key) {
-            $pos = stripos($logtext, 'error');
+            $pos = stripos($logtext, $keys);
             if ($pos !== false) break;
         }
 
