@@ -55,10 +55,11 @@ class BaseRscript
         $result = storage_path($file . '.json');
         $log = storage_path($file . '.log');
 
+        $url = env('APP_URL');
         $argsString = $this->argsImplode($args);
         $scriptFile = base_path('rscripts/' . $script);
 
-        $execute = "Rscript {$scriptFile} {$argsString} > {$result} 2> {$log}";
+        $execute = "Rscript {$scriptFile} --url={$url} {$argsString} > {$result} 2> {$log}";
         Log::debug("Executing '{$execute}'");
 
         shell_exec($execute);

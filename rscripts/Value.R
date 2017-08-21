@@ -9,6 +9,7 @@ parameter <- function(id, args) {
 args <- commandArgs()
 base <- dirname(parameter('file', args))
 
+url <- parameter('url', args)
 id <- parameter('id', args)
 date <- parameter('date', args)
 
@@ -17,8 +18,8 @@ source(paste(base, 'Class/Stock.R', sep='/'))
 source(paste(base, 'Class/Portfolio.R', sep='/'))
 
 
-url.hist <- sprintf('http://ctrade.dev/api/histories?id=%s&date=%s&count=%s', id, date, 1)
-url.pf <- sprintf('http://ctrade.dev/api/portfolio?id=%s', id)
+url.hist <- sprintf(paste(url, 'api/histories?id=%s&date=%s&count=%s', sep='/'), id, date, 1)
+url.pf <- sprintf(paste(url, 'api/portfolio?id=%s', sep='/'), id)
 
 fetchHistories <- function(url) {
     request <- GET(url)
