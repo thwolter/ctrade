@@ -6,6 +6,8 @@ namespace App\Entities;
 
 use App\Presenters\Presentable;
 use App\Repositories\DataRepository;
+use Backpack\CRUD\CrudTrait;
+use Carbon\Carbon;
 use Laravel\Scout\Searchable;
 
 /**
@@ -39,9 +41,17 @@ use Laravel\Scout\Searchable;
 class Stock extends Instrument
 {
 
-    use Searchable, Presentable;
+    use Searchable, Presentable, CrudTrait;
 
-    protected $fillable = ['name', 'wkn', 'isin'];
+    protected $fillable = [
+        'name',
+        'wkn',
+        'isin',
+        'checked',
+        'checked_at',
+        'checked_by'
+    ];
+
     protected $dates = ['created_at', 'updated_at', 'checked_at'];
 
     protected $presenter = \App\Presenters\Stock::class;
@@ -68,4 +78,5 @@ class Stock extends Instrument
                 'type' => get_class($this)
             ]);
     }
+
 }

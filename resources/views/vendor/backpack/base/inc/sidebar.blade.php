@@ -22,6 +22,7 @@
            <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/setting') }}"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
           <li><a href="{{ url('admin/exchange') }}"><i class="fa fa-tag"></i> <span>Exchanges</span></a></li>
           <li><a href="{{ url('admin/alias') }}"><i class="fa fa-tag"></i> <span>Alias</span></a></li>
+          <li><a href="{{ url('admin/stocks') }}"><i class="fa fa-tag"></i> <span>Stocks</span></a></li>
 
           <!-- Users, Roles Permissions -->
           <li class="treeview">
