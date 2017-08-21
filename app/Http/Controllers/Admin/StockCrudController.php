@@ -19,7 +19,8 @@ class StockCrudController extends CrudController
     {
         $this->crud->setModel(Stock::class);
         $this->crud->setRoute('admin/stocks');
-        $this->crud->setEntityNameStrings('stock', 'stocks');
+        $this->crud->setEntityNameStrings('Stock', 'Stocks');
+        $this->crud->enableAjaxTable();
 
         $this->crud->setColumns([
             ['name' => 'isin', 'label' => 'ISIN'],
