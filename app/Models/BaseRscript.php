@@ -55,7 +55,7 @@ class BaseRscript
         $result = storage_path($file . '.json');
         $log = storage_path($file . '.log');
 
-        $url = env('APP_URL');
+        $url = config('app.url');
         $argsString = $this->argsImplode($args);
         $scriptFile = base_path('rscripts/' . $script);
 
