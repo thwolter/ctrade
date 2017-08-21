@@ -18,11 +18,10 @@ class CreateStocksTable extends Migration
             $table->string('isin');
             $table->string('wkn')->nullable();
             $table->string('name');
-            $table->string('proposed_name')->nullable();
+            $table->string('name_overwrite')->nullable();
             $table->integer('currency_id');
             $table->integer('sector_id')->nullable();
             $table->integer('industry_id')->nullable();
-            $table->timestamp('checked_at')->nullable();
             $table->timestamps();
         });
     }

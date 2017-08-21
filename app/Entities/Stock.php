@@ -9,6 +9,7 @@ use App\Repositories\DataRepository;
 use Backpack\CRUD\CrudTrait;
 use Carbon\Carbon;
 use Laravel\Scout\Searchable;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 /**
  * App\Entities\Stock
@@ -41,18 +42,11 @@ use Laravel\Scout\Searchable;
 class Stock extends Instrument
 {
 
-    use Searchable, Presentable, CrudTrait;
+    use Searchable, Presentable, CrudTrait, RevisionableTrait;
 
-    protected $fillable = [
-        'name',
-        'wkn',
-        'isin',
-        'checked',
-        'checked_at',
-        'checked_by'
-    ];
+    protected $fillable = ['name', 'name_overwrite', 'wkn', 'isin'];
 
-    protected $dates = ['created_at', 'updated_at', 'checked_at'];
+    protected $dates = ['created_at', 'updated_at'];
 
     protected $presenter = \App\Presenters\Stock::class;
 
@@ -78,5 +72,40 @@ class Stock extends Instrument
                 'type' => get_class($this)
             ]);
     }
+
+    public function getOriginalName()
+    {
+        return $this->fresh()->getOriginal('name');
+    }
+
+    /*
+   |--------------------------------------------------------------------------
+   | SCOPES
+   |--------------------------------------------------------------------------
+   */
+
+    public function scopeOverwritten($query)
+    {
+        return $query->where('name_overwrite', '!=', null);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+
+    public function getNameAttribute($value)
+    {
+        return ($this->name_overwrite) ? $this->name_overwrite : $value;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
+
 
 }

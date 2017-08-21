@@ -19,37 +19,33 @@ class StockCrudController extends CrudController
     {
         $this->crud->setModel(Stock::class);
         $this->crud->setRoute('admin/stocks');
-        $this->crud->setEntityNameStrings('Stock', 'Stocks');
+        $this->crud->setEntityNameStrings('stock', 'stocks');
         $this->crud->enableAjaxTable();
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
 
         $this->crud->setColumns([
             ['name' => 'isin', 'label' => 'ISIN'],
             ['name' => 'wkn', 'label' => 'WKN'],
-            ['name' => 'name', 'label' => 'Name'],
-            ['name' => 'checked', 'label' => 'Checked'],
+            ['label' => 'Name', 'type' => 'model_function', 'function_name' => 'getOriginalName'],
+            ['name' => 'name_overwrite', 'label' => 'Overwritten'],
         ]);
 
         $this->crud->addFilter([
             'type' => 'simple',
-            'name' => 'checked',
-            'label' => 'Not checked'
+            'name' => 'name_overwrite',
+            'label' => 'Overwritten'
         ],
             false,
             function () {
-                $this->crud->addClause('where', 'checked', 0);
+                $this->crud->addClause('overwritten');
             });
 
 
         $this->crud->addField([
-            'name' => 'name',
-            'label' => 'Name',
-            'type' => 'text',
-        ]);
-
-        $this->crud->addField([
-            'name' => 'proposed_name',
-            'label' => 'Proposal',
-            'type' => 'text',
+            'name' => 'name_overwrite',
+            'label' => 'Overwritten Name',
+            'type' => 'text'
         ]);
 
         $this->crud->addField([
@@ -100,13 +96,6 @@ class StockCrudController extends CrudController
             ],
         ]);
 
-        $this->crud->addField([
-            'name' => 'checked',
-            'label' => 'Checked',
-            'type' => 'checkbox'
-        ]);
-
-
     }
 
     public function store(Request $request)
@@ -116,16 +105,6 @@ class StockCrudController extends CrudController
 
     public function update(Request $request)
     {
-        if ($request->get('checked')) {
-            //$request->request->set('checked', 1);
-            $request->request->set('checked_at', Carbon::now());
-            $request->request->set('checked_by', $request->user()->id);
-
-        } else {
-            //$request->request->set('checked', 0);
-            $request->request->set('checked_at', null);
-            $request->request->set('checked_by', null);
-        }
         return parent::updateCrud();
     }
 

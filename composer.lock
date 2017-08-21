@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ee53dcfe16b669f1815560d825ec4ab",
+    "content-hash": "88ddf357958463578bc99fdd2c040a21",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -263,16 +263,16 @@
         },
         {
             "name": "backpack/crud",
-            "version": "3.2.15",
+            "version": "3.2.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Backpack/CRUD.git",
-                "reference": "d52e867663f6313297c802bd708486f69a62a2d8"
+                "reference": "a1e67c526311640437bdc4f840a8c9288eddc1ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/d52e867663f6313297c802bd708486f69a62a2d8",
-                "reference": "d52e867663f6313297c802bd708486f69a62a2d8",
+                "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/a1e67c526311640437bdc4f840a8c9288eddc1ec",
+                "reference": "a1e67c526311640437bdc4f840a8c9288eddc1ec",
                 "shasum": ""
             },
             "require": {
@@ -323,7 +323,7 @@
                 "read",
                 "update"
             ],
-            "time": "2017-08-11T05:07:31+00:00"
+            "time": "2017-08-21T09:41:12+00:00"
         },
         {
             "name": "backpack/langfilemanager",
@@ -1699,16 +1699,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.19",
+            "version": "v0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "430b7125af4f76f38f786222117a9ac1436e0e28"
+                "reference": "c1a6e6ac716c6563ca6c240120cde69fde49af4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/430b7125af4f76f38f786222117a9ac1436e0e28",
-                "reference": "430b7125af4f76f38f786222117a9ac1436e0e28",
+                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/c1a6e6ac716c6563ca6c240120cde69fde49af4f",
+                "reference": "c1a6e6ac716c6563ca6c240120cde69fde49af4f",
                 "shasum": ""
             },
             "require": {
@@ -1732,7 +1732,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2017-08-13T00:18:21+00:00"
+            "time": "2017-08-20T00:20:36+00:00"
         },
         {
             "name": "google/auth",
@@ -3051,16 +3051,16 @@
         },
         {
             "name": "markrogoyski/math-php",
-            "version": "v0.34.0",
+            "version": "v0.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/markrogoyski/math-php.git",
-                "reference": "037f42af49506dda5c7687676c76887567fabdf5"
+                "reference": "1e11cad2863fc79abd3e338b4907d9408983e8b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/markrogoyski/math-php/zipball/037f42af49506dda5c7687676c76887567fabdf5",
-                "reference": "037f42af49506dda5c7687676c76887567fabdf5",
+                "url": "https://api.github.com/repos/markrogoyski/math-php/zipball/1e11cad2863fc79abd3e338b4907d9408983e8b0",
+                "reference": "1e11cad2863fc79abd3e338b4907d9408983e8b0",
                 "shasum": ""
             },
             "require": {
@@ -3112,7 +3112,7 @@
                 "regressions",
                 "statistics"
             ],
-            "time": "2017-08-12T19:13:34+00:00"
+            "time": "2017-08-20T18:37:50+00:00"
         },
         {
             "name": "mledoze/countries",
@@ -6395,16 +6395,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "ecb0b2cdaa0add708fe6f329ef65ae0c5225130b"
+                "reference": "9a02332089ac48e704c70f6cefed30c224e3c0b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/ecb0b2cdaa0add708fe6f329ef65ae0c5225130b",
-                "reference": "ecb0b2cdaa0add708fe6f329ef65ae0c5225130b",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/9a02332089ac48e704c70f6cefed30c224e3c0b0",
+                "reference": "9a02332089ac48e704c70f6cefed30c224e3c0b0",
                 "shasum": ""
             },
             "require": {
@@ -6440,7 +6440,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-08-03T14:17:41+00:00"
+            "time": "2017-08-20T05:47:52+00:00"
         },
         {
             "name": "phpunit/phpunit",

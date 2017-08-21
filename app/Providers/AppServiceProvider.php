@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Entities\Stock;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -20,9 +21,10 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         Relation::morphMap([
-            'stock' => \App\Entities\Stock::class,
-            'ccyPair' => \App\Entities\CcyPair::class
+            'Stock' => \App\Entities\Stock::class,
+            'CcyPair' => \App\Entities\CcyPair::class
         ]);
+
 
 
     }
