@@ -33,6 +33,7 @@ class NotifyUpdatedHasCanceled implements ShouldQueue
      */
     public function handle(MetadataUpdateHasCanceled $event)
     {
+        //Todo: seems not to work
         $job = resolve("Update{$event->provider}/{$event->database}")
             ->delay(Carbon::now()->addMinutes($this->delay));
 
