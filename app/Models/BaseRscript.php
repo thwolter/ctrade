@@ -85,7 +85,7 @@ class BaseRscript
 
         $pos = false;
         foreach ($keys as $key) {
-            $pos = stripos($logtext, $keys);
+            $pos = stripos($logtext, $key);
             if ($pos !== false) break;
         }
 
