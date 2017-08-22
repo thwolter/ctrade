@@ -337,6 +337,10 @@
     </div>
 </center>
 
+
+@yield('scripts.footer')
+
+
 <script>
     function ErrorPage(container, pageType, templateName) {
         this.$container = $(container);

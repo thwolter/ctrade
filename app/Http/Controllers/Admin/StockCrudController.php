@@ -62,6 +62,18 @@ class StockCrudController extends CrudController
                 $this->crud->addClause('overwritten');
             });
 
+
+        $this->crud->addFilter([
+            'type' => 'simple',
+            'name' => 'industry',
+            'label' => 'Empty'
+        ],
+            false,
+            function () {
+                $this->crud->addClause('where', 'industry_id', null);
+            });
+
+
         $this->crud->addFilter([
             'name' => 'currency',
             'type' => 'dropdown',

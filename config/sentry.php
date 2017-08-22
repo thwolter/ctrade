@@ -11,4 +11,7 @@ return array(
 
     // Capture default user context
     'user_context' => true,
+
+    // should log ?
+    'enable' => env('SENTRY_LOG', true)
 );

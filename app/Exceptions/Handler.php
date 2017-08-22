@@ -18,7 +18,7 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         \Illuminate\Auth\AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
-        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        //\Symfony\Component\HttpKernel\Exception\HttpException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
@@ -34,7 +34,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if ($this->shouldReport($exception) and env('SENTRY_LOG')) {
+        if ($this->shouldReport($exception) and config('sentry.enable')) {
             // bind the event ID for Feedback
             $this->sentryID = app('sentry')->captureException($exception);
         }
@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if (env('SENTRY_LOG')) {
+        if (config('sentry.enable')) {
             return response()->view('errors.500', [
                 'sentryID' => $this->sentryID,
             ], 500);

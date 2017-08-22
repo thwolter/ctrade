@@ -24,7 +24,7 @@ class SentryContext
             // Add user context
             if (auth()->check()) {
                 $sentry->user_context([
-                    // 'email' => 'foo@example.com'
+                    'id' => auth()->user()->id
                 ]);
             } else {
                 $sentry->user_context(['id' => null]);
