@@ -26,12 +26,12 @@ class PositionsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param int $id
+     * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($slug)
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
         return view('positions.index', compact('portfolio'));
     }
 

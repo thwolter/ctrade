@@ -120,5 +120,7 @@ return [
         'username' => 'Benutzername',
         'password' => 'Passwort',
         'email'    => 'E-Mail-Adresse',
+        'name'     => 'Name',
+        'amount'   => 'Betrag'
     ],
 ];

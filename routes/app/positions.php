@@ -14,7 +14,7 @@ Route::match(['put', 'patch'], '/positions/update', [
     'uses' => 'PositionsController@update'
 ]);
 
-Route::get('/positions/index/{Portfolio}', [
+Route::get('/{slug}/positions/index', [
     'as' => 'positions.index',
     'uses' => 'PositionsController@index'
 ]);

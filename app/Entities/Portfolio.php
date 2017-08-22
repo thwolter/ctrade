@@ -11,6 +11,7 @@ use App\Settings\Settings;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -402,10 +403,27 @@ class Portfolio extends Model
     }
 
     /*
-   |--------------------------------------------------------------------------
-   | SCOPES
-   |--------------------------------------------------------------------------
-   */
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Ensure that a slug is unique for a given user. Different users may have the same slug.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $attribute
+     * @param array $config
+     * @param string $slug
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithUniqueSlugConstraints(Builder $query, Model $model, $attribute, $config, $slug)
+    {
+        $user = $model->user;
+
+        return $query->where('user_id', $user->getKey());
+    }
 
     /*
     |--------------------------------------------------------------------------

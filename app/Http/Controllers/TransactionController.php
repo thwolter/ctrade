@@ -17,24 +17,24 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param int $id portfolio id
+     * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($slug)
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
         return view('transactions.index', compact('portfolio'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param int $id portfolio id
+     * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create($slug)
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
         return view('transactions.create', compact('portfolio'));
     }
 

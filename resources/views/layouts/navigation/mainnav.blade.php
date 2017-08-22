@@ -14,25 +14,25 @@
                 @if ((!isset($focus)) and isset($portfolio))
 
                     <li class="{{ active_class(if_route('portfolios.show')) }}">
-                        <a href="{{ route('portfolios.show', $portfolio->id) }}">
+                        <a href="{{ route('portfolios.show', $portfolio->slug) }}">
                             Dashboard
                         </a>
                     </li>
 
                     <li class="{{ active_class(if_route_pattern(['transactions.*'])) }}">
-                        <a href="{{ route('transactions.index', $portfolio->id) }}">
+                        <a href="{{ route('transactions.index', $portfolio->slug) }}">
                             Transaktionen
                         </a>
                     </li>
 
                     <li class="{{ active_class(if_route_pattern(['positions.*'])) }}">
-                        <a href="{{ route('positions.index', $portfolio->id) }}">
+                        <a href="{{ route('positions.index', $portfolio->slug) }}">
                             Positionen
                         </a>
                     </li>
 
                     <li class="">
-                        <a href="{{ route('home.coming', $portfolio->id) }}">
+                        <a href="{{ route('home.coming') }}">
                             Optimieren
                         </a>
                     </li>
@@ -46,28 +46,28 @@
                         <ul class="dropdown-menu" role="menu">
 
                             <li>
-                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->id, 'tab' => 'portfolio']) }}">
+                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->slug, 'tab' => 'portfolio']) }}">
                                     <i class="fa fa-pie-chart" aria-hidden="true"></i>
                                     Portfolio
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->id, 'tab' => 'parameter']) }}">
+                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->slug, 'tab' => 'parameter']) }}">
                                     <i class="fa fa-calculator" aria-hidden="true"></i>
                                     Parameter
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->id, 'tab' => 'limits']) }}">
+                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->slug, 'tab' => 'limits']) }}">
                                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
                                     Limite
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->id, 'tab' => 'notifications']) }}">
+                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->slug, 'tab' => 'notifications']) }}">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
                                     Benachichtigungen
                                 </a>

@@ -25,7 +25,7 @@
 
                     <portlet title="Meine Portfolios">
                         @foreach($portfolios as $portfolio)
-                            @php $route = route('portfolios.show', ['id' => $portfolio->id]) @endphp
+                            @php $route = route('portfolios.show', ['slug' => $portfolio->slug]) @endphp
                             <ol>
                                 <li>
                                     <a href="{{ $route }}" class="">{{ $portfolio->name }}</a>

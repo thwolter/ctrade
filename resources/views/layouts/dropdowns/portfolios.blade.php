@@ -39,7 +39,7 @@
 
         @foreach (Auth::user()->portfolios as $items)
             <li>
-                <a href="{{ route('portfolios.show', $items->id) }}">
+                <a href="{{ route('portfolios.show', $items->slug) }}">
                     <i class="fa fa-caret-right dropdown-icon "></i>
                     {{ $items->name }}
                 </a>

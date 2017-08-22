@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -86,7 +87,7 @@ class PortfoliosController extends Controller
         Transaction::deposit($portfolio, Carbon::now(), $request->get('amount'));
 
         return [
-            'redirect' => route('portfolios.show', $portfolio->id),
+            'redirect' => route('portfolios.show', $portfolio->slug),
             'cash' => $portfolio->cash,
             'currency' => $portfolio->currencyCode(),
             'id' => $portfolio->id
@@ -96,24 +97,25 @@ class PortfoliosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $portfolio = Auth::user()->portfolios()->whereSlug($slug)->first();
         return view('portfolios.show', compact('portfolio'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param Request $request
+     * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, Request $request)
+    public function edit(Request $request, $slug)
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $portfolio = Auth::user()->portfolios()->whereSlug($slug)->first();
         $user = $portfolio->user;
         $limit = new LimitRepository($portfolio);
 
@@ -127,13 +129,13 @@ class PortfoliosController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param UpdatePortfolio|Request $request
+     * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePortfolio $request, $id)
+    public function update(UpdatePortfolio $request, $slug)
     {
-        $portfolio = Portfolio::findOrFail($id);
+        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
 
         if ($request->get('name'))
             $portfolio->update(['name' => $request->name]);
@@ -145,7 +147,7 @@ class PortfoliosController extends Controller
 
         $portfolio->settings()->merge($request->all());
 
-        return redirect(route('portfolios.edit', $id))
+        return redirect(route('portfolios.edit', $slug))
             ->with('message', 'Portfolio erfolgreich geändert.')
             ->with('active_tab', $request->get('active_tab'));
     }
@@ -153,17 +155,18 @@ class PortfoliosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param Request $request
+     * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $slug)
     {
         if (!$request->confirmed) {
-            return redirect(route('portfolios.edit', $id))->with('delete', 'confirm');
+            return redirect(route('portfolios.edit', $slug))->with('delete', 'confirm');
         }
         else {
-            $portfolio = Portfolio::findOrFail($id);
-            $portfolio->delete($id);
+            $portfolio = Auth::user()->portfolios()->whereSlug($slug)->first();
+            $portfolio->delete($portfolio->id);
             return redirect(route('portfolios.index'));
         }
     }
@@ -202,7 +205,7 @@ class PortfoliosController extends Controller
                 break;
         }
 
-        return ['redirect' => route('positions.index', $portfolio->id)];
+        return ['redirect' => route('positions.index', $portfolio->slug)];
     }
 }
 
