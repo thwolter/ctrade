@@ -23,3 +23,11 @@ Route::get('/{provider}/callback', [
 ]);
 
 
+Route::group(['middleware' => 'web', 'prefix' => config('backpack.base.route_prefix')], function () {
+    Route::get('login', 'Admin\LoginController@showLoginForm');
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm');
+    Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
+    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+    Route::get('logout', 'Auth\LoginController@logout');
+});
+

@@ -169,6 +169,20 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
 
+
+        /*
+        * Backpack Service Providers...
+        */
+        Backpack\Base\BaseServiceProvider::class,
+        Backpack\CRUD\CrudServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
+        Backpack\BackupManager\BackupManagerServiceProvider::class,
+        Backpack\LogManager\LogManagerServiceProvider::class,
+        Backpack\Settings\SettingsServiceProvider::class,
+        Backpack\PermissionManager\PermissionManagerServiceProvider::class,
+        Backpack\LangFileManager\LangFileManagerServiceProvider::class,
+
+
         /*
          * Application Service Providers...
          */
@@ -194,19 +208,6 @@ return [
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         \Morrislaptop\LaravelQueueClear\LaravelQueueClearServiceProvider::class,
-
-
-        /*
-        * Backpack Service Providers...
-        */
-        Backpack\Base\BaseServiceProvider::class,
-        Backpack\CRUD\CrudServiceProvider::class,
-        Spatie\Backup\BackupServiceProvider::class,
-        Backpack\BackupManager\BackupManagerServiceProvider::class,
-        Backpack\LogManager\LogManagerServiceProvider::class,
-        Backpack\Settings\SettingsServiceProvider::class,
-        Backpack\PermissionManager\PermissionManagerServiceProvider::class,
-        Backpack\LangFileManager\LangFileManagerServiceProvider::class,
 
 
         /*

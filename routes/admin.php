@@ -1,7 +1,7 @@
 <?php
 
-//Route::get('login', 'AuthController@login');
-//Route::get('logout', 'AuthController@logout@logout');
+//Route::auth();
+//Route::get('logout', 'Auth\LoginController@logout');
 
 CRUD::resource('exchange', 'ExchangeCrudController');
 CRUD::resource('alias', 'AliasCrudController');
