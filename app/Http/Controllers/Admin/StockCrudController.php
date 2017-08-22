@@ -25,10 +25,31 @@ class StockCrudController extends CrudController
         $this->crud->with('revisionHistory');
 
         $this->crud->setColumns([
-            ['name' => 'isin', 'label' => 'ISIN'],
-            ['name' => 'wkn', 'label' => 'WKN'],
-            ['label' => 'Name', 'type' => 'model_function', 'function_name' => 'getOriginalName'],
-            ['name' => 'name_overwrite', 'label' => 'Overwritten'],
+            [
+                'name' => 'isin',
+                'label' => 'ISIN'
+            ],
+            [
+                'name' => 'wkn',
+                'label' => 'WKN'
+            ],
+            [
+                'label' => 'Name',
+                'type' => 'model_function',
+                'function_name' => 'getOriginalName'
+            ],
+            [
+                'name' => 'name_overwrite',
+                'label' => 'Overwritten'
+            ],
+            [
+                'label' => 'Currency',
+                'type' => 'select',
+                'name' => 'currency_id',
+                'entity' => 'currency',
+                'attribute' => 'code',
+                'model' => Currency::class
+            ]
         ]);
 
         $this->crud->addFilter([
@@ -40,6 +61,36 @@ class StockCrudController extends CrudController
             function () {
                 $this->crud->addClause('overwritten');
             });
+
+        $this->crud->addFilter([
+            'name' => 'currency',
+            'type' => 'dropdown',
+            'label'=> 'Currency'
+        ], function() {
+                return Currency::getEnumValuesAsAssociativeArray('code');
+        }, function($value) { // if the filter is active
+            $this->crud->addClause('where', 'currency_id', $value);
+        });
+
+        $this->crud->addFilter([
+            'name' => 'industry',
+            'type' => 'dropdown',
+            'label'=> 'Industry'
+        ], function() {
+            return Industry::getEnumValuesAsAssociativeArray('name');
+        }, function($value) { // if the filter is active
+            $this->crud->addClause('where', 'industry_id', $value);
+        });
+
+        $this->crud->addFilter([
+            'name' => 'sector',
+            'type' => 'dropdown',
+            'label'=> 'Sector'
+        ], function() {
+            return Sector::getEnumValuesAsAssociativeArray('name');
+        }, function($value) { // if the filter is active
+            $this->crud->addClause('where', 'industry_id', $value);
+        });
 
 
         $this->crud->addField([
