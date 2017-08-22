@@ -98,7 +98,7 @@ class PositionsController extends Controller
                 break;
         }
 
-        return ['redirect' => route('positions.index', $portfolio->id)];
+        return ['redirect' => route('positions.index', $portfolio->slug)];
     }
 
     /**

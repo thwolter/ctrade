@@ -6,12 +6,6 @@
         </h3>
     </div>
 
-    @if (session('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
-
     @include('partials.errors')
 
     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
@@ -20,7 +14,7 @@
 
     <br><br>
 
-    {!! Form::open(['route' => ['portfolios.update', $portfolio->id], 'method' => 'PUT',
+    {!! Form::open(['route' => ['portfolios.update', $portfolio->slug], 'method' => 'PUT',
         'class' => 'form form-horizontal']) !!}
 
     <input type="hidden" name="active_tab" value="parameter">

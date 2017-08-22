@@ -3,7 +3,7 @@
 namespace App\Listeners\Limit;
 
 use App\Events\Limits\LimitHasChanged;
-use App\Jobs\CheckLimits;
+use App\Jobs\Calculations\CheckLimits;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;

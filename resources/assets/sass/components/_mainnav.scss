@@ -152,7 +152,6 @@
     width: auto;
     padding-right: 0;
     padding-left: 0;
-
     border-top: 0;
     box-shadow: none;
   }
@@ -224,7 +223,7 @@
 
       & > a {
         padding: 21px 15px;
-        font-size: 16px;
+        font-size: 14px;
         border-bottom: 1px solid transparent;
         border-bottom-color: $mainnav-link-border-color;
 
@@ -300,14 +299,14 @@
       margin-right: 10px;
 
       & > a {
-        font-size: 18px;
+        font-size: 16px;
       }
     }
 
     .mainnav-caret {
       top: -2px;
 
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 
@@ -332,7 +331,7 @@
   .mainnav-menu {
     & > li {
       & > a {
-        font-size: 20px;
+        font-size: 18px;
       }
     }
   }

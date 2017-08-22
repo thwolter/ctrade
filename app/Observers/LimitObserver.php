@@ -5,7 +5,7 @@ namespace App\Observers;
 
 
 use App\Entities\Limit;
-use App\Jobs\CheckLimits;
+use App\Jobs\Calculations\CheckLimits;
 use App\Notifications\LimitChanged;
 
 class LimitObserver

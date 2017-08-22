@@ -33,7 +33,7 @@ class LimitController extends Controller
         }
 
         session(['active_tab' => $request->active_tab]);
-        $redirect = redirect(route('portfolios.edit', $request->id));
+        $redirect = redirect(route('portfolios.edit', $portfolio->slug));
 
         if (array_search(false, $success)) {
             return $redirect->with('error', 'Limite konnten nicht angepasst werden. Bitte überprüfe die Werte.');

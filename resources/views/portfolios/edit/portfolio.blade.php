@@ -6,13 +6,7 @@
         </h3>
     </div>
 
-    @if (session('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
-
-    @if (session('delete'))
+    @if (session('delete_portfolio'))
         <div class="alert alert-warning">
            <strong>Achtung:</strong> Portfolio wird einschließlich der historischen Wertentwicklung
             unwiderruflich gelöscht. Zum Fortfahren bitte am Ende der Seite bestätigen.
@@ -28,7 +22,7 @@
 
     <br><br>
 
-    {!! Form::open(['route' => ['portfolios.update', $portfolio->id], 'method' => 'PUT',
+    {!! Form::open(['route' => ['portfolios.update', $portfolio->slug], 'method' => 'PUT',
      'class' => 'form form-horizontal']) !!}
 
     <input type="hidden" name="tab" value="portfolio">
@@ -71,7 +65,7 @@
 
     <br><hr>
     {!! Form::open([
-        'route' => ['portfolios.destroy', $portfolio->id],
+        'route' => ['portfolios.destroy', $portfolio->slug],
         'method' => 'DELETE',
         'class' => 'form form-horizontal'
         ]) !!}
@@ -91,7 +85,7 @@
                 <input type="hidden" name="confirmed" value="true">
 
                 <p style="margin-top: 20px; font-size: 1.1em">
-                    <a href="{{ route('portfolios.edit', $portfolio->id) }}" class="">Nein, nicht löschen.</a>
+                    <a href="{{ route('portfolios.edit', $portfolio->slug) }}" class="">Nein, nicht löschen.</a>
                 </p>
             </div>
         </div>

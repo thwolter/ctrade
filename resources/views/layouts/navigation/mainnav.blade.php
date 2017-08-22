@@ -46,28 +46,28 @@
                         <ul class="dropdown-menu" role="menu">
 
                             <li>
-                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->slug, 'tab' => 'portfolio']) }}">
+                                <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'portfolio']) }}">
                                     <i class="fa fa-pie-chart" aria-hidden="true"></i>
                                     Portfolio
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->slug, 'tab' => 'parameter']) }}">
+                                <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'parameter']) }}">
                                     <i class="fa fa-calculator" aria-hidden="true"></i>
                                     Parameter
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->slug, 'tab' => 'limits']) }}">
+                                <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'limits']) }}">
                                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
                                     Limite
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ route('portfolios.edit', ['id' => $portfolio->slug, 'tab' => 'notifications']) }}">
+                                <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'notifications']) }}">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
                                     Benachichtigungen
                                 </a>

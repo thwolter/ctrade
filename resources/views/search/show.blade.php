@@ -12,7 +12,7 @@
             <h4>Aktien kaufen</h4>
             <div class="space-40"></div>
 
-            {!! Form::open(['route' => ['positions.new', $portfolio->id],
+            {!! Form::open(['route' => 'positions.new',
                 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
                 {!! Form::hidden('itemId', $item->id) !!}

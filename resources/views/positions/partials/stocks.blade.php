@@ -20,7 +20,7 @@
                 <tr class="h5">
                     <td class="align-middle">{{ $loop->iteration }}</td>
                     <td class="align-middle">
-                        <a href="{{ route('positions.show', [$portfolio->id, $position->id]) }}">
+                        <a href="{{ route('positions.show', $position->id) }}">
                             {{ $position->name() }}</a>
                         <span>
                             ({{ $position->present()->priceDate() }})

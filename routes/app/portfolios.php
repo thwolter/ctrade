@@ -28,6 +28,7 @@
         'uses' => 'PortfoliosController@update'
     ]);
 
+
     Route::get('{slug}/show', [
         'as' => 'portfolios.show',
         'uses' => 'PortfoliosController@show'

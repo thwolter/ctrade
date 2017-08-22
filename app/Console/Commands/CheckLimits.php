@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Entities\Portfolio;
 use Illuminate\Console\Command;
+use App\Jobs\Calculations\CheckLimits As JobCheckLimits;
 
 class CheckLimits extends Command
 {
@@ -41,7 +42,7 @@ class CheckLimits extends Command
         $portfolios = Portfolio::all();
         foreach ($portfolios as $portfolio)
         {
-            dispatch(new \App\Jobs\CheckLimits($portfolio));
+            dispatch(new JobCheckLimits($portfolio));
         }
 
         $this->info(doneInfo($portfolios, 'portfolio'));

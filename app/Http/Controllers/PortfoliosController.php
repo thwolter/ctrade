@@ -116,14 +116,14 @@ class PortfoliosController extends Controller
     public function edit(Request $request, $slug)
     {
         $portfolio = Auth::user()->portfolios()->whereSlug($slug)->first();
-        $user = $portfolio->user;
         $limit = new LimitRepository($portfolio);
 
-        if (! session('active_tab'))
-            session(['active_tab' => $request->get('tab')]);
+        if (! session('active_tab')) {
+            session(['active_tab' => $request->get('tab', 'portfolio')]);
+        }
 
         return view('portfolios.edit',
-            compact('portfolio', 'user', 'limit'));
+            compact('portfolio', 'limit'));
     }
 
     /**
@@ -133,24 +133,21 @@ class PortfoliosController extends Controller
      * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePortfolio $request, $slug)
+    public function update(UpdatePortfolio $request)
     {
-        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
+        $portfolio = Portfolio::find($request->id)->first();
 
-        if ($request->get('name'))
-            $portfolio->update(['name' => $request->name]);
-
-        if ($request->get('description'))
-            $portfolio->update(['description' => $request->description]);
-
+        $portfolio->name = $request->get('name', $portfolio->name);
+        $portfolio->description = $request->get('description', $portfolio->description);
         $portfolio->save();
 
         $portfolio->settings()->merge($request->all());
 
-        return redirect(route('portfolios.edit', $slug))
-            ->with('message', 'Portfolio erfolgreich geändert.')
+        return redirect(route('portfolios.edit', $portfolio->slug))
+            ->with('message', trans('portfolio.setup.changed'))
             ->with('active_tab', $request->get('active_tab'));
     }
+
 
     /**
      * Remove the specified resource from storage.

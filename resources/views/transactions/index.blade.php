@@ -28,7 +28,7 @@
                     <tbody>
 
                         @foreach(array_reverse($portfolio->transactions->all()) as $transaction)
-                            <tr class="h5">
+                            <tr class="">
                                 <td class="align-middle">{{ $loop->iteration }}</td>
                                 <td class="align-middle">{{ $transaction->present()->date }}</td>
                                 <td class="align-middle">{{ $transaction->present()->type }}</td>

@@ -66,18 +66,6 @@
                     </portlet>
                 </div>
 
-                <div class="col-md-6">
-                    <portlet title="Risikoentwicklung">
-                        <p>a line chart</p>
-                    </portlet>
-                </div>
-
-                <div class="col-md-6">
-                    <portlet title="Verteilung des Risikos">
-                        <p>a donut chart</p>
-                    </portlet>
-                </div>
-
             </div> <!-- /.row -->
 
         </div> <!-- /.container -->
