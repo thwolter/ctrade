@@ -19,6 +19,7 @@ class CreatePortfoliosTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
+            $table->string('slug');
             $table->string('description')->nullable();
             $table->integer('category_id')->nullable();
             $table->float('cash', 10, 2);

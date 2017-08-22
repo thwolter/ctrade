@@ -9,6 +9,8 @@ use App\Presenters\Presentable;
 use App\Settings\PortfolioSettings;
 use App\Settings\Settings;
 use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -55,10 +57,15 @@ use Psy\Readline\Libedit;
  */
 class Portfolio extends Model
 {
-    use Presentable, UuidModel;
+    use Presentable, UuidModel, Sluggable, SluggableScopeHelpers;
+
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
 
     protected $presenter = 'App\Presenters\Portfolio';
-
 
     protected $fillable = ['name', 'cash', 'description', 'settings', 'img_url'];
 
@@ -69,24 +76,16 @@ class Portfolio extends Model
     public $imagesPath = 'public/images';
 
 
-    public function getCategoryNameAttribute()
-    {
-        $default = $this->category;
-        return (!is_null($default)) ? $default->name : 'keine Kategorie';
-    }
-
-    public function getImageUrlAttribute()
-    {
-        $file = $this->image;
-        return (!is_null($file)) ? 'images/' . $file->path : null;
-
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
 
     public function image()
     {
@@ -118,17 +117,33 @@ class Portfolio extends Model
         return $this->hasMany(Limit::class);
     }
 
-
     public function currency()
     {
         return $this->belongsTo(Currency::class);
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+
+    public function getCategoryNameAttribute()
+    {
+        $default = $this->category;
+        return (!is_null($default)) ? $default->name : 'keine Kategorie';
+    }
+
+    public function getImageUrlAttribute()
+    {
+        $file = $this->image;
+        return (!is_null($file)) ? 'images/' . $file->path : null;
+    }
+
     public function settings($key = null)
     {
         $settings = new PortfolioSettings($this);
-
         return $key ? $settings->get($key) : $settings;
     }
 
@@ -147,24 +162,20 @@ class Portfolio extends Model
         return $this->positions->sum->total($this->currencyCode());
     }
 
-
     public function total()
     {
         return $this->stockTotal() + $this->cash();
     }
-
 
     public function value()
     {
         return $this->total() + $this->cash();
     }
 
-
     public function setCurrency($code)
     {
         $this->currency()->associate(Currency::firstOrCreate(['code' => $code]));
     }
-
 
     public function saveKeyFigure($key, $value, $date)
     {
@@ -383,4 +394,28 @@ class Portfolio extends Model
 
         return $this;
     }
+
+
+    public function sluggable()
+    {
+        return ['slug' => ['source' => 'name']];
+    }
+
+    /*
+   |--------------------------------------------------------------------------
+   | SCOPES
+   |--------------------------------------------------------------------------
+   */
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
 }

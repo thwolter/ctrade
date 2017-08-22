@@ -208,6 +208,7 @@ return [
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         \Morrislaptop\LaravelQueueClear\LaravelQueueClearServiceProvider::class,
+        \Cviebrock\EloquentSluggable\ServiceProvider::class,
 
 
         /*
