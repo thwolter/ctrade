@@ -5,8 +5,14 @@
     <div class="content">
         <div class="container">
 
+            @if (session('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
+
             <div class="page-header">
-                <h3 class="page-title">Einstellungen</h3>
+                <h3 class="page-title">@lang('user.title')</h3>
             </div> <!-- /.page-header -->
 
             <div class="portlet portlet-boxed">
@@ -25,14 +31,14 @@
                                 <li role="presentation" class="{{ active_tab('profile') }}">
                                     <a href="#profile" data-toggle="tab" role="tab">
                                         <i class="fa fa-user"></i>
-                                        &nbsp;&nbsp;Mein Profil
+                                        &nbsp;&nbsp;@lang('user.profile.title')
                                     </a>
                                 </li>
 
                                 <li role="presentation" class="{{ active_tab('password') }}">
                                     <a href="#password" data-toggle="tab" role="tab">
                                         <i class="fa fa-lock"></i>
-                                        &nbsp;&nbsp;Passwort ändern
+                                        &nbsp;&nbsp;@lang('user.password.title')
                                     </a>
                                 </li>
 

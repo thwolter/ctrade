@@ -22,7 +22,10 @@ class UserController extends Controller
     public function edit(Request $request)
     {
         $user = $request->user();
-        session(['active_tab' => $request->get('tab', 'profile')]);
+
+        if (!session('active_tab')) {
+            session(['active_tab' => $request->get('tab', 'profile')]);
+        }
 
         return view('users.edit', compact('user'));
     }
@@ -46,7 +49,6 @@ class UserController extends Controller
             $message = "\nBitte bestätige deine neue Email-Adresse über den Link, den wir dir per Email geschickt haben.";
         }
 
-
         return redirect()->route('users.edit')
             ->with('message', 'Profil erfolgreich aktualisiert.'.$message)
             ->with('active_tab', $request->get('tab'))
@@ -56,9 +58,9 @@ class UserController extends Controller
 
     public function password(ChangePassword $request)
     {
-        $request->user()->fill([
-            'password' => Hash::make($request->password)
-        ])->save();
+        $request->user()
+            ->fill(['password' => Hash::make($request->password)])
+            ->save();
 
         return redirect()->route('users.edit')
             ->with('message', 'Passwort erfolgreich geändert')

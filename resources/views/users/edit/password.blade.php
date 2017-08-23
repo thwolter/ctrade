@@ -1,22 +1,14 @@
 <div class="tab-pane fade in {{ active_tab('password') }}" id="password">
 
     <div class="heading-block">
-        <h3>
-            Change Password
-        </h3>
+        <h3>@lang('user.password.title')</h3>
     </div> <!-- /.heading-block -->
-
-    @if (session('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
 
     @include('partials.errors')
 
     <br><br>
 
-    {!! Form::open(['route' => ['users.password'], 'method' => 'PUT', 'class' => 'form form-horizontal']) !!}
+    {!! Form::open(['route' => 'users.password', 'method' => 'PUT', 'class' => 'form form-horizontal']) !!}
 
     <input type="hidden" name="active_tab" value="password">
     <input type="hidden" name="id" value="{{ $user->id }}">

@@ -1,16 +1,8 @@
 <div class="tab-pane fade in {{ active_tab('profile') }}" id="profile">
 
     <div class="heading-block">
-        <h3>
-            Mein Profil
-        </h3>
+        <h3>@lang('user.profile.title')</h3>
     </div> <!-- /.heading-block -->
-
-    @if (session('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
 
     @include('partials.errors')
 

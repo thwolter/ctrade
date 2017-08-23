@@ -223,17 +223,12 @@
 
     .navbar-divider {
       position: relative;
-
       float: left;
-
       overflow: hidden;
       z-index: 101;
-
       width: 1px;
       height: $navbar-admin-height;
-
       margin: 0;
-
       background-color: darken($navbar-admin-bg, 5%);
     }
 
