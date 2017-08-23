@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4683461347dc05417f75a0bc417cca9",
+    "content-hash": "ee528c218cf8c3604c5d41e07e8066ba",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2209,6 +2209,59 @@
                 "watermark"
             ],
             "time": "2017-07-03T15:50:40+00:00"
+        },
+        {
+            "name": "ipunkt/laravel-analytics",
+            "version": "1.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ipunkt/laravel-analytics.git",
+                "reference": "061c5d6e847ca508b2022037efaed83fd8124957"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ipunkt/laravel-analytics/zipball/061c5d6e847ca508b2022037efaed83fd8124957",
+                "reference": "061c5d6e847ca508b2022037efaed83fd8124957",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "~5.0",
+                "illuminate/session": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "laravel/framework": "~5.0"
+            },
+            "suggest": {
+                "martijnc/php-csp": "For handling Content Security Policy matters"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Ipunkt\\LaravelAnalytics\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Kummer",
+                    "email": "r.kummer@ipunkt.biz"
+                }
+            ],
+            "description": "Analytics tracking for Laravel",
+            "keywords": [
+                "analytics",
+                "google analytics",
+                "javascript",
+                "laravel",
+                "php",
+                "statistics"
+            ],
+            "time": "2017-03-31T11:06:39+00:00"
         },
         {
             "name": "itsgoingd/clockwork",

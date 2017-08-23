@@ -209,6 +209,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         \Morrislaptop\LaravelQueueClear\LaravelQueueClearServiceProvider::class,
         \Cviebrock\EloquentSluggable\ServiceProvider::class,
+        Ipunkt\LaravelAnalytics\AnalyticsServiceProvider::class,
 
 
         /*
@@ -281,6 +282,7 @@ return [
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Analytics' => Ipunkt\LaravelAnalytics\AnalyticsFacade::class,
 
         /*
          * Custom Classes
