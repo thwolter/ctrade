@@ -5,7 +5,7 @@
     <div class="content">
         <div class="container">
 
-           @include('partials.message')
+            @include('partials.message')
 
             @if (session('error'))
                 <div class="alert alert-danger">

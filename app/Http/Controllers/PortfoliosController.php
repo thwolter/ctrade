@@ -63,7 +63,7 @@ class PortfoliosController extends Controller
      */
     public function create()
     {
-        $currencies = Currency::eligible();
+        $currencies = Currency::getEnumValuesAsAssociativeArray('code');
         return view('portfolios.create', compact('currencies'));
     }
 

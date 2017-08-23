@@ -60,19 +60,6 @@ class Currency extends Model
     |--------------------------------------------------------------------------
     */
 
-    static public function eligible()
-    {
-        $eligible = [];
-        $currencies = Currency::whereEligible(true)->get();
-
-        foreach ($currencies as $currency)
-        {
-            $eligible[$currency->id] = $currency->code;
-        };
-
-        return $eligible;
-    }
-
 
     public static function getEnumValuesAsAssociativeArray($field_name)
     {
@@ -89,6 +76,11 @@ class Currency extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
+    public function scopeEligible($query)
+    {
+        return $query->where('eligible', 1);
+    }
 
     /*
     |--------------------------------------------------------------------------
