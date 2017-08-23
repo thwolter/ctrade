@@ -4,7 +4,7 @@
 namespace App\Models;
 
 
-use App\Models\Exceptions\RscriptException;
+use App\Exceptions\RscriptException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 

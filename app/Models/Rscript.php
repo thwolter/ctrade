@@ -3,9 +3,7 @@
 namespace App\Models;
 
 
-use App\Models\Exceptions\RscriptException;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class Rscript extends BaseRscript
 {

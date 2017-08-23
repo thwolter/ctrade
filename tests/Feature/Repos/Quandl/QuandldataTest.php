@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Repos\Quandl;
 
-use App\Entities\Exceptions\DatasourceException;
+use App\Exceptions\DatasourceException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

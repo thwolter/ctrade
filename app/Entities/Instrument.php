@@ -4,7 +4,7 @@
 namespace App\Entities;
 
 
-use App\Entities\Exceptions\InstrumentException;
+use App\Exceptions\InstrumentException;
 use App\Repositories\Contracts\InstrumentInterface;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;

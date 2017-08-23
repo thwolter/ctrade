@@ -4,7 +4,7 @@ namespace App\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use App\Entities\Exceptions\DatasourceException;
+use App\Exceptions\DatasourceException;
 
 
 

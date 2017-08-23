@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Models\Exceptions;
+namespace App\Exceptions;
 
 
 class RscriptException extends \Exception

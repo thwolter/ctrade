@@ -2,7 +2,6 @@
 
 namespace App\Entities;
 
-use App\Entities\Exceptions\LimitTypeException;
 use App\Entities\Traits\UuidModel;
 use App\Events\PortfolioHasChanged;
 use App\Presenters\Presentable;

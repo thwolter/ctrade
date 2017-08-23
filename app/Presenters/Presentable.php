@@ -9,7 +9,7 @@
 namespace App\Presenters;
 
 
-use App\Presenters\Exceptions\PresenterException;
+use App\Exceptions\PresenterException;
 
 trait Presentable
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Presenters\Exceptions;
+namespace App\Exceptions;
 
 
 class PresenterException extends \Exception

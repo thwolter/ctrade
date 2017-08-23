@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Exceptions;
+namespace App\Exceptions;
 
 
 class QuandlException extends \Exception
