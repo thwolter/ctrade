@@ -19,6 +19,7 @@ use App\Http\Requests\DeletePortfolio;
 use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
 use App\Repositories\LimitRepository;
+use App\Repositories\PortfolioRepository;
 use App\Settings\InitialSettings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,9 +32,13 @@ use Illuminate\Support\Facades\Storage;
 class PortfoliosController extends Controller
 {
 
-    public function __construct()
+    protected $repo;
+
+
+    public function __construct(PortfolioRepository $repo)
     {
         $this->middleware('auth');
+        $this->repo = $repo;
     }
 
     /**
@@ -64,10 +69,11 @@ class PortfoliosController extends Controller
      */
     public function create()
     {
-        $firstPortfolio = ! auth()->user()->portfolios->count();
-        $currencies = Currency::getEnumValuesAsAssociativeArray('code');
+        $user = auth()->user();
+        $firstPortfolio = ! $user->portfolios->count();
 
-        $categories = Category::getNamesAsArray(auth()->user()->id);
+        $currencies = Currency::getEnumValuesAsAssociativeArray('code');
+        $categories = Category::getNamesArray($user->id);
 
         return view('portfolios.create', compact('currencies', 'categories'))
             ->with('info', $firstPortfolio ? trans('portfolio.messages.create_first') : null);
@@ -81,27 +87,12 @@ class PortfoliosController extends Controller
      */
     public function store(CreatePortfolio $request)
     {
-        $portfolio = new Portfolio([
-            'name' => $request->get('name'),
-            'cash' => $request->get('amount'),
-            'description' => $request->get('description')
-        ]);
-        $portfolio->currency()
-            ->associate(Currency::whereCode($request->get('currency'))->first());
-
-        if ($request->get('category')) {
-            $category = Category::make(['name' => $request->get('category')]);
-            $category->user()->associate(auth()->user())->save();
-        }
-
-        auth()->user()->obtain($portfolio);
-
+        $portfolio = $this->repo->createPortfolio(auth()->user(), $request->all());
         Transaction::deposit($portfolio, Carbon::now(), $request->get('amount'));
 
-        $message = "Portfolio $portfolio->name erfolgreich erstellt. Füge Positionen hinzu.";
-        return [
-            'redirect' => route('positions.index', [$portfolio->slug, 'success' => $message]),
-        ];
+        return ['redirect' => route('positions.index', [$portfolio->slug,
+            'success' => "Portfolio $portfolio->name erfolgreich erstellt. Füge Positionen hinzu."
+        ])];
     }
 
     /**
@@ -172,7 +163,7 @@ class PortfoliosController extends Controller
             return redirect(route('portfolios.edit', $slug))->with('delete', 'confirm');
         }
         else {
-            $portfolio = Auth::user()->portfolios()->whereSlug($slug)->first();
+            $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
             $portfolio->delete($portfolio->id);
             return redirect(route('portfolios.index'));
         }

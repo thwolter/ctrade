@@ -53,7 +53,7 @@ class Category extends Model
     |--------------------------------------------------------------------------
     */
 
-    public static function getNamesAsArray($userId)
+    public static function getNamesArray($userId)
     {
         $array = [];
         foreach (self::whereUserId($userId)->get() as $category)
@@ -62,6 +62,7 @@ class Category extends Model
         }
         return $array;
     }
+
 
     /*
     |--------------------------------------------------------------------------
