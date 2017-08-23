@@ -2,56 +2,57 @@
     <div>
         <div class="input-form">
             <form @submit.prevent="onSubmit">
-        
+
                 <div>
-            
+
                     <!-- portfolio name -->
                     <div class="form-group row">
                         <label for="name" class="col-md-3 col-md-offset-1 col-form-label">Bezeichnung</label>
                         <div class="col-md-7">
-    
+
                             <div>
                                 <input type="text" name="name" placeholder="Name des Portfolios"
-                                    class="form-control" v-model="form.name" @keydown="form.errors.clear('name')">
+                                       class="form-control" v-model="form.name" @keydown="form.errors.clear('name')">
                             </div>
-                            
+
                             <p v-if="form.errors.has('name')" class="error-text">
                                 <span v-text="form.errors.get('name')"></span>
                             </p>
-    
+
                         </div>
                     </div><!-- /portfolio name -->
-    
+
                     <!-- currency -->
                     <div class="form-group row">
                         <label for="currency" class="col-md-3 col-md-offset-1 col-form-label">Währung</label>
                         <div class="col-md-7">
-    
+
                             <select name="currency" v-model="form.currency" class="form-control">
                                 <option value="" disabled selected hidden>Währung</option>
                                 <option v-for="currency in currencies" :value="currency">
                                     {{ currency }}
                                 </option>
                             </select>
-    
+
                         </div>
                     </div><!-- /currency -->
-    
+
                     <!-- cash -->
                     <div class="form-group row">
                         <label for="cash" class="col-md-3 col-md-offset-1 col-form-label">Barbestand</label>
                         <div class="col-md-7">
-    
+
                             <div class="input-group">
                                 <span class="input-group-addon">{{ form.currency }}</span>
                                 <cleave type="text" id="cash" name="cash" class="form-control" v-model="cash"
-                                    placeholder="Betrag" :options="cleave" @rawValueChanged="form.errors.clear('amount')"> </cleave>
+                                        placeholder="Betrag" :options="cleave"
+                                        @rawValueChanged="form.errors.clear('amount')"></cleave>
                             </div>
-                            
-                            <p  v-if="form.errors.has('amount')" class="error-text">
+
+                            <p v-if="form.errors.has('amount')" class="error-text">
                                 <span v-text="form.errors.get('amount')"></span>
                             </p>
-    
+
                         </div>
                     </div><!-- /cash -->
 
@@ -62,7 +63,8 @@
 
                             <div>
                                 <input type="text" name="category" placeholder="Kategorie" list="category_names"
-                                       class="form-control" v-model="form.category" @keydown="form.errors.clear('category')">
+                                       class="form-control" v-model="form.category"
+                                       @keydown="form.errors.clear('category')">
                                 <datalist id="category_names">
                                     <option v-for="category in categories">{{ category }}</option>
                                 </datalist>
@@ -82,7 +84,8 @@
 
                             <div>
                                 <textarea rows="6" name="description" placeholder="Beschreibe dein Portfolio"
-                                       class="form-control" v-model="form.description" @keydown="form.errors.clear('description')">
+                                          class="form-control" v-model="form.description"
+                                          @keydown="form.errors.clear('description')">
                                 </textarea>
                             </div>
 
@@ -101,8 +104,9 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
-            
+
             </form>
         </div>
     </div>
@@ -115,7 +119,7 @@
     import Cleave from 'vue-cleave';
 
     export default {
-    
+
         mixins: [Input],
 
         components: {
@@ -126,7 +130,7 @@
             route: String,
             redirect: String,
             currencies: Object,
-            categories: Object
+            categories: null
         },
 
         data() {
@@ -159,20 +163,18 @@
         },
 
         methods: {
-            onSubmit()
-            {
+            onSubmit() {
                 this.form.post(this.route)
                     .then(data => {
                         Event.fire('portfolio-created', data),
-                        window.location = data.redirect;
+                            window.location = data.redirect;
                     });
             }
         },
 
         watch: {
             cash: {
-                handler()
-                {
+                handler() {
                     if (this.cash === '') {
                         this.form.amount = null;
                     } else {

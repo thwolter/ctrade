@@ -21416,6 +21416,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -21433,7 +21437,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         route: String,
         redirect: String,
         currencies: Object,
-        categories: Object
+        categories: null
     },
 
     data: function data() {

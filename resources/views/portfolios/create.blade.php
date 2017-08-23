@@ -41,9 +41,9 @@
 
                     </div> <!-- /.row -->
 
-
-                </div> <!-- /.container -->
-            </div> <!-- /.content -->
+                </div>
+            </div> <!-- /.container -->
+        </div> <!-- /.content -->
 
 
 @endsection
