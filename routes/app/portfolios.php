@@ -2,23 +2,24 @@
 
 //Route::resource('/portfolios', 'PortfoliosController');
 
+Route::prefix('portfolio')->group(function() {
 
-    Route::post('portfolio/store', [
+    Route::post('store', [
         'as' => 'portfolios.store',
         'uses' => 'PortfoliosController@store'
     ]);
 
-    Route::get('portfolio/', [
+    Route::get('', [
         'as' => 'portfolios.index',
         'uses' => 'PortfoliosController@index'
     ]);
 
-    Route::get('portfolio/create', [
+    Route::get('create', [
         'as' => 'portfolios.create',
         'uses' => 'PortfoliosController@create'
     ]);
 
-    Route::post('portfolio/pay', [
+    Route::post('pay', [
         'as' => 'portfolios.pay',
         'uses' => 'PortfoliosController@pay'
     ]);
@@ -44,6 +45,7 @@
         'uses' => 'PortfoliosController@edit'
     ]);
 
+});
 
 
 
