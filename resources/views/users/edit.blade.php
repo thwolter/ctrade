@@ -5,11 +5,7 @@
     <div class="content">
         <div class="container">
 
-            @if (session('message'))
-                <div class="alert alert-success">
-                    {{ session('message') }}
-                </div>
-            @endif
+           @include('partials.message')
 
             <div class="page-header">
                 <h3 class="page-title">@lang('user.title')</h3>

@@ -144,7 +144,7 @@ class PortfoliosController extends Controller
         $portfolio->settings()->merge($request->all());
 
         return redirect(route('portfolios.edit', $portfolio->slug))
-            ->with('message', trans('portfolio.setup.changed'))
+            ->with('success', trans('portfolio.setup.changed'))
             ->with('active_tab', $request->get('active_tab'));
     }
 

@@ -46,11 +46,11 @@ class UserController extends Controller
             $user->save();
 
             event(new EmailHasChanged($user));
-            $message = "\nBitte bestätige deine neue Email-Adresse über den Link, den wir dir per Email geschickt haben.";
         }
 
         return redirect()->route('users.edit')
-            ->with('message', 'Profil erfolgreich aktualisiert.'.$message)
+            ->with('success', 'Profil erfolgreich aktualisiert.')
+            ->with('info', 'Bitte bestätige deine neue Email-Adresse über den Link, den wir dir per Email geschickt haben.')
             ->with('active_tab', $request->get('tab'))
             ->with('email_new', $user->email_new);
     }
@@ -63,7 +63,7 @@ class UserController extends Controller
             ->save();
 
         return redirect()->route('users.edit')
-            ->with('message', 'Passwort erfolgreich geändert')
+            ->with('success', 'Passwort erfolgreich geändert')
             ->with('active_tab', 'password');
     }
 

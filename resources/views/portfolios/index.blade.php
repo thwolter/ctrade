@@ -5,6 +5,8 @@
     <div class="content">
         <div class="container">
 
+            @include('partials.message')
+
             @php( $focus = 'Meine Portfolios' )
 
                 @if (count($portfolios) == 0)

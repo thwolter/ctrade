@@ -5,11 +5,7 @@
     <div class="content">
         <div class="container">
 
-            @if (session('message'))
-                <div class="alert alert-success">
-                    {{ session('message') }}
-                </div>
-            @endif
+           @include('partials.message')
 
             @if (session('error'))
                 <div class="alert alert-danger">

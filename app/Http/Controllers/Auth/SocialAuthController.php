@@ -30,6 +30,7 @@ class SocialAuthController extends Controller
         $user = $repo->createOrGetUser(Socialite::driver($provider)->user(), $provider);
 
         Auth::login($user, true);
-        return redirect(route('portfolios.index'));
+        return redirect(route('home'))
+            ->with('message', 'Wir haben Deinen Account verknüpft');
     }
 }
