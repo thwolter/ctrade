@@ -21378,6 +21378,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -21394,7 +21432,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: {
         route: String,
         redirect: String,
-        currencies: Object
+        currencies: Object,
+        categories: Object
     },
 
     data: function data() {
@@ -21402,7 +21441,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             form: new Form({
                 currency: 'EUR',
                 amount: null,
-                name: null
+                name: null,
+                category: null,
+                description: null
             }),
 
             decimal: ',',
@@ -49892,7 +49933,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "text",
       "name": "name",
-      "placeholder": "z.B. Deutsche Standardwerte"
+      "placeholder": "Name des Portfolios"
     },
     domProps: {
       "value": (_vm.form.name)
@@ -49995,6 +50036,93 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('span', {
     domProps: {
       "textContent": _vm._s(_vm.form.errors.get('amount'))
+    }
+  })]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group row"
+  }, [_c('label', {
+    staticClass: "col-md-3 col-md-offset-1 col-form-label",
+    attrs: {
+      "for": "category"
+    }
+  }, [_vm._v("Kategorie")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-7"
+  }, [_c('div', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.category),
+      expression: "form.category"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "category",
+      "placeholder": "Kategorie",
+      "list": "category_names"
+    },
+    domProps: {
+      "value": (_vm.form.category)
+    },
+    on: {
+      "keydown": function($event) {
+        _vm.form.errors.clear('category')
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.category = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('datalist', {
+    attrs: {
+      "id": "category_names"
+    }
+  }, _vm._l((_vm.categories), function(category) {
+    return _c('option', [_vm._v(_vm._s(category))])
+  }))]), _vm._v(" "), (_vm.form.errors.has('category')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('category'))
+    }
+  })]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group row"
+  }, [_c('label', {
+    staticClass: "col-md-3 col-md-offset-1 col-form-label",
+    attrs: {
+      "for": "category"
+    }
+  }, [_vm._v("Beschreibung")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-7"
+  }, [_c('div', [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.description),
+      expression: "form.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "rows": "6",
+      "name": "description",
+      "placeholder": "Beschreibe dein Portfolio"
+    },
+    domProps: {
+      "value": (_vm.form.description)
+    },
+    on: {
+      "keydown": function($event) {
+        _vm.form.errors.clear('description')
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.description = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), (_vm.form.errors.has('description')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('description'))
     }
   })]) : _vm._e()])]), _vm._v(" "), _vm._m(0)])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

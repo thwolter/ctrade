@@ -29,10 +29,10 @@ class PositionsController extends Controller
      * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function index($slug)
+    public function index(Request $request, $slug)
     {
         $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
-        return view('positions.index', compact('portfolio'));
+        return view('positions.index', array_merge(['portfolio' => $portfolio], $request->all()));
     }
 
 

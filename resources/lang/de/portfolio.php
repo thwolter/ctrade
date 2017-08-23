@@ -15,4 +15,17 @@ return [
 
     'name' => 'Es existiert bereits ein Portfolio mit diesem Namen.',
 
+    'setup' => [
+        'changed' => 'Einstellungen erfolgreich gespeichert.',
+    ],
+
+    'menu' => [
+        'unspecified'   => 'Meine Portfolios',
+        'create'        => 'Neues Portfolio',
+        'overview'      => 'Überblick'
+    ],
+
+    'messages' => [
+        'create_first' => 'Lege hier dein erstes Portfolio an.'
+    ]
 ];

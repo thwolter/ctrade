@@ -15,5 +15,9 @@ return [
         'changed' => 'Portfolio successfully changed.',
     ],
 
+    'menu' => [
+        'unspecified' => 'My portfolios'
+    ]
+
 
 ];

@@ -11,11 +11,11 @@
                         <div class="col-md-7">
     
                             <div>
-                                <input type="text" name="name" placeholder="z.B. Deutsche Standardwerte" 
+                                <input type="text" name="name" placeholder="Name des Portfolios"
                                     class="form-control" v-model="form.name" @keydown="form.errors.clear('name')">
                             </div>
                             
-                            <p  v-if="form.errors.has('name')" class="error-text">
+                            <p v-if="form.errors.has('name')" class="error-text">
                                 <span v-text="form.errors.get('name')"></span>
                             </p>
     
@@ -54,7 +54,45 @@
     
                         </div>
                     </div><!-- /cash -->
-                    
+
+                    <!-- portfolio category -->
+                    <div class="form-group row">
+                        <label for="category" class="col-md-3 col-md-offset-1 col-form-label">Kategorie</label>
+                        <div class="col-md-7">
+
+                            <div>
+                                <input type="text" name="category" placeholder="Kategorie" list="category_names"
+                                       class="form-control" v-model="form.category" @keydown="form.errors.clear('category')">
+                                <datalist id="category_names">
+                                    <option v-for="category in categories">{{ category }}</option>
+                                </datalist>
+                            </div>
+
+                            <p v-if="form.errors.has('category')" class="error-text">
+                                <span v-text="form.errors.get('category')"></span>
+                            </p>
+
+                        </div>
+                    </div><!-- /portfolio category -->
+
+                    <!-- portfolio description -->
+                    <div class="form-group row">
+                        <label for="category" class="col-md-3 col-md-offset-1 col-form-label">Beschreibung</label>
+                        <div class="col-md-7">
+
+                            <div>
+                                <textarea rows="6" name="description" placeholder="Beschreibe dein Portfolio"
+                                       class="form-control" v-model="form.description" @keydown="form.errors.clear('description')">
+                                </textarea>
+                            </div>
+
+                            <p v-if="form.errors.has('description')" class="error-text">
+                                <span v-text="form.errors.get('description')"></span>
+                            </p>
+
+                        </div>
+                    </div><!-- /portfolio description -->
+
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <div class="pull-right">
@@ -87,7 +125,8 @@
         props: {
             route: String,
             redirect: String,
-            currencies: Object
+            currencies: Object,
+            categories: Object
         },
 
         data() {
@@ -95,7 +134,9 @@
                 form: new Form({
                     currency: 'EUR',
                     amount: null,
-                    name: null
+                    name: null,
+                    category: null,
+                    description: null
                 }),
 
                 decimal: ',',

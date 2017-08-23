@@ -10,6 +10,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Category;
 use App\Entities\Currency;
 use App\Entities\PortfolioImage;
 use App\Entities\Transaction;
@@ -63,8 +64,13 @@ class PortfoliosController extends Controller
      */
     public function create()
     {
+        $firstPortfolio = ! auth()->user()->portfolios->count();
         $currencies = Currency::getEnumValuesAsAssociativeArray('code');
-        return view('portfolios.create', compact('currencies'));
+
+        $categories = Category::getNamesAsArray(auth()->user()->id);
+
+        return view('portfolios.create', compact('currencies', 'categories'))
+            ->with('info', $firstPortfolio ? trans('portfolio.messages.create_first') : null);
     }
 
     /**
@@ -77,20 +83,24 @@ class PortfoliosController extends Controller
     {
         $portfolio = new Portfolio([
             'name' => $request->get('name'),
-            'cash' => $request->get('amount')
+            'cash' => $request->get('amount'),
+            'description' => $request->get('description')
         ]);
         $portfolio->currency()
             ->associate(Currency::whereCode($request->get('currency'))->first());
+
+        if ($request->get('category')) {
+            $category = Category::make(['name' => $request->get('category')]);
+            $category->user()->associate(auth()->user())->save();
+        }
 
         auth()->user()->obtain($portfolio);
 
         Transaction::deposit($portfolio, Carbon::now(), $request->get('amount'));
 
+        $message = "Portfolio $portfolio->name erfolgreich erstellt. Füge Positionen hinzu.";
         return [
-            'redirect' => route('portfolios.show', $portfolio->slug),
-            'cash' => $portfolio->cash,
-            'currency' => $portfolio->currencyCode(),
-            'id' => $portfolio->id
+            'redirect' => route('positions.index', [$portfolio->slug, 'success' => $message]),
         ];
     }
 

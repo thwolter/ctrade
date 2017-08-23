@@ -1,18 +1,30 @@
-@if (session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
+@if (session('success') || isset($success))
+    <div class="alert alert-success">
+        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+        {{ session('success', $success) }}
+    </div>
 @endif
 
 
-@if(session('info'))
-    <div class="alert alert-success">{{ session('info') }}</div>
+@if(session('info') || isset($info))
+    <div class="alert alert-success">
+        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+        {{ session('info', $info) }}
+    </div>
 @endif
 
 
-@if(session('warning'))
-    <div class="alert alert-success">{{ session('warning') }}</div>
+@if(session('warning') || isset($warning))
+    <div class="alert alert-success">
+        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+        {{ session('warning', $warning) }}
+    </div>
 @endif
 
 
-@if(session('danger'))
-    <div class="alert alert-success">{{ session('danger') }}</div>
+@if(session('danger') || isset($danger))
+    <div class="alert alert-success">
+        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+        {{ session('danger', $danger) }}
+    </div>
 @endif

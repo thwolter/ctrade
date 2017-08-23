@@ -2,7 +2,7 @@
     <div class="container">
 
         <a class="mainnav-toggle" data-toggle="collapse" data-target=".mainnav-collapse">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">@lang('navigations.toggle')</span>
             <i class="fa fa-bars"></i>
         </a>
 
@@ -15,31 +15,31 @@
 
                     <li class="{{ active_class(if_route('portfolios.show')) }}">
                         <a href="{{ route('portfolios.show', $portfolio->slug) }}">
-                            Dashboard
+                            @lang('navigation.dashboard')
                         </a>
                     </li>
 
                     <li class="{{ active_class(if_route_pattern(['transactions.*'])) }}">
                         <a href="{{ route('transactions.index', $portfolio->slug) }}">
-                            Transaktionen
+                            @lang('navigation.transactions')
                         </a>
                     </li>
 
                     <li class="{{ active_class(if_route_pattern(['positions.*'])) }}">
                         <a href="{{ route('positions.index', $portfolio->slug) }}">
-                            Positionen
+                            @lang('navigation.positions')
                         </a>
                     </li>
 
                     <li class="">
                         <a href="{{ route('home.coming') }}">
-                            Optimieren
+                            @lang('navigation.optimize')
                         </a>
                     </li>
 
                     <li class="dropdown {{ active_class(if_route('portfolios.edit')) }}">
                         <a href="./index.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-                            Einstellungen
+                            @lang('navigation.settings.title')
                             <i class="mainnav-caret"></i>
                         </a>
 
@@ -48,28 +48,28 @@
                             <li>
                                 <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'portfolio']) }}">
                                     <i class="fa fa-pie-chart" aria-hidden="true"></i>
-                                    Portfolio
+                                    @lang('navigation.settings.portfolio')
                                 </a>
                             </li>
 
                             <li>
                                 <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'parameter']) }}">
                                     <i class="fa fa-calculator" aria-hidden="true"></i>
-                                    Parameter
+                                    @lang('navigation.settings.parameter')
                                 </a>
                             </li>
 
                             <li>
                                 <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'limits']) }}">
                                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                                    Limite
+                                    @lang('navigation.settings.limits')
                                 </a>
                             </li>
 
                             <li>
                                 <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'notifications']) }}">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
-                                    Benachichtigungen
+                                    @lang('navigation.settings.message')
                                 </a>
                             </li>
 

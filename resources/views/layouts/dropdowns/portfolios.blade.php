@@ -2,15 +2,15 @@
 
     <a href="javascript:;" class="dropdown-toggle portfolio-name" data-toggle="dropdown"
        data-hover="dropdown">
+
         @if (if_route(['portfolios.index']))
-            Meine Portfolios
-        @elseif (isset($focus))
-            {{ $focus }}
+            @lang('portfolio.menu.unspecified')
         @elseif (isset($portfolio))
             {{ $portfolio->name }}
         @else
-            Meine Portfolios
+            @lang('portfolio.menu.unspecified')
         @endif
+
         <i class="mainnav-caret portfolio-caret"></i>
     </a>
 
@@ -20,7 +20,7 @@
         <li>
             <a href="{{ route('portfolios.create') }}">
                 <i class="fa fa-edit dropdown-icon "></i>
-                Neues Portfolio
+                @lang('portfolio.menu.create')
             </a>
         </li>
 
@@ -28,7 +28,7 @@
         <li>
             <a href="{{ route('portfolios.index') }}">
                 <i class="fa fa-th dropdown-icon "></i>
-                Übersicht
+                @lang('portfolio.menu.overview')
             </a>
         </li>
 

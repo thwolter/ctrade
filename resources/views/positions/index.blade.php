@@ -4,15 +4,8 @@
 
     <div class="content">
         <div class="container">
-     
-            
-            @if (count($portfolio->positions) == 0)
-                <div class="alert alert-info alert-dismissible role=" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    
-                    <strong>Portfolio enthält noch keine Positionen.</strong>
-                </div>
-            @endif
+
+            @include('partials.message')
 
             <div class="row">
                 <div class="col-md-6">
