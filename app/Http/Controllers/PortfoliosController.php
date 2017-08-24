@@ -119,9 +119,7 @@ class PortfoliosController extends Controller
         $portfolio = Auth::user()->portfolios()->whereSlug($slug)->first();
         $limit = new LimitRepository($portfolio);
 
-        if (! session('active_tab')) {
-            session(['active_tab' => $request->get('tab', 'portfolio')]);
-        }
+        setActiveTab($request, 'portfolio');
 
         return view('portfolios.edit',
             compact('portfolio', 'limit'));
@@ -160,7 +158,10 @@ class PortfoliosController extends Controller
     public function destroy(Request $request, $slug)
     {
         if (!$request->confirmed) {
-            return redirect(route('portfolios.edit', $slug))->with('delete', 'confirm');
+            return redirect(route('portfolios.edit', $slug))
+                ->with('delete', 'confirm')
+                ->with('danger', 'Bitte bestätigen, dass das Portfolio unwiderruflich gelöscht werden soll.')
+                ->with('active_tab', 'portfolio');
         }
         else {
             $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();

@@ -81,10 +81,10 @@
         <div class="form-group">
             <div class="col-md-7 col-md-push-3">
 
-                <button type="submit" class="btn btn-warning">Portfolio unwiderruflich löschen</button>
+                <button type="submit" class="btn btn-danger">Portfolio unwiderruflich löschen</button>
                 <input type="hidden" name="confirmed" value="true">
 
-                <p style="margin-top: 20px; font-size: 1.1em">
+                <p style="margin-top: 20px;">
                     <a href="{{ route('portfolios.edit', $portfolio->slug) }}" class="">Nein, nicht löschen.</a>
                 </p>
             </div>

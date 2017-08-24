@@ -12,6 +12,19 @@ function active_tab($tab, $active = 'active')
     return session('active_tab') === $tab ? $active : '';
 }
 
+/**
+ * Set the session variable 'active_tab' to be evaluated in views to set the specified
+ * tab as active. The session variable can be used for redirects and view calls.
+ *
+ * @param \Illuminate\Http\Request $request
+ * @param $default
+ */
+function setActiveTab(Illuminate\Http\Request $request, $default)
+{
+    $tab = $request->get('tab', session('active_tab', $default));
+    session(['active_tab' => $tab]);
+}
+
 function format_price($value)
 {
     $fmt = numfmt_create('de_DE', NumberFormatter::CURRENCY);
