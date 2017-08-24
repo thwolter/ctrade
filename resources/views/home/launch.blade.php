@@ -36,6 +36,7 @@
     <![endif]-->
 
     <link rel="shortcut icon" href="favicon.ico">
+    {!! Analytics::render() !!}
 </head>
 
 <body class="">
