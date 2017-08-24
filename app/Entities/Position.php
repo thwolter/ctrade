@@ -7,6 +7,7 @@ use App\Presenters\Presentable;
 use App\Repositories\CurrencyRepository;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 /**
@@ -32,7 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Position extends Model implements PresentableInterface
 {
-    use Financable, Presentable;
+    use Financable, Presentable, SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -47,6 +48,8 @@ class Position extends Model implements PresentableInterface
         'positionable_id',
         'amount'
     ];
+
+    protected $dates = ['deleted_at'];
 
 
     /*

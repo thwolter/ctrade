@@ -21,6 +21,7 @@ class CreateKeyfiguresTable extends Migration
             $table->unique(array('portfolio_id', 'type_id'));
             $table->json('values')->nullable();
             $table->dateTime('expires_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

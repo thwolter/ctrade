@@ -6,6 +6,8 @@ use App\Entities\Traits\UuidModel;
 use App\Settings\InitialSettings;
 use App\Settings\Settings;
 use Carbon\Carbon;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
@@ -44,7 +46,13 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable
 {
-    use Notifiable, CrudTrait, HasRoles, UuidModel;
+    use Notifiable, CrudTrait, HasRoles, UuidModel, SoftDeletes, CascadeSoftDeletes;
+
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * The attributes that are mass assignable.
@@ -60,15 +68,21 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token', 'id'
-    ];
+    protected $hidden = ['password', 'remember_token', 'id'];
 
-    protected $cast = [
-        'settings' => 'json'
-    ];
+    protected $cast = ['settings' => 'json'];
+
+    protected $cascadeDeletes = ['portfolios'];
+
+    protected $dates = ['deleted_at'];
 
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
 
     public function portfolios()
     {
@@ -82,6 +96,12 @@ class User extends Authenticatable
         $this->portfolios()->save($portfolio);
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
 
     public function settings($key = null)
     {
@@ -102,6 +122,11 @@ class User extends Authenticatable
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
 
     public function scopeUnverified($query)
     {
@@ -128,4 +153,16 @@ class User extends Authenticatable
         return ($this->validToken()->count() && ($this->email_new));
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
 }

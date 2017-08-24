@@ -25,6 +25,7 @@ class CreateTransactionsTable extends Migration
             $table->float('price')->nullable();
             $table->float('cash')->nullable();
             $table->dateTime('executed_at');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

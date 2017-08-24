@@ -5,6 +5,7 @@ namespace App\Entities;
 use App\Presenters\LimitPresenter;
 use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Entities\Limit
@@ -29,12 +30,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Limit extends Model
 {
-    use Presentable;
+    use Presentable, SoftDeletes;
 
     protected $presenter = LimitPresenter::class;
 
     protected $fillable = ['type', 'value', 'date', 'active'];
 
+    protected $dates = ['deleted_at'];
 
     public function portfolio()
     {

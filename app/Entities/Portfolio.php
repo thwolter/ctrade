@@ -10,10 +10,12 @@ use App\Settings\Settings;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Psy\Readline\Libedit;
 
@@ -57,7 +59,7 @@ use Psy\Readline\Libedit;
  */
 class Portfolio extends Model
 {
-    use Presentable, UuidModel, Sluggable, SluggableScopeHelpers;
+    use Presentable, UuidModel, Sluggable, SluggableScopeHelpers, SoftDeletes, CascadeSoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -72,6 +74,17 @@ class Portfolio extends Model
     protected $casts = ['settings' => 'json'];
 
     protected $hidden = ['id'];
+
+    protected $cascadeDeletes = [
+        'positions',
+        'transactions',
+        'category',
+        'keyFigures',
+        'limits',
+        'image'
+    ];
+
+    protected $dates = ['deleted_at'];
 
     public $imagesPath = 'public/images';
 

@@ -20,6 +20,7 @@ class CreatePositionsTable extends Migration
             $table->integer('positionable_id');
             $table->string('positionable_type');
             $table->float('amount')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

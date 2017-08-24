@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('email_token')->nullable();
             $table->rememberToken();
             $table->dateTime('email_token_expires_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

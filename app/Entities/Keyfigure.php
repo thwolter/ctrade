@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Entities\Keyfigure
@@ -37,11 +38,14 @@ use Illuminate\Database\Eloquent\Model;
 class Keyfigure extends Model
 {
 
+    use SoftDeletes;
+
+
     protected $fillable = ['values', 'expires_at'];
 
-    protected $casts = [
-        'values' => 'json'
-    ];
+    protected $casts = ['values' => 'json'];
+
+    protected $dates = ['deleted_at'];
 
 
     public function type()

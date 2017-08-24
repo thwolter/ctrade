@@ -21,6 +21,7 @@ class CreateLimitsTable extends Migration
             $table->float('value');
             $table->date('date')->nullable();
             $table->boolean('active')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

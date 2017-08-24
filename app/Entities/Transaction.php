@@ -6,6 +6,7 @@ use App\Events\PortfolioHasChanged;
 use App\Presenters\Presentable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Entities\Transaction
@@ -44,7 +45,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Transaction extends Model
 {
-    use Presentable;
+    use Presentable, SoftDeletes;
 
     protected $presenter = \App\Presenters\Transaction::class;
 
@@ -55,6 +56,9 @@ class Transaction extends Model
         'cash',
         'executed_at'
     ];
+
+    protected $dates = ['deleted_at'];
+
 
     public function type()
     {

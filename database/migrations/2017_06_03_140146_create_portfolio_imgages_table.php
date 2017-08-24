@@ -18,6 +18,7 @@ class CreatePortfolioImgagesTable extends Migration
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
             $table->string('path');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
