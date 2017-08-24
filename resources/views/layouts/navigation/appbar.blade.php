@@ -37,8 +37,9 @@
             </ul>
 
             <ul>
+
             <!-- user menu -->
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right my-account">
 
                 {{--<li class="divider"></li>--}}
 
