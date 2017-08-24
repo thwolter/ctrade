@@ -57,18 +57,14 @@
                     </div><!-- /cash -->
 
                     <!-- portfolio category -->
-                    <div class="form-group row">
+                    <div v-if="categories.length" class="form-group row">
                         <label for="category" class="col-md-3 col-md-offset-1 col-form-label">Kategorie</label>
                         <div class="col-md-7">
 
-                            <div>
-                                <input type="text" name="category" placeholder="Kategorie" list="category_names"
-                                       class="form-control" v-model="form.category"
-                                       @keydown="form.errors.clear('category')">
-                                <datalist id="category_names">
-                                    <option v-for="category in categories">{{ category }}</option>
-                                </datalist>
-                            </div>
+                            <select name="category" class="form-control" v-model="form.category">
+                                <option :value="null">keine Kategorie</option>
+                                <option v-for="category in categories" :value="category">{{ category }}</option>
+                            </select>
 
                             <p v-if="form.errors.has('category')" class="error-text">
                                 <span v-text="form.errors.get('category')"></span>
@@ -130,7 +126,7 @@
             route: String,
             redirect: String,
             currencies: Object,
-            categories: null
+            categories: null,
         },
 
         data() {

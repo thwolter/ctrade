@@ -38,12 +38,19 @@
                                     </a>
                                 </li>
 
-                              {{--  <li role="presentation" class="{{ active_tab('messaging') }}">
+                                <li role="presentation" class="{{ active_tab('messaging') }}">
                                     <a href="#messaging" data-toggle="tab" role="tab">
                                         <i class="fa fa-bullhorn"></i>
-                                        &nbsp;&nbsp;Benachrichtigungen
+                                        @lang('user.messaging.title')
                                     </a>
-                                </li>--}}
+                                </li>
+
+                                <li role="presentation" class="{{ active_tab('categories') }}">
+                                    <a href="#categories" data-toggle="tab" role="tab">
+                                        <i class="fa fa-list"></i>
+                                        &nbsp;&nbsp;@lang('user.categories.title')
+                                    </a>
+                                </li>
 
                             </ul>
 
@@ -58,7 +65,9 @@
 
                                 @include('users.edit.password')
 
-                               {{-- @include('users.edit.messaging')--}}
+                                @include('users.edit.messaging')
+
+                                @include('users.edit.categories')
 
                             </div> <!-- /.tab-content -->
 
