@@ -15,10 +15,10 @@ $brand-tertiary                        : #888;
 $brand-facebook                        : #3b5998;
 $brand-twitter                         : #00acee;
 
-$brand-success:         #5cb85c !default;
-$brand-info:            $brand-layout !default;
-$brand-warning:         #f0ad4e !default;
-$brand-danger:          #d9534f !default;
+$brand-success									: #5cb85c;
+$brand-info										: $brand-layout;
+$brand-warning									: #f0ad4e;
+$brand-danger									: #d9534f;
 
 
 //== Fonts
@@ -172,7 +172,7 @@ $alert-success-border            		: $brand-success;
 
 $alert-info-bg                         : lighten($brand-info, 40%);
 $alert-info-text                       : $brand-info;
-$alert-info-border              			: $brand-info;
+$alert-info-border             			: $brand-info;
 
 $alert-warning-bg                      : lighten($brand-warning, 40%);
 $alert-warning-text                    : $brand-warning;
