@@ -20768,7 +20768,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.form.exchange = price.exchange;
             this.form.type = this.stock.item.type;
-            //this.form.price = Object.values(price.price)[0];
             this.form.price = Object.keys(price.price).map(function (e) {
                 return price.price[e];
             })[0];
@@ -22511,7 +22510,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.total = isNaN(total) ? 0 .toFixed(2) : total.toFixed(2);
         },
         originalPrice: function originalPrice() {
-            return Object.values(this.price)[0].toFixed(2);
+            var _this = this;
+
+            //return Object.values(this.price)[0].toFixed(2);
+            return Object.keys(this.price).map(function (key) {
+                return _this.price[key];
+            })[0].toFixed(2);
         },
         hide: function hide() {
             this.form.reset();
@@ -22527,18 +22531,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.showDialog = true;
         },
         fetch: function fetch() {
-            var _this = this;
+            var _this2 = this;
 
             var lookupForm = new Form({ id: this.form.id });
             lookupForm.post(this.lookup).then(function (data) {
-                _this.setData(data);
-                _this.showSpinner = false;
+                _this2.setData(data);
+                _this2.showSpinner = false;
             });
         },
         setData: function setData(data) {
+
             this.item = data.item;
             this.price = data.price;
-
             this.form.price = this.originalPrice();
 
             this.cash = data.cash;

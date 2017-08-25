@@ -168,7 +168,7 @@
             },
 
             originalPrice() {
-                return Object.values(this.price)[0].toFixed(2);
+                return Object.keys(this.price).map(key => this.price[key])[0].toFixed(2);
             },
 
             hide() {
@@ -196,9 +196,9 @@
             },
 
             setData(data) {
+
                 this.item = data.item;
                 this.price = data.price;
-
                 this.form.price = this.originalPrice();
 
                 this.cash = data.cash;
