@@ -30,7 +30,7 @@ Route::prefix('portfolio')->group(function() {
     ]);
 
 
-    Route::get('{slug}/show', [
+    Route::get('{slug}', [
         'as' => 'portfolios.show',
         'uses' => 'PortfoliosController@show'
     ]);
