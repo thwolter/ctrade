@@ -25,3 +25,7 @@ Route::get('quandl/{database}/{symbol}', function($database, $symbol) {
         'provider' => 'Quandl', 'database' => $database, 'symbol' => $symbol
     ]);
 });
+
+Route::get('template', function() {
+    return view('test');
+});

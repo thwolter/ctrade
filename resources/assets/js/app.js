@@ -37,6 +37,7 @@ Vue.use(VueResource);
 //Vue.use(InstantSearch);
 
 require('./components');
+require('./passport-components');
 
 
 Raven
