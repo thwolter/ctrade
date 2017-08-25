@@ -167,8 +167,7 @@
 
                 this.form.exchange = price.exchange;
                 this.form.type = this.stock.item.type;
-                this.form.price = Object.values(price.price)[0];
-
+                this.form.price = Object.keys(price.price).map(e => price.price[e])[0]
                 this.price = this.form.price.toFixed(2);
             },
 

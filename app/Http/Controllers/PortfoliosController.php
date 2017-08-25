@@ -91,7 +91,7 @@ class PortfoliosController extends Controller
         Transaction::deposit($portfolio, Carbon::now(), $request->get('amount'));
 
         return ['redirect' => route('positions.index', [$portfolio->slug,
-            'success' => "Portfolio $portfolio->name erfolgreich erstellt. Füge Positionen hinzu."
+            'success' => "Portfolio '$portfolio->name' erfolgreich erstellt. Füge Positionen hinzu."
         ])];
     }
 

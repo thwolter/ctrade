@@ -25,22 +25,45 @@
 
                 @else
 
-                    <portlet title="Meine Portfolios">
-                        @foreach($portfolios as $portfolio)
-                            @php $route = route('portfolios.show', ['slug' => $portfolio->slug]) @endphp
-                            <ol>
-                                <li>
-                                    <a href="{{ $route }}" class="">{{ $portfolio->name }}</a>
+                    @foreach($portfolios as $portfolio)
+                        @php $route = route('portfolios.show', ['slug' => $portfolio->slug]) @endphp
+
+                        <portlet title="{{ $portfolio->name }}">
+
+                            <div class="portfolio-box">
+                                <div class="col-xs-6">
                                     <p>{{ $portfolio->description }}</p>
-                                </li>
-                            </ol>
-                        @endforeach
-                    </portlet>
+                                </div>
+                                <div class="keyfigure col-xs-2">
+                                    <div class="keyfigure-title">
+                                        Value
+                                    </div>
+                                    <div class="keyfigure-number">
+                                        2.000,00€
+                                    </div>
+                                </div>
+                                <div class="keyfigure col-xs-2">
+                                    <div class="keyfigure-title">
+                                        Value
+                                    </div>
+                                    <div class="keyfigure-number">
+                                        2.000,00€
+                                    </div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <a href="#">Öffnen</a>
+                                </div>
+                            </div>
+                        </portlet>
+
+                    @endforeach
+
 
                 @endif
         </div>
     </div>
-@endsection
 
+
+@endsection
 
 

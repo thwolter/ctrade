@@ -53,7 +53,7 @@ class PositionsController extends Controller
 
         Transaction::buy($portfolio, Carbon::now(), $position, $amount);
 
-        return ['redirect' => route('positions.index', $request->pid)];
+        return ['redirect' => route('positions.index', $portfolio->slug)];
 
     }
 

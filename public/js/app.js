@@ -20768,8 +20768,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.form.exchange = price.exchange;
             this.form.type = this.stock.item.type;
-            this.form.price = Object.values(price.price)[0];
-
+            //this.form.price = Object.values(price.price)[0];
+            this.form.price = Object.keys(price.price).map(function (e) {
+                return price.price[e];
+            })[0];
             this.price = this.form.price.toFixed(2);
         },
         updateTotal: function updateTotal() {
