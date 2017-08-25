@@ -21906,13 +21906,18 @@ var moment = __webpack_require__(0);
     },
 
     created: function created() {
-        this.assign(Object.values(this.unread));
-    },
-    mounted: function mounted() {
         var _this = this;
 
+        //this.assign(Object.values(this.unread));
+        this.assign(Object.keys(this.unread).map(function (key) {
+            return _this.unread[key];
+        }));
+    },
+    mounted: function mounted() {
+        var _this2 = this;
+
         Echo.private('App.Entities.User.' + this.user_id).notification(function (data) {
-            _this.notifications.push({
+            _this2.notifications.push({
                 'title': data.title,
                 'message': data.message,
                 'icon': data.icon,
@@ -22512,7 +22517,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         originalPrice: function originalPrice() {
             var _this = this;
 
-            //return Object.values(this.price)[0].toFixed(2);
             return Object.keys(this.price).map(function (key) {
                 return _this.price[key];
             })[0].toFixed(2);

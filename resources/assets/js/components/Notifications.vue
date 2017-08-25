@@ -124,7 +124,8 @@
 
 
         created() {
-            this.assign(Object.values(this.unread));
+            //this.assign(Object.values(this.unread));
+            this.assign(Object.keys(this.unread).map(key => this.unread[key]));
         },
 
         mounted() {
