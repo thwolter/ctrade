@@ -16,6 +16,10 @@ import Colors from './core/Colors';
  * 
  */ 
 import popover from 'vue-strap';
+
+import Raven from 'raven-js';
+import RavenVue from 'raven-js/plugins/vue';
+
 import { dropdown } from 'vue-strap';
 
 
@@ -34,6 +38,11 @@ Vue.use(VueResource);
 
 require('./components');
 
+
+Raven
+    .config('https://962f2203bdb945a9be03e5d67e2935d5@sentry.io/178330')
+    .addPlugin(RavenVue, Vue)
+    .install();
 
 const app = new Vue({
     el: '#wrapper',
