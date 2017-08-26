@@ -59,6 +59,6 @@ class Transaction extends Presenter
     public function isin()
     {
         $instrument = $this->entity->instrumentable;
-        return ($instrument) ? "({$instrument->isin})" : null;
+        return ($instrument) ? $instrument->isin : null;
     }
 }

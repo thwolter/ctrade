@@ -30,6 +30,8 @@
                         <tbody>
 
                         @foreach(array_reverse($portfolio->transactions->all()) as $transaction)
+
+                            @php ($isin = $transaction->present()->isin)
                             <tr class="">
                                 <td class="align-middle">{{ $loop->iteration }}</td>
                                 <td class="align-middle">{{ $transaction->present()->date }}</td>
@@ -38,7 +40,7 @@
                                 <td class="align-middle text-right">{{ $transaction->amount }}</td>
                                 <td class="align-middle">
                                     <a href="{{ route('transactions.show', [$portfolio->id, 'id' => $transaction->id]) }}">
-                                        {{ $transaction->present()->name}} {{ $transaction->present()->isin }}
+                                        {{ $transaction->present()->name}} @if($isin) ({{ $isin }}) @endif
                                     </a>
                                 </td>
                                 <td class="align-middle text-right">{{ $transaction->present()->price() }}</td>

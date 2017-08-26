@@ -7,7 +7,7 @@
         </div><!-- /.col-xs-8 -->
 
         <div class="col-xs-4 text-center">
-            <i class="fa {{ $icon }} icon-stat-visual bg-primary"></i> <!-- /.icon-stat-visual -->
+            <i class="fa {{ $icon }} icon-stat-visual {{ $iconColor }}"></i> <!-- /.icon-stat-visual -->
         </div><!-- /.col-xs-4 -->
     </div><!-- /.row -->
 

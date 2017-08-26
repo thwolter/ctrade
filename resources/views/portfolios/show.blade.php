@@ -13,6 +13,7 @@
                         @slot('value', $portfolio->present()->total())
                         @slot('date', $portfolio->present()->updatedValue());
                         @slot('icon', 'fa-pie-chart');
+                        @slot('iconColor', 'bg-primary')
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
 
@@ -22,6 +23,7 @@
                         @slot('value', $portfolio->present()->cash())
                         @slot('date', $portfolio->present()->updatedToday());
                         @slot('icon', 'fa-university');
+                        @slot('iconColor', 'bg-primary')
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
 
@@ -31,6 +33,7 @@
                         @slot('value', $portfolio->present()->risk())
                         @slot('date', $portfolio->present()->updatedRisk());
                         @slot('icon', 'fa-tachometer');
+                        @slot('iconColor', 'bg-primary')
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
 
@@ -40,6 +43,7 @@
                         @slot('value', $portfolio->present()->total())
                         @slot('date', 'now');
                         @slot('icon', 'fa-line-chart');
+                        @slot('iconColor', 'bg-primary')
                     @endcomponent
                 </div> <!-- /.col-md-3 -->
             </div>
