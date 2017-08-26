@@ -19,6 +19,7 @@
                             <th>Nr</th>
                             <th>Datum</th>
                             <th>Transaktion</th>
+                            <th>Typ</th>
                             <th class="align-middle text-right">Stück</th>
                             <th>Position</th>
                             <th>Preis</th>
@@ -33,17 +34,12 @@
                                 <td class="align-middle">{{ $loop->iteration }}</td>
                                 <td class="align-middle">{{ $transaction->present()->date }}</td>
                                 <td class="align-middle">{{ $transaction->present()->type }}</td>
+                                <td class="align-middle">{{ $transaction->present()->instrument }}</td>
                                 <td class="align-middle text-right">{{ $transaction->amount }}</td>
                                 <td class="align-middle">
                                     <a href="{{ route('transactions.show', [$portfolio->id, 'id' => $transaction->id]) }}">
-                                        {{ $transaction->present()->name}}</a>
-                                    @php ($instrument = $transaction->instrumentable)
-                                        @if( !is_null($instrument) )
-                                            <span>
-                                            {{ $instrument->typeDisp}} | {{ $instrument->wkn }}
-                                                | {{ $instrument->isin }}
-                                        </span>
-                                        @endif
+                                        {{ $transaction->present()->name}} {{ $transaction->present()->isin }}
+                                    </a>
                                 </td>
                                 <td class="align-middle text-right">{{ $transaction->present()->price() }}</td>
                                 <td class="align-middle text-right">{{ $transaction->present()->total() }}</td>

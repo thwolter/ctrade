@@ -16,30 +16,29 @@ class Transaction extends Presenter
 
     public function total()
     {
-        if ($this->isCash()) {
-            $total = $this->entity->cash;
-        } else {
-            $total = $this->entity->amount * $this->entity->price;
-        }
-        return $this->formatPrice($total, $this->entity->portfolio->currencyCode());
+        return $this->formatPrice($this->entity->value, $this->entity->portfolio->currencyCode());
     }
 
     public function price()
     {
-        if (!$this->isCash()) {
-            $price = $this->entity->price;
+        $price = $this->entity->price;
+
+        if ($price)
             return $this->formatPrice($price, $this->entity->portfolio->currencyCode());
-        }
     }
 
     public function date()
     {
-        return $this->formatDate($this->entity->date);
+        return $this->formatDate($this->entity->executed_at);
     }
 
     public function type()
     {
-        return $this->entity->type->name;
+        $type = $this->entity->type->name;
+        $direction = ($this->entity->value > 0) ? 'plus' : 'minus';
+
+        return trans("transactions.{$type}.{$direction}");
+
     }
 
     public function name()
@@ -50,8 +49,16 @@ class Transaction extends Presenter
             return $instrument->name;
     }
 
-    private function isCash()
+
+    public function instrument()
     {
-        return in_array($this->entity->type->code, ['deposit', 'withdraw']);
+        $instrument = $this->entity->instrumentable;
+        return ($instrument) ? trans("instrument.{$instrument->instrumentType}") : null;
+    }
+
+    public function isin()
+    {
+        $instrument = $this->entity->instrumentable;
+        return ($instrument) ? "({$instrument->isin})" : null;
     }
 }

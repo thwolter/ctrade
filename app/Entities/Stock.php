@@ -50,9 +50,12 @@ class Stock extends Instrument
 
     protected $presenter = \App\Presenters\Stock::class;
 
+    //todo: check if this can be deleted; should use $type
     public $typeDisp = 'Aktie';
 
     public $asYouType = true;
+
+    public $instrumentType = 'stock';
 
 
     public function toSearchableArray()

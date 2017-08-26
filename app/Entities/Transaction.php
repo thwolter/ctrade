@@ -64,7 +64,7 @@ class Transaction extends Model
         'executed_at'
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'executed_at'];
 
 
     /*
