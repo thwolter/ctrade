@@ -1,6 +1,6 @@
 <portlet id="cash-container" title="Barbestand">
     
-        <div>
+        <div class="table-responsive">
             <table class="table table-striped table-hover positions-table">
                 <thead>
                 <tr>
@@ -11,7 +11,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="h5">
+                <tr class="">
                     <td class="align-middle">1</td>
                     <td class="align-middle">Cash</td>
                     <td class="text-right">{{ $portfolio->present()->cash }}</td>

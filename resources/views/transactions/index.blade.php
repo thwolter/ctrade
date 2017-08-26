@@ -12,20 +12,21 @@
             @endif
 
             <portlet title="Transaktionen">
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th>Nr</th>
-                        <th>Datum</th>
-                        <th>Transaktion</th>
-                        <th class="align-middle text-right">Stück</th>
-                        <th>Position</th>
-                        <th>Preis</th>
-                        <th class="align-middle text-right">Gesamt</th>
-                    </tr>
-                    </thead>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Nr</th>
+                            <th>Datum</th>
+                            <th>Transaktion</th>
+                            <th class="align-middle text-right">Stück</th>
+                            <th>Position</th>
+                            <th>Preis</th>
+                            <th class="align-middle text-right">Gesamt</th>
+                        </tr>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
 
                         @foreach(array_reverse($portfolio->transactions->all()) as $transaction)
                             <tr class="">
@@ -35,21 +36,23 @@
                                 <td class="align-middle text-right">{{ $transaction->amount }}</td>
                                 <td class="align-middle">
                                     <a href="{{ route('transactions.show', [$portfolio->id, 'id' => $transaction->id]) }}">
-                                            {{ $transaction->present()->name}}</a>
+                                        {{ $transaction->present()->name}}</a>
                                     @php ($instrument = $transaction->instrumentable)
-                                    @if( !is_null($instrument) )
-                                        <span>
+                                        @if( !is_null($instrument) )
+                                            <span>
                                             {{ $instrument->typeDisp}} | {{ $instrument->wkn }}
-                                            | {{ $instrument->isin }}
+                                                | {{ $instrument->isin }}
                                         </span>
-                                    @endif
+                                        @endif
                                 </td>
                                 <td class="align-middle text-right">{{ $transaction->present()->price() }}</td>
                                 <td class="align-middle text-right">{{ $transaction->present()->total() }}</td>
                             </tr>
                         @endforeach
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+
             </portlet>
         </div>
     </div>

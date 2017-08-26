@@ -1,11 +1,15 @@
 <template>
-    <div class="buy-sell-icons text-center">
-        <a href="#" class="btn-link" @click="doBuy">
-            <i class="fa fa-plus-square buy-icon" aria-hidden="true"></i>
-        </a>
-        <a href="#" class="btn-link" @click="doSell">
-            <i class="fa fa-minus-square sell-icon" aria-hidden="true"></i>
-        </a>
+    <div class="row buy-sell-icons text-center">
+        <div class="col-md-2 col-md-push-2">
+            <a href="#" class="btn-link" @click="doBuy">
+                <i class="fa fa-plus-square buy-icon" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div>
+            <a href="#" class="btn-link" @click="doSell">
+                <i class="fa fa-minus-square sell-icon" aria-hidden="true"></i>
+            </a>
+        </div>
     </div>
 </template>
 

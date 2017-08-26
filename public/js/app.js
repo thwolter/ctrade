@@ -20900,6 +20900,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -53762,7 +53766,9 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "buy-sell-icons text-center"
+    staticClass: "row buy-sell-icons text-center"
+  }, [_c('div', {
+    staticClass: "col-md-2 col-md-push-2"
   }, [_c('a', {
     staticClass: "btn-link",
     attrs: {
@@ -53776,7 +53782,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "aria-hidden": "true"
     }
-  })]), _vm._v(" "), _c('a', {
+  })])]), _vm._v(" "), _c('div', [_c('a', {
     staticClass: "btn-link",
     attrs: {
       "href": "#"
@@ -53789,7 +53795,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "aria-hidden": "true"
     }
-  })])])
+  })])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
