@@ -30,14 +30,17 @@ class RiskRepository
     public function portfolioRisk($date = null)
     {
         $risks = $this->portfolio->keyFigure('risk')->values;
-        $referenceDate = Carbon::parse(key($risks));
-        $dailyRisk = array_get(head($risks), (string)$this->confidence);
+        $referenceDate = Carbon::parse(array_last(array_keys($risks)));
+        $dailyRisk = array_get(array_last($risks), (string)$this->confidence);
 
         if (is_null($date)) {
             $factor = sqrt($this->period);
 
         } else {
-            $factor = sqrt(max(0, $referenceDate->diffInDays($date, false)));
+            $factor = sqrt(max(
+                0,
+                $referenceDate->diffInDays($date, false))
+            );
         }
 
         return $dailyRisk * $factor;

@@ -34,13 +34,13 @@ class Portfolio extends Presenter
 
     public function updatedRisk()
     {
-        $date = key($this->entity->keyFigure('risk')->values);
+        $date = array_last(array_keys($this->entity->keyFigure('risk')->values));
         return $this->formatDate($date);
     }
 
     public function updatedValue()
     {
-        $date = key($this->entity->keyFigure('value')->values);
+        $date = array_last(array_keys($this->entity->keyFigure('value')->values));
         return $this->formatDate($date);
     }
 
