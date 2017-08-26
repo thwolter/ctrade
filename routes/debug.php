@@ -29,3 +29,7 @@ Route::get('quandl/{database}/{symbol}', function($database, $symbol) {
 Route::get('template', function() {
     return view('test');
 });
+
+Route::get('portfolio/{id}', function($id) {
+    return redirect('api/portfolio', $id);
+});

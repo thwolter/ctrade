@@ -31,7 +31,7 @@ class ApiBaseController extends Controller
      * @return array
      * @throws \Exception
      */
-    public function getWeekDaysSeries(Request $request): array
+    public function getWeekDaysSeries(Request $request)
     {
         if (isset($request->date) && isset($request->count)) {
             $days = TimeSeries::allWeekDays($request->date, $request->count);

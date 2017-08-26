@@ -10,7 +10,7 @@ class Rscript extends BaseRscript
 
     public function portfolioRisk($date, $count)
     {
-        Log::info(("Calculate risk for portfolio {$this->entity->id} at {$date}"));
+        Log::info(("Calculate risk for portfolio {$this->entity->id} on {$date}"));
         $script = 'Risk.R';
 
         $args = [
@@ -21,9 +21,10 @@ class Rscript extends BaseRscript
         return $this->execute($script, $args);
     }
 
+
     public function portfolioValue($date)
     {
-        Log::info(("Calculate value for portfolio {$this->entity->id} at {$date}"));
+        Log::info(("Calculate value for portfolio {$this->entity->id} on {$date}"));
 
         $script = 'Value.R';
 

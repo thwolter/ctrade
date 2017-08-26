@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Repositories\TradesRepository;
 
 /**
  * Calculate the risk and risk distribution for a given portfolio based on the composition
@@ -59,9 +60,7 @@ class CalcPortfolioRisk implements ShouldQueue
 
         for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {
 
-            $portfolio = $this->portfolio->rollbackToDate($date);
-
-            $rscript = new Rscript($portfolio);
+            $rscript = new Rscript($this->portfolio);
             $risk = $rscript->portfolioRisk($date->toDateString(), 250);
 
             $kfRisk->set($date->toDateString(), $this->toRiskArray($risk));

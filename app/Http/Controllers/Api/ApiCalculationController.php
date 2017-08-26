@@ -22,10 +22,10 @@ class ApiCalculationController extends ApiBaseController
         $this->validate($request, [
             'id' => 'required|exists:portfolios,id',
             'date' => 'required|date',
-            'count' => 'required|numeric'
+            'count' => 'required|integer'
         ]);
 
-        $date = Carbon::createFromFormat('Y-m-d', $request->date);
+        $date = Carbon::parse($request->date);
 
         $rscript = new Rscript($this->getPortfolio($request));
         $risk = $rscript->portfolioRisk($date, $request->count);
@@ -47,7 +47,7 @@ class ApiCalculationController extends ApiBaseController
             'date' => 'required|date'
         ]);
 
-        $date = Carbon::createFromFormat('Y-m-d', $request->date);
+        $date = Carbon::parse($request->date);
 
         $rscript = new Rscript($this->getPortfolio($request));
         $value = $rscript->portfolioValue($date);

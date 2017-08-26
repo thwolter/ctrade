@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Repositories\TradesRepository;
 
 class CalcPortfolioValue implements ShouldQueue
 {
@@ -41,9 +42,7 @@ class CalcPortfolioValue implements ShouldQueue
 
         for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {
 
-            $portfolio = $this->portfolio->rollbackToDate($date);
-
-            $rscript = new Rscript($portfolio);
+            $rscript = new Rscript($this->portfolio);
             $value = $rscript->portfolioValue($date->toDateString());
 
             $kfValue->set($date->toDateString(), array_first_or_null($value['value']));

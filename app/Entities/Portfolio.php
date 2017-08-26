@@ -324,38 +324,6 @@ class Portfolio extends Model
 
     }
 
-    /**
-     * Rolls the portfolio transaction back to the provided date.
-     *
-     * @param $date
-     * @return Portfolio
-     */
-    public function rollbackToDate($date)
-    {
-        $portfolio = clone $this;
-        $transactions = $this->transactions->where('executed_at', '>', $date)->all();
-
-        foreach (array_reverse($transactions) as $transaction) {
-
-            $value = $transaction->amount * $transaction->price;
-            switch ($transaction->type->code) {
-                case 'buy':
-                    $portfolio->revertTrade($transaction->position->id, -$value);
-                    break;
-                case 'sell':
-                    $portfolio->revertTrade($transaction->position->id, +$value);
-                    break;
-                case 'deposit':
-                    $portfolio->cash -= $value;
-                    break;
-                case 'withdrawal':
-                    $this->cash += $value;
-
-            }
-        }
-        return $portfolio;
-    }
-
 
     public function keyFigure($type)
     {
@@ -392,20 +360,9 @@ class Portfolio extends Model
         $portfolio = $position->portfolio;
 
         $position->update(['amount' => $position->amount + $amount]);
-
         $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
 
         return $portfolio;
-    }
-
-    private function revertTrade($id, $value)
-    {
-        $position = $this->positions()->find($id);
-
-        $position->amount = $position->amount + $value;
-        $this->cash = $this->cash - $value;
-
-        return $this;
     }
 
 

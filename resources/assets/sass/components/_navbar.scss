@@ -31,7 +31,8 @@
 .navbar-nav > .navbar-profile {
   .dropdown-toggle {
     padding-left: 50px;
-    text-transform: none;
+    font-size: 13px;
+    //text-transform: none;
   }
 }
 
@@ -76,7 +77,8 @@
 
   .navbar-small {
     > li > a {
-      font-size: 15px !important;
+      font-size: 13px !important;
+      font-weight: bold !important;
     }
   }
 

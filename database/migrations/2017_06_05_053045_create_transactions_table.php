@@ -23,7 +23,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('position_id')->nullable();
             $table->float('amount')->nullable();
             $table->float('price')->nullable();
-            $table->float('cash')->nullable();
+            $table->float('value');
             $table->dateTime('executed_at');
             $table->softDeletes();
             $table->timestamps();

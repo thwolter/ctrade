@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Repositories\CurrencyRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Repositories\TradesRepository;
 
 class ApiDataController extends ApiBaseController
 {
@@ -17,12 +19,19 @@ class ApiDataController extends ApiBaseController
      */
     public function histories(Request $request)
     {
-        $portfolio = $this->getPortfolio($request);
+        $this->validate($request, [
+            'id' => 'required|exists:portfolios,id',
+            'date' => 'required_without:from|date',
+            'count' => 'required_with:date|integer',
+            'from' => 'required_without:date|date',
+            'to' => 'required_with:from|date'
+        ]);
 
+
+        $portfolio = $this->getPortfolio($request);
         $days = $this->getWeekDaysSeries($request);
 
         $result = [];
-
         foreach ($portfolio->positions as $position) {
 
             $key = $position->positionable_type . '_' . $position->positionable_id;
@@ -46,7 +55,14 @@ class ApiDataController extends ApiBaseController
      */
     public function portfolio(Request $request)
     {
-        //Todo: get portfolio for a specified day in the past based on transactions analysis
-        return collect($this->getPortfolio($request)->toArray());
+        $this->validate($request, [
+            'id' => 'required|exists:portfolios,id',
+            'date' => 'sometimes|date',
+        ]);
+
+        $tradesRepo = new TradesRepository($this->getPortfolio($request));
+        $date = Carbon::parse($request->get('date', null));
+
+        return collect($tradesRepo->rollbackToDate($date));
     }
 }

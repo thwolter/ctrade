@@ -1,5 +1,4 @@
 library(R6)
-library(httr)
 
 parameter <- function(id, args) {
     prefix <- paste0('--', id, '=')
@@ -19,45 +18,12 @@ count <- parameter('count', args)
 source(paste(base, 'Class/Instrument.R', sep='/'))
 source(paste(base, 'Class/Stock.R', sep='/'))
 source(paste(base, 'Class/Portfolio.R', sep='/'))
+source(paste(base, 'Helper/fetchData.R', sep='/'))
+
 
 
 url.hist <- sprintf(paste(url, 'api/histories?id=%s&date=%s&count=%s', sep='/'), id, date, count)
-url.pf <- sprintf(paste(url, 'api/portfolio?id=%s', sep='/'), id)
-
-fetchHistories <- function(url) {
-    request <- GET(url)
-    stop_for_status(request, url)
-    
-    dat <- content(request)
-    len <- length(dat)
-    dimnames = list(names(dat[[1]]), names(dat))
-    m <- matrix(unlist(dat), ncol=len, dimnames=dimnames)
-    
-    m <- cbind(m, rep(1, len))
-    colnames(m)[len+1] <- 'Unity'
-    
-    hist = c()
-    for (i in 1:(len+1)) {
-        
-        dat <- xts::xts(m[,i], do.call("as.Date", list(x = rownames(m))))
-        names(dat)<-colnames(m)[i]
-        hist <- c(hist, list(dat))
-    }
-    names(hist)<-colnames(m)
-    return(hist)
-}
-
-fetchPortfolio <- function(url) {
-    request <- GET(url)
-    stop_for_status(request, url)
-    
-    data <- content(request)
-    
-    items <- as.data.frame(t(matrix(unlist(data$items), ncol=length(data$items))), stringsAsFactors = FALSE)
-    names(items) <- names(data$items[[1]])
-    
-    return(list(meta = data$meta, items = items))
-}
+url.pf <- sprintf(paste(url, 'api/portfolio?id=%s&date=%s', sep='/'), id, date)
 
 
 pfdata <- fetchPortfolio(url.pf)
@@ -66,25 +32,39 @@ histories <- fetchHistories(url.hist)
 pf <- Portfolio$new(pfdata, histories)
 
 
-require(methods) #for PerformanceAnalytics
-output950 <- PerformanceAnalytics::VaR(
-    R = pf$returns(), p = 0.95, weights = pf$delta(), portfolio_method = 'component')
+if (length(pfdata$items)) {
 
-output975 <- PerformanceAnalytics::VaR(
-    R = pf$returns(), p = 0.975, weights = pf$delta(), portfolio_method = 'component')
+    require(methods) #for PerformanceAnalytics
+    output950 <- PerformanceAnalytics::VaR(
+        R = pf$returns(), p = 0.95, weights = pf$delta(), portfolio_method = 'component')
 
-output990 <- PerformanceAnalytics::VaR(
-    R = pf$returns(), p = 0.99, weights = pf$delta(), portfolio_method = 'component')
+    output975 <- PerformanceAnalytics::VaR(
+        R = pf$returns(), p = 0.975, weights = pf$delta(), portfolio_method = 'component')
+    
+    output990 <- PerformanceAnalytics::VaR(
+        R = pf$returns(), p = 0.99, weights = pf$delta(), portfolio_method = 'component')
 
 
-result <- list(
-    contrib95 = as.list(output950$contribution),
-    contrib975 = as.list(output975$contribution),
-    contrib99 = as.list(output990$contribution),
-    total95 = as.numeric(output950$MVaR),
-    total975 = as.numeric(output975$MVaR),
-    total99 = as.numeric(output990$MVaR),
-    date = toString(index(tail(histories[[1]],1)))
-)
+    result <- list(
+        contrib95 = as.list(output950$contribution),
+        contrib975 = as.list(output975$contribution),
+        contrib99 = as.list(output990$contribution),
+        total95 = as.numeric(output950$MVaR),
+        total975 = as.numeric(output975$MVaR),
+        total99 = as.numeric(output990$MVaR),
+        date = toString(index(tail(histories[[1]],1)))
+    )
+    
+} else {
+    result <- list(
+        contrib95 = 0,
+        contrib975 = 0,
+        contrib99 = 0,
+        total95 = 0,
+        total975 = 0,
+        total99 = 0,
+        date = toString(index(tail(histories[[1]],1)))
+    )
+}
 
 jsonlite::toJSON(result)

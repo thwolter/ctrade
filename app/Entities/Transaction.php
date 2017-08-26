@@ -47,18 +47,31 @@ class Transaction extends Model
 {
     use Presentable, SoftDeletes;
 
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
+
     protected $presenter = \App\Presenters\Transaction::class;
 
     protected $fillable = [
         'date',
         'amount',
         'price',
+        'value',
         'cash',
         'executed_at'
     ];
 
     protected $dates = ['deleted_at'];
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
 
     public function type()
     {
@@ -80,6 +93,14 @@ class Transaction extends Model
         return $this->morphTo();
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+
+
     /**
      * @param Portfolio $portfolio
      * @param Carbon $date
@@ -89,30 +110,30 @@ class Transaction extends Model
      */
     public static function buy($portfolio, $date, $position, $amount)
     {
-        $type = 'buy';
+        $type = 'trade';
 
         return self::saveTransaction($portfolio, $date, $position, $amount, $type);
     }
 
     public static function sell($portfolio, $date, $position, $amount)
     {
-        $type = 'sell';
+        $type = 'trade';
 
-        return self::saveTransaction($portfolio, $date, $position, $amount, $type);
+        return self::saveTransaction($portfolio, $date, $position, -$amount, $type);
     }
 
     public static function deposit($portfolio, $date, $amount)
     {
-        $type = 'deposit';
+        $type = 'payment';
 
         return self::payment($portfolio, $date, $amount, $type);
     }
 
     public static function withdraw($portfolio, $date, $amount)
     {
-        $type = 'withdraw';
+        $type = 'payment';
 
-        return self::payment($portfolio, $date, $amount, $type);
+        return self::payment($portfolio, $date, -$amount, $type);
     }
 
     /**
@@ -125,10 +146,13 @@ class Transaction extends Model
      */
     private static function saveTransaction($portfolio, $date, $position, $amount, $type)
     {
+        $price = array_first($position->price());
+
         $transaction = new self([
             'executed_at' => $date,
             'amount' => $amount,
-            'price' => array_first($position->price())
+            'price' => $price,
+            'value' => $amount * $price
         ]);
 
         $transaction->portfolio()->associate($portfolio);
@@ -151,7 +175,7 @@ class Transaction extends Model
     {
         $transaction = new self([
             'executed_at' => $date,
-            'cash' => $amount
+            'value' => $amount
         ]);
 
         $transaction->portfolio()->associate($portfolio);
@@ -160,5 +184,24 @@ class Transaction extends Model
         event(new PortfolioHasChanged($portfolio, $date));
         return $transaction->save();
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
 
 }
