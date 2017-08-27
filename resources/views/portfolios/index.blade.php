@@ -28,36 +28,50 @@
                     @foreach($portfolios as $portfolio)
                         @php $route = route('portfolios.show', ['slug' => $portfolio->slug]) @endphp
 
-                        <portlet title="{{ $portfolio->name }}">
+                        <portlet title="Portfolio: {{ $portfolio->name }}">
 
                             <div class="portfolio-box">
-                                <div class="col-xs-6">
-                                    <p>{{ $portfolio->description }}</p>
+
+                                <div>
+                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                        <span>Beschreibung:</span>
+                                        {!! $portfolio->present()->description() !!}
+                                    </div>
+
+                                    <div class="keyfigure col-md-2 col-sm-3 col-xs-12">
+                                        <div class="keyfigure-title">Wert</div>
+                                        <div class="keyfigure-number">
+                                            {{ $portfolio->present()->total() }}
+                                        </div>
+                                    </div>
+
+                                    <div class="keyfigure col-md-2 col-sm-3 col-xs-12">
+                                        <div class="keyfigure-title">Risiko</div>
+                                        <div class="keyfigure-number">
+                                            {{ $portfolio->present()->risk() }}
+                                        </div>
+                                    </div>
+
+                                    <div class="keyfigure col-md-2 col-sm-3 col-xs-12">
+                                        <div class="keyfigure-title">Rendite</div>
+                                        <div class="keyfigure-number">
+                                            {{ $portfolio->present()->return() }}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="keyfigure col-xs-2">
-                                    <div class="keyfigure-title">
-                                        Value
-                                    </div>
-                                    <div class="keyfigure-number">
-                                        2.000,00€
-                                    </div>
-                                </div>
-                                <div class="keyfigure col-xs-2">
-                                    <div class="keyfigure-title">
-                                        Value
-                                    </div>
-                                    <div class="keyfigure-number">
-                                        2.000,00€
-                                    </div>
-                                </div>
-                                <div class="col-xs-2">
-                                    <a href="#">Öffnen</a>
+
+                            </div>
+
+                            <div>
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 30px;">
+                                    <a href="{{ route('portfolios.show', $portfolio->slug) }}" class="btn btn-primary">Öffnen</a>
                                 </div>
                             </div>
+
+
                         </portlet>
 
                     @endforeach
-
 
                 @endif
         </div>

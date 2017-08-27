@@ -70,4 +70,14 @@ class Portfolio extends Presenter
         return (! is_null($url)) ? asset('storage/'.$url) : asset('img/portfolios/bg-1.jpg');
     }
 
+    public function description()
+    {
+        $description = $this->entity->description;
+        if ($description) {
+            return '<p>$description</p>';
+        } else {
+            return '<p style="color: lightgrey;">Keine Beschreibung vorhanden.</p>';
+        }
+    }
+
 }

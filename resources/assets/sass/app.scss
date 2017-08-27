@@ -175,9 +175,20 @@
 	color: #555;
 }
 
-.keyfigures-number {
-	background-color: rgba(74, 128, 198, 0.29);
-	color: #4a80c6;
-	line-height: 30px;
-	text-align: center;
+.keyfigure {
+	padding-bottom: 10px;
+
+	.keyfigure-title {
+		background-color: #4a80c6;
+		color: white;
+		padding: 0 10px;
+	}
+
+	.keyfigure-number {
+		background-color: rgba(74, 128, 198, 0.1);
+		color: #4a80c6;
+		line-height: 35px;
+		text-align: center;
+	}
 }
+
