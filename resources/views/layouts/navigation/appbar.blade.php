@@ -32,6 +32,10 @@
                     <a href="{{ route('home.about') }}">Über uns</a>
                 </li>
 
+                <li class="navbar-item">
+                    <a href="{{ route('faq.index') }}">Faq</a>
+                </li>
+
                 <li class="navbar-divider"></li><!-- /.navbar-divider -->
 
             </ul>
