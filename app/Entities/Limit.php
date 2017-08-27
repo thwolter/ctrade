@@ -45,7 +45,7 @@ class Limit extends Model
 
 
     public function type() {
-        return $this->belongsTo(LimitType::class);
+        return $this->belongsTo(LimitType::class)->withDefault();
     }
 
 

@@ -28,6 +28,6 @@ class LimitType extends Model
 
     public function limits()
     {
-        return $this->hasMany(Limit::class);
+        return $this->hasMany(Limit::class, 'type_id');
     }
 }
