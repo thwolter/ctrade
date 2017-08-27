@@ -94,9 +94,7 @@ class LimitRepository
      */
     public function get($type)
     {
-        return $this->portfolio->limits()
-            ->whereHas('type', function ($query) use ($type) {$query->whereCode($type);})
-            ->first();
+        return $this->portfolio->limits()->ofType($type)->first();
     }
 
 

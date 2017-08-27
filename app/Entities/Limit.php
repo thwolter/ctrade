@@ -71,4 +71,8 @@ class Limit extends Model
         return $query->where('date', null);
     }
 
+    public function scopeOfType($query, $type)
+    {
+        return $query->whereHas('type', function ($query) use ($type) {$query->whereCode($type);});
+    }
 }
