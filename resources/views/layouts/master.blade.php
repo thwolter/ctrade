@@ -9,22 +9,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400,300,700">
+    <meta name="author" content="Thomas Wolter">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <!-- Font Awesome CSS -->
-    {{--<link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/fontawesome/css/font-awesome.min.css') }}">--}}
-
-    <!-- Bootstrap CSS -->
-    {{--<link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">--}}
-
-    <!-- App CSS -->
-    {{--<link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/admin-1/css/mvpready-admin.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     
     
@@ -45,20 +33,18 @@
 <div id="wrapper">
 
    @if (Auth::check())
-
         @include('layouts.navigation.appbar')
         @include('layouts.navigation.mainnav')
-
-    @else
-
-       @include('layouts.navigation.guest')
-
     @endif
 
     @yield('content')
 
 </div> <!-- /#wrapper -->
-@include('layouts.partials.footer')
+
+@if (Auth::check())
+    @include('layouts.partials.footer')
+@endif
+
 
 
 <!-- App JS -->
