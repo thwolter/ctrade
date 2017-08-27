@@ -8,43 +8,19 @@
             <div class="row">
 
                 <div class="col-md-3 col-sm-6">
-                    @component('partials.icon-stat')
-                        @slot('label', 'Portfoliowert')
-                        @slot('value', $portfolio->present()->total())
-                        @slot('date', $portfolio->present()->updatedValue());
-                        @slot('icon', 'fa-pie-chart');
-                        @slot('iconColor', 'bg-primary')
-                    @endcomponent
+                   @include('partials.stats.value')
                 </div> <!-- /.col-md-3 -->
 
                 <div class="col-md-3 col-sm-6">
-                    @component('partials.icon-stat')
-                        @slot('label', 'Barbestand')
-                        @slot('value', $portfolio->present()->cash())
-                        @slot('date', $portfolio->present()->updatedToday());
-                        @slot('icon', 'fa-university');
-                        @slot('iconColor', 'bg-primary')
-                    @endcomponent
+                   @include('partials.stats.cash')
                 </div> <!-- /.col-md-3 -->
 
                 <div class="col-md-3 col-sm-6">
-                    @component('partials.icon-stat')
-                        @slot('label', 'Risiko ('.$portfolio->settings()->human()->get('period').')')
-                        @slot('value', $portfolio->present()->risk())
-                        @slot('date', $portfolio->present()->updatedRisk());
-                        @slot('icon', 'fa-tachometer');
-                        @slot('iconColor', 'bg-primary')
-                    @endcomponent
+                   @include('partials.stats.risk')
                 </div> <!-- /.col-md-3 -->
 
                 <div class="col-md-3 col-sm-6">
-                    @component('partials.icon-stat')
-                        @slot('label', 'Rendite (30 Tage)')
-                        @slot('value', $portfolio->present()->total())
-                        @slot('date', 'now');
-                        @slot('icon', 'fa-line-chart');
-                        @slot('iconColor', 'bg-primary')
-                    @endcomponent
+                   @include('partials.stats.return')
                 </div> <!-- /.col-md-3 -->
             </div>
 

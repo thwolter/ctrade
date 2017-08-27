@@ -45,6 +45,11 @@ abstract class Presenter
         return $currencyFmt;
     }
 
+    public function formatPercentage($value)
+    {
+        return sprintf('%01.1f %%', $value);
+    }
+
     public function price()
     {
         return $this->formatPrice($this->entity->price(), $this->entity->currencyCode());

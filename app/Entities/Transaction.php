@@ -192,6 +192,24 @@ class Transaction extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function scopePayments($query)
+    {
+        return $query->whereHas('type', function($query) {
+            $query->where('code', 'payment');
+        });
+    }
+
+    public function scopeBetween($query, $from, $to)
+    {
+        return $query->where('executed_at', '>=', $from)->where('executed_at', '<=', $to);
+    }
+
+    public function scopeAfter($query, $date)
+    {
+        return $query->where('executed_at', '>', $date);
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | ACCESORS

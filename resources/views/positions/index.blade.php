@@ -12,18 +12,14 @@
                     @include('positions.partials.cash')
                 </div>
 
+                <div class="col-md-3 col-sm-6">
+                    @include('partials.stats.value')
+                </div> <!-- /.col-md-3 -->
 
-                <div class="col-md-3">
-                    <icon-stat label="Portfoliowert" icon="fa-dollar bg-primary">
-                        {{ $portfolio->present()->total() }}
-                    </icon-stat>
-                </div>
+                <div class="col-md-3 col-sm-6">
+                    @include('partials.stats.return')
+                </div> <!-- /.col-md-3 -->
 
-                <div class="col-md-3">
-                    <icon-stat label="Entwicklung" icon="fa-dollar bg-primary">
-                        {{ $portfolio->present()->total() }}
-                    </icon-stat>
-                    </div>
             </div>
 
             @include('positions.partials.stocks')

@@ -11,6 +11,17 @@ use Illuminate\Http\Request;
 class ApiBaseController extends Controller
 {
 
+    protected function getRedirectUrl()
+    {
+        return 'api/error';
+    }
+
+
+    public function apiCallError(Request $request)
+    {
+        return view('api.error');
+    }
+
     /**
      * Returns the portfolio for a requested id.
      *

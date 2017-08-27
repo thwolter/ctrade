@@ -51,6 +51,13 @@
                                     </a>
                                 </li>
 
+                                <li role="presentation" class="{{ active_tab('dashboard') }}">
+                                    <a href="#dashboard" data-toggle="tab" role="tab">
+                                        <i class="fa fa-tachometer"></i>
+                                        &nbsp;&nbsp;Dashboard
+                                    </a>
+                                </li>
+
                                 <li role="presentation" class="{{ active_tab('notifications') }}">
                                     <a href="#notifications" data-toggle="tab" role="tab">
                                         <i class="fa fa-envelope"></i>
@@ -72,6 +79,8 @@
                                 @include('portfolios.edit.parameter')
 
                                 @include('portfolios.edit.limits')
+
+                                @include('portfolios.edit.dashboard')
 
                                 @include('portfolios.edit.notifications')
 

@@ -23,6 +23,7 @@ return [
         'parameter'     => 'Parameter',
         'limits'        => 'Limite',
         'message'       => 'Nachrichten',
+        'dashboard'     => 'Dashboard'
         ]
 
 

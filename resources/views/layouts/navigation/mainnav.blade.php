@@ -67,6 +67,13 @@
                             </li>
 
                             <li>
+                                <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'dashboard']) }}">
+                                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                                    @lang('navigation.settings.dashboard')
+                                </a>
+                            </li>
+
+                            <li>
                                 <a href="{{ route('portfolios.edit', ['slug' => $portfolio->slug, 'tab' => 'notifications']) }}">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
                                     @lang('navigation.settings.message')

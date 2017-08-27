@@ -28,9 +28,7 @@ class UpdatePortfolio extends FormRequest
     {
         return [
             'id' => 'required|exists:portfolios,id',
-            'name' => 'min:1|max:60',
-            'category' => 'string|nullable',
-            'description' => 'string|nullable'
+            'name' => 'sometimes|min:1|max:60',
         ];
     }
 

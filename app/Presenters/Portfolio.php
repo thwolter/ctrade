@@ -32,6 +32,14 @@ class Portfolio extends Presenter
         return $this->formatPrice($risk, $this->entity->currencyCode());
     }
 
+    public function return()
+    {
+        $repo = new RiskRepository($this->entity);
+        $return = $repo->portfolioReturn();
+
+        return $this->formatPercentage($return);
+    }
+
     public function updatedRisk()
     {
         $date = array_last(array_keys($this->entity->keyFigure('risk')->values));
@@ -47,6 +55,12 @@ class Portfolio extends Presenter
     public function updatedToday()
     {
         $date = Carbon::now();
+        return $this->formatDate($date);
+    }
+
+    public function updatedReturn()
+    {
+        $date = array_last(array_keys($this->entity->keyFigure('value')->values));
         return $this->formatDate($date);
     }
 

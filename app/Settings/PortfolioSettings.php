@@ -11,7 +11,8 @@ class PortfolioSettings extends Settings
         'period' => 20,
         'history' => 250,
         'email_frequency' => 'daily',
-        'threshold' => 0
+        'threshold' => 0,
+        'returnPeriod' => 30
     ];
 
     protected $confidence = [
@@ -32,5 +33,14 @@ class PortfolioSettings extends Settings
         '6 Monate' => 120,
         '1 Jahr' => 250,
         '2 Jahre' => 500,
+    ];
+
+    protected $returnPeriod = [
+        '1 Tag' => 1,
+        '1 Woche' => 7,
+        '1 Monat' => 30,
+        '6 Monate' => 180,
+        '1 Jahr' => 360,
+        'seit Beginn' => null
     ];
 }

@@ -16,6 +16,7 @@ class RiskRepository
 
     protected $confidence;
     protected $period;
+    protected $returnPeriod;
 
 
     public function __construct(Portfolio $portfolio)
@@ -24,6 +25,7 @@ class RiskRepository
 
         $this->confidence = $portfolio->settings('confidence');
         $this->period = $portfolio->settings('period');
+        $this->returnPeriod = $portfolio->settings('returnPeriod');
     }
 
 
@@ -44,5 +46,27 @@ class RiskRepository
         }
 
         return $dailyRisk * $factor;
+    }
+
+
+    public function portfolioReturn()
+    {
+        $values = $this->portfolio->keyFigure('value')->values;
+        $dates = array_keys($values);
+
+        $now = Carbon::now()->toDateString();
+        $from = Carbon::now()->subDay($this->returnPeriod)->toDateString();
+
+        if (! array_key_exists($now, array_keys($values))) {
+            $now = array_last($dates);
+        }
+
+        if (! array_key_exists($from, array_keys($values))) {
+            $from = array_first($dates);
+        }
+
+        $return = $values[$now]-$values[$from];
+
+        return $return;
     }
 }
