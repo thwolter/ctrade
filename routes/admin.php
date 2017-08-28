@@ -2,7 +2,9 @@
 
 CRUD::resource('exchange', 'ExchangeCrudController');
 CRUD::resource('alias', 'AliasCrudController');
-CRUD::resource('stocks', 'StockCrudController');
+CRUD::resource('stock', 'StockCrudController');
+CRUD::resource('faq', 'FaqCrudController');
+CRUD::resource('faq-category', 'FaqCategoryController');
 
 
 

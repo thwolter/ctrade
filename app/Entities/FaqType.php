@@ -2,11 +2,14 @@
 
 namespace App\Entities;
 
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
 class FaqType extends Model
 {
+
+    use CrudTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -48,7 +51,7 @@ class FaqType extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function name()
+    public function getNameAttribute()
     {
         return (App::getLocale('de')) ? $this->name_de : $this->name_en;
     }

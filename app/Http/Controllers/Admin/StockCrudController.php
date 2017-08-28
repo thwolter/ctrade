@@ -18,7 +18,7 @@ class StockCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel(Stock::class);
-        $this->crud->setRoute('admin/stocks');
+        $this->crud->setRoute('admin/stock');
         $this->crud->setEntityNameStrings('stock', 'stocks');
         $this->crud->enableAjaxTable();
         $this->crud->allowAccess('revisions');
@@ -64,22 +64,11 @@ class StockCrudController extends CrudController
 
 
         $this->crud->addFilter([
-            'type' => 'simple',
-            'name' => 'industry',
-            'label' => 'Empty'
-        ],
-            false,
-            function () {
-                $this->crud->addClause('where', 'industry_id', null);
-            });
-
-
-        $this->crud->addFilter([
             'name' => 'currency',
             'type' => 'dropdown',
             'label'=> 'Currency'
         ], function() {
-                return Currency::getEnumValuesAsAssociativeArray('code');
+                return Currency::getEnumValuesAsAssociativeArray('name');
         }, function($value) { // if the filter is active
             $this->crud->addClause('where', 'currency_id', $value);
         });

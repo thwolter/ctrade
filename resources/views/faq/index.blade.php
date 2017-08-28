@@ -73,25 +73,24 @@
                         <div class="portlet-body">
 
                             @foreach ($types as $type)
-                                @php $name = $type->name() @endphp
-                                <h5>{{ $name }}</h5>
+                                <h5>{{ $type->name }}</h5>
 
-                                <div id="accordion-{{ $name }}" class="panel-group accordion-simple">
+                                <div id="accordion-{{ $type->name }}" class="panel-group accordion-simple">
 
                                     @foreach ($type->faqs as $faq)
                                         <div class="panel">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
                                                     <a class="accordion-toggle" data-toggle="collapse"
-                                                       data-parent="#accordion-{{ $name }}" href="#faq-general-{{ $faq->id }}">
-                                                        <i class="fa faq-accordion-caret"></i>{{ $faq->question() }}
+                                                       data-parent="#accordion-{{ $type->name }}" href="#faq-general-{{ $faq->id }}">
+                                                        <i class="fa faq-accordion-caret"></i>{{ $faq->question }}
                                                     </a>
                                                 </h4>
                                             </div><!-- .panel-heading -->
 
                                             <div id="faq-general-{{ $faq->id }}" class="panel-collapse collapse">
                                                 <div class="panel-body">
-                                                    <p>{{ $faq->answer() }}</p>
+                                                    <p>{{ $faq->answer }}</p>
                                                 </div><!-- .panel-body -->
                                             </div> <!-- ./panel-collapse -->
                                         </div><!-- .panel -->
