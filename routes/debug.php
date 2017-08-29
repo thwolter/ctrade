@@ -33,3 +33,48 @@ Route::get('template', function() {
 Route::get('portfolio/{id}', function($id) {
     return redirect('api/portfolio', $id);
 });
+
+Route::get('token', function() {
+    $guzzle = new GuzzleHttp\Client;
+
+    $response = $guzzle->post('http://ctrade.dev/oauth/token', [
+        'form_params' => [
+            'grant_type' => 'client_credentials',
+            'client_id' => '1',
+            'client_secret' => '22zGlADqbdaftoHulePLDrZBVM8eo8FD4GGocBYt',
+            'scope' => '',
+        ],
+    ]);
+
+    //return $response->access_token;
+    return json_decode((string) $response->getBody(), true);
+});
+
+
+Route::get('token2', function() {
+    $guzzle = new GuzzleHttp\Client;
+
+    $response = $guzzle->post('//capmyrisk.com/oauth/token', [
+        'form_params' => [
+            'grant_type' => 'client_credentials',
+            'client_id' => '3',
+            'client_secret' => '7TjmuPRaaCm5EqeV6mYlM8tB3bGvc99rpY1Z3EfA',
+            'scope' => '',
+        ],
+    ]);
+
+    //return $response->access_token;
+    return json_decode((string) $response->getBody(), true);
+});
+
+
+Route::get('/redirect', function () {
+    $query = http_build_query([
+        'client_id' => '1',
+        'redirect_uri' => 'ctrade.dev/callback',
+        'response_type' => 'token',
+        'scope' => '',
+    ]);
+
+    return redirect('oauth/authorize?'.$query);
+});
