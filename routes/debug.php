@@ -54,11 +54,11 @@ Route::get('token', function() {
 Route::get('token2', function() {
     $guzzle = new GuzzleHttp\Client;
 
-    $response = $guzzle->post('//capmyrisk.com/oauth/token', [
+    $response = $guzzle->post('http://capmyrisk.com/oauth/token', [
         'form_params' => [
             'grant_type' => 'client_credentials',
             'client_id' => '3',
-            'client_secret' => '7TjmuPRaaCm5EqeV6mYlM8tB3bGvc99rpY1Z3EfA',
+            'client_secret' => 'AAOmHxG4Jvf8quf9IzMiL995Y6cSpBhd6jJAdncf',
             'scope' => '',
         ],
     ]);
