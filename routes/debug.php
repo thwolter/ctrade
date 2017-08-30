@@ -54,7 +54,7 @@ Route::get('token', function() {
 Route::get('token2', function() {
     $guzzle = new GuzzleHttp\Client;
 
-    $response = $guzzle->post('http://capmyrisk.com/oauth/token', [
+    $response = $guzzle->post('https://www.capmyrisk.com/oauth/token', [
         'form_params' => [
             'grant_type' => 'client_credentials',
             'client_id' => '3',
@@ -70,11 +70,11 @@ Route::get('token2', function() {
 
 Route::get('/redirect', function () {
     $query = http_build_query([
-        'client_id' => '1',
-        'redirect_uri' => 'ctrade.dev/callback',
-        'response_type' => 'token',
+        'client_id' => '0',
+        'redirect_uri' => 'http://ctrade.cev/callback',
+        'response_type' => 'code',
         'scope' => '',
     ]);
 
-    return redirect('oauth/authorize?'.$query);
+    return redirect('http://ctrade.dev/oauth/authorize?'.$query);
 });

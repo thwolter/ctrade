@@ -5,14 +5,31 @@
 
 library(httr)
 
+
+#
+# Fetch the access token from the server.
+# A token can be produced with command 'php partisan passwort:client'
+#
+fetchAccessToken <- function(uri, client_id, client_secret)
+{
+    request <- POST(url, encode = "form",
+                    body = list(
+                        grant_type = 'client_credentials',
+                        client_id = client_id,
+                        client_secret = client_secret,
+                        scope = ''
+                    )
+    )
+    
+    return(content(request)$access_token)
+}
+
+
 fetchHistories <- function(url) {
     request <- GET(url, add_headers(
-        form_params = list(
-            grant_type = 'client_credentials',
-            client_id = client_id,
-            client_secret = client_secret,
-            scope = ''
-    )))
+        'Accept' = 'application/json',
+        'Authorization' = paste('Bearer', token)
+    ))
     stop_for_status(request, url)
 
     dat <- content(request)
@@ -34,8 +51,12 @@ fetchHistories <- function(url) {
     return(hist)
 }
 
+
 fetchPortfolio <- function(url) {
-    request <- GET(url)
+    request <- GET(url, add_headers(
+        'Accept' = 'application/json',
+        'Authorization' = paste('Bearer', token)
+    ))
     stop_for_status(request, url)
 
     data <- content(request)

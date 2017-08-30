@@ -19,8 +19,9 @@ source(paste(base, 'Class/Instrument.R', sep='/'))
 source(paste(base, 'Class/Stock.R', sep='/'))
 source(paste(base, 'Class/Portfolio.R', sep='/'))
 source(paste(base, 'Helper/fetchData.R', sep='/'))
-source(paste(base, 'Helper/.env.R', sep='/'))
 
+source(paste(base, 'Helper/.env.R', sep='/'))
+token <- fetchAccessToken(uri_token, client_id, client_secret)
 
 
 url.hist <- sprintf(paste(url, 'api/histories?id=%s&date=%s&count=%s', sep='/'), id, date, count)
