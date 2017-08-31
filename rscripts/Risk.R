@@ -20,16 +20,17 @@ source(paste(base, 'Class/Stock.R', sep='/'))
 source(paste(base, 'Class/Portfolio.R', sep='/'))
 source(paste(base, 'Helper/fetchData.R', sep='/'))
 
-source(paste(base, 'Helper/.env.R', sep='/'))
-token <- fetchAccessToken(uri_token, client_id, client_secret)
-
 
 url.hist <- sprintf(paste(url, 'api/histories?id=%s&date=%s&count=%s', sep='/'), id, date, count)
 url.pf <- sprintf(paste(url, 'api/portfolio?id=%s&date=%s', sep='/'), id, date)
 
+# Get the token from server
+source(paste(base, 'Helper/.env.R', sep='/'))
+token <- fetchAccessToken(uri_token, client_id, client_secret)
 
-pfdata <- fetchPortfolio(url.pf)
-histories <- fetchHistories(url.hist)
+# fetch portfolio data an history from server
+pfdata <- fetchPortfolio(url.pf, token)
+histories <- fetchHistories(url.hist, token)
 
 pf <- Portfolio$new(pfdata, histories)
 
