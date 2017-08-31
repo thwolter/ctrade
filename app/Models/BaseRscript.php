@@ -93,7 +93,11 @@ class BaseRscript
         unlink($log);
         unlink($result);
 
-        if ($pos !== false)
-            throw new RscriptException(substr($logtext, $pos));
+        if ($pos !== false) {
+            $error = substr($logtext, $pos);
+            Log::emergency("Rscript error: $error");
+            throw new RscriptException($error);
+        }
+
     }
 }

@@ -52,6 +52,9 @@ class RiskRepository
     public function portfolioReturn()
     {
         $values = $this->portfolio->keyFigure('value')->values;
+
+        if (!$values) return null;
+
         $dates = array_keys($values);
 
         $now = Carbon::now()->toDateString();

@@ -23,8 +23,13 @@ url.hist <- sprintf(paste(url, 'api/histories?id=%s&date=%s&count=%s', sep='/'),
 url.pf <- sprintf(paste(url, 'api/portfolio?id=%s&date=%s', sep='/'), id, date)
 
 
-pfdata <- fetchPortfolio(url.pf)
-histories <- fetchHistories(url.hist)
+# Get the token from server
+source(paste(base, '.env.R', sep='/'))
+token <- fetchAccessToken(uri_token, client_id, client_secret)
+
+
+pfdata <- fetchPortfolio(url.pf, token)
+histories <- fetchHistories(url.hist, token)
 
 pf <- Portfolio$new(pfdata, histories)
 

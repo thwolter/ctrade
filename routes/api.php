@@ -43,13 +43,15 @@ Route::get('/lookup', 'Api\ApiSearchController@lookup');
 | provides the historic values of the portfolio.
 |
 */
-Route::get('/portfolio/positions', 'Api\ApiDatabaseController@positions');
-Route::get('/portfolio/value', 'Api\ApiDatabaseController@value');
-Route::get('/portfolio/risk', 'Api\ApiDatabaseController@risk');
-Route::get('/portfolio/limits', 'Api\ApiDatabaseController@limits');
-Route::get('/portfolio/utilisation', 'Api\ApiDatabaseController@utilisation');
-Route::get('/portfolio/contribution', 'Api\ApiDatabaseController@contribution');
-Route::get('/portfolio/graph', 'Api\ApiDatabaseController@graph');
+Route::group(['middleware' => ['auth:api']], function() {
+    Route::get('/portfolio/positions', 'Api\ApiDatabaseController@positions');
+    Route::get('/portfolio/value', 'Api\ApiDatabaseController@value');
+    Route::get('/portfolio/risk', 'Api\ApiDatabaseController@risk');
+    Route::get('/portfolio/limits', 'Api\ApiDatabaseController@limits');
+    Route::get('/portfolio/utilisation', 'Api\ApiDatabaseController@utilisation');
+    Route::get('/portfolio/contribution', 'Api\ApiDatabaseController@contribution');
+    Route::get('/portfolio/graph', 'Api\ApiDatabaseController@graph');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -61,8 +63,11 @@ Route::get('/portfolio/graph', 'Api\ApiDatabaseController@graph');
 | provides the historic values of the portfolio.
 |
 */
-Route::get('/portfolio/calc/value', 'Api\ApiCalculationController@portfolioCalculateValue');
-Route::get('/portfolio/calc/risk', 'Api\ApiCalculationController@portfolioCalculateRisk');
+Route::group(['middleware' => ['client']], function() {
+    Route::get('/portfolio/calc/value', 'Api\ApiCalculationController@portfolioCalculateValue');
+    Route::get('/portfolio/calc/risk', 'Api\ApiCalculationController@portfolioCalculateRisk');
+});
+
 
 
 /*

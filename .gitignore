@@ -16,3 +16,4 @@ _ide_helper*
 errordump.rda
 opt.RData
 tmp/
+/rscripts/.env.R
