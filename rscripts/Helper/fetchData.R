@@ -12,20 +12,20 @@ library(httr)
 #
 fetchAccessToken <- function(uri, client_id, client_secret)
 {
-    request <- POST(url, encode = "form",
-                    body = list(
-                        grant_type = 'client_credentials',
-                        client_id = client_id,
-                        client_secret = client_secret,
-                        scope = ''
-                    )
+    request <- POST(url, encode = "form", 
+        body = list(
+            grant_type = 'client_credentials',
+            client_id = client_id,
+            client_secret = client_secret,
+            scope = '*'
+        )
     )
     
     return(content(request)$access_token)
 }
 
 
-fetchHistories <- function(url) {
+fetchHistories <- function(url, token = NULL) {
     request <- GET(url, add_headers(
         'Accept' = 'application/json',
         'Authorization' = paste('Bearer', token)
@@ -52,7 +52,7 @@ fetchHistories <- function(url) {
 }
 
 
-fetchPortfolio <- function(url) {
+fetchPortfolio <- function(url, token = NULL) {
     request <- GET(url, add_headers(
         'Accept' = 'application/json',
         'Authorization' = paste('Bearer', token)
