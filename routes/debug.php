@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Artisan;
 
-function getClientToken(): array
+function getClientToken()
 {
     $guzzle = new GuzzleHttp\Client;
 
@@ -50,7 +50,7 @@ Route::get('template', function() {
 
 Route::get('portfolio/{id}', function($id) {
 
-    $token = $this->getClientToken();
+    $token = getClientToken();
 
     $guzzle = new GuzzleHttp\Client;
     $response = $guzzle->get('http://ctrade.dev/api/portfolio?id=2', [
