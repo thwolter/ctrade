@@ -31,7 +31,30 @@ Route::get('template', function() {
 });
 
 Route::get('portfolio/{id}', function($id) {
-    return redirect('api/portfolio', $id);
+
+    $guzzle = new GuzzleHttp\Client;
+
+    $response = $guzzle->post('http://ctrade.dev/oauth/token', [
+        'form_params' => [
+            'grant_type' => 'client_credentials',
+            'client_id' => '1',
+            'client_secret' => '22zGlADqbdaftoHulePLDrZBVM8eo8FD4GGocBYt',
+            'scope' => '*',
+        ],
+    ]);
+
+    $json = json_decode((string) $response->getBody(), true);
+    $token = $json['access_token'];
+
+    $response = $guzzle->get('http://ctrade.dev/api/portfolio?id=2', [
+        //'query' => 'id='.$id,
+        'headers' => [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '.$token,
+        ],
+    ]);
+
+    return $response;
 });
 
 Route::get('token', function() {
@@ -42,13 +65,14 @@ Route::get('token', function() {
             'grant_type' => 'client_credentials',
             'client_id' => '1',
             'client_secret' => '22zGlADqbdaftoHulePLDrZBVM8eo8FD4GGocBYt',
-            'scope' => '',
+            'scope' => '*',
         ],
     ]);
 
     //return $response->access_token;
     return json_decode((string) $response->getBody(), true);
 });
+
 
 
 Route::get('token2', function() {

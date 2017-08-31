@@ -37,13 +37,13 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\SentryContext::class,
-            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class
         ],
 
         'api' => [
             'throttle:60,1',
             'bindings',
-            'auth:api',
+            //'auth:api',
             'client'
         ],
     ];
