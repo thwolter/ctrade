@@ -54,13 +54,13 @@ class FaqCrudController extends CrudController
 
 
         $this->crud->addField([
-            'name'       => 'question_en',
+            'name'       => 'question',
             'label'      => 'Question (english)',
             'type'       => 'text',
         ]);
 
         $this->crud->addField([
-            'name'       => 'answer_en',
+            'name'       => 'answer',
             'label'      => 'Answer (english)',
             'type'       => 'textarea',
         ]);

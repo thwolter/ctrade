@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\App;
 
 class Faq extends Model
 {
-
     use CrudTrait;
 
     /*
@@ -17,7 +16,7 @@ class Faq extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $fillable = ['question', 'answer'];
+    protected $fillable = ['question', 'answer', 'question_de', 'answer_de'];
 
 
     /*
@@ -52,14 +51,14 @@ class Faq extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getQuestionAttribute()
+    public function getQuestionAttribute($value)
     {
-        return (App::getLocale('de')) ? $this->question_de : $this->question_en;
+        return (App::getLocale('de') && $this->question_de) ? $this->question_de : $value;
     }
 
-    public function getAnswerAttribute()
+    public function getAnswerAttribute($value)
     {
-        return (App::getLocale('de')) ? $this->answer_de : $this->answer_en;
+        return (App::getLocale('de') && $this->answer_de) ? $this->answer_de : $value;
     }
 
 

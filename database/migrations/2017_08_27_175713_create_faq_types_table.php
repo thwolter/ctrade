@@ -15,7 +15,7 @@ class CreateFaqTypesTable extends Migration
     {
         Schema::create('faq_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name_en')->nullable();
+            $table->string('name')->unique();
             $table->string('name_de')->nullable();
             $table->timestamps();
         });

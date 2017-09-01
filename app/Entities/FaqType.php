@@ -17,7 +17,7 @@ class FaqType extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $fillable = ['name_de', 'name_en'];
+    protected $fillable = ['name', 'name_de'];
 
 
     /*
@@ -51,9 +51,9 @@ class FaqType extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getNameAttribute()
+    public function getNameAttribute($value)
     {
-        return (App::getLocale('de')) ? $this->name_de : $this->name_en;
+        return (App::getLocale('de')) ? $this->name_de : $value;
     }
 
     /*

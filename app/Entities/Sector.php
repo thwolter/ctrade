@@ -2,7 +2,9 @@
 
 namespace App\Entities;
 
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 /**
  * App\Entities\Sector
@@ -20,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Sector extends Model
 {
+    use CrudTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +31,7 @@ class Sector extends Model
     */
 
     protected $fillable = [
-        'name'
+        'name', 'name_de'
     ];
 
 
@@ -71,9 +74,16 @@ class Sector extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getNameAttribute($value)
+    {
+        return (App::getLocale('de') && $this->name_de) ? $this->name_de : $value;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+
 }

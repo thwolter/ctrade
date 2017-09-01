@@ -2,7 +2,9 @@
 
 namespace App\Entities;
 
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 /**
  * App\Entities\Industry
@@ -20,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Industry extends Model
 {
+    use CrudTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +31,7 @@ class Industry extends Model
     */
 
     protected $fillable = [
-        'name'
+        'name', 'name_de'
     ];
 
 
@@ -61,10 +64,10 @@ class Industry extends Model
     }
 
     /*
-   |--------------------------------------------------------------------------
-   | SCOPES
-   |--------------------------------------------------------------------------
-   */
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -72,9 +75,16 @@ class Industry extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getNameAttribute($value)
+    {
+        return (App::getLocale('de') && $this->name_de) ? $this->name_de : $value;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+
 }

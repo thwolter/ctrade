@@ -4,30 +4,33 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Entities\FaqType;
+use App\Entities\Industry;
+use App\Entities\Sector;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Http\Request;
 
 
-class FaqCategoryController extends CrudController
+class SectorCrudController extends CrudController
 {
 
     public function setup()
     {
-        $this->crud->setModel(FaqType::class);
-        $this->crud->setRoute('admin/faq-category');
-        $this->crud->setEntityNameStrings('FAQ category', 'FAQ categories');
+        $this->crud->setModel(Sector::class);
+        $this->crud->setRoute('admin/sector');
+        $this->crud->setEntityNameStrings('sector', 'sectors');
 
 
         $this->crud->setColumns([
 
             [
                 'name'  => 'name',
-                'label' => 'Category',
+                'label' => 'Name',
                 'type'  => 'text',
             ],
+
             [
                 'name'  => 'name_de',
-                'label' => 'Category (de)',
+                'label' => 'Name (de)',
                 'type'  => 'text',
             ],
 
@@ -38,6 +41,9 @@ class FaqCategoryController extends CrudController
             'name'       => 'name',
             'label'      => 'Name (english)',
             'type'       => 'text',
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
         ]);
 
         $this->crud->addField([
