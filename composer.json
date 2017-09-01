@@ -29,6 +29,7 @@
         "khill/lavacharts": "^3.1",
         "laravel/dusk": "^2.0",
         "laravel/framework": "5.5.*",
+        "laravel/horizon": "^1.0",
         "laravel/passport": "^3.0",
         "laravel/scout": "^3.0",
         "laravel/socialite": "^3.0",
@@ -75,12 +76,12 @@
             "php artisan key:generate"
         ],
         "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "Illuminate\\Foundation\\ComposerScripts::postInstall"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan ide-helper:generate",
-            "php artisan ide-helper:meta",
+            "php artisan ide-helper:meta"
         ]
     },
     "config": {

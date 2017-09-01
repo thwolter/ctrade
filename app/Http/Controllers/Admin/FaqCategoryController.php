@@ -21,7 +21,7 @@ class FaqCategoryController extends CrudController
         $this->crud->setColumns([
 
             [
-                'name'  => 'name',
+                'name'  => 'originalName',
                 'label' => 'Category',
                 'type'  => 'text',
             ],
@@ -35,7 +35,7 @@ class FaqCategoryController extends CrudController
 
 
         $this->crud->addField([
-            'name'       => 'name',
+            'name'       => 'originalName',
             'label'      => 'Name (english)',
             'type'       => 'text',
         ]);

@@ -16,7 +16,7 @@ class Faq extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $fillable = ['question', 'answer', 'question_de', 'answer_de'];
+    protected $fillable = ['faq_type_id', 'question', 'answer', 'question_de', 'answer_de'];
 
 
     /*
@@ -61,6 +61,15 @@ class Faq extends Model
         return (App::getLocale('de') && $this->answer_de) ? $this->answer_de : $value;
     }
 
+    public function getOriginalQuestionAttribute($value)
+    {
+        return $this->getOriginal('question');
+    }
+
+    public function getOriginalAnswerAttribute($value)
+    {
+        return $this->getOriginal('answer');
+    }
 
     /*
     |--------------------------------------------------------------------------

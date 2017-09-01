@@ -7,7 +7,7 @@
 
             @include('partials.message')
 
-            @php( $focus = 'Meine Portfolios' )
+            @php $focus = 'Meine Portfolios' @endphp
 
                 @if (count($portfolios) == 0)
 
