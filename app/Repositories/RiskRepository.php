@@ -52,7 +52,6 @@ class RiskRepository
     public function portfolioReturn()
     {
         $values = $this->portfolio->keyFigure('value')->values;
-
         if (!$values) return null;
 
         $dates = array_keys($values);
@@ -67,7 +66,7 @@ class RiskRepository
         if (! array_key_exists($from, array_keys($values))) {
             $from = array_first($dates);
         }
-
+        //todo: eliminate all cash in/out before calculating return
         $return = $values[$now]-$values[$from];
 
         return $return;

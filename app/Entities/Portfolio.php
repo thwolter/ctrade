@@ -303,7 +303,6 @@ class Portfolio extends Model
         return $this->image()->save($image);
     }
 
-
     public function updateImage(UploadedFile $file)
     {
         $image = PortfolioImage::fromForm($file);
@@ -325,16 +324,19 @@ class Portfolio extends Model
     }
 
 
+    /**
+     * Return the keyFigures of chosen type. If not exists in database it will be craated.
+     *
+     * @param string $type
+     * @return Keyfigure
+     */
     public function keyFigure($type)
     {
-        $keyFigure = $this->keyfigures()->whereHas('type', function ($query) use ($type) {
-            $query->whereCode($type);
-        })->first();
+        $keyFigure = $this->keyfigures()->ofType($type)->first();
 
-        if (count($keyFigure) == 0) {
-            $type = KeyfigureType::firstOrCreate(['code' => $type]);
+        if (!$keyFigure) {
             $keyFigure = new Keyfigure();
-            $keyFigure->type()->associate($type);
+            $keyFigure->type()->associate(KeyfigureType::firstOrCreate(['code' => $type]));
             $this->keyFigures()->save($keyFigure);
         }
 

@@ -135,7 +135,12 @@ class Keyfigure extends Model
     |--------------------------------------------------------------------------
     */
 
-
+    public function scopeOfType($query, $type)
+    {
+        return $query->whereHas('type', function($query) use ($type) {
+            $query->whereCode($type);
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
