@@ -13,4 +13,5 @@ return [
 
     'failed'   => 'Diese Zugangsdaten wurden nicht in unserer Datenbank gefunden.',
     'throttle' => 'Zu viele Loginversuche. Versuchen Sie es bitte in :seconds Sekunden nochmal.',
+    'welcome' => 'Willkommen, :Name',
 ];

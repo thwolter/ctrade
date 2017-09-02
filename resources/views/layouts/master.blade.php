@@ -37,7 +37,14 @@
         @include('layouts.navigation.mainnav')
     @endif
 
-    @yield('content')
+       <div class="content">
+           <div class="container">
+
+               @include('partials.message')
+               @yield('content')
+
+           </div>
+       </div>
 
 </div> <!-- /#wrapper -->
 

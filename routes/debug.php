@@ -24,6 +24,9 @@ Route::get('test', function() {
     return view('auth.confirmed.email', ['user' => \App\Entities\User::first()]);
 });
 
+Route::get('portfolio/index', function() {
+   redirect('http://ctrade.dev/portfolio')->with('success', 'hi, it works');
+});
 
 Route::get('event', function(Request $request) {
     $limit = \App\Entities\Limit::firstOrFail();

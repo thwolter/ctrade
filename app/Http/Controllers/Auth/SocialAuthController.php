@@ -27,10 +27,15 @@ class SocialAuthController extends Controller
      */
     public function callback($provider, UserRepository $repo)
     {
-        $user = $repo->createOrGetUser(Socialite::driver($provider)->user(), $provider);
+        $providerUser = Socialite::driver($provider)->user();
+        $user = $repo->getUser($providerUser, $provider);
+
+        if (!$user) {
+            $user = $repo->createUser($providerUser, $provider);
+            session(['success' => trans('auth.welcome', ['name' => $user->firstName])]);
+        }
 
         Auth::login($user, true);
-        return redirect(route('home'))
-            ->with('message', 'Wir haben Deinen Account verknüpft');
+        return redirect(route('home'));
     }
 }

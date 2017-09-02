@@ -2,80 +2,73 @@
 
 @section('content')
 
-    <div class="content">
-        <div class="container">
+    <div class="page-header">
+        <h3 class="page-title">@lang('user.title')</h3>
+    </div> <!-- /.page-header -->
 
-            @include('partials.message')
+    <div class="portlet portlet-boxed">
+        <div class="portlet-body">
+            <div class="layout layout-main-right layout-stack-sm">
 
-            <div class="page-header">
-                <h3 class="page-title">@lang('user.title')</h3>
-            </div> <!-- /.page-header -->
+                <div class="col-md-3 col-sm-4 layout-sidebar">
 
-            <div class="portlet portlet-boxed">
-                <div class="portlet-body">
-                    <div class="layout layout-main-right layout-stack-sm">
+                    <div class="nav-layout-sidebar-skip">
+                        <br class="xs-20 visible-xs"/>
+                        <strong>Tab Navigation</strong> / <a href="#settings-content">Skip to Content</a>
+                    </div>
 
-                        <div class="col-md-3 col-sm-4 layout-sidebar">
+                    <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
 
-                            <div class="nav-layout-sidebar-skip">
-                                <br class="xs-20 visible-xs"/>
-                                <strong>Tab Navigation</strong> / <a href="#settings-content">Skip to Content</a>
-                            </div>
+                        <li role="presentation" class="{{ active_tab('profile') }}">
+                            <a href="#profile" data-toggle="tab" role="tab">
+                                <i class="fa fa-user"></i>
+                                &nbsp;&nbsp;@lang('user.profile.title')
+                            </a>
+                        </li>
 
-                            <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
+                        <li role="presentation" class="{{ active_tab('password') }}">
+                            <a href="#password" data-toggle="tab" role="tab">
+                                <i class="fa fa-lock"></i>
+                                &nbsp;&nbsp;@lang('user.password.title')
+                            </a>
+                        </li>
 
-                                <li role="presentation" class="{{ active_tab('profile') }}">
-                                    <a href="#profile" data-toggle="tab" role="tab">
-                                        <i class="fa fa-user"></i>
-                                        &nbsp;&nbsp;@lang('user.profile.title')
-                                    </a>
-                                </li>
+                        <li role="presentation" class="{{ active_tab('messaging') }}">
+                            <a href="#messaging" data-toggle="tab" role="tab">
+                                <i class="fa fa-bullhorn"></i>
+                                @lang('user.messaging.title')
+                            </a>
+                        </li>
 
-                                <li role="presentation" class="{{ active_tab('password') }}">
-                                    <a href="#password" data-toggle="tab" role="tab">
-                                        <i class="fa fa-lock"></i>
-                                        &nbsp;&nbsp;@lang('user.password.title')
-                                    </a>
-                                </li>
+                        <li role="presentation" class="{{ active_tab('categories') }}">
+                            <a href="#categories" data-toggle="tab" role="tab">
+                                <i class="fa fa-list"></i>
+                                &nbsp;&nbsp;@lang('user.categories.title')
+                            </a>
+                        </li>
 
-                                <li role="presentation" class="{{ active_tab('messaging') }}">
-                                    <a href="#messaging" data-toggle="tab" role="tab">
-                                        <i class="fa fa-bullhorn"></i>
-                                        @lang('user.messaging.title')
-                                    </a>
-                                </li>
+                    </ul>
 
-                                <li role="presentation" class="{{ active_tab('categories') }}">
-                                    <a href="#categories" data-toggle="tab" role="tab">
-                                        <i class="fa fa-list"></i>
-                                        &nbsp;&nbsp;@lang('user.categories.title')
-                                    </a>
-                                </li>
-
-                            </ul>
-
-                        </div> <!-- /.col -->
+                </div> <!-- /.col -->
 
 
-                        <div class="col-md-9 col-sm-8 layout-main">
+                <div class="col-md-9 col-sm-8 layout-main">
 
-                            <div id="settings-content" class="tab-content stacked-content">
+                    <div id="settings-content" class="tab-content stacked-content">
 
-                                @include('users.edit.profile')
+                        @include('users.edit.profile')
 
-                                @include('users.edit.password')
+                        @include('users.edit.password')
 
-                                @include('users.edit.messaging')
+                        @include('users.edit.messaging')
 
-                                @include('users.edit.categories')
+                        @include('users.edit.categories')
 
-                            </div> <!-- /.tab-content -->
+                    </div> <!-- /.tab-content -->
 
-                        </div> <!-- /.col -->
-                    </div> <!-- /.row -->
-                </div> <!-- /.portlet-body -->
-            </div> <!-- /.portlet -->
-        </div> <!-- /.container -->
-    </div> <!-- .content -->
+                </div> <!-- /.col -->
+            </div> <!-- /.row -->
+        </div> <!-- /.portlet-body -->
+    </div> <!-- /.portlet -->
 
 @endsection

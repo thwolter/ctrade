@@ -20,7 +20,7 @@ class HomeController extends Controller
     public function index()
     {
         if (\Auth::check())
-            return redirect(route('portfolios.index'));
+            return redirect(route('portfolios.index'))->withSuccess(session('success'));
         else
             return redirect(route('home.launch'));
             //return view('home.home');
