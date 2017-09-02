@@ -56,18 +56,20 @@ class RiskRepository
 
         $dates = array_keys($values);
 
-        $now = Carbon::now()->toDateString();
-        $from = Carbon::now()->subDay($this->returnPeriod)->toDateString();
+        $now = Carbon::now()->endOfDay();
+        $from = Carbon::now()->subDays($this->returnPeriod)->endOfDay();
 
-        if (! array_key_exists($now, array_keys($values))) {
-            $now = array_last($dates);
+
+        if (! array_key_exists($now->toDateString(), array_keys($values))) {
+            $now = Carbon::parse(array_last($dates))->endOfDay();
         }
 
-        if (! array_key_exists($from, array_keys($values))) {
-            $from = array_first($dates);
+        if (! array_key_exists($from->toDateString(), array_keys($values))) {
+            $from = Carbon::parse(array_first($dates))->endOfDay();
         }
-        //todo: eliminate all cash in/out before calculating return
-        $return = $values[$now]-$values[$from];
+
+        $cashFlow = $this->portfolio->cashFlow($from, $now);
+        $return = $values[$now->toDateString()] - $values[$from->toDateString()] - $cashFlow;
 
         return $return;
     }

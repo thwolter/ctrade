@@ -170,6 +170,11 @@ class Portfolio extends Model
         return $this->cash;
     }
 
+    public function cashFlow($from, $to)
+    {
+        return $this->transactions()->payments()->between($from, $to)->sum('value');
+    }
+
     public function stockTotal()
     {
         return $this->positions->sum->total($this->currencyCode());

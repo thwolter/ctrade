@@ -112,14 +112,14 @@ class Transaction extends Model
     {
         $type = 'trade';
 
-        return self::saveTransaction($portfolio, $date, $position, $amount, $type);
+        return self::transaction($portfolio, $date, $position, $amount, $type);
     }
 
     public static function sell($portfolio, $date, $position, $amount)
     {
         $type = 'trade';
 
-        return self::saveTransaction($portfolio, $date, $position, -$amount, $type);
+        return self::transaction($portfolio, $date, $position, -$amount, $type);
     }
 
     public static function deposit($portfolio, $date, $amount)
@@ -136,6 +136,7 @@ class Transaction extends Model
         return self::payment($portfolio, $date, -$amount, $type);
     }
 
+
     /**
      * @param Portfolio $portfolio
      * @param Carbon $date
@@ -144,7 +145,7 @@ class Transaction extends Model
      * @param string $type
      * @return bool
      */
-    private static function saveTransaction($portfolio, $date, $position, $amount, $type)
+    private static function transaction($portfolio, $date, $position, $amount, $type)
     {
         $price = array_first($position->price());
 
@@ -201,7 +202,7 @@ class Transaction extends Model
 
     public function scopeBetween($query, $from, $to)
     {
-        return $query->where('executed_at', '>=', $from)->where('executed_at', '<=', $to);
+        return $query->where('executed_at', '>', $from)->where('executed_at', '<', $to);
     }
 
     public function scopeAfter($query, $date)
