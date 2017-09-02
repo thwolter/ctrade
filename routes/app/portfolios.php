@@ -2,7 +2,7 @@
 
 //Route::resource('/portfolios', 'PortfoliosController');
 
-Route::prefix('portfolio')->group(function() {
+Route::prefix('portfolio')->middleware('auth')->group(function() {
 
     Route::post('store', [
         'as' => 'portfolios.store',

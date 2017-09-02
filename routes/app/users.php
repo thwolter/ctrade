@@ -1,6 +1,6 @@
 <?php
 
-Route::prefix('user')->group(function() {
+Route::prefix('user')->middleware('auth')->group(function() {
 
     Route::get('edit', [
         'as' => 'users.edit',
