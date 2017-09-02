@@ -20,7 +20,7 @@ class StockCrudController extends CrudController
         $this->crud->setModel(Stock::class);
         $this->crud->setRoute('admin/stock');
         $this->crud->setEntityNameStrings('stock', 'stocks');
-        $this->crud->enableAjaxTable();
+        //$this->crud->enableAjaxTable();
         $this->crud->allowAccess('revisions');
         $this->crud->with('revisionHistory');
 
@@ -30,26 +30,22 @@ class StockCrudController extends CrudController
                 'label' => 'ISIN'
             ],
             [
-                'name' => 'wkn',
-                'label' => 'WKN'
-            ],
-            [
-                'label' => 'Name',
-                'type' => 'model_function',
-                'function_name' => 'getOriginalName'
-            ],
-            [
-                'name' => 'name_overwrite',
-                'label' => 'Overwritten'
-            ],
-            [
                 'label' => 'Currency',
                 'type' => 'select',
                 'name' => 'currency_id',
                 'entity' => 'currency',
                 'attribute' => 'code',
                 'model' => Currency::class
+            ],
+            [
+                'name' => 'originalName',
+                'label' => 'Name',
+            ],
+            [
+                'name' => 'name_overwrite',
+                'label' => 'Overwritten'
             ]
+
         ]);
 
         $this->crud->addFilter([
@@ -95,6 +91,36 @@ class StockCrudController extends CrudController
 
 
         $this->crud->addField([
+            'name' => 'isin',
+            'label' => 'ISIN',
+            'type' => 'text',
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        $this->crud->addField([
+            'name' => 'currency_id',
+            'label' => 'Currency',
+            'entity' => 'currency',
+            'model' => Currency::class,
+            'attribute' => 'code',
+            'type' => 'select',
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        $this->crud->addField([
+            'name' => 'originalName',
+            'label' => 'Name',
+            'type' => 'text',
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        $this->crud->addField([
             'name' => 'name_overwrite',
             'label' => 'Overwritten Name',
             'type' => 'text'
@@ -118,35 +144,6 @@ class StockCrudController extends CrudController
             'type' => 'select',
         ]);
 
-        $this->crud->addField([
-            'name' => 'isin',
-            'label' => 'ISIN',
-            'type' => 'text',
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-        ]);
-
-        $this->crud->addField([
-            'name' => 'wkn',
-            'label' => 'WKN',
-            'type' => 'text',
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-        ]);
-
-        $this->crud->addField([
-            'name' => 'currency_id',
-            'label' => 'Currency',
-            'entity' => 'currency',
-            'model' => Currency::class,
-            'attribute' => 'code',
-            'type' => 'select',
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-        ]);
 
     }
 

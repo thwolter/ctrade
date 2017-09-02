@@ -17,6 +17,7 @@ class CreateExchangesTable extends Migration
             $table->increments('id');
             $table->string('code');
             $table->string('name')->nullable();
+            $table->string('name_de')->nullable();
             $table->timestamps();
         });
     }

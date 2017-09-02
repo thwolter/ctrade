@@ -21,7 +21,7 @@ class FaqCategoryController extends CrudController
         $this->crud->setColumns([
 
             [
-                'name'  => 'originalName',
+                'name'  => 'original_name',
                 'label' => 'Category',
                 'type'  => 'text',
             ],
@@ -35,7 +35,7 @@ class FaqCategoryController extends CrudController
 
 
         $this->crud->addField([
-            'name'       => 'originalName',
+            'name'       => 'original_name',
             'label'      => 'Name (english)',
             'type'       => 'text',
         ]);
@@ -50,12 +50,23 @@ class FaqCategoryController extends CrudController
 
     public function store(Request $request)
     {
+        $this->amendRequest($request);
         return parent::storeCrud();
     }
 
     public function update(Request $request)
     {
+        $this->amendRequest($request);
         return parent::updateCrud();
     }
 
+    /**
+     * Replace a model accessor field by the original field.
+     *
+     * @param Request $request
+     */
+    private function amendRequest(Request $request): void
+    {
+        $request->merge(['name' => $request->get('original_name')]);
+    }
 }

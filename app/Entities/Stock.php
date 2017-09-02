@@ -46,12 +46,7 @@ class Stock extends Instrument
 
     protected $fillable = ['name', 'name_overwrite', 'wkn', 'isin'];
 
-    protected $dates = ['created_at', 'updated_at'];
-
     protected $presenter = \App\Presenters\Stock::class;
-
-    //todo: check if this can be deleted; should use $type
-    public $typeDisp = 'Aktie';
 
     public $asYouType = true;
 
@@ -76,10 +71,6 @@ class Stock extends Instrument
             ]);
     }
 
-    public function getOriginalName()
-    {
-        return $this->fresh()->getOriginal('name');
-    }
 
     /*
    |--------------------------------------------------------------------------
@@ -102,6 +93,11 @@ class Stock extends Instrument
     public function getNameAttribute($value)
     {
         return ($this->name_overwrite) ? $this->name_overwrite : $value;
+    }
+
+    public function getOriginalNameAttribute($value)
+    {
+        return $this->fresh()->getOriginal('name');
     }
 
     /*

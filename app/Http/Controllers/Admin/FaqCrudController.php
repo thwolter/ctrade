@@ -54,13 +54,13 @@ class FaqCrudController extends CrudController
 
 
         $this->crud->addField([
-            'name'       => 'originalQuestion',
+            'name'       => 'original_question',
             'label'      => 'Question (english)',
             'type'       => 'text',
         ]);
 
         $this->crud->addField([
-            'name'       => 'originalAnswer',
+            'name'       => 'original_answer',
             'label'      => 'Answer (english)',
             'type'       => 'textarea',
         ]);
@@ -82,12 +82,27 @@ class FaqCrudController extends CrudController
 
     public function store(Request $request)
     {
+        $this->amendRequest($request);
         return parent::storeCrud();
     }
 
     public function update(Request $request)
     {
+        $this->amendRequest($request);
         return parent::updateCrud();
+    }
+
+    /**
+     * Replace a model accessor field by the original field.
+     *
+     * @param Request $request
+     */
+    private function amendRequest(Request $request): void
+    {
+        $request->merge([
+            'answer' => $request->get('original_answer'),
+            'question' => $request->get('original_question')
+        ]);
     }
 
 }

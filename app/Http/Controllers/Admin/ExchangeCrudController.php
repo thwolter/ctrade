@@ -19,18 +19,28 @@ class ExchangeCrudController extends CrudController
 
         $this->crud->setColumns([
             ['name'  => 'code', 'label' => 'Code'],
-            ['name'  => 'name', 'label' => 'name'],
+            ['name'  => 'original_name', 'label' => 'Name'],
+            ['name'  => 'name_de', 'label' => 'Name (de)'],
         ]);
 
         $this->crud->addField([
             'name'       => 'code',
             'label'      => 'Code',
             'type'       => 'text',
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
         ]);
 
         $this->crud->addField([
-            'name'       => 'name',
-            'label'      => 'Name',
+            'name'       => 'original_name',
+            'label'      => 'Name (english)',
+            'type'       => 'text',
+        ]);
+
+        $this->crud->addField([
+            'name'       => 'name_de',
+            'label'      => 'Name (german)',
             'type'       => 'text',
         ]);
 
@@ -39,12 +49,24 @@ class ExchangeCrudController extends CrudController
 
     public function store(Request $request)
     {
+        $this->amendRequest($request);
         return parent::storeCrud();
     }
 
     public function update(Request $request)
     {
+        $this->amendRequest($request);
         return parent::updateCrud();
+    }
+
+    /**
+     * Replace a model accessor field by the original field.
+     *
+     * @param Request $request
+     */
+    private function amendRequest(Request $request): void
+    {
+        $request->merge(['name' => $request->get('original_name')]);
     }
 
 }
