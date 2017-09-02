@@ -1,7 +1,7 @@
 <div class="navbar-brand">
     <div class="brand-name">
         <a href="/">
-            CapMyRisk
+            <b>Cap</b>MyRisk
         </a>
     </div>
 </div>

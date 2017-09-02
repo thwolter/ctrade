@@ -39,7 +39,7 @@ class LimitController extends Controller
             return $redirect->with('error', 'Limite konnten nicht angepasst werden. Bitte überprüfe die Werte.');
 
         } else {
-            return $redirect->with('message', 'Limite erfolgreich geändert.');
+            return $redirect->with('success', 'Limite erfolgreich geändert.');
         }
     }
 }
