@@ -13,19 +13,21 @@
     <input type="hidden" name="active_tab" value="password">
     <input type="hidden" name="id" value="{{ $user->id }}">
 
-        <div class="form-group">
+        @if($user->hasPassword())
+            <div class="form-group">
 
-            <label class="col-md-3 control-label">Password</label>
+                <label class="col-md-3 control-label">Password</label>
 
-            <div class="col-md-7">
-                <input type="password" name="oldpassword" class="form-control"
-                placeholder="akutelles Passwort"/>
-            </div> <!-- /.col -->
+                <div class="col-md-7">
+                    <input type="password" name="oldpassword" class="form-control"
+                    placeholder="akutelles Passwort"/>
+                </div> <!-- /.col -->
 
-        </div> <!-- /.form-group -->
+            </div> <!-- /.form-group -->
 
 
-        <hr>
+            <hr>
+        @endif
 
 
         <div class="form-group">

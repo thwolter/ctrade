@@ -50,7 +50,7 @@
                 <li class="dropdown navbar-profile">
 
                     <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="#">
-                        Mein Account
+                        @lang('auth.hello', ['name' => Auth::user()->firstName])
                         <i class="fa fa-caret-down"></i>
                     </a>
 

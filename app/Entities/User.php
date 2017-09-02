@@ -123,6 +123,11 @@ class User extends Authenticatable
     }
 
 
+    public function hasPassword()
+    {
+        return !is_null($this->password);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
