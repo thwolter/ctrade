@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Dusk\DuskServiceProvider;
+use Laravel\Horizon\Horizon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
             'Stock' => \App\Entities\Stock::class,
             'CcyPair' => \App\Entities\CcyPair::class
         ]);
+
+        // Choose who can see the horizon dashboard
+        Horizon::auth(function ($request) {
+            return auth()->user()->hasRole('admin');
+        });
 
 
 
