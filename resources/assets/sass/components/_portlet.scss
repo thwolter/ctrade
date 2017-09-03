@@ -3,7 +3,6 @@
 
 .portlet {
   position: relative;
-
   padding: 0;
   margin: 0 0 2em;
 }
@@ -22,57 +21,40 @@
 .portlet-icon {
   position: relative;
   top: -1px;
-
   margin-right: 10px;
-
   font-size: 16px;
 }
 
 .portlet-body {
   padding: 0;
   margin: 0;
-
-  background: #fff;
-
   @include clearfix ();
 }
 
 .portlet-default {
   .portlet-title {
     position: relative;
-
     margin-bottom: 30px;
 
     &:before {
       content: "";
-
       display: block;
-
       position: absolute;
-
       bottom: 0;
-
       width: 100%;
       height: 1px;
-
       z-index: 9;
-
       background: #e6e6e6;
     }
 
     &:after {
       content: "";
-
       display: block;
-
       position: relative;
       z-index: 10;
-
       width: 80px;
       height: 1px;
-
       margin: 20px 0 0;
-
       background: $brand-secondary;
     }
   }
@@ -81,17 +63,11 @@
 .portlet-boxed {
   .portlet-header {
     padding: 20px 20px;
-
-    border: 1px solid #ddd;
-
-    @include border-top-radius (5px);
   }
 
   .portlet-title {
     display: inline-block;
-
     margin-bottom: 0;
-
     font-size: 18px;
 
     u {
@@ -100,21 +76,49 @@
 
     &:after {
       content: "";
-
       display: block;
-
       position: relative;
-
-      bottom: -22px;
-
+      bottom: -20px;
       z-index: 100;
-
       width: auto;
-      height: 1px;
-
+      height: 4px;
       padding: 0 0 0 0;
       margin: 0 -35px 0 0;
+      background: $heading-bar-highlight-color;
+    }
+  }
 
+  .portlet-body {
+    padding: 30px 25px 25px;
+  }
+}
+
+.portlet-bordered {
+  .portlet-header {
+    padding: 20px 20px;
+    border: 1px solid #ddd;
+    @include border-top-radius (5px);
+  }
+
+  .portlet-title {
+    display: inline-block;
+    margin-bottom: 0;
+    font-size: 18px;
+
+    u {
+      text-decoration: none;
+    }
+
+    &:after {
+      content: "";
+      display: block;
+      position: relative;
+      bottom: -22px;
+      z-index: 100;
+      width: auto;
+      height: 1px;
+      padding: 0 0 0 0;
+      margin: 0 -35px 0 0;
       background: $heading-bar-highlight-color;
     }
   }
@@ -131,7 +135,6 @@
 
   .portlet-header+.portlet-body {
     border-top: none;
-
     @include border-top-radius (0);
   }
 
@@ -148,7 +151,6 @@
   .table-bordered {
     margin-top: -2px !important;
     margin-bottom: -2px !important;
-
     border-right: none;
     border-left: none;
 
@@ -168,14 +170,12 @@
   .dataTables_filter,
   .dataTables_paginate {
     float: right;
-
     padding-right: 20px;
   }
 
   .dataTables_info,
   .dataTables_length {
     float: left;
-
     padding-left: 20px;
   }
 
@@ -207,37 +207,47 @@
 .portlet-boxed {
   & {
     @include portlet-variant ($portlet-header-bg, $portlet-header-color);
+    @include portlet-variant-body($portlet-body-bg)
   }
 
   &.portlet-inverse {
     @include portlet-variant ($portlet-inverse-header-bg, $portlet-inverse-header-color);
+    @include portlet-variant-body($portlet-inverse-body-bg)
   }
 
   &.portlet-danger {
     @include portlet-variant ($portlet-danger-header-bg, $portlet-danger-header-color);
+    @include portlet-variant-body($portlet-danger-body-bg)
   }
 
   &.portlet-warning {
     @include portlet-variant ($portlet-warning-header-bg, $portlet-warning-header-color);
+    @include portlet-variant-body($portlet-warnings-body-bg)
+
   }
 
   &.portlet-success {
     @include portlet-variant ($portlet-success-header-bg, $portlet-success-header-color);
+    @include portlet-variant-body($portlet-success-body-bg)
   }
 
   &.portlet-info {
     @include portlet-variant ($portlet-info-header-bg, $portlet-info-header-color);
+    @include portlet-variant-body($portlet-info-body-bg)
   }
 
   &.portlet-primary {
     @include portlet-variant ($portlet-primary-header-bg, $portlet-primary-header-color);
+    @include portlet-variant-body($portlet-primary-body-bg)
   }
 
   &.portlet-secondary {
     @include portlet-variant ($portlet-secondary-header-bg, $portlet-secondary-header-color);
+    @include portlet-variant-body($portlet-secondary-body-bg)
   }
 
   &.portlet-tertiary {
     @include portlet-variant ($portlet-tertiary-header-bg, $portlet-tertiary-header-color);
+    @include portlet-variant-body($portlet-tertiary-body-bg)
   }
 }

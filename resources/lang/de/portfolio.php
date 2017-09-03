@@ -26,6 +26,7 @@ return [
     ],
 
     'messages' => [
-        'create_first' => 'Lege hier dein erstes Portfolio an.'
+        'create_first' => 'Lege hier dein erstes Portfolio an. Außer der Währung kannst du
+            alle Angaben auch in den Einstellungen anpassen.'
     ]
 ];

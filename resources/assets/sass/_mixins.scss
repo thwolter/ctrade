@@ -49,6 +49,14 @@
   }
 }
 
+//## [@mixin portlet-variant ()]
+
+@mixin portlet-variant-body ($bg) {
+  .portlet-body {
+    background-color: $bg;
+  }
+}
+
 
 
 //== Make Layout

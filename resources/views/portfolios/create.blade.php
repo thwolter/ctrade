@@ -5,7 +5,7 @@
     @php ($focus = 'Portfolio erstellen')
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 col-md-offset-2">
                 <portlet title="Portfolio erstellen">
 
                     <div class="col-md-12">
@@ -18,23 +18,6 @@
 
                 </portlet> <!-- /portlet -->
             </div>
-
-            <div class="col-md-4">
-
-                <div class="info-box">
-                    <p>
-                        Ein Portfolio hat eine Währung und einen Anfangs Cashbestand.
-                        Du kannst später deinem Portfolio Wertpapiere zuordnen und Cash
-                        ein- und auszahlen.
-                    </p>
-                    <p>
-                        Bitte beachte, dass die Währung des Portfolios nachträglich nicht
-                        geändert werden kann.
-                    </p>
-                </div>
-
-
-            </div> <!-- /.row -->
 
         </div>
 

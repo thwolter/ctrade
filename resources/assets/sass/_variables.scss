@@ -9,7 +9,7 @@
 $brand-layout                          : #5f8fcd;
 
 $brand-primary                         : $brand-layout;
-$brand-secondary                       : #eeeeee;
+$brand-secondary                       : #ee8a32;
 $brand-tertiary                        : #888;
 
 $brand-facebook                        : #3b5998;
@@ -34,9 +34,10 @@ $font-stack-icon                       : 'FontAwesome';
 //
 //## []
 
-$layout-bg : #f5f5f5;
-$navbar-admin-bg: #000;
-$navbar-bg: #000;
+$layout-bg 										: #fff;
+$box-bg-light 									: #fafafa;
+$navbar-admin-bg								: #000;
+$navbar-bg										: #000;
 
 
 
@@ -310,32 +311,43 @@ $parsely-error-color                   : #fff;
 //
 //## [.portlet-*]
 
-$portlet-header-bg                     : #fff;
-$portlet-header-color                  : lighten($brand-layout, 7.5%);
+$portlet-header-bg                     : #e5e5e5;
+$portlet-header-color                  : #777;
+$portlet-body-bg								: $box-bg-light;
+
 
 $portlet-inverse-header-bg             : $brand-layout;
 $portlet-inverse-header-color          : #fff;
+$portlet-inverse-body-bg					: $box-bg-light;
 
 $portlet-danger-header-bg              : lighten($brand-danger, 2%);
 $portlet-danger-header-color           : #fff;
+$portlet-danger-body-bg						: $box-bg-light;
 
 $portlet-warning-header-bg             : lighten($brand-warning, 2%);
 $portlet-warning-header-color          : #fff;
+$portlet-warnings-body-bg					: $box-bg-light;
 
 $portlet-info-header-bg                : $brand-info;
 $portlet-info-header-color             : #fff;
+$portlet-info-body-bg						: $box-bg-light;
 
 $portlet-success-header-bg             : $brand-success;
 $portlet-success-header-color          : #fff;
+$portlet-success-body-bg					: $box-bg-light;
 
 $portlet-primary-header-bg             : $brand-primary;
 $portlet-primary-header-color          : #fff;
+$portlet-primary-body-bg					: $box-bg-light;
 
 $portlet-secondary-header-bg           : $brand-secondary;
 $portlet-secondary-header-color        : #fff;
+$portlet-secondary-body-bg					: $box-bg-light;
+
 
 $portlet-tertiary-header-bg            : $brand-tertiary;
-$portlet-tertiary-header-color         :#fff;
+$portlet-tertiary-header-color         : #fff;
+$portlet-tertiary-body-bg					: $box-bg-light;
 
 
 //== Pricing Plans
