@@ -607,7 +607,7 @@ $navbar-admin-toggle-color             : lighten($navbar-admin-bg, 20%);
 //
 //## [.mainnav]
 
-$mainnav-bg                            : #eeeeee;
+$mainnav-bg                            : $box-bg-light;
 $mainnav-border-color                  : #ccc;
 
 $mainnav-toggle-bg                     : transparent;
