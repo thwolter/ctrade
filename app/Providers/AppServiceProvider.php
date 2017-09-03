@@ -27,7 +27,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Choose who can see the horizon dashboard
         Horizon::auth(function ($request) {
-            return auth()->user()->hasRole('admin');
+            $user = auth()->user();
+            return ($user) ? $user->hasRole('admin') : null;
         });
 
 
