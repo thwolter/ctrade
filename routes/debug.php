@@ -2,23 +2,6 @@
 
 use Illuminate\Support\Facades\Artisan;
 
-function getClientToken()
-{
-    $guzzle = new GuzzleHttp\Client;
-
-    $response = $guzzle->post('http://ctrade.dev/oauth/token', [
-        'form_params' => [
-            'grant_type' => 'client_credentials',
-            'client_id' => '1',
-            'client_secret' => '22zGlADqbdaftoHulePLDrZBVM8eo8FD4GGocBYt',
-            'scope' => '*',
-        ],
-    ]);
-
-    $json = json_decode((string)$response->getBody(), true);
-    return $json['access_token'];
-}
-
 
 Route::get('test', function() {
     return view('auth.confirmed.email', ['user' => \App\Entities\User::first()]);
@@ -53,7 +36,19 @@ Route::get('template', function() {
 
 Route::get('portfolio/{id}', function($id) {
 
-    $token = getClientToken();
+    $guzzle = new GuzzleHttp\Client;
+
+    $response = $guzzle->post('http://ctrade.dev/oauth/token', [
+        'form_params' => [
+            'grant_type' => 'client_credentials',
+            'client_id' => '1',
+            'client_secret' => '22zGlADqbdaftoHulePLDrZBVM8eo8FD4GGocBYt',
+            'scope' => '*',
+        ],
+    ]);
+
+    $json = json_decode((string)$response->getBody(), true);
+    $token = $json['access_token'];
 
     $guzzle = new GuzzleHttp\Client;
     $response = $guzzle->get('http://ctrade.dev/api/portfolio?id=2', [

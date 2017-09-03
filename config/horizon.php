@@ -67,6 +67,13 @@ return [
                 'processes' => 3,
                 'tries' => 3,
             ],
+            'supervisor-2' => [
+                'connection' => 'redis',
+                'queue' => ['quandl'],
+                'balance' => 'simple',
+                'processes' => 3,
+                'tries' => 3,
+            ],
         ],
     ],
 
