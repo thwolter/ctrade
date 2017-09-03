@@ -71,10 +71,14 @@
                                 <i class="fa fa-bullhorn"></i> Benachichtigungen
                             </a></li>
 
-                        <!-- Admin dashboard -->
+                        <!-- Admin dashboards -->
                         @role('admin')
-                        <li><a href="/admin/dashboard">
-                                <i class="fa fa-globe"></i> Dashboard
+                            <li><a href="/admin/dashboard">
+                                    <i class="fa fa-globe"></i> Backpack
+                            </a></li>
+
+                            <li><a href="/horizon">
+                                    <i class="fa fa-globe"></i> Horizon
                             </a></li>
                         @endrole
 
