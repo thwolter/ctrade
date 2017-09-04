@@ -10,6 +10,7 @@
             @include('portfolios.partials.welcome')
         </portlet>
 
+
         @if ($examples)
             <portlet id="examples" title="Beispiele">
                 @foreach($examples as $portfolio)
@@ -23,7 +24,8 @@
         @foreach($portfolios as $portfolio)
             @php $route = route('portfolios.show', ['slug' => $portfolio->slug]) @endphp
 
-            <portlet title="Portfolio: {{ $portfolio->name }}">
+            <div class="col-lg-10 col-lg-offset-1">
+                <portlet title="Portfolio: {{ $portfolio->name }}">
 
                 <div class="portfolio-box">
 
@@ -65,6 +67,7 @@
 
 
             </portlet>
+            </div>
 
         @endforeach
 

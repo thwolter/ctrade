@@ -59,7 +59,7 @@
                                      <span style="display:block">
                                          <a href="#" @click.prevent="onClickLink(item.id)">{{ item.name }}</a>
                                      </span>
-                                    <span>{{ item.industry }} | {{ item.sector }}</span>
+                                    <span>{{ join(item.industry, item.sector) }}</span>
 
                                 </td>
                                 <td>{{ item.isin }}</td>
@@ -133,6 +133,11 @@
                 this.query = null;
                 this.results = [];
                 this.doSearch = true;
+            },
+
+            join(industry, sector) {
+                let sep = (industry && sector) ? ' | ' : '';
+                return _.join([industry, sector], sep);
             }
         },
 
