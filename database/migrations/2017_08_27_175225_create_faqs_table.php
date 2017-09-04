@@ -17,9 +17,9 @@ class CreateFaqsTable extends Migration
             $table->increments('id');
             $table->integer('faq_type_id');
             $table->string('question')->unique();
-            $table->string('answer')->unique();
+            $table->text('answer');
             $table->string('question_de')->nullable();
-            $table->string('answer_de')->nullable();
+            $table->text('answer_de')->nullable();
             $table->timestamps();
         });
     }

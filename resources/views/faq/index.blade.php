@@ -31,7 +31,7 @@
 
                         @foreach($categories as $category)
 
-                            <a href="#{{ $category->name }}" class="list-group-item">
+                            <a href="#category-{{ $category->id }}" class="list-group-item">
                                 {{ $category->name }}
                                 <i class="fa fa-chevron-right list-group-chevron"></i>
                                 <span class="badge badge-secondary">{{ $category->faqs->count() }}</span>
@@ -54,16 +54,16 @@
                 <div class="portlet-body">
 
                     @foreach ($categories as $category)
-                        <h5 id="{{ $category->name }}">{{ $category->name }}</h5>
+                        <h5 id="category-{{ $category->id }}">{{ $category->name }}</h5>
 
-                        <div id="accordion-{{ $category->name }}" class="panel-group accordion-simple">
+                        <div id="accordion-{{ $category->id }}" class="panel-group accordion-simple">
 
                             @foreach ($category->faqs as $faq)
                                 <div class="panel">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a class="accordion-toggle" data-toggle="collapse"
-                                               data-parent="#accordion-{{ $category->name }}"
+                                               data-parent="#accordion-{{ $category->id }}"
                                                href="#faq-general-{{ $faq->id }}">
                                                 <i class="fa faq-accordion-caret"></i>{{ $faq->question }}
                                             </a>
