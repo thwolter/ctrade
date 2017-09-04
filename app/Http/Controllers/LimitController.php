@@ -18,7 +18,7 @@ class LimitController extends Controller
 
     public function set(Request $request)
     {
-        $portfolio = Portfolio::findOrFail($request->id)->first();
+        $portfolio = Portfolio::find($request->id);
         $repo = new LimitRepository($portfolio);
 
         $success = [];

@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('phpinfo', function() {
+    phpinfo();
+});
 
 Route::get('test', function() {
     return view('auth.confirmed.email', ['user' => \App\Entities\User::first()]);
