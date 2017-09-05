@@ -50,9 +50,9 @@
                         </div>
 
                         <div class="keyfigure col-md-2 col-sm-3 col-xs-12">
-                            <div class="keyfigure-title">Rendite</div>
+                            <div class="keyfigure-title">Entwicklung</div>
                             <div class="keyfigure-number">
-                                {{ $portfolio->present()->return() }}
+                                {{ $portfolio->present()->profit() }}
                             </div>
                         </div>
                     </div>

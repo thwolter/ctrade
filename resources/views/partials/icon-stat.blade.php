@@ -1,9 +1,10 @@
 <div class="icon-stat">
 
+    @php $signClass = ($value[0] === '-') ? 'negative' : '' @endphp
     <div class="row">
         <div class="col-xs-8 text-left">
             <span class="icon-stat-label">{{ $label }}</span> <!-- /.icon-stat-label -->
-            <span class="icon-stat-value">{{ $value }}</span> <!-- /.icon-stat-value -->
+            <span class="icon-stat-value {{ $signClass }}">{{ $value }}</span> <!-- /.icon-stat-value -->
         </div><!-- /.col-xs-8 -->
 
         <div class="col-xs-4 text-center">

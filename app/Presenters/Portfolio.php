@@ -40,6 +40,14 @@ class Portfolio extends Presenter
         return $this->formatPercentage($return);
     }
 
+    public function profit()
+    {
+        $repo = new RiskRepository($this->entity);
+        $profit = $repo->portfolioProfit();
+
+        return $this->formatprice($profit, $this->entity->currencyCode());
+    }
+
     public function updatedRisk()
     {
         $date = array_last(array_keys($this->entity->keyFigure('risk')->values));

@@ -51,6 +51,16 @@ class RiskRepository
 
     public function portfolioReturn()
     {
+        return null;
+    }
+
+    public function portfolioProfit()
+    {
+        return array_get($this->getPortfolioDelta(), 'delta');
+    }
+
+    private function getPortfolioDelta()
+    {
         $values = $this->portfolio->keyFigure('value')->values;
         if (!$values) return null;
 
@@ -59,18 +69,17 @@ class RiskRepository
         $now = Carbon::now()->endOfDay();
         $from = Carbon::now()->subDays($this->returnPeriod)->endOfDay();
 
-
-        if (! array_key_exists($now->toDateString(), array_keys($values))) {
+        if (!array_key_exists($now->toDateString(), array_keys($values))) {
             $now = Carbon::parse(array_last($dates))->endOfDay();
         }
 
-        if (! array_key_exists($from->toDateString(), array_keys($values))) {
+        if (!array_key_exists($from->toDateString(), array_keys($values))) {
             $from = Carbon::parse(array_first($dates))->endOfDay();
         }
 
         $cashFlow = $this->portfolio->cashFlow($from, $now);
-        $return = $values[$now->toDateString()] - $values[$from->toDateString()] - $cashFlow;
+        $delta = $values[$now->toDateString()] - $values[$from->toDateString()] - $cashFlow;
 
-        return $return;
+        return ['from' => $from, 'now' => $now, 'delta' => $delta];
     }
 }
