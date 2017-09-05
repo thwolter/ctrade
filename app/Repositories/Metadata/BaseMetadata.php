@@ -8,6 +8,7 @@ use App\Events\MetadataUpdateHasCanceled;
 use App\Events\MetadataUpdateHasFinished;
 use App\Events\MetadataUpdateHasStarted;
 use App\Facades\Datasource;
+use App\Jobs\Metadata\RunBulkUpdate;
 use App\Repositories\Exceptions\MetadataException;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
@@ -111,19 +112,7 @@ abstract class BaseMetadata
         $i = 0;
         while ($items) {
 
-            foreach ($items as $item) {
-
-                if ($this->datasource($item)) {
-
-                    if ($this->existUpdate($item)) {
-                        $this->update($item);
-                    }
-
-                } else {
-                    $this->create($item);
-                }
-
-            }
+            dispatch(new RunBulkUpdate($items, $this));
 
             if (App::environment('local')) break;
 
