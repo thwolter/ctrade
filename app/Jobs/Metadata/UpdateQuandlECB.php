@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 
 
-class UpdateQuandlECB //implements ShouldQueue
+class UpdateQuandlECB implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

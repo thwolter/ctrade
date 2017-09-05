@@ -21,7 +21,7 @@ return [
     | from Quandl data provider.
     */
 
-    'per_page' => 50,
+    'per_page' => 100,
 
 
     /*

@@ -4,13 +4,14 @@ namespace App\Jobs\Metadata;
 
 use App\Repositories\Metadata\BaseMetadata;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Collection;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
-class RunBulkUpdate
+class RunBulkUpdate implements ShouldQueue
 {
-    use Dispatchable, Queueable;
-
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $items;
     protected $base;
