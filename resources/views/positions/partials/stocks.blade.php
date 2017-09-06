@@ -22,7 +22,7 @@
                     <tr class="">
                         <td class="align-middle">{{ $loop->iteration }}</td>
                         <td class="align-middle">
-                            <a href="{{ route('positions.show', $position->id) }}">
+                            <a href="{{ route('positions.show', $position->positionable->slug) }}">
                                 {{ $position->name() }}</a>
                         </td>
                         <td>{{ $position->positionable->isin }}</td>

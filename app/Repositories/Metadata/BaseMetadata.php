@@ -20,6 +20,8 @@ abstract class BaseMetadata
 
     protected $chunk;
 
+    protected $queue = 'default';
+
     protected $provider;
 
     protected $database;
@@ -112,7 +114,7 @@ abstract class BaseMetadata
         $i = 0;
         while ($items) {
 
-            dispatch(new RunBulkUpdate($items, $this));
+            dispatch(new RunBulkUpdate($items, $this))->onQueue($this->queue);
 
             if (App::environment('local')) break;
 

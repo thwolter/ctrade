@@ -9,6 +9,7 @@ abstract class QuandlMetadata extends BaseMetadata
 {
 
     protected $provider = 'Quandl';
+    protected $queue = 'quandl';
 
     protected $maxLagging = 30;
 

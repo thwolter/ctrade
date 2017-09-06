@@ -7,9 +7,5 @@ foreach (File::allFiles(__DIR__.'/app') as $partial)
 }
 
 
-App::bind(
-    'App\Repositories\Contracts\InstrumentInterface',
-    'App\Repositories\InstrumentRepository'
-);
 
 
