@@ -12,7 +12,7 @@
         </div> <!-- /.col-md-3 -->
 
         <div class="col-md-3 col-sm-6">
-            @include('partials.stats.return')
+            @include('partials.stats.profit')
         </div> <!-- /.col-md-3 -->
 
     </div>
