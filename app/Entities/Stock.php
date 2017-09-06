@@ -8,6 +8,8 @@ use App\Presenters\Presentable;
 use App\Repositories\DataRepository;
 use Backpack\CRUD\CrudTrait;
 use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Laravel\Scout\Searchable;
 use Venturecraft\Revisionable\RevisionableTrait;
 
@@ -41,8 +43,13 @@ use Venturecraft\Revisionable\RevisionableTrait;
  */
 class Stock extends Instrument
 {
+    use Searchable, Presentable, CrudTrait, RevisionableTrait, Sluggable, SluggableScopeHelpers;
 
-    use Searchable, Presentable, CrudTrait, RevisionableTrait;
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
 
     protected $fillable = ['name', 'name_overwrite', 'wkn', 'isin'];
 
@@ -51,6 +58,20 @@ class Stock extends Instrument
     public $asYouType = true;
 
     public $instrumentType = 'stock';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
 
 
     public function toSearchableArray()
@@ -71,6 +92,10 @@ class Stock extends Instrument
             ]);
     }
 
+    public function sluggable()
+    {
+        return ['slug' => ['source' => 'nameWithType']];
+    }
 
     /*
    |--------------------------------------------------------------------------
@@ -100,6 +125,10 @@ class Stock extends Instrument
         return $this->fresh()->getOriginal('name');
     }
 
+    public function getNameWithTypeAttribute($value)
+    {
+        return $this->name . ' Stock';
+    }
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
