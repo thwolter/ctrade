@@ -161,10 +161,6 @@ class Position extends Model implements PresentableInterface
         ];
     }
 
-   /* public function history($dates)
-    {
-        return $this->positionable->history($dates);
-    }*/
 
     /*
     |--------------------------------------------------------------------------
