@@ -10,17 +10,15 @@ trait Financable
     
     protected $financialInstance;
 
- 
+
+    abstract protected function useDatasource();
+
+
     public function financial()
     {
-        if (!method_exists($this, 'datasources')) {
-            throw new FinancialException("Method 'datasources' not found.");
-        }
-
         if (! isset($financialInstance)) {
 
-            $datasource = $this->datasources->first();
-            $this->financialInstance = new DataRepository($datasource);
+            $this->financialInstance = new DataRepository($this->useDatasource());
         }
         
         return $this->financialInstance;

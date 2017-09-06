@@ -40,4 +40,9 @@ class CcyPair extends Model
         return $this->origin.$this->target;
     }
 
+
+    protected function useDatasource()
+    {
+        return $this->datasources->first();
+    }
 }

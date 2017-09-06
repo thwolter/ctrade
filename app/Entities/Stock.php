@@ -74,6 +74,12 @@ class Stock extends Instrument
     */
 
 
+    protected function useDatasource()
+    {
+        return $this->datasources->first();
+    }
+
+
     public function toSearchableArray()
     {
         return $this->toArray();

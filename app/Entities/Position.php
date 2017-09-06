@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Position extends Model implements PresentableInterface
 {
-    use Financable, Presentable, SoftDeletes;
+    use Presentable, SoftDeletes, Financable;
 
     /*
     |--------------------------------------------------------------------------
@@ -83,10 +83,11 @@ class Position extends Model implements PresentableInterface
     |--------------------------------------------------------------------------
     */
 
-    public function price()
-    {
-        return $this->positionable->price();
-    }
+   protected function useDatasource()
+   {
+       return $this->datasource;
+   }
+
 
     public function currency()
     {
@@ -160,10 +161,10 @@ class Position extends Model implements PresentableInterface
         ];
     }
 
-    public function history($dates)
+   /* public function history($dates)
     {
         return $this->positionable->history($dates);
-    }
+    }*/
 
     /*
     |--------------------------------------------------------------------------
