@@ -177,6 +177,7 @@ class Position extends Model implements PresentableInterface
         return $query->where('positionable_id', $instrument->id)->where('positionable_type', $type);
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | ACCESORS

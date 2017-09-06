@@ -65,10 +65,14 @@ class PositionsController extends Controller
      * @return \Illuminate\Http\Response
      *
      */
-    public function show($pid, $id)
+    public function show($portfolioSlug, $positionSlug)
     {
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
+        $portfolio = auth()->user()->portfolios()->whereSlug($portfolioSlug)->first();
+
+        // workaround required as whereHas on polymorphic relationship doesn't work yet
+        foreach ($portfolio->positions as $position) {
+            if ($position->positionable->slug == $positionSlug) break;
+        }
 
         return view('positions.show', compact('portfolio', 'position'));
     }
