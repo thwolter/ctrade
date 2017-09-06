@@ -7,6 +7,7 @@ use App\Presenters\Presentable;
 use App\Repositories\CurrencyRepository;
 use App\Repositories\Financable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -169,6 +170,12 @@ class Position extends Model implements PresentableInterface
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
+    public function scopeWithInstrument($query, $instrument)
+    {
+        $type = array_search(get_class($instrument), Relation::morphMap());
+        return $query->where('positionable_id', $instrument->id)->where('positionable_type', $type);
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -26,6 +26,7 @@ class PositionStore extends FormRequest
         return [
             'type' => 'required',
             'id' => 'required',
+            'datasourceId' => 'required',
             'amount' => 'required|min:0.01',
             'pid' => 'required|exists:portfolios,id'
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Facades\TimeSeries;
 use App\Repositories\CurrencyRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -65,4 +66,28 @@ class ApiDataController extends ApiBaseController
 
         return collect($tradesRepo->rollbackToDate($date));
     }
+
+
+    /**
+     * Return all week days either within a period or as number up to set date.
+     *
+     * @param Request $request
+     * @return array
+     * @throws \Exception
+     */
+    public function getWeekDaysSeries(Request $request)
+    {
+        if (isset($request->date) && isset($request->count)) {
+            $days = TimeSeries::allWeekDays($request->date, $request->count);
+
+        } elseif (isset($request->from) && isset($request->to)) {
+            $days = TimeSeries::allWeekDaysBetween($request->from, $request->to);
+
+        } else {
+            throw new \Exception("Parameter ['date' and 'count'] or ['from' and 'to'] must be set.");
+        }
+
+        return $days;
+    }
+
 }

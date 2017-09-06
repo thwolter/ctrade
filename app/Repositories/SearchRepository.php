@@ -22,7 +22,10 @@ class SearchRepository
         foreach ($item->datasources as $datasource)
         {
             $data = new DataRepository($datasource);
-            $prices[] = ['exchange'=> $datasource->exchange->code, 'price' => $data->price()];
+            $prices[] = [
+                'exchange'=> $datasource->exchange->code,
+                'price' => $data->price(),
+                'datasourceId' => $datasource->id];
         };
 
         return ['item' => $item->toArray(), 'prices' => $prices];

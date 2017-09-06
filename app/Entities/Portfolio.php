@@ -5,6 +5,7 @@ namespace App\Entities;
 use App\Entities\Traits\UuidModel;
 use App\Events\PortfolioHasChanged;
 use App\Presenters\Presentable;
+use App\Repositories\PositionRepository;
 use App\Settings\PortfolioSettings;
 use App\Settings\Settings;
 use Carbon\Carbon;
@@ -222,13 +223,12 @@ class Portfolio extends Model
     }
 
 
-    public function makePosition($instrument)
+    public function makePosition($instrument, $datasource = null)
     {
-        $position = $this->positionWith($instrument);
+        $position =  $this->positions()->withInstrument($instrument)->first();
 
-        if (is_null($position)) {
-            $position = new Position(['amount' => 0]);
-            $position->positionable()->associate($instrument);
+        if (! $position) {
+            $position = (new PositionRepository())->createPosition($instrument, $datasource);
             $this->positions()->save($position);
         }
 
@@ -290,15 +290,6 @@ class Portfolio extends Model
         return $this;
     }
 
-    public function positionWith($instrument)
-    {
-        $type = array_search(get_class($instrument), Relation::morphMap());
-
-        return $this->positions()
-            ->where('positionable_id', $instrument->id)
-            ->where('positionable_type', $type)
-            ->first();
-    }
 
     public function addImage(UploadedFile $file)
     {

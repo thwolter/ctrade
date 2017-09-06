@@ -95,6 +95,7 @@
 
                 form: new Form({
                     exchange: null,
+                    datasourceId: null,
                     price: null,
                     amount: null,
                     currency: null,
@@ -166,6 +167,7 @@
                 let price = this.stock.prices[index];
 
                 this.form.exchange = price.exchange;
+                this.form.datasourceId = price.datasourceId;
                 this.form.type = this.stock.item.type;
                 this.form.price = Object.keys(price.price).map(e => price.price[e])[0]
                 this.price = this.form.price.toFixed(2);

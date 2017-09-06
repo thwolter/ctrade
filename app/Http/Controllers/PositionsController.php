@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Datasource;
 use App\Entities\Transaction;
 use App\Http\Requests\PositionStore;
 use App\Http\Requests\PositionUpdate;
 use App\Repositories\FinancialMapping;
+use App\Repositories\PositionRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -44,14 +46,13 @@ class PositionsController extends Controller
      */
     public function store(PositionStore $request)
     {
-        $amount = $request->amount;
+        $portfolio = Portfolio::find($request->pid);
         $instrument = resolve($request->type)->find($request->id);
 
-        $portfolio = Portfolio::find($request->pid);
-        $position = $portfolio->makePosition($instrument);
-        $portfolio->buy($position->id, $amount);
+        $position = $portfolio->makePosition($instrument, $request->datasourceId);
 
-        Transaction::buy($portfolio, Carbon::now(), $position, $amount);
+        $portfolio->buy($position->id, $request->amount);
+        Transaction::buy($portfolio, Carbon::now(), $position, $request->amount);
 
         return ['redirect' => route('positions.index', $portfolio->slug)];
 
