@@ -14,17 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\DeleteTemp::class,
-
-        Commands\Metadata\UpdateMetadata::class,
-        Commands\Metadata\CheckMetadata::class,
-
-        Commands\TestMail::class,
-
-        Commands\Calculations\CalculateRisk::class,
-        Commands\Calculations\CalculateValue::class,
-        Commands\CheckLimits::class,
-
+        //
     ];
 
     /**
@@ -56,5 +46,9 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         require base_path('routes/console.php');
+
+        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__.'/Commands/Calculations');
+        $this->load(__DIR__.'/Commands/Metadata');
     }
 }
