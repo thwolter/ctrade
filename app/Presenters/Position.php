@@ -19,4 +19,11 @@ class Position extends Presenter
     {
         return $this->entity->name();
     }
+
+    public function exchange()
+    {
+        $datasource = $this->entity->datasource;
+        return ($datasource->exchange) ? $datasource->exchange->name : '';
+    }
+
 }

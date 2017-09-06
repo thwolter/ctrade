@@ -59,7 +59,9 @@ class Exchange extends Model
 
     public function getNameAttribute($value)
     {
-        return (App::getLocale('de') && $this->name_de) ? $this->name_de : $value;
+        return (App::getLocale('de') && $this->name_de)
+            ? $this->name_de
+            : ($value) ? $value : $this->code;
     }
 
 

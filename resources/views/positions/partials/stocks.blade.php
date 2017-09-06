@@ -8,6 +8,8 @@
                     <th>Nr</th>
                     <th>Position</th>
                     <th>ISIN</th>
+                    <th>Börse</th>
+                    <th>Updated</th>
                     <th class="text-right">Preis</th>
                     <th class="text-right">Stück</th>
                     <th class="text-right">Gesamt</th>
@@ -22,11 +24,10 @@
                         <td class="align-middle">
                             <a href="{{ route('positions.show', $position->id) }}">
                                 {{ $position->name() }}</a>
-                            <span>
-                            ({{ $position->present()->priceDate() }})
-                        </span>
                         </td>
                         <td>{{ $position->positionable->isin }}</td>
+                        <td>{{ $position->present()->exchange }}</td>
+                        <td>{{ $position->present()->priceDate() }}</td>
                         <td class="align-middle text-right">{{ $position->present()->price() }}</td>
                         <td class="align-middle text-right">{{ $position->amount() }}</td>
                         <td class="align-middle text-right">
