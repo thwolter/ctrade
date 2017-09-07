@@ -54,7 +54,7 @@ return [
                 'connection' => 'redis',
                 'queue' => ['quandl'],
                 'balance' => 'simple',
-                'processes' => 1,
+                'processes' => 2,
                 'tries' => 3,
             ],
         ],

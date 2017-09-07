@@ -77,6 +77,6 @@ return [
         ],
         'asYouType' => true,
         'searchBoolean' => env('TNTSEARCH_BOOLEAN', true),
-],
+    ],
 
 ];
