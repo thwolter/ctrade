@@ -31,6 +31,12 @@ class RunBulkUpdate implements ShouldQueue
         $this->base = $base;
     }
 
+
+    public function tags()
+    {
+        return ['bulk', 'database: '.$this->base->database];
+    }
+
     /**
      * Execute the job.
      *

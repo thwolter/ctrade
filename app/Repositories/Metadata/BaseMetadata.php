@@ -24,7 +24,7 @@ abstract class BaseMetadata
 
     protected $provider;
 
-    protected $database;
+    public $database;
 
     protected $keys =[];
 

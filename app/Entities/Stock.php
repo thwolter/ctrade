@@ -43,7 +43,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  */
 class Stock extends Instrument
 {
-    use Searchable, Presentable, CrudTrait, RevisionableTrait, Sluggable, SluggableScopeHelpers;
+    use Presentable, CrudTrait, RevisionableTrait, Sluggable, SluggableScopeHelpers;
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +82,9 @@ class Stock extends Instrument
 
     public function toSearchableArray()
     {
-        return $this->toArray();
+        return array_only($this->toArray(), [
+            'id', 'isin', 'wkn', 'name', 'sector', 'industry', 'currency'
+        ]);
     }
 
 

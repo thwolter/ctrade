@@ -10,7 +10,8 @@ class SearchRepository
 
     public function search($entity, $query)
     {
-        return resolve($entity)->search($query)->get();
+        return resolve($entity)
+            ->where('name', 'like', $query.'%')->get();
     }
 
 

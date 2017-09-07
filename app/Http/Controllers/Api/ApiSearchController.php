@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 class ApiSearchController extends ApiBaseController
 {
 
-    protected $repo;
+    protected $search;
 
-    public function __construct(SearchRepository $repo)
+    public function __construct(SearchRepository $search)
     {
-        $this->repo = $repo;
+        $this->search = $search;
     }
 
     /**
@@ -25,7 +25,7 @@ class ApiSearchController extends ApiBaseController
      */
     public function search(SearchRequest $request)
     {
-        return json_encode($this->repo
+        return json_encode($this->search
             ->search($request->get('entity'), $request->get('query'))
         );
     }
@@ -39,7 +39,7 @@ class ApiSearchController extends ApiBaseController
      */
     public function lookup(Request $request)
     {
-        return json_encode($this->repo
+        return json_encode($this->search
             ->lookup($request->get('entity'), $request->get('id'))
         );
     }

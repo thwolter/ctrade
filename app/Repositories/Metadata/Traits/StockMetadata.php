@@ -63,102 +63,6 @@ trait StockMetadata
         $stock->update();
     }
 
-    protected function model($item)
-    {
-        return resolve(Stock::class);
-    }
-
-
-    protected function exchange($item)
-    {
-        $exchange = Exchange::whereCodeOrAlias(parent::exchange($item));
-        return ($exchange->count()) ? $exchange->first()->code : null;
-    }
-
-
-    protected function valid($item)
-    {
-        return $this->tradable($item) and $this->isIdentifiable($item) && $this->hasCurrency($item) &&
-            $this->hasIsin($item) && $this->hasExchange($item);
-    }
-
-    /**
-     * @param $item
-     * @return array
-     */
-    protected function toArray($item)
-    {
-        $parameter = [
-            'name' => $this->name($item),
-            'currency' => $this->currency($item),
-            'wkn' => $this->wkn($item),
-            'isin' => $this->isin($item),
-            'sector' => $this->sector($item),
-            'industry' => $this->industry($item)
-        ];
-        return $parameter;
-    }
-
-    /**
-     * @param $item
-     * @return bool
-     */
-    protected function isIdentifiable($item)
-    {
-        if (!is_null($this->symbol($item)) || !is_null($this->name($item)) ||
-            !is_null($this->currency($item))) return true;
-
-        Log::notice(sprintf('%s skipped (name or currency missing)',
-            $this->symbol($item), $this->currency($item)
-        ));
-
-        return false;
-    }
-
-    /**
-     * check if currency persists in database
-     * @param $item
-     *
-     * @return bool
-     */
-    protected function hasCurrency($item)
-    {
-        if (Currency::whereCode($this->currency($item))->first())
-            return true;
-
-        Log::notice(sprintf('%s skipped (requires currency %s)',
-            $this->symbol($item), $this->currency($item)
-        ));
-
-        return false;
-    }
-
-
-    protected function hasIsin($item)
-    {
-        if ($this->isin($item)) {
-            return true;
-        } else {
-            Log::notice(sprintf('%s skipped (isin not defined)', $this->symbol($item)));
-            return false;
-        }
-    }
-
-
-    protected function hasExchange($item)
-    {
-        $exchange = $this->exchange($item);
-
-        if ($exchange) {
-            return true;
-
-        } else {
-            Log::notice(sprintf('%s skipped (exchange [%s] not defined)',
-                $this->symbol($item), parent::exchange($item)));
-            return false;
-        }
-    }
-
 
     public function persistStock($parameter)
     {
@@ -180,6 +84,107 @@ trait StockMetadata
 
         $stock->save();
         return $stock;
+    }
+
+
+    protected function model($item)
+    {
+        return resolve(Stock::class);
+    }
+
+
+    protected function exchange($item)
+    {
+        $exchange = Exchange::whereCodeOrAlias(parent::exchange($item));
+        return ($exchange->count()) ? $exchange->first()->code : null;
+    }
+
+
+    /**
+     * @param $item
+     * @return array
+     */
+    protected function toArray($item)
+    {
+        $parameter = [
+            'name' => $this->name($item),
+            'currency' => $this->currency($item),
+            'wkn' => $this->wkn($item),
+            'isin' => $this->isin($item),
+            'sector' => $this->sector($item),
+            'industry' => $this->industry($item)
+        ];
+        return $parameter;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validity Checks
+    |--------------------------------------------------------------------------
+    */
+
+    private function valid($item)
+    {
+        return $this->hasSymbol($item) && $this->hasCurrency($item) &&
+            $this->hasIsin($item) && $this->hasExchange($item);
+    }
+
+
+    /**
+     * @param $item
+     * @return bool
+     */
+    private function hasSymbol($item)
+    {
+        if ($this->symbol($item)) return true;
+
+        Log::warning(sprintf('%s skipped (symbol missing)',
+            array_get($item, 'dataset_code')
+        ));
+
+        return false;
+    }
+
+    /**
+     * check if currency persists in database
+     * @param $item
+     *
+     * @return bool
+     */
+    protected function hasCurrency($item)
+    {
+        if (Currency::whereCode($this->currency($item))->first()) return true;
+
+        Log::warning(sprintf('%s skipped (requires currency %s)',
+            $this->symbol($item), $this->currency($item)
+        ));
+
+        return false;
+    }
+
+
+    protected function hasIsin($item)
+    {
+        if ($this->isin($item))
+            return true;
+
+        Log::warning(sprintf('%s skipped (isin not defined)', $this->symbol($item)));
+        return false;
+
+    }
+
+
+    protected function hasExchange($item)
+    {
+        if (parent::exchange($item))
+            return true;
+
+        Log::notice(sprintf('%s skipped (exchange [%s] not defined)',
+            $this->symbol($item), parent::exchange($item)));
+
+        return false;
+
     }
 
 

@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\MySqlConnection;
+use Illuminate\Database\SQLiteConnection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Dusk\DuskServiceProvider;
@@ -30,8 +34,6 @@ class AppServiceProvider extends ServiceProvider
             $user = auth()->user();
             return ($user) ? $user->hasRole('admin') : null;
         });
-
-
 
     }
 
