@@ -22220,7 +22220,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.timeout = setTimeout(function () {
                 this.error = false;
                 if (this.query === '') {
-                    this.assign([]);
+                    self.assign([]);
                 } else {
                     self.onSubmit();
                 }
