@@ -112,3 +112,8 @@ Route::get('/redirect', function () {
 
     return redirect('http://ctrade.dev/oauth/authorize?'.$query);
 });
+
+Route::get('/update/stocks', function() {
+
+    foreach (\App\Entities\Stock::all() as $stock) { $stock->update(); }
+});
