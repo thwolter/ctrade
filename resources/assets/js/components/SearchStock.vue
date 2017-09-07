@@ -96,7 +96,9 @@
                 error: false,
 
                 doSearch: true,
-                id: null
+                id: null,
+
+                timeout: null
             }
         },
 
@@ -112,12 +114,17 @@
             },
 
             onRefresh() {
-                this.error = false;
-                if (this.query === '') {
-                    this.assign([]);
-                } else {
-                    this.onSubmit();
-                }
+                let self = this;
+                clearTimeout(this.timeout);
+
+                this.timeout = setTimeout(function () {
+                    this.error = false;
+                    if (this.query === '') {
+                        self.assign([]);
+                    } else {
+                        self.onSubmit();
+                    }
+                }, 500);
             },
 
             onClickLink(id) {

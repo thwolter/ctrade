@@ -22193,7 +22193,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             error: false,
 
             doSearch: true,
-            id: null
+            id: null,
+
+            timeout: null
         };
     },
 
@@ -22212,12 +22214,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         onRefresh: function onRefresh() {
-            this.error = false;
-            if (this.query === '') {
-                this.assign([]);
-            } else {
-                this.onSubmit();
-            }
+            var self = this;
+            clearTimeout(this.timeout);
+
+            this.timeout = setTimeout(function () {
+                this.error = false;
+                if (this.query === '') {
+                    this.assign([]);
+                } else {
+                    self.onSubmit();
+                }
+            }, 500);
         },
         onClickLink: function onClickLink(id) {
             this.id = id;
