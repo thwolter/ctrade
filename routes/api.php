@@ -97,6 +97,3 @@ Route::post('/notifications/read', 'Api\ApiNotificationsController@markAsRead');
 | This routes can be used for debugging as it allows to set break points.
 |
 */
-Route::get('/metadata/update', function() {
-    Artisan::call('metadata:update');
-});
