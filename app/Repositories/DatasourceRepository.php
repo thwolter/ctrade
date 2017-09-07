@@ -20,47 +20,6 @@ use Illuminate\Support\Facades\DB;
 class DatasourceRepository
 {
 
-
-    public function __construct()
-    {
-
-    }
-
-
-    public function whereProvider($provider)
-    {
-        return Datasource::whereHas('provider', function($query) use($provider) {
-            $query->whereCode($provider);
-        });
-    }
-
-
-    public function whereDatabase($database)
-    {
-        return Datasource::whereHas('database', function($query) use($database) {
-            $query->whereCode($database);
-        });
-    }
-
-
-    public function whereDataset($dataset)
-    {
-        return Datasource::whereHas('dataset', function($query) use($dataset) {
-            $query->whereCode($dataset);
-        });
-    }
-
-
-    public function whereOrigin($provider, $database)
-    {
-        $providerId = Provider::whereCode($provider)->first()->id;
-        $databaseId = Database::whereCode($database)->first()->id;
-
-        return Datasource::whereProviderId($providerId)->whereDatabaseId($databaseId);
-
-    }
-
-
     public function make($provider, $database, $dataset, $attributes = [])
     {
         $datasource = new Datasource($attributes);

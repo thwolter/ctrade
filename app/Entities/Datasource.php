@@ -34,9 +34,29 @@ use App\Exceptions\DatasourceException;
  */
 class Datasource extends Model
 {
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
+
     protected $fillable = ['valid', 'refreshed_at'];
 
     protected $dates = ['created_at', 'updated_at', 'refreshed_at'];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
 
     public function provider()
     {
@@ -147,8 +167,59 @@ class Datasource extends Model
             $this->provider->code, $this->database->code, $this->dataset->code);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
+
     public function scopeValid($query)
     {
         return $query->whereValid(true);
     }
+
+    public function scopeWhereProvider($query, $name)
+    {
+        return $query->whereHas('provider', function($query) use ($name) {
+            $query->whereCode($name);
+        });
+    }
+
+    public function scopeWhereDatabase($query, $name)
+    {
+        return $query->whereHas('database', function($query) use ($name) {
+            $query->whereCode($name);
+        });
+    }
+
+    public function scopeWhereDataset($query, $name)
+    {
+        return $query->whereHas('dataset', function($query) use ($name) {
+            $query->whereCode($name);
+        });
+    }
+
+    public function scopeWhereOrigin($query, $provider, $database)
+    {
+        return $query->whereProvider($provider)->whereDatabase($database);
+    }
+
+    public function scopeWithSet($query, $provider, $database, $dataset)
+    {
+        return $query->whereProvider($provider)->whereDatabase($database)->whereDataset($dataset);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
+
 }

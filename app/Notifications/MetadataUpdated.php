@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Entities\Datasource;
 use App\Repositories\DatasourceRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -62,8 +63,7 @@ class MetadataUpdated extends Notification
      */
     public function toArray($notifiable)
     {
-        $datasources = (new DatasourceRepository())
-            ->whereOrigin($this->provider, $this->database);
+        $datasources = Datasource::whereOrigin($this->provider, $this->database);
 
         return [
             'provider' => $this->provider,

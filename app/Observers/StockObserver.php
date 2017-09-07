@@ -22,7 +22,7 @@ class StockObserver
 
     public function updating(Stock $stock)
     {
-        if (! $stock->daasource->first()) {
+        if (! $stock->datasources->first()) {
             Log::critical( 'Stock '.$stock->name. ' has no datasource!');
 
         } else {
