@@ -53,7 +53,7 @@ return [
             'supervisor-2' => [
                 'connection' => 'redis',
                 'queue' => ['quandl'],
-                'balance' => 'simple',
+                'balance' => 'auto',
                 'processes' => 2,
                 'tries' => 3,
             ],

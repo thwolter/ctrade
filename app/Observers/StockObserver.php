@@ -22,6 +22,7 @@ class StockObserver
 
     public function updating(Stock $stock)
     {
+        Log::debug('Get dataset code for stock '.$stock->name);
         $code = $stock->datasources->first()->dataset->code;
         foreach (array_except($stock->getDirty(), 'updated_at') as $key => $value) {
             Log::info(sprintf('%s - %s: %s', $code, $key, $value));

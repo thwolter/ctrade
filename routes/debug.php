@@ -115,5 +115,11 @@ Route::get('/redirect', function () {
 
 Route::get('/update/stocks', function() {
 
-    foreach (\App\Entities\Stock::all() as $stock) { $stock->update(); }
+    foreach (\App\Entities\Stock::all() as $stock) {
+
+        if (! $stock->datasources) {
+            $a = $stock->id;
+        }
+
+    }
 });
