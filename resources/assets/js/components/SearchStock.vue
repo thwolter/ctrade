@@ -60,6 +60,10 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div v-if="showNoResults">
+                        <p>Keine Ergebniss gefunden.</p>
+                    </div>
                 </div>
 
               <!--  <div v-else>
@@ -95,6 +99,8 @@
                     entity: this.entity,
                     id: null,
                 }),
+
+                showNoResults: false
             }
         },
 
@@ -130,6 +136,7 @@
 
             assign(data) {
                 this.results = data;
+                this.showNoResults = (this.results.length === 0) && this.query;
             },
 
             reset() {

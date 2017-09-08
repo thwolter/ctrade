@@ -22170,6 +22170,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -22191,7 +22195,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             form: new Form({
                 entity: this.entity,
                 id: null
-            })
+            }),
+
+            showNoResults: false
         };
     },
 
@@ -22228,6 +22234,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         assign: function assign(data) {
             this.results = data;
+            this.showNoResults = this.results.length === 0 && this.query;
         },
         reset: function reset() {
             this.query = null;
@@ -55054,7 +55061,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v(_vm._s(item.name))])]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.join(item.industry, item.sector)))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.isin))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.currency))])])
-  }))])]) : _vm._e()]) : _vm._e()])])])
+  }))])]) : _vm._e(), _vm._v(" "), (_vm.showNoResults) ? _c('div', [_c('p', [_vm._v("Keine Ergebniss gefunden.")])]) : _vm._e()]) : _vm._e()])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "modal-header"
