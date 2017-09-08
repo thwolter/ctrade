@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Datasource;
 use App\Entities\Transaction;
 use App\Http\Requests\PositionStore;
 use App\Http\Requests\PositionUpdate;
-use App\Repositories\FinancialMapping;
-use App\Repositories\PositionRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -28,13 +25,24 @@ class PositionsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param $slug
+     * @param Request $request
+     * @param string $slug
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $slug)
     {
         $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
         return view('positions.index', array_merge(['portfolio' => $portfolio], $request->all()));
+    }
+
+
+    public function create($slug, $entity, $positionSlug)
+    {
+        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
+        $instrument = resolve('App\\Entities\\'.ucfirst($entity))->findBySlug($positionSlug);
+
+       return view('positions.create');
     }
 
 

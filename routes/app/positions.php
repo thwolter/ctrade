@@ -18,6 +18,11 @@ Route::middleware('auth')->group(function() {
         'uses' => 'PositionsController@index'
     ]);
 
+    Route::get('/{slug}/positions/{entity}/{id}', [
+        'as' => 'positions.create',
+        'uses' => 'PositionsController@create'
+    ]);
+
     Route::get('/{slug}/positions/{position}', [
         'as' => 'positions.show',
         'uses' => 'PositionsController@show'

@@ -14,7 +14,7 @@ class AddSlugToStocks extends Migration
     public function up()
     {
         Schema::table('stocks', function(Blueprint $table) {
-            $table->string('slug')->after('name')->nullable();
+            $table->string('slug')->after('name')->unique();
         });
     }
 

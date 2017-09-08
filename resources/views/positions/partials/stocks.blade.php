@@ -64,6 +64,7 @@
             lookup="{{ '/api/position/fetch' }}">
     </trade-stock>
 
+
 @section('scripts.footer')
     <script>
         $('#searchStocks').on('hidden.bs.modal', function () {

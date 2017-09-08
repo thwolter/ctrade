@@ -28,15 +28,6 @@
                                 </div>
                             </div>
 
-                            <!-- submit button -->
-                            <div>
-                                <div class="col-sm-offset-3 col-sm-8">
-                                    <button class="btn btn-primary">Suchen</button>
-                                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
-                                </div>
-                            </div>
-
-
                         </form>
                     </div> <!-- /.row -->
 
@@ -57,7 +48,7 @@
                                 <td class="align-middle"> {{ parseInt(index)+1 }}</td>
                                 <td class="align-middle">
                                      <span style="display:block">
-                                         <a href="#" @click.prevent="onClickLink(item.id)">{{ item.name }}</a>
+                                         <a href="#" @click.prevent="onClickLink(item.slug)">{{ item.name }}</a>
                                      </span>
                                     <span>{{ join(item.industry, item.sector) }}</span>
 
@@ -71,9 +62,9 @@
                     </div>
                 </div>
 
-                <div v-else>
+              <!--  <div v-else>
                     <add-stock :id="id" :pid="pid" :cash="cash" :store="store" :entity="entity"></add-stock>
-                </div>
+                </div>-->
 
 
             </div> <!-- /.modal-content -->
@@ -85,7 +76,7 @@
     export default {
 
         props: [
-            'store', 'cash', 'pid', 'entity'],
+            'create', 'cash', 'pid', 'entity'],
 
         data() {
             return {
@@ -98,7 +89,12 @@
                 doSearch: true,
                 id: null,
 
-                timeout: null
+                timeout: null,
+
+                form: new Form({
+                    entity: this.entity,
+                    id: null,
+                }),
             }
         },
 
@@ -127,9 +123,9 @@
                 }, 500);
             },
 
-            onClickLink(id) {
-                this.id = id;
-                this.doSearch = false;
+            onClickLink(slug) {
+                let entity = this.entity.substr(this.entity.lastIndexOf('\\') + 1).toLowerCase();
+                window.location = this.create+'/'+entity+'/'+slug;
             },
 
             assign(data) {

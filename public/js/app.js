@@ -22170,19 +22170,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['store', 'cash', 'pid', 'entity'],
+    props: ['create', 'cash', 'pid', 'entity'],
 
     data: function data() {
         return {
@@ -22195,7 +22186,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             doSearch: true,
             id: null,
 
-            timeout: null
+            timeout: null,
+
+            form: new Form({
+                entity: this.entity,
+                id: null
+            })
         };
     },
 
@@ -22226,9 +22222,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }, 500);
         },
-        onClickLink: function onClickLink(id) {
-            this.id = id;
-            this.doSearch = false;
+        onClickLink: function onClickLink(slug) {
+            var entity = this.entity.substr(this.entity.lastIndexOf('\\') + 1).toLowerCase();
+            window.location = this.create + '/' + entity + '/' + slug;
         },
         assign: function assign(data) {
             this.results = data;
@@ -55036,9 +55032,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "help-block"
-  }, [_vm._v("\n                                    Suche nach Namen oder Branche\n                                ")])])]), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), (_vm.isResult) ? _c('div', [_c('table', {
+  }, [_vm._v("\n                                    Suche nach Namen oder Branche\n                                ")])])])])]), _vm._v(" "), (_vm.isResult) ? _c('div', [_c('table', {
     staticClass: "table table-striped table-hover positions-table"
-  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(item, index) {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(item, index) {
     return _c('tr', [_c('td', {
       staticClass: "align-middle"
     }, [_vm._v(" " + _vm._s(parseInt(index) + 1))]), _vm._v(" "), _c('td', {
@@ -55054,19 +55050,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       on: {
         "click": function($event) {
           $event.preventDefault();
-          _vm.onClickLink(item.id)
+          _vm.onClickLink(item.slug)
         }
       }
     }, [_vm._v(_vm._s(item.name))])]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.join(item.industry, item.sector)))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.isin))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.currency))])])
-  }))])]) : _vm._e()]) : _c('div', [_c('add-stock', {
-    attrs: {
-      "id": _vm.id,
-      "pid": _vm.pid,
-      "cash": _vm.cash,
-      "store": _vm.store,
-      "entity": _vm.entity
-    }
-  })], 1)])])])
+  }))])]) : _vm._e()]) : _vm._e()])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "modal-header"
@@ -55080,18 +55068,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("×")]), _vm._v(" "), _c('h3', {
     staticClass: "modal-title"
   }, [_vm._v("Wertpapier hinzufügen")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
-    staticClass: "col-sm-offset-3 col-sm-8"
-  }, [_c('button', {
-    staticClass: "btn btn-primary"
-  }, [_vm._v("Suchen")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "data-dismiss": "modal",
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("Abbrechen")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Nr.")]), _vm._v(" "), _c('th', [_vm._v("Name/Sektor")]), _vm._v(" "), _c('th', [_vm._v("ISIN")]), _vm._v(" "), _c('th', [_vm._v("Währung")])])])
 }]}
