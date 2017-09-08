@@ -26,12 +26,14 @@ class PriceHistory
         else
             return array_slice($this->data, 0);
     }
-    
+
+
     public function price()
     {
         return [key($this->data) => head($this->data)];
     }
-    
+
+
     public function priceDate()
     {
         return key($this->data);

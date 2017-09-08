@@ -98,12 +98,23 @@ Route::get('/portfolio', 'Api\ApiDataController@portfolio');
 
 /*
 |--------------------------------------------------------------------------
-| API Notification routes
+| API Notification Routes
 |--------------------------------------------------------------------------
 |
 |
 */
 Route::post('/notifications/read', 'Api\ApiNotificationsController@markAsRead');
+
+
+/*
+|--------------------------------------------------------------------------
+| API Stock Routes
+|--------------------------------------------------------------------------
+|
+|
+*/
+
+Route::get('/stock', 'Api\ApiStockController@history');
 
 /*
 |--------------------------------------------------------------------------

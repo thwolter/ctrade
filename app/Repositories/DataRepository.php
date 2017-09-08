@@ -30,6 +30,12 @@ class DataRepository
     }
 
 
+    public function rawHistory($attributes)
+    {
+        return $this->provider()->rawHistory($attributes);
+    }
+
+
     private function provider()
     {
         return app($this->datasource->provider->code.'PriceData', [$this->datasource]);

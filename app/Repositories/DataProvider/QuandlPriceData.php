@@ -18,58 +18,68 @@ class QuandlPriceData implements DataInterface
     protected $client;
     protected $length;
 
+    protected $tags;
+    protected $key;
+
 
     public function __construct(Datasource $datasource)
     {
         $this->datasource = $datasource;
-
-        $this->length = config('quandl.length');
-        $this->client = new \Quandl(config('quandl.api_key'), 'json');
+        $this->config();
     }
 
 
     public function price()
     {
-        return $this->fetchHistory()->price();
+        return $this->getPriceHistory()->price();
     }
 
 
+    /**
+     * Return an array with the history of close prices of an item.
+     *
+     * @param array $dates
+     * @return array
+     */
     public function history($dates = null)
     {
-        return $this->fetchHistory()->history($dates);
+        return $this->getPriceHistory()->history($dates);
+    }
+
+    /**
+     * Returns an nested array with column names and prices history.
+     *
+     * @param array $attributes
+     * @return array
+     */
+    public function rawHistory($attributes)
+    {
+        $item = json_decode($this->getJson(), true);
+
+        $rawdata = array_get($item, 'dataset.data');
+        $columns = array_get($item, 'dataset.column_names');
+
+        if (array_has($attributes, ['from', 'to'])) {
+
+            $data = array_where($rawdata, function ($value, $key) use ($attributes) {
+                return $value[0] >= $attributes['from'] && $value[0] <= $attributes['to'];
+            });
+        } else {
+            $data = $rawdata;
+        }
+
+        return compact('columns', 'data');
     }
 
 
-    private function fetchHistory()
+    private function getPriceHistory()
     {
-        $key = $this->datasource->dataset->code;
-        $tags = [$this->datasource->provider->code, $this->datasource->database->code];
+        $data = json_decode($this->getJson(), true);
 
-        Log::debug(sprintf('Check cache for %s from %s', $key, implode(', ', $tags)));
-        $history = \Cache::tags($tags)->get($key);
+        $prices = array_get($data, 'dataset.data');
+        $columns = array_get($data, 'dataset.column_names');
 
-        if (!$history) {
-
-            Log::debug(sprintf('Fetching %s from %s', $key, implode(', ', $tags)));
-            $json = $this->client->getSymbol($this->symbol($this->datasource), ['limit' => $this->length]);
-
-            if ($this->client->error) {
-                event(new FetchingFailed($this->datasource, $this->client->last_url, $this->client->error));
-                throw new PriceDataException($this->client->error);
-            }
-
-            $item = array_get(json_decode($json, true), 'dataset');
-
-            $prices = array_get($item, 'data');
-            $column = $this->priceColumn(array_get($item, 'column_names'));
-
-            $history = new PriceHistory($prices, $column);
-
-            Log::debug(sprintf('Caching %s from %s', $key, implode(', ', $tags)));
-            \Cache::tags($tags)->forever($key, $history);
-        }
-
-        return $history;
+        return new PriceHistory($prices, $this->priceColumn($columns));
     }
 
 
@@ -94,6 +104,69 @@ class QuandlPriceData implements DataInterface
     private function symbol()
     {
         return sprintf('%s/%s', $this->datasource->database->code, $this->datasource->dataset->code);
+    }
+
+
+    /**
+     * Receive the tags for caching a dataset.
+     *
+     * @return array
+     */
+    private function getTags()
+    {
+        return [$this->datasource->provider->code, $this->datasource->database->code];
+    }
+
+
+    /**
+     * Get the json representation of Quandl data for an item.
+     *
+     * @return string
+     */
+    private function getJson()
+    {
+        Log::debug(sprintf('Check cache for %s from %s', $this->key, implode(', ', $this->tags)));
+        $json = \Cache::tags($this->tags)->get($this->key);
+
+        if (!$json) {
+            Log::debug(sprintf('Caching %s from %s', $this->key, implode(', ', $this->tags)));
+
+            $json = $this->fetchFromQuandl();
+            \Cache::tags($this->tags)->forever($this->key, $json);
+        }
+        return $json;
+    }
+
+
+    /**
+     * Fetch json data for given symbol from Quandl API.
+     *
+     * @return string
+     * @throws PriceDataException
+     */
+    private function fetchFromQuandl()
+    {
+        Log::debug(sprintf('Fetching %s from %s', $this->key, implode(', ', $this->tags)));
+        $json = $this->client->getSymbol($this->symbol($this->datasource), ['limit' => $this->length]);
+
+        if ($this->client->error) {
+            event(new FetchingFailed($this->datasource, $this->client->last_url, $this->client->error));
+            throw new PriceDataException($this->client->error);
+        }
+        return $json;
+    }
+
+    /**
+     * Set the required configuration for the Datasource and Quandl Api.
+     *
+     */
+    private function config()
+    {
+        $this->length = config('quandl.length');
+        $this->client = new \Quandl(config('quandl.api_key'), 'json');
+
+        $this->key = $this->datasource->dataset->code;
+        $this->tags = $this->getTags();
     }
 
 }
