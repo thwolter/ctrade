@@ -10,7 +10,7 @@ use App\Repositories\RiskRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ApiDatabaseController extends ApiBaseController
+class ApiPortfolioController extends ApiBaseController
 {
 
     /**

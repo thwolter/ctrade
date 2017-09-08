@@ -61,7 +61,7 @@
 
     <trade-stock
             route="{{ route('positions.update', [], false) }}"
-            lookup="{{ route('positions.fetch', [], false) }}">
+            lookup="{{ '/api/position/fetch' }}">
     </trade-stock>
 
 @section('scripts.footer')

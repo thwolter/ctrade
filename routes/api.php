@@ -31,7 +31,7 @@ Route::get('/lookup', 'Api\ApiSearchController@lookup');
 
 /*
 |--------------------------------------------------------------------------
-| API Database Routes
+| API Portfolio Routes
 |--------------------------------------------------------------------------
 |
 | This routes provide information to the specified portfolio, like positions
@@ -40,14 +40,31 @@ Route::get('/lookup', 'Api\ApiSearchController@lookup');
 |
 */
 Route::group(['middleware' => ['auth:api']], function() {
-    Route::get('/portfolio/positions', 'Api\ApiDatabaseController@positions');
-    Route::get('/portfolio/value', 'Api\ApiDatabaseController@value');
-    Route::get('/portfolio/risk', 'Api\ApiDatabaseController@risk');
-    Route::get('/portfolio/limits', 'Api\ApiDatabaseController@limits');
-    Route::get('/portfolio/utilisation', 'Api\ApiDatabaseController@utilisation');
-    Route::get('/portfolio/contribution', 'Api\ApiDatabaseController@contribution');
-    Route::get('/portfolio/graph', 'Api\ApiDatabaseController@graph');
+    Route::get('/portfolio/positions', 'Api\ApiPortfolioController@positions');
+    Route::get('/portfolio/value', 'Api\ApiPortfolioController@value');
+    Route::get('/portfolio/risk', 'Api\ApiPortfolioController@risk');
+    Route::get('/portfolio/limits', 'Api\ApiPortfolioController@limits');
+    Route::get('/portfolio/utilisation', 'Api\ApiPortfolioController@utilisation');
+    Route::get('/portfolio/contribution', 'Api\ApiPortfolioController@contribution');
+    Route::get('/portfolio/graph', 'Api\ApiPortfolioController@graph');
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| API Position Routes
+|--------------------------------------------------------------------------
+|
+| This routes provide information to the specified portfolio, like positions
+| to receive the contribution of all positions in a portfolios. valueHistory
+| provides the historic values of the portfolio.
+|
+*/
+
+Route::group(['middleware' => ['auth:api']], function() {
+    Route::post('/position/fetch', 'Api\ApiPositionController@fetch');
+});
+
 
 /*
 |--------------------------------------------------------------------------

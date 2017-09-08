@@ -118,21 +118,4 @@ class PositionsController extends Controller
 
         return redirect(route('positions.index', $position->portfolio->id));
     }
-
-    public function fetch(Request $request)
-    {
-        $this->validate($request, [
-            'id' => 'required'
-        ]);
-
-        $position = Position::find($request->id);
-
-        $item = $position->positionable->toArray();
-        $price = $position->price();
-        $amount = $position->amount;
-        $cash = $position->portfolio->cash();
-
-        return compact('item', 'price', 'amount', 'cash');
-
-    }
 }

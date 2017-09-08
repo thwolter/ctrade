@@ -7,10 +7,6 @@ Route::middleware('auth')->group(function() {
     Route::resource('/positions', 'PositionsController',
         ['only' => ['store', 'destroy']]);
 
-    Route::post('/positions/fetch', [
-        'as' => 'positions.fetch',
-        'uses' => 'PositionsController@fetch'
-    ]);
 
     Route::match(['put', 'patch'], '/positions/update', [
         'as' => 'positions.update',
