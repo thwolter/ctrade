@@ -10,6 +10,7 @@ use App\Entities\User;
 
 class PortfolioRepository
 {
+
     /**
      * Create a portfolio with attributes which may be received from a request and persist
      * the portfolio with an assigned user.
@@ -22,7 +23,7 @@ class PortfolioRepository
     {
         $portfolio = new Portfolio([
             'name' => array_get($attributes,'name'),
-            'cash' => array_get($attributes,'amount'),
+            'cash' => 0,
             'description' => array_get($attributes,'description')
         ]);
         $portfolio->currency()
@@ -34,6 +35,7 @@ class PortfolioRepository
         }
 
         $user->obtain($portfolio);
+        $portfolio->deposit($attributes);
 
         return $portfolio;
     }

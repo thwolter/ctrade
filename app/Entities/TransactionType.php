@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 class TransactionType extends Model
 {
 
-    protected $fillable = ['name'];
+    protected $fillable = ['code', 'name'];
 
 
     public function transactions()

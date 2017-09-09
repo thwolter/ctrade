@@ -59,11 +59,27 @@ class PositionsController extends Controller
 
         $position = $portfolio->makePosition($instrument, $request->datasourceId);
 
-        $portfolio->buy($position->id, $request->amount);
-        Transaction::buy($portfolio, Carbon::now(), $position, $request->amount);
+        $portfolio->buy($position, $request);
+        $portfolio->fees($request);
 
         return ['redirect' => route('positions.index', $portfolio->slug)];
+    }
 
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param PositionUpdate $request
+     * @return array
+     */
+    public function update(PositionUpdate $request)
+    {
+        $position = Position::find($request->id);
+        $transaction = $request->transaction;
+
+        $position->portfolio->$transaction($position, $request);
+
+        return ['redirect' => route('positions.index', $position->portfolio->slug)];
     }
 
     /**
@@ -77,7 +93,6 @@ class PositionsController extends Controller
     {
         $portfolio = auth()->user()->portfolios()->whereSlug($portfolioSlug)->first();
 
-        // workaround required as whereHas on polymorphic relationship doesn't work yet
         foreach ($portfolio->positions as $position) {
             if ($position->positionable->slug == $positionSlug) break;
         }
@@ -86,33 +101,6 @@ class PositionsController extends Controller
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param PositionUpdate $request
-     * @return array
-     */
-    public function update(PositionUpdate $request)
-    {
-        $amount = $request->amount;
-        $id = $request->id;
-
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
-
-        switch ($request->transaction) {
-            case 'buy':
-                $portfolio->buy($id, $amount);
-                Transaction::buy($portfolio, Carbon::now(), $position, $amount);
-                break;
-            case 'sell':
-                $portfolio->sell($id, $amount);
-                Transaction::sell($portfolio, Carbon::now(), $position, $amount);
-                break;
-        }
-
-        return ['redirect' => route('positions.index', $portfolio->slug)];
-    }
 
     /**
      * Remove the specified resource from storage.

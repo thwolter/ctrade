@@ -88,7 +88,6 @@ class PortfoliosController extends Controller
     public function store(CreatePortfolio $request)
     {
         $portfolio = $this->repo->createPortfolio(auth()->user(), $request->all());
-        Transaction::deposit($portfolio, Carbon::now(), $request->get('amount'));
 
         return ['redirect' => route('positions.index', [$portfolio->slug,
             'success' => "Portfolio '$portfolio->name' erfolgreich erstellt. Füge Positionen hinzu."
@@ -191,18 +190,8 @@ class PortfoliosController extends Controller
     {
         $portfolio = Portfolio::whereId($request->id)->first();
 
-        switch ($request->transaction) {
-
-            case 'deposit':
-                $portfolio->deposit($request->amount);
-                Transaction::deposit($portfolio, Carbon::now(), $request->amount);
-
-                break;
-            case 'withdraw':
-                $portfolio->withdraw($request->amount);
-                Transaction::withdraw($portfolio, Carbon::now(), $request->amount);
-                break;
-        }
+        $transaction = $request->transaction;
+        $portfolio->$transaction($request);
 
         return ['redirect' => route('positions.index', $portfolio->slug)];
     }

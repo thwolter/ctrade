@@ -6,6 +6,7 @@ use App\Entities\Traits\UuidModel;
 use App\Events\PortfolioHasChanged;
 use App\Presenters\Presentable;
 use App\Repositories\PositionRepository;
+use App\Repositories\TransactionRepository;
 use App\Settings\PortfolioSettings;
 use App\Settings\Settings;
 use Carbon\Carbon;
@@ -89,6 +90,8 @@ class Portfolio extends Model
 
     public $imagesPath = 'public/images';
 
+    protected $transaction;
+
 
     /*
     |--------------------------------------------------------------------------
@@ -142,6 +145,13 @@ class Portfolio extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->transaction = new TransactionRepository($this);
+    }
 
     public function getCategoryNameAttribute()
     {
@@ -239,13 +249,15 @@ class Portfolio extends Model
     /**
      * A buy transaction for position with a given id.
      *
-     * @param int $id the position id
-     * @param float $amount the transaction's amount
+     * @param Position $position
+     * @param array|mixed $attributes
      * @return Portfolio
      */
-    public function buy($id, $amount)
+    public function buy($position, $attributes)
     {
-        $this->makeTrade($id, $amount)->save();
+        $this->transaction->trade($position, $attributes, 'buy');
+        $this->makeTrade($position, $attributes['amount'])->save();
+
         return $this;
     }
 
@@ -253,13 +265,15 @@ class Portfolio extends Model
     /**
      * A sell transaction for position with a given id
      *
-     * @param $id
-     * @param $amount
+     * @param Position $position
+     * @param array|mixed $attributes
      * @return mixed
      */
-    public function sell($id, $amount)
+    public function sell($position, $attributes)
     {
-        $this->makeTrade($id, -$amount)->save();
+        $this->transaction->trade($position, $attributes, 'sell');
+        $this->makeTrade($position, -$attributes['amount'])->save();
+
         return $this;
     }
 
@@ -270,9 +284,11 @@ class Portfolio extends Model
      * @param int $amount
      * @return $this
      */
-    public function deposit($amount)
+    public function deposit($attributes)
     {
-        $this->cash = $this->cash + $amount;
+        $this->transaction->pay($attributes, 'deposit');
+
+        $this->cash = $this->cash + $attributes['amount'];
         $this->save();
         return $this;
     }
@@ -283,13 +299,30 @@ class Portfolio extends Model
      * @param int $amount
      * @return $this
      */
-    public function withdraw($amount)
+    public function withdraw($attributes)
     {
-        $this->cash = $this->cash - $amount;
+        $this->transaction->pay($attributes, 'withdrawal');
+
+        $this->cash = $this->cash - $attributes['amount'];
         $this->save();
         return $this;
     }
 
+    /**
+     * Deduct fees from portfolio cash.
+     *
+     * @param array|mixed $attributes
+     * @return Portfolio
+     */
+    public function fees($attributes)
+    {
+        $this->transaction->pay($attributes, 'fees');
+
+        $this->cash = $this->cash - $attributes['fees'];
+        $this->save();
+
+        return $this;
+    }
 
     public function addImage(UploadedFile $file)
     {
@@ -352,15 +385,12 @@ class Portfolio extends Model
      * @param $amount
      * @return mixed
      */
-    private function makeTrade($id, $amount)
+    private function makeTrade($position, $amount)
     {
-        $position = Position::find($id);
-        $portfolio = $position->portfolio;
-
         $position->update(['amount' => $position->amount + $amount]);
-        $portfolio->cash = $portfolio->cash - $amount * array_first($position->price());
+        $this->cash -= $amount * array_first($position->price());
 
-        return $portfolio;
+        return $this;
     }
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Entities\Portfolio;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PositionStore extends FormRequest
@@ -36,12 +37,17 @@ class PositionStore extends FormRequest
 
     public function withValidator($validator)
     {
-        $lastTransaction = Portfolio::find($this->pid)->transactions()->last()->executed_at;
+        $portfolio = Portfolio::find($this->pid);
 
-        $validator->after(function($validator) use ($lastTransaction) {
-            if ($this->date < $lastTransaction) {
+        $validator->after(function($validator) use ($portfolio) {
+            if ($this->date > $portfolio->transactions()->last()->executed_at) {
                 $validator->errors()
-                    ->add('date', 'Datum darf nicht vor der letzten Transaktion liegen.');
+                    ->add('date', 'Datum muss aktueller sein als bereits vorhande Transaktionen.');
+            }
+
+            if ($this->date > Carbon::now()->endOfDay()) {
+                $validator->errors()
+                    ->add('date', 'Transaktion darf nicht in der Zukunft liegen.');
             }
         });
     }
