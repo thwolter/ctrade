@@ -20795,13 +20795,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             cleavePrice: {
                 numeral: true,
                 numeralDecimalMark: ',',
-                delimiter: '.'
+                delimiter: '.',
+                numeralPositiveOnly: true
             },
 
             cleaveAmount: {
                 numeral: true,
                 numeralDecimalMark: ',',
-                delimiter: '.'
+                delimiter: '.',
+                numeralPositiveOnly: true
             }
         };
     },
@@ -20809,16 +20811,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         onSubmit: function onSubmit() {
+            var _this = this;
+
             this.showSpinner = true;
             this.form.post(this.store).then(function (data) {
                 window.location = data.redirect;
+            }).catch(function (error) {
+                _this.showSpinner = false;
             });
         },
         onCancel: function onCancel() {
             Event.fire('backToSearch');
         },
         fetch: function fetch() {
-            var _this = this;
+            var _this2 = this;
 
             axios.get(this.lookup, {
                 params: {
@@ -20826,8 +20832,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     entity: this.entity
                 }
             }).then(function (data) {
-                _this.add(data.data);
-                _this.showSpinner = false;
+                _this2.add(data.data);
+                _this2.showSpinner = false;
             });
         },
         add: function add(data) {
@@ -20855,6 +20861,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var history = this.stock.prices[this.exchange].history;
             this.price = history[this.date];
             this.form.price = this.price;
+        },
+        asNumeric: function asNumeric(value) {
+            var number = parseFloat(value);
+            return isNaN(number) ? 0 : number;
         }
     },
 
@@ -20865,7 +20875,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         price: function price(value) {
             if (value !== '') {
-                this.form.price = parseFloat(value);
+                this.form.price = this.asNumeric(value);
                 this.updateTotal();
             } else {
                 this.updateExchange(this.exchange);
@@ -20873,7 +20883,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         amount: function amount(value) {
-            this.form.amount = parseFloat(value);
+            this.form.amount = this.asNumeric(value);
             this.updateTotal();
         },
 
@@ -20883,7 +20893,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         fees: function fees(value) {
-            this.form.fees = parseFloat(value);
+            this.form.fees = this.asNumeric(value);
             this.updateTotal();
         },
 
@@ -20897,7 +20907,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         exceedCash: function exceedCash() {
-            return parseFloat(this.cash) < this.form.price * this.form.amount;
+            return this.asNumeric(this.cash) < this.total;
         },
         clsTotal: function clsTotal() {
             if (this.exceedCash) {
@@ -21563,7 +21573,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.form.post(this.route).then(function (data) {
                 Event.fire('portfolio-created', data);
                 window.location = data.redirect;
-            });
+            }).catch(function (error) {});
         }
     },
 
@@ -23961,9 +23971,9 @@ var Form = function () {
 
                     resolve(response.data);
                 }).catch(function (error) {
-                    _this.onFail(error.response.data);
+                    _this.onFail(error.response.data.errors);
 
-                    reject(error.response.data);
+                    reject(error.response.data.errors);
                 });
             });
         }
@@ -54645,6 +54655,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.date)
     },
     on: {
+      "keydown": function($event) {
+        _vm.form.errors.clear('date')
+      },
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.date = $event.target.value
@@ -54673,7 +54686,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     attrs: {
       "options": _vm.cleaveAmount,
-      "placeholder": "Betrag"
+      "placeholder": "Gebühren"
     },
     on: {
       "input": function($event) {
@@ -54717,13 +54730,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "total"
     }
-  })], 1)])]), _vm._v(" "), (_vm.exceedCash) ? _c('div', [_c('p', {
-    staticClass: "error-text"
-  }, [_vm._v("\n            Betrag übersteigt verfügbaren Barbestand.\n        ")])]) : _vm._e(), _vm._v(" "), _c('div', {
+  })], 1)])]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
-  }, [_c('div', [_c('div', {
-    staticClass: "pull-right"
-  }, [_c('button', {
+  }, [(_vm.exceedCash) ? _c('div', {
+    staticClass: "col-md-offset-1"
+  }, [_c('p', {
+    staticClass: "error-text pull-left"
+  }, [_vm._v("\n                Betrag übersteigt verfügbaren Barbestand.\n            ")])]) : _vm._e(), _vm._v(" "), _c('div', [_c('button', {
     staticClass: "btn btn-default",
     attrs: {
       "type": "reset"
@@ -54736,7 +54749,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "disabled": _vm.hasError
     }
-  }, [_vm._v("Hinzufügen")])])])])])
+  }, [_vm._v("Hinzufügen")])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

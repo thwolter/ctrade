@@ -164,6 +164,9 @@
                     .then(data => {
                         Event.fire('portfolio-created', data);
                         window.location = data.redirect;
+                    })
+                    .catch(error => {
+
                     });
             }
         },

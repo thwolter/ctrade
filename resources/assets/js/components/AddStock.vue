@@ -47,8 +47,9 @@
             <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
                 <label for="query" class="control-label">Datum</label>
                 <div>
-                   <input v-model="date" type="date" name="date"
-                          :class="['form-control', { 'error': form.errors.has('date') }]">
+                    <input v-model="date" type="date" name="date"
+                           :class="['form-control', { 'error': form.errors.has('date') }]"
+                           @keydown="form.errors.clear('date')">
                 </div>
                 <p v-if="form.errors.has('date')" class="error-text">
                     <span v-text="form.errors.get('date')"></span>
@@ -60,7 +61,7 @@
                 <label for="query" class="control-label">Gebühren</label>
                 <div class="input-group">
                     <span class="input-group-addon">{{ form.currency }}</span>
-                    <cleave v-model="fees" :options="cleaveAmount" placeholder="Betrag"
+                    <cleave v-model="fees" :options="cleaveAmount" placeholder="Gebühren"
                             :class="['form-control', { 'error': form.errors.has('fees') }]"
                             @input="form.errors.clear('fees')"></cleave>
                 </div>
@@ -81,18 +82,17 @@
 
         </div><!-- /.row -->
 
-        <div v-if="exceedCash">
-            <p class="error-text">
-                Betrag übersteigt verfügbaren Barbestand.
-            </p>
-        </div>
-
         <div class="modal-footer">
+
+            <div v-if="exceedCash" class="col-md-offset-1">
+                <p class="error-text pull-left">
+                    Betrag übersteigt verfügbaren Barbestand.
+                </p>
+            </div>
+
             <div>
-                <div class="pull-right">
-                    <button class="btn btn-default" type="reset" @click="onCancel">Zurück</button>
-                    <button class="btn btn-primary" :disabled="hasError">Hinzufügen</button>
-                </div>
+                <button class="btn btn-default" type="reset" @click="onCancel">Zurück</button>
+                <button class="btn btn-primary" :disabled="hasError">Hinzufügen</button>
             </div>
         </div>
 
@@ -137,13 +137,15 @@
                 cleavePrice: {
                     numeral: true,
                     numeralDecimalMark: ',',
-                    delimiter: '.'
+                    delimiter: '.',
+                    numeralPositiveOnly: true
                 },
 
                 cleaveAmount: {
                     numeral: true,
                     numeralDecimalMark: ',',
-                    delimiter: '.'
+                    delimiter: '.',
+                    numeralPositiveOnly: true
                 }
             }
         },
@@ -156,6 +158,9 @@
                     .then(data => {
                         window.location = data.redirect;
                     })
+                    .catch(error => {
+                        this.showSpinner = false;
+                    });
             },
 
             onCancel() {
@@ -203,6 +208,11 @@
                 let history = this.stock.prices[this.exchange].history;
                 this.price = history[this.date];
                 this.form.price = this.price;
+            },
+
+            asNumeric(value) {
+                let number = parseFloat(value);
+                return isNaN(number) ? 0 : number;
             }
         },
 
@@ -213,7 +223,7 @@
 
             price: function (value) {
                 if (value !== '') {
-                    this.form.price = parseFloat(value);
+                    this.form.price = this.asNumeric(value);
                     this.updateTotal();
                 } else {
                     this.updateExchange(this.exchange);
@@ -221,7 +231,7 @@
             },
 
             amount: function (value) {
-                this.form.amount = parseFloat(value);
+                this.form.amount = this.asNumeric(value);
                 this.updateTotal();
             },
 
@@ -231,7 +241,7 @@
             },
 
             fees: function (value) {
-                this.form.fees = parseFloat(value);
+                this.form.fees = this.asNumeric(value);
                 this.updateTotal();
             },
 
@@ -245,7 +255,7 @@
 
         computed: {
             exceedCash() {
-                return (parseFloat(this.cash) < this.form.price * this.form.amount)
+                return (this.asNumeric(this.cash) < this.total)
             },
 
             clsTotal() {
