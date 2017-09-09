@@ -155,8 +155,7 @@
                 this.form.post(this.store)
                     .then(data => {
                         window.location = data.redirect;
-                    });
-
+                    })
             },
 
             onCancel() {

@@ -210,6 +210,10 @@ class Transaction extends Model
         return $query->where('executed_at', '>', $date);
     }
 
+    public function scopeLast($query)
+    {
+        return $query->orderBy('executed_at', 'desc')->first();
+    }
 
     /*
     |--------------------------------------------------------------------------

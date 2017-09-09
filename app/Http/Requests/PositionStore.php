@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Entities\Portfolio;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PositionStore extends FormRequest
@@ -27,8 +28,21 @@ class PositionStore extends FormRequest
             'type' => 'required',
             'id' => 'required',
             'datasourceId' => 'required',
-            'amount' => 'required|min:0.01',
-            'pid' => 'required|exists:portfolios,id'
+            'amount' => 'required|min:0.001',
+            'pid' => 'required|exists:portfolios,id',
+            'date' => 'required'
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $lastTransaction = Portfolio::find($this->pid)->transactions()->last()->executed_at;
+
+        $validator->after(function($validator) use ($lastTransaction) {
+            if ($this->date < $lastTransaction) {
+                $validator->errors()
+                    ->add('date', 'Datum darf nicht vor der letzten Transaktion liegen.');
+            }
+        });
     }
 }

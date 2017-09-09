@@ -162,8 +162,8 @@
             onSubmit() {
                 this.form.post(this.route)
                     .then(data => {
-                        Event.fire('portfolio-created', data),
-                            window.location = data.redirect;
+                        Event.fire('portfolio-created', data);
+                        window.location = data.redirect;
                     });
             }
         },

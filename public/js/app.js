@@ -21561,7 +21561,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         onSubmit: function onSubmit() {
             this.form.post(this.route).then(function (data) {
-                Event.fire('portfolio-created', data), window.location = data.redirect;
+                Event.fire('portfolio-created', data);
+                window.location = data.redirect;
             });
         }
     },

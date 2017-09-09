@@ -4,7 +4,7 @@
 
     @php $stock = $position->positionable @endphp
 
-    @include('stocks.summary')
+    @include('stock.summary')
 
 @endsection
 
