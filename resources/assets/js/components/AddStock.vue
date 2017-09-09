@@ -78,17 +78,17 @@
                     <cleave v-model="total" :options="cleavePrice" :class="clsTotal"
                             readonly></cleave>
                 </div>
+                <div v-if="exceedCash" class="col-md-offset-1">
+                    <p class="error-text pull-left">
+                        Betrag übersteigt verfügbaren Barbestand.
+                    </p>
+                </div>
+
             </div>
 
         </div><!-- /.row -->
 
         <div class="modal-footer">
-
-            <div v-if="exceedCash" class="col-md-offset-1">
-                <p class="error-text pull-left">
-                    Betrag übersteigt verfügbaren Barbestand.
-                </p>
-            </div>
 
             <div>
                 <button class="btn btn-default" type="reset" @click="onCancel">Zurück</button>
