@@ -42,7 +42,7 @@ class PositionsController extends Controller
         $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
         $instrument = resolve('App\\Entities\\'.ucfirst($entity))->findBySlug($positionSlug);
 
-       return view('positions.create');
+        return view('positions.create', compact('portfolio', 'entity', 'instrument'));
     }
 
 

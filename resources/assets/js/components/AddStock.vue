@@ -8,65 +8,81 @@
 
         <!-- Form -->
         <div class="row">
-            <div class="col-md-6">
 
-                <!-- exchange -->
-                <div class="form-group">
-                    <label for="query" class="control-label">Handelsplatz</label>
-                    <div>
-                        <select name="exchange" v-model="exchange" class="form-control">
-                            <option v-for="(price, key) in stock.prices" :value="key">
-                                {{ price.exchange }}
-                            </option>
-                        </select>
-                    </div>
+            <!-- exchange -->
+            <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
+                <label for="query" class="control-label">Handelsplatz</label>
+                <div>
+                    <select name="exchange" v-model="exchange" class="form-control">
+                        <option v-for="(price, key) in stock.prices" :value="key">
+                            {{ price.exchange }}
+                        </option>
+                    </select>
                 </div>
             </div>
-            <div class="col-md-6">
 
-                <!-- amount -->
-                <div class="form-group">
-                    <label for="query" class="control-label">Anzahl</label>
-                    <div>
-                        <cleave v-model="amount" :options="cleaveAmount" placeholder="Anzahl"
-                                :class="['form-control', { 'error': form.errors.has('amount') }]"
-                                @input="form.errors.clear('amount')"></cleave>
-                    </div>
-                    <p  v-if="form.errors.has('amount')" class="error-text">
-                        <span v-text="form.errors.get('amount')"></span>
-                    </p>
+            <!-- price -->
+            <div class="form-group col-sm-4 col-md-3">
+                <label for="query" class="control-label">Preis</label>
+                <div class="input-group">
+                    <span class="input-group-addon">{{ form.currency }}</span>
+                    <cleave v-model="price" :options="cleavePrice" class="form-control"></cleave>
                 </div>
             </div>
-        </div> <!-- /.row -->
 
-        <div class="row">
-            <div class="col-md-6">
-
-                <!-- price -->
-                <div class="form-group">
-                    <label for="query" class="control-label">Preis</label>
-                    <div class="input-group">
-                        <span class="input-group-addon">{{ form.currency }}</span>
-                        <cleave v-model="price" :options="cleavePrice" class="form-control" ></cleave>
-                    </div>
+            <!-- amount -->
+            <div class="form-group col-sm-4 col-md-3">
+                <label for="query" class="control-label">Anzahl</label>
+                <div>
+                    <cleave v-model="amount" :options="cleaveAmount" placeholder="Anzahl"
+                            :class="['form-control', { 'error': form.errors.has('amount') }]"
+                            @input="form.errors.clear('amount')"></cleave>
                 </div>
+                <p v-if="form.errors.has('amount')" class="error-text">
+                    <span v-text="form.errors.get('amount')"></span>
+                </p>
             </div>
-            <div class="col-md-6">
 
-                <!-- total -->
-                <div class="form-group">
-                    <label for="query" class="control-label">Gesamt</label>
-                    <div class="input-group">
-                        <span class="input-group-addon">{{ form.currency }}</span>
-                        <cleave v-model="total" :options="cleavePrice" :class="clsTotal"
+            <!-- date -->
+            <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
+                <label for="query" class="control-label">Datum</label>
+                <div>
+                   <input v-model="date" type="date" name="date"
+                          :class="['form-control', { 'error': form.errors.has('date') }]">
+                </div>
+                <p v-if="form.errors.has('date')" class="error-text">
+                    <span v-text="form.errors.get('date')"></span>
+                </p>
+            </div>
+
+            <!-- fees -->
+            <div class="form-group col-sm-4 col-md-3">
+                <label for="query" class="control-label">Gebühren</label>
+                <div class="input-group">
+                    <span class="input-group-addon">{{ form.currency }}</span>
+                    <cleave v-model="fees" :options="cleaveAmount" placeholder="Betrag"
+                            :class="['form-control', { 'error': form.errors.has('fees') }]"
+                            @input="form.errors.clear('fees')"></cleave>
+                </div>
+                <p v-if="form.errors.has('fees')" class="error-text">
+                    <span v-text="form.errors.get('fees')"></span>
+                </p>
+            </div>
+
+            <!-- total -->
+            <div class="form-group col-sm-4 col-md-3">
+                <label for="query" class="control-label">Gesamt</label>
+                <div class="input-group">
+                    <span class="input-group-addon">{{ form.currency }}</span>
+                    <cleave v-model="total" :options="cleavePrice" :class="clsTotal"
                             readonly></cleave>
-                    </div>
                 </div>
             </div>
+
         </div><!-- /.row -->
 
         <div v-if="exceedCash">
-            <p  class="error-text">
+            <p class="error-text">
                 Betrag übersteigt verfügbaren Barbestand.
             </p>
         </div>
@@ -98,6 +114,8 @@
                     datasourceId: null,
                     price: null,
                     amount: null,
+                    date: null,
+                    fees: null,
                     currency: null,
                     id: null,
                     type: null,
@@ -110,6 +128,8 @@
                 price: '',
                 amount: '',
                 total: '',
+                fees: '',
+                date: (new Date()).toISOString().split('T')[0],
 
                 hasFormError: false,
                 showSpinner: true,
@@ -166,25 +186,33 @@
             updateExchange(index) {
                 let price = this.stock.prices[index];
 
+                this.date = _.first(Object.keys(price.history));
+
                 this.form.exchange = price.exchange;
                 this.form.datasourceId = price.datasourceId;
                 this.form.type = this.stock.item.type;
-                this.form.price = Object.keys(price.price).map(e => price.price[e])[0]
-                this.price = this.form.price.toFixed(2);
             },
 
             updateTotal() {
-                this.total = (this.form.price * this.form.amount).toFixed(2);
-                if (this.total === '') { this.total = '0'; }
+                this.total = (this.form.price * this.form.amount + this.form.fees).toFixed(2);
+                if (this.total === '') {
+                    this.total = '0';
+                }
+            },
+
+            updatePrice() {
+                let history = this.stock.prices[this.exchange].history;
+                this.price = history[this.date];
+                this.form.price = this.price;
             }
         },
 
         watch: {
-            exchange: function(index) {
+            exchange: function (index) {
                 this.updateExchange(index);
             },
 
-            price: function(value) {
+            price: function (value) {
                 if (value !== '') {
                     this.form.price = parseFloat(value);
                     this.updateTotal();
@@ -193,8 +221,18 @@
                 }
             },
 
-            amount: function(value) {
+            amount: function (value) {
                 this.form.amount = parseFloat(value);
+                this.updateTotal();
+            },
+
+            date: function (value) {
+                this.form.date = value;
+                this.updatePrice();
+            },
+
+            fees: function (value) {
+                this.form.fees = parseFloat(value);
                 this.updateTotal();
             },
 

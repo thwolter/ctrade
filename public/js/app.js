@@ -20741,6 +20741,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -20756,6 +20772,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 datasourceId: null,
                 price: null,
                 amount: null,
+                date: null,
+                fees: null,
                 currency: null,
                 id: null,
                 type: null,
@@ -20768,6 +20786,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             price: '',
             amount: '',
             total: '',
+            fees: '',
+            date: new Date().toISOString().split('T')[0],
 
             hasFormError: false,
             showSpinner: true,
@@ -20819,19 +20839,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         updateExchange: function updateExchange(index) {
             var price = this.stock.prices[index];
 
+            this.date = _.first(Object.keys(price.history));
+
             this.form.exchange = price.exchange;
             this.form.datasourceId = price.datasourceId;
             this.form.type = this.stock.item.type;
-            this.form.price = Object.keys(price.price).map(function (e) {
-                return price.price[e];
-            })[0];
-            this.price = this.form.price.toFixed(2);
         },
         updateTotal: function updateTotal() {
-            this.total = (this.form.price * this.form.amount).toFixed(2);
+            this.total = (this.form.price * this.form.amount + this.form.fees).toFixed(2);
             if (this.total === '') {
                 this.total = '0';
             }
+        },
+        updatePrice: function updatePrice() {
+            var history = this.stock.prices[this.exchange].history;
+            this.price = history[this.date];
+            this.form.price = this.price;
         }
     },
 
@@ -20851,6 +20874,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         amount: function amount(value) {
             this.form.amount = parseFloat(value);
+            this.updateTotal();
+        },
+
+        date: function date(value) {
+            this.form.date = value;
+            this.updatePrice();
+        },
+
+        fees: function fees(value) {
+            this.form.fees = parseFloat(value);
             this.updateTotal();
         },
 
@@ -54496,9 +54529,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })], 1) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-md-6"
-  }, [_c('div', {
-    staticClass: "form-group"
+    staticClass: "form-group col-sm-4 col-md-3 col-md-offset-1"
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
@@ -54531,11 +54562,32 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       domProps: {
         "value": key
       }
-    }, [_vm._v("\n                            " + _vm._s(price.exchange) + "\n                        ")])
-  }))])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('div', {
-    staticClass: "form-group"
+    }, [_vm._v("\n                        " + _vm._s(price.exchange) + "\n                    ")])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "query"
+    }
+  }, [_vm._v("Preis")]), _vm._v(" "), _c('div', {
+    staticClass: "input-group"
+  }, [_c('span', {
+    staticClass: "input-group-addon"
+  }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
+    staticClass: "form-control",
+    attrs: {
+      "options": _vm.cleavePrice
+    },
+    model: {
+      value: (_vm.price),
+      callback: function($$v) {
+        _vm.price = $$v
+      },
+      expression: "price"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3"
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
@@ -54567,37 +54619,81 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "textContent": _vm._s(_vm.form.errors.get('amount'))
     }
-  })]) : _vm._e()])])]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-6"
-  }, [_c('div', {
-    staticClass: "form-group"
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3 col-md-offset-1"
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
       "for": "query"
     }
-  }, [_vm._v("Preis")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Datum")]), _vm._v(" "), _c('div', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.date),
+      expression: "date"
+    }],
+    class: ['form-control', {
+      'error': _vm.form.errors.has('date')
+    }],
+    attrs: {
+      "type": "date",
+      "name": "date"
+    },
+    domProps: {
+      "value": (_vm.date)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.date = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), (_vm.form.errors.has('date')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('date'))
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "query"
+    }
+  }, [_vm._v("Gebühren")]), _vm._v(" "), _c('div', {
     staticClass: "input-group"
   }, [_c('span', {
     staticClass: "input-group-addon"
   }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
-    staticClass: "form-control",
+    class: ['form-control', {
+      'error': _vm.form.errors.has('fees')
+    }],
     attrs: {
-      "options": _vm.cleavePrice
+      "options": _vm.cleaveAmount,
+      "placeholder": "Betrag"
+    },
+    on: {
+      "input": function($event) {
+        _vm.form.errors.clear('fees')
+      }
     },
     model: {
-      value: (_vm.price),
+      value: (_vm.fees),
       callback: function($$v) {
-        _vm.price = $$v
+        _vm.fees = $$v
       },
-      expression: "price"
+      expression: "fees"
     }
-  })], 1)])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('div', {
-    staticClass: "form-group"
+  })], 1), _vm._v(" "), (_vm.form.errors.has('fees')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('fees'))
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3"
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
@@ -54620,7 +54716,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "total"
     }
-  })], 1)])])]), _vm._v(" "), (_vm.exceedCash) ? _c('div', [_c('p', {
+  })], 1)])]), _vm._v(" "), (_vm.exceedCash) ? _c('div', [_c('p', {
     staticClass: "error-text"
   }, [_vm._v("\n            Betrag übersteigt verfügbaren Barbestand.\n        ")])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"

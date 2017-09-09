@@ -24,7 +24,7 @@ class SearchRepository
             $data = new DataRepository($datasource);
             $prices[] = [
                 'exchange'=> $datasource->exchange->code,
-                'price' => $data->price(),
+                'history' => $data->history(),
                 'datasourceId' => $datasource->id];
         };
 
