@@ -246,47 +246,70 @@ class Portfolio extends Model
     }
 
 
+    /* ------------------------------------
+     * Functions to buy and sell a position
+     * ------------------------------------
+     */
+
     /**
      * A buy transaction for position with a given id.
      *
      * @param Position $position
-     * @param array|mixed $attributes
+     * @param array $attributes
      * @return Portfolio
      */
     public function buy($position, $attributes)
     {
-        $this->transaction->trade($position, $attributes, 'buy');
+        $this->transaction->trade($position, $attributes);
         $this->makeTrade($position, $attributes['amount'])->save();
 
         return $this;
     }
 
-
     /**
      * A sell transaction for position with a given id
      *
      * @param Position $position
-     * @param array|mixed $attributes
+     * @param array $attributes
      * @return mixed
      */
     public function sell($position, $attributes)
     {
-        $this->transaction->trade($position, $attributes, 'sell');
+        $this->transaction->trade($position, $attributes);
         $this->makeTrade($position, -$attributes['amount'])->save();
 
         return $this;
     }
 
+    /**
+     * Make a Trade without persisting
+     *
+     * @param Position $position
+     * @param $amount
+     * @return mixed
+     */
+    private function makeTrade($position, $amount)
+    {
+        $position->update(['amount' => $position->amount + $amount]);
+        $this->cash -= $amount * array_first($position->price());
+
+        return $this;
+    }
+
+    /* --------------------------------------------
+     * Functions for withdrawing or depositing cash
+     * --------------------------------------------
+     */
 
     /**
      * Deposit an amount of cash.
      *
-     * @param int $amount
+     * @param array $attributes
      * @return $this
      */
     public function deposit($attributes)
     {
-        $this->transaction->pay($attributes, 'deposit');
+        $this->transaction->pay($attributes);
 
         $this->cash = $this->cash + $attributes['amount'];
         $this->save();
@@ -296,12 +319,12 @@ class Portfolio extends Model
     /**
      * Withdraw an amount of cash.
      *
-     * @param int $amount
+     * @param array $attributes
      * @return $this
      */
     public function withdraw($attributes)
     {
-        $this->transaction->pay($attributes, 'withdrawal');
+        $this->transaction->pay($attributes);
 
         $this->cash = $this->cash - $attributes['amount'];
         $this->save();
@@ -311,12 +334,12 @@ class Portfolio extends Model
     /**
      * Deduct fees from portfolio cash.
      *
-     * @param array|mixed $attributes
+     * @param array $attributes
      * @return Portfolio
      */
     public function fees($attributes)
     {
-        $this->transaction->pay($attributes, 'fees');
+        $this->transaction->fees($attributes);
 
         $this->cash = $this->cash - $attributes['fees'];
         $this->save();
@@ -374,24 +397,6 @@ class Portfolio extends Model
 
 
 
-    /*
-     * private functions
-     */
-
-    /**
-     * Make a Trade without persisting
-     *
-     * @param int $id of position
-     * @param $amount
-     * @return mixed
-     */
-    private function makeTrade($position, $amount)
-    {
-        $position->update(['amount' => $position->amount + $amount]);
-        $this->cash -= $amount * array_first($position->price());
-
-        return $this;
-    }
 
 
     public function sluggable()

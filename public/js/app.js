@@ -21518,6 +21518,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -21543,13 +21576,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             form: new Form({
                 currency: 'EUR',
                 amount: null,
+                date: new Date().toISOString().split('T')[0],
                 name: null,
+                manage: true,
                 category: null,
-                description: null
+                description: null,
+                type: 'deposit'
             }),
 
             decimal: ',',
             cash: null,
+
+            showCash: true,
+
+            management: [{ text: 'Ohne Cash Management', value: false }, { text: 'Mit Cash Management', value: true }],
 
             cleave: {
                 numeral: true,
@@ -21588,6 +21628,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
 
             deep: true
+        },
+
+        form: {
+            deep: true,
+            handler: function handler() {
+                this.showCash = this.form.manage === true;
+            }
         }
     }
 });
@@ -53919,7 +53966,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.form.name),
       expression: "form.name"
     }],
-    staticClass: "form-control",
+    class: ['form-control', {
+      'error': _vm.form.errors.has('name')
+    }],
     attrs: {
       "type": "text",
       "name": "name",
@@ -53992,16 +54041,55 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "col-md-3 col-md-offset-1 col-form-label",
     attrs: {
+      "for": "manage"
+    }
+  }, [_vm._v("Management")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-7"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.manage),
+      expression: "form.manage"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "manage"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.form.manage = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.management), function(type) {
+    return _c('option', {
+      domProps: {
+        "value": type.value
+      }
+    }, [_vm._v("\n                                " + _vm._s(type.text) + "\n                            ")])
+  }))])]), _vm._v(" "), (_vm.showCash) ? _c('div', [_c('div', {
+    staticClass: "form-group row"
+  }, [_c('label', {
+    staticClass: "col-md-3 col-md-offset-1 col-form-label",
+    attrs: {
       "for": "cash"
     }
-  }, [_vm._v("Barbestand")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Einzahlung")]), _vm._v(" "), _c('div', {
     staticClass: "col-md-7"
   }, [_c('div', {
     staticClass: "input-group"
   }, [_c('span', {
     staticClass: "input-group-addon"
   }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
-    staticClass: "form-control",
+    class: ['form-control', {
+      'error': _vm.form.errors.has('amount')
+    }],
     attrs: {
       "type": "text",
       "id": "cash",
@@ -54027,7 +54115,48 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "textContent": _vm._s(_vm.form.errors.get('amount'))
     }
-  })]) : _vm._e()])]), _vm._v(" "), (_vm.categories.length) ? _c('div', {
+  })]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group row"
+  }, [_c('label', {
+    staticClass: "col-md-3 col-md-offset-1 col-form-label",
+    attrs: {
+      "for": "date"
+    }
+  }, [_vm._v("Datum")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-7"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.date),
+      expression: "form.date"
+    }],
+    class: ['form-control', {
+      'error': _vm.form.errors.has('date')
+    }],
+    attrs: {
+      "type": "date",
+      "name": "date"
+    },
+    domProps: {
+      "value": (_vm.form.date)
+    },
+    on: {
+      "keydown": function($event) {
+        _vm.form.errors.clear('date')
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.date = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.form.errors.has('date')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('date'))
+    }
+  })]) : _vm._e()])])]) : _vm._e(), _vm._v(" "), (_vm.categories.length) ? _c('div', {
     staticClass: "form-group row"
   }, [_c('label', {
     staticClass: "col-md-3 col-md-offset-1 col-form-label",
@@ -54544,7 +54673,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
-      "for": "query"
+      "for": "exchange"
     }
   }, [_vm._v("Handelsplatz")]), _vm._v(" "), _c('div', [_c('select', {
     directives: [{
@@ -54579,7 +54708,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
-      "for": "query"
+      "for": "price"
     }
   }, [_vm._v("Preis")]), _vm._v(" "), _c('div', {
     staticClass: "input-group"
@@ -54602,7 +54731,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
-      "for": "query"
+      "for": "amount"
     }
   }, [_vm._v("Anzahl")]), _vm._v(" "), _c('div', [_c('cleave', {
     class: ['form-control', {
@@ -54635,7 +54764,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
-      "for": "query"
+      "for": "date"
     }
   }, [_vm._v("Datum")]), _vm._v(" "), _c('div', [_c('input', {
     directives: [{
@@ -54674,7 +54803,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
-      "for": "query"
+      "for": "fees"
     }
   }, [_vm._v("Gebühren")]), _vm._v(" "), _c('div', {
     staticClass: "input-group"
@@ -54711,7 +54840,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
-      "for": "query"
+      "for": "total"
     }
   }, [_vm._v("Gesamt")]), _vm._v(" "), _c('div', {
     staticClass: "input-group"

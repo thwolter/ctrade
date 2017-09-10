@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Entities\Currency;
 
@@ -26,9 +27,12 @@ class CreatePortfolio extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:1|max:60',
-            'currency' => 'exists:currencies,code',
-            'amount' => 'required|min:0'
+            'name'      => 'required|min:1|max:60',
+            'currency'  => 'exists:currencies,code',
+            'manage'    => 'required|boolean',
+            'amount'    => 'required_if:manage,true|min:0',
+            'date'      => 'required_with:amount|before_or_equal:'.Carbon::today(),
+            'type'      => 'required_with:amount:in:deposit'
         ];
     }
 
@@ -52,4 +56,12 @@ class CreatePortfolio extends FormRequest
         });
     }
 
+
+    public function messages()
+    {
+        return [
+            'date.before_or_equal'  => 'Datum darf nicht in der Zukunft liegen.',
+            'amount.required_if'    => 'Bitte gib einen Wert ein.'
+        ];
+    }
 }

@@ -11,7 +11,7 @@
 
             <!-- exchange -->
             <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
-                <label for="query" class="control-label">Handelsplatz</label>
+                <label for="exchange" class="control-label">Handelsplatz</label>
                 <div>
                     <select name="exchange" v-model="exchange" class="form-control">
                         <option v-for="(price, key) in stock.prices" :value="key">
@@ -23,7 +23,7 @@
 
             <!-- price -->
             <div class="form-group col-sm-4 col-md-3">
-                <label for="query" class="control-label">Preis</label>
+                <label for="price" class="control-label">Preis</label>
                 <div class="input-group">
                     <span class="input-group-addon">{{ form.currency }}</span>
                     <cleave v-model="price" :options="cleavePrice" class="form-control"></cleave>
@@ -32,7 +32,7 @@
 
             <!-- amount -->
             <div class="form-group col-sm-4 col-md-3">
-                <label for="query" class="control-label">Anzahl</label>
+                <label for="amount" class="control-label">Anzahl</label>
                 <div>
                     <cleave v-model="amount" :options="cleaveAmount" placeholder="Anzahl"
                             :class="['form-control', { 'error': form.errors.has('amount') }]"
@@ -45,7 +45,7 @@
 
             <!-- date -->
             <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
-                <label for="query" class="control-label">Datum</label>
+                <label for="date" class="control-label">Datum</label>
                 <div>
                     <input v-model="date" type="date" name="date"
                            :class="['form-control', { 'error': form.errors.has('date') }]"
@@ -58,7 +58,7 @@
 
             <!-- fees -->
             <div class="form-group col-sm-4 col-md-3">
-                <label for="query" class="control-label">Gebühren</label>
+                <label for="fees" class="control-label">Gebühren</label>
                 <div class="input-group">
                     <span class="input-group-addon">{{ form.currency }}</span>
                     <cleave v-model="fees" :options="cleaveAmount" placeholder="Gebühren"
@@ -72,7 +72,7 @@
 
             <!-- total -->
             <div class="form-group col-sm-4 col-md-3">
-                <label for="query" class="control-label">Gesamt</label>
+                <label for="total" class="control-label">Gesamt</label>
                 <div class="input-group">
                     <span class="input-group-addon">{{ form.currency }}</span>
                     <cleave v-model="total" :options="cleavePrice" :class="clsTotal"

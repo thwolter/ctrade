@@ -34,10 +34,9 @@ class Transaction extends Presenter
 
     public function type()
     {
-        $type = $this->entity->type->name;
-        $direction = ($this->entity->value > 0) ? 'plus' : 'minus';
+        $type = $this->entity->type->code;
 
-        return trans("transactions.{$type}.{$direction}");
+        return trans("transactions.{$type}");
 
     }
 

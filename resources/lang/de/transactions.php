@@ -10,16 +10,10 @@ return [
     |
     */
 
-    'trade' => [
-
-        'plus' => 'Kauf',
-        'minus' => 'Verkauf'],
-
-
-    'payment' => [
-
-        'plus' => 'Einzahlung',
-        'minus' => 'Auszahlung'
-    ],
+    'buy'           => 'Kauf',
+    'sell'          => 'Verkauf',
+    'withdrawal'    => 'Auszahlung',
+    'deposit'       => 'Einzahlung',
+    'fees'          => 'Gebühren'
 
 ];

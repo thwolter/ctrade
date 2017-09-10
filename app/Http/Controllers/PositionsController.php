@@ -59,8 +59,8 @@ class PositionsController extends Controller
 
         $position = $portfolio->makePosition($instrument, $request->datasourceId);
 
-        $portfolio->buy($position, $request);
-        $portfolio->fees($request);
+        $portfolio->buy($position, $request->all);
+        $portfolio->fees($request->all());
 
         return ['redirect' => route('positions.index', $portfolio->slug)];
     }

@@ -30,7 +30,7 @@
 
                 @foreach(array_reverse($portfolio->transactions->all()) as $transaction)
 
-                    @php ($isin = $transaction->present()->isin)
+                    @php $isin = $transaction->present()->isin @endphp
                         <tr class="">
                             <td class="align-middle">{{ $loop->iteration }}</td>
                             <td class="align-middle">{{ $transaction->present()->date }}</td>

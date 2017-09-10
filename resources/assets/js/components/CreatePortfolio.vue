@@ -12,7 +12,8 @@
 
                             <div>
                                 <input type="text" name="name" placeholder="Name des Portfolios"
-                                       class="form-control" v-model="form.name" @keydown="form.errors.clear('name')">
+                                       :class="['form-control', { 'error': form.errors.has('name') }]"
+                                       v-model="form.name" @keydown="form.errors.clear('name')">
                             </div>
 
                             <p v-if="form.errors.has('name')" class="error-text">
@@ -37,24 +38,56 @@
                         </div>
                     </div><!-- /currency -->
 
-                    <!-- cash -->
+                    <!-- manage -->
                     <div class="form-group row">
-                        <label for="cash" class="col-md-3 col-md-offset-1 col-form-label">Barbestand</label>
+                        <label for="manage" class="col-md-3 col-md-offset-1 col-form-label">Management</label>
                         <div class="col-md-7">
 
-                            <div class="input-group">
-                                <span class="input-group-addon">{{ form.currency }}</span>
-                                <cleave type="text" id="cash" name="cash" class="form-control" v-model="cash"
-                                        placeholder="Betrag" :options="cleave"
-                                        @rawValueChanged="form.errors.clear('amount')"></cleave>
-                            </div>
-
-                            <p v-if="form.errors.has('amount')" class="error-text">
-                                <span v-text="form.errors.get('amount')"></span>
-                            </p>
+                            <select name="manage" v-model="form.manage" class="form-control">
+                                <option v-for="type in management" :value="type.value">
+                                    {{ type.text }}
+                                </option>
+                            </select>
 
                         </div>
-                    </div><!-- /cash -->
+                    </div><!-- /manage -->
+
+                    <div v-if="showCash">
+
+                        <!-- cash -->
+                        <div class="form-group row">
+                            <label for="cash" class="col-md-3 col-md-offset-1 col-form-label">Einzahlung</label>
+                            <div class="col-md-7">
+
+                                <div class="input-group">
+                                    <span class="input-group-addon">{{ form.currency }}</span>
+                                    <cleave type="text" id="cash" name="cash" v-model="cash"
+                                            placeholder="Betrag" :options="cleave"
+                                            :class="['form-control', { 'error': form.errors.has('amount') }]"
+                                            @rawValueChanged="form.errors.clear('amount')"></cleave>
+                                </div>
+                                <p v-if="form.errors.has('amount')" class="error-text">
+                                    <span v-text="form.errors.get('amount')"></span>
+                                </p>
+                            </div>
+                        </div><!-- /cash -->
+
+                        <!-- date -->
+                        <div class="form-group row">
+                            <label for="date" class="col-md-3 col-md-offset-1 col-form-label">Datum</label>
+                            <div class="col-md-7">
+                                <input v-model="form.date" type="date" name="date"
+                                       :class="['form-control', { 'error': form.errors.has('date') }]"
+                                       @keydown="form.errors.clear('date')">
+                                <p v-if="form.errors.has('date')" class="error-text">
+                                    <span v-text="form.errors.get('date')"></span>
+                                </p>
+                            </div>
+
+                        </div><!-- /date -->
+
+                    </div>
+
 
                     <!-- portfolio category -->
                     <div v-if="categories.length" class="form-group row">
@@ -126,7 +159,7 @@
             route: String,
             redirect: String,
             currencies: Object,
-            categories: null,
+            categories: null
         },
 
         data() {
@@ -134,13 +167,23 @@
                 form: new Form({
                     currency: 'EUR',
                     amount: null,
+                    date: (new Date()).toISOString().split('T')[0],
                     name: null,
+                    manage: true,
                     category: null,
-                    description: null
+                    description: null,
+                    type: 'deposit'
                 }),
 
                 decimal: ',',
                 cash: null,
+
+                showCash: true,
+
+                management: [
+                    {text: 'Ohne Cash Management', value: false},
+                    {text: 'Mit Cash Management', value: true},
+                ],
 
                 cleave: {
                     numeral: true,
@@ -181,6 +224,13 @@
                     }
                 },
                 deep: true
+            },
+
+            form: {
+                deep: true,
+                handler() {
+                    this.showCash = (this.form.manage === true);
+                }
             }
         }
     }
