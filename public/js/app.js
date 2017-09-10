@@ -21198,6 +21198,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -21430,6 +21431,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave__ = __webpack_require__(260);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_cleave__);
+//
 //
 //
 //
@@ -54179,13 +54181,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.date = $event.target.value
       }
     }
-  }), _vm._v(" "), (_vm.form.errors.has('date')) ? _c('p', {
+  })]), _vm._v(" "), (_vm.form.errors.has('date')) ? _c('p', {
     staticClass: "error-text"
   }, [_c('span', {
     domProps: {
       "textContent": _vm._s(_vm.form.errors.get('date'))
     }
-  })]) : _vm._e()])])])]) : _vm._e(), _vm._v(" "), (_vm.categories.length) ? _c('div', {
+  })]) : _vm._e()])])]) : _vm._e(), _vm._v(" "), (_vm.categories.length) ? _c('div', {
     staticClass: "form-group row"
   }, [_c('label', {
     staticClass: "col-md-3 col-md-offset-1 col-form-label",
@@ -54671,7 +54673,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('span', {
     staticClass: "input-group-addon"
   }, [_vm._v("EUR")]), _vm._v(" "), _c('cleave', {
-    class: _vm.classObject,
+    class: ['form-control', {
+      'error': _vm.form.errors.has('date')
+    }],
     attrs: {
       "placeholder": "Betrag",
       "options": _vm.cleave

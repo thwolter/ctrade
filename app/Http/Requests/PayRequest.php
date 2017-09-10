@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Entities\Portfolio;
+use App\Rules\AfterLatestTransaction;
+use App\Rules\BeforOrEqualToday;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,20 +31,12 @@ class PayRequest extends FormRequest
             'amount'        => 'required|min:0.01',
             'transaction'   => 'required|in:deposit,withdraw',
             'id'            => 'required|exists:portfolios,id',
-            'date'          => 'required|date'
+            'date'          => [
+                'required',
+                new AfterLatestTransaction(Portfolio::find($this->id)),
+                new BeforOrEqualToday()
+
+            ],
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function($validator) {
-            if ($this->date < Portfolio::find($this->id)->lastTransactionDate()->toDateString()) {
-                $validator->errors()->add('date', trans('validation.transaction.after'));
-            }
-
-            if ($this->date > Carbon::now()->endOfDay()) {
-                $validator->errors()->add('date', trans('validation.transaction.today'));
-            }
-        });
     }
 }

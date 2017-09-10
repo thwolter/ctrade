@@ -81,10 +81,11 @@
                                     <input v-model="form.date" type="date" name="date"
                                            :class="['form-control', { 'error': form.errors.has('date') }]"
                                            @keydown="form.errors.clear('date')">
-                                    <p v-if="form.errors.has('date')" class="error-text">
-                                        <span v-text="form.errors.get('date')"></span>
-                                    </p>
                                 </div>
+                                <p v-if="form.errors.has('date')" class="error-text">
+                                    <span v-text="form.errors.get('date')"></span>
+                                </p>
+
                             </div>
 
 

@@ -136,5 +136,10 @@ return [
     'transaction' => [
         'after' => 'Datum muss aktueller sein als bereits vorhande Transaktionen.',
         'today' => 'Transaktion darf nicht in der Zukunft liegen.'
+    ],
+
+    'portfolio' => [
+        'date'      => 'Datum darf nicht in der Zukunft liegen.',
+        'amount'    => 'Bitte gib einen Wert ein.'
     ]
 ];

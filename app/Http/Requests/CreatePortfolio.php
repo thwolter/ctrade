@@ -60,8 +60,8 @@ class CreatePortfolio extends FormRequest
     public function messages()
     {
         return [
-            'date.before_or_equal'  => 'Datum darf nicht in der Zukunft liegen.',
-            'amount.required_if'    => 'Bitte gib einen Wert ein.'
+            'date.before_or_equal'  => trans('validation.portfolio.date'),
+            'amount.required_if'    => trans('validation.portfolio.amount')
         ];
     }
 }

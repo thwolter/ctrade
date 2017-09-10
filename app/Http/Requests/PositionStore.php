@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Entities\Portfolio;
 use App\Events\PortfolioHasChanged;
+use App\Rules\AfterLatestTransaction;
+use App\Rules\BeforOrEqualToday;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -32,21 +34,13 @@ class PositionStore extends FormRequest
             'datasourceId'  => 'required',
             'amount'        => 'required|min:0.001',
             'pid'           => 'required|exists:portfolios,id',
-            'date'          => 'required|date',
-            'transaction'   => 'required|in:buy'
+            'date'          => [
+                'required',
+                new AfterLatestTransaction(Portfolio::find($this->pid)),
+                new BeforOrEqualToday()
+            ],
+            'transaction'   => 'required|in:buy',
+
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function($validator) {
-            if ($this->date < Portfolio::find($this->pid)->lastTransactionDate()->toDateString()) {
-                $validator->errors()->add('date', trans('validation.transaction.after'));
-            }
-
-            if ($this->date > Carbon::now()->endOfDay()) {
-                $validator->errors()->add('date', trans('validation.transaction.today'));
-            }
-        });
     }
 }

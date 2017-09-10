@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Entities\Position;
+use App\Rules\AfterLatestTransaction;
+use App\Rules\BeforOrEqualToday;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,8 +31,11 @@ class PositionUpdate extends FormRequest
             'amount'        => 'required|min:0.001',
             'transaction'   => 'required|in:buy,sell',
             'id'            => 'required|exists:positions,id',
-            'date'          => 'required|date',
-
+            'date'          => [
+                'required',
+                new AfterLatestTransaction(Position::find($this->id)->portfolio),
+                new BeforOrEqualToday()
+            ],
         ];
     }
 

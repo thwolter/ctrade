@@ -43,8 +43,9 @@
                                         <div>
                                             <div class="input-group">
                                                 <span class="input-group-addon">EUR</span>
-                                                <cleave v-model="form.amount" :class="classObject"
-                                                        placeholder="Betrag" :options="cleave"
+                                                <cleave v-model="form.amount" placeholder="Betrag"
+                                                        :options="cleave"
+                                                        :class="['form-control', { 'error': form.errors.has('date') }]"
                                                         @input="form.errors.clear('amount')"></cleave>
                                             </div>
 
