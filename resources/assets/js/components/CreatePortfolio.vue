@@ -76,13 +76,17 @@
                         <div class="form-group row">
                             <label for="date" class="col-md-3 col-md-offset-1 col-form-label">Datum</label>
                             <div class="col-md-7">
-                                <input v-model="form.date" type="date" name="date"
-                                       :class="['form-control', { 'error': form.errors.has('date') }]"
-                                       @keydown="form.errors.clear('date')">
-                                <p v-if="form.errors.has('date')" class="error-text">
-                                    <span v-text="form.errors.get('date')"></span>
-                                </p>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input v-model="form.date" type="date" name="date"
+                                           :class="['form-control', { 'error': form.errors.has('date') }]"
+                                           @keydown="form.errors.clear('date')">
+                                    <p v-if="form.errors.has('date')" class="error-text">
+                                        <span v-text="form.errors.get('date')"></span>
+                                    </p>
+                                </div>
                             </div>
+
 
                         </div><!-- /date -->
 
@@ -108,11 +112,11 @@
 
                     <!-- portfolio description -->
                     <div class="form-group row">
-                        <label for="category" class="col-md-3 col-md-offset-1 col-form-label">Beschreibung</label>
+                        <label for="category" class="col-md-3 col-md-offset-1 col-form-label">Notiz</label>
                         <div class="col-md-7">
 
                             <div>
-                                <textarea rows="6" name="description" placeholder="Beschreibe dein Portfolio"
+                                <textarea rows="6" name="description" placeholder="Notizen zum Portfolio"
                                           class="form-control" v-model="form.description"
                                           @keydown="form.errors.clear('description')">
                                 </textarea>
@@ -172,7 +176,7 @@
                     manage: true,
                     category: null,
                     description: null,
-                    type: 'deposit'
+                    transaction: 'deposit'
                 }),
 
                 decimal: ',',

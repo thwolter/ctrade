@@ -123,4 +123,18 @@ return [
         'name'     => 'Name',
         'amount'   => 'Betrag'
     ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | After Validation Hook Attributes
+    |--------------------------------------------------------------------------
+    |
+    |
+    */
+
+    'transaction' => [
+        'after' => 'Datum muss aktueller sein als bereits vorhande Transaktionen.',
+        'today' => 'Transaktion darf nicht in der Zukunft liegen.'
+    ]
 ];

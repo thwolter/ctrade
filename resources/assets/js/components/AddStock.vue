@@ -120,7 +120,8 @@
                     id: null,
                     type: null,
                     pid: null,
-                    entity: this.entity
+                    entity: this.entity,
+                    transaction: 'buy'
                 }),
 
                 stock: [],

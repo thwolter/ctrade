@@ -347,6 +347,11 @@ class Portfolio extends Model
         return $this;
     }
 
+    /* --------------------------------------------
+    * Functions for portfolio images
+    * --------------------------------------------
+    */
+
     public function addImage(UploadedFile $file)
     {
         $image = PortfolioImage::fromForm($file);
@@ -395,13 +400,15 @@ class Portfolio extends Model
         return $keyFigure;
     }
 
-
-
-
-
     public function sluggable()
     {
         return ['slug' => ['source' => 'name']];
+    }
+
+
+    public function lastTransactionDate()
+    {
+        return $this->transactions()->last()->executed_at;
     }
 
     /*

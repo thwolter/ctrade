@@ -10,10 +10,10 @@ return [
     |
     */
 
-    'buy'           => 'Kauf',
-    'sell'          => 'Verkauf',
-    'withdrawal'    => 'Auszahlung',
-    'deposit'       => 'Einzahlung',
-    'fees'          => 'Gebühren'
+    'buy'       => 'Kauf',
+    'sell'      => 'Verkauf',
+    'withdraw'  => 'Auszahlung',
+    'deposit'   => 'Einzahlung',
+    'fees'      => 'Gebühren'
 
 ];

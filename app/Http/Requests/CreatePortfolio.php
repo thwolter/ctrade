@@ -27,12 +27,12 @@ class CreatePortfolio extends FormRequest
     public function rules()
     {
         return [
-            'name'      => 'required|min:1|max:60',
-            'currency'  => 'exists:currencies,code',
-            'manage'    => 'required|boolean',
-            'amount'    => 'required_if:manage,true|min:0',
-            'date'      => 'required_with:amount|before_or_equal:'.Carbon::today(),
-            'type'      => 'required_with:amount:in:deposit'
+            'name'          => 'required|min:1|max:60',
+            'currency'      => 'exists:currencies,code',
+            'manage'        => 'required|boolean',
+            'amount'        => 'required_if:manage,true|min:0',
+            'date'          => 'required_with:amount|before_or_equal:'.Carbon::today(),
+            'transaction'   => 'required_with:amount:in:deposit'
         ];
     }
 

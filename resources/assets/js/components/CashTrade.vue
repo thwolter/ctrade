@@ -18,9 +18,28 @@
                         <div class="modal-body">
 
                             <div class="row">
+
+                                <!-- date -->
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="amount" class="control-label cursor-pointer"></label>
+                                        <label for="date" class="col-form-label">Datum</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <input v-model="form.date" type="date" name="date"
+                                                   :class="['form-control', { 'error': form.errors.has('date') }]"
+                                                   @keydown="form.errors.clear('date')">
+                                        </div>
+                                        <p v-if="form.errors.has('date')" class="error-text">
+                                            <span v-text="form.errors.get('date')"></span>
+                                        </p>
+
+                                    </div>
+                                </div><!-- /date -->
+
+                                <!-- amount -->
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="amount" class="control-label cursor-pointer">Betrag</label>
                                         <div>
                                             <div class="input-group">
                                                 <span class="input-group-addon">EUR</span>
@@ -38,7 +57,9 @@
 
                                         </div>
                                     </div>
-                                </div>
+                                </div> <!-- /amount -->
+
+
                             </div>
                         </div> <!-- /.modal-body -->
 
@@ -74,6 +95,7 @@
                 form: new Form({
                     amount: null,
                     transaction: null,
+                    date: (new Date()).toISOString().split('T')[0],
                     id: null
                 }),
 
@@ -114,8 +136,7 @@
         },
 
         computed: {
-            classObject()
-            {
+            classObject() {
                 if (this.error) {
                     return 'form-control error'
                 } else {
@@ -126,7 +147,7 @@
 
             hasError() {
                 return (this.hasFormError ||
-                (this.exceedCash && this.withdraw));
+                    (this.exceedCash && this.withdraw));
             },
 
             exceedCash() {
@@ -145,8 +166,7 @@
         watch: {
             form: {
                 deep: true,
-                handler()
-                {
+                handler() {
                     this.hasFormError = this.form.errors.any();
                 }
             }

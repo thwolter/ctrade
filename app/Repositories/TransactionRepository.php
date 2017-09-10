@@ -63,7 +63,7 @@ class TransactionRepository
     public function fees($attributes)
     {
         $transaction = $this->makeTransaction($attributes);
-        $transaction->value = $attributes['value'];
+        $transaction->value = $attributes['amount'];
 
         return $transaction->save();
     }
@@ -77,8 +77,8 @@ class TransactionRepository
      */
     private function makeTransaction($attributes): Transaction
     {
-        if (array_has($attributes, ['buy', 'sell'])) {
-            $sign = ($attributes['type'] == 'buy') ? 1 : -1;
+        if (in_array($attributes['transaction'], ['buy', 'sell'])) {
+            $sign = ($attributes['transaction'] == 'buy') ? 1 : -1;
             $amount = $attributes['amount'] * $sign;
             $price = $attributes['price'];
         }
@@ -90,7 +90,7 @@ class TransactionRepository
             'price' => isset ($price) ? $price : null
         ]);
 
-        $type = TransactionType::firstOrCreate(['code' => $attributes['type']]);
+        $type = TransactionType::firstOrCreate(['code' => $attributes['transaction']]);
 
         $transaction->portfolio()->associate($this->portfolio);
         $transaction->type()->associate($type);
