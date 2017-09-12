@@ -24,7 +24,7 @@ class ApiPortfolioController extends ApiBaseController
         $portfolio = $this->getPortfolio($request);
 
         $items = [];
-        foreach ($portfolio->positions as $position) {
+        foreach ($portfolio->positions->unique() as $position) {
             $price = $position->price();
             $array = $position->toArray();
 

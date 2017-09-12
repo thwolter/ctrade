@@ -30,12 +30,12 @@ class ApiSearchController extends ApiBaseController
     public function search(Request $request)
     {
         $request->validate([
-            'entity' => 'required|string',
+            'instrumentType' => 'required|string',
             'query' => 'required|string'
         ]);
 
         return json_encode($this->search
-            ->search($request->get('entity'), $request->get('query'))
+            ->search($request->get('instrumentType'), $request->get('query'))
         );
     }
 
@@ -49,12 +49,12 @@ class ApiSearchController extends ApiBaseController
     public function lookup(Request $request)
     {
         $request->validate([
-            'entity' => 'required|string',
-            'id' => 'required|integer'
+            'instrumentType' => 'required|string',
+            'instrumentId' => 'required|integer'
         ]);
 
         return json_encode($this->search
-            ->lookup($request->get('entity'), $request->get('id'))
+            ->lookup($request->get('instrumentType'), $request->get('instrumentId'))
         );
     }
 }

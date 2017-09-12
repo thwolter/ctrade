@@ -33,10 +33,10 @@ class ApiDataController extends ApiBaseController
         $days = $this->getWeekDaysSeries($request);
 
         $result = [];
-        foreach ($portfolio->positions as $position) {
+        foreach ($portfolio->positions()->proxies() as $position) {
 
             $key = $position->positionable_type . '_' . $position->positionable_id;
-            $result[$key] = $position->history($days);
+            $result[$key] = $position->positionable->history($days);
 
             $origin = $portfolio->currencyCode();
             $target = $position->currencyCode();
@@ -61,10 +61,11 @@ class ApiDataController extends ApiBaseController
             'date' => 'sometimes|date',
         ]);
 
-        $tradesRepo = new TradesRepository($this->getPortfolio($request));
         $date = Carbon::parse($request->get('date', null));
 
-        return collect($tradesRepo->rollbackToDate($date));
+        //return collect($tradesRepo->rollbackToDate($date));
+
+        return $this->getPortfolio($request);
     }
 
 

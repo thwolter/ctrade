@@ -9,11 +9,11 @@
         @include('stock.summary')
 
         <portlet title="Kaufen">
-            <add-stock id="{{ $instrument->id }}"
-                       pid="{{ $portfolio->id }}"
-                       cash="{{ $portfolio->cash }}"
-                       store="{{ route('positions.store', [], false) }}"
-                       entity="{{ \App\Entities\Stock::class }}">
+            <add-stock portfolio-id="{{ $portfolio->id }}"
+                       instrument-type="{{ \App\Entities\Stock::class }}"
+                       instrument-id="{{ $instrument->id }}"
+                       store-route="{{ route('positions.store', [], false) }}"
+                       cash="{{ $portfolio->cash() }}">
             </add-stock>
         </portlet>
 

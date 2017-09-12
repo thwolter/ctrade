@@ -9,7 +9,7 @@ use App\Rules\BeforOrEqualToday;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PositionStore extends FormRequest
+class TradeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,17 +29,20 @@ class PositionStore extends FormRequest
     public function rules()
     {
         return [
-            'type'          => 'required',
-            'id'            => 'required',
-            'datasourceId'  => 'required',
-            'amount'        => 'required|min:0.001',
-            'pid'           => 'required|exists:portfolios,id',
-            'date'          => [
+            'portfolioId'         => 'required|exists:portfolios,id',
+            'transaction'       => 'required|string',
+            'instrumentType'    => 'required|string',
+            'instrumentId'      => 'required|numeric',
+            'currency'          => 'required|string',
+            'amount'            => 'required|numeric|min:0',
+            'price'             => 'required|numeric|min:0',
+            'fees'              => 'required|numeric|min:0',
+            'executed'          => [
                 'required',
-                new AfterLatestTransaction(Portfolio::find($this->pid)),
+                new AfterLatestTransaction(Portfolio::find($this->portfolioId)),
                 new BeforOrEqualToday()
             ],
-            'transaction'   => 'required|in:buy',
+
 
         ];
     }

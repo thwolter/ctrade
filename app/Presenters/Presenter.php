@@ -50,10 +50,7 @@ abstract class Presenter
         return sprintf('%01.1f %%', $value);
     }
 
-    public function price()
-    {
-        return $this->formatPrice($this->entity->price(), $this->entity->currencyCode());
-    }
+
 
     public function valueAtRisk()
     {
@@ -65,10 +62,6 @@ abstract class Presenter
         return sprintf('%01.1f%%', $this->entity->percentRisk());
     }
 
-    public function priceDate()
-    {
-        return Carbon::parse(key($this->entity->price()))->formatLocalized('%d.%m.%Y');
-    }
 
     public function formatDate($date)
     {

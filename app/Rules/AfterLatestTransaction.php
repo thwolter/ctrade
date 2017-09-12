@@ -30,7 +30,7 @@ class AfterLatestTransaction implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $value >= $this->portfolio->lastTransactionDate()->toDateString();
+        return $value >= $this->portfolio->latestTransactionDate()->toDateString();
     }
 
     /**

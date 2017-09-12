@@ -14,7 +14,7 @@
                 <tr class="">
                     <td class="align-middle">1</td>
                     <td class="align-middle">Cash</td>
-                    <td class="text-right">{{ $portfolio->present()->cash }}</td>
+                    <td class="text-right">{{ $portfolio->present()->cash() }}</td>
                     <td></td>
 
                     <td class="align-middle">
@@ -29,7 +29,7 @@
 
             <cash-trade
                 route="{{ route('portfolios.pay', [], false) }}"
-                cash="{{ $portfolio->cash }}">
+                cash="{{ $portfolio->cash() }}">
             </cash-trade>
                    
 

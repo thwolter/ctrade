@@ -71,7 +71,7 @@ class Portfolio extends Model
 
     protected $presenter = 'App\Presenters\Portfolio';
 
-    protected $fillable = ['name', 'cash', 'description', 'settings', 'img_url'];
+    protected $fillable = ['name', 'description', 'settings', 'img_url'];
 
     protected $casts = ['settings' => 'json'];
 
@@ -86,7 +86,10 @@ class Portfolio extends Model
         'image'
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at'];
 
     public $imagesPath = 'public/images';
 
@@ -114,11 +117,6 @@ class Portfolio extends Model
         return $this->hasMany(Position::class);
     }
 
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
-
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -139,6 +137,11 @@ class Portfolio extends Model
         return $this->belongsTo(Currency::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -146,12 +149,6 @@ class Portfolio extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->transaction = new TransactionRepository($this);
-    }
 
     public function getCategoryNameAttribute()
     {
@@ -178,7 +175,7 @@ class Portfolio extends Model
 
     public function cash()
     {
-        return $this->cash;
+        return $this->payments()->sum('amount');
     }
 
     public function cashFlow($from, $to)
@@ -186,20 +183,22 @@ class Portfolio extends Model
         return $this->transactions()->payments()->between($from, $to)->sum('value');
     }
 
-    public function stockTotal()
+    public function totalOfType($type = null)
     {
-        return $this->positions->sum->total($this->currencyCode());
+        $positions = ($type) ? $this->positions()->ofType($type) : $this->positions();
+        $sum = 0;
+        foreach($positions->get() as $position)
+        {
+            $sum += $position->value();
+        }
+        return $sum;
     }
 
     public function total()
     {
-        return $this->stockTotal() + $this->cash();
+        return $this->totalOfType(null) + $this->cash();
     }
 
-    public function value()
-    {
-        return $this->total() + $this->cash();
-    }
 
     public function setCurrency($code)
     {
@@ -220,12 +219,12 @@ class Portfolio extends Model
             'meta' => [
                 'name' => $this->name,
                 'currency' => $this->currencyCode(),
-                'cash' => $this->cash
+                'cash' => $this->cash()
             ],
             'items' => []
         ];
 
-        foreach ($this->positions as $position) {
+        foreach ($this->positions()->proxies() as $position) {
 
             $array['items'][$position->id] = $position->toArray();
         }
@@ -233,73 +232,71 @@ class Portfolio extends Model
     }
 
 
-    public function makePosition($instrument, $datasource = null)
-    {
-        $position =  $this->positions()->withInstrument($instrument)->first();
 
-        if (! $position) {
-            $position = (new PositionRepository())->createPosition($instrument, $datasource);
-            $this->positions()->save($position);
-        }
-
-        return $position;
-    }
-
-
-    /* ------------------------------------
-     * Functions to buy and sell a position
-     * ------------------------------------
+    /* --------------------------------
+     * Functions to manage transactions
+     * --------------------------------
      */
+
+    /**
+     * Return the instrument from an attributes array.
+     *
+     * @param array $attributes
+     * @return mixed
+     */
+    private function getInstrument($attributes)
+    {
+        $instrument = resolve($attributes['instrumentType'])->find($attributes['instrumentId']);
+        return $instrument;
+    }
 
     /**
      * A buy transaction for position with a given id.
      *
-     * @param Position $position
      * @param array $attributes
      * @return Portfolio
      */
-    public function buy($position, $attributes)
+    public function buy($attributes)
     {
-        $this->transaction->trade($position, $attributes);
-        $this->makeTrade($position, $attributes['amount'])->save();
+        $position = new Position([
+            'amount' => $attributes['amount'],
+            'executed_at' => $attributes['executed']
+        ]);
+        $position->positionable()->associate($this->getInstrument($attributes));
+        $this->positions()->save($position);
 
-        return $this;
+        $this->payments()->create([
+            'type' => 'invest',
+            'amount' => -$attributes['price'] * $attributes['amount'],
+            'executed_at' => $attributes['executed']
+        ]);
+
+        return $this->payFees($attributes);
     }
 
     /**
      * A sell transaction for position with a given id
      *
-     * @param Position $position
      * @param array $attributes
      * @return mixed
      */
-    public function sell($position, $attributes)
+    public function sell($attributes)
     {
-        $this->transaction->trade($position, $attributes);
-        $this->makeTrade($position, -$attributes['amount'])->save();
+        $position = new Position([
+            'amount' => -$attributes['amount'],
+            'executed_at' => $attributes['executed']
+        ]);
+        $position->positionable()->associate($this->getInstrument($attributes));
+        $this->positions()->save($position);
 
-        return $this;
+        $this->payments()->create([
+            'type' => 'divest',
+            'amount' => $attributes['price'] * $attributes['amount'],
+            'executed_at' => $attributes['date']
+        ]);
+
+        return $this->payFees($attributes);
     }
-
-    /**
-     * Make a Trade without persisting
-     *
-     * @param Position $position
-     * @param $amount
-     * @return mixed
-     */
-    private function makeTrade($position, $amount)
-    {
-        $position->update(['amount' => $position->amount + $amount]);
-        $this->cash -= $amount * array_first($position->price());
-
-        return $this;
-    }
-
-    /* --------------------------------------------
-     * Functions for withdrawing or depositing cash
-     * --------------------------------------------
-     */
 
     /**
      * Deposit an amount of cash.
@@ -309,10 +306,12 @@ class Portfolio extends Model
      */
     public function deposit($attributes)
     {
-        $this->transaction->pay($attributes);
+        $this->payments()->create([
+            'type' => 'deposit',
+            'amount' => $attributes['amount'],
+            'executed_at' => $attributes['date']
+        ]);
 
-        $this->cash = $this->cash + $attributes['amount'];
-        $this->save();
         return $this;
     }
 
@@ -324,10 +323,12 @@ class Portfolio extends Model
      */
     public function withdraw($attributes)
     {
-        $this->transaction->pay($attributes);
+        $this->payments()->create([
+            'type' => 'withdraw',
+            'amount' => -$attributes['amount'],
+            'executed_at' => $attributes['executed']
+        ]);
 
-        $this->cash = $this->cash - $attributes['amount'];
-        $this->save();
         return $this;
     }
 
@@ -337,12 +338,13 @@ class Portfolio extends Model
      * @param array $attributes
      * @return Portfolio
      */
-    public function fees($attributes)
+    public function payFees($attributes)
     {
-        $this->transaction->fees($attributes);
-
-        $this->cash = $this->cash - $attributes['fees'];
-        $this->save();
+        $this->payments()->create([
+            'type' => 'fees',
+            'amount' => -$attributes['fees'],
+            'executed_at' => $attributes['executed']
+        ]);
 
         return $this;
     }
@@ -406,9 +408,15 @@ class Portfolio extends Model
     }
 
 
-    public function lastTransactionDate()
+    public function latestTransactionDate()
     {
-        return $this->transactions()->last()->executed_at;
+        $payment = $this->payments()->latest()->first();
+        $position = $this->positions()->latest()->first();
+
+        return max(
+            ($payment) ? $payment->executed_at : null,
+            ($position) ? $position->executed_at : null
+        );
     }
 
     /*
@@ -433,6 +441,8 @@ class Portfolio extends Model
 
         return $query->where('user_id', $user->getKey());
     }
+
+
 
     /*
     |--------------------------------------------------------------------------

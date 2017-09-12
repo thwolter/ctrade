@@ -1,4 +1,6 @@
-@php( $positions = $portfolio->positions()->wherePositionableType('stock')->get() )
+@php
+    $positions = $portfolio->positions()->ofType(\App\Entities\Stock::class)->proxies()
+@endphp
 
     <portlet title="Aktien">
         <div class="table-responsive">
@@ -8,7 +10,6 @@
                     <th>Nr</th>
                     <th>Position</th>
                     <th>ISIN</th>
-                    <th>Börse</th>
                     <th>Updated</th>
                     <th class="text-right">Preis</th>
                     <th class="text-right">Stück</th>
@@ -19,21 +20,24 @@
                 <tbody>
                 @foreach($positions as $position)
 
+                    @php
+                        $stock = $position->positionable;
+                    @endphp
+
                     <tr class="">
                         <td class="align-middle">{{ $loop->iteration }}</td>
                         <td class="align-middle">
-                            <a href="{{ route('positions.show', [$position->portfolio->slug, $position->positionable->slug]) }}">
-                                {{ $position->name() }}</a>
+                            <a href="{{ route('positions.show', [$portfolio->slug, $stock->slug]) }}">
+                                {{ $stock->name }}</a>
                         </td>
-                        <td>{{ $position->positionable->isin }}</td>
-                        <td>{{ $position->present()->exchange }}</td>
-                        <td>{{ $position->present()->priceDate() }}</td>
-                        <td class="align-middle text-right">{{ $position->present()->price() }}</td>
-                        <td class="align-middle text-right">{{ $position->amount() }}</td>
+                        <td>{{ $stock->present()->isin }}</td>
+                        <td>{{ $stock->present()->priceDate() }}</td>
+                        <td class="align-middle text-right">{{ $stock->present()->price() }}</td>
+                        <td class="align-middle text-right">{{ $position->present()->sumAmount() }}</td>
                         <td class="align-middle text-right">
-                            {{ $position->present()->total() }}
-                            @if ($position->currencyCode() != $portfolio->currencyCode())
-                                <div>({{ $position->present()->total($portfolio->currencyCode()) }})</div>
+                            {{ $position->present()->sumValue() }}
+                            @if ($stock->currencyCode() != $portfolio->currencyCode())
+                                <div>({{ $position->present->sumValue($portfolio->currencyCode()) }})</div>
                             @endif
                         </td>
 

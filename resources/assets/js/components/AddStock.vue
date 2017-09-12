@@ -45,14 +45,14 @@
 
             <!-- date -->
             <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
-                <label for="date" class="control-label">Datum</label>
+                <label for="executed" class="control-label">Datum</label>
                 <div>
-                    <input v-model="date" type="date" name="date"
-                           :class="['form-control', { 'error': form.errors.has('date') }]"
-                           @keydown="form.errors.clear('date')">
+                    <input v-model="executed" type="date" name="date"
+                           :class="['form-control', { 'error': form.errors.has('executed') }]"
+                           @keydown="form.errors.clear('executed')">
                 </div>
-                <p v-if="form.errors.has('date')" class="error-text">
-                    <span v-text="form.errors.get('date')"></span>
+                <p v-if="form.errors.has('executed')" class="error-text">
+                    <span v-text="form.errors.get('executed')"></span>
                 </p>
             </div>
 
@@ -103,25 +103,28 @@
 
     export default {
 
-        props: ['pid', 'id', 'store', 'cash', 'entity'],
+        props: [
+            'portfolioId',
+            'instrumentType',
+            'instrumentId',
+            'storeRoute',
+            'cash'
+        ],
 
         data() {
             return {
                 lookup: '/api/lookup',
 
                 form: new Form({
-                    exchange: null,
-                    datasourceId: null,
+                    portfolioId: null,
+                    transaction: 'buy',
+                    instrumentId: null,
+                    instrumentType: this.instrumentType,
                     price: null,
                     amount: null,
-                    date: null,
+                    executed: null,
                     fees: null,
                     currency: null,
-                    id: null,
-                    type: null,
-                    pid: null,
-                    entity: this.entity,
-                    transaction: 'buy'
                 }),
 
                 stock: [],
@@ -130,7 +133,7 @@
                 amount: '',
                 total: '',
                 fees: '',
-                date: (new Date()).toISOString().split('T')[0],
+                executed: (new Date()).toISOString().split('T')[0],
 
                 hasFormError: false,
                 showSpinner: true,
@@ -155,7 +158,7 @@
 
             onSubmit() {
                 this.showSpinner = true;
-                this.form.post(this.store)
+                this.form.post(this.storeRoute)
                     .then(data => {
                         window.location = data.redirect;
                     })
@@ -171,8 +174,8 @@
             fetch() {
                 axios.get(this.lookup, {
                     params: {
-                        id: this.id,
-                        entity: this.entity
+                        instrumentId: this.instrumentId,
+                        instrumentType: this.instrumentType
                     }
                 })
                     .then(data => {
@@ -184,18 +187,14 @@
             add(data) {
                 this.stock = data;
                 this.form.currency = this.stock.item.currency;
+                this.form.instrumentType = this.stock.item.type;
 
                 this.updateExchange(this.exchange);
             },
 
             updateExchange(index) {
                 let price = this.stock.prices[index];
-
-                this.date = _.first(Object.keys(price.history));
-
-                this.form.exchange = price.exchange;
-                this.form.datasourceId = price.datasourceId;
-                this.form.type = this.stock.item.type;
+                this.executed = _.first(Object.keys(price.history));
             },
 
             updateTotal() {
@@ -207,7 +206,7 @@
 
             updatePrice() {
                 let history = this.stock.prices[this.exchange].history;
-                this.price = history[this.date];
+                this.price = history[this.executed];
                 this.form.price = this.price;
             },
 
@@ -236,8 +235,8 @@
                 this.updateTotal();
             },
 
-            date: function (value) {
-                this.form.date = value;
+            executed: function (value) {
+                this.form.executed = value;
                 this.updatePrice();
             },
 
@@ -274,8 +273,8 @@
 
         mounted() {
             this.fetch();
-            this.form.id = this.id;
-            this.form.pid = this.pid;
+            this.form.instrumentId = this.instrumentId;
+            this.form.portfolioId = this.portfolioId;
         }
     }
 </script>

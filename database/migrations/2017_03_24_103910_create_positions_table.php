@@ -17,9 +17,10 @@ class CreatePositionsTable extends Migration
             $table->increments('id');
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
-            $table->integer('positionable_id');
             $table->string('positionable_type');
+            $table->integer('positionable_id');
             $table->float('amount')->nullable();
+            $table->dateTime('executed_at');
             $table->softDeletes();
             $table->timestamps();
         });

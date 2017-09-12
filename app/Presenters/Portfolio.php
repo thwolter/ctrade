@@ -11,12 +11,12 @@ class Portfolio extends Presenter
 
     public function cash()
     {
-        return $this->formatPrice($this->entity->cash, $this->entity->currencyCode());
+        return $this->formatPrice($this->entity->cash(), $this->entity->currencyCode());
     }
 
     public function stockTotal()
     {
-        return $this->formatPrice($this->entity->stockTotal(), $this->entity->currencyCode());
+        return $this->formatPrice($this->entity->total(\App\Entities\Stock::class), $this->entity->currencyCode());
     }
 
     public function total()

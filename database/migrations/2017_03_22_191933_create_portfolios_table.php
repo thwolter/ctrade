@@ -22,7 +22,6 @@ class CreatePortfoliosTable extends Migration
             $table->string('slug');
             $table->string('description')->nullable();
             $table->integer('category_id')->nullable();
-            $table->float('cash', 10, 2);
             $table->integer('currency_id');
             $table->json('settings')->nullable();
             $table->boolean('public')->default(false);

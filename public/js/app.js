@@ -20761,25 +20761,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['pid', 'id', 'store', 'cash', 'entity'],
+    props: ['portfolioId', 'instrumentType', 'instrumentId', 'storeRoute', 'cash'],
 
     data: function data() {
         return {
             lookup: '/api/lookup',
 
             form: new Form({
-                exchange: null,
-                datasourceId: null,
+                portfolioId: null,
+                transaction: 'buy',
+                instrumentId: null,
+                instrumentType: this.instrumentType,
                 price: null,
                 amount: null,
-                date: null,
+                executed: null,
                 fees: null,
-                currency: null,
-                id: null,
-                type: null,
-                pid: null,
-                entity: this.entity,
-                transaction: 'buy'
+                currency: null
             }),
 
             stock: [],
@@ -20788,7 +20785,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             amount: '',
             total: '',
             fees: '',
-            date: new Date().toISOString().split('T')[0],
+            executed: new Date().toISOString().split('T')[0],
 
             hasFormError: false,
             showSpinner: true,
@@ -20815,7 +20812,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             this.showSpinner = true;
-            this.form.post(this.store).then(function (data) {
+            this.form.post(this.storeRoute).then(function (data) {
                 window.location = data.redirect;
             }).catch(function (error) {
                 _this.showSpinner = false;
@@ -20829,8 +20826,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             axios.get(this.lookup, {
                 params: {
-                    id: this.id,
-                    entity: this.entity
+                    instrumentId: this.instrumentId,
+                    instrumentType: this.instrumentType
                 }
             }).then(function (data) {
                 _this2.add(data.data);
@@ -20840,17 +20837,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         add: function add(data) {
             this.stock = data;
             this.form.currency = this.stock.item.currency;
+            this.form.instrumentType = this.stock.item.type;
 
             this.updateExchange(this.exchange);
         },
         updateExchange: function updateExchange(index) {
             var price = this.stock.prices[index];
-
-            this.date = _.first(Object.keys(price.history));
-
-            this.form.exchange = price.exchange;
-            this.form.datasourceId = price.datasourceId;
-            this.form.type = this.stock.item.type;
+            this.executed = _.first(Object.keys(price.history));
         },
         updateTotal: function updateTotal() {
             this.total = (this.form.price * this.form.amount + this.form.fees).toFixed(2);
@@ -20860,7 +20853,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         updatePrice: function updatePrice() {
             var history = this.stock.prices[this.exchange].history;
-            this.price = history[this.date];
+            this.price = history[this.executed];
             this.form.price = this.price;
         },
         asNumeric: function asNumeric(value) {
@@ -20888,8 +20881,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.updateTotal();
         },
 
-        date: function date(value) {
-            this.form.date = value;
+        executed: function executed(value) {
+            this.form.executed = value;
             this.updatePrice();
         },
 
@@ -20924,8 +20917,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     mounted: function mounted() {
         this.fetch();
-        this.form.id = this.id;
-        this.form.pid = this.pid;
+        this.form.instrumentId = this.instrumentId;
+        this.form.portfolioId = this.portfolioId;
     }
 });
 
@@ -22289,32 +22282,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['create', 'cash', 'pid', 'entity'],
+    props: ['portfolioId', 'instrumentType', 'createRoute', 'cash'],
 
     data: function data() {
         return {
-            route: '/api/search',
+            searchRoute: '/api/search',
 
             query: null,
             results: [],
             error: false,
 
             doSearch: true,
-            id: null,
+            instrumentId: null,
 
             timeout: null,
 
             form: new Form({
-                entity: this.entity,
-                id: null
+                instrumentType: this.instrumentType,
+                instrumentId: null
             }),
 
             showNoResults: false
@@ -22326,10 +22314,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         onSubmit: function onSubmit() {
             var _this = this;
 
-            axios.get(this.route, {
+            axios.get(this.searchRoute, {
                 params: {
                     query: this.query,
-                    entity: this.entity
+                    instrumentType: this.instrumentType
                 }
             }).then(function (data) {
                 return _this.assign(data.data);
@@ -22349,8 +22337,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, 500);
         },
         onClickLink: function onClickLink(slug) {
-            var entity = this.entity.substr(this.entity.lastIndexOf('\\') + 1).toLowerCase();
-            window.location = this.create + '/' + entity + '/' + slug;
+            var instrumentType = this.instrumentType.substr(this.instrumentType.lastIndexOf('\\') + 1).toLowerCase();
+            window.location = this.createRoute + '/' + instrumentType + '/' + slug;
         },
         assign: function assign(data) {
             this.results = data;
@@ -54852,39 +54840,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "control-label",
     attrs: {
-      "for": "date"
+      "for": "executed"
     }
   }, [_vm._v("Datum")]), _vm._v(" "), _c('div', [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.date),
-      expression: "date"
+      value: (_vm.executed),
+      expression: "executed"
     }],
     class: ['form-control', {
-      'error': _vm.form.errors.has('date')
+      'error': _vm.form.errors.has('executed')
     }],
     attrs: {
       "type": "date",
       "name": "date"
     },
     domProps: {
-      "value": (_vm.date)
+      "value": (_vm.executed)
     },
     on: {
       "keydown": function($event) {
-        _vm.form.errors.clear('date')
+        _vm.form.errors.clear('executed')
       },
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.date = $event.target.value
+        _vm.executed = $event.target.value
       }
     }
-  })]), _vm._v(" "), (_vm.form.errors.has('date')) ? _c('p', {
+  })]), _vm._v(" "), (_vm.form.errors.has('executed')) ? _c('p', {
     staticClass: "error-text"
   }, [_c('span', {
     domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('date'))
+      "textContent": _vm._s(_vm.form.errors.get('executed'))
     }
   })]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "form-group col-sm-4 col-md-3"

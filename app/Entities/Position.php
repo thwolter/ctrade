@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Position extends Model implements PresentableInterface
 {
-    use Presentable, SoftDeletes, Financable;
+    use Presentable, SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -42,15 +42,21 @@ class Position extends Model implements PresentableInterface
     |--------------------------------------------------------------------------
     */
 
-    protected $presenter = \App\Presenters\Position::class;
+    protected $presenter = 'App\Presenters\Position';
 
     protected $fillable = [
         'positionable_type',
         'positionable_id',
+        'executed_at',
         'amount'
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'executed_at',
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
 
 
     /*
@@ -71,29 +77,17 @@ class Position extends Model implements PresentableInterface
     }
 
 
-    public function datasource()
-    {
-        return $this->belongsTo(Datasource::class)->withDefault();
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
 
-   protected function useDatasource()
-   {
-       return $this->datasource;
-   }
-
 
     public function currency()
     {
         return $this->positionable->currency;
     }
-
 
     public function currencyCode()
     {
@@ -105,37 +99,36 @@ class Position extends Model implements PresentableInterface
         return get_class($this->positionable);
     }
 
-    public function typeDisp()
-    {
-        return $this->positionable->typeDisp;
-    }
 
-    public function amount()
+    public function sumAmount()
     {
-        return $this->amount;
-    }
-
-    public function name()
-    {
-        return $this->positionable->name;
+        return $this->allRelated($this->positionable_type, $this->positionable_id)
+            ->sum('amount');
     }
 
 
-    public function symbol()
+    public function price()
     {
-        return $this->positionable->symbol;
+        return $this->positionable->price();
     }
 
-    public function total($currency = null)
+
+    public function value($currency = null)
     {
-        return $this->amount() * array_first($this->price()) * $this->convert($currency);
+        return $this->amount * array_first($this->price()) * $this->convert($currency);
+    }
+
+
+    public function sumValue($currency = null)
+    {
+        return $this->sumAmount() * array_first($this->price()) * $this->convert($currency);
     }
 
 
     public function convert($currencyCode = null)
     {
 
-        if (is_null($currencyCode) or $this->currencyCode() == $currencyCode) return 1;
+        if (!$currencyCode or $this->currencyCode() === $currencyCode) return 1;
 
         return array_first((new CurrencyRepository($this->currencyCode(), $currencyCode))->price());
     }
@@ -149,15 +142,12 @@ class Position extends Model implements PresentableInterface
 
     public function toArray()
     {
-
-        $type = $this->positionable_type;
-
         return [
-            'name' => $this->name(),
-            'type' => $type,
-            'symbol' => "{$type}_{$this->positionable_id}",
+            'name' => $this->positionable->name,
+            'type' => $this->positionable_type,
+            'symbol' => "{$this->positionable_type}_{$this->positionable_id}",
             'currency' => $this->currencyCode(),
-            'amount' => $this->amount,
+            'amount' => $this->sumAmount(),
         ];
     }
 
@@ -173,6 +163,31 @@ class Position extends Model implements PresentableInterface
         $type = array_search(get_class($instrument), Relation::morphMap());
         return $query->where('positionable_id', $instrument->id)->where('positionable_type', $type);
     }
+
+
+    public function scopeOfType($query, $entity)
+    {
+        return $query->where('positionable_type', $entity);
+    }
+
+    public function scopeWithId($query, $id)
+    {
+        return $query->where('positionable_id', $id);
+    }
+
+    public function scopeAllRelated($query, $type, $id)
+    {
+        return $query->ofType($type)->withId($id);
+    }
+
+    public function scopeProxies($query)
+    {
+        return $query->get()->unique(function($item) {
+            return $item['positionable_type'].$item['positionable_id'];
+        });
+    }
+
+
 
 
     /*

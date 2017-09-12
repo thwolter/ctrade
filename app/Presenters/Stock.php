@@ -11,12 +11,18 @@ class Stock extends Presenter
 
     public function priceDate()
     {
-        $date = new Carbon(array_keys($this->entity->price())[0]);
-
-        //Todo: setlocale has to be called centralized for a user
-        setlocale(LC_TIME, 'German');
-        return $date->formatLocalized('%A %d %B %Y');
+        return Carbon::parse(key($this->entity->price()))
+            ->formatLocalized('%d.%m.%Y');
     }
 
+    public function isin()
+    {
+        return '';
+    }
+
+    public function price()
+    {
+        return $this->formatPrice($this->entity->price(), $this->entity->currencyCode());
+    }
 
 }

@@ -66,11 +66,6 @@
                     </div>
                 </div>
 
-              <!--  <div v-else>
-                    <add-stock :id="id" :pid="pid" :cash="cash" :store="store" :entity="entity"></add-stock>
-                </div>-->
-
-
             </div> <!-- /.modal-content -->
         </div> <!-- /.modal-content -->
     </div> <!-- /.modal-dialog -->
@@ -80,24 +75,28 @@
     export default {
 
         props: [
-            'create', 'cash', 'pid', 'entity'],
+            'portfolioId',
+            'instrumentType',
+            'createRoute',
+            'cash'
+        ],
 
         data() {
             return {
-                route: '/api/search',
+                searchRoute: '/api/search',
 
                 query: null,
                 results: [],
                 error: false,
 
                 doSearch: true,
-                id: null,
+                instrumentId: null,
 
                 timeout: null,
 
                 form: new Form({
-                    entity: this.entity,
-                    id: null,
+                    instrumentType: this.instrumentType,
+                    instrumentId: null,
                 }),
 
                 showNoResults: false
@@ -106,10 +105,10 @@
 
         methods: {
             onSubmit() {
-                axios.get(this.route, {
+                axios.get(this.searchRoute, {
                     params: {
                         query: this.query,
-                        entity: this.entity
+                        instrumentType: this.instrumentType
                     }
                 })
                     .then(data => this.assign(data.data));
@@ -130,8 +129,8 @@
             },
 
             onClickLink(slug) {
-                let entity = this.entity.substr(this.entity.lastIndexOf('\\') + 1).toLowerCase();
-                window.location = this.create+'/'+entity+'/'+slug;
+                let instrumentType = this.instrumentType.substr(this.instrumentType.lastIndexOf('\\') + 1).toLowerCase();
+                window.location = this.createRoute+'/'+instrumentType+'/'+slug;
             },
 
             assign(data) {

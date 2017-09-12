@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Transaction;
-use App\Http\Requests\PositionStore;
-use App\Http\Requests\PositionUpdate;
-use Carbon\Carbon;
+use App\Http\Requests\TradeRequest;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\Position;
@@ -49,18 +46,12 @@ class PositionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param PositionStore|Request $request
+     * @param TradeRequest|Request $request
      * @return array
      */
-    public function store(PositionStore $request)
+    public function store(TradeRequest $request)
     {
-        $portfolio = Portfolio::find($request->pid);
-        $instrument = resolve($request->type)->find($request->id);
-
-        $position = $portfolio->makePosition($instrument, $request->datasourceId);
-
-        $portfolio->buy($position, $request->all());
-        $portfolio->fees($request->all());
+        $portfolio = Portfolio::find($request->portfolioId)->buy($request->all());
 
         return ['redirect' => route('positions.index', $portfolio->slug)];
     }
@@ -69,10 +60,10 @@ class PositionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param PositionUpdate $request
+     * @param TradeRequest $request
      * @return array
      */
-    public function update(PositionUpdate $request)
+    public function update(TradeRequest $request)
     {
         $position = Position::find($request->id);
         $transaction = $request->transaction;

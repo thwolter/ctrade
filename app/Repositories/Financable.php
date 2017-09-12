@@ -10,13 +10,13 @@ trait Financable
 
     protected $financialInstance;
 
-    abstract protected function useDatasource();
-
 
     public function financial()
     {
         if (!isset($financialInstance)) {
-            $this->financialInstance = new DataRepository($this->useDatasource());
+
+            $datasource = $this->datasources->first();
+            $this->financialInstance = new DataRepository($datasource);
         }
         return $this->financialInstance;
     }

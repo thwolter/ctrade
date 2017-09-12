@@ -24,10 +24,6 @@ class AppServiceProvider extends ServiceProvider
         // required for migrate ot use utf8mb4
         Schema::defaultStringLength(191);
 
-        Relation::morphMap([
-            'Stock' => \App\Entities\Stock::class,
-            'CcyPair' => \App\Entities\CcyPair::class
-        ]);
 
         // Choose who can see the horizon dashboard
         Horizon::auth(function ($request) {
