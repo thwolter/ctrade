@@ -112,10 +112,6 @@ class Portfolio extends Model
         return $this->hasOne(PortfolioImage::class);
     }
 
-    public function positions()
-    {
-        return $this->hasMany(Position::class);
-    }
 
     public function category()
     {
@@ -142,6 +138,16 @@ class Portfolio extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function assets()
+    {
+        return $this->hasMany(Asset::class);
+    }
+
+    public function positions()
+    {
+        return $this->hasManyThrough(Position::class, Asset::class,
+            'portfolio_id', 'asset_id');
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -185,11 +191,11 @@ class Portfolio extends Model
 
     public function totalOfType($type = null)
     {
-        $positions = ($type) ? $this->positions()->ofType($type) : $this->positions();
+        $assets = $type ? $this->assets()->ofType($type) : $this->assets();
         $sum = 0;
-        foreach($positions->get() as $position)
+        foreach($assets->get() as $asset)
         {
-            $sum += $position->value();
+            $sum += $asset->value();
         }
         return $sum;
     }
@@ -224,9 +230,9 @@ class Portfolio extends Model
             'items' => []
         ];
 
-        foreach ($this->positions()->proxies() as $position) {
-
-            $array['items'][$position->id] = $position->toArray();
+        foreach ($this->assets()->get() as $asset)
+        {
+            $array['items'][$asset->id] = $asset->toArray();
         }
         return $array;
     }
@@ -258,12 +264,10 @@ class Portfolio extends Model
      */
     public function buy($attributes)
     {
-        $position = new Position([
-            'amount' => $attributes['amount'],
-            'executed_at' => $attributes['executed']
-        ]);
-        $position->positionable()->associate($this->getInstrument($attributes));
-        $this->positions()->save($position);
+        $this->assets()->firstOrCreate([
+            'positionable_type' => $attributes['instrumentType'],
+            'positionable_id' => $attributes['instrumentId']
+        ])->obtain($attributes['amount'], $attributes['executed']);
 
         $this->payments()->create([
             'type' => 'invest',

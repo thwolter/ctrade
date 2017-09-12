@@ -1,5 +1,5 @@
 @php
-    $positions = $portfolio->positions()->ofType(\App\Entities\Stock::class)->proxies()
+    $assets = $portfolio->assets()->ofType(\App\Entities\Stock::class)->get();
 @endphp
 
     <portlet title="Aktien">
@@ -18,10 +18,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($positions as $position)
+                @foreach($assets as $asset)
 
                     @php
-                        $stock = $position->positionable;
+                        $stock = $asset->positionable;
                     @endphp
 
                     <tr class="">
@@ -33,16 +33,16 @@
                         <td>{{ $stock->present()->isin }}</td>
                         <td>{{ $stock->present()->priceDate() }}</td>
                         <td class="align-middle text-right">{{ $stock->present()->price() }}</td>
-                        <td class="align-middle text-right">{{ $position->present()->sumAmount() }}</td>
+                        <td class="align-middle text-right">{{ $asset->present()->amount() }}</td>
                         <td class="align-middle text-right">
-                            {{ $position->present()->sumValue() }}
+                            {{ $asset->present()->value() }}
                             @if ($stock->currencyCode() != $portfolio->currencyCode())
-                                <div>({{ $position->present->sumValue($portfolio->currencyCode()) }})</div>
+                                <div>({{ $asset->present->value($portfolio->currencyCode()) }})</div>
                             @endif
                         </td>
 
                         <td class="align-middle col-md-1">
-                            <buy-sell-btn id="{{ $position->id }}" event-buy="buyStock" event-sell="sellStock"
+                            <buy-sell-btn id="{{ $asset->id }}" event-buy="buyStock" event-sell="sellStock"
                                           toggle="false">
                             </buy-sell-btn>
                         </td>

@@ -18,6 +18,7 @@ class CreateStocksTable extends Migration
             $table->string('isin');
             $table->string('wkn')->nullable();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->string('name_overwrite')->nullable();
             $table->integer('currency_id');
             $table->integer('sector_id')->nullable();

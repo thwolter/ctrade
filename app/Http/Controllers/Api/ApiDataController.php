@@ -33,13 +33,12 @@ class ApiDataController extends ApiBaseController
         $days = $this->getWeekDaysSeries($request);
 
         $result = [];
-        foreach ($portfolio->positions()->proxies() as $position) {
+        foreach ($portfolio->assets()->get() as $asset) {
 
-            $key = $position->positionable_type . '_' . $position->positionable_id;
-            $result[$key] = $position->positionable->history($days);
+            $result[$asset->label()] = $asset->positionable->history($days);
 
             $origin = $portfolio->currencyCode();
-            $target = $position->currencyCode();
+            $target = $asset->currencyCode();
 
             if ($origin != $target)
                 $result[$origin . $target] = (new CurrencyRepository($origin, $target))->history($days);

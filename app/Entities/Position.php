@@ -32,9 +32,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Entities\Position whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Position extends Model implements PresentableInterface
+class Position extends Model
 {
-    use Presentable, SoftDeletes;
+    use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -42,11 +42,8 @@ class Position extends Model implements PresentableInterface
     |--------------------------------------------------------------------------
     */
 
-    protected $presenter = 'App\Presenters\Position';
 
     protected $fillable = [
-        'positionable_type',
-        'positionable_id',
         'executed_at',
         'amount'
     ];
@@ -65,15 +62,10 @@ class Position extends Model implements PresentableInterface
     |--------------------------------------------------------------------------
     */
 
-    public function positionable()
-    {
-        return $this->morphTo();
-    }
 
-
-    public function portfolio()
+    public function asset()
     {
-        return $this->belongsTo(Portfolio::class);
+        return $this->belongsTo(Asset::class);
     }
 
 
@@ -84,110 +76,11 @@ class Position extends Model implements PresentableInterface
     */
 
 
-    public function currency()
-    {
-        return $this->positionable->currency;
-    }
-
-    public function currencyCode()
-    {
-        return $this->currency()->code;
-    }
-
-    public function type()
-    {
-        return get_class($this->positionable);
-    }
-
-
-    public function sumAmount()
-    {
-        return $this->allRelated($this->positionable_type, $this->positionable_id)
-            ->sum('amount');
-    }
-
-
-    public function price()
-    {
-        return $this->positionable->price();
-    }
-
-
-    public function value($currency = null)
-    {
-        return $this->amount * array_first($this->price()) * $this->convert($currency);
-    }
-
-
-    public function sumValue($currency = null)
-    {
-        return $this->sumAmount() * array_first($this->price()) * $this->convert($currency);
-    }
-
-
-    public function convert($currencyCode = null)
-    {
-
-        if (!$currencyCode or $this->currencyCode() === $currencyCode) return 1;
-
-        return array_first((new CurrencyRepository($this->currencyCode(), $currencyCode))->price());
-    }
-
-
-    public function hasCurrency($currency)
-    {
-        return $this->currency() == $currency;
-    }
-
-
-    public function toArray()
-    {
-        return [
-            'name' => $this->positionable->name,
-            'type' => $this->positionable_type,
-            'symbol' => "{$this->positionable_type}_{$this->positionable_id}",
-            'currency' => $this->currencyCode(),
-            'amount' => $this->sumAmount(),
-        ];
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
-
-    public function scopeWithInstrument($query, $instrument)
-    {
-        $type = array_search(get_class($instrument), Relation::morphMap());
-        return $query->where('positionable_id', $instrument->id)->where('positionable_type', $type);
-    }
-
-
-    public function scopeOfType($query, $entity)
-    {
-        return $query->where('positionable_type', $entity);
-    }
-
-    public function scopeWithId($query, $id)
-    {
-        return $query->where('positionable_id', $id);
-    }
-
-    public function scopeAllRelated($query, $type, $id)
-    {
-        return $query->ofType($type)->withId($id);
-    }
-
-    public function scopeProxies($query)
-    {
-        return $query->get()->unique(function($item) {
-            return $item['positionable_type'].$item['positionable_id'];
-        });
-    }
-
-
 
 
     /*
@@ -195,6 +88,7 @@ class Position extends Model implements PresentableInterface
     | ACCESORS
     |--------------------------------------------------------------------------
     */
+
 
     /*
     |--------------------------------------------------------------------------
