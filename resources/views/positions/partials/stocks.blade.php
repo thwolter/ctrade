@@ -42,8 +42,11 @@
                         </td>
 
                         <td class="align-middle col-md-1">
-                            <buy-sell-btn id="{{ $asset->id }}" event-buy="buyStock" event-sell="sellStock"
-                                          toggle="false">
+                            <buy-sell-btn
+                                    instrument-id="{{ $asset->id }}"
+                                    event-buy="buyStock"
+                                    event-sell="sellStock"
+                                    toggle="false">
                             </buy-sell-btn>
                         </td>
                     </tr>
@@ -64,8 +67,8 @@
 
 
     <trade-stock
-            route="{{ route('positions.update', [], false) }}"
-            lookup="{{ '/api/position/fetch' }}">
+            instrument-type="{{ get_class($stock) }}"
+            submit-route="{{ route('positions.update', [], false) }}">
     </trade-stock>
 
 

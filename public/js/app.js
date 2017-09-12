@@ -10692,9 +10692,9 @@ __webpack_require__(306)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(168),
+  __webpack_require__(165),
   /* template */
-  __webpack_require__(293),
+  __webpack_require__(292),
   /* scopeId */
   null,
   /* cssModules */
@@ -20656,368 +20656,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-
-    props: ['portfolioId', 'instrumentType', 'instrumentId', 'storeRoute', 'cash'],
-
-    data: function data() {
-        return {
-            lookup: '/api/lookup',
-
-            form: new Form({
-                portfolioId: null,
-                transaction: 'buy',
-                instrumentId: null,
-                instrumentType: this.instrumentType,
-                price: null,
-                amount: null,
-                executed: null,
-                fees: null,
-                currency: null
-            }),
-
-            stock: [],
-            exchange: 0,
-            price: '',
-            amount: '',
-            total: '',
-            fees: '',
-            executed: new Date().toISOString().split('T')[0],
-
-            hasFormError: false,
-            showSpinner: true,
-
-            cleavePrice: {
-                numeral: true,
-                numeralDecimalMark: ',',
-                delimiter: '.',
-                numeralPositiveOnly: true
-            },
-
-            cleaveAmount: {
-                numeral: true,
-                numeralDecimalMark: ',',
-                delimiter: '.',
-                numeralPositiveOnly: true
-            }
-        };
-    },
-
-
-    methods: {
-        onSubmit: function onSubmit() {
-            var _this = this;
-
-            this.showSpinner = true;
-            this.form.post(this.storeRoute).then(function (data) {
-                window.location = data.redirect;
-            }).catch(function (error) {
-                _this.showSpinner = false;
-            });
-        },
-        onCancel: function onCancel() {
-            Event.fire('backToSearch');
-        },
-        fetch: function fetch() {
-            var _this2 = this;
-
-            axios.get(this.lookup, {
-                params: {
-                    instrumentId: this.instrumentId,
-                    instrumentType: this.instrumentType
-                }
-            }).then(function (data) {
-                _this2.add(data.data);
-                _this2.showSpinner = false;
-            });
-        },
-        add: function add(data) {
-            this.stock = data;
-            this.form.currency = this.stock.item.currency;
-            this.form.instrumentType = this.stock.item.type;
-
-            this.updateExchange(this.exchange);
-        },
-        updateExchange: function updateExchange(index) {
-            var price = this.stock.prices[index];
-            this.executed = _.first(Object.keys(price.history));
-        },
-        updateTotal: function updateTotal() {
-            this.total = (this.form.price * this.form.amount + this.form.fees).toFixed(2);
-            if (this.total === '') {
-                this.total = '0';
-            }
-        },
-        updatePrice: function updatePrice() {
-            var history = this.stock.prices[this.exchange].history;
-            this.price = history[this.executed];
-            this.form.price = this.price;
-        },
-        asNumeric: function asNumeric(value) {
-            var number = parseFloat(value);
-            return isNaN(number) ? 0 : number;
-        }
-    },
-
-    watch: {
-        exchange: function exchange(index) {
-            this.updateExchange(index);
-        },
-
-        price: function price(value) {
-            if (value !== '') {
-                this.form.price = this.asNumeric(value);
-                this.updateTotal();
-            } else {
-                this.updateExchange(this.exchange);
-            }
-        },
-
-        amount: function amount(value) {
-            this.form.amount = this.asNumeric(value);
-            this.updateTotal();
-        },
-
-        executed: function executed(value) {
-            this.form.executed = value;
-            this.updatePrice();
-        },
-
-        fees: function fees(value) {
-            this.form.fees = this.asNumeric(value);
-            this.updateTotal();
-        },
-
-        form: {
-            deep: true,
-            handler: function handler() {
-                this.hasFormError = this.form.errors.any();
-            }
-        }
-    },
-
-    computed: {
-        exceedCash: function exceedCash() {
-            return this.asNumeric(this.cash) < this.total;
-        },
-        clsTotal: function clsTotal() {
-            if (this.exceedCash) {
-                return 'form-control error';
-            } else {
-                return 'form-control';
-            }
-        },
-        hasError: function hasError() {
-            return this.hasFormError || this.exceedCash;
-        }
-    },
-
-    mounted: function mounted() {
-        this.fetch();
-        this.form.instrumentId = this.instrumentId;
-        this.form.portfolioId = this.portfolioId;
-    }
-});
-
-/***/ }),
-/* 165 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-
-    props: ['id', 'eventBuy', 'eventSell', 'toggle'],
-
-    data: function data() {
-        return {
-            show: false,
-            direction: null,
-            event: {
-                buy: 'onBuy',
-                sell: 'onSell'
-            },
-            doToggle: true
-        };
-    },
-
-
-    methods: {
-        doBuy: function doBuy() {
-            this.setFocus('buy');
-        },
-        doSell: function doSell() {
-            this.setFocus('sell');
-        },
-        setFocus: function setFocus(direction) {
-            if (this.direction !== direction || !this.doToggle) {
-                this.show = true;
-                this.direction = direction;
-                this.fireEvent();
-            } else {
-                this.show = false;
-                this.direction = null;
-            }
-        },
-        fireEvent: function fireEvent() {
-            if (this.buy) {
-                Event.fire(this.event.buy, this.id);
-            } else {
-                Event.fire(this.event.sell, this.id);
-            }
-        }
-    },
-
-    computed: {
-        buy: function buy() {
-            return this.direction === 'buy';
-            this.$nextTick();
-        },
-        sell: function sell() {
-            return this.direction === 'sell';
-            this.$nextTick();
-        }
-    },
-
-    mounted: function mounted() {
-        if (this.eventBuy) {
-            this.event.buy = this.eventBuy;
-        }
-        if (this.eventSell) {
-            this.event.sell = this.eventSell;
-        }
-
-        if (this.toggle === 'false') {
-            this.doToggle = false;
-        }
-    }
-});
-
-/***/ }),
-/* 166 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(13);
 //
 //
@@ -21102,196 +20740,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 167 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(13);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-
-    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
-
-    props: ['route', 'id', 'cash'],
-
-    data: function data() {
-        return {
-            form: new Form({
-                amount: null,
-                transaction: null,
-                date: new Date().toISOString().split('T')[0],
-                id: null
-            }),
-
-            cleave: {
-                numeral: true,
-                numeralDecimalMark: ',',
-                delimiter: '.',
-                numeralPositiveOnly: true
-            },
-
-            showDialog: false,
-
-            hasFormError: false
-        };
-    },
-
-
-    methods: {
-        onSubmit: function onSubmit() {
-            var _this = this;
-
-            this.form.post(this.route).then(function (data) {
-                _this.hide();
-                window.location = data.redirect;
-            });
-        },
-        show: function show(id, transaction) {
-            this.form.transaction = transaction;
-            this.form.id = id;
-            this.showDialog = true;
-        },
-        hide: function hide() {
-            this.form.reset();
-            this.showDialog = false;
-        }
-    },
-
-    computed: {
-        classObject: function classObject() {
-            if (this.error) {
-                return 'form-control error';
-            } else {
-                return 'form-control';
-            }
-        },
-        hasError: function hasError() {
-            return this.hasFormError || this.exceedCash && this.withdraw;
-        },
-        exceedCash: function exceedCash() {
-            return parseFloat(this.cash) < this.form.amount && this.withdraw;
-        },
-        deposit: function deposit() {
-            return this.form.transaction === 'deposit';
-        },
-        withdraw: function withdraw() {
-            return this.form.transaction === 'withdraw';
-        }
-    },
-
-    watch: {
-        form: {
-            deep: true,
-            handler: function handler() {
-                this.hasFormError = this.form.errors.any();
-            }
-        }
-    },
-
-    mounted: function mounted() {
-        var vm = this;
-
-        this.form.id = this.id;
-
-        Event.listen('depositCash', function (id) {
-            vm.show(id, 'deposit');
-        });
-
-        Event.listen('withdrawCash', function (id) {
-            vm.show(id, 'withdraw');
-        });
-    }
-});
-
-/***/ }),
-/* 168 */
+/* 165 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21375,7 +20824,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 }));
 
 /***/ }),
-/* 169 */
+/* 166 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21414,7 +20863,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 170 */
+/* 167 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21662,7 +21111,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 171 */
+/* 168 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21729,7 +21178,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 172 */
+/* 169 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21785,7 +21234,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 173 */
+/* 170 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21944,7 +21393,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 174 */
+/* 171 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22100,7 +21549,7 @@ var moment = __webpack_require__(0);
 });
 
 /***/ }),
-/* 175 */
+/* 172 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22128,7 +21577,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 176 */
+/* 173 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22147,7 +21596,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
-            route: '/api/portfolio/positions',
+            route: '/api/portfolio/assets',
 
             type: 'doughnut',
             segments: 5,
@@ -22161,7 +21610,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         assign: function assign(data) {
 
-            var items = data.positions;
+            var items = data.assets;
             var share = [];
             var labels = [];
 
@@ -22204,178 +21653,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 177 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-
-    props: ['portfolioId', 'instrumentType', 'createRoute', 'cash'],
-
-    data: function data() {
-        return {
-            searchRoute: '/api/search',
-
-            query: null,
-            results: [],
-            error: false,
-
-            doSearch: true,
-            instrumentId: null,
-
-            timeout: null,
-
-            form: new Form({
-                instrumentType: this.instrumentType,
-                instrumentId: null
-            }),
-
-            showNoResults: false
-        };
-    },
-
-
-    methods: {
-        onSubmit: function onSubmit() {
-            var _this = this;
-
-            axios.get(this.searchRoute, {
-                params: {
-                    query: this.query,
-                    instrumentType: this.instrumentType
-                }
-            }).then(function (data) {
-                return _this.assign(data.data);
-            });
-        },
-        onRefresh: function onRefresh() {
-            var self = this;
-            clearTimeout(this.timeout);
-
-            this.timeout = setTimeout(function () {
-                this.error = false;
-                if (this.query === '') {
-                    self.assign([]);
-                } else {
-                    self.onSubmit();
-                }
-            }, 500);
-        },
-        onClickLink: function onClickLink(slug) {
-            var instrumentType = this.instrumentType.substr(this.instrumentType.lastIndexOf('\\') + 1).toLowerCase();
-            window.location = this.createRoute + '/' + instrumentType + '/' + slug;
-        },
-        assign: function assign(data) {
-            this.results = data;
-            this.showNoResults = this.results.length === 0 && this.query;
-        },
-        reset: function reset() {
-            this.query = null;
-            this.results = [];
-            this.doSearch = true;
-        },
-        join: function join(industry, sector) {
-            var sep = industry && sector ? ' | ' : '';
-            return _.join([industry, sector], sep);
-        }
-    },
-
-    computed: {
-        isResult: function isResult() {
-            return this.results.length !== 0;
-        }
-    },
-
-    created: function created() {
-        var _this2 = this;
-
-        Event.listen('resetSearch', function () {
-            _this2.reset();
-        });
-
-        Event.listen('backToSearch', function () {
-            _this2.doSearch = true;
-        });
-    }
-});
-
-/***/ }),
-/* 178 */
+/* 174 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22525,268 +21803,7 @@ var isNumber = function isNumber(n) {
 });
 
 /***/ }),
-/* 179 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-
-    props: ['route', 'lookup'],
-
-    data: function data() {
-        return {
-            form: new Form({
-                price: null,
-                amount: null,
-                id: null,
-                transaction: null
-            }),
-
-            total: '',
-            originalAmount: null,
-
-            item: [],
-            price: [],
-
-            hasFormError: false,
-            showSpinner: true,
-
-            cleavePrice: {
-                numeral: true,
-                numeralDecimalMark: ',',
-                delimiter: '.',
-                numeralPositiveOnly: true
-            },
-            cleaveAmount: {
-                numeral: true,
-                numeralDecimalMark: ',',
-                delimiter: '.',
-                numeralPositiveOnly: true
-            },
-
-            showDialog: false
-        };
-    },
-
-
-    methods: {
-        onSubmit: function onSubmit() {
-            this.form.put(this.route).then(function (data) {
-                window.location = data.redirect;
-            }).catch(function (data) {});
-        },
-        updateTotal: function updateTotal() {
-            var total = this.form.price * this.form.amount;
-            this.total = isNaN(total) ? 0 .toFixed(2) : total.toFixed(2);
-        },
-        originalPrice: function originalPrice() {
-            var _this = this;
-
-            return Object.keys(this.price).map(function (key) {
-                return _this.price[key];
-            })[0].toFixed(2);
-        },
-        hide: function hide() {
-            this.form.reset();
-            this.showDialog = false;
-            this.form.price = null; // why is price not reset with form?
-            this.showSpinner = true;
-        },
-        show: function show(id, transaction) {
-            this.form.transaction = transaction;
-            this.form.id = id;
-
-            this.fetch();
-            this.showDialog = true;
-        },
-        fetch: function fetch() {
-            var _this2 = this;
-
-            var lookupForm = new Form({ id: this.form.id });
-            lookupForm.post(this.lookup).then(function (data) {
-                _this2.setData(data);
-                _this2.showSpinner = false;
-            });
-        },
-        setData: function setData(data) {
-
-            this.item = data.item;
-            this.price = data.price;
-            this.form.price = this.originalPrice();
-
-            this.cash = data.cash;
-
-            this.originalAmount = data.amount;
-            if (this.form.transaction === 'sell') {
-                this.form.amount = data.amount;
-            }
-        }
-    },
-
-    watch: {
-
-        form: {
-            deep: true,
-            handler: function handler() {
-                this.hasFormError = this.form.errors.any();
-                if (this.form.price === '') {
-                    this.form.price = this.originalPrice();
-                }
-                this.updateTotal();
-            }
-        }
-    },
-
-    computed: {
-        exceedCash: function exceedCash() {
-            return parseFloat(this.cash) < this.form.price * this.form.amount;
-        },
-        exceedInventory: function exceedInventory() {
-            return this.form.amount > this.originalAmount;
-        },
-        classTotal: function classTotal() {
-            return ['form-control', this.exceedCash ? 'error' : ''];
-        },
-        hasError: function hasError() {
-            return this.hasFormError || this.exceedCash || this.exceedInventory && this.sell;
-        },
-        buy: function buy() {
-            return this.form.transaction === 'buy';
-        },
-        sell: function sell() {
-            return this.form.transaction === 'sell';
-        }
-    },
-
-    mounted: function mounted() {
-        var vm = this;
-
-        Event.listen('buyStock', function (id) {
-            vm.show(id, 'buy');
-        });
-
-        Event.listen('sellStock', function (id) {
-            vm.show(id, 'sell');
-        });
-    }
-});
-
-/***/ }),
-/* 180 */
+/* 175 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22832,7 +21849,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 181 */
+/* 176 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22956,7 +21973,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 182 */
+/* 177 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23325,7 +22342,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 183 */
+/* 178 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23652,6 +22669,975 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
+/* 179 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['portfolioId', 'instrumentType', 'instrumentId', 'storeRoute', 'cash'],
+
+    data: function data() {
+        return {
+            lookup: '/api/lookup',
+
+            form: new Form({
+                portfolioId: null,
+                transaction: 'buy',
+                instrumentId: null,
+                instrumentType: this.instrumentType,
+                price: null,
+                amount: null,
+                executed: null,
+                fees: null,
+                currency: null
+            }),
+
+            stock: [],
+            exchange: 0,
+            price: '',
+            amount: '',
+            total: '',
+            fees: '',
+            executed: new Date().toISOString().split('T')[0],
+
+            hasFormError: false,
+            showSpinner: true,
+
+            cleavePrice: {
+                numeral: true,
+                numeralDecimalMark: ',',
+                delimiter: '.',
+                numeralPositiveOnly: true
+            },
+
+            cleaveAmount: {
+                numeral: true,
+                numeralDecimalMark: ',',
+                delimiter: '.',
+                numeralPositiveOnly: true
+            }
+        };
+    },
+
+
+    methods: {
+        onSubmit: function onSubmit() {
+            var _this = this;
+
+            this.showSpinner = true;
+            this.form.post(this.storeRoute).then(function (data) {
+                window.location = data.redirect;
+            }).catch(function (error) {
+                _this.showSpinner = false;
+            });
+        },
+        onCancel: function onCancel() {
+            Event.fire('backToSearch');
+        },
+        fetch: function fetch() {
+            var _this2 = this;
+
+            axios.get(this.lookup, {
+                params: {
+                    instrumentId: this.instrumentId,
+                    instrumentType: this.instrumentType
+                }
+            }).then(function (data) {
+                _this2.add(data.data);
+                _this2.showSpinner = false;
+            });
+        },
+        add: function add(data) {
+            this.stock = data;
+            this.form.currency = this.stock.item.currency;
+            this.form.instrumentType = this.stock.item.type;
+
+            this.updateExchange(this.exchange);
+        },
+        updateExchange: function updateExchange(index) {
+            var price = this.stock.prices[index];
+            this.executed = _.first(Object.keys(price.history));
+        },
+        updateTotal: function updateTotal() {
+            this.total = (this.form.price * this.form.amount + this.form.fees).toFixed(2);
+            if (this.total === '') {
+                this.total = '0';
+            }
+        },
+        updatePrice: function updatePrice() {
+            var history = this.stock.prices[this.exchange].history;
+            this.price = history[this.executed];
+            this.form.price = this.price;
+        },
+        asNumeric: function asNumeric(value) {
+            var number = parseFloat(value);
+            return isNaN(number) ? 0 : number;
+        }
+    },
+
+    watch: {
+        exchange: function exchange(index) {
+            this.updateExchange(index);
+        },
+
+        price: function price(value) {
+            if (value !== '') {
+                this.form.price = this.asNumeric(value);
+                this.updateTotal();
+            } else {
+                this.updateExchange(this.exchange);
+            }
+        },
+
+        amount: function amount(value) {
+            this.form.amount = this.asNumeric(value);
+            this.updateTotal();
+        },
+
+        executed: function executed(value) {
+            this.form.executed = value;
+            this.updatePrice();
+        },
+
+        fees: function fees(value) {
+            this.form.fees = this.asNumeric(value);
+            this.updateTotal();
+        },
+
+        form: {
+            deep: true,
+            handler: function handler() {
+                this.hasFormError = this.form.errors.any();
+            }
+        }
+    },
+
+    computed: {
+        exceedCash: function exceedCash() {
+            return this.asNumeric(this.cash) < this.total;
+        },
+        clsTotal: function clsTotal() {
+            if (this.exceedCash) {
+                return 'form-control error';
+            } else {
+                return 'form-control';
+            }
+        },
+        hasError: function hasError() {
+            return this.hasFormError || this.exceedCash;
+        }
+    },
+
+    mounted: function mounted() {
+        this.fetch();
+        this.form.instrumentId = this.instrumentId;
+        this.form.portfolioId = this.portfolioId;
+    }
+});
+
+/***/ }),
+/* 180 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['instrumentId', 'eventBuy', 'eventSell', 'toggle'],
+
+    data: function data() {
+        return {
+            show: false,
+            direction: null,
+            doToggle: true
+        };
+    },
+
+
+    methods: {
+        doBuy: function doBuy() {
+            this.setFocus('buy');
+        },
+        doSell: function doSell() {
+            this.setFocus('sell');
+        },
+        setFocus: function setFocus(direction) {
+            if (this.direction !== direction || !this.doToggle) {
+                this.show = true;
+                this.direction = direction;
+                this.fireEvent();
+            } else {
+                this.show = false;
+                this.direction = null;
+            }
+        },
+        fireEvent: function fireEvent() {
+            if (this.buy) {
+                Event.fire(this.eventBuy, this.instrumentId);
+            } else {
+                Event.fire(this.eventSell, this.instrumentId);
+            }
+        }
+    },
+
+    computed: {
+        buy: function buy() {
+            return this.direction === 'buy';
+            this.$nextTick();
+        },
+        sell: function sell() {
+            return this.direction === 'sell';
+            this.$nextTick();
+        }
+    },
+
+    mounted: function mounted() {
+        this.doToggle = this.toogle;
+    }
+});
+
+/***/ }),
+/* 181 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(13);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
+
+    props: ['route', 'id', 'cash'],
+
+    data: function data() {
+        return {
+            form: new Form({
+                amount: null,
+                transaction: null,
+                date: new Date().toISOString().split('T')[0],
+                id: null
+            }),
+
+            cleave: {
+                numeral: true,
+                numeralDecimalMark: ',',
+                delimiter: '.',
+                numeralPositiveOnly: true
+            },
+
+            showDialog: false,
+
+            hasFormError: false
+        };
+    },
+
+
+    methods: {
+        onSubmit: function onSubmit() {
+            var _this = this;
+
+            this.form.post(this.route).then(function (data) {
+                _this.hide();
+                window.location = data.redirect;
+            });
+        },
+        show: function show(id, transaction) {
+            this.form.transaction = transaction;
+            this.form.id = id;
+            this.showDialog = true;
+        },
+        hide: function hide() {
+            this.form.reset();
+            this.showDialog = false;
+        }
+    },
+
+    computed: {
+        classObject: function classObject() {
+            if (this.error) {
+                return 'form-control error';
+            } else {
+                return 'form-control';
+            }
+        },
+        hasError: function hasError() {
+            return this.hasFormError || this.exceedCash && this.withdraw;
+        },
+        exceedCash: function exceedCash() {
+            return parseFloat(this.cash) < this.form.amount && this.withdraw;
+        },
+        deposit: function deposit() {
+            return this.form.transaction === 'deposit';
+        },
+        withdraw: function withdraw() {
+            return this.form.transaction === 'withdraw';
+        }
+    },
+
+    watch: {
+        form: {
+            deep: true,
+            handler: function handler() {
+                this.hasFormError = this.form.errors.any();
+            }
+        }
+    },
+
+    mounted: function mounted() {
+        var vm = this;
+
+        this.form.id = this.id;
+
+        Event.listen('depositCash', function (id) {
+            vm.show(id, 'deposit');
+        });
+
+        Event.listen('withdrawCash', function (id) {
+            vm.show(id, 'withdraw');
+        });
+    }
+});
+
+/***/ }),
+/* 182 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['portfolioId', 'instrumentType', 'createRoute', 'cash'],
+
+    data: function data() {
+        return {
+            searchRoute: '/api/search',
+
+            query: null,
+            results: [],
+            error: false,
+
+            doSearch: true,
+            instrumentId: null,
+
+            timeout: null,
+
+            form: new Form({
+                instrumentType: this.instrumentType,
+                instrumentId: null
+            }),
+
+            showNoResults: false
+        };
+    },
+
+
+    methods: {
+        onSubmit: function onSubmit() {
+            var _this = this;
+
+            axios.get(this.searchRoute, {
+                params: {
+                    query: this.query,
+                    instrumentType: this.instrumentType
+                }
+            }).then(function (data) {
+                return _this.assign(data.data);
+            });
+        },
+        onRefresh: function onRefresh() {
+            var self = this;
+            clearTimeout(this.timeout);
+
+            this.timeout = setTimeout(function () {
+                this.error = false;
+                if (this.query === '') {
+                    self.assign([]);
+                } else {
+                    self.onSubmit();
+                }
+            }, 500);
+        },
+        onClickLink: function onClickLink(slug) {
+            var instrumentType = this.instrumentType.substr(this.instrumentType.lastIndexOf('\\') + 1).toLowerCase();
+            window.location = this.createRoute + '/' + instrumentType + '/' + slug;
+        },
+        assign: function assign(data) {
+            this.results = data;
+            this.showNoResults = this.results.length === 0 && this.query;
+        },
+        reset: function reset() {
+            this.query = null;
+            this.results = [];
+            this.doSearch = true;
+        },
+        join: function join(industry, sector) {
+            var sep = industry && sector ? ' | ' : '';
+            return _.join([industry, sector], sep);
+        }
+    },
+
+    computed: {
+        isResult: function isResult() {
+            return this.results.length !== 0;
+        }
+    },
+
+    created: function created() {
+        var _this2 = this;
+
+        Event.listen('resetSearch', function () {
+            _this2.reset();
+        });
+
+        Event.listen('backToSearch', function () {
+            _this2.doSearch = true;
+        });
+    }
+});
+
+/***/ }),
+/* 183 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['submitRoute'],
+
+    data: function data() {
+        return {
+            fetchRoute: '/api/asset/fetch',
+
+            form: new Form({
+                portfolioId: null,
+                transaction: null,
+                instrumentType: null,
+                instrumentId: null,
+                price: null,
+                amount: null,
+                currency: null,
+                fees: null,
+                executed: null
+            }),
+
+            total: '',
+            originalAmount: null,
+            originalPrice: null,
+
+            instrument: [],
+
+            hasFormError: false,
+            showSpinner: true,
+            showDialog: false,
+
+            cleavePrice: {
+                numeral: true,
+                numeralDecimalMark: ',',
+                delimiter: '.',
+                numeralPositiveOnly: true
+            },
+
+            cleaveAmount: {
+                numeral: true,
+                numeralDecimalMark: ',',
+                delimiter: '.',
+                numeralPositiveOnly: true
+            }
+        };
+    },
+
+
+    methods: {
+        onSubmit: function onSubmit() {
+            this.form.put(this.submitRoute).then(function (data) {
+                window.location = data.redirect;
+            }).catch(function (data) {});
+        },
+        updateTotal: function updateTotal() {
+            var total = this.form.price * this.form.amount;
+            this.total = isNaN(total) ? 0 .toFixed(2) : total.toFixed(2);
+        },
+        hide: function hide() {
+            this.form.reset();
+            this.showDialog = false;
+            this.form.price = null; // why is price not reset with form?
+            this.showSpinner = true;
+        },
+        fetch: function fetch(assetId) {
+            var _this = this;
+
+            var fetchForm = new Form({ assetId: assetId });
+            fetchForm.post(this.fetchRoute).then(function (data) {
+                _this.setData(data);
+                _this.showDialog = true;
+                _this.showSpinner = false;
+            });
+        },
+        setData: function setData(data) {
+            this.instrument = data.instrument;
+            this.price = data.price.toString();
+            this.cash = data.cash;
+            this.originalAmount = data.amount;
+
+            this.fillForm(data);
+        },
+        fillForm: function fillForm(data) {
+            this.form.portfolioId = data.portfolioId;
+            this.form.instrumentType = data.instrument.type;
+            this.form.instrumentId = data.instrument.id;
+            this.form.price = data.price.toString();
+            this.form.amount = this.form.transaction === 'sell' ? data.amount : null;
+            this.form.currency = data.instrument.currency;
+        }
+    },
+
+    watch: {
+
+        form: {
+            deep: true,
+            handler: function handler() {
+                this.hasFormError = this.form.errors.any();
+                if (this.form.price === '') {
+                    this.form.price = this.originalPrice;
+                }
+                this.updateTotal();
+            }
+        }
+    },
+
+    computed: {
+        exceedCash: function exceedCash() {
+            return parseFloat(this.cash) < this.form.price * this.form.amount;
+        },
+        exceedInventory: function exceedInventory() {
+            return this.form.amount > this.originalAmount;
+        },
+        classTotal: function classTotal() {
+            return ['form-control', this.exceedCash ? 'error' : ''];
+        },
+        hasError: function hasError() {
+            return this.hasFormError || this.exceedCash || this.exceedInventory && this.sell;
+        },
+        buy: function buy() {
+            return this.form.transaction === 'buy';
+        },
+        sell: function sell() {
+            return this.form.transaction === 'sell';
+        }
+    },
+
+    mounted: function mounted() {
+        var vm = this;
+
+        Event.listen('buyStock', function (assetId) {
+            vm.form.transaction = 'buy';
+            vm.fetch(assetId);
+        });
+
+        Event.listen('sellStock', function (assetId) {
+            vm.form.transaction = 'sell';
+            vm.fetch(assetId);
+        });
+    }
+});
+
+/***/ }),
 /* 184 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -23727,25 +23713,25 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
  * vue components
  */
 
-Vue.component('portlet', __webpack_require__(271));
-Vue.component('icon-stat', __webpack_require__(268));
-Vue.component('cash-trade', __webpack_require__(264));
-Vue.component('buy-sell-btn', __webpack_require__(262));
-Vue.component('cash-success', __webpack_require__(263));
-Vue.component('create-portfolio', __webpack_require__(266));
-Vue.component('search-stock', __webpack_require__(273));
-Vue.component('add-stock', __webpack_require__(261));
-Vue.component('cleave', __webpack_require__(265));
-Vue.component('trade-stock', __webpack_require__(275));
+Vue.component('cash-trade', __webpack_require__(277));
+Vue.component('buy-sell-btn', __webpack_require__(276));
+Vue.component('search-stock', __webpack_require__(278));
+Vue.component('add-stock', __webpack_require__(275));
+Vue.component('trade-stock', __webpack_require__(279));
 
-Vue.component('graph', __webpack_require__(267));
+Vue.component('portlet', __webpack_require__(268));
+Vue.component('icon-stat', __webpack_require__(265));
+Vue.component('cash-success', __webpack_require__(261));
+Vue.component('create-portfolio', __webpack_require__(263));
+Vue.component('cleave', __webpack_require__(262));
+Vue.component('graph', __webpack_require__(264));
 Vue.component('chart', __webpack_require__(14));
-Vue.component('positions-chart', __webpack_require__(272));
-Vue.component('value-chart', __webpack_require__(276));
-Vue.component('spinner', __webpack_require__(274));
-Vue.component('limit-stats', __webpack_require__(269));
+Vue.component('positions-chart', __webpack_require__(269));
+Vue.component('value-chart', __webpack_require__(271));
+Vue.component('spinner', __webpack_require__(270));
+Vue.component('limit-stats', __webpack_require__(266));
 
-Vue.component('notifications', __webpack_require__(270));
+Vue.component('notifications', __webpack_require__(267));
 
 /***/ }),
 /* 186 */
@@ -24078,11 +24064,11 @@ var Form = function () {
 /* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
-Vue.component('passport-clients', __webpack_require__(278));
+Vue.component('passport-clients', __webpack_require__(273));
 
-Vue.component('passport-authorized-clients', __webpack_require__(277));
+Vue.component('passport-authorized-clients', __webpack_require__(272));
 
-Vue.component('passport-personal-access-tokens', __webpack_require__(279));
+Vue.component('passport-personal-access-tokens', __webpack_require__(274));
 
 /***/ }),
 /* 191 */
@@ -26533,7 +26519,7 @@ exports.push([module.i, "\n.vue-simple-spinner {\n  transition: all 0.3s linear;
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n.form-title[data-v-2e004f07] {\n    margin-bottom: 30px;\n}\n", ""]);
+exports.push([module.i, "\n.form-title[data-v-2d0bf8b5] {\n    margin-bottom: 30px;\n}\n", ""]);
 
 /***/ }),
 /* 241 */
@@ -53110,75 +53096,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(164),
   /* template */
-  __webpack_require__(289),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/AddStock.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] AddStock.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3ae14faa", Component.options)
-  } else {
-    hotAPI.reload("data-v-3ae14faa", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 262 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(165),
-  /* template */
-  __webpack_require__(281),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/BuySellBtn.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] BuySellBtn.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0c7af38e", Component.options)
-  } else {
-    hotAPI.reload("data-v-0c7af38e", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 263 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(166),
-  /* template */
-  __webpack_require__(290),
+  __webpack_require__(288),
   /* scopeId */
   null,
   /* cssModules */
@@ -53205,46 +53123,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 264 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(167),
-  /* template */
-  __webpack_require__(288),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/CashTrade.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] CashTrade.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3237c1e8", Component.options)
-  } else {
-    hotAPI.reload("data-v-3237c1e8", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 265 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(169),
+  __webpack_require__(166),
   /* template */
   __webpack_require__(284),
   /* scopeId */
@@ -53273,12 +53157,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 266 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(170),
+  __webpack_require__(167),
   /* template */
   __webpack_require__(283),
   /* scopeId */
@@ -53307,12 +53191,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 267 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(171),
+  __webpack_require__(168),
   /* template */
   __webpack_require__(286),
   /* scopeId */
@@ -53341,14 +53225,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 268 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(172),
+  __webpack_require__(169),
   /* template */
-  __webpack_require__(298),
+  __webpack_require__(296),
   /* scopeId */
   null,
   /* cssModules */
@@ -53375,7 +53259,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 269 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -53384,7 +53268,7 @@ __webpack_require__(301)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(173),
+  __webpack_require__(170),
   /* template */
   __webpack_require__(280),
   /* scopeId */
@@ -53413,12 +53297,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 270 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(174),
+  __webpack_require__(171),
   /* template */
   __webpack_require__(299),
   /* scopeId */
@@ -53447,14 +53331,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 271 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(175),
+  __webpack_require__(172),
   /* template */
-  __webpack_require__(297),
+  __webpack_require__(295),
   /* scopeId */
   null,
   /* cssModules */
@@ -53481,7 +53365,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 272 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -53490,7 +53374,7 @@ __webpack_require__(307)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(176),
+  __webpack_require__(173),
   /* template */
   null,
   /* scopeId */
@@ -53518,41 +53402,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 273 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(177),
-  /* template */
-  __webpack_require__(294),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/SearchStock.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] SearchStock.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-66d15029", Component.options)
-  } else {
-    hotAPI.reload("data-v-66d15029", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 274 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -53561,7 +53411,7 @@ __webpack_require__(302)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(178),
+  __webpack_require__(174),
   /* template */
   __webpack_require__(282),
   /* scopeId */
@@ -53590,50 +53440,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 275 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(303)
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(179),
-  /* template */
-  __webpack_require__(285),
-  /* scopeId */
-  "data-v-2e004f07",
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/TradeStock.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] TradeStock.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2e004f07", Component.options)
-  } else {
-    hotAPI.reload("data-v-2e004f07", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 276 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(180),
+  __webpack_require__(175),
   /* template */
   null,
   /* scopeId */
@@ -53661,7 +53473,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 277 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -53670,9 +53482,9 @@ __webpack_require__(304)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(181),
+  __webpack_require__(176),
   /* template */
-  __webpack_require__(291),
+  __webpack_require__(289),
   /* scopeId */
   "data-v-420d48e5",
   /* cssModules */
@@ -53699,7 +53511,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 278 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -53708,9 +53520,9 @@ __webpack_require__(308)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(182),
+  __webpack_require__(177),
   /* template */
-  __webpack_require__(296),
+  __webpack_require__(294),
   /* scopeId */
   "data-v-6db3a500",
   /* cssModules */
@@ -53737,7 +53549,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 279 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -53746,9 +53558,9 @@ __webpack_require__(305)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(183),
+  __webpack_require__(178),
   /* template */
-  __webpack_require__(292),
+  __webpack_require__(291),
   /* scopeId */
   "data-v-5a11c594",
   /* cssModules */
@@ -53768,6 +53580,180 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-5a11c594", Component.options)
   } else {
     hotAPI.reload("data-v-5a11c594", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 275 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(179),
+  /* template */
+  __webpack_require__(298),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/trading/AddStock.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] AddStock.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-eaf0e650", Component.options)
+  } else {
+    hotAPI.reload("data-v-eaf0e650", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 276 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(180),
+  /* template */
+  __webpack_require__(281),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/trading/BuySellBtn.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] BuySellBtn.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0e63a032", Component.options)
+  } else {
+    hotAPI.reload("data-v-0e63a032", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(181),
+  /* template */
+  __webpack_require__(297),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/trading/CashTrade.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] CashTrade.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e7f4f0c4", Component.options)
+  } else {
+    hotAPI.reload("data-v-e7f4f0c4", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(182),
+  /* template */
+  __webpack_require__(290),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/trading/SearchStock.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] SearchStock.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-493adc3b", Component.options)
+  } else {
+    hotAPI.reload("data-v-493adc3b", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(303)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(183),
+  /* template */
+  __webpack_require__(285),
+  /* scopeId */
+  "data-v-2d0bf8b5",
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/trading/TradeStock.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] TradeStock.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2d0bf8b5", Component.options)
+  } else {
+    hotAPI.reload("data-v-2d0bf8b5", Component.options)
   }
 })()}
 
@@ -53924,7 +53910,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0c7af38e", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0e63a032", module.exports)
   }
 }
 
@@ -54356,7 +54342,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-body"
   }, [_c('div', {
     staticClass: "form-title"
-  }, [_c('h5', [_vm._v(_vm._s(_vm.item.name))]), _vm._v(" "), _c('h6', [_vm._v(" ISIN " + _vm._s(_vm.item.isin) + " / WKN " + _vm._s(_vm.item.wkn))])]), _vm._v(" "), _c('form', {
+  }, [_c('h5', [_vm._v(_vm._s(_vm.instrument.name))]), _vm._v(" "), _c('h6', [_vm._v(" ISIN " + _vm._s(_vm.instrument.isin) + " / WKN " + _vm._s(_vm.instrument.wkn))])]), _vm._v(" "), _c('form', {
     on: {
       "submit": function($event) {
         $event.preventDefault();
@@ -54421,7 +54407,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input-group"
   }, [_c('span', {
     staticClass: "input-group-addon"
-  }, [_vm._v(_vm._s(_vm.item.currency))]), _vm._v(" "), _c('cleave', {
+  }, [_vm._v(_vm._s(_vm.instrument.currency))]), _vm._v(" "), _c('cleave', {
     staticClass: "form-control",
     attrs: {
       "options": _vm.cleavePrice
@@ -54446,7 +54432,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input-group"
   }, [_c('span', {
     staticClass: "input-group-addon"
-  }, [_vm._v(_vm._s(_vm.item.currency))]), _vm._v(" "), _c('cleave', {
+  }, [_vm._v(_vm._s(_vm.instrument.currency))]), _vm._v(" "), _c('cleave', {
     class: _vm.classTotal,
     attrs: {
       "options": _vm.cleavePrice,
@@ -54509,7 +54495,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-2e004f07", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-2d0bf8b5", module.exports)
   }
 }
 
@@ -54558,414 +54544,6 @@ if (false) {
 
 /***/ }),
 /* 288 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.showDialog) ? _c('div', [_c('div', {
-    staticClass: "modal-backdrop fade in",
-    on: {
-      "click": _vm.hide
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "modal show",
-    attrs: {
-      "id": "cash-dialog",
-      "role": "dialog",
-      "aria-labelledby": "trade-dialog"
-    }
-  }, [_c('div', {
-    staticClass: "modal-dialog"
-  }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_c('form', {
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.onSubmit($event)
-      }
-    }
-  }, [_c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-hidden": "true"
-    },
-    on: {
-      "click": _vm.hide
-    }
-  }, [_vm._v("×\n                        ")]), _vm._v(" "), (_vm.deposit) ? _c('h3', {
-    staticClass: "modal-title"
-  }, [_vm._v("Cash einzahlen")]) : _vm._e(), _vm._v(" "), (_vm.withdraw) ? _c('h3', {
-    staticClass: "modal-title"
-  }, [_vm._v("Cash auszahlen")]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "modal-body"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    staticClass: "col-form-label",
-    attrs: {
-      "for": "date"
-    }
-  }, [_vm._v("Datum")]), _vm._v(" "), _c('div', {
-    staticClass: "input-group"
-  }, [_vm._m(0), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.form.date),
-      expression: "form.date"
-    }],
-    class: ['form-control', {
-      'error': _vm.form.errors.has('date')
-    }],
-    attrs: {
-      "type": "date",
-      "name": "date"
-    },
-    domProps: {
-      "value": (_vm.form.date)
-    },
-    on: {
-      "keydown": function($event) {
-        _vm.form.errors.clear('date')
-      },
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.form.date = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), (_vm.form.errors.has('date')) ? _c('p', {
-    staticClass: "error-text"
-  }, [_c('span', {
-    domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('date'))
-    }
-  })]) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    staticClass: "control-label cursor-pointer",
-    attrs: {
-      "for": "amount"
-    }
-  }, [_vm._v("Betrag")]), _vm._v(" "), _c('div', [_c('div', {
-    staticClass: "input-group"
-  }, [_c('span', {
-    staticClass: "input-group-addon"
-  }, [_vm._v("EUR")]), _vm._v(" "), _c('cleave', {
-    class: ['form-control', {
-      'error': _vm.form.errors.has('date')
-    }],
-    attrs: {
-      "placeholder": "Betrag",
-      "options": _vm.cleave
-    },
-    on: {
-      "input": function($event) {
-        _vm.form.errors.clear('amount')
-      }
-    },
-    model: {
-      value: (_vm.form.amount),
-      callback: function($$v) {
-        _vm.form.amount = $$v
-      },
-      expression: "form.amount"
-    }
-  })], 1), _vm._v(" "), (_vm.form.errors.has('amount')) ? _c('p', {
-    staticClass: "error-text"
-  }, [_c('span', {
-    domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('amount'))
-    }
-  })]) : _vm._e(), _vm._v(" "), (_vm.exceedCash) ? _c('p', {
-    staticClass: "error-text"
-  }, [_vm._v("\n                                            Betrag übersteigt verfügbaren Barbestand.\n                                        ")]) : _vm._e()])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
-  }, [_c('div', {
-    staticClass: "pull-right"
-  }, [_c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "type": "reset"
-    },
-    on: {
-      "click": _vm.hide
-    }
-  }, [_vm._v("Abbrechen")]), _vm._v(" "), (_vm.deposit) ? _c('button', {
-    staticClass: "btn btn-success",
-    attrs: {
-      "type": "submit",
-      "disabled": _vm.hasError
-    }
-  }, [_vm._v("\n                                Einzahlen\n                            ")]) : _vm._e(), _vm._v(" "), (_vm.withdraw) ? _c('button', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "type": "submit",
-      "disabled": _vm.hasError
-    }
-  }, [_vm._v("\n                                Auszahlen\n                            ")]) : _vm._e()])])])])])])]) : _vm._e()
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "input-group-addon"
-  }, [_c('i', {
-    staticClass: "fa fa-calendar"
-  })])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-3237c1e8", module.exports)
-  }
-}
-
-/***/ }),
-/* 289 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('form', {
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.onSubmit($event)
-      }
-    }
-  }, [(_vm.showSpinner) ? _c('div', [_c('spinner', {
-    staticClass: "spinner-overlay"
-  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "form-group col-sm-4 col-md-3 col-md-offset-1"
-  }, [_c('label', {
-    staticClass: "control-label",
-    attrs: {
-      "for": "exchange"
-    }
-  }, [_vm._v("Handelsplatz")]), _vm._v(" "), _c('div', [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.exchange),
-      expression: "exchange"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "exchange"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.exchange = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.stock.prices), function(price, key) {
-    return _c('option', {
-      domProps: {
-        "value": key
-      }
-    }, [_vm._v("\n                        " + _vm._s(price.exchange) + "\n                    ")])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group col-sm-4 col-md-3"
-  }, [_c('label', {
-    staticClass: "control-label",
-    attrs: {
-      "for": "price"
-    }
-  }, [_vm._v("Preis")]), _vm._v(" "), _c('div', {
-    staticClass: "input-group"
-  }, [_c('span', {
-    staticClass: "input-group-addon"
-  }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
-    staticClass: "form-control",
-    attrs: {
-      "options": _vm.cleavePrice
-    },
-    model: {
-      value: (_vm.price),
-      callback: function($$v) {
-        _vm.price = $$v
-      },
-      expression: "price"
-    }
-  })], 1)]), _vm._v(" "), _c('div', {
-    staticClass: "form-group col-sm-4 col-md-3"
-  }, [_c('label', {
-    staticClass: "control-label",
-    attrs: {
-      "for": "amount"
-    }
-  }, [_vm._v("Anzahl")]), _vm._v(" "), _c('div', [_c('cleave', {
-    class: ['form-control', {
-      'error': _vm.form.errors.has('amount')
-    }],
-    attrs: {
-      "options": _vm.cleaveAmount,
-      "placeholder": "Anzahl"
-    },
-    on: {
-      "input": function($event) {
-        _vm.form.errors.clear('amount')
-      }
-    },
-    model: {
-      value: (_vm.amount),
-      callback: function($$v) {
-        _vm.amount = $$v
-      },
-      expression: "amount"
-    }
-  })], 1), _vm._v(" "), (_vm.form.errors.has('amount')) ? _c('p', {
-    staticClass: "error-text"
-  }, [_c('span', {
-    domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('amount'))
-    }
-  })]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "form-group col-sm-4 col-md-3 col-md-offset-1"
-  }, [_c('label', {
-    staticClass: "control-label",
-    attrs: {
-      "for": "executed"
-    }
-  }, [_vm._v("Datum")]), _vm._v(" "), _c('div', [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.executed),
-      expression: "executed"
-    }],
-    class: ['form-control', {
-      'error': _vm.form.errors.has('executed')
-    }],
-    attrs: {
-      "type": "date",
-      "name": "date"
-    },
-    domProps: {
-      "value": (_vm.executed)
-    },
-    on: {
-      "keydown": function($event) {
-        _vm.form.errors.clear('executed')
-      },
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.executed = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), (_vm.form.errors.has('executed')) ? _c('p', {
-    staticClass: "error-text"
-  }, [_c('span', {
-    domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('executed'))
-    }
-  })]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "form-group col-sm-4 col-md-3"
-  }, [_c('label', {
-    staticClass: "control-label",
-    attrs: {
-      "for": "fees"
-    }
-  }, [_vm._v("Gebühren")]), _vm._v(" "), _c('div', {
-    staticClass: "input-group"
-  }, [_c('span', {
-    staticClass: "input-group-addon"
-  }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
-    class: ['form-control', {
-      'error': _vm.form.errors.has('fees')
-    }],
-    attrs: {
-      "options": _vm.cleaveAmount,
-      "placeholder": "Gebühren"
-    },
-    on: {
-      "input": function($event) {
-        _vm.form.errors.clear('fees')
-      }
-    },
-    model: {
-      value: (_vm.fees),
-      callback: function($$v) {
-        _vm.fees = $$v
-      },
-      expression: "fees"
-    }
-  })], 1), _vm._v(" "), (_vm.form.errors.has('fees')) ? _c('p', {
-    staticClass: "error-text"
-  }, [_c('span', {
-    domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('fees'))
-    }
-  })]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "form-group col-sm-4 col-md-3"
-  }, [_c('label', {
-    staticClass: "control-label",
-    attrs: {
-      "for": "total"
-    }
-  }, [_vm._v("Gesamt")]), _vm._v(" "), _c('div', {
-    staticClass: "input-group"
-  }, [_c('span', {
-    staticClass: "input-group-addon"
-  }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
-    class: _vm.clsTotal,
-    attrs: {
-      "options": _vm.cleavePrice,
-      "readonly": ""
-    },
-    model: {
-      value: (_vm.total),
-      callback: function($$v) {
-        _vm.total = $$v
-      },
-      expression: "total"
-    }
-  })], 1), _vm._v(" "), (_vm.exceedCash) ? _c('div', {
-    staticClass: "col-md-offset-1"
-  }, [_c('p', {
-    staticClass: "error-text pull-left"
-  }, [_vm._v("\n                    Betrag übersteigt verfügbaren Barbestand.\n                ")])]) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
-  }, [_c('div', [_c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "type": "reset"
-    },
-    on: {
-      "click": _vm.onCancel
-    }
-  }, [_vm._v("Zurück")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "disabled": _vm.hasError
-    }
-  }, [_vm._v("Hinzufügen")])])])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-3ae14faa", module.exports)
-  }
-}
-
-/***/ }),
-/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55027,7 +54605,7 @@ if (false) {
 }
 
 /***/ }),
-/* 291 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55073,7 +54651,107 @@ if (false) {
 }
 
 /***/ }),
-/* 292 */
+/* 290 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-dialog"
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [(_vm.doSearch) ? _c('div', [_c('div', {
+    staticClass: "row"
+  }, [_c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "control-label col-sm-2 col-sm-offset-1",
+    attrs: {
+      "for": "query"
+    }
+  }, [_vm._v("Suchen")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.query),
+      expression: "query"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Name, WKN, ISIN, ..."
+    },
+    domProps: {
+      "value": (_vm.query)
+    },
+    on: {
+      "keyup": _vm.onRefresh,
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.query = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "help-block"
+  }, [_vm._v("\n                                    Suche nach Namen oder Branche\n                                ")])])])])]), _vm._v(" "), (_vm.isResult) ? _c('div', [_c('table', {
+    staticClass: "table table-striped table-hover positions-table"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(item, index) {
+    return _c('tr', [_c('td', {
+      staticClass: "align-middle"
+    }, [_vm._v(" " + _vm._s(parseInt(index) + 1))]), _vm._v(" "), _c('td', {
+      staticClass: "align-middle"
+    }, [_c('span', {
+      staticStyle: {
+        "display": "block"
+      }
+    }, [_c('a', {
+      attrs: {
+        "href": "#"
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.onClickLink(item.slug)
+        }
+      }
+    }, [_vm._v(_vm._s(item.name))])]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.join(item.industry, item.sector)))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.isin))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.currency))])])
+  }))])]) : _vm._e(), _vm._v(" "), (_vm.showNoResults) ? _c('div', [_c('p', [_vm._v("Keine Ergebniss gefunden.")])]) : _vm._e()]) : _vm._e()])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")]), _vm._v(" "), _c('h3', {
+    staticClass: "modal-title"
+  }, [_vm._v("Wertpapier hinzufügen")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Nr.")]), _vm._v(" "), _c('th', [_vm._v("Name/Sektor")]), _vm._v(" "), _c('th', [_vm._v("ISIN")]), _vm._v(" "), _c('th', [_vm._v("Währung")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-493adc3b", module.exports)
+  }
+}
+
+/***/ }),
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55273,7 +54951,7 @@ if (false) {
 }
 
 /***/ }),
-/* 293 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55302,108 +54980,8 @@ if (false) {
 }
 
 /***/ }),
+/* 293 */,
 /* 294 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-dialog"
-  }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "modal-body"
-  }, [(_vm.doSearch) ? _c('div', [_c('div', {
-    staticClass: "row"
-  }, [_c('form', {
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.onSubmit($event)
-      }
-    }
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    staticClass: "control-label col-sm-2 col-sm-offset-1",
-    attrs: {
-      "for": "query"
-    }
-  }, [_vm._v("Suchen")]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-8"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.query),
-      expression: "query"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "placeholder": "Name, WKN, ISIN, ..."
-    },
-    domProps: {
-      "value": (_vm.query)
-    },
-    on: {
-      "keyup": _vm.onRefresh,
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.query = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('span', {
-    staticClass: "help-block"
-  }, [_vm._v("\n                                    Suche nach Namen oder Branche\n                                ")])])])])]), _vm._v(" "), (_vm.isResult) ? _c('div', [_c('table', {
-    staticClass: "table table-striped table-hover positions-table"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(item, index) {
-    return _c('tr', [_c('td', {
-      staticClass: "align-middle"
-    }, [_vm._v(" " + _vm._s(parseInt(index) + 1))]), _vm._v(" "), _c('td', {
-      staticClass: "align-middle"
-    }, [_c('span', {
-      staticStyle: {
-        "display": "block"
-      }
-    }, [_c('a', {
-      attrs: {
-        "href": "#"
-      },
-      on: {
-        "click": function($event) {
-          $event.preventDefault();
-          _vm.onClickLink(item.slug)
-        }
-      }
-    }, [_vm._v(_vm._s(item.name))])]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.join(item.industry, item.sector)))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.isin))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.currency))])])
-  }))])]) : _vm._e(), _vm._v(" "), (_vm.showNoResults) ? _c('div', [_c('p', [_vm._v("Keine Ergebniss gefunden.")])]) : _vm._e()]) : _vm._e()])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")]), _vm._v(" "), _c('h3', {
-    staticClass: "modal-title"
-  }, [_vm._v("Wertpapier hinzufügen")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Nr.")]), _vm._v(" "), _c('th', [_vm._v("Name/Sektor")]), _vm._v(" "), _c('th', [_vm._v("ISIN")]), _vm._v(" "), _c('th', [_vm._v("Währung")])])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-66d15029", module.exports)
-  }
-}
-
-/***/ }),
-/* 295 */,
-/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55715,7 +55293,7 @@ if (false) {
 }
 
 /***/ }),
-/* 297 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55740,7 +55318,7 @@ if (false) {
 }
 
 /***/ }),
-/* 298 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55773,6 +55351,414 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-b11249bc", module.exports)
+  }
+}
+
+/***/ }),
+/* 297 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return (_vm.showDialog) ? _c('div', [_c('div', {
+    staticClass: "modal-backdrop fade in",
+    on: {
+      "click": _vm.hide
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "modal show",
+    attrs: {
+      "id": "cash-dialog",
+      "role": "dialog",
+      "aria-labelledby": "trade-dialog"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog"
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-hidden": "true"
+    },
+    on: {
+      "click": _vm.hide
+    }
+  }, [_vm._v("×\n                        ")]), _vm._v(" "), (_vm.deposit) ? _c('h3', {
+    staticClass: "modal-title"
+  }, [_vm._v("Cash einzahlen")]) : _vm._e(), _vm._v(" "), (_vm.withdraw) ? _c('h3', {
+    staticClass: "modal-title"
+  }, [_vm._v("Cash auszahlen")]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-form-label",
+    attrs: {
+      "for": "date"
+    }
+  }, [_vm._v("Datum")]), _vm._v(" "), _c('div', {
+    staticClass: "input-group"
+  }, [_vm._m(0), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.date),
+      expression: "form.date"
+    }],
+    class: ['form-control', {
+      'error': _vm.form.errors.has('date')
+    }],
+    attrs: {
+      "type": "date",
+      "name": "date"
+    },
+    domProps: {
+      "value": (_vm.form.date)
+    },
+    on: {
+      "keydown": function($event) {
+        _vm.form.errors.clear('date')
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.date = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), (_vm.form.errors.has('date')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('date'))
+    }
+  })]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "control-label cursor-pointer",
+    attrs: {
+      "for": "amount"
+    }
+  }, [_vm._v("Betrag")]), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "input-group"
+  }, [_c('span', {
+    staticClass: "input-group-addon"
+  }, [_vm._v("EUR")]), _vm._v(" "), _c('cleave', {
+    class: ['form-control', {
+      'error': _vm.form.errors.has('date')
+    }],
+    attrs: {
+      "placeholder": "Betrag",
+      "options": _vm.cleave
+    },
+    on: {
+      "input": function($event) {
+        _vm.form.errors.clear('amount')
+      }
+    },
+    model: {
+      value: (_vm.form.amount),
+      callback: function($$v) {
+        _vm.form.amount = $$v
+      },
+      expression: "form.amount"
+    }
+  })], 1), _vm._v(" "), (_vm.form.errors.has('amount')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('amount'))
+    }
+  })]) : _vm._e(), _vm._v(" "), (_vm.exceedCash) ? _c('p', {
+    staticClass: "error-text"
+  }, [_vm._v("\n                                            Betrag übersteigt verfügbaren Barbestand.\n                                        ")]) : _vm._e()])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('div', {
+    staticClass: "pull-right"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "reset"
+    },
+    on: {
+      "click": _vm.hide
+    }
+  }, [_vm._v("Abbrechen")]), _vm._v(" "), (_vm.deposit) ? _c('button', {
+    staticClass: "btn btn-success",
+    attrs: {
+      "type": "submit",
+      "disabled": _vm.hasError
+    }
+  }, [_vm._v("\n                                Einzahlen\n                            ")]) : _vm._e(), _vm._v(" "), (_vm.withdraw) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "disabled": _vm.hasError
+    }
+  }, [_vm._v("\n                                Auszahlen\n                            ")]) : _vm._e()])])])])])])]) : _vm._e()
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "input-group-addon"
+  }, [_c('i', {
+    staticClass: "fa fa-calendar"
+  })])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-e7f4f0c4", module.exports)
+  }
+}
+
+/***/ }),
+/* 298 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      }
+    }
+  }, [(_vm.showSpinner) ? _c('div', [_c('spinner', {
+    staticClass: "spinner-overlay"
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "form-group col-sm-4 col-md-3 col-md-offset-1"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "exchange"
+    }
+  }, [_vm._v("Handelsplatz")]), _vm._v(" "), _c('div', [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.exchange),
+      expression: "exchange"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "exchange"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.exchange = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.stock.prices), function(price, key) {
+    return _c('option', {
+      domProps: {
+        "value": key
+      }
+    }, [_vm._v("\n                        " + _vm._s(price.exchange) + "\n                    ")])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "price"
+    }
+  }, [_vm._v("Preis")]), _vm._v(" "), _c('div', {
+    staticClass: "input-group"
+  }, [_c('span', {
+    staticClass: "input-group-addon"
+  }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
+    staticClass: "form-control",
+    attrs: {
+      "options": _vm.cleavePrice
+    },
+    model: {
+      value: (_vm.price),
+      callback: function($$v) {
+        _vm.price = $$v
+      },
+      expression: "price"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "amount"
+    }
+  }, [_vm._v("Anzahl")]), _vm._v(" "), _c('div', [_c('cleave', {
+    class: ['form-control', {
+      'error': _vm.form.errors.has('amount')
+    }],
+    attrs: {
+      "options": _vm.cleaveAmount,
+      "placeholder": "Anzahl"
+    },
+    on: {
+      "input": function($event) {
+        _vm.form.errors.clear('amount')
+      }
+    },
+    model: {
+      value: (_vm.amount),
+      callback: function($$v) {
+        _vm.amount = $$v
+      },
+      expression: "amount"
+    }
+  })], 1), _vm._v(" "), (_vm.form.errors.has('amount')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('amount'))
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3 col-md-offset-1"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "executed"
+    }
+  }, [_vm._v("Datum")]), _vm._v(" "), _c('div', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.executed),
+      expression: "executed"
+    }],
+    class: ['form-control', {
+      'error': _vm.form.errors.has('executed')
+    }],
+    attrs: {
+      "type": "date",
+      "name": "date"
+    },
+    domProps: {
+      "value": (_vm.executed)
+    },
+    on: {
+      "keydown": function($event) {
+        _vm.form.errors.clear('executed')
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.executed = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), (_vm.form.errors.has('executed')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('executed'))
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "fees"
+    }
+  }, [_vm._v("Gebühren")]), _vm._v(" "), _c('div', {
+    staticClass: "input-group"
+  }, [_c('span', {
+    staticClass: "input-group-addon"
+  }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
+    class: ['form-control', {
+      'error': _vm.form.errors.has('fees')
+    }],
+    attrs: {
+      "options": _vm.cleaveAmount,
+      "placeholder": "Gebühren"
+    },
+    on: {
+      "input": function($event) {
+        _vm.form.errors.clear('fees')
+      }
+    },
+    model: {
+      value: (_vm.fees),
+      callback: function($$v) {
+        _vm.fees = $$v
+      },
+      expression: "fees"
+    }
+  })], 1), _vm._v(" "), (_vm.form.errors.has('fees')) ? _c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('fees'))
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-4 col-md-3"
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "total"
+    }
+  }, [_vm._v("Gesamt")]), _vm._v(" "), _c('div', {
+    staticClass: "input-group"
+  }, [_c('span', {
+    staticClass: "input-group-addon"
+  }, [_vm._v(_vm._s(_vm.form.currency))]), _vm._v(" "), _c('cleave', {
+    class: _vm.clsTotal,
+    attrs: {
+      "options": _vm.cleavePrice,
+      "readonly": ""
+    },
+    model: {
+      value: (_vm.total),
+      callback: function($$v) {
+        _vm.total = $$v
+      },
+      expression: "total"
+    }
+  })], 1), _vm._v(" "), (_vm.exceedCash) ? _c('div', {
+    staticClass: "col-md-offset-1"
+  }, [_c('p', {
+    staticClass: "error-text pull-left"
+  }, [_vm._v("\n                    Betrag übersteigt verfügbaren Barbestand.\n                ")])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('div', [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "reset"
+    },
+    on: {
+      "click": _vm.onCancel
+    }
+  }, [_vm._v("Zurück")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "disabled": _vm.hasError
+    }
+  }, [_vm._v("Hinzufügen")])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-eaf0e650", module.exports)
   }
 }
 
@@ -57488,13 +57474,13 @@ var content = __webpack_require__(240);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("3dd87698", content, false);
+var update = __webpack_require__(5)("ab442a64", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2e004f07&scoped=true!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TradeStock.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2e004f07&scoped=true!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TradeStock.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2d0bf8b5&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TradeStock.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2d0bf8b5&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TradeStock.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });

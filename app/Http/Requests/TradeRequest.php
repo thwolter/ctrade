@@ -29,7 +29,7 @@ class TradeRequest extends FormRequest
     public function rules()
     {
         return [
-            'portfolioId'         => 'required|exists:portfolios,id',
+            'portfolioId'       => 'required|exists:portfolios,id',
             'transaction'       => 'required|string',
             'instrumentType'    => 'required|string',
             'instrumentId'      => 'required|numeric',

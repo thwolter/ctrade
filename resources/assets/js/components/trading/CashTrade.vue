@@ -83,7 +83,7 @@
 </template>
 
 <script>
-    import Input from '../mixins/Input.js';
+    import Input from '../../mixins/Input.js';
 
     export default {
 

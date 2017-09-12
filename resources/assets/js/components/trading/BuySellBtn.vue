@@ -16,16 +16,16 @@
 <script>
     export default {
 
-        props: ['id', 'eventBuy', 'eventSell', 'toggle'],
+        props: [
+            'instrumentId',
+            'eventBuy',
+            'eventSell',
+            'toggle'],
 
         data() {
             return {
                 show: false,
                 direction: null,
-                event: {
-                    buy: 'onBuy',
-                    sell: 'onSell'
-                },
                 doToggle: true
             }
         },
@@ -52,9 +52,9 @@
 
             fireEvent() {
                if (this.buy) {
-                   Event.fire(this.event.buy, this.id)
+                   Event.fire(this.eventBuy, this.instrumentId)
                } else {
-                   Event.fire(this.event.sell, this.id)
+                   Event.fire(this.eventSell, this.instrumentId)
                }
             }
         },
@@ -71,10 +71,7 @@
         },
 
         mounted() {
-            if (this.eventBuy) { this.event.buy = this.eventBuy; }
-            if (this.eventSell) { this.event.sell = this.eventSell; }
-
-            if (this.toggle === 'false') { this.doToggle = false; }
+            this.doToggle = this.toogle;
         }
     }
 </script>

@@ -40,7 +40,7 @@ Route::get('/lookup', 'Api\ApiSearchController@lookup');
 |
 */
 Route::group(['middleware' => ['auth:api']], function() {
-    Route::get('/portfolio/positions', 'Api\ApiPortfolioController@positions');
+    Route::get('/portfolio/assets', 'Api\ApiPortfolioController@assets');
     Route::get('/portfolio/value', 'Api\ApiPortfolioController@value');
     Route::get('/portfolio/risk', 'Api\ApiPortfolioController@risk');
     Route::get('/portfolio/limits', 'Api\ApiPortfolioController@limits');
@@ -62,7 +62,7 @@ Route::group(['middleware' => ['auth:api']], function() {
 */
 
 Route::group(['middleware' => ['auth:api']], function() {
-    Route::post('/position/fetch', 'Api\ApiPositionController@fetch');
+    Route::post('/asset/fetch', 'Api\ApiAssetController@fetch');
 });
 
 

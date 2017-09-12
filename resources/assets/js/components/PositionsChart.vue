@@ -10,7 +10,7 @@
 
         data() {
             return {
-                route: '/api/portfolio/positions',
+                route: '/api/portfolio/assets',
 
                 type: 'doughnut',
                 segments: 5,
@@ -24,7 +24,7 @@
 
             assign(data) {
 
-                const items = data.positions;
+                const items = data.assets;
                 let share = [];
                 let labels = [];
 

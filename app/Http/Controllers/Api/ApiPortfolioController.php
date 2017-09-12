@@ -19,33 +19,33 @@ class ApiPortfolioController extends ApiBaseController
      * @param Request $request
      * @return string
      */
-    public function positions(Request $request)
+    public function assets(Request $request)
     {
         $portfolio = $this->getPortfolio($request);
 
         $items = [];
-        foreach ($portfolio->positions->unique() as $position) {
-            $price = $position->price();
-            $array = $position->toArray();
+        foreach ($portfolio->assets as $asset) {
+            $price = $asset->price();
+            $array = $asset->toArray();
 
             $items[] = array_merge($array, [
                 'price' => head($price),
                 'total' => head($price) * $array['amount'],
                 'date' => key($price),
-                'currency' => $position->currencyCode()
+                'currency' => $asset->currencyCode()
             ]);
         }
 
         $collection = collect($items)->sortByDesc('total');
         $total = $collection->sum('total');
 
-        $positions = $collection->toArray();
+        $assets = $collection->toArray();
 
-        foreach ($positions as &$record) {
+        foreach ($assets as &$record) {
             $record['share'] = $record['total'] / $total;
         }
 
-        return collect(['positions' => $positions, 'total' => $total]);
+        return collect(['assets' => $assets, 'total' => $total]);
     }
 
 

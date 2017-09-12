@@ -186,7 +186,7 @@ class Portfolio extends Model
 
     public function cashFlow($from, $to)
     {
-        return $this->transactions()->payments()->between($from, $to)->sum('value');
+        return $this->payments()->whereBetween('executed_at', [$from, $to])->sum('amount');
     }
 
     public function totalOfType($type = null)

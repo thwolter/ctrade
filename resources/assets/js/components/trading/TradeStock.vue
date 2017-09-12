@@ -15,8 +15,8 @@
 
                     <div class="modal-body">
                         <div class="form-title">
-                            <h5>{{ item.name }}</h5>
-                            <h6> ISIN {{ item.isin }} / WKN {{ item.wkn }}</h6>
+                            <h5>{{ instrument.name }}</h5>
+                            <h6> ISIN {{ instrument.isin }} / WKN {{ instrument.wkn }}</h6>
                         </div>
 
                         <form @submit.prevent="onSubmit">
@@ -66,7 +66,7 @@
                                     <div class="form-group">
                                         <label for="price" class="control-label">Preis</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon">{{ item.currency }}</span>
+                                            <span class="input-group-addon">{{ instrument.currency }}</span>
                                             <cleave v-model="form.price" :options="cleavePrice"
                                                     class="form-control"></cleave>
                                         </div>
@@ -78,7 +78,7 @@
                                     <div class="form-group">
                                         <label for="total" class="control-label">Gesamt</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon">{{ item.currency }}</span>
+                                            <span class="input-group-addon">{{ instrument.currency }}</span>
                                             <cleave v-model="total" :options="cleavePrice" :class="classTotal"
                                                     readonly></cleave>
                                         </div>
@@ -113,25 +113,35 @@
 <script>
     export default {
 
-        props: ['route', 'lookup'],
+        props: [
+            'submitRoute'
+        ],
 
         data() {
             return {
+                fetchRoute: '/api/asset/fetch',
+
                 form: new Form({
+                    portfolioId: null,
+                    transaction: null,
+                    instrumentType: null,
+                    instrumentId: null,
                     price: null,
                     amount: null,
-                    id: null,
-                    transaction: null
+                    currency: null,
+                    fees: null,
+                    executed: null,
                 }),
 
                 total: '',
                 originalAmount: null,
+                originalPrice: null,
 
-                item: [],
-                price: [],
+                instrument: [],
 
                 hasFormError: false,
                 showSpinner: true,
+                showDialog: false,
 
                 cleavePrice: {
                     numeral: true,
@@ -139,21 +149,20 @@
                     delimiter: '.',
                     numeralPositiveOnly: true
                 },
+
                 cleaveAmount: {
                     numeral: true,
                     numeralDecimalMark: ',',
                     delimiter: '.',
                     numeralPositiveOnly: true
-                },
-
-                showDialog: false
+                }
             }
         },
 
         methods: {
 
             onSubmit() {
-                this.form.put(this.route)
+                this.form.put(this.submitRoute)
                     .then(data => {
                         window.location = data.redirect;
                     })
@@ -167,9 +176,6 @@
                 this.total = (isNaN(total)) ? (0).toFixed(2) : total.toFixed(2)
             },
 
-            originalPrice() {
-                return Object.keys(this.price).map(key => this.price[key])[0].toFixed(2);
-            },
 
             hide() {
                 this.form.reset();
@@ -178,35 +184,33 @@
                 this.showSpinner = true;
             },
 
-            show(id, transaction) {
-                this.form.transaction = transaction;
-                this.form.id = id;
 
-                this.fetch();
-                this.showDialog = true;
-            },
-
-            fetch() {
-                let lookupForm = new Form({ id: this.form.id });
-                lookupForm.post(this.lookup)
+            fetch(assetId) {
+                let fetchForm = new Form({ assetId: assetId });
+                fetchForm.post(this.fetchRoute)
                     .then(data => {
                         this.setData(data);
+                        this.showDialog = true;
                         this.showSpinner = false;
                     })
             },
 
             setData(data) {
-
-                this.item = data.item;
-                this.price = data.price;
-                this.form.price = this.originalPrice();
-
+                this.instrument = data.instrument;
+                this.price = data.price.toString();
                 this.cash = data.cash;
-
                 this.originalAmount = data.amount;
-                if (this.form.transaction === 'sell') {
-                    this.form.amount = data.amount;
-                }
+
+                this.fillForm(data);
+            },
+
+            fillForm(data) {
+                this.form.portfolioId = data.portfolioId;
+                this.form.instrumentType = data.instrument.type;
+                this.form.instrumentId = data.instrument.id;
+                this.form.price = data.price.toString();
+                this.form.amount = (this.form.transaction === 'sell') ? data.amount : null;
+                this.form.currency = data.instrument.currency;
             }
         },
 
@@ -217,7 +221,7 @@
                 handler() {
                     this.hasFormError = this.form.errors.any();
                     if (this.form.price === '') {
-                        this.form.price = this.originalPrice();
+                        this.form.price = this.originalPrice;
                     }
                     this.updateTotal();
                 }
@@ -252,14 +256,16 @@
         },
 
         mounted() {
-            var vm = this;
+            let vm = this;
 
-            Event.listen('buyStock', function (id) {
-                vm.show(id, 'buy');
+            Event.listen('buyStock', function (assetId) {
+                vm.form.transaction = 'buy';
+                vm.fetch(assetId);
             });
 
-            Event.listen('sellStock', function (id) {
-                vm.show(id, 'sell');
+            Event.listen('sellStock', function (assetId) {
+                vm.form.transaction = 'sell';
+                vm.fetch(assetId);
             });
         }
     }
