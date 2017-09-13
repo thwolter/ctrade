@@ -126,7 +126,7 @@
                     price: null,
                     amount: null,
                     executed: null,
-                    fees: null,
+                    fees: 0,
                     currency: null,
                 }),
 
@@ -160,6 +160,9 @@
 
             onSubmit() {
                 this.showSpinner = true;
+
+                this.form.amount *= (this.transaction === 'sell') ? -1 : 1;
+
                 this.form.post(this.storeRoute)
                     .then(data => {
                         window.location = data.redirect;
@@ -200,7 +203,7 @@
             },
 
             updateTotal() {
-                this.total = (this.form.price * this.form.amount + this.form.fees).toFixed(2);
+                this.total = (this.form.price * this.form.amount + this.asNumeric(this.form.fees));
                 if (this.total === '') {
                     this.total = '0';
                 }
@@ -214,7 +217,7 @@
 
             asNumeric(value) {
                 let number = parseFloat(value);
-                return isNaN(number) ? 0 : number;
+                return (isNaN(number) || !value) ? 0 : number;
             }
         },
 
@@ -251,13 +254,14 @@
                 deep: true,
                 handler() {
                     this.hasFormError = this.form.errors.any();
+                    this.updateTotal();
                 }
             }
         },
 
         computed: {
             exceedCash() {
-                return (this.asNumeric(this.cash) < this.total)
+                return (this.asNumeric(this.cash) < this.total);
             },
 
             clsTotal() {

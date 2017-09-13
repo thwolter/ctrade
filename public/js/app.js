@@ -23231,7 +23231,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 price: null,
                 amount: null,
                 executed: null,
-                fees: null,
+                fees: 0,
                 currency: null
             }),
 
@@ -23267,6 +23267,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             this.showSpinner = true;
+
+            this.form.amount *= this.transaction === 'sell' ? -1 : 1;
+
             this.form.post(this.storeRoute).then(function (data) {
                 window.location = data.redirect;
             }).catch(function (error) {
@@ -23301,7 +23304,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.executed = _.first(Object.keys(price.history));
         },
         updateTotal: function updateTotal() {
-            this.total = (this.form.price * this.form.amount + this.form.fees).toFixed(2);
+            this.total = this.form.price * this.form.amount + this.asNumeric(this.form.fees);
             if (this.total === '') {
                 this.total = '0';
             }
@@ -23313,7 +23316,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         asNumeric: function asNumeric(value) {
             var number = parseFloat(value);
-            return isNaN(number) ? 0 : number;
+            return isNaN(number) || !value ? 0 : number;
         }
     },
 
@@ -23350,6 +23353,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             deep: true,
             handler: function handler() {
                 this.hasFormError = this.form.errors.any();
+                this.updateTotal();
             }
         }
     },

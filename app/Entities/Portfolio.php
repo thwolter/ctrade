@@ -262,7 +262,7 @@ class Portfolio extends Model
      * @param array $attributes
      * @return Portfolio
      */
-    public function buy($attributes)
+    public function tradePosition($attributes)
     {
         $this->assets()->firstOrCreate([
             'positionable_type' => $attributes['instrumentType'],
@@ -270,7 +270,7 @@ class Portfolio extends Model
         ])->obtain($attributes['amount'], $attributes['executed']);
 
         $this->payments()->create([
-            'type' => 'invest',
+            'type' => 'trade',
             'amount' => -$attributes['price'] * $attributes['amount'],
             'executed_at' => $attributes['executed']
         ]);
@@ -278,29 +278,6 @@ class Portfolio extends Model
         return $this->payFees($attributes);
     }
 
-    /**
-     * A sell transaction for position with a given id
-     *
-     * @param array $attributes
-     * @return mixed
-     */
-    public function sell($attributes)
-    {
-        $position = new Position([
-            'amount' => -$attributes['amount'],
-            'executed_at' => $attributes['executed']
-        ]);
-        $position->positionable()->associate($this->getInstrument($attributes));
-        $this->positions()->save($position);
-
-        $this->payments()->create([
-            'type' => 'divest',
-            'amount' => $attributes['price'] * $attributes['amount'],
-            'executed_at' => $attributes['date']
-        ]);
-
-        return $this->payFees($attributes);
-    }
 
     /**
      * Deposit an amount of cash.

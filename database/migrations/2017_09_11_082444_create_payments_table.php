@@ -17,7 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->increments('id');
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
-            $table->enum('type',['fees', 'deposit', 'withdrawal', 'invest', 'divest']);
+            $table->enum('type',['fees', 'deposit', 'withdrawal', 'trade']);
             $table->float('amount');
             $table->dateTime('executed_at');
             $table->softDeletes();

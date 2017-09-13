@@ -34,9 +34,9 @@ class TradeRequest extends FormRequest
             'instrumentType'    => 'required|string',
             'instrumentId'      => 'required|numeric',
             'currency'          => 'required|string',
-            'amount'            => 'required|numeric|min:0',
+            'amount'            => 'required|numeric',
             'price'             => 'required|numeric|min:0',
-            'fees'              => 'required|numeric|min:0',
+            'fees'              => 'required|nullable|numeric|min:0',
             'executed'          => [
                 'required',
                 new AfterLatestTransaction(Portfolio::find($this->portfolioId)),

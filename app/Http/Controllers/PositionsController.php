@@ -52,7 +52,7 @@ class PositionsController extends Controller
      */
     public function store(TradeRequest $request)
     {
-        $portfolio = Portfolio::find($request->portfolioId)->buy($request->all());
+        $portfolio = Portfolio::find($request->portfolioId)->tradePosition($request->all());
 
         return ['redirect' => route('positions.index', $portfolio->slug)];
     }
