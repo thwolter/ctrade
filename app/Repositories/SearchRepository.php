@@ -8,6 +8,14 @@ namespace App\Repositories;
 class SearchRepository
 {
 
+    protected $repo;
+
+    public function __construct(DatasourceRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+
+
     public function search($entity, $query)
     {
         return $query ? resolve($entity)->where('name', 'like', $query.'%')->get() : [];
@@ -18,15 +26,7 @@ class SearchRepository
     {
         $item = resolve($entity)->find($id);
 
-        $prices = [];
-        foreach ($item->datasources as $datasource)
-        {
-            $data = new DataRepository($datasource);
-            $prices[] = [
-                'exchange'=> $datasource->exchange->code,
-                'history' => $data->history(),
-                'datasourceId' => $datasource->id];
-        };
+        $prices = $this->repo->collectHistories($item->datasources);
 
         return ['item' => $item->toArray(), 'prices' => $prices];
 

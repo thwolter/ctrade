@@ -3,10 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\Asset;
+use App\Repositories\DatasourceRepository;
+use App\Repositories\SearchRepository;
 use Illuminate\Http\Request;
 
 class ApiAssetController extends ApiBaseController
 {
+
+    /**
+     * @var DatasourceRepository
+     */
+    protected $repo;
+
+
+    public function __construct(DatasourceRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+
 
     public function fetch(Request $request)
     {
@@ -19,8 +33,7 @@ class ApiAssetController extends ApiBaseController
         return [
             'instrument'        => $asset->positionable->toArray(),
             'portfolioId'       => $asset->portfolio->id,
-            'price'             => array_first($asset->price()),
-            'priceDate'         => key($asset->price()),
+            'prices'            => $this->repo->collectHistories($asset->positionable->datasources),
             'amount'            => $asset->amount(),
             'cash'              => $asset->portfolio->cash(),
         ];

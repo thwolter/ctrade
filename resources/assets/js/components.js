@@ -5,7 +5,6 @@
 Vue.component('cash-trade', require('./components/trading/CashTrade.vue'));
 Vue.component('buy-sell-btn', require('./components/trading/BuySellBtn.vue'));
 Vue.component('search-stock', require('./components/trading/SearchStock.vue'));
-Vue.component('add-stock', require('./components/trading/AddStock.vue'));
 Vue.component('trade-stock', require('./components/trading/TradeStock.vue'));
 
 Vue.component('portlet', require('./components/Portlet.vue'));

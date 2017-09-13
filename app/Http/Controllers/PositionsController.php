@@ -34,13 +34,14 @@ class PositionsController extends Controller
     }
 
 
-    public function create($slug, $entity, $positionSlug)
+    public function create($slug, $entity, $instrumentSlug)
     {
         $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
-        $instrument = resolve('App\\Entities\\'.ucfirst($entity))->findBySlug($positionSlug);
+        $instrument = resolve('App\\Entities\\'.ucfirst($entity))->findBySlug($instrumentSlug);
 
-        return view('positions.create', compact('portfolio', 'entity', 'instrument'));
+        return view('positions.trade', compact('portfolio', 'entity', 'instrument'));
     }
+
 
 
     /**

@@ -1,147 +1,144 @@
 <template>
-    <div v-if="showDialog">
-        <div class="modal-backdrop fade in" @click="hide"></div>
-        <div id="trade-dialog" class="modal show" role="dialog" aria-labelledby="trade-dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
+    <form @submit.prevent="onSubmit">
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                        @click="hide">&times;</button>
+        <!-- Spinner -->
+        <div v-if="showSpinner">
+            <spinner class="spinner-overlay"></spinner>
+        </div>
 
-                        <h3 v-if="buy" class="modal-title">Wertpapier kaufen</h3>
-                        <h3 v-if="sell" class="modal-title">Wertpapier verkaufen</h3>
-                    </div> <!-- /.modal-header -->
+        <!-- Form -->
+        <div class="row">
 
-                    <div class="modal-body">
-                        <div class="form-title">
-                            <h5>{{ instrument.name }}</h5>
-                            <h6> ISIN {{ instrument.isin }} / WKN {{ instrument.wkn }}</h6>
-                        </div>
-
-                        <form @submit.prevent="onSubmit">
-
-                            <!-- Spinner -->
-                            <div v-if="showSpinner">
-                                <spinner class="spinner-overlay"></spinner>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-6">
-
-                                    <!-- exchange -->
-                                    <div class="form-group">
-                                        <label for="exchange" class="control-label">Handelsplatz</label>
-                                        <div>
-                                            <select name="exchange" class="form-control">
-                                                <option value="0">Stuttgart</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-
-                                    <!-- amount -->
-                                    <div class="form-group">
-                                        <label for="amount" class="control-label">Anzahl</label>
-                                        <div>
-                                            <cleave v-model="form.amount" :options="cleaveAmount" placeholder="Anzahl"
-                                                    :class="['form-control', { 'error': form.errors.has('amount') }, {'error': exceedInventory && sell}]"
-                                                    @input="form.errors.clear('amount')"></cleave>
-                                        </div>
-                                        <p v-if="form.errors.has('amount')" class="error-text">
-                                            <span v-text="form.errors.get('amount')"></span>
-                                        </p>
-                                        <p v-if="exceedInventory && sell" class="error-text">
-                                            <span>Anzahl übersteigt verfügbaren Bestand.</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div> <!-- /.row -->
-
-                            <div class="row">
-                                <div class="col-sm-6">
-
-                                    <!-- price -->
-                                    <div class="form-group">
-                                        <label for="price" class="control-label">Preis</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">{{ instrument.currency }}</span>
-                                            <cleave v-model="form.price" :options="cleavePrice"
-                                                    class="form-control"></cleave>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-
-                                    <!-- total -->
-                                    <div class="form-group">
-                                        <label for="total" class="control-label">Gesamt</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">{{ instrument.currency }}</span>
-                                            <cleave v-model="total" :options="cleavePrice" :class="classTotal"
-                                                    readonly></cleave>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- /.row -->
-
-                            <div v-if="exceedCash">
-                                <p class="error-text">
-                                    Betrag übersteigt verfügbaren Barbestand.
-                                </p>
-                            </div>
-
-                            <div class="modal-footer">
-                                <div>
-                                    <div class="pull-right">
-                                        <button type="reset" class="btn btn-default" @click="hide">Abbrechen</button>
-                                        <button v-if="buy" class="btn btn-success" :disabled="hasError">Kaufen</button>
-                                        <button v-if="sell" class="btn btn-primary" :disabled="hasError">Verkaufen</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
+            <!-- exchange -->
+            <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
+                <label for="exchange" class="control-label">Handelsplatz</label>
+                <div>
+                    <select name="exchange" v-model="exchange" class="form-control">
+                        <option v-for="(price, key) in stock.prices" :value="key">
+                            {{ price.exchange }}
+                        </option>
+                    </select>
                 </div>
             </div>
+
+            <!-- price -->
+            <div class="form-group col-sm-4 col-md-3">
+                <label for="price" class="control-label">Preis</label>
+                <div class="input-group">
+                    <span class="input-group-addon">{{ form.currency }}</span>
+                    <cleave v-model="price" :options="cleavePrice" class="form-control"></cleave>
+                </div>
+            </div>
+
+            <!-- amount -->
+            <div class="form-group col-sm-4 col-md-3">
+                <label for="amount" class="control-label">Anzahl</label>
+                <div>
+                    <cleave v-model="form.amount" :options="cleaveAmount" placeholder="Anzahl"
+                            :class="['form-control', { 'error': form.errors.has('amount') }]"
+                            @input="form.errors.clear('amount')"></cleave>
+                </div>
+                <p v-if="form.errors.has('amount')" class="error-text">
+                    <span v-text="form.errors.get('amount')"></span>
+                </p>
+            </div>
+
+            <!-- date -->
+            <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
+                <label for="executed" class="control-label">Datum</label>
+                <div>
+                    <input v-model="executed" type="date" name="date"
+                           :class="['form-control', { 'error': form.errors.has('executed') }]"
+                           @keydown="form.errors.clear('executed')">
+                </div>
+                <p v-if="form.errors.has('executed')" class="error-text">
+                    <span v-text="form.errors.get('executed')"></span>
+                </p>
+            </div>
+
+            <!-- fees -->
+            <div class="form-group col-sm-4 col-md-3">
+                <label for="fees" class="control-label">Gebühren</label>
+                <div class="input-group">
+                    <span class="input-group-addon">{{ form.currency }}</span>
+                    <cleave v-model="fees" :options="cleaveAmount" placeholder="Gebühren"
+                            :class="['form-control', { 'error': form.errors.has('fees') }]"
+                            @input="form.errors.clear('fees')"></cleave>
+                </div>
+                <p v-if="form.errors.has('fees')" class="error-text">
+                    <span v-text="form.errors.get('fees')"></span>
+                </p>
+            </div>
+
+            <!-- total -->
+            <div class="form-group col-sm-4 col-md-3">
+                <label for="total" class="control-label">Gesamt</label>
+                <div class="input-group">
+                    <span class="input-group-addon">{{ form.currency }}</span>
+                    <cleave v-model="total" :options="cleavePrice" :class="clsTotal"
+                            readonly></cleave>
+                </div>
+                <div v-if="exceedCash" class="col-md-offset-1">
+                    <p class="error-text pull-left">
+                        Betrag übersteigt verfügbaren Barbestand.
+                    </p>
+                </div>
+
+            </div>
+
+        </div><!-- /.row -->
+
+        <div class="modal-footer">
+
+            <div>
+                <button class="btn btn-default" type="reset" @click="onCancel">Zurück</button>
+                <button v-if="transaction === 'sell'" class="btn btn-warning" :disabled="hasError">Verkaufen</button>
+                <button v-else class="btn btn-primary" :disabled="hasError">Kaufen</button>
+            </div>
         </div>
-    </div>
+
+    </form>
 </template>
 
 <script>
+
     export default {
 
         props: [
-            'submitRoute'
+            'portfolioId',
+            'instrumentType',
+            'instrumentId',
+            'storeRoute',
+            'cash',
+            'amount',
+            'transaction'
         ],
 
         data() {
             return {
-                fetchRoute: '/api/asset/fetch',
+                lookup: '/api/lookup',
 
                 form: new Form({
                     portfolioId: null,
-                    transaction: null,
-                    instrumentType: null,
+                    transaction: this.transaction,
                     instrumentId: null,
+                    instrumentType: this.instrumentType,
                     price: null,
                     amount: null,
-                    currency: null,
-                    fees: null,
                     executed: null,
+                    fees: null,
+                    currency: null,
                 }),
 
+                stock: [],
+                exchange: 0,
+                price: '',
                 total: '',
-                originalAmount: null,
-                originalPrice: null,
-
-                instrument: [],
+                fees: '',
+                executed: (new Date()).toISOString().split('T')[0],
 
                 hasFormError: false,
                 showSpinner: true,
-                showDialog: false,
 
                 cleavePrice: {
                     numeral: true,
@@ -162,117 +159,124 @@
         methods: {
 
             onSubmit() {
-                this.form.put(this.submitRoute)
+                this.showSpinner = true;
+                this.form.post(this.storeRoute)
                     .then(data => {
                         window.location = data.redirect;
                     })
-                    .catch(data => {
-
+                    .catch(error => {
+                        this.showSpinner = false;
                     });
             },
 
-            updateTotal() {
-                let total = this.form.price * this.form.amount;
-                this.total = (isNaN(total)) ? (0).toFixed(2) : total.toFixed(2)
+            onCancel() {
+                Event.fire('backToSearch');
             },
 
-
-            hide() {
-                this.form.reset();
-                this.showDialog = false;
-                this.form.price = null; // why is price not reset with form?
-                this.showSpinner = true;
-            },
-
-
-            fetch(assetId) {
-                let fetchForm = new Form({ assetId: assetId });
-                fetchForm.post(this.fetchRoute)
+            fetch() {
+                axios.get(this.lookup, {
+                    params: {
+                        instrumentId: this.instrumentId,
+                        instrumentType: this.instrumentType
+                    }
+                })
                     .then(data => {
-                        this.setData(data);
-                        this.showDialog = true;
+                        this.add(data.data);
                         this.showSpinner = false;
                     })
             },
 
-            setData(data) {
-                this.instrument = data.instrument;
-                this.price = data.price.toString();
-                this.cash = data.cash;
-                this.originalAmount = data.amount;
+            add(data) {
+                this.stock = data;
+                this.form.currency = this.stock.item.currency;
+                this.form.instrumentType = this.stock.item.type;
 
-                this.fillForm(data);
+                this.updateExchange(this.exchange);
             },
 
-            fillForm(data) {
-                this.form.portfolioId = data.portfolioId;
-                this.form.instrumentType = data.instrument.type;
-                this.form.instrumentId = data.instrument.id;
-                this.form.price = data.price.toString();
-                this.form.amount = (this.form.transaction === 'sell') ? data.amount : null;
-                this.form.currency = data.instrument.currency;
+            updateExchange(index) {
+                let price = this.stock.prices[index];
+                this.executed = _.first(Object.keys(price.history));
+            },
+
+            updateTotal() {
+                this.total = (this.form.price * this.form.amount + this.form.fees).toFixed(2);
+                if (this.total === '') {
+                    this.total = '0';
+                }
+            },
+
+            updatePrice() {
+                let history = this.stock.prices[this.exchange].history;
+                this.price = history[this.executed];
+                this.form.price = this.price;
+            },
+
+            asNumeric(value) {
+                let number = parseFloat(value);
+                return isNaN(number) ? 0 : number;
             }
         },
 
         watch: {
+            exchange: function (index) {
+                this.updateExchange(index);
+            },
+
+            price: function (value) {
+                if (value !== '') {
+                    this.form.price = this.asNumeric(value);
+                    this.updateTotal();
+                } else {
+                    this.updateExchange(this.exchange);
+                }
+            },
+
+            amount: function (value) {
+                this.form.amount = this.asNumeric(value);
+                this.updateTotal();
+            },
+
+            executed: function (value) {
+                this.form.executed = value;
+                this.updatePrice();
+            },
+
+            fees: function (value) {
+                this.form.fees = this.asNumeric(value);
+                this.updateTotal();
+            },
 
             form: {
                 deep: true,
                 handler() {
                     this.hasFormError = this.form.errors.any();
-                    if (this.form.price === '') {
-                        this.form.price = this.originalPrice;
-                    }
-                    this.updateTotal();
                 }
             }
         },
 
         computed: {
             exceedCash() {
-                return (parseFloat(this.cash) < this.form.price * this.form.amount)
+                return (this.asNumeric(this.cash) < this.total)
             },
 
-            exceedInventory() {
-                return (this.form.amount > this.originalAmount);
-            },
-
-            classTotal() {
-                return ['form-control', this.exceedCash ? 'error' : ''];
+            clsTotal() {
+                if (this.exceedCash) {
+                    return 'form-control error';
+                } else {
+                    return 'form-control';
+                }
             },
 
             hasError() {
-                return (this.hasFormError || this.exceedCash ||
-                    (this.exceedInventory && this.sell));
-            },
-
-            buy() {
-                return (this.form.transaction === 'buy');
-            },
-
-            sell() {
-                return (this.form.transaction === 'sell');
+                return (this.hasFormError || this.exceedCash);
             }
         },
 
         mounted() {
-            let vm = this;
-
-            Event.listen('buyStock', function (assetId) {
-                vm.form.transaction = 'buy';
-                vm.fetch(assetId);
-            });
-
-            Event.listen('sellStock', function (assetId) {
-                vm.form.transaction = 'sell';
-                vm.fetch(assetId);
-            });
+            this.fetch();
+            this.form.instrumentId = this.instrumentId;
+            this.form.portfolioId = this.portfolioId;
         }
     }
 </script>
-
-<style scoped>
-    .form-title {
-        margin-bottom: 30px;
-    }
-</style>

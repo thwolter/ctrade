@@ -51,6 +51,24 @@ class DatasourceRepository
     }
 
 
+    /**
+     * @param $datasources
+     * @return array
+     */
+    public function collectHistories($datasources)
+    {
+        $prices = [];
+        foreach ($datasources as $datasource) {
+            $data = new DataRepository($datasource);
+            $prices[] = [
+                'exchange' => $datasource->exchange->code,
+                'history' => $data->history(),
+                'datasourceId' => $datasource->id];
+        };
+        return $prices;
+    }
+
+
     public function updatedAfter($timestamp)
     {
         return DB::table('datasources')

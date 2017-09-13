@@ -106,6 +106,7 @@ class Asset extends Model
         ];
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -123,6 +124,11 @@ class Asset extends Model
         return $query->where('positionable_id', $id);
     }
 
+    public function scopeWithSlug($query, $slug)
+    {
+        $a=1;
+    }
+
 
 
     /*
@@ -131,6 +137,10 @@ class Asset extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getSlugAttribute()
+    {
+        return $this->positionable->slug;
+    }
 
 
     /*
