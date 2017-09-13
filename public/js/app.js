@@ -23230,7 +23230,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 instrumentType: this.instrumentType,
                 price: null,
                 amount: null,
-                executed: null,
+                executed: new Date().toISOString().split('T')[0],
                 fees: 0,
                 currency: null
             }),
@@ -23239,7 +23239,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             exchange: 0,
             price: '',
             total: '',
-            fees: '',
             executed: new Date().toISOString().split('T')[0],
 
             hasFormError: false,
@@ -23276,8 +23275,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.showSpinner = false;
             });
         },
-        onCancel: function onCancel() {
-            Event.fire('backToSearch');
+        onReset: function onReset() {
+            this.initiateForm();
         },
         fetch: function fetch() {
             var _this2 = this;
@@ -23288,23 +23287,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     instrumentType: this.instrumentType
                 }
             }).then(function (data) {
-                _this2.add(data.data);
+                _this2.stock = data.data;
+                _this2.initiateForm();
                 _this2.showSpinner = false;
             });
         },
-        add: function add(data) {
-            this.stock = data;
+        initiateForm: function initiateForm() {
             this.form.currency = this.stock.item.currency;
             this.form.instrumentType = this.stock.item.type;
-
             this.updateExchange(this.exchange);
+            this.updatePrice();
         },
         updateExchange: function updateExchange(index) {
             var price = this.stock.prices[index];
             this.executed = _.first(Object.keys(price.history));
         },
         updateTotal: function updateTotal() {
-            this.total = this.form.price * this.form.amount + this.asNumeric(this.form.fees);
+            this.total = (this.form.price * this.form.amount + this.asNumeric(this.form.fees)).toFixed(2);
             if (this.total === '') {
                 this.total = '0';
             }
@@ -23334,19 +23333,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
 
-        amount: function amount(value) {
-            this.form.amount = this.asNumeric(value);
-            this.updateTotal();
-        },
-
         executed: function executed(value) {
             this.form.executed = value;
             this.updatePrice();
-        },
-
-        fees: function fees(value) {
-            this.form.fees = this.asNumeric(value);
-            this.updateTotal();
         },
 
         form: {
@@ -23376,8 +23365,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     mounted: function mounted() {
         this.fetch();
-        this.form.instrumentId = this.instrumentId;
-        this.form.portfolioId = this.portfolioId;
+        //this.form.instrumentId = this.instrumentId;
+        //this.form.portfolioId = this.portfolioId;
     }
 });
 
@@ -54170,11 +54159,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     },
     model: {
-      value: (_vm.fees),
+      value: (_vm.form.fees),
       callback: function($$v) {
-        _vm.fees = $$v
+        _vm.form.fees = $$v
       },
-      expression: "fees"
+      expression: "form.fees"
     }
   })], 1), _vm._v(" "), (_vm.form.errors.has('fees')) ? _c('p', {
     staticClass: "error-text"
@@ -54218,7 +54207,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "reset"
     },
     on: {
-      "click": _vm.onCancel
+      "click": _vm.onReset
     }
   }, [_vm._v("Zurück")]), _vm._v(" "), (_vm.transaction === 'sell') ? _c('button', {
     staticClass: "btn btn-warning",

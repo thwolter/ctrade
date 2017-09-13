@@ -61,7 +61,7 @@
                 <label for="fees" class="control-label">Gebühren</label>
                 <div class="input-group">
                     <span class="input-group-addon">{{ form.currency }}</span>
-                    <cleave v-model="fees" :options="cleaveAmount" placeholder="Gebühren"
+                    <cleave v-model="form.fees" :options="cleaveAmount" placeholder="Gebühren"
                             :class="['form-control', { 'error': form.errors.has('fees') }]"
                             @input="form.errors.clear('fees')"></cleave>
                 </div>
@@ -91,7 +91,7 @@
         <div class="modal-footer">
 
             <div>
-                <button class="btn btn-default" type="reset" @click="onCancel">Zurück</button>
+                <button class="btn btn-default" type="reset" @click="onReset">Reset</button>
                 <button v-if="transaction === 'sell'" class="btn btn-warning" :disabled="hasError">Verkaufen</button>
                 <button v-else class="btn btn-primary" :disabled="hasError">Kaufen</button>
             </div>
@@ -125,7 +125,7 @@
                     instrumentType: this.instrumentType,
                     price: null,
                     amount: null,
-                    executed: null,
+                    executed: (new Date()).toISOString().split('T')[0],
                     fees: 0,
                     currency: null,
                 }),
@@ -134,7 +134,6 @@
                 exchange: 0,
                 price: '',
                 total: '',
-                fees: '',
                 executed: (new Date()).toISOString().split('T')[0],
 
                 hasFormError: false,
@@ -172,8 +171,8 @@
                     });
             },
 
-            onCancel() {
-                Event.fire('backToSearch');
+            onReset() {
+                this.initiateForm();
             },
 
             fetch() {
@@ -184,17 +183,17 @@
                     }
                 })
                     .then(data => {
-                        this.add(data.data);
+                        this.stock = data.data;
+                        this.initiateForm();
                         this.showSpinner = false;
                     })
             },
 
-            add(data) {
-                this.stock = data;
+            initiateForm() {
                 this.form.currency = this.stock.item.currency;
                 this.form.instrumentType = this.stock.item.type;
-
                 this.updateExchange(this.exchange);
+                this.updatePrice();
             },
 
             updateExchange(index) {
@@ -203,7 +202,7 @@
             },
 
             updateTotal() {
-                this.total = (this.form.price * this.form.amount + this.asNumeric(this.form.fees));
+                this.total = (this.form.price * this.form.amount + this.asNumeric(this.form.fees)).toFixed(2);
                 if (this.total === '') {
                     this.total = '0';
                 }
@@ -235,19 +234,9 @@
                 }
             },
 
-            amount: function (value) {
-                this.form.amount = this.asNumeric(value);
-                this.updateTotal();
-            },
-
             executed: function (value) {
                 this.form.executed = value;
                 this.updatePrice();
-            },
-
-            fees: function (value) {
-                this.form.fees = this.asNumeric(value);
-                this.updateTotal();
             },
 
             form: {
@@ -279,8 +268,8 @@
 
         mounted() {
             this.fetch();
-            this.form.instrumentId = this.instrumentId;
-            this.form.portfolioId = this.portfolioId;
+            //this.form.instrumentId = this.instrumentId;
+            //this.form.portfolioId = this.portfolioId;
         }
     }
 </script>
