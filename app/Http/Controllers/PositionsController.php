@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Stock;
 use App\Http\Requests\TradeRequest;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -18,7 +19,6 @@ class PositionsController extends Controller
         $this->middleware('auth');
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -34,15 +34,36 @@ class PositionsController extends Controller
     }
 
 
-    public function create($slug, $entity, $instrumentSlug)
+    public function buyStock($portfolioSlug, $slug)
     {
-        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
-        $instrument = resolve('App\\Entities\\'.ucfirst($entity))->findBySlug($instrumentSlug);
-
-        return view('positions.trade', compact('portfolio', 'entity', 'instrument'));
+        return view('positions.stocks.trade', [
+            'portfolio' => Portfolio::whereSlug($portfolioSlug)->first(),
+            'stock' => Stock::findBySlug($slug),
+            'transaction' => 'buy'
+        ]);
     }
 
 
+    public function sellStock($portfolioSlug, $slug)
+    {
+        return view('positions.stocks.trade', [
+            'portfolio' => Portfolio::whereSlug($portfolioSlug)->first(),
+            'stock' => Stock::findBySlug($slug),
+            'transaction' => 'sell'
+        ]);
+    }
+
+
+    public function create($portfolioSlug, $entity, $slug)
+    {
+        $instrument = resolve('App\\Entities\\'.ucfirst($entity));
+
+        return view('positions.'.str_plural($entity).'.trade', [
+            'portfolio' => Portfolio::whereSlug($portfolioSlug)->first(),
+            'stock' => $instrument::findBySlug($slug),
+            'transaction' => 'buy'
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -56,42 +77,6 @@ class PositionsController extends Controller
 
         return ['redirect' => route('positions.index', $portfolio->slug)];
     }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param TradeRequest $request
-     * @return array
-     */
-    public function update(TradeRequest $request)
-    {
-        $position = Position::find($request->id);
-        $transaction = $request->transaction;
-
-        $position->portfolio->$transaction($position, $request);
-
-        return ['redirect' => route('positions.index', $position->portfolio->slug)];
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     *
-     */
-    public function show($portfolioSlug, $positionSlug)
-    {
-        $portfolio = auth()->user()->portfolios()->whereSlug($portfolioSlug)->first();
-
-        foreach ($portfolio->positions as $position) {
-            if ($position->positionable->slug == $positionSlug) break;
-        }
-
-        return view('positions.show', compact('portfolio', 'position'));
-    }
-
 
 
     /**

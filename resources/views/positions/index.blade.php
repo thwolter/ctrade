@@ -4,7 +4,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            @include('positions.partials.cash')
+            @include('positions.cash.index')
         </div>
 
         <div class="col-md-3 col-sm-6">
@@ -17,7 +17,7 @@
 
     </div>
 
-    @include('positions.partials.stocks')
+    @include('positions.stocks.index')
 
 @endsection
 

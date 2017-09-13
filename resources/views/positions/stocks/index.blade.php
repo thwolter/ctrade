@@ -27,7 +27,7 @@
                 <tr class="">
                     <td class="align-middle">{{ $loop->iteration }}</td>
                     <td class="align-middle">
-                        <a href="{{ route('positions.show', [$portfolio->slug, $stock->slug]) }}">
+                        <a href="{{ route('assets.show', [$portfolio->slug, $stock->slug]) }}">
                             {{ $stock->name }}</a>
                     </td>
                     <td>{{ $stock->present()->isin }}</td>
@@ -44,13 +44,13 @@
                     <td class="align-middle col-md-1">
                         <div class="row buy-sell-icons text-center">
                             <div class="col-md-2 col-md-push-2">
-                                <a href="{{ route('assets.tradeStock', [$portfolio->slug, $asset->slug, 'buy']) }}"
+                                <a href="{{ route('positions.buyStock', [$portfolio->slug, $asset->slug]) }}"
                                    class="btn-link">
                                     <i class="fa fa-plus-square buy-icon" aria-hidden="true"></i>
                                 </a>
                             </div>
                             <div>
-                                <a href="{{ route('assets.tradeStock', [$portfolio->slug, $asset->slug, 'sell']) }}"
+                                <a href="{{ route('positions.sellStock', [$portfolio->slug, $asset->slug]) }}"
                                    class="btn-link">
                                     <i class="fa fa-minus-square sell-icon" aria-hidden="true"></i>
                                 </a>
@@ -70,7 +70,13 @@
 </portlet>
 
 
-@include('positions.partials.stock.internal_search')
+<div id="searchStocks" class="modal fade">
+    <search-stock
+            portfolio-id="{{ $portfolio->id }}"
+            instrument-type="{{ \App\Entities\Stock::class }}"
+            submit-route="{{ route('positions.create', [$portfolio->slug, null, null], false) }}">
+    </search-stock>
+</div>
 
 
 @section('scripts.footer')

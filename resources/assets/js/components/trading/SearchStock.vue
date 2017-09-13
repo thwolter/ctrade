@@ -77,8 +77,7 @@
         props: [
             'portfolioId',
             'instrumentType',
-            'createRoute',
-            'cash'
+            'submitRoute'
         ],
 
         data() {
@@ -130,7 +129,7 @@
 
             onClickLink(slug) {
                 let instrumentType = this.instrumentType.substr(this.instrumentType.lastIndexOf('\\') + 1).toLowerCase();
-                window.location = this.createRoute+'/'+instrumentType+'/'+slug;
+                window.location = this.submitRoute + '/' + instrumentType + '/' + slug;
             },
 
             assign(data) {

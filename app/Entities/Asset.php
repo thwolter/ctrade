@@ -124,9 +124,14 @@ class Asset extends Model
         return $query->where('positionable_id', $id);
     }
 
-    public function scopeWithSlug($query, $slug)
+
+    public function scopeWhereSlug($query, $slug)
     {
-        $a=1;
+        $asset = $query->with('positionable')->get()->filter(function ($item) use ($slug){
+            return array_get($item, 'positionable.slug') === $slug;
+        })->first();
+
+        return $query->whereId($asset->id);
     }
 
 

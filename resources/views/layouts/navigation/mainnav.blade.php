@@ -25,7 +25,7 @@
                         </a>
                     </li>
 
-                    <li class="{{ active_class(if_route_pattern(['positions.*'])) }}">
+                    <li class="{{ active_class(if_route_pattern(['positions.*', 'assets.*'])) }}">
                         <a href="{{ route('positions.index', $portfolio->slug) }}">
                             @lang('navigation.positions')
                         </a>

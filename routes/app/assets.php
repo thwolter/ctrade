@@ -4,9 +4,10 @@
 
 Route::middleware('auth')->group(function() {
 
-    Route::get('/{slug}/positions/{assetSlug}/{transaction}', [
-        'as' => 'assets.tradeStock',
-        'uses' => 'AssetController@tradeStock'
+
+    Route::get('/{slug}/assets/{$assetSlug}', [
+        'as' => 'assets.show',
+        'uses' => 'AssetController@show'
     ]);
 
 });

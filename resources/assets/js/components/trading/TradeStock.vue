@@ -119,7 +119,7 @@
                 lookup: '/api/lookup',
 
                 form: new Form({
-                    portfolioId: null,
+                    portfolioId: this.portfolioId,
                     transaction: this.transaction,
                     instrumentId: null,
                     instrumentType: this.instrumentType,
@@ -192,6 +192,8 @@
             initiateForm() {
                 this.form.currency = this.stock.item.currency;
                 this.form.instrumentType = this.stock.item.type;
+                this.form.instrumentId = this.stock.item.id;
+
                 this.updateExchange(this.exchange);
                 this.updatePrice();
             },

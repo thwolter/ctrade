@@ -23016,7 +23016,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['portfolioId', 'instrumentType', 'createRoute', 'cash'],
+    props: ['portfolioId', 'instrumentType', 'submitRoute'],
 
     data: function data() {
         return {
@@ -23069,7 +23069,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         onClickLink: function onClickLink(slug) {
             var instrumentType = this.instrumentType.substr(this.instrumentType.lastIndexOf('\\') + 1).toLowerCase();
-            window.location = this.createRoute + '/' + instrumentType + '/' + slug;
+            window.location = this.submitRoute + '/' + instrumentType + '/' + slug;
         },
         assign: function assign(data) {
             this.results = data;
@@ -23224,7 +23224,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             lookup: '/api/lookup',
 
             form: new Form({
-                portfolioId: null,
+                portfolioId: this.portfolioId,
                 transaction: this.transaction,
                 instrumentId: null,
                 instrumentType: this.instrumentType,
@@ -23295,6 +23295,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         initiateForm: function initiateForm() {
             this.form.currency = this.stock.item.currency;
             this.form.instrumentType = this.stock.item.type;
+            this.form.instrumentId = this.stock.item.id;
+
             this.updateExchange(this.exchange);
             this.updatePrice();
         },
@@ -54209,7 +54211,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.onReset
     }
-  }, [_vm._v("Zurück")]), _vm._v(" "), (_vm.transaction === 'sell') ? _c('button', {
+  }, [_vm._v("Reset")]), _vm._v(" "), (_vm.transaction === 'sell') ? _c('button', {
     staticClass: "btn btn-warning",
     attrs: {
       "disabled": _vm.hasError

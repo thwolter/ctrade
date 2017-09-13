@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TradeRequest;
-use Illuminate\Http\Request;
 use App\Entities\Portfolio;
-use App\Entities\Position;
 
 
 
@@ -19,15 +16,22 @@ class AssetController extends Controller
     }
 
 
-    public function tradeStock($portfolioSlug, $assetSlug, $transaction)
+    /**
+     * Display the specified resource.
+     *
+     * @param string $portfolioSlug
+     * @param string $assetSlug
+     * @return \Illuminate\Http\Response
+     *
+     */
+    public function show($portfolioSlug, $assetSlug)
     {
-        $portfolio = Portfolio::whereSlug($portfolioSlug)->first();
-        foreach ($portfolio->assets as $asset) {
-            if ($asset->slug === $assetSlug) break;
+        $portfolio = auth()->user()->portfolios()->whereSlug($portfolioSlug)->first();
+
+        foreach ($portfolio->positions as $position) {
+            if ($position->positionable->slug == $assetSlug) break;
         }
 
-        $stock = $asset->positionable;
-
-        return view('assets.trade.stock', compact('portfolio', 'stock', 'transaction'));
+        return view('positions.show', compact('portfolio', 'position'));
     }
 }
