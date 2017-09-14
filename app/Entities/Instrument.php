@@ -31,16 +31,6 @@ abstract class Instrument extends Model
     |--------------------------------------------------------------------------
     */
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
-
-
-
     public function positions()
     {
         return $this->morphMany(Position::class, 'positionable');
@@ -69,13 +59,32 @@ abstract class Instrument extends Model
     {
         return $this->belongsTo(Industry::class);
     }
-    
-    
+
+
     public function datasources()
     {
         return $this->morphToMany(Datasource::class, 'sourcable')->withTimestamps();
     }
 
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Return the class_basename of the instrument.
+     *
+     * @param bool $toLower
+     * @return string
+     */
+    public function type($toLower = false)
+    {
+        $name = class_basename($this);
+        return $toLower ? strtolower($name) : $name;
+    }
 
     /*
     |--------------------------------------------------------------------------

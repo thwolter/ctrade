@@ -34,9 +34,18 @@ class Limit extends Model
 
     protected $presenter = LimitPresenter::class;
 
-    protected $fillable = ['type', 'value', 'date', 'active'];
+    protected $fillable = [
+        'type',
+        'value',
+        'date',
+        'active'
+    ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
 
     public function portfolio()
     {

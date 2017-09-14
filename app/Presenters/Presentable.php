@@ -14,25 +14,24 @@ use App\Exceptions\PresenterException;
 trait Presentable
 {
 
-    protected $presenterInstance;
+    /**
+     * The instance of the presenter.
+     *
+     * @var $presenterInstance
+     */
+    private $presenterInstance;
 
 
     public function present()
     {
-
         if (!$this->presenter or !class_exists($this->presenter)) {
-
             throw new PresenterException("'presenter' property not defined.");
         }
 
-
         if (!isset($this->presenterInstance)) {
-
             $this->presenterInstance = new $this->presenter($this);
         }
 
-
         return $this->presenterInstance;
-
     }
 }

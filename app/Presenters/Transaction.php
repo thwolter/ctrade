@@ -52,7 +52,7 @@ class Transaction extends Presenter
     public function instrument()
     {
         $instrument = $this->entity->instrumentable;
-        return ($instrument) ? trans("instrument.{$instrument->instrumentType}") : null;
+        return ($instrument) ? trans("instrument.{$instrument->type()}") : null;
     }
 
     public function isin()

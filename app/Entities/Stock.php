@@ -5,12 +5,9 @@ namespace App\Entities;
 
 
 use App\Presenters\Presentable;
-use App\Repositories\DataRepository;
 use Backpack\CRUD\CrudTrait;
-use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
-use Laravel\Scout\Searchable;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 /**
@@ -54,10 +51,6 @@ class Stock extends Instrument
     protected $fillable = ['name', 'name_overwrite', 'wkn', 'isin'];
 
     protected $presenter = \App\Presenters\Stock::class;
-
-    public $asYouType = true;
-
-    public $instrumentType = 'stock';
 
 
     /*
