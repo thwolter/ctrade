@@ -219,44 +219,29 @@ class Portfolio extends Model
     }
 
 
-
-    /* --------------------------------
-     * Functions to manage transactions
-     * --------------------------------
-     */
-
-    /**
-     * Return the instrument from an attributes array.
-     *
-     * @param array $attributes
-     * @return mixed
-     */
-    private function getInstrument($attributes)
-    {
-        $instrument = resolve($attributes['instrumentType'])->find($attributes['instrumentId']);
-        return $instrument;
-    }
-
     /**
      * A buy transaction for position with a given id.
      *
      * @param array $attributes
      * @return Portfolio
      */
-    public function tradePosition($attributes)
+    public function storeTrade($attributes)
     {
-        $this->assets()->firstOrCreate([
-            'positionable_type' => $attributes['instrumentType'],
-            'positionable_id' => $attributes['instrumentId']
-        ])->obtain($attributes['amount'], $attributes['executed']);
-
-        $this->payments()->create([
-            'type' => 'trade',
-            'amount' => -$attributes['price'] * $attributes['amount'],
+        $position = Position::make([
+            'amount' => $attributes['amount'],
             'executed_at' => $attributes['executed']
         ]);
 
-        return $this->payFees($attributes);
+        $this->assets()->firstOrCreate([
+            'positionable_type' => $attributes['instrumentType'],
+            'positionable_id' => $attributes['instrumentId']
+        ])->obtain($position);
+
+        $this
+            ->payTrade($attributes, $position)
+            ->payFees($attributes, $position);
+
+        return $this;
     }
 
 
@@ -295,21 +280,41 @@ class Portfolio extends Model
     }
 
     /**
+     * Persist the payment for a trade.
+     *
+     * @param $attributes
+     * @param $position
+     * @return $this
+     */
+    private function payTrade($attributes, $position)
+    {
+        $this->payments()->create([
+            'type' => 'trade',
+            'amount' => -$attributes['price'] * $attributes['amount'],
+            'executed_at' => $attributes['executed']
+        ])->position()->associate($position);
+
+        return $this;
+    }
+
+    /**
      * Deduct fees from portfolio cash.
      *
      * @param array $attributes
      * @return Portfolio
      */
-    public function payFees($attributes)
+    public function payFees($attributes, $position)
     {
         $this->payments()->create([
             'type' => 'fees',
             'amount' => -$attributes['fees'],
             'executed_at' => $attributes['executed']
-        ]);
+        ])->position()->associate($position);
 
         return $this;
     }
+
+
 
     /* --------------------------------------------
     * Functions for portfolio images
@@ -427,6 +432,7 @@ class Portfolio extends Model
         $file = $this->image;
         return (!is_null($file)) ? 'images/' . $file->path : null;
     }
+
 
     /*
     |--------------------------------------------------------------------------

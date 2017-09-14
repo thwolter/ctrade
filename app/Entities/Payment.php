@@ -38,6 +38,12 @@ class Payment extends Model
         return $this->belongsTo(Portfolio::class);
     }
 
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+
+    }
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

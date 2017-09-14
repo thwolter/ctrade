@@ -51,10 +51,8 @@ class Asset extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function obtain($amount, $executed)
+    public function obtain($position)
     {
-        $position = Position::make(['amount' => $amount, 'executed_at' => $executed]);
-
         $this->positions()->save($position);
     }
 
