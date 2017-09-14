@@ -143,6 +143,11 @@ class Asset extends Model
         return $this->positionable->slug;
     }
 
+    public function getCurrencyAttribute()
+    {
+        return $this->positionable->currency;
+    }
+
 
     /*
     |--------------------------------------------------------------------------
