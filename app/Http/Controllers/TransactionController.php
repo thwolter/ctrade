@@ -15,22 +15,12 @@ class TransactionController extends Controller
      * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function index($slug)
+    public function index(Portfolio $portfolio)
     {
-        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
-        return view('transactions.index', compact('portfolio'));
+        $transactions = $portfolio->transactions();
+        return view('transactions.index', compact('transactions'));
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param $slug
-     * @return \Illuminate\Http\Response
-     */
-    public function create($slug)
-    {
-        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
-        return view('transactions.create', compact('portfolio'));
-    }
+
     /**
      * Display the specified resource.
      *

@@ -112,7 +112,6 @@ class Portfolio extends Model
         return $this->hasOne(PortfolioImage::class);
     }
 
-
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -154,19 +153,6 @@ class Portfolio extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-
-    public function getCategoryNameAttribute()
-    {
-        $default = $this->category;
-        return (!is_null($default)) ? $default->name : 'keine Kategorie';
-    }
-
-    public function getImageUrlAttribute()
-    {
-        $file = $this->image;
-        return (!is_null($file)) ? 'images/' . $file->path : null;
-    }
 
     public function settings($key = null)
     {
@@ -434,6 +420,18 @@ class Portfolio extends Model
     | ACCESORS
     |--------------------------------------------------------------------------
     */
+
+    public function getCategoryNameAttribute()
+    {
+        $default = $this->category;
+        return (!is_null($default)) ? $default->name : 'keine Kategorie';
+    }
+
+    public function getImageUrlAttribute()
+    {
+        $file = $this->image;
+        return (!is_null($file)) ? 'images/' . $file->path : null;
+    }
 
     /*
     |--------------------------------------------------------------------------
