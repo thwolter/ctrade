@@ -149,7 +149,7 @@ class LimitRepository
                 'risk' => $risk,
                 'limit' => $limit,
                 'date' => $date,
-                'ccy' => $this->portfolio->currencyCode()
+                'ccy' => $this->portfolio->currency->code
             ];
         };
         return $result;

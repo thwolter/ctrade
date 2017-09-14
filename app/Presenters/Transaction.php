@@ -16,7 +16,7 @@ class Transaction extends Presenter
 
     public function total()
     {
-        return $this->formatPrice($this->entity->value, $this->entity->portfolio->currencyCode());
+        return $this->formatPrice($this->entity->value, $this->entity->portfolio->currency->code);
     }
 
     public function price()
@@ -24,7 +24,7 @@ class Transaction extends Presenter
         $price = $this->entity->price;
 
         if ($price)
-            return $this->formatPrice($price, $this->entity->portfolio->currencyCode());
+            return $this->formatPrice($price, $this->entity->portfolio->currency->code);
     }
 
     public function date()

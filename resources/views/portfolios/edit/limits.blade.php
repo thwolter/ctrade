@@ -49,7 +49,7 @@
                 <label class="col-md-3 control-label">Betrag</label>
                 <div class="col-md-7">
                     <div class="input-group">
-                        <span class="input-group-addon">{{ $portfolio->currencyCode() }}</span>
+                        <span class="input-group-addon">{{ $portfolio->currency->code }}</span>
                         <input type="number" name="absolute_value" placeholder="Betrag"
                                class="form-control" step="0.01" min="0" value="{{ $value }}">
                     </div>
@@ -123,7 +123,7 @@
                 <label class="col-md-3 control-label">Betrag</label>
                 <div class="col-md-7">
                     <div class="input-group">
-                        <span class="input-group-addon">{{ $portfolio->currencyCode() }}</span>
+                        <span class="input-group-addon">{{ $portfolio->currency->code }}</span>
                         <input type="number" name="{{ $type.'_value' }}" placeholder="Betrag"
                                class="form-control" step="0.01" min="0" value="{{ $value }}">
                     </div>
@@ -161,7 +161,7 @@
                 <label class="col-md-3 control-label">Mindestwert</label>
                 <div class="col-md-7">
                     <div class="input-group">
-                        <span class="input-group-addon">{{ $portfolio->currencyCode() }}</span>
+                        <span class="input-group-addon">{{ $portfolio->currency->code }}</span>
                         <input type="number" name="{{ $type.'_value' }}" placeholder="Betrag"
                                class="form-control" step="0.01" min="0" value="{{ $value }}">
                     </div>

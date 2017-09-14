@@ -160,11 +160,6 @@ class Portfolio extends Model
         return $key ? $settings->get($key) : $settings;
     }
 
-    public function currencyCode()
-    {
-        return $this->currency->code;
-    }
-
     public function cash()
     {
         return $this->payments()->sum('amount');
@@ -210,7 +205,7 @@ class Portfolio extends Model
         $array = [
             'meta' => [
                 'name' => $this->name,
-                'currency' => $this->currencyCode(),
+                'currency' => $this->currency->code,
                 'cash' => $this->cash()
             ],
             'items' => []

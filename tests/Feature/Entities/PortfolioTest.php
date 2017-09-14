@@ -127,7 +127,7 @@ class PortfolioTest extends TestCase
     /** @test */
     public function portfolio_has_a_currency_code()
     {
-        $this->assertEquals('CHF', $this->portfolio->currencyCode());
+        $this->assertEquals('CHF', $this->portfolio->currency->code);
     }
 
 

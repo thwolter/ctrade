@@ -36,8 +36,8 @@
                     <td class="align-middle text-right">{{ $asset->present()->amount() }}</td>
                     <td class="align-middle text-right">
                         {{ $asset->present()->value() }}
-                        @if ($stock->currencyCode() != $portfolio->currencyCode())
-                            <div>({{ $asset->present->value($portfolio->currencyCode()) }})</div>
+                        @if ($stock->currency->code != $portfolio->currency->code)
+                            <div>({{ $asset->present->value($portfolio->currency->code) }})</div>
                         @endif
                     </td>
 

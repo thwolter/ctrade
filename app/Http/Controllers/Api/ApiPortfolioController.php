@@ -32,7 +32,7 @@ class ApiPortfolioController extends ApiBaseController
                 'price' => head($price),
                 'total' => head($price) * $array['amount'],
                 'date' => key($price),
-                'currency' => $asset->currencyCode()
+                'currency' => $asset->currency->code
             ]);
         }
 

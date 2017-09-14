@@ -78,16 +78,12 @@ class Asset extends Model
         return $this->positionable->currency;
     }
 
-    public function currencyCode()
-    {
-        return $this->positionable->currencyCode;
-    }
 
     public function convert($currencyCode = null)
     {
-        if (!$currencyCode or $this->currencyCode() === $currencyCode) return 1;
+        if (!$currencyCode or $this->currency->code === $currencyCode) return 1;
 
-        return array_first((new CurrencyRepository($this->currencyCode(), $currencyCode))->price());
+        return array_first((new CurrencyRepository($this->currency->code, $currencyCode))->price());
     }
 
     public function label()
@@ -101,7 +97,7 @@ class Asset extends Model
             'name' => $this->positionable->name,
             'type' => $this->positionable_type,
             'symbol' => $this->label(),
-            'currency' => $this->currencyCode(),
+            'currency' => $this->currency->code,
             'amount' => $this->amount(),
         ];
     }

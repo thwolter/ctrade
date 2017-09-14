@@ -11,17 +11,17 @@ class Portfolio extends Presenter
 
     public function cash()
     {
-        return $this->formatPrice($this->entity->cash(), $this->entity->currencyCode());
+        return $this->formatPrice($this->entity->cash(), $this->entity->currency->code);
     }
 
     public function stockTotal()
     {
-        return $this->formatPrice($this->entity->total(\App\Entities\Stock::class), $this->entity->currencyCode());
+        return $this->formatPrice($this->entity->total(\App\Entities\Stock::class), $this->entity->currency->code);
     }
 
     public function total()
     {
-        return $this->formatPrice($this->entity->total(), $this->entity->currencyCode());
+        return $this->formatPrice($this->entity->total(), $this->entity->currency->code);
     }
 
     public function risk()
@@ -29,7 +29,7 @@ class Portfolio extends Presenter
         $repo = new RiskRepository($this->entity);
         $risk = $repo->portfolioRisk();
 
-        return $this->formatPrice($risk, $this->entity->currencyCode());
+        return $this->formatPrice($risk, $this->entity->currency->code);
     }
 
     public function return()
@@ -45,7 +45,7 @@ class Portfolio extends Presenter
         $repo = new RiskRepository($this->entity);
         $profit = $repo->portfolioProfit();
 
-        return $this->formatprice($profit, $this->entity->currencyCode());
+        return $this->formatprice($profit, $this->entity->currency->code);
     }
 
     public function updatedRisk()

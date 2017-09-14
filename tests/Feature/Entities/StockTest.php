@@ -78,6 +78,6 @@ class StockTest extends TestCase
     /** @test */
     public function stock_has_a_currency_code()
     {
-        $this->assertEquals('EUR', $this->stock->currencyCode());
+        $this->assertEquals('EUR', $this->stock->currency->code);
     }
 }

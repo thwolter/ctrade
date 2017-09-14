@@ -38,7 +38,7 @@ class PositionTest extends TestCase
     public function positions_has_a_currency()
     {
         $this->assertEquals('EUR', $this->position->currency()->code);
-        $this->assertEquals('EUR', $this->position->currencyCode());
+        $this->assertEquals('EUR', $this->position->currency->code);
     }
 
     /** @test */
@@ -122,7 +122,7 @@ class PositionTest extends TestCase
     /** @test */
     public function position_has_a_currency_code()
     {
-        $this->assertEquals('EUR', $this->position->currencyCode());
+        $this->assertEquals('EUR', $this->position->currency->code);
     }
 
     /** @test */

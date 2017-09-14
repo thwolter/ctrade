@@ -37,8 +37,8 @@ class ApiDataController extends ApiBaseController
 
             $result[$asset->label()] = $asset->positionable->history($days);
 
-            $origin = $portfolio->currencyCode();
-            $target = $asset->currencyCode();
+            $origin = $portfolio->currency->code;
+            $target = $asset->currency->code;
 
             if ($origin != $target)
                 $result[$origin . $target] = (new CurrencyRepository($origin, $target))->history($days);

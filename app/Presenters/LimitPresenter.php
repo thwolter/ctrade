@@ -15,7 +15,7 @@ class LimitPresenter extends Presenter
             $string = $this->entity->value. '%';
 
         } else {
-            $string = $this->formatPrice($this->entity->value, $this->entity->portfolio->currencyCode());
+            $string = $this->formatPrice($this->entity->value, $this->entity->portfolio->currency->code);
 
         }
         return $string;
