@@ -388,6 +388,10 @@ class Portfolio extends Model
         return ['slug' => ['source' => 'name']];
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function latestTransactionDate()
     {

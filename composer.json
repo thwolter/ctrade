@@ -88,9 +88,10 @@
         ]
     },
     "config": {
+        "process-timeout": 600,
         "preferred-install": "dist",
-        "sort-packages": true,
         "minimum-stability": "dev",
+        "sort-packages": true,
         "prefer-stable": true
     },
     "extra": {

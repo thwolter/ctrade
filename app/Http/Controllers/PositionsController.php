@@ -27,39 +27,41 @@ class PositionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $slug)
+    public function index(Request $request, Portfolio $portfolio)
     {
-        $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
         return view('positions.index', array_merge(['portfolio' => $portfolio], $request->all()));
     }
 
 
-    public function buyStock($portfolioSlug, $slug)
+    /**
+     * Create a new resource for a stock model.
+     *
+     * @param Portfolio $portfolio
+     * @param Stock $stock
+     * @param $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function tradeStock(Portfolio $portfolio, Stock $stock, $transaction)
     {
-        return view('positions.stocks.trade', [
-            'portfolio' => Portfolio::whereSlug($portfolioSlug)->first(),
-            'stock' => Stock::findBySlug($slug),
-            'transaction' => 'buy'
-        ]);
+        return view('positions.stocks.trade',
+            compact('portfolio', 'stock', 'transaction')
+        );
     }
 
-
-    public function sellStock($portfolioSlug, $slug)
-    {
-        return view('positions.stocks.trade', [
-            'portfolio' => Portfolio::whereSlug($portfolioSlug)->first(),
-            'stock' => Stock::findBySlug($slug),
-            'transaction' => 'sell'
-        ]);
-    }
-
-
-    public function create($portfolioSlug, $entity, $slug)
+    /**
+     * Create a new resource based on given entity and instrument.
+     *
+     * @param Portfolio $portfolio
+     * @param $entity
+     * @param $slug
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Portfolio $portfolio, $entity, $slug)
     {
         $instrument = resolve('App\\Entities\\'.ucfirst($entity));
 
         return view('positions.'.str_plural($entity).'.trade', [
-            'portfolio' => Portfolio::whereSlug($portfolioSlug)->first(),
+            'portfolio' => $portfolio,
             'stock' => $instrument::findBySlug($slug),
             'transaction' => 'buy'
         ]);

@@ -105,6 +105,12 @@ class Stock extends Instrument
         return ['slug' => ['source' => 'nameWithType']];
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

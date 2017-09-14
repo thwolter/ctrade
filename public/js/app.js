@@ -23069,7 +23069,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         onClickLink: function onClickLink(slug) {
             var instrumentType = this.instrumentType.substr(this.instrumentType.lastIndexOf('\\') + 1).toLowerCase();
-            window.location = this.submitRoute + '/' + instrumentType + '/' + slug;
+            window.location = this.submitRoute.replace('%entity%', instrumentType).replace('%instrument%', slug);
         },
         assign: function assign(data) {
             this.results = data;

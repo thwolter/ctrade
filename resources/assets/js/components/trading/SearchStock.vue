@@ -129,7 +129,9 @@
 
             onClickLink(slug) {
                 let instrumentType = this.instrumentType.substr(this.instrumentType.lastIndexOf('\\') + 1).toLowerCase();
-                window.location = this.submitRoute + '/' + instrumentType + '/' + slug;
+                window.location = this.submitRoute
+                    .replace('%entity%', instrumentType)
+                    .replace('%instrument%', slug);
             },
 
             assign(data) {

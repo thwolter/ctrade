@@ -44,13 +44,13 @@
                     <td class="align-middle col-md-1">
                         <div class="row buy-sell-icons text-center">
                             <div class="col-md-2 col-md-push-2">
-                                <a href="{{ route('positions.buyStock', [$portfolio->slug, $asset->slug]) }}"
+                                <a href="{{ route('positions.tradeStock', [$portfolio->slug, $asset->slug, 'buy']) }}"
                                    class="btn-link">
                                     <i class="fa fa-plus-square buy-icon" aria-hidden="true"></i>
                                 </a>
                             </div>
                             <div>
-                                <a href="{{ route('positions.sellStock', [$portfolio->slug, $asset->slug]) }}"
+                                <a href="{{ route('positions.tradeStock', [$portfolio->slug, $asset->slug, 'sell']) }}"
                                    class="btn-link">
                                     <i class="fa fa-minus-square sell-icon" aria-hidden="true"></i>
                                 </a>
@@ -74,7 +74,7 @@
     <search-stock
             portfolio-id="{{ $portfolio->id }}"
             instrument-type="{{ \App\Entities\Stock::class }}"
-            submit-route="{{ route('positions.create', [$portfolio->slug, null, null], false) }}">
+            submit-route="{{ route('positions.create', [$portfolio->slug, '%entity%', '%instrument%'], false) }}">
     </search-stock>
 </div>
 
