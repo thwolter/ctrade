@@ -72,6 +72,10 @@ class Payment extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getAssetAttribute()
+    {
+        return optional($this->position)->asset;
+    }
 
 
     /*

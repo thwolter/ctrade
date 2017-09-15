@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Asset;
 use App\Entities\Portfolio;
 
 

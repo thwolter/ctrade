@@ -30,7 +30,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('portfolio', function ($value) {
            return  auth()->user()->portfolios()->whereSlug($value)->first();
         });
-
     }
 
     /**

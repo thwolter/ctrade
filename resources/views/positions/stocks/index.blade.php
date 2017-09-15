@@ -12,7 +12,7 @@
                 <th>ISIN</th>
                 <th>Updated</th>
                 <th class="text-right">Preis</th>
-                <th class="text-right">Stück</th>
+                <th class="text-center">Stück</th>
                 <th class="text-right">Gesamt</th>
                 <th></th>
             </tr>
@@ -25,13 +25,13 @@
                 <tr class="">
                     <td class="align-middle">{{ $loop->iteration }}</td>
                     <td class="align-middle">
-                        <a href="{{ route('assets.show', [$portfolio->slug, $stock->slug]) }}">
+                        <a href="{{ route('assets.show', [$portfolio, $stock->slug]) }}">
                             {{ $stock->name }}</a>
                     </td>
                     <td>{{ $stock->present()->isin }}</td>
                     <td>{{ $stock->present()->priceDate() }}</td>
                     <td class="align-middle text-right">{{ $stock->present()->price() }}</td>
-                    <td class="align-middle text-right">{{ $asset->present()->amount() }}</td>
+                    <td class="align-middle text-center">{{ $asset->present()->amount() }}</td>
                     <td class="align-middle text-right">
                         {{ $asset->present()->value() }}
                         @if ($stock->currency->code != $portfolio->currency->code)

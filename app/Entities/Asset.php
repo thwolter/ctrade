@@ -105,6 +105,7 @@ class Asset extends Model
         return class_basename($this->positionable) === $type;
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

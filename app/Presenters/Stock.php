@@ -17,7 +17,7 @@ class Stock extends Presenter
 
     public function isin()
     {
-        return '';
+        return $this->entity->isin;
     }
 
     public function price()
