@@ -3,23 +3,15 @@
 namespace App\Entities;
 
 use App\Entities\Traits\UuidModel;
-use App\Events\PortfolioHasChanged;
 use App\Presenters\Presentable;
-use App\Repositories\PositionRepository;
-use App\Repositories\TransactionRepository;
 use App\Settings\PortfolioSettings;
-use App\Settings\Settings;
-use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use App\Repositories\Financable;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
-use Psy\Readline\Libedit;
 
 
 /**
@@ -69,11 +61,18 @@ class Portfolio extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $presenter = 'App\Presenters\Portfolio';
+    protected $presenter = \App\Presenters\Portfolio::class;
 
-    protected $fillable = ['name', 'description', 'settings', 'img_url'];
+    protected $fillable = [
+        'name',
+        'description',
+        'settings',
+        'img_url'
+    ];
 
-    protected $casts = ['settings' => 'json'];
+    protected $casts = [
+        'settings' => 'json'
+    ];
 
     protected $hidden = ['id'];
 
@@ -229,6 +228,7 @@ class Portfolio extends Model
     {
         $position = Position::make([
             'amount' => $attributes['amount'],
+            'price' => $attributes['price'],
             'executed_at' => $attributes['executed']
         ]);
 
@@ -292,7 +292,7 @@ class Portfolio extends Model
             'type' => 'trade',
             'amount' => -$attributes['price'] * $attributes['amount'],
             'executed_at' => $attributes['executed']
-        ])->position()->associate($position);
+        ])->position()->associate($position)->save();
 
         return $this;
     }
@@ -303,13 +303,13 @@ class Portfolio extends Model
      * @param array $attributes
      * @return Portfolio
      */
-    public function payFees($attributes, $position)
+    public function payFees($attributes, $position = null)
     {
         $this->payments()->create([
             'type' => 'fees',
             'amount' => -$attributes['fees'],
             'executed_at' => $attributes['executed']
-        ])->position()->associate($position);
+        ])->position()->associate($position)->save();
 
         return $this;
     }
@@ -381,13 +381,10 @@ class Portfolio extends Model
 
     public function latestTransactionDate()
     {
-        $payment = $this->payments()->latest()->first();
-        $position = $this->positions()->latest()->first();
+        $payment = $this->payments()->latestExecuted();
+        $position = $this->positions()->latestExecuted()->first();
 
-        return max(
-            ($payment) ? $payment->executed_at : null,
-            ($position) ? $position->executed_at : null
-        );
+        return max(optional($payment)->executed_at, optional($position)->executed_at);
     }
 
     /*
@@ -432,6 +429,12 @@ class Portfolio extends Model
         $file = $this->image;
         return (!is_null($file)) ? 'images/' . $file->path : null;
     }
+
+    public function getTransactionsAttribute()
+    {
+        return $this->payments()->with(['position.asset.positionable.currency'])->get();
+    }
+
 
 
     /*

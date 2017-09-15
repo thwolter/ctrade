@@ -80,6 +80,7 @@ abstract class Instrument extends Model
         return $toLower ? strtolower($name) : $name;
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -108,6 +109,7 @@ abstract class Instrument extends Model
     {
         return $this->currency()->first()->code;
     }
+
 
     /*
     |--------------------------------------------------------------------------

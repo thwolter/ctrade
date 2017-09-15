@@ -3,12 +3,13 @@ namespace App\Http\Controllers;
 use App\Entities\Portfolio;
 use App\Entities\Transaction;
 use Illuminate\Http\Request;
-class TransactionController extends Controller
+class PaymentController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +18,9 @@ class TransactionController extends Controller
      */
     public function index(Portfolio $portfolio)
     {
-        $transactions = $portfolio->transactions();
-        return view('transactions.index', compact('transactions'));
+        return view('payments.index')
+            ->with('payments', $portfolio->payments)
+            ->with('portfolio', $portfolio);
     }
 
     /**

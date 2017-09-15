@@ -2,16 +2,21 @@
 
 namespace App\Entities;
 
+use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
+
+    use Presentable;
 
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
+
+    protected $presenter = \App\Presenters\Payment::class;
 
     protected $fillable = [
         'amount',
@@ -41,8 +46,8 @@ class Payment extends Model
     public function position()
     {
         return $this->belongsTo(Position::class);
-
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +61,7 @@ class Payment extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function scopeLatest($query)
+    public function scopeLatestExecuted($query)
     {
         return $query->orderBy('executed_at', 'desc')->first();
     }

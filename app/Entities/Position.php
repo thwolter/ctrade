@@ -45,7 +45,8 @@ class Position extends Model
 
     protected $fillable = [
         'executed_at',
-        'amount'
+        'amount',
+        'price'
     ];
 
     protected $dates = [
@@ -82,6 +83,10 @@ class Position extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function scopeLatestExecuted($query)
+    {
+        return $query->orderBy('executed_at', 'desc')->first();
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -5,7 +5,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('{portfolio}/transactions/index', [
         'as' => 'transactions.index',
-        'uses' => 'TransactionController@index'
+        'uses' => 'PaymentController@index'
     ]);
 
     Route::get('transactions/{transaction}', [

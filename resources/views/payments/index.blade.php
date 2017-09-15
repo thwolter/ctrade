@@ -28,22 +28,22 @@
 
                 <tbody>
 
-                @foreach(array_reverse($portfolio->transactions->all()) as $transaction)
+                @foreach($payments as $payment)
 
-                    @php $isin = $transaction->present()->isin @endphp
+                    @php $isin = $payment->present()->isin @endphp
                         <tr class="">
                             <td class="align-middle">{{ $loop->iteration }}</td>
-                            <td class="align-middle">{{ $transaction->present()->date }}</td>
-                            <td class="align-middle">{{ $transaction->present()->type }}</td>
-                            <td class="align-middle">{{ $transaction->present()->instrument }}</td>
-                            <td class="align-middle text-right">{{ $transaction->amount }}</td>
+                            <td class="align-middle">{{ $payment->present()->date() }}</td>
+                            <td class="align-middle">{{ $payment->present()->paymentType() }}</td>
+                            <td class="align-middle">{{ $payment->present()->instrumentType() }}</td>
+                            <td class="align-middle text-right">{{ $payment->present()->amount() }}</td>
                             <td class="align-middle">
-                                <a href="{{ route('transactions.show', [$portfolio->id, 'id' => $transaction->id]) }}">
-                                    {{ $transaction->present()->name}} @if($isin) ({{ $isin }}) @endif
+                                <a href="{{ route('transactions.show', [$portfolio->id, 'id' => $payment->id]) }}">
+                                    {{ $payment->present()->name}} @if($isin) ({{ $isin }}) @endif
                                 </a>
                             </td>
-                            <td class="align-middle text-right">{{ $transaction->present()->price() }}</td>
-                            <td class="align-middle text-right">{{ $transaction->present()->total() }}</td>
+                            <td class="align-middle text-right">{{ $payment->present()->price() }}</td>
+                            <td class="align-middle text-right">{{ $payment->present()->total() }}</td>
                         </tr>
                         @endforeach
                 </tbody>
