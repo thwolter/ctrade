@@ -37,11 +37,11 @@
             <div class="separator"></div>
         @endif
 
-        @foreach (Auth::user()->portfolios as $items)
+        @foreach (Auth::user()->portfolios as $userPortfolio)
             <li>
-                <a href="{{ route(Route::currentRouteName(), $items) }}">
+                <a href="{{ route('portfolios.show', $userPortfolio) }}">
                     <i class="fa fa-caret-right dropdown-icon "></i>
-                    {{ $items->name }}
+                    {{ $userPortfolio->name }}
                 </a>
             </li>
         @endforeach
