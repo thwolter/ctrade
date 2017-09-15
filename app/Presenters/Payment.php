@@ -15,7 +15,7 @@ class Payment extends Presenter
 
     private function instrument()
     {
-        $position = $this->entity->position;
+        $position = $this->getPosition();
         return $position ? $position->asset->positionable : null;
     }
 
@@ -28,20 +28,18 @@ class Payment extends Presenter
 
     public function total()
     {
-        $position = $this->entity->position;
-        $total = $position ? $position->price * $position->amount : $this->entity->amount;
-
-        return $this->formatPrice($total, $this->currencyCode());
+        return $this->formatPrice($this->entity->amount, $this->currencyCode());
     }
 
     public function price()
     {
-        return $this->formatPrice(optional($this->entity->position)->price, $this->currencyCode());
+        $position = $this->getPosition();
+        return $position ? $this->formatPrice($position->price, $this->currencyCode()) : null;
     }
 
     public function amount()
     {
-        $position = $this->entity->position;
+        $position = $this->getPosition();
         return $position ? $position->amount : null;
     }
 
@@ -69,5 +67,13 @@ class Payment extends Presenter
     public function isin()
     {
         return $this->instrument() ? $this->instrument()->isin : null;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getPosition()
+    {
+        return in_array($this->entity->type, ['buy', 'sell']) ? $this->entity->position : null;
     }
 }
