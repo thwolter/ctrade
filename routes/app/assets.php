@@ -5,7 +5,7 @@
 Route::middleware('auth')->group(function() {
 
 
-    Route::get('/{slug}/assets/{$assetSlug}', [
+    Route::get('/{portfolio}/assets/{asset}', [
         'as' => 'assets.show',
         'uses' => 'AssetController@show'
     ]);

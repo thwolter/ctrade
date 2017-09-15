@@ -20,9 +20,7 @@
             <tbody>
             @foreach($assets as $asset)
 
-                @php
-                    $stock = $asset->positionable;
-                @endphp
+                @php $stock = $asset->positionable @endphp
 
                 <tr class="">
                     <td class="align-middle">{{ $loop->iteration }}</td>

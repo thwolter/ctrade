@@ -3,7 +3,7 @@
 @section('content')
 
 
-    @include('stock.summary')
+    @include('stocks.summary')
 
     <portlet title="{{ ($transaction === 'buy') ? 'Kaufen' : 'Verkaufen' }}">
         <trade-stock

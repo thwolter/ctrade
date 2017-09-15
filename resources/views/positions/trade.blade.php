@@ -6,7 +6,7 @@
 
         @php $stock = $instrument @endphp
 
-        @include('stock.summary')
+        @include('stocks.summary')
 
         <portlet title="Kaufen">
             <trade-stock

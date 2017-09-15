@@ -1,4 +1,5 @@
 <div>
+
     <portlet title="{{ $stock->name }}">
         <div class="col-md-3">
             <p><span>ISIN: </span>{{ $stock->isin }}</p>

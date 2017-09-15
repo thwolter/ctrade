@@ -19,19 +19,15 @@ class AssetController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $portfolioSlug
-     * @param string $assetSlug
+     * @param Portfolio $portfolio
+     * @param string $slug
      * @return \Illuminate\Http\Response
      *
      */
-    public function show($portfolioSlug, $assetSlug)
+    public function show(Portfolio $portfolio, $slug)
     {
-        $portfolio = auth()->user()->portfolios()->whereSlug($portfolioSlug)->first();
-
-        foreach ($portfolio->positions as $position) {
-            if ($position->positionable->slug == $assetSlug) break;
-        }
-
-        return view('positions.show', compact('portfolio', 'position'));
+        return view('assets.show')
+            ->with('portfolio', $portfolio)
+            ->with('asset', $portfolio->assets()->whereSlug($slug)->first());
     }
 }

@@ -100,6 +100,10 @@ class Asset extends Model
         ];
     }
 
+    public function isType($type)
+    {
+        return class_basename($this->positionable) === $type;
+    }
 
     /*
     |--------------------------------------------------------------------------

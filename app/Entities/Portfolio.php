@@ -289,7 +289,7 @@ class Portfolio extends Model
     private function payTrade($attributes, $position)
     {
         $this->payments()->create([
-            'type' => 'trade',
+            'type' => $attributes['transaction'],
             'amount' => -$attributes['price'] * $attributes['amount'],
             'executed_at' => $attributes['executed']
         ])->position()->associate($position)->save();
@@ -428,11 +428,6 @@ class Portfolio extends Model
     {
         $file = $this->image;
         return (!is_null($file)) ? 'images/' . $file->path : null;
-    }
-
-    public function getTransactionsAttribute()
-    {
-        return $this->payments()->with(['position.asset.positionable.currency'])->get();
     }
 
 

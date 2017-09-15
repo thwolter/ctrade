@@ -9,8 +9,6 @@
 namespace App\Presenters;
 
 
-use App\Entities\Position;
-use Carbon\Carbon;
 
 class Payment extends Presenter
 {
@@ -23,18 +21,17 @@ class Payment extends Presenter
 
     private function currencyCode()
     {
-        return $this->instrument() ? $this->instrument()->currency->code : null;
+        return $this->instrument()
+            ? $this->instrument()->currency->code
+            : $this->entity->portfolio->currency->code;
     }
 
     public function total()
     {
         $position = $this->entity->position;
+        $total = $position ? $position->price * $position->amount : $this->entity->amount;
 
-        if ($position) {
-            $total = $position->price * $position->amount;
-            return $this->formatPrice($total, $this->currencyCode());
-        }
-
+        return $this->formatPrice($total, $this->currencyCode());
     }
 
     public function price()
@@ -44,7 +41,8 @@ class Payment extends Presenter
 
     public function amount()
     {
-        return optional($this->entity->position)->amount;
+        $position = $this->entity->position;
+        return $position ? $position->amount : null;
     }
 
     public function date()
@@ -59,8 +57,7 @@ class Payment extends Presenter
 
     public function paymentType()
     {
-        if ($this->instrument())
-            return trans('transactions.'.$this->instrument()->type());
+        return trans('payment.'.$this->entity->type);
     }
 
     public function instrumentType()

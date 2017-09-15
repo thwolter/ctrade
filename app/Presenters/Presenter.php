@@ -34,15 +34,12 @@ abstract class Presenter
 
     public function formatPrice($value, $currencyCode)
     {
-        if (is_null($this->priceFormat)) {
+        if (! $this->priceFormat) {
             $this->priceFormat = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
         }
 
-        if (is_array($value)) $value = array_first($value);
-        $currencyFmt = $this->priceFormat->formatCurrency($value, $currencyCode);
-
-        //return preg_replace($this->replace, '', $currencyFmt).' '.$currencyCode;
-        return $currencyFmt;
+        $value = is_array($value) ? array_first($value) : $value;
+        return $value ? $this->priceFormat->formatCurrency($value, $currencyCode) : null;
     }
 
     public function formatPercentage($value)
