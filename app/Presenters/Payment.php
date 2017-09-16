@@ -9,14 +9,20 @@
 namespace App\Presenters;
 
 
-
 class Payment extends Presenter
 {
 
+    private $position;
+
+    public function __construct($entity)
+    {
+        parent::__construct($entity);
+        $this->position = $this->getPosition();
+    }
+
     private function instrument()
     {
-        $position = $this->getPosition();
-        return $position ? $position->asset->positionable : null;
+        return $this->position ? $this->position->asset->positionable : null;
     }
 
     private function currencyCode()
@@ -33,14 +39,12 @@ class Payment extends Presenter
 
     public function price()
     {
-        $position = $this->getPosition();
-        return $position ? $this->formatPrice($position->price, $this->currencyCode()) : null;
+        return $this->position ? $this->formatPrice($this->position->price, $this->currencyCode()) : null;
     }
 
     public function amount()
     {
-        $position = $this->getPosition();
-        return $position ? $position->amount : null;
+        return $this->position ? $this->position->amount : null;
     }
 
     public function date()
