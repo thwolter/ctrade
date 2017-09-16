@@ -141,10 +141,51 @@ class ApiPortfolioController extends ApiBaseController
             'count' => 'required|numeric'
         ]);
 
+        $portfolio = $this->getPortfolio($request);
+
+        $values = $portfolio->keyFigure('value')->values;
+        $risks = $portfolio->keyFigure('risk')->values;
+
         return collect([
-            'values' => $this->getPortfolio($request)->keyFigure('value')->values,
-            'risk' => $this->getPortfolio($request)->keyFigure('risk')->values
+            'values' => $values,
+            'risk' => $this->valueAfterRisk($values, $risks, '0.95'),
+            'limit' => $this->limitTimeSeries($values, 4000),
         ]);
+    }
+
+    /**
+     * Return the history of values after deduction of risk for a given confidence level.
+     *
+     * @param array $values
+     * @param array $risks
+     * @return array
+     */
+    public function valueAfterRisk($values, $risks, $conf)
+    {
+        $risk = array_combine(array_keys($risks), array_column($risks, $conf));
+
+        $valueAfterRisk = [];
+        foreach ($values as $key => $value) {
+            $valueAfterRisk[$key] = $value - array_get($risk, $key);
+        }
+        return $valueAfterRisk;
+    }
+
+    /**
+     * Return the history of values after deduction of risk for a given confidence level.
+     *
+     * @param array $values
+     * @param float $limit
+     * @return array
+     */
+    public function limitTimeSeries($values, $limit)
+    {
+        //todo: perhaps better to use array_pad
+        $timeSeries = [];
+        foreach ($values as $key => $value) {
+            $timeSeries[$key] = $limit;
+        }
+        return $timeSeries;
     }
 
 }

@@ -21847,6 +21847,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     label: 'Risk',
                     data: _.toArray(data.risk),
                     backgroundColor: 'rgba(3, 78, 123, 0.3)'
+                }, {
+                    label: 'Limit',
+                    data: _.toArray(data.limit),
+                    backgroundColor: 'rgba(3, 78, 123, 0.3)'
                 }],
 
                 labels: Object.keys(data.values)
