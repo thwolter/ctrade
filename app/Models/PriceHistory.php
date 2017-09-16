@@ -28,9 +28,12 @@ class PriceHistory
     }
 
 
-    public function price()
+    public function price($date = null)
     {
-        return [key($this->data) => head($this->data)];
+        $date = Carbon::parse($date)->toDateString();
+        $price = array_get($this->data, $date);
+
+        return $price ? [$date => $price] : [key($this->data) => head($this->data)];
     }
 
 

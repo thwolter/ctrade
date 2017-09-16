@@ -7,6 +7,7 @@ use App\Facades\TimeSeries;
 use App\Presenters\Presentable;
 use App\Repositories\CurrencyRepository;
 use App\Settings\PortfolioSettings;
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
@@ -161,9 +162,11 @@ class Portfolio extends Model
         return $key ? $settings->get($key) : $settings;
     }
 
-    public function cash()
+    public function cash($date = null)
     {
-        return $this->payments()->sum('amount');
+        return $this->payments()
+            ->where('executed_at', '<=', Carbon::parse($date)->endOfDay())
+            ->sum('amount');
     }
 
     public function cashFlow($from, $to)

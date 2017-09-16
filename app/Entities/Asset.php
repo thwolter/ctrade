@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use App\Presenters\Presentable;
 use App\Repositories\CurrencyRepository;
+use Carbon\Carbon;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -56,26 +57,27 @@ class Asset extends Model
         $this->positions()->save($position);
     }
 
-    public function value()
+    public function value($date = null)
     {
-        return $this->amount() * array_first($this->price());
+        return $this->amount($date) * array_first($this->price($date));
     }
 
-    public function amount()
+    public function amount($date = null)
     {
-        return $this->positions()->sum('amount');
+        return $this->positions()
+            ->where('executed_at', '<=', Carbon::parse($date)->endOfDay())
+            ->sum('amount');
     }
 
-    public function price()
+    public function price($date = null)
     {
-        return $this->positionable->price();
+        return $this->positionable->price($date);
     }
 
     public function currency()
     {
         return $this->positionable->currency;
     }
-
 
     public function convert($currencyCode = null)
     {
@@ -89,14 +91,14 @@ class Asset extends Model
         return class_basename($this->positionable_type).$this->positionable_id;
     }
 
-    public function toArray()
+    public function toArray($date = null)
     {
         return [
             'name' => $this->positionable->name,
             'type' => $this->positionable_type,
             'symbol' => $this->label(),
             'currency' => $this->currency->code,
-            'amount' => $this->amount(),
+            'amount' => $this->amount($date),
         ];
     }
 

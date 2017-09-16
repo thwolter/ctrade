@@ -148,7 +148,7 @@ class ApiPortfolioController extends ApiBaseController
 
         return collect([
             'values' => $values,
-            'risk' => $this->valueAfterRisk($values, $risks, '0.95'),
+            'risk' => $this->valueAfterRisk($values, $risks, '0.99'),
             'limit' => $this->limitTimeSeries($values, 4000),
         ]);
     }

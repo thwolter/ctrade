@@ -22,7 +22,7 @@ class ApiDataController extends ApiBaseController
      */
     public function histories(Request $request)
     {
-        $attributes = $request->validate([
+        $request->validate([
             'id' => 'required|exists:portfolios,id',
             'date' => 'required_without:from|date',
             'count' => 'required_with:date|integer',
@@ -41,12 +41,10 @@ class ApiDataController extends ApiBaseController
      */
     public function portfolio(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'id' => 'required|exists:portfolios,id',
             'date' => 'sometimes|date',
         ]);
-
-        $date = Carbon::parse($request->get('date', null));
 
         return new PortfolioAssets(Portfolio::find($request->id));
     }

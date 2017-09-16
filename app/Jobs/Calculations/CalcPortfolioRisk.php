@@ -108,7 +108,7 @@ class CalcPortfolioRisk implements ShouldQueue
      * @param $date
      * @return array
      */
-    private function risk($date): array
+    private function risk($date)
     {
         $rscript = new Rscript($this->portfolio);
         $risk = $rscript->portfolioRisk($date->toDateString(), 250);

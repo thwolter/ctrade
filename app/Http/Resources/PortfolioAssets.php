@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\Resource;
 
 class PortfolioAssets extends Resource
@@ -14,9 +15,11 @@ class PortfolioAssets extends Resource
      */
     public function toArray($request)
     {
+        $date = Carbon::parse($request->date)->endOfDay();
+
         return [
-            'portfolio' => $this->portfolioToArray(),
-            'assets' => $this->assetsToArray()
+            'portfolio' => $this->portfolioToArray($date),
+            'assets' => $this->assetsToArray($date)
         ];
     }
 
@@ -24,11 +27,11 @@ class PortfolioAssets extends Resource
      * @param $array
      * @return mixed
      */
-    private function assetsToArray()
+    private function assetsToArray($date)
     {
         $array = [];
         foreach ($this->assets()->get() as $asset) {
-            $array[$asset->id] = $asset->toArray();
+            $array[$asset->id] = $asset->toArray($date);
         }
         return $array;
     }
@@ -36,12 +39,12 @@ class PortfolioAssets extends Resource
     /**
      * @return array
      */
-    private function portfolioToArray()
+    private function portfolioToArray($date)
     {
         return [
             'name' => $this->name,
             'currency' => $this->currency->code,
-            'cash' => $this->cash()
+            'cash' => $this->cash($date)
         ];
     }
 }

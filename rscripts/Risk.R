@@ -35,7 +35,7 @@ histories <- fetchHistories(url.hist, token)
 pf <- Portfolio$new(pfdata, histories)
 
 
-if (length(pfdata$items)) {
+if (length(pfdata$items) && sum(as.numeric(pfdata$items$amount))) {
 
     require(methods) #for PerformanceAnalytics
     output950 <- PerformanceAnalytics::VaR(

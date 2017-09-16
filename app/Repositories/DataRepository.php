@@ -18,9 +18,9 @@ class DataRepository
     }
 
 
-    public function price()
+    public function price($date = null)
     {
-        return $this->provider()->price();
+        return $this->provider()->price($date);
     }
 
 

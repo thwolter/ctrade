@@ -29,9 +29,9 @@ class QuandlPriceData implements DataInterface
     }
 
 
-    public function price()
+    public function price($date = null)
     {
-        return $this->getPriceHistory()->price();
+        return $this->getPriceHistory()->price($date);
     }
 
 
