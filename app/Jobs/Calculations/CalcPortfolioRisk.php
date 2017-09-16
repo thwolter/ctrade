@@ -55,7 +55,7 @@ class CalcPortfolioRisk implements ShouldQueue
         $kfContrib = $this->portfolio->keyFigure('contribution');
 
         // perhaps it is sufficient to check only one keyFigure
-        $start = $kfRisk->calculateFromDate();
+        $start = $kfRisk->firstDayToCalculate();
         $today = Carbon::now()->endOfDay();
 
         for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {
@@ -68,7 +68,6 @@ class CalcPortfolioRisk implements ShouldQueue
         }
 
         $kfRisk->validUntil($today->startOfDay());
-
         event(new PortfolioRiskWasCalculated($this->portfolio));
     }
 

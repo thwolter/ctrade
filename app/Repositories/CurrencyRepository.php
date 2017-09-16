@@ -101,4 +101,9 @@ class CurrencyRepository implements DataInterface
         return $n;
     }
 
+    public function label()
+    {
+        return $this->origin.$this->target;
+    }
+
 }

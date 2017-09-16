@@ -32,7 +32,7 @@ fetchHistories <- function(url, token = NULL) {
     ))
     stop_for_status(request, url)
 
-    dat <- content(request)
+    dat <- content(request)$data
     len <- length(dat)
     dimnames = list(names(dat[[1]]), names(dat))
     m <- matrix(unlist(dat), ncol=len, dimnames=dimnames)

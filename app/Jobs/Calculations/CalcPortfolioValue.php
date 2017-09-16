@@ -37,7 +37,7 @@ class CalcPortfolioValue implements ShouldQueue
     {
         $kfValue = $this->portfolio->keyFigure('value');
 
-        $start = $kfValue->calculateFromDate();
+        $start = $kfValue->firstDayToCalculate();
         $today = Carbon::now()->endOfDay();
 
         for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {

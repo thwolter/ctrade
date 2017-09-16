@@ -7,6 +7,7 @@ use App\Entities\Category;
 use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\User;
+use App\Facades\TimeSeries;
 
 class PortfolioRepository
 {
@@ -39,5 +40,6 @@ class PortfolioRepository
 
         return $portfolio;
     }
+
 
 }

@@ -3,7 +3,9 @@
 namespace App\Entities;
 
 use App\Entities\Traits\UuidModel;
+use App\Facades\TimeSeries;
 use App\Presenters\Presentable;
+use App\Repositories\CurrencyRepository;
 use App\Settings\PortfolioSettings;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
@@ -386,6 +388,7 @@ class Portfolio extends Model
 
         return max(optional($payment)->executed_at, optional($position)->executed_at);
     }
+
 
     /*
     |--------------------------------------------------------------------------

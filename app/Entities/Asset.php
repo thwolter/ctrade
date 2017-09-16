@@ -105,6 +105,10 @@ class Asset extends Model
         return class_basename($this->positionable) === $type;
     }
 
+    public function hasForeignCurrency()
+    {
+        return $this->currency->code != $this->portfolio->currency->code;
+    }
 
     /*
     |--------------------------------------------------------------------------

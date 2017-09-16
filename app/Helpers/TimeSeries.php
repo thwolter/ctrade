@@ -43,4 +43,26 @@ class TimeSeries
 
         return $dates;
     }
+
+    /**
+     * Return all week days either within a period or as number up to set date.
+     *
+     * @param Request $request
+     * @return array
+     * @throws \Exception
+     */
+    public function getWeekDaysSeries($attributes)
+    {
+        if (isset($attributes['date']) && isset($attributes['count'])) {
+            $days = TimeSeries::allWeekDays($attributes['date'], $attributes['count']);
+
+        } elseif (isset($attributes['from']) && isset($attributes['to'])) {
+            $days = TimeSeries::allWeekDaysBetween($attributes['from'], $attributes['to']);
+
+        } else {
+            throw new \Exception("Parameter ['date' and 'count'] or ['from' and 'to'] must be set.");
+        }
+
+        return $days;
+    }
 }

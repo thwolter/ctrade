@@ -46,11 +46,21 @@ class Keyfigure extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $fillable = ['values', 'expires_at'];
+    protected $fillable = [
+        'values',
+        'expires_at'
+    ];
 
-    protected $casts = ['values' => 'json'];
+    protected $casts = [
+        'values' => 'json'
+    ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'expires_at',
+        'deleted_at'
+    ];
 
 
     /*
@@ -105,18 +115,15 @@ class Keyfigure extends Model
      * @param KeyFigure
      * @return Carbon
      */
-    public function calculateFromDate()
+    public function firstDayToCalculate()
     {
-        $date = $this->portfolio->created_at;
+        $lastDay = $this->lastDayOfCalculation();
+        $date = $lastDay ? $lastDay->addDay() : $this->portfolio->created_at;
 
-        if (count($this->values) > 0) {
-            $date = Carbon::parse(max(max(array_keys($this->values)), $date))->addDay();
-
-            $invalidated = $this->expires_at;
-            if (!is_null($invalidated)) {
-                $date = Carbon::parse(min($date, $invalidated));
-            }
+        if ($this->expires_at) {
+            $date = min($date, $this->expires_at);
         }
+
         return $date->endOfDay();
     }
 
@@ -140,6 +147,23 @@ class Keyfigure extends Model
         return $query->whereHas('type', function($query) use ($type) {
             $query->whereCode($type);
         });
+    }
+
+    /**
+     * @return mixed
+     */
+    public function lastDayOfCalculation()
+    {
+
+        return $this->hasValues() ? Carbon::parse(max(array_keys($this->values))) : null;
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasValues()
+    {
+        return count($this->values) > 0;
     }
 
     /*
