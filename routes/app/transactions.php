@@ -8,10 +8,5 @@ Route::group(['middleware' => 'auth'], function() {
         'uses' => 'PaymentController@index'
     ]);
 
-    Route::get('transactions/{transaction}', [
-        'as' => 'transactions.show',
-        'uses' => 'TransactionController@show'
-    ]);
-
 });
 

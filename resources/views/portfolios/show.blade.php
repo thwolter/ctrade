@@ -32,7 +32,14 @@
 
         <div class="col-md-7">
             <portlet title="Wertentwicklung">
-                <value-chart pid="{{ $portfolio->id }}" height="100px"></value-chart>
+                <value-chart
+                        pid="{{ $portfolio->id }}"
+                        date="{{ \Carbon\Carbon::today()->toDateString() }}"
+                        conf="{{ 0.95 }}"
+                        count="{{ 50 }}"
+                        height="100px">
+
+                </value-chart>
             </portlet>
         </div>
 

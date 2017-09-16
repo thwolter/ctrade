@@ -86,8 +86,10 @@ class ApiPortfolioController extends ApiBaseController
             'id' => 'required|exists:portfolios,id',
         ]);
 
-        $values = $this->getPortfolio($request)->keyFigure('value')->values;
-        return collect(['values' => $values]);
+        return collect([
+            'values' => $this->getPortfolio($request)->keyFigure('value')->values,
+            'risk' => $this->getPortfolio($request)->keyFigure('risk')->values
+        ]);
     }
 
 
@@ -130,7 +132,7 @@ class ApiPortfolioController extends ApiBaseController
         return $result;
     }
 
-    public function graph(Request $request)
+    public function keyFigures(Request $request)
     {
         $this->validate($request, [
             'id' => 'required|exists:portfolios,id',
@@ -138,10 +140,11 @@ class ApiPortfolioController extends ApiBaseController
             'conf' => 'required|numeric',
             'count' => 'required|numeric'
         ]);
-        //todo: return both value and risk history
-        $values = $this->getPortfolio($request)->keyFigure('value')->values;
 
-        return $values;
+        return collect([
+            'values' => $this->getPortfolio($request)->keyFigure('value')->values,
+            'risk' => $this->getPortfolio($request)->keyFigure('risk')->values
+        ]);
     }
 
 }

@@ -21816,11 +21816,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
+    props: ['date', 'conf', 'count'],
+
     extends: __WEBPACK_IMPORTED_MODULE_0__Chart_vue___default.a,
 
     data: function data() {
         return {
-            route: '/api/portfolio/value',
+            route: '/api/portfolio/keyFigures',
+
+            routeParams: {
+                id: this.pid,
+                date: this.date,
+                conf: this.conf,
+                count: this.count
+            },
+
             type: 'line'
         };
     },
@@ -21830,7 +21840,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         assign: function assign(data) {
             this.data = {
                 datasets: [{
+                    label: 'Value',
                     data: _.toArray(data.values),
+                    backgroundColor: 'rgba(3, 78, 123, 0.3)'
+                }, {
+                    label: 'Risk',
+                    data: _.toArray(data.risk),
                     backgroundColor: 'rgba(3, 78, 123, 0.3)'
                 }],
 

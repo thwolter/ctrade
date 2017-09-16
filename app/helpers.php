@@ -59,3 +59,12 @@ function doneInfo($entities, $name)
     return sprintf("Done (%s %s). \n", $count, str_plural($name, $count));
 }
 
+
+function array_dissociate($array)
+{
+    $result = [];
+    foreach($array as $key => $value) {
+        $result[] = array_flatten(array_prepend($value, $key));
+    }
+    return $result;
+}

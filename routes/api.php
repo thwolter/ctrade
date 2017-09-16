@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/portfolio/limits', 'Api\ApiPortfolioController@limits');
     Route::get('/portfolio/utilisation', 'Api\ApiPortfolioController@utilisation');
     Route::get('/portfolio/contribution', 'Api\ApiPortfolioController@contribution');
-    Route::get('/portfolio/graph', 'Api\ApiPortfolioController@graph');
+    Route::get('/portfolio/keyFigures', 'Api\ApiPortfolioController@keyFigures');
 });
 
 
