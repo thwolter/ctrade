@@ -60,8 +60,7 @@ class CalcPortfolioRisk implements ShouldQueue
 
         for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {
 
-            $rscript = new Rscript($this->portfolio);
-            $risk = $rscript->portfolioRisk($date->toDateString(), 250);
+            $risk = $this->risk($date);
 
             $kfRisk->set($date->toDateString(), $this->toRiskArray($risk));
             $kfContrib->set($date->toDateString(), $this->toContribArray($risk));
@@ -101,5 +100,18 @@ class CalcPortfolioRisk implements ShouldQueue
             '0.975' => $risk['contrib975'],
             '0.99' => $risk['contrib99']
         ];
+    }
+
+    /**
+     * Calculate the risk on the given date.
+     *
+     * @param $date
+     * @return array
+     */
+    private function risk($date): array
+    {
+        $rscript = new Rscript($this->portfolio);
+        $risk = $rscript->portfolioRisk($date->toDateString(), 250);
+        return $risk;
     }
 }
