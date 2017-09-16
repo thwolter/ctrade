@@ -61,7 +61,7 @@ fetchPortfolio <- function(url, token = NULL) {
 
     data <- content(request)$data
 
-    if (length(data$items)) {
+    if (length(data$assets)) {
         items <- as.data.frame(t(matrix(unlist(data$assets), ncol=length(data$assets))), stringsAsFactors = FALSE)
         names(items) <- names(data$assets[[1]])
     } else {

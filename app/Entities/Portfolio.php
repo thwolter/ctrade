@@ -201,7 +201,7 @@ class Portfolio extends Model
         return $this;
     }
 
-    public function toArray()
+   /* public function toArray()
     {
         $array = [
             'meta' => [
@@ -217,7 +217,7 @@ class Portfolio extends Model
             $array['items'][$asset->id] = $asset->toArray();
         }
         return $array;
-    }
+    }*/
 
 
     /**
