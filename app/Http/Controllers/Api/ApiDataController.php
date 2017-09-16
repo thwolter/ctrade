@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Entities\Portfolio;
 use App\Http\Resources\AssetHistories;
 use App\Http\Resources\HistoryCollection;
+use App\Http\Resources\PortfolioAssets;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -29,8 +30,6 @@ class ApiDataController extends ApiBaseController
             'to' => 'required_with:from|date'
         ]);
 
-        $result = $this->getPortfolio($request)->collectHistories($attributes);
-
         return new AssetHistories(Portfolio::find($request->id));
     }
 
@@ -38,7 +37,7 @@ class ApiDataController extends ApiBaseController
      * Provides the portfolio data including positions details.
      *
      * @param Request $request
-     * @return \Illuminate\Support\Collection
+     * @return PortfolioAssets
      */
     public function portfolio(Request $request)
     {
@@ -49,9 +48,7 @@ class ApiDataController extends ApiBaseController
 
         $date = Carbon::parse($request->get('date', null));
 
-        //return collect($tradesRepo->rollbackToDate($date));
-
-        return $this->getPortfolio($request);
+        return new PortfolioAssets(Portfolio::find($request->id));
     }
 
 

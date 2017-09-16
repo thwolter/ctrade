@@ -59,16 +59,16 @@ fetchPortfolio <- function(url, token = NULL) {
     ))
     stop_for_status(request, url)
 
-    data <- content(request)
+    data <- content(request)$data
 
     if (length(data$items)) {
-        items <- as.data.frame(t(matrix(unlist(data$items), ncol=length(data$items))), stringsAsFactors = FALSE)
-        names(items) <- names(data$items[[1]])
+        items <- as.data.frame(t(matrix(unlist(data$assets), ncol=length(data$assets))), stringsAsFactors = FALSE)
+        names(items) <- names(data$assets[[1]])
     } else {
         items <- as.data.frame(NULL)
     }
 
-    return(list(meta = data$meta, items = items))
+    return(list(meta = data$portfolio, items = items))
 }
 
 
