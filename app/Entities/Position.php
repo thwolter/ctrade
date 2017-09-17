@@ -6,6 +6,7 @@ use App\Presenters\Contracts\PresentableInterface;
 use App\Presenters\Presentable;
 use App\Repositories\CurrencyRepository;
 use App\Repositories\Financable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -87,6 +88,12 @@ class Position extends Model
     {
         return $query->orderBy('executed_at', 'desc')->first();
     }
+
+    public function scopeCreatedOrUpdatedAfter($query, $date)
+    {
+        return $query->where('positions.updated_at', '>=', $date);
+    }
+
 
     /*
     |--------------------------------------------------------------------------

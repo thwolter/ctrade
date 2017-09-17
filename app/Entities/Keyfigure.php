@@ -117,21 +117,35 @@ class Keyfigure extends Model
      */
     public function firstDayToCalculate()
     {
-        $lastDay = $this->lastDayOfCalculation();
-        $date = $lastDay ? $lastDay->addDay() : $this->portfolio->created_at;
+        $previous = $this->lastDayOfCalculation();
 
-        if ($this->expires_at) {
-            $date = min($date, $this->expires_at);
-        }
+        if (!$previous) return $this->portfolio()->created_at;
 
-        return $date->endOfDay();
+        $compare = [
+            optional($this->firstExecutedPaymentEnteredAfter($previous))->executed_at,
+            optional($this->firstExecutedPositionEnteredAfter($previous))->executed_at,
+            $previous->addDay()
+        ];
+
+        return min(array_diff($compare, [null]))->endOfDay();
+    }
+
+
+    public function firstExecutedPositionEnteredAfter($date)
+    {
+        return $this->portfolio->positions()->createdOrUpdatedAfter($date)->orderBy('executed_at')->first();
+    }
+
+    public function firstExecutedPaymentEnteredAfter($date)
+    {
+        return $this->portfolio->payments()->createdOrUpdatedAfter($date)->orderBy('executed_at')->first();
     }
 
 
     public static function boot()
     {
         parent::boot();
-        static::creating(function($keyfigures) {
+        static::creating(function ($keyfigures) {
             $keyfigures->values = [];
         });
     }
@@ -144,7 +158,7 @@ class Keyfigure extends Model
 
     public function scopeOfType($query, $type)
     {
-        return $query->whereHas('type', function($query) use ($type) {
+        return $query->whereHas('type', function ($query) use ($type) {
             $query->whereCode($type);
         });
     }

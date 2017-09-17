@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Presenters\Presentable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
@@ -64,6 +65,11 @@ class Payment extends Model
     public function scopeLatestExecuted($query)
     {
         return $query->orderBy('executed_at', 'desc')->first();
+    }
+
+    public function scopeCreatedOrUpdatedAfter($query, $date)
+    {
+        return $query->where('updated_at', '>=', Carbon::parse($date));
     }
 
     /*
