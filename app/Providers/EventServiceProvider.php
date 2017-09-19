@@ -58,10 +58,7 @@ class EventServiceProvider extends ServiceProvider
         /*
          * Calculation events
          */
-        'App\Events\PortfolioRiskWasCalculated' => [
-            'App\Listeners\Portfolio\RecalculateUtilisation'
-        ],
-        'App\Events\PortfolioValueWasCalculated' => [
+        'App\Events\PortfolioWasCalculated' => [
             'App\Listeners\Portfolio\RecalculateUtilisation'
         ],
 

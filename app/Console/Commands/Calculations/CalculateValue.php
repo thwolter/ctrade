@@ -30,8 +30,7 @@ class CalculateValue extends Command
      */
     public function handle()
     {
-        $portfolios = Portfolio::all();
-        foreach ($portfolios as $portfolio)
+        foreach (Portfolio::all() as $portfolio)
         {
             dispatch(new CalcPortfolioValue($portfolio));
         }

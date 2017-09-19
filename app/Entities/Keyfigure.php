@@ -99,10 +99,6 @@ class Keyfigure extends Model
         $this->update(['values' => $values, 'expires_at' => null]);
     }
 
-    public function validUntil(Carbon $date)
-    {
-        $this->update(['expires_at' => $date->toDateTimeString()]);
-    }
 
     public function has($key)
     {
@@ -119,7 +115,7 @@ class Keyfigure extends Model
     {
         $previous = $this->lastDayOfCalculation();
 
-        if (!$previous) return $this->portfolio()->created_at;
+        if (!$previous) return $this->portfolio->created_at;
 
         $compare = [
             optional($this->firstExecutedPaymentEnteredAfter($previous))->executed_at,

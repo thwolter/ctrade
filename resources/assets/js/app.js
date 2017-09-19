@@ -50,7 +50,7 @@ const app = new Vue({
     
     components: {
         popover,
-        //dropdown
+        //dropdown,
     }
 });
 

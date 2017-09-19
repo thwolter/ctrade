@@ -2,11 +2,11 @@
 
 namespace App\Jobs\Calculations;
 
-use App\Entities\Keyfigure;
 use App\Entities\Portfolio;
 use App\Events\PortfolioRiskWasCalculated;
 use App\Models\Rscript;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -24,7 +24,7 @@ use App\Repositories\TradesRepository;
  *
  * @package App\Jobs
  */
-class CalcPortfolioRisk implements ShouldQueue
+class CalcPortfolioRisk
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -43,75 +43,31 @@ class CalcPortfolioRisk implements ShouldQueue
 
     /**
      * Call the rscript for risk calculation for each date between last calculation and today.
-     * If no calculations are done yet, take the date of portfolio creation as the first date.
-     * To ensure that the portfolio at the due date is taken as a basis, the portfolio trades
-     * conducted after the due date have to be rewind for calculation purposes.
      *
      * @return void
      */
     public function handle()
     {
-        $kfRisk = $this->portfolio->keyFigure('risk');
-        $kfContrib = $this->portfolio->keyFigure('contribution');
-
-        // perhaps it is sufficient to check only one keyFigure
-        $start = $kfRisk->firstDayToCalculate();
-        $today = Carbon::now()->endOfDay();
-
-        for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {
-
-            $risk = $this->risk($date);
-
-            $kfRisk->set($date->toDateString(), $this->toRiskArray($risk));
-            $kfContrib->set($date->toDateString(), $this->toContribArray($risk));
+        foreach ($this->period()->chunk(config('calculation.chunk.risk')) as $dates)
+        {
+            dispatch(new CalcPortfolioRiskChunk($this->portfolio, $dates));
         }
-
-        $kfRisk->validUntil($today->startOfDay());
-        event(new PortfolioRiskWasCalculated($this->portfolio));
     }
 
 
-    /**
-     * Returns a formatted array with risk figures per confidence level.
-     *
-     * @param $risk
-     * @return array
-     */
-    private function toRiskArray($risk)
+    private function period()
     {
-        return [
-            '0.95' => array_first_or_null($risk['total95']),
-            '0.975' => array_first_or_null($risk['total975']),
-            '0.99' => array_first_or_null($risk['total99'])
-        ];
-    }
+        $interval = new \DateInterval('P1D');
+        $period = new \DatePeriod($this->startDate(), $interval, Carbon::now()->endOfDay());
 
-
-    /**
-     * Returns a formatted array with risk contributions for required confidence levels.
-     *
-     * @param $risk
-     * @return mixed
-     */
-    private function toContribArray($risk)
-    {
-        return [
-            '0.95' => $risk['contrib95'],
-            '0.975' => $risk['contrib975'],
-            '0.99' => $risk['contrib99']
-        ];
+        return collect($period);
     }
 
     /**
-     * Calculate the risk on the given date.
-     *
-     * @param $date
-     * @return array
+     * @return Carbon
      */
-    private function risk($date)
+    private function startDate()
     {
-        $rscript = new Rscript($this->portfolio);
-        $risk = $rscript->portfolioRisk($date->toDateString(), 250);
-        return $risk;
+        return $this->portfolio->keyFigure('risk')->firstDayToCalculate();
     }
 }

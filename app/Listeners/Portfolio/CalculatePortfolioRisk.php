@@ -27,8 +27,6 @@ class CalculatePortfolioRisk
      */
     public function handle(PortfolioHasChanged $event)
     {
-        $event->portfolio->keyFigure('risk')->validUntil($event->timestamp);
-
         dispatch(new CalcPortfolioRisk($event->portfolio));
     }
 

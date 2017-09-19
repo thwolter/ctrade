@@ -12,7 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Repositories\TradesRepository;
 
-class CalcPortfolioValue implements ShouldQueue
+class CalcPortfolioValue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -35,19 +35,28 @@ class CalcPortfolioValue implements ShouldQueue
      */
     public function handle()
     {
-        $kfValue = $this->portfolio->keyFigure('value');
-
-        $start = $kfValue->firstDayToCalculate();
-        $today = Carbon::now()->endOfDay();
-
-        for ($date = clone $start; $date->diffInDays($today, false) >= 0; $date->addDay()) {
-
-            $rscript = new Rscript($this->portfolio);
-            $value = $rscript->portfolioValue($date->toDateString());
-
-            $kfValue->set($date->toDateString(), array_first_or_null($value['value']));
+        foreach ($this->period()->chunk(config('calculation.chunk.value')) as $dates)
+        {
+            dispatch(new CalcPortfolioValueChunk($this->portfolio, $dates));
         }
+    }
 
-        $kfValue->validUntil($today->startOfDay());
+
+    private function period()
+    {
+        $interval = new \DateInterval('P1D');
+        $period = new \DatePeriod($this->startDate(), $interval, Carbon::now()->endOfDay());
+
+        return collect($period);
+    }
+
+
+    /**
+     * @return Carbon
+     */
+    private function startDate()
+    {
+        $start = $this->portfolio->keyFigure('value')->firstDayToCalculate();
+        return $start;
     }
 }

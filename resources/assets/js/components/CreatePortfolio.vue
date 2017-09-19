@@ -76,19 +76,23 @@
                         <div class="form-group row">
                             <label for="date" class="col-md-3 col-md-offset-1 col-form-label">Datum</label>
                             <div class="col-md-7">
-                                <div class="input-group">
+                                <div class="input-group date" id="datepicker">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input v-model="form.date" type="date" name="date"
-                                           :class="['form-control', { 'error': form.errors.has('date') }]"
-                                           @keydown="form.errors.clear('date')">
+                                    <datepicker
+                                            v-model="form.date"
+                                            name="date"
+                                            input-class="form-control"
+                                            language="de"
+                                            @keydown="form.errors.clear('date')"
+                                    >
+                                    </datepicker>
                                 </div>
+
                                 <p v-if="form.errors.has('date')" class="error-text">
                                     <span v-text="form.errors.get('date')"></span>
                                 </p>
 
                             </div>
-
-
                         </div><!-- /date -->
 
                     </div>
@@ -148,16 +152,20 @@
 </template>
 
 <script>
+
     import {required, between} from 'vuelidate/lib/validators';
     import Input from '../mixins/Input.js';
     import Cleave from 'vue-cleave';
+    import Datepicker from 'vuejs-datepicker';
+
 
     export default {
 
         mixins: [Input],
 
         components: {
-            Cleave
+            Cleave,
+            Datepicker
         },
 
         props: {
@@ -208,6 +216,8 @@
 
         methods: {
             onSubmit() {
+                this.form.date = this.form.date.toISOString().split('T')[0];
+
                 this.form.post(this.route)
                     .then(data => {
                         Event.fire('portfolio-created', data);
