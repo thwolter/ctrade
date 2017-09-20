@@ -19,7 +19,6 @@ class QuandlECB extends QuandlMetadata implements MetadataInterface
     public $database = 'ECB';
 
     protected $origin = 'EUR';
-    protected $maxLagging = 5;
 
     protected $keys =[
         'symbol'    => ['dataset_code', '/.*/', 0],
@@ -33,8 +32,7 @@ class QuandlECB extends QuandlMetadata implements MetadataInterface
 
     public function updateDatabase()
     {
-        Log::info(sprintf('Update started for %s/%s ...', $this->provider, $this->database));
-        event(new MetadataUpdateHasStarted($this->provider, $this->database));
+        $this->notifyAboutStart();
 
         foreach (Currency::all() as $currency) {
 
@@ -66,9 +64,7 @@ class QuandlECB extends QuandlMetadata implements MetadataInterface
             $this->cacheItem($item);
 
         }
-
-        event(new MetadataUpdateHasFinished($this->provider, $this->database));
-        Log::info(sprintf('Update finished for %s/%s.', $this->provider, $this->database));
+        $this->notifyAboutFinished();
     }
 
 
@@ -82,6 +78,20 @@ class QuandlECB extends QuandlMetadata implements MetadataInterface
 
         Log::debug(sprintf('Caching %s with tags %s', $key, implode(', ', $tags)));
         \Cache::tags($tags)->forever($key, $history);
+    }
+
+
+    private function notifyAboutStart()
+    {
+        Log::info(sprintf('Update started for %s/%s ...', $this->provider, $this->database));
+        event(new MetadataUpdateHasStarted($this->provider, $this->database));
+    }
+
+
+    private function notifyAboutFinished()
+    {
+        event(new MetadataUpdateHasFinished($this->provider, $this->database));
+        Log::info(sprintf('Update finished for %s/%s.', $this->provider, $this->database));
     }
 
 }

@@ -70,7 +70,7 @@ trait CcyPairMetadata
 
     protected function valid($item)
     {
-        return $this->tradable($item);
+        return true;
     }
 
 }

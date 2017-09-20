@@ -12,8 +12,6 @@ abstract class QuandlMetadata extends BaseMetadata
     protected $provider = 'Quandl';
     protected $queue = 'quandl';
 
-    protected $maxLagging = 30;
-
     protected $perPage;
     protected $nextPage = 0;
     protected $totalPages = 2;
@@ -65,11 +63,6 @@ abstract class QuandlMetadata extends BaseMetadata
         return Carbon::parse(array_get($item, 'oldest_available_date'));
     }
 
-
-    public function tradable($item)
-    {
-        return $this->newestPrice($item)->diffInDays(Carbon::now()) <= $this->maxLagging;
-    }
 
     /**
      * Fetch details for a given symbol from the provider's database.
