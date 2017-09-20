@@ -23,16 +23,17 @@
 
             <!-- price -->
             <div class="form-group col-sm-4 col-md-3">
-                <label for="price" class="control-label">Preis</label>
+                <label for="form.price" class="control-label">Preis</label>
                 <div class="input-group">
                     <span class="input-group-addon">{{ form.currency }}</span>
-                    <cleave v-model="price" :options="cleavePrice" class="form-control"></cleave>
+                    <cleave v-model="form.price" :options="cleavePrice" class="form-control"
+                        placeholder="Preis"></cleave>
                 </div>
             </div>
 
             <!-- amount -->
             <div class="form-group col-sm-4 col-md-3">
-                <label for="amount" class="control-label">Anzahl</label>
+                <label for="form.amount" class="control-label">Anzahl</label>
                 <div>
                     <cleave v-model="form.amount" :options="cleaveAmount" placeholder="Anzahl"
                             :class="['form-control', { 'error': form.errors.has('amount') }]"
@@ -45,15 +46,19 @@
 
             <!-- date -->
             <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
-                <label for="executed" class="control-label">Datum</label>
+                <label for="form.executed" class="control-label">Datum</label>
                 <div>
                     <div class="input-group date" id="datepicker">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         <datepicker
-                                v-model="executed"
+                                v-model="form.executed"
                                 name="date"
                                 input-class="form-control"
                                 language="de"
+                                :disabled="disabled"
+                                :full-month-name="true"
+                                :monday-first="true"
+
                                 @keydown="form.errors.clear('executed')">
                         </datepicker>
                     </div>
@@ -65,7 +70,7 @@
 
             <!-- fees -->
             <div class="form-group col-sm-4 col-md-3">
-                <label for="fees" class="control-label">Gebühren</label>
+                <label for="form.fees" class="control-label">Gebühren</label>
                 <div class="input-group">
                     <span class="input-group-addon">{{ form.currency }}</span>
                     <cleave v-model="form.fees" :options="cleaveAmount" placeholder="Gebühren"
@@ -98,7 +103,6 @@
         <div class="modal-footer">
 
             <div>
-                <button class="btn btn-default" type="reset" @click="onReset">Reset</button>
                 <button v-if="transaction === 'sell'" class="btn btn-warning" :disabled="hasError">Verkaufen</button>
                 <button v-else class="btn btn-primary" :disabled="hasError">Kaufen</button>
             </div>
@@ -138,19 +142,17 @@
                     instrumentType: this.instrumentType,
                     price: null,
                     amount: null,
-                    executed: (new Date()).toISOString().split('T')[0],
+                    executed: null,
                     fees: 0,
                     currency: null,
                 }),
 
                 stock: [],
                 exchange: 0,
-                price: '',
-                total: '',
-                executed: (new Date()).toISOString().split('T')[0],
 
                 hasFormError: false,
                 showSpinner: true,
+                disabled: {},
 
                 cleavePrice: {
                     numeral: true,
@@ -172,7 +174,6 @@
 
             onSubmit() {
                 this.showSpinner = true;
-
                 this.form.amount *= (this.transaction === 'sell') ? -1 : 1;
 
                 this.form.post(this.storeRoute)
@@ -184,9 +185,6 @@
                     });
             },
 
-            onReset() {
-                this.initiateForm();
-            },
 
             fetch() {
                 axios.get(this.lookup, {
@@ -201,7 +199,6 @@
                         this.updateExchange(this.exchange);
 
                         this.form.executed = this.lastPrice;
-                        this.executed = this.lastPrice;
                         this.updatePrice();
 
                         this.showSpinner = false;
@@ -215,21 +212,18 @@
             },
 
             updateExchange(index) {
-                let price = this.stock.prices[index];
-                this.executed = _.first(Object.keys(price.history));
+                this.form.executed = _.first(Object.keys(this.stock.prices[index].history));
             },
 
-            updateTotal() {
-                this.total = (this.form.price * this.form.amount + this.asNumeric(this.form.fees)).toFixed(2);
-                if (this.total === '') {
-                    this.total = '0';
-                }
-            },
 
             updatePrice() {
-                let history = this.stock.prices[this.exchange].history;
-                this.price = history[this.form.executed];
-                this.form.price = this.price;
+                this.form.price = this.stock.prices[this.exchange].history[this.form.executed];
+
+                this.disabled = {
+                    to: new Date(this.firstPrice),
+                    from: new Date(this.lastPrice),
+                    days: [6, 0]
+                }
             },
 
             asNumeric(value) {
@@ -243,30 +237,24 @@
                 this.updateExchange(index);
             },
 
-            price: function (value) {
-                if (value !== '') {
-                    this.form.price = this.asNumeric(value);
-                    this.updateTotal();
-                } else {
-                    this.updateExchange(this.exchange);
-                }
-            },
-
-            executed: function (value) {
-                this.form.executed = value.toISOString().split('T')[0];
-                this.updatePrice();
-            },
-
             form: {
-                deep: true,
                 handler() {
                     this.hasFormError = this.form.errors.any();
-                    this.updateTotal();
-                }
+                    this.form.executed = this.form.executed.toISOString().split('T')[0];
+                    this.updatePrice();
+                },
+                deep: true
             }
         },
 
         computed: {
+            total() {
+                let price = this.asNumeric(this.form.price);
+                let amount = this.asNumeric(this.form.amount);
+                let fees = this.asNumeric(this.form.fees);
+                return ((price * amount) + fees).toFixed(2);
+            },
+
             exceedCash() {
                 return (this.asNumeric(this.cash) < this.total);
             },
