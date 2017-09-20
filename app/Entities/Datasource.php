@@ -40,9 +40,20 @@ class Datasource extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $fillable = ['valid', 'refreshed_at'];
+    protected $fillable = [
+        'valid',
+        'refreshed_at',
+        'oldest_date',
+        'newest_date'
+    ];
 
-    protected $dates = ['created_at', 'updated_at', 'refreshed_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'refreshed_at',
+        'newest_date',
+        'oldest_date'
+    ];
 
 
     /*

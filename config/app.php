@@ -221,6 +221,7 @@ return [
         App\Providers\DataServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
         \App\Providers\MetadataServiceProvider::class,
+        App\Providers\QuandlServiceProvider::class,
 
     ],
 

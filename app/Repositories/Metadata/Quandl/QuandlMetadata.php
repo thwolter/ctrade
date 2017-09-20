@@ -4,6 +4,7 @@ namespace App\Repositories\Metadata\Quandl;
 
 use App\Repositories\Metadata\BaseMetadata;
 use Carbon\Carbon;
+use Quandl;
 
 abstract class QuandlMetadata extends BaseMetadata
 {
@@ -16,16 +17,7 @@ abstract class QuandlMetadata extends BaseMetadata
     protected $perPage;
     protected $nextPage = 0;
     protected $totalPages = 2;
-    protected $client;
-   
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->client = new \Quandl(config('quandl.api_key'),'json');
-        $this->client->timeout = config('quandl.timeout');
-    }
 
 
     public function getFirstItems()
@@ -65,6 +57,12 @@ abstract class QuandlMetadata extends BaseMetadata
     public function newestPrice($item)
     {
         return Carbon::parse(array_get($item, 'newest_available_date'));
+    }
+
+
+    public function oldestPrice($item)
+    {
+        return Carbon::parse(array_get($item, 'oldest_available_date'));
     }
 
 

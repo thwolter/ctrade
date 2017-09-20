@@ -38,7 +38,12 @@ class DatasourceRepository
         $dataset = Dataset::firstOrCreate(['code' => array_get($attributes, 'dataset')]);
         $exchange = Exchange::firstOrCreate(['code' => array_get($attributes, 'exchange')]);
 
-        $datasource = new Datasource(array_only($attributes, ['valid', 'refreshed_at']));
+        $datasource = new Datasource(array_only($attributes, [
+            'valid',
+            'refreshed_at',
+            'oldest_date',
+            'newest_date'
+        ]));
 
         $datasource
             ->provider()->associate($provider)

@@ -20,6 +20,8 @@ abstract class BaseMetadata
 
     protected $chunk;
 
+    protected $client;
+
     protected $queue = 'default';
 
     protected $provider;
@@ -56,6 +58,7 @@ abstract class BaseMetadata
 
     public function __construct()
     {
+        $this->client = app()->make(ucfirst($this->provider).'Client');
         $this->chunk = config('quandl.per_page');
     }
 
@@ -148,7 +151,7 @@ abstract class BaseMetadata
      */
     public function existUpdate($item)
     {
-        $current = @($this->datasource($item)->refreshed_at->timestamp);
+        $current = optional($this->datasource($item))->refreshed_at->timestamp;
         $updated = $this->refreshed($item)->timestamp;
 
         return $current < $updated;

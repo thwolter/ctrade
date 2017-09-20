@@ -34,7 +34,9 @@ trait CcyPairMetadata
                 'dataset' => $this->symbol($item),
                 'exchange' => $this->exchange($item),
                 'valid' => (int)$this->valid($item),
-                'refreshed_at' => $this->refreshed($item)
+                'refreshed_at' => $this->refreshed($item),
+                'oldest_date' => $this->oldestPrice($item),
+                'newest_date' => $this->newestPrice($item),
             ]);
 
             $datasource->assign($ccyPair);
@@ -52,7 +54,9 @@ trait CcyPairMetadata
     {
         $this->datasource($item)->update([
             'valid' => (int)$this->valid($item),
-            'refreshed_at' => $this->refreshed($item)
+            'refreshed_at' => $this->refreshed($item),
+            'oldest_date' => $this->oldestPrice($item),
+            'newest_date' => $this->newestPrice($item),
         ]);
     }
 
