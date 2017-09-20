@@ -21027,7 +21027,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -23141,6 +23140,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuejs_datepicker__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuejs_datepicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuejs_datepicker__);
 //
 //
 //
@@ -23243,9 +23244,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
+    components: {
+        Datepicker: __WEBPACK_IMPORTED_MODULE_0_vuejs_datepicker___default.a
+    },
 
     props: ['portfolioId', 'instrumentType', 'instrumentId', 'storeRoute', 'cash', 'amount', 'transaction'],
 
@@ -23319,6 +23333,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (data) {
                 _this2.stock = data.data;
                 _this2.initiateForm();
+                _this2.updateExchange(_this2.exchange);
+
+                _this2.form.executed = _this2.lastPrice;
+                _this2.executed = _this2.lastPrice;
+                _this2.updatePrice();
+
                 _this2.showSpinner = false;
             });
         },
@@ -23326,9 +23346,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.form.currency = this.stock.item.currency;
             this.form.instrumentType = this.stock.item.type;
             this.form.instrumentId = this.stock.item.id;
-
-            this.updateExchange(this.exchange);
-            this.updatePrice();
         },
         updateExchange: function updateExchange(index) {
             var price = this.stock.prices[index];
@@ -23342,7 +23359,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         updatePrice: function updatePrice() {
             var history = this.stock.prices[this.exchange].history;
-            this.price = history[this.executed];
+            this.price = history[this.form.executed];
             this.form.price = this.price;
         },
         asNumeric: function asNumeric(value) {
@@ -23366,7 +23383,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         executed: function executed(value) {
-            this.form.executed = value;
+            this.form.executed = value.toISOString().split('T')[0];
             this.updatePrice();
         },
 
@@ -23384,21 +23401,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.asNumeric(this.cash) < this.total;
         },
         clsTotal: function clsTotal() {
-            if (this.exceedCash) {
-                return 'form-control error';
-            } else {
-                return 'form-control';
-            }
+            return this.exceedCash ? 'form-control error' : 'form-control';
         },
         hasError: function hasError() {
             return this.hasFormError || this.exceedCash;
+        },
+        firstPrice: function firstPrice() {
+            return _.last(Object.keys(this.stock.prices[this.exchange].history));
+        },
+        lastPrice: function lastPrice() {
+            return _.first(Object.keys(this.stock.prices[this.exchange].history));
         }
     },
 
     mounted: function mounted() {
         this.fetch();
-        //this.form.instrumentId = this.instrumentId;
-        //this.form.portfolioId = this.portfolioId;
     }
 });
 
@@ -54129,33 +54146,30 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "executed"
     }
-  }, [_vm._v("Datum")]), _vm._v(" "), _c('div', [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.executed),
-      expression: "executed"
-    }],
-    class: ['form-control', {
-      'error': _vm.form.errors.has('executed')
-    }],
+  }, [_vm._v("Datum")]), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "input-group date",
     attrs: {
-      "type": "date",
-      "name": "date"
-    },
-    domProps: {
-      "value": (_vm.executed)
+      "id": "datepicker"
+    }
+  }, [_vm._m(0), _vm._v(" "), _c('datepicker', {
+    attrs: {
+      "name": "date",
+      "input-class": "form-control",
+      "language": "de"
     },
     on: {
       "keydown": function($event) {
         _vm.form.errors.clear('executed')
-      },
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.executed = $event.target.value
       }
+    },
+    model: {
+      value: (_vm.executed),
+      callback: function($$v) {
+        _vm.executed = $$v
+      },
+      expression: "executed"
     }
-  })]), _vm._v(" "), (_vm.form.errors.has('executed')) ? _c('p', {
+  })], 1)]), _vm._v(" "), (_vm.form.errors.has('executed')) ? _c('p', {
     staticClass: "error-text"
   }, [_c('span', {
     domProps: {
@@ -54247,7 +54261,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "disabled": _vm.hasError
     }
   }, [_vm._v("Kaufen")])])])])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "input-group-addon"
+  }, [_c('i', {
+    staticClass: "fa fa-calendar"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

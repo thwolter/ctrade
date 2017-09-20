@@ -47,9 +47,16 @@
             <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
                 <label for="executed" class="control-label">Datum</label>
                 <div>
-                    <input v-model="executed" type="date" name="date"
-                           :class="['form-control', { 'error': form.errors.has('executed') }]"
-                           @keydown="form.errors.clear('executed')">
+                    <div class="input-group date" id="datepicker">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <datepicker
+                                v-model="executed"
+                                name="date"
+                                input-class="form-control"
+                                language="de"
+                                @keydown="form.errors.clear('executed')">
+                        </datepicker>
+                    </div>
                 </div>
                 <p v-if="form.errors.has('executed')" class="error-text">
                     <span v-text="form.errors.get('executed')"></span>
@@ -102,7 +109,13 @@
 
 <script>
 
+    import Datepicker from 'vuejs-datepicker';
+
     export default {
+
+        components: {
+            Datepicker
+        },
 
         props: [
             'portfolioId',
@@ -185,6 +198,12 @@
                     .then(data => {
                         this.stock = data.data;
                         this.initiateForm();
+                        this.updateExchange(this.exchange);
+
+                        this.form.executed = this.lastPrice;
+                        this.executed = this.lastPrice;
+                        this.updatePrice();
+
                         this.showSpinner = false;
                     })
             },
@@ -193,9 +212,6 @@
                 this.form.currency = this.stock.item.currency;
                 this.form.instrumentType = this.stock.item.type;
                 this.form.instrumentId = this.stock.item.id;
-
-                this.updateExchange(this.exchange);
-                this.updatePrice();
             },
 
             updateExchange(index) {
@@ -212,14 +228,14 @@
 
             updatePrice() {
                 let history = this.stock.prices[this.exchange].history;
-                this.price = history[this.executed];
+                this.price = history[this.form.executed];
                 this.form.price = this.price;
             },
 
             asNumeric(value) {
                 let number = parseFloat(value);
                 return (isNaN(number) || !value) ? 0 : number;
-            }
+            },
         },
 
         watch: {
@@ -237,7 +253,7 @@
             },
 
             executed: function (value) {
-                this.form.executed = value;
+                this.form.executed = value.toISOString().split('T')[0];
                 this.updatePrice();
             },
 
@@ -256,22 +272,24 @@
             },
 
             clsTotal() {
-                if (this.exceedCash) {
-                    return 'form-control error';
-                } else {
-                    return 'form-control';
-                }
+                return this.exceedCash ? 'form-control error' : 'form-control';
             },
 
             hasError() {
                 return (this.hasFormError || this.exceedCash);
+            },
+
+            firstPrice() {
+                return _.last(Object.keys(this.stock.prices[this.exchange].history));
+            },
+
+            lastPrice() {
+                return _.first(Object.keys(this.stock.prices[this.exchange].history));
             }
         },
 
         mounted() {
             this.fetch();
-            //this.form.instrumentId = this.instrumentId;
-            //this.form.portfolioId = this.portfolioId;
         }
     }
 </script>

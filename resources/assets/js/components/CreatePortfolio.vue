@@ -83,8 +83,7 @@
                                             name="date"
                                             input-class="form-control"
                                             language="de"
-                                            @keydown="form.errors.clear('date')"
-                                    >
+                                            @keydown="form.errors.clear('date')">
                                     </datepicker>
                                 </div>
 
@@ -158,7 +157,6 @@
     import Cleave from 'vue-cleave';
     import Datepicker from 'vuejs-datepicker';
 
-
     export default {
 
         mixins: [Input],
@@ -194,8 +192,8 @@
                 showCash: true,
 
                 management: [
-                    {text: 'Ohne Cash Management', value: false},
-                    {text: 'Mit Cash Management', value: true},
+                    { text: 'Ohne Cash Management', value: false },
+                    { text: 'Mit Cash Management', value: true },
                 ],
 
                 cleave: {
