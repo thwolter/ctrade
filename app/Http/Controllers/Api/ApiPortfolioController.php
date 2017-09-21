@@ -14,6 +14,13 @@ use Illuminate\Http\Request;
 class ApiPortfolioController extends ApiBaseController
 {
 
+    protected $repo;
+
+    public function __construct(PortfolioRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+
     /**
      * Returns the positions list with price, total and share for portfolio with given id.
      *
@@ -22,9 +29,7 @@ class ApiPortfolioController extends ApiBaseController
      */
     public function assets(Request $request)
     {
-        $portfolio = $this->getPortfolio($request);
-
-        return (new PortfolioRepository())->getAssetsArray($portfolio);
+        return $this->repo->getAssetsArray($this->getPortfolio($request));
     }
 
 
