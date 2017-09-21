@@ -58,8 +58,7 @@
                                 :disabled="disabled"
                                 :full-month-name="true"
                                 :monday-first="true"
-
-                                @keydown="form.errors.clear('executed')">
+                                ref="datepicker">
                         </datepicker>
                     </div>
                 </div>
@@ -276,7 +275,14 @@
             }
         },
 
+
         mounted() {
+
+            this.$refs.datepicker.$on('opened', () => {
+                this.form.errors.clear('executed');
+                this.updatePrice();
+            });
+
             this.fetch();
         }
     }

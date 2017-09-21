@@ -23261,7 +23261,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -23410,6 +23409,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     mounted: function mounted() {
+        var _this3 = this;
+
+        this.$refs.datepicker.$on('opened', function () {
+            _this3.form.errors.clear('executed');
+            _this3.updatePrice();
+        });
+
         this.fetch();
     }
 });
@@ -54148,6 +54154,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "datepicker"
     }
   }, [_vm._m(0), _vm._v(" "), _c('datepicker', {
+    ref: "datepicker",
     attrs: {
       "name": "date",
       "input-class": "form-control",
@@ -54155,11 +54162,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "disabled": _vm.disabled,
       "full-month-name": true,
       "monday-first": true
-    },
-    on: {
-      "keydown": function($event) {
-        _vm.form.errors.clear('executed')
-      }
     },
     model: {
       value: (_vm.form.executed),
