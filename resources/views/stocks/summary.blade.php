@@ -9,4 +9,5 @@
             {{ $stock->present()->price() }}
         </div>
     </portlet>
+
 </div>

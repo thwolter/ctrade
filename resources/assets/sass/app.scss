@@ -83,8 +83,10 @@
 }
 
 [v-cloak] {
-	display: none;
+	> * { display: none; }
+	::before { content: "loading ..."; }
 }
+
 
 input.form-control.error {
 	background-color: rgba(215, 75, 75, 0.18);

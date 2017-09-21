@@ -82,7 +82,6 @@ class Asset extends Model
     public function convert($currencyCode = null)
     {
         if (!$currencyCode or $this->currency->code === $currencyCode) return 1;
-
         return array_first((new CurrencyRepository($this->currency->code, $currencyCode))->price());
     }
 
@@ -101,6 +100,19 @@ class Asset extends Model
             'amount' => $this->amount($date),
         ];
     }
+
+    public function toArrayWithPrice()
+    {
+        $price = $this->price();
+
+        return array_merge($this->toArray(), [
+            'price' => head($price),
+            'total' => $this->value(),
+            'date' => key($price),
+            'currency' => $this->currency()
+        ]);
+    }
+
 
     public function isType($type)
     {
@@ -138,7 +150,6 @@ class Asset extends Model
 
         return $query->whereId($asset->id);
     }
-
 
 
     /*

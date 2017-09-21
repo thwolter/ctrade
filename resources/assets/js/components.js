@@ -7,6 +7,8 @@ Vue.component('buy-sell-btn', require('./components/trading/BuySellBtn.vue'));
 Vue.component('search-stock', require('./components/trading/SearchStock.vue'));
 Vue.component('trade-stock', require('./components/trading/TradeStock.vue'));
 
+Vue.component('performance', require('./components/stock/Performance.vue'));
+
 Vue.component('portlet', require('./components/Portlet.vue'));
 Vue.component('icon-stat', require('./components/IconStat.vue'));
 Vue.component('cash-success', require('./components/CashSuccess.vue'));

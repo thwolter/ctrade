@@ -204,24 +204,6 @@ class Portfolio extends Model
         return $this;
     }
 
-   /* public function toArray()
-    {
-        $array = [
-            'meta' => [
-                'name' => $this->name,
-                'currency' => $this->currency->code,
-                'cash' => $this->cash()
-            ],
-            'items' => []
-        ];
-
-        foreach ($this->assets()->get() as $asset)
-        {
-            $array['items'][$asset->id] = $asset->toArray();
-        }
-        return $array;
-    }*/
-
 
     /**
      * A buy transaction for position with a given id.
