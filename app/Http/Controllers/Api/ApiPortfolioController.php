@@ -8,17 +8,18 @@ use App\Repositories\CurrencyRepository;
 use App\Repositories\LimitRepository;
 use App\Repositories\PortfolioRepository;
 use App\Repositories\RiskRepository;
+use App\Repositories\StatisticsRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ApiPortfolioController extends ApiBaseController
 {
 
-    protected $repo;
+    protected $statistic;
 
-    public function __construct(PortfolioRepository $repo)
+    public function __construct(StatisticsRepository $statistic)
     {
-        $this->repo = $repo;
+        $this->statistic = $statistic;
     }
 
     /**
@@ -29,7 +30,11 @@ class ApiPortfolioController extends ApiBaseController
      */
     public function assets(Request $request)
     {
-        return $this->repo->getAssetsArray($this->getPortfolio($request));
+        $attributes = $request->validate([
+            'id' => 'required|exists:portfolios,id'
+        ]);
+
+        return $this->statistic->getAssetsArray($attributes);
     }
 
 
@@ -42,19 +47,12 @@ class ApiPortfolioController extends ApiBaseController
      */
     public function risk(Request $request)
     {
-        $this->validate($request, [
+        $attributes = $request->validate([
             'id' => 'required|exists:portfolios,id',
             'conf' => 'required|numeric'
         ]);
 
-        $values = $this->getPortfolio($request)->keyFigure('risk')->values;
-
-        $result = [];
-        for ($i = 0; $i < count($values); $i++) {
-            $result[array_keys($values)[$i]] = array_get($values[array_keys($values)[$i]], $request->conf);
-        }
-
-        return $result;
+        return $this->statistic->getRisks($attributes);
     }
 
 
@@ -66,110 +64,57 @@ class ApiPortfolioController extends ApiBaseController
      */
     public function value(Request $request)
     {
-        $this->validate($request, [
+        $attributes = $request->validate([
             'id' => 'required|exists:portfolios,id',
+            'conf' => 'required|numeric'
         ]);
 
         return collect([
             'values' => $this->getPortfolio($request)->keyFigure('value')->values,
-            'risk' => $this->getPortfolio($request)->keyFigure('risk')->values
+            'risk' => $this->statistic->getRisks($attributes)
         ]);
     }
 
 
     public function contribution(Request $request)
     {
-        $this->validate($request, [
+        $attributes = $request->validate([
             'id' => 'required|exists:portfolios,id',
             'date' => 'required|date',
             'conf' => 'required|numeric'
         ]);
 
-        $contribution = $this->getPortfolio($request)->keyFigure('contribution')->values;
-
-        return array_get(array_get($contribution, $request->date), $request->conf);
+       return $this->statistic->getRiskContribution($attributes);
     }
+
 
     public function limits(Request $request)
     {
-        $this->validate($request, [
-            'id' => 'required|exists:portfolios,id',
-            'date' => 'required|date',
-            'count' => 'sometimes|required|numeric'
-        ]);
-
-        $limits = new LimitRepository($this->getPortfolio($request));
-        return $limits->limitHistory($request->type, $request->date, $request->count);
+       //
     }
+
 
     public function utilisation(Request $request)
     {
-        $this->validate($request, [
+        $attributes = $request->validate([
             'id' => 'required|exists:portfolios,id',
         ]);
 
-        $portfolio = $this->getPortfolio($request);
-
-        $limits = new LimitRepository($portfolio);
-        $result = $limits->utilisation();
-
-        return $result;
+        $this->statistic->getLimitUtilisation($attributes);
     }
+
 
     public function keyFigures(Request $request)
     {
-        $this->validate($request, [
+        $attributes = $request->validate([
             'id' => 'required|exists:portfolios,id',
             'date' => 'required|date',
             'conf' => 'required|numeric',
             'count' => 'required|numeric'
         ]);
 
-        $portfolio = $this->getPortfolio($request);
-
-        $values = $portfolio->keyFigure('value')->values;
-        $risks = $portfolio->keyFigure('risk')->values;
-
-        return collect([
-            'values' => $values,
-            'risk' => $this->valueAfterRisk($values, $risks, '0.99'),
-            'limit' => $this->limitTimeSeries($values, 4800),
-        ]);
+        return $this->statistic->getTimeSeries($attributes);
     }
 
-    /**
-     * Return the history of values after deduction of risk for a given confidence level.
-     *
-     * @param array $values
-     * @param array $risks
-     * @return array
-     */
-    public function valueAfterRisk($values, $risks, $conf)
-    {
-        $risk = array_combine(array_keys($risks), array_column($risks, $conf));
-
-        $valueAfterRisk = [];
-        foreach ($values as $key => $value) {
-            $valueAfterRisk[$key] = $value - array_get($risk, $key);
-        }
-        return $valueAfterRisk;
-    }
-
-    /**
-     * Return the history of values after deduction of risk for a given confidence level.
-     *
-     * @param array $values
-     * @param float $limit
-     * @return array
-     */
-    public function limitTimeSeries($values, $limit)
-    {
-        //todo: perhaps better to use array_pad
-        $timeSeries = [];
-        foreach ($values as $key => $value) {
-            $timeSeries[$key] = $limit;
-        }
-        return $timeSeries;
-    }
 
 }

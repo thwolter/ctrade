@@ -40,32 +40,4 @@ class PortfolioRepository
 
         return $portfolio;
     }
-
-
-    public function getAssetsArray(Portfolio $portfolio)
-    {
-        $items = collect([]);
-        foreach ($portfolio->assets as $asset) {
-            $items->push($asset->toArrayWithPrice());
-        }
-
-        $total = $items->sum('total');
-
-        return collect([
-            'assets' => $this->addShare($items->sortByDesc('total'), $total),
-            'total' => $total
-        ]);
-    }
-
-    private function addShare($items, $total)
-    {
-        $items = $items->toArray();
-
-        foreach ($items as &$item) {
-            $item['share'] = $item['total'] / $total;
-        }
-        return $items;
-    }
-
-
 }
