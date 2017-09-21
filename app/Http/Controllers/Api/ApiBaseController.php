@@ -31,7 +31,6 @@ class ApiBaseController extends Controller
      */
     protected function getPortfolio(Request $request)
     {
-        $portfolio = Portfolio::findOrFail($request->get('id'));
-        return $portfolio;
+        return Portfolio::find($request->get('id'));
     }
 }
