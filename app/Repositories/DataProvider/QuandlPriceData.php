@@ -193,9 +193,14 @@ class QuandlPriceData implements DataInterface
     {
         $timeSeries = $this->getTimeSeries($item);
 
-        $result = array_where($timeSeries, function ($value) use ($date) {
-            return $value[0] <= $date;
-        });
+        if ($date) {
+            $result = array_where($timeSeries, function ($value) use ($date) {
+                return $value[0] <= $date;
+            });
+
+        } else {
+            $result = $timeSeries;
+        }
 
         return array_slice($result, 0, $count);
     }

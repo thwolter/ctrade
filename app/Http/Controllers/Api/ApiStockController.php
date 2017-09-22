@@ -15,7 +15,7 @@ class ApiStockController extends ApiBaseController
     {
         $attributes = $request->validate([
             'id' => 'required|exists:stocks,id',
-            'date' => 'sometimes|date',
+            'date' => 'sometimes|date|nullable',
             'count' => 'required_with:date|integer',
             'from' => 'empty_with:date|date',
             'to' => 'required_with:from|date',
