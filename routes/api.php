@@ -114,7 +114,7 @@ Route::post('/notifications/read', 'Api\ApiNotificationsController@markAsRead');
 |
 */
 
-Route::get('/stock', 'Api\ApiStockController@history');
+Route::get('/stock/history', 'Api\ApiStockController@history');
 
 /*
 |--------------------------------------------------------------------------

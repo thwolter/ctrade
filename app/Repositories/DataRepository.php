@@ -30,9 +30,9 @@ class DataRepository
     }
 
 
-    public function rawHistory($attributes)
+    public function allDataHistory($attributes)
     {
-        return $this->provider()->rawHistory($attributes);
+        return $this->provider()->allDataHistory($attributes);
     }
 
 

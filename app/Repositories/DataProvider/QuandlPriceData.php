@@ -52,21 +52,16 @@ class QuandlPriceData implements DataInterface
      * @param array $attributes
      * @return array
      */
-    public function rawHistory($attributes)
+    public function allDataHistory($attributes)
     {
         $item = json_decode($this->getJson(), true);
 
-        $rawdata = array_get($item, 'dataset.data');
+        $timeSeries = array_get($item, 'dataset.data');
         $columns = array_get($item, 'dataset.column_names');
 
-        if (array_has($attributes, ['from', 'to'])) {
-
-            $data = array_where($rawdata, function ($value, $key) use ($attributes) {
-                return $value[0] >= $attributes['from'] && $value[0] <= $attributes['to'];
-            });
-        } else {
-            $data = $rawdata;
-        }
+        $data = array_has($attributes, ['from', 'to'])
+            ? $this->timeSeriesFromTo($timeSeries, $attributes['from'], $attributes['to'])
+            : $timeSeries;
 
         return compact('columns', 'data');
     }
@@ -167,6 +162,21 @@ class QuandlPriceData implements DataInterface
 
         $this->key = $this->datasource->dataset->code;
         $this->tags = $this->getTags();
+    }
+
+    /**
+     * Returns data between a given period.
+     *
+     * @param array $rawdata
+     * @param $from
+     * @param $to
+     * @return array
+     */
+    private function timeSeriesFromTo($rawdata, $from, $to): array
+    {
+        return array_where($rawdata, function ($value, $key) use ($from, $to) {
+            return $value[0] >= $from && $value[0] <= $to;
+        });
     }
 
 }

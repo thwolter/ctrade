@@ -12,10 +12,10 @@ class ApiStockController extends ApiBaseController
     {
         $attributes = $request->validate([
             'id' => 'required|exists:stocks,id',
-            'from' => 'required_without:date|date',
+            'from' => 'sometimes|date',
             'to' => 'required_with:from|date'
         ]);
 
-        return Stock::find($request->id)->rawHistory($attributes);
+        return collect(Stock::find($attributes['id'])->allDataHistory($attributes));
     }
 }

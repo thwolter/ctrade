@@ -1,3 +1,3 @@
 <portlet title="Kennzahlen">
-    <performance></performance>
+    <performance stock-id="{{ $stock->id }}"></performance>
 </portlet>
