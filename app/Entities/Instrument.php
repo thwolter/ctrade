@@ -87,6 +87,16 @@ abstract class Instrument extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function exchangesAsAssociativeArray()
+    {
+        $array = [];
+        foreach ($this->datasources as $datasource)
+        {
+            $array[$datasource->exchange->code] = $datasource->exchange->name;
+        }
+        return $array;
+    }
+
 
     /*
     |--------------------------------------------------------------------------

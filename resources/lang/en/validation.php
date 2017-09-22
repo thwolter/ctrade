@@ -85,6 +85,7 @@ return [
     'unique'               => 'The :attribute has already been taken.',
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => 'The :attribute format is invalid.',
+    'empty_with'           => 'You have to fill in one of the fields, but not both',
 
     /*
     |--------------------------------------------------------------------------

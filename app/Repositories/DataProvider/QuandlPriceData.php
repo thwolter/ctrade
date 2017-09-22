@@ -25,6 +25,8 @@ class QuandlPriceData implements DataInterface
     public function __construct(Datasource $datasource)
     {
         $this->datasource = $datasource;
+        $this->client = app()->make('QuandlClient');
+
         $this->config();
     }
 
@@ -56,14 +58,20 @@ class QuandlPriceData implements DataInterface
     {
         $item = json_decode($this->getJson(), true);
 
-        $timeSeries = array_get($item, 'dataset.data');
-        $columns = array_get($item, 'dataset.column_names');
+        if (array_has($attributes, ['from', 'to'])) {
+            $data = $this->getTimeSeriesFromTo($item, $attributes['from'], $attributes['to']);
 
-        $data = array_has($attributes, ['from', 'to'])
-            ? $this->timeSeriesFromTo($timeSeries, $attributes['from'], $attributes['to'])
-            : $timeSeries;
+        } elseif (array_has($attributes, ['date', 'count'])) {
+            $data = $this->getTimeSeriesDateCount($item, $attributes['date'], $attributes['count']);
 
-        return compact('columns', 'data');
+        } else {
+            $data = $this->getTimeSeries($item);
+        }
+
+        return [
+            'columns' => $this->getColumnNames($item),
+            'data' => $data
+        ];
     }
 
 
@@ -158,7 +166,6 @@ class QuandlPriceData implements DataInterface
     private function config()
     {
         $this->length = config('quandl.length');
-        $this->client = new \Quandl(config('quandl.api_key'), 'json');
 
         $this->key = $this->datasource->dataset->code;
         $this->tags = $this->getTags();
@@ -172,11 +179,45 @@ class QuandlPriceData implements DataInterface
      * @param $to
      * @return array
      */
-    private function timeSeriesFromTo($rawdata, $from, $to): array
+    private function getTimeSeriesFromTo($item, $from, $to)
     {
-        return array_where($rawdata, function ($value, $key) use ($from, $to) {
+        $timeSeries = $this->getTimeSeries($item);
+
+        return array_where($timeSeries, function ($value) use ($from, $to) {
             return $value[0] >= $from && $value[0] <= $to;
         });
+    }
+
+
+    private function getTimeSeriesDateCount($item, $date, $count)
+    {
+        $timeSeries = $this->getTimeSeries($item);
+
+        $result = array_where($timeSeries, function ($value) use ($date) {
+            return $value[0] <= $date;
+        });
+
+        return array_slice($result, 0, $count);
+    }
+
+
+    /**
+     * @param $item
+     * @return mixed
+     */
+    private function getTimeSeries($item)
+    {
+        return array_get($item, 'dataset.data');
+    }
+
+    /**
+     * @param $item
+     * @return mixed
+     */
+    private function getColumnNames($item)
+    {
+        $columns = array_get($item, 'dataset.column_names');
+        return $columns;
     }
 
 }

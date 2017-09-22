@@ -7,6 +7,7 @@ use Illuminate\Database\MySqlConnection;
 use Illuminate\Database\SQLiteConnection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Dusk\DuskServiceProvider;
@@ -29,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
         Horizon::auth(function ($request) {
             $user = auth()->user();
             return ($user) ? $user->hasRole('admin') : null;
+        });
+
+        Validator::extend('empty_with', function ($attribute, $value, $parameters, $validator) {
+            return ($value == '' || $validator->getData()[$parameters[0]] == '');
         });
 
     }

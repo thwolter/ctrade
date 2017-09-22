@@ -19,7 +19,7 @@ class AssetHistories extends Resource
         $days = TimeSeries::getWeekDaysSeries($request->all());
 
         $result = [];
-        foreach ($this->assets()->get() as $asset) {
+        foreach ($this->assets as $asset) {
 
             $result += $this->assetHistory($asset, $days);
 

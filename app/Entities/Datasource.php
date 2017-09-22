@@ -221,6 +221,14 @@ class Datasource extends Model
         return $query->whereProvider($provider)->whereDatabase($database)->whereDataset($dataset);
     }
 
+    public function scopeWhereExchange($query, $exchange)
+    {
+        return $query->whereHas('exchange', function ($query) use ($exchange) {
+            $query->whereCode($exchange);
+        });
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | ACCESORS
