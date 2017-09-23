@@ -1,11 +1,11 @@
 <template>
     <div v-cloak>
 
-       <!-- <select v-model="exchange" class="form-control">
-            <option v-for="type in management" :value="type.value">
-                {{ type.text }}
+      <select v-model="exchange" class="form-control">
+            <option v-for="exchange in exchanges" :value="exchange.code">
+                {{ exchange.name }}
             </option>
-        </select>-->
+        </select>
 
         <table>
             <tbody>
@@ -36,7 +36,7 @@
                     <td>...</td>
                 </tr>
                 <tr>
-                    <td>52 Wo. performance</td>
+                    <td>52 Wo. perf.</td>
                     <td>...</td>
                 </tr>
             </tbody>
@@ -57,12 +57,14 @@
 
                 routeParams: {
                     id: this.stockId,
-                    count: 1
+                    date: null,
+                    count: 1,
+                    exchange: 0
                 },
 
-                data: null,
                 stocks: null,
-                exchanges: null
+                exchanges: null,
+                exchange: null
             }
         },
 
@@ -74,9 +76,16 @@
                     .then(data => {
                         this.stocks = data.data.stocks;
                         this.exchanges = data.data.exchanges;
+                        this.exchange = this.exchanges[0].code;
                     })
-            },
+            }
+        },
 
+        watch: {
+            exchange: function(value) {
+                this.routeParams.exchange = value;
+                this.fetch();
+            }
         },
 
         mounted() {

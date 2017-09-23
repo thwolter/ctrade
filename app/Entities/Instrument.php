@@ -81,12 +81,6 @@ abstract class Instrument extends Model
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
     public function exchangesAsAssociativeArray()
     {
         $array = [];
@@ -96,6 +90,26 @@ abstract class Instrument extends Model
         }
         return $array;
     }
+
+    public function exchangesToArray()
+    {
+        $array = [];
+        foreach ($this->datasources as $datasource)
+        {
+            $array[] = [
+                'code' => $datasource->exchange->code,
+                'name' => $datasource->exchange->name
+            ];
+        }
+        return $array;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
 
 
     /*

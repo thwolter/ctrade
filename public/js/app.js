@@ -22768,12 +22768,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             routeParams: {
                 id: this.stockId,
-                count: 1
+                date: null,
+                count: 1,
+                exchange: 0
             },
 
-            data: null,
             stocks: null,
-            exchanges: null
+            exchanges: null,
+            exchange: null
         };
     },
 
@@ -22787,7 +22789,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (data) {
                 _this.stocks = data.data.stocks;
                 _this.exchanges = data.data.exchanges;
+                _this.exchange = _this.exchanges[0].code;
             });
+        }
+    },
+
+    watch: {
+        exchange: function exchange(value) {
+            this.routeParams.exchange = value;
+            this.fetch();
         }
     },
 
@@ -54445,9 +54455,34 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {}, [_vm._m(0)])
+  return _c('div', {}, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.exchange),
+      expression: "exchange"
+    }],
+    staticClass: "form-control",
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.exchange = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.exchanges), function(exchange) {
+    return _c('option', {
+      domProps: {
+        "value": exchange.code
+      }
+    }, [_vm._v("\n            " + _vm._s(exchange.name) + "\n        ")])
+  })), _vm._v(" "), _vm._m(0)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('table', [_c('tbody', [_c('tr', [_c('td', [_vm._v("Kurs")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Kursdatum")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Vortag")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Volume")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("High/Low")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. hoch")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. tief")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. performance")]), _vm._v(" "), _c('td', [_vm._v("...")])])])])
+  return _c('table', [_c('tbody', [_c('tr', [_c('td', [_vm._v("Kurs")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Kursdatum")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Vortag")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Volume")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("High/Low")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. hoch")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. tief")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. perf.")]), _vm._v(" "), _c('td', [_vm._v("...")])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
