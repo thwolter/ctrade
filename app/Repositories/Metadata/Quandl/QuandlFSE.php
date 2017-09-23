@@ -13,11 +13,21 @@ class QuandlFSE extends QuandlMetadata implements MetadataInterface
     public $database = 'FSE';
     public $exchange = 'FSE';
     
-    protected $keys =[
+    protected $keys = [
         'isin'      => ['description', '/(?:ISIN:\s([[:alnum:]]*))/', 1],
         'name'      => ['name', '/(.*)(\([^()]*\))/', 1],
         'exchange'  => ['description', '/Trading System: (\w*)/', 1],
         'description'   => ['description', '/.*/', 0]
+    ];
+
+    protected $columns = [
+        'Date'   => 'Date',
+        'Open'   => 'Open',
+        'High'   => 'High',
+        'Low'    => 'Low',
+        'Close'  => 'Close',
+        'Volume' => 'Traded Volume',
+
     ];
 
     public function wkn($item)
@@ -50,5 +60,7 @@ class QuandlFSE extends QuandlMetadata implements MetadataInterface
         $name = parent::name($item);
         return $this->correctLegalForm(title_case($name));
     }
+
+
 }
 

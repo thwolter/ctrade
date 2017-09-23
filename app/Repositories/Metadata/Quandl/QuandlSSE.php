@@ -26,6 +26,14 @@ class QuandlSSE extends QuandlMetadata implements MetadataInterface
         'description'   => ['description', '/.*/', 0]
     ];
 
+    protected $columns = [
+        'Date'   => 'Date',
+        'High'   => 'High',
+        'Low'    => 'Low',
+        'Close'  => 'Last',
+        'Volume' => 'Volume',
+    ];
+
     public function name($item)
     {
         $name = parent::name($item);

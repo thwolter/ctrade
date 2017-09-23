@@ -22735,32 +22735,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['stockId'],
+    props: ['stockId', 'locale'],
 
     data: function data() {
         return {
@@ -22769,11 +22747,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             routeParams: {
                 id: this.stockId,
                 date: null,
-                count: 1,
-                exchange: 0
+                count: 250,
+                exchange: null
             },
 
-            stocks: null,
+            history: null,
             exchanges: null,
             exchange: null
         };
@@ -22787,10 +22765,69 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.get(this.lookup, {
                 params: this.routeParams
             }).then(function (data) {
-                _this.stocks = data.data.stocks;
+                _this.history = data.data.history;
                 _this.exchanges = data.data.exchanges;
-                _this.exchange = _this.exchanges[0].code;
             });
+        },
+        column: function column(name) {
+            return this.history.columns.findIndex(function (element) {
+                return element === name;
+            });
+        }
+    },
+
+    computed: {
+        currency: function currency() {
+            return this.history.currency;
+        },
+
+        close: function close() {
+            return this.history.data[0][this.column('Close')].toLocaleString(this.locale, { style: 'currency', currency: this.currency });
+        },
+
+        previous: function previous() {
+            return this.history.data[1][this.column('Close')].toLocaleString(this.locale, { style: 'currency', currency: this.currency });
+        },
+
+        date: function date() {
+            return new Date(this.history.data[0][this.column('Date')]).toLocaleDateString(this.locale);
+        },
+        volume: function volume() {
+            return this.history.data[0][this.column('Volume')].toLocaleString(this.locale);
+        },
+
+
+        high: function high() {
+            return this.history.data[0][this.column('High')].toLocaleString(this.locale, { style: 'currency', currency: this.currency });
+        },
+
+        low: function low() {
+            return this.history.data[0][this.column('Low')].toLocaleString(this.locale, { style: 'currency', currency: this.currency });
+        },
+
+        highYear: function highYear() {
+            var _this2 = this;
+
+            return _.max(this.history.data.map(function (x) {
+                return x[_this2.column('Close')];
+            })).toLocaleString(this.locale, { style: 'currency', currency: this.currency });
+        },
+        lowYear: function lowYear() {
+            var _this3 = this;
+
+            return _.min(this.history.data.map(function (x) {
+                return x[_this3.column('Close')];
+            })).toLocaleString(this.locale, { style: 'currency', currency: this.currency });
+        },
+        returnYear: function returnYear() {
+            var current = this.history.data[0][this.column('Close')];
+
+            if (this.history.data.length >= 250) {
+                var previous = this.history.data[249][this.column('Close')];
+                if (previous !== 0) {
+                    return (current / previous - 1).toLocaleString(this.locale, { style: 'percent' });
+                }
+            }
         }
     },
 
@@ -22798,6 +22835,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         exchange: function exchange(value) {
             this.routeParams.exchange = value;
             this.fetch();
+        },
+
+        exchanges: function exchanges() {
+            if (!this.exchange) {
+                this.exchange = this.exchanges[0].code;
+            }
         }
     },
 
@@ -54462,7 +54505,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.exchange),
       expression: "exchange"
     }],
-    staticClass: "form-control",
+    staticClass: "form-control form-control-blank",
     on: {
       "change": function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
@@ -54480,10 +54523,38 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": exchange.code
       }
     }, [_vm._v("\n            " + _vm._s(exchange.name) + "\n        ")])
-  })), _vm._v(" "), _vm._m(0)])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('table', [_c('tbody', [_c('tr', [_c('td', [_vm._v("Kurs")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Kursdatum")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Vortag")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Volume")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("High/Low")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. hoch")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. tief")]), _vm._v(" "), _c('td', [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. perf.")]), _vm._v(" "), _c('td', [_vm._v("...")])])])])
-}]}
+  })), _vm._v(" "), _c('table', {
+    staticClass: "table table-responsive table-hoover"
+  }, [_c('tbody', [_c('tr', [_c('td', [_vm._v("Kurs")]), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.close)
+    }
+  })]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Kursdatum")]), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.date)
+    }
+  })]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Vortag")]), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.previous)
+    }
+  })]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Volume")]), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.volume)
+    }
+  })]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("High/Low")]), _c('td', [_vm._v(_vm._s(_vm.high) + " / " + _vm._s(_vm.low))])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. hoch")]), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.highYear)
+    }
+  }, [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. tief")]), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.lowYear)
+    }
+  }, [_vm._v("...")])]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("52 Wo. perf.")]), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.returnYear)
+    }
+  })])])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

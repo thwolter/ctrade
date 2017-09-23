@@ -47,6 +47,8 @@ abstract class BaseMetadata
 
     abstract function dataset($item);
 
+    abstract function timeSeries($item, $attributes);
+
     /**
      * Get the DateTime when the item was refreshed on provider side.
      *

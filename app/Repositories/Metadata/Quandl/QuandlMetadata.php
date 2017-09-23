@@ -16,6 +16,10 @@ abstract class QuandlMetadata extends BaseMetadata
     protected $nextPage = 0;
     protected $totalPages = 2;
 
+    protected $columns = [
+        //
+    ];
+
 
 
     public function getFirstItems()
@@ -46,6 +50,77 @@ abstract class QuandlMetadata extends BaseMetadata
     }
 
 
+    /**
+     * Return the timeSeries with columns specified for this class in array $columns.
+     *
+     * @param $item
+     * @param $attributes
+     * @return array
+     */
+    public function withColumns($item, $attributes)
+    {
+        $timeSeries = $this->timeSeries($item, $attributes);
+
+        $array = [];
+        for ($i = 0; $i < count($timeSeries); $i++) {
+            $array[] = $this->array_columns($timeSeries[$i], $this->columnNames($item));
+        }
+
+        return [
+            'columns' => array_keys($this->columns),
+            'data' => $array
+        ];
+    }
+
+
+    public function timeSeries($item, $attributes)
+    {
+        if (array_has($attributes, ['from', 'to'])) {
+            return $this->getTimeSeriesFromTo($item, $attributes['from'], $attributes['to']);
+
+        } elseif (array_has($attributes, ['count'])) {
+            return $this->getTimeSeriesDateCount($item, array_get($attributes, 'date'), $attributes['count']);
+
+        } else {
+            return $this->getTimeSeriesAllDates($item);
+        }
+    }
+
+
+    private function getTimeSeriesFromTo($item, $from, $to)
+    {
+        $timeSeries = $this->getTimeSeriesAllDates($item);
+
+        return array_where($timeSeries, function ($value) use ($from, $to) {
+            return $value[0] >= $from && $value[0] <= $to;
+        });
+    }
+
+
+    private function getTimeSeriesDateCount($item, $date, $count)
+    {
+        $timeSeries = $this->getTimeSeriesAllDates($item);
+
+        if ($date) {
+            $result = array_where($timeSeries, function ($value) use ($date) {
+                return $value[0] <= $date;
+            });
+
+        } else {
+            $result = $timeSeries;
+        }
+
+        return array_slice($result, 0, $count);
+    }
+
+
+    private function getTimeSeriesAllDates($item)
+    {
+        return array_get($item, 'dataset.data');
+    }
+
+
+
     public function refreshed($item)
     {
         return Carbon::parse(array_get($item, 'refreshed_at'));
@@ -74,6 +149,29 @@ abstract class QuandlMetadata extends BaseMetadata
     {
         $item = $this->client->getSymbol($this->database . '/' . $symbol);
         return array_get(json_decode($item, true), 'dataset');
+    }
+
+
+    public function columnNames($item)
+    {
+        return array_get($item, 'dataset.column_names');
+    }
+
+
+    /**
+     * Returns the specified columns of an array.
+     *
+     * @param array $array of column names
+     * @param array $columns
+     * @return array
+     */
+    private function array_columns($array, $columns)
+    {
+        $row = [];
+        foreach ($this->columns as $key => $value) {
+            $row[] = $array[array_index($value, $columns)];
+        }
+        return $row;
     }
 
 }

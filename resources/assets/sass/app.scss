@@ -197,5 +197,12 @@ input.form-control.error {
 		line-height: 35px;
 		text-align: center;
 	}
+
+	.form-control-blank {
+		border: none;
+		background-color: transparent;
+		box-shadow: none;
+		font-weight: bolder;
+	}
 }
 

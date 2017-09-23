@@ -19,18 +19,22 @@ class ApiStockController extends ApiBaseController
             'count' => 'required_with:date|integer',
             'from' => 'empty_with:date|date',
             'to' => 'required_with:from|date',
-            'exchange' => 'required|integer'
+            'exchange' => 'sometimes|nullable'
         ]);
 
         $stock = Stock::find($attributes['id']);
         $exchanges = $stock->exchangesToArray();
 
-        $exchange = array_get($exchanges, $attributes['exchange'].'.code');
+        $exchange = array_get($attributes, 'exchange');
+        if (! $exchange) {
+            $exchange = array_get($exchanges, '0.code');
+        }
+
         $repo = new DataRepository($stock->datasources()->whereExchange($exchange)->first());
 
         return [
             'exchanges' => $exchanges,
-            'stocks' => $repo->allDataHistory($attributes),
+            'history' => array_add($repo->allDataHistory($attributes), 'currency', 'EUR')
         ];
     }
 }

@@ -1,44 +1,22 @@
 <template>
     <div v-cloak>
 
-      <select v-model="exchange" class="form-control">
+      <select v-model="exchange" class="form-control form-control-blank">
             <option v-for="exchange in exchanges" :value="exchange.code">
                 {{ exchange.name }}
             </option>
         </select>
 
-        <table>
+        <table class="table table-responsive table-hoover">
             <tbody>
-                <tr>
-                    <td>Kurs</td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>Kursdatum</td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>Vortag</td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>Volume</td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>High/Low</td>
-                    <td>...</td>
-                </tr> <tr>
-                    <td>52 Wo. hoch</td>
-                    <td>...</td>
-                </tr> <tr>
-                    <td>52 Wo. tief</td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>52 Wo. perf.</td>
-                    <td>...</td>
-                </tr>
+                <tr><td>Kurs</td><td v-text="close"></td></tr>
+                <tr><td>Kursdatum</td><td v-text="date"></td></tr>
+                <tr><td>Vortag</td><td v-text="previous"></td></tr>
+                <tr><td>Volume</td><td v-text="volume"></td></tr>
+                <tr><td>High/Low</td><td>{{ high }} / {{ low }}</td></tr>
+                <tr><td>52 Wo. hoch</td><td v-text="highYear">...</td></tr>
+                <tr><td>52 Wo. tief</td><td v-text="lowYear">...</td></tr>
+                <tr><td>52 Wo. perf.</td><td v-text="returnYear"></td></tr>
             </tbody>
         </table>
     </div>
@@ -48,7 +26,8 @@
     export default {
 
         props: [
-            'stockId'
+            'stockId',
+            'locale'
         ],
 
         data() {
@@ -58,11 +37,11 @@
                 routeParams: {
                     id: this.stockId,
                     date: null,
-                    count: 1,
-                    exchange: 0
+                    count: 250,
+                    exchange: null
                 },
 
-                stocks: null,
+                history: null,
                 exchanges: null,
                 exchange: null
             }
@@ -74,10 +53,72 @@
                     params: this.routeParams
                 })
                     .then(data => {
-                        this.stocks = data.data.stocks;
+                        this.history = data.data.history;
                         this.exchanges = data.data.exchanges;
-                        this.exchange = this.exchanges[0].code;
+
                     })
+            },
+
+            column(name) {
+                return this.history.columns.findIndex((element) => (element === name));
+            }
+        },
+
+        computed: {
+            currency: function() {
+                return this.history.currency;
+            },
+
+            close: function() {
+                return this.history.data[0][this.column('Close')]
+                    .toLocaleString(this.locale, { style: 'currency', currency: this.currency});
+            },
+
+            previous: function() {
+                return this.history.data[1][this.column('Close')]
+                    .toLocaleString(this.locale, { style: 'currency', currency: this.currency});
+            },
+
+            date() {
+                return new Date(this.history.data[0][this.column('Date')])
+                    .toLocaleDateString(this.locale);
+            },
+
+            volume() {
+                return this.history.data[0][this.column('Volume')]
+                    .toLocaleString(this.locale);
+            },
+
+            high: function() {
+                return this.history.data[0][this.column('High')]
+                    .toLocaleString(this.locale, { style: 'currency', currency: this.currency});
+            },
+
+            low: function() {
+                return this.history.data[0][this.column('Low')]
+                    .toLocaleString(this.locale, { style: 'currency', currency: this.currency});
+            },
+
+            highYear() {
+                return _.max(this.history.data.map(x => x[this.column('Close')]))
+                    .toLocaleString(this.locale, { style: 'currency', currency: this.currency});
+            },
+
+            lowYear() {
+                return _.min(this.history.data.map(x => x[this.column('Close')]))
+                    .toLocaleString(this.locale, { style: 'currency', currency: this.currency});
+            },
+
+            returnYear() {
+                let current = this.history.data[0][this.column('Close')];
+
+                if (this.history.data.length >= 250) {
+                    let previous = this.history.data[249][this.column('Close')];
+                    if (previous !== 0) {
+                        return (current/previous - 1)
+                            .toLocaleString(this.locale, { style: 'percent' });
+                    }
+                }
             }
         },
 
@@ -85,6 +126,12 @@
             exchange: function(value) {
                 this.routeParams.exchange = value;
                 this.fetch();
+            },
+
+            exchanges: function() {
+                if (! this.exchange) {
+                    this.exchange = this.exchanges[0].code;
+                }
             }
         },
 

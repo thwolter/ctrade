@@ -58,20 +58,9 @@ class QuandlPriceData implements DataInterface
     {
         $item = json_decode($this->getJson(), true);
 
-        if (array_has($attributes, ['from', 'to'])) {
-            $data = $this->getTimeSeriesFromTo($item, $attributes['from'], $attributes['to']);
-
-        } elseif (array_has($attributes, ['date', 'count'])) {
-            $data = $this->getTimeSeriesDateCount($item, $attributes['date'], $attributes['count']);
-
-        } else {
-            $data = $this->getTimeSeries($item);
-        }
-
-        return [
-            'columns' => $this->getColumnNames($item),
-            'data' => $data
-        ];
+        return app()
+            ->make('Quandl/'.$this->datasource->database->code)
+            ->withColumns($item, $attributes);
     }
 
 
@@ -171,39 +160,6 @@ class QuandlPriceData implements DataInterface
         $this->tags = $this->getTags();
     }
 
-    /**
-     * Returns data between a given period.
-     *
-     * @param array $rawdata
-     * @param $from
-     * @param $to
-     * @return array
-     */
-    private function getTimeSeriesFromTo($item, $from, $to)
-    {
-        $timeSeries = $this->getTimeSeries($item);
-
-        return array_where($timeSeries, function ($value) use ($from, $to) {
-            return $value[0] >= $from && $value[0] <= $to;
-        });
-    }
-
-
-    private function getTimeSeriesDateCount($item, $date, $count)
-    {
-        $timeSeries = $this->getTimeSeries($item);
-
-        if ($date) {
-            $result = array_where($timeSeries, function ($value) use ($date) {
-                return $value[0] <= $date;
-            });
-
-        } else {
-            $result = $timeSeries;
-        }
-
-        return array_slice($result, 0, $count);
-    }
 
 
     /**
@@ -212,17 +168,7 @@ class QuandlPriceData implements DataInterface
      */
     private function getTimeSeries($item)
     {
-        return array_get($item, 'dataset.data');
-    }
-
-    /**
-     * @param $item
-     * @return mixed
-     */
-    private function getColumnNames($item)
-    {
-        $columns = array_get($item, 'dataset.column_names');
-        return $columns;
+        return app()->make('Quandl/'.$this->datasource->database->code)->withColumns($item);
     }
 
 }
