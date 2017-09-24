@@ -10602,10 +10602,6 @@ return jQuery;
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/* styles */
-__webpack_require__(307)
-
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(166),
@@ -20780,16 +20776,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             showSpinner: true,
 
-            legend: null,
-
             type: 'doughnut',
             data: null,
             options: null,
+            legend: null,
 
             backgroundColor: Colors.standard(),
-
-            clsContainer: null,
-            clsLegend: 'display-hidden',
 
             routeParams: {
                 id: this.pid
@@ -20805,6 +20797,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.get(this.route, { params: this.routeParams }).then(function (response) {
                 _this.assign(response.data);
                 _this.render();
+                _this.showSpinner = false;
             }).catch(function (error) {
                 return alert(error);
             });
@@ -20824,9 +20817,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     mounted: function mounted() {
         this.fetch();
-    },
-    updated: function updated() {
-        this.showSpinner = false;
     }
 }));
 
@@ -21603,6 +21593,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Chart_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Chart_vue__);
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -21617,17 +21624,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             route: '/api/portfolio/assets',
 
             type: 'doughnut',
-            segments: 5,
-
-            clsContainer: 'chart-container col-xs-7',
-            clsLegend: 'chart-legend col-xs-5'
+            maxSegments: 5
         };
     },
 
 
     methods: {
         assign: function assign(data) {
+            var segments = this.segments(data);
 
+            this.data = {
+                datasets: [{
+                    data: segments.values,
+                    backgroundColor: this.backgroundColor
+                }],
+
+                labels: segments.labels
+            };
+
+            this.options = {
+                legend: {
+                    display: false,
+                    position: 'top'
+                }
+            };
+        },
+        segments: function segments(data) {
             var items = data.assets;
             var share = [];
             var labels = [];
@@ -21637,7 +21659,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var n = Object.keys(items).length;
 
-            while (i < Math.min(n, this.segments)) {
+            while (i < Math.min(n, this.maxSegments)) {
                 var item = items[i];
 
                 share[i] = (100 * item.share).toFixed(0);
@@ -21651,21 +21673,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 share[i] = data.total - sum;
                 labels[i] = 'Andere' + share[i];
             }
-
-            this.data = {
-                datasets: [{
-                    data: share,
-                    backgroundColor: this.backgroundColor
-                }],
-
-                labels: labels
-            };
-
-            this.options = {
-                legend: {
-                    display: false
-                }
-            };
+            return { values: share, labels: labels };
         }
     }
 });
@@ -26587,13 +26595,7 @@ exports = module.exports = __webpack_require__(4)();
 exports.push([module.i, "\n.action-link[data-v-5a11c594] {\n    cursor: pointer;\n}\n.m-b-none[data-v-5a11c594] {\n    margin-bottom: 0;\n}\n", ""]);
 
 /***/ }),
-/* 244 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n.display-hidden {\n    display: none;\n}\n", ""]);
-
-/***/ }),
+/* 244 */,
 /* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53427,7 +53429,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(174),
   /* template */
-  null,
+  __webpack_require__(339),
   /* scopeId */
   null,
   /* cssModules */
@@ -53435,6 +53437,7 @@ var Component = __webpack_require__(1)(
 )
 Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/PositionsChart.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PositionsChart.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -55144,16 +55147,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "height": this.height
     }
-  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
-    class: _vm.clsContainer
-  }, [_c('canvas', {
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', [_c('canvas', {
     ref: "canvas"
-  })]), _vm._v(" "), _c('div', {
-    class: _vm.clsLegend,
-    domProps: {
-      "innerHTML": _vm._s(_vm.legend)
-    }
-  })])
+  })])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -57464,32 +57460,7 @@ if(false) {
 }
 
 /***/ }),
-/* 307 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(244);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(5)("26d40646", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-5b2ab80e!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Chart.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-5b2ab80e!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Chart.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 307 */,
 /* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -58056,6 +58027,35 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-6ebf6748", module.exports)
+  }
+}
+
+/***/ }),
+/* 339 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {}, [(_vm.showSpinner) ? _c('div', [_c('spinner', {
+    staticClass: "spinner-overlay",
+    attrs: {
+      "height": this.height
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-5"
+  }, [_c('canvas', {
+    ref: "canvas"
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 col-xs-offset-1",
+    domProps: {
+      "innerHTML": _vm._s(_vm.legend)
+    }
+  })])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-68a00109", module.exports)
   }
 }
 

@@ -23,14 +23,12 @@
 
     <div class="row">
 
-        <div class="col-md-5">
+        <div class="col-lg-8 col-md-7 col-sm-6">
+
             <portlet title="Positionen">
                 <positions-chart pid="{{ $portfolio->id }}"></positions-chart>
             </portlet>
-        </div>
 
-
-        <div class="col-md-7">
             <portlet title="Wertentwicklung">
                 <value-chart
                         pid="{{ $portfolio->id }}"
@@ -38,13 +36,12 @@
                         conf="{{ 0.95 }}"
                         count="{{ 50 }}"
                         height="100px">
-
                 </value-chart>
             </portlet>
         </div>
 
 
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-5 col-sm-6">
             <portlet title="Limitauslastung">
                 <limit-stats pid="{{ $portfolio->id }}"></limit-stats>
             </portlet>

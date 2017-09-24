@@ -1,3 +1,20 @@
+<template>
+    <div v-cloak>
+
+        <!-- Spinner -->
+        <div v-if="showSpinner">
+            <spinner class="spinner-overlay" :height="this.height"></spinner>
+        </div>
+
+        <div class="col-xs-5">
+            <canvas ref="canvas"></canvas>
+        </div>
+
+        <div v-html="legend" class="col-xs-6 col-xs-offset-1">
+        </div>
+
+    </div>
+</template>
 
 <script>
     import chart from './Chart.vue';
@@ -13,17 +30,33 @@
                 route: '/api/portfolio/assets',
 
                 type: 'doughnut',
-                segments: 5,
-
-                clsContainer: 'chart-container col-xs-7',
-                clsLegend: 'chart-legend col-xs-5'
+                maxSegments: 5,
             }
         },
 
         methods: {
 
             assign(data) {
+                var segments = this.segments(data);
 
+                this.data = {
+                    datasets: [{
+                        data: segments.values,
+                        backgroundColor: this.backgroundColor
+                    }],
+
+                    labels: segments.labels
+                };
+
+                this.options = {
+                    legend: {
+                        display: false,
+                        position: 'top'
+                    }
+                };
+            },
+
+            segments(data)  {
                 const items = data.assets;
                 let share = [];
                 let labels = [];
@@ -33,7 +66,7 @@
 
                 let n = Object.keys(items).length;
 
-                while (i < Math.min(n, this.segments)) {
+                while (i < Math.min(n, this.maxSegments)) {
                     let item = items[i];
 
                     share[i] = (100 * item.share).toFixed(0);
@@ -47,21 +80,7 @@
                     share[i] = data.total - sum;
                     labels[i] = 'Andere' + share[i];
                 }
-
-                this.data = {
-                    datasets: [{
-                        data: share,
-                        backgroundColor: this.backgroundColor
-                    }],
-
-                    labels: labels
-                };
-
-                this.options = {
-                    legend: {
-                        display: false
-                    }
-                }
+                return {values: share, labels: labels};
             }
         }
     }

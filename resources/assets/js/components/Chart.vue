@@ -6,10 +6,10 @@
             <spinner class="spinner-overlay" :height="this.height"></spinner>
         </div>
 
-        <div :class="clsContainer">
+        <div>
             <canvas ref="canvas"></canvas>
         </div>
-        <div v-html="legend" :class="clsLegend"></div>
+
     </div>
 </template>
 
@@ -24,16 +24,12 @@
             return {
                 showSpinner: true,
 
-                legend: null,
-
                 type: 'doughnut',
                 data: null,
                 options: null,
+                legend: null,
 
                 backgroundColor: Colors.standard(),
-
-                clsContainer: null,
-                clsLegend: 'display-hidden',
 
                 routeParams: {
                     id: this.pid
@@ -47,6 +43,7 @@
                     .then(response => {
                         this.assign(response.data);
                         this.render();
+                        this.showSpinner = false;
                     })
                     .catch(error => alert(error));
             },
@@ -65,18 +62,8 @@
         },
 
         mounted() {
-            this.fetch()
+            this.fetch();
         },
-
-        updated() {
-            this.showSpinner = false;
-        }
     })
 </script>
-
-<style>
-    .display-hidden {
-        display: none;
-    }
-</style>
 
