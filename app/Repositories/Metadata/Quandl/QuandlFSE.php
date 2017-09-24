@@ -27,7 +27,6 @@ class QuandlFSE extends QuandlMetadata implements MetadataInterface
         'Low'    => 'Low',
         'Close'  => 'Close',
         'Volume' => 'Traded Volume',
-
     ];
 
     public function wkn($item)
