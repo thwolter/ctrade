@@ -214,7 +214,7 @@
 
         methods: {
             onSubmit() {
-                this.form.date = this.form.date.toISOString().split('T')[0];
+                this.form.date = (new Date(this.form.date)).toISOString().split('T')[0];
 
                 this.form.post(this.route)
                     .then(data => {

@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Repositories\DataProvider;
+namespace App\Classes\DataProvider;
 
+use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;
 use App\Events\PriceData\FetchingFailed;
-use App\Repositories\Contracts\DataInterface;
-use App\Repositories\Exceptions\PriceDataException;
+use App\Exceptions\DataServiceException;
 use App\Models\PriceHistory;
 use Illuminate\Support\Facades\Log;
 
-class QuandlPriceData implements DataInterface
+class QuandlPriceData implements DataServiceInterface
 {
 
-    protected $priceColumnNames = ['Last', 'Close'];
+    protected $priceColumnNames = ['Close'];
 
     protected $datasource;
     protected $client;
@@ -134,7 +134,7 @@ class QuandlPriceData implements DataInterface
      * Fetch json data for given symbol from Quandl API.
      *
      * @return string
-     * @throws PriceDataException
+     * @throws DataServiceException
      */
     private function fetchFromQuandl()
     {
@@ -143,7 +143,7 @@ class QuandlPriceData implements DataInterface
 
         if ($this->client->error) {
             event(new FetchingFailed($this->datasource, $this->client->last_url, $this->client->error));
-            throw new PriceDataException($this->client->error);
+            throw new DataServiceException($this->client->error);
         }
         return $json;
     }

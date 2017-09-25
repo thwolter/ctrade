@@ -22,10 +22,10 @@
 
         <div class="spacer-md"></div>
 
-        <div :class="clsContainer">
+        <div>
             <canvas ref="canvas"></canvas>
         </div>
-        <div v-html="legend" :class="clsLegend"></div>
+
     </div>
 </template>
 

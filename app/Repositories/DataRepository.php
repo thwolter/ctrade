@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;
 
 
@@ -38,6 +39,6 @@ class DataRepository
 
     private function provider()
     {
-        return app($this->datasource->provider->code.'PriceData', [$this->datasource]);
+        return app(DataServiceInterface::class, [$this->datasource]);
     }
 }

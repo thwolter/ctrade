@@ -21086,7 +21086,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         onSubmit: function onSubmit() {
-            this.form.date = this.form.date.toISOString().split('T')[0];
+            this.form.date = new Date(this.form.date).toISOString().split('T')[0];
 
             this.form.post(this.route).then(function (data) {
                 Event.fire('portfolio-created', data);
@@ -55577,16 +55577,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "spacer-md"
-  }), _vm._v(" "), _c('div', {
-    class: _vm.clsContainer
-  }, [_c('canvas', {
+  }), _vm._v(" "), _c('div', [_c('canvas', {
     ref: "canvas"
-  })]), _vm._v(" "), _c('div', {
-    class: _vm.clsLegend,
-    domProps: {
-      "innerHTML": _vm._s(_vm.legend)
-    }
-  })])
+  })])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
