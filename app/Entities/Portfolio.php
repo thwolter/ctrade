@@ -81,7 +81,6 @@ class Portfolio extends Model
 
     protected $cascadeDeletes = [
         'positions',
-        'transactions',
         'category',
         'keyFigures',
         'limits',

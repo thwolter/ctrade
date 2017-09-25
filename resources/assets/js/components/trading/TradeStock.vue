@@ -157,6 +157,7 @@
                 cleavePrice: {
                     numeral: true,
                     numeralDecimalMark: ',',
+                    numeralDecimalScale: 2,
                     delimiter: '.',
                     numeralPositiveOnly: true
                 },

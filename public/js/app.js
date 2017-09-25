@@ -23580,6 +23580,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             cleavePrice: {
                 numeral: true,
                 numeralDecimalMark: ',',
+                numeralDecimalScale: 2,
                 delimiter: '.',
                 numeralPositiveOnly: true
             },
