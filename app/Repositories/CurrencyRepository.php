@@ -3,12 +3,12 @@
 
 namespace App\Repositories;
 
+use App\Contracts\DataServiceInterface;
 use App\Facades\Datasource;
-use App\Repositories\Contracts\DataInterface;
-use Carbon\Carbon;
+use Clockwork\DataSource\DataSourceInterface;
 
 
-class CurrencyRepository implements DataInterface
+class CurrencyRepository
 {
 
     protected $origin;
@@ -61,13 +61,15 @@ class CurrencyRepository implements DataInterface
 
     private function direct()
     {
-        return new DataRepository(Datasource::withDataset($this->origin.$this->target)->first());
+        $datasource = Datasource::withDataset($this->origin . $this->target)->first();
+        return app(DataServiceInterface::class, [$datasource]);
     }
 
 
     private function oblique($currency)
     {
-        return new DataRepository(Datasource::withDataset($this->baseCurrency.$currency)->first());
+        $datasource = Datasource::withDataset($this->baseCurrency . $currency)->first();
+        return app(DataSourceInterface::class, [$datasource]);
     }
 
 
@@ -106,4 +108,8 @@ class CurrencyRepository implements DataInterface
         return $this->origin.$this->target;
     }
 
+    public function allDataHistory($attributes)
+    {
+        // TODO: Implement allDataHistory() method.
+    }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Entities\Datasource;
 use App\Entities\Stock;
-use App\Repositories\DataRepository;
+use App\Facades\DataService;
 use Illuminate\Http\Request;
 
 class ApiStockController extends ApiBaseController
@@ -30,7 +30,7 @@ class ApiStockController extends ApiBaseController
             $exchange = array_get($exchanges, '0.code');
         }
 
-        $repo = new DataRepository($stock->datasources()->whereExchange($exchange)->first());
+        $repo = new DataService($stock->datasources()->whereExchange($exchange)->first());
 
         return [
             'exchanges' => $exchanges,

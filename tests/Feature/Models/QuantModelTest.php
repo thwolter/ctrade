@@ -5,7 +5,6 @@ namespace Tests\Feature\Repos;
 use App\Entities\CcyPair;
 use App\Entities\Currency;
 use App\Models\QuantModel;
-use App\Repositories\DataRepository;
 use App\Repositories\Metadata\QuandlECB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

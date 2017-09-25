@@ -3,7 +3,7 @@
 namespace Tests\Feature\Repos;
 
 use App\Facades\Datasource;
-use App\Repositories\DataRepository;
+use App\Facades\DataService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -18,7 +18,7 @@ class DataRepositoryTest extends TestCase
     public function ALV_has_a_history()
     {
         Datasource::make('Quandl', 'SSE', 'ALV');
-        $data = new DataRepository(Datasource::withDataset('ALV'));
+        $data = new DataService(Datasource::withDataset('ALV'));
         $this->assertGreaterThan(0, $data->history());
     }
 
@@ -26,7 +26,7 @@ class DataRepositoryTest extends TestCase
     public function EURUSD_has_a_history()
     {
         Datasource::make('Quandl', 'ECB', 'EURUSD');
-        $data = new DataRepository(Datasource::withDataset('EURUSD'));
+        $data = new DataService(Datasource::withDataset('EURUSD'));
         $this->assertGreaterThan(0, $data->history());
     }
 
@@ -34,7 +34,7 @@ class DataRepositoryTest extends TestCase
     public function ALV_has_a_price()
     {
         Datasource::make('Quandl', 'SSE', 'ALV');
-        $data = new DataRepository(Datasource::withDataset('ALV'));
+        $data = new DataService(Datasource::withDataset('ALV'));
         $this->assertGreaterThan(0, $data->price());
     }
 
@@ -42,7 +42,7 @@ class DataRepositoryTest extends TestCase
     public function EURUSD_has_a_price()
     {
         Datasource::make('Quandl', 'ECB', 'EURUSD');
-        $data = new DataRepository(Datasource::withDataset('EURUSD'));
+        $data = new DataService(Datasource::withDataset('EURUSD'));
         $this->assertGreaterThan(0, $data->price());
     }
     
@@ -52,7 +52,7 @@ class DataRepositoryTest extends TestCase
     {
         Datasource::make('Quandl', 'SSE', 'ALV');
         Datasource::make('Fake', null, 'ALV');
-        $data = new DataRepository(Datasource::withDataset('ALV'));
+        $data = new DataService(Datasource::withDataset('ALV'));
         $this->assertGreaterThan(0, $data->price());
     }
 }

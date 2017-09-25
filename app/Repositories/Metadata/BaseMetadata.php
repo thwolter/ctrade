@@ -144,7 +144,6 @@ abstract class BaseMetadata
     }
 
 
-
     /**
      * Returns true if the received item was updated on provider level.
      *
@@ -154,7 +153,7 @@ abstract class BaseMetadata
     public function existUpdate($item)
     {
         $current = optional($this->datasource($item))->refreshed_at;
-        $updated = $this->refreshed($item)->timestamp;
+        $updated = $this->refreshed($item);
 
         return $current < $updated;
     }

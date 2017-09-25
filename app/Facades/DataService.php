@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Repositories;
+namespace App\Facades;
 
 use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;
 
 
-class DataRepository
+class DataService
 {
 
     protected $datasource;

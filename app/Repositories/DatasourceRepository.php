@@ -64,7 +64,7 @@ class DatasourceRepository
     {
         $prices = [];
         foreach ($datasources as $datasource) {
-            $data = new DataRepository($datasource);
+            $data = new DataService($datasource);
             $prices[] = [
                 'exchange' => $datasource->exchange->code,
                 'history' => $data->history(),
