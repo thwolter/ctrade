@@ -153,7 +153,7 @@ abstract class BaseMetadata
      */
     public function existUpdate($item)
     {
-        $current = optional($this->datasource($item))->refreshed_at->timestamp;
+        $current = optional($this->datasource($item))->refreshed_at;
         $updated = $this->refreshed($item)->timestamp;
 
         return $current < $updated;
