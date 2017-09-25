@@ -13,7 +13,8 @@
                 instrument-id="{{ $stock->id }}"
                 store-route="{{ route('positions.store', [], false) }}"
                 cash="{{ $portfolio->cash() }}"
-                amount="">
+                amount=""
+                min-date="{{ $portfolio->latestTransactionDate()->toDateString() }}">
         </trade-stock>
     </portlet>
 

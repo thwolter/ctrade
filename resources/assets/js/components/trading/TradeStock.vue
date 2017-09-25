@@ -127,7 +127,8 @@
             'storeRoute',
             'cash',
             'amount',
-            'transaction'
+            'transaction',
+            'minDate'
         ],
 
         data() {
@@ -218,8 +219,11 @@
             updatePrice() {
                 this.form.price = this.stock.prices[this.exchange].history[this.form.executed];
 
+                let firstPrice = new Date(this.firstPrice);
+                let date = this.minDate ? new Date(Math.max(firstPrice, new Date(this.minDate))) : firstPrice;
+
                 this.disabled = {
-                    to: new Date(this.firstPrice),
+                    to: date,
                     from: new Date(this.lastPrice),
                     days: [6, 0]
                 }
