@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Classes\Metadata\Quandl\QuandlECB;
 use Illuminate\Support\ServiceProvider;
 
 class QuandlServiceProvider extends ServiceProvider
@@ -29,6 +30,10 @@ class QuandlServiceProvider extends ServiceProvider
             $client->timeout = config('quandl.timeout');
 
             return $client;
+        });
+
+        $this->app->bind('QuandlPrices', function($app, $parameter) {
+            return resolve('App\Classes\Metadata\Quandl\Quandl'.$parameter[0]);
         });
     }
 }

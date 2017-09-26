@@ -7,7 +7,7 @@ Route::get('phpinfo', function() {
 });
 
 Route::get('test', function() {
-    return view('auth.confirmed.email', ['user' => \App\Entities\User::first()]);
+    return App\Entities\CcyPair::whereSymbol('EURUSD')->first()->price();
 });
 
 Route::get('portfolio/index', function() {

@@ -58,8 +58,7 @@ class QuandlPriceData implements DataServiceInterface
     {
         $item = json_decode($this->getJson(), true);
 
-        return app()
-            ->make('Quandl/'.$this->datasource->database->code)
+        return app('QuandlPrices', [$this->datasource->database->code])
             ->withColumns($item, $attributes);
     }
 

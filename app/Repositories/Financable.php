@@ -15,9 +15,7 @@ trait Financable
     public function financial()
     {
         if (!isset($financialInstance)) {
-
-            $datasource = $this->datasources->first();
-            $this->financialInstance = app(DataServiceInterface::class, [$datasource]);
+            $this->financialInstance = app(DataServiceInterface::class, [$this->datasource()]);
         }
         return $this->financialInstance;
     }

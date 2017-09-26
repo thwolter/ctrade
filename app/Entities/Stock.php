@@ -67,7 +67,7 @@ class Stock extends Instrument
     */
 
 
-    protected function useDatasource()
+    protected function datasource()
     {
         return $this->datasources->first();
     }
