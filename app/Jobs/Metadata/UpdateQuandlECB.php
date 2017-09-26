@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Metadata;
 
-use App\Repositories\Metadata\Quandl\QuandlECB;
+use App\Classes\Metadata\Quandl\QuandlECB;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

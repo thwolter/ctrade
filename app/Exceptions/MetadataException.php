@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Repositories\Exceptions;
+namespace App\Exceptions;
 
 
 class MetadataException extends \Exception

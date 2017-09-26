@@ -19,7 +19,9 @@ Route::get('event', function(Request $request) {
     event(new \App\Events\Limits\LimitHasChanged($limit));
 });
 
-Route::get('metadata/update', function() { Artisan::call('metadata:update'); });
+Route::get('metadata/update/{database}', function($database) {
+    Artisan::call('metadata:update', ['database' => $database]);
+});
 
 Route::get('temp/delete', function() { Artisan::call('temp:delete'); });
 

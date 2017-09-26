@@ -82,6 +82,12 @@ class Currency extends Model
         return $query->where('eligible', 1);
     }
 
+
+    public function scopeForeign($query, $currency)
+    {
+        return $query->where('code', '!=', $currency);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESORS

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Repositories\Contracts;
+namespace App\Contracts;
 
 use App\Facades\Datasource;
-use App\Repositories\Exceptions\MetadataException;
+use App\Exceptions\MetadataException;
 use Carbon\Carbon;
 
 interface MetadataInterface

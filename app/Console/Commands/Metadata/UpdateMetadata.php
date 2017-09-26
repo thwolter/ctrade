@@ -2,21 +2,24 @@
 
 namespace App\Console\Commands\Metadata;
 
-use App\Jobs\Metadata\UpdateQuandlECB;
-use App\Jobs\Metadata\UpdateQuandlFSE;
-use App\Jobs\Metadata\UpdateQuandlSSE;
 use Illuminate\Console\Command;
 
 
 class UpdateMetadata extends Command
 {
 
+    private $databases = [
+        'ECB',
+        'SSE',
+        'FSE'
+    ];
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'metadata:update';
+    protected $signature = 'metadata:update {database?}';
 
     /**
      * The console command description.
@@ -33,11 +36,13 @@ class UpdateMetadata extends Command
      */
     public function handle()
     {
+        if ($this->argument('database'))
+            $this->databases = array_wrap($this->argument('database'));
 
-        dispatch((new UpdateQuandlECB())->onQueue('quandl'));
-
-        dispatch((new UpdateQuandlSSE())->onQueue('quandl'));
-        dispatch((new UpdateQuandlFSE())->onQueue('quandl'));
+        foreach ($this->databases as $database)
+        {
+            dispatch(app('UpdateQuandl', [$database])->onQueue('quandl'));
+        }
 
         $this->info("Done. \n");
         return;

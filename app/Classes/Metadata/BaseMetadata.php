@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Repositories\Metadata;
+namespace App\Classes\Metadata;
 
 
 use App\Events\MetadataUpdateHasCanceled;
@@ -9,7 +9,7 @@ use App\Events\MetadataUpdateHasFinished;
 use App\Events\MetadataUpdateHasStarted;
 use App\Facades\Datasource;
 use App\Jobs\Metadata\RunBulkUpdate;
-use App\Repositories\Exceptions\MetadataException;
+use App\Exceptions\MetadataException;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
@@ -81,54 +81,30 @@ abstract class BaseMetadata
             throw new MetadataException("'{$key}' not defined.");
 
         $match = preg_match($parm[1], array_get($item, $parm[0]), $matches);
-        if ($match) {
-            $result = trim($matches[$parm[2]]);
 
-        } else {
-            $result = null;
-        }
-
-        return $result;
+        return $match ? trim($matches[$parm[2]]) : null;
     }
 
 
     public function updateDatabase()
     {
-        Log::info(sprintf('Update started for %s/%s ...', $this->provider, $this->database));
-        event(new MetadataUpdateHasStarted($this->provider, $this->database));
-
-        if (App::environment('local')) {
-            $items = Cache::get($this->provider.$this->database);
-            if (!$items) {
-                $items = $this->getFirstItems($this->chunk);
-                Cache::forever($this->provider.$this->database, $items);
-            }
-
-        } else {
-            $items = $this->getFirstItems($this->chunk);
-        }
+        $this->notifyAboutStart();
+        $items = $this->fetchFirstItems();
 
         if (!$items) {
-
-            Log::warning(sprintf('Update canceled for %s/%s.', $this->provider, $this->database));
-            event(new MetadataUpdateHasCanceled($this->provider, $this->database));
-
+            $this->notifyAboutCancellation();
             return false;
         }
 
-        $i = 0;
         while ($items) {
 
             dispatch(new RunBulkUpdate($items, $this))->onQueue($this->queue);
-
             if (App::environment('local')) break;
 
-            $items = $this->getNextItems($this->chunk);
-            $i++;
+            $items = $this->fetchNextItems();
         }
 
-        event(new MetadataUpdateHasFinished($this->provider, $this->database));
-        Log::info(sprintf('Update finished for %s/%s.', $this->provider, $this->database));
+        $this->notifyAboutFinished();
     }
 
 
@@ -156,6 +132,49 @@ abstract class BaseMetadata
         $updated = $this->refreshed($item);
 
         return $current < $updated;
+    }
+
+
+    private function notifyAboutStart()
+    {
+        Log::info(sprintf('Update started for %s/%s ...', $this->provider, $this->database));
+        event(new MetadataUpdateHasStarted($this->provider, $this->database));
+    }
+
+
+    private function notifyAboutCancellation()
+    {
+        Log::warning(sprintf('Update canceled for %s/%s.', $this->provider, $this->database));
+        event(new MetadataUpdateHasCanceled($this->provider, $this->database));
+    }
+
+
+    private function notifyAboutFinished()
+    {
+        event(new MetadataUpdateHasFinished($this->provider, $this->database));
+        Log::info(sprintf('Update finished for %s/%s.', $this->provider, $this->database));
+    }
+
+
+    private function fetchFirstItems()
+    {
+        if (App::environment('local')) {
+            $items = Cache::get($this->provider . $this->database);
+            if (!$items) {
+                $items = $this->getFirstItems($this->chunk);
+                Cache::forever($this->provider . $this->database, $items);
+            }
+
+        } else {
+            $items = $this->getFirstItems($this->chunk);
+        }
+        return $items;
+    }
+
+
+    private function fetchNextItems()
+    {
+        return $this->getNextItems($this->chunk);
     }
 
 }

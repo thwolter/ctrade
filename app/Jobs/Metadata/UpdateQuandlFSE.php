@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Metadata;
 
-use App\Repositories\Metadata\Quandl\QuandlFSE;
+use App\Classes\Metadata\Quandl\QuandlFSE;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

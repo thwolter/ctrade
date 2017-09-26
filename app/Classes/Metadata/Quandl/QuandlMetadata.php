@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Repositories\Metadata\Quandl;
+namespace App\Classes\Metadata\Quandl;
 
-use App\Repositories\Metadata\BaseMetadata;
+use App\Classes\Metadata\BaseMetadata;
 use Carbon\Carbon;
-use Quandl;
 
 abstract class QuandlMetadata extends BaseMetadata
 {

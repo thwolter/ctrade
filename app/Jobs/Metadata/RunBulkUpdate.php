@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Metadata;
 
-use App\Repositories\Metadata\BaseMetadata;
+use App\Classes\Metadata\BaseMetadata;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

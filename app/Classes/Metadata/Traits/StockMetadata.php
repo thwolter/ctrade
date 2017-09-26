@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Repositories\Metadata\Traits;
+namespace App\Classes\Metadata\Traits;
 
 
 use App\Entities\Currency;
@@ -9,7 +9,6 @@ use App\Entities\Exchange;
 use App\Entities\Industry;
 use App\Entities\Sector;
 use App\Entities\Stock;
-use App\Facades\Datasource;
 use App\Repositories\DatasourceRepository;
 use Illuminate\Support\Facades\Log;
 

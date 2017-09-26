@@ -4,17 +4,12 @@
 namespace App\Repositories;
 
 
+use App\Contracts\DataServiceInterface;
 use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Entities\Datasource;
 use App\Entities\Exchange;
-use App\Entities\Limit;
-use App\Entities\LimitType;
-use App\Entities\Portfolio;
 use App\Entities\Provider;
-use App\Notifications\LimitChanged;
-use App\Repositories\Exceptions\LimitException;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class DatasourceRepository
@@ -64,7 +59,7 @@ class DatasourceRepository
     {
         $prices = [];
         foreach ($datasources as $datasource) {
-            $data = new DataService($datasource);
+            $data = app(DataServiceInterface::class, [$datasource]);
             $prices[] = [
                 'exchange' => $datasource->exchange->code,
                 'history' => $data->history(),

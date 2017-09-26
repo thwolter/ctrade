@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Repositories\Metadata\Traits;
+namespace App\Classes\Metadata\Traits;
 
 
 use App\Entities\CcyPair;

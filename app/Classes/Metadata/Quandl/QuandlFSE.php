@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Metadata\Quandl;
+namespace App\Classes\Metadata\Quandl;
 
-use App\Repositories\Contracts\MetadataInterface;
-use App\Repositories\Metadata\Traits\StockMetadata;
+use App\Contracts\MetadataInterface;
+use App\Classes\Metadata\Traits\StockMetadata;
 
 
 class QuandlFSE extends QuandlMetadata implements MetadataInterface
