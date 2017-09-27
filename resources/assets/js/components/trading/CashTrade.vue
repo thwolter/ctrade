@@ -143,7 +143,7 @@
 
             show(id, transaction) {
                 this.form.transaction = transaction;
-                this.form.id = id;
+                this.form.id = id ? id : this.id;
                 this.showDialog = true;
             },
 
@@ -192,8 +192,6 @@
 
         mounted() {
             var vm = this;
-
-            this.form.id = this.id;
 
             if (this.transaction === 'deposit' || this.transaction === 'withdraw') {
                 vm.show(this.id, this.transaction);

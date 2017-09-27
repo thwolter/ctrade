@@ -23208,7 +23208,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         show: function show(id, transaction) {
             this.form.transaction = transaction;
-            this.form.id = id;
+            this.form.id = id ? id : this.id;
             this.showDialog = true;
         },
         hide: function hide() {
@@ -23252,8 +23252,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this2 = this;
 
         var vm = this;
-
-        this.form.id = this.id;
 
         if (this.transaction === 'deposit' || this.transaction === 'withdraw') {
             vm.show(this.id, this.transaction);
