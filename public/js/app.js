@@ -23206,6 +23206,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 window.location = data.redirect;
             });
         },
+        initEventListeners: function initEventListeners(vm) {
+            if (this.transaction === 'deposit' || this.transaction === 'withdraw') {
+                vm.show(this.id, this.transaction);
+            } else {
+                Event.listen('depositCash', function (id) {
+                    vm.show(id, 'deposit');
+                });
+
+                Event.listen('withdrawCash', function (id) {
+                    console.log('ok, withdraw');
+                    vm.show(id, 'withdraw');
+                });
+            }
+        },
+        initDatapickerEvents: function initDatapickerEvents() {
+            var _this2 = this;
+
+            this.$refs.datepicker.$on('opened', function () {
+                _this2.form.errors.clear('executed');
+                _this2.updatePrice();
+            });
+        },
         show: function show(id, transaction) {
             this.form.transaction = transaction;
             this.form.id = id ? id : this.id;
@@ -23219,11 +23241,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         classObject: function classObject() {
-            if (this.error) {
-                return 'form-control error';
-            } else {
-                return 'form-control';
-            }
+            return this.error ? 'form-control error' : 'form-control';
         },
         hasError: function hasError() {
             return this.hasFormError || this.exceedCash && this.withdraw;
@@ -23249,27 +23267,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     mounted: function mounted() {
-        var _this2 = this;
-
-        var vm = this;
-
-        if (this.transaction === 'deposit' || this.transaction === 'withdraw') {
-            vm.show(this.id, this.transaction);
-        } else {
-            Event.listen('depositCash', function (id) {
-                vm.show(id, 'deposit');
-            });
-
-            Event.listen('withdrawCash', function (id) {
-                console.log('ok, withdraw');
-                vm.show(id, 'withdraw');
-            });
-        }
-
-        this.$refs.datepicker.$on('opened', function () {
-            _this2.form.errors.clear('executed');
-            _this2.updatePrice();
-        });
+        this.initEventListeners(this);
+        this.initDatapickerEvents();
     }
 });
 

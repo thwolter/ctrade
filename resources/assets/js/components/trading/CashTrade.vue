@@ -141,6 +141,29 @@
                     })
             },
 
+            initEventListeners(vm) {
+                if (this.transaction === 'deposit' || this.transaction === 'withdraw') {
+                    vm.show(this.id, this.transaction);
+
+                } else {
+                    Event.listen('depositCash', function (id) {
+                        vm.show(id, 'deposit');
+                    });
+
+                    Event.listen('withdrawCash', function (id) {
+                        console.log('ok, withdraw');
+                        vm.show(id, 'withdraw');
+                    });
+                }
+            },
+
+            initDatapickerEvents() {
+                this.$refs.datepicker.$on('opened', () => {
+                    this.form.errors.clear('executed');
+                    this.updatePrice();
+                });
+            },
+
             show(id, transaction) {
                 this.form.transaction = transaction;
                 this.form.id = id ? id : this.id;
@@ -155,17 +178,12 @@
 
         computed: {
             classObject() {
-                if (this.error) {
-                    return 'form-control error'
-                } else {
-                    return 'form-control'
-                }
+                return this.error ? 'form-control error' : 'form-control';
             },
 
 
             hasError() {
-                return (this.hasFormError ||
-                    (this.exceedCash && this.withdraw));
+                return (this.hasFormError || (this.exceedCash && this.withdraw));
             },
 
             exceedCash() {
@@ -191,28 +209,8 @@
         },
 
         mounted() {
-            var vm = this;
-
-            if (this.transaction === 'deposit' || this.transaction === 'withdraw') {
-                vm.show(this.id, this.transaction);
-
-            } else {
-                Event.listen('depositCash', function (id) {
-                    vm.show(id, 'deposit');
-                });
-
-                Event.listen('withdrawCash', function (id) {
-                    console.log('ok, withdraw');
-                    vm.show(id, 'withdraw');
-                });
-            }
-
-            this.$refs.datepicker.$on('opened', () => {
-                this.form.errors.clear('executed');
-                this.updatePrice();
-            });
-
-
+            this.initEventListeners(this);
+            this.initDatapickerEvents();
         }
     }
 </script>
