@@ -19,6 +19,11 @@ Route::prefix('portfolio')->middleware('auth')->group(function() {
         'uses' => 'PortfoliosController@create'
     ]);
 
+    Route::get('{portfolio}/created', [
+        'as' => 'portfolios.fresh',
+        'uses' => 'PortfoliosController@fresh'
+    ]);
+
     Route::post('pay', [
         'as' => 'portfolios.pay',
         'uses' => 'PortfoliosController@pay'

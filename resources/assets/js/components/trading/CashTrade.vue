@@ -25,9 +25,16 @@
                                         <label for="date" class="col-form-label">Datum</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <input v-model="form.date" type="date" name="date"
-                                                   :class="['form-control', { 'error': form.errors.has('date') }]"
-                                                   @keydown="form.errors.clear('date')">
+                                            <datepicker
+                                                    v-model="form.date"
+                                                    name="date"
+                                                    input-class="form-control"
+                                                    language="de"
+                                                    :disabled="disabled"
+                                                    :full-month-name="true"
+                                                    :monday-first="true"
+                                                    ref="datepicker">
+                                            </datepicker>
                                         </div>
                                         <p v-if="form.errors.has('date')" class="error-text">
                                             <span v-text="form.errors.get('date')"></span>
@@ -84,12 +91,22 @@
 
 <script>
     import Input from '../../mixins/Input.js';
+    import Datepicker from 'vuejs-datepicker';
 
     export default {
 
         mixins: [Input],
 
-        props: ['route', 'id', 'cash'],
+        props: [
+            'route',
+            'id',
+            'cash',
+            'transaction'
+        ],
+
+        components: {
+            Datepicker
+        },
 
         data() {
             return {
@@ -109,8 +126,8 @@
                 },
 
                 showDialog: false,
-
                 hasFormError: false,
+                disabled: {}
             }
         },
 
@@ -178,13 +195,26 @@
 
             this.form.id = this.id;
 
-            Event.listen('depositCash', function (id) {
-                vm.show(id, 'deposit');
+            if (this.transaction === 'deposit' || this.transaction === 'withdraw') {
+                vm.show(this.id, this.transaction);
+
+            } else {
+                Event.listen('depositCash', function (id) {
+                    vm.show(id, 'deposit');
+                });
+
+                Event.listen('withdrawCash', function (id) {
+                    console.log('ok, withdraw');
+                    vm.show(id, 'withdraw');
+                });
+            }
+
+            this.$refs.datepicker.$on('opened', () => {
+                this.form.errors.clear('executed');
+                this.updatePrice();
             });
 
-            Event.listen('withdrawCash', function (id) {
-                vm.show(id, 'withdraw');
-            });
+
         }
     }
 </script>

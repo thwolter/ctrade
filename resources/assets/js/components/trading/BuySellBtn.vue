@@ -19,14 +19,14 @@
         props: [
             'instrumentId',
             'eventBuy',
-            'eventSell',
-            'toggle'],
+            'eventSell'
+        ],
 
         data() {
             return {
                 show: false,
                 direction: null,
-                doToggle: true
+                doToggle: true,
             }
         },
 
@@ -71,7 +71,7 @@
         },
 
         mounted() {
-            this.doToggle = this.toogle;
+
         }
     }
 </script>

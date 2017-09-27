@@ -4,6 +4,9 @@
 
 Vue.component('cash-trade', require('./components/trading/CashTrade.vue'));
 Vue.component('buy-sell-btn', require('./components/trading/BuySellBtn.vue'));
+Vue.component('deposit-btn', require('./components/trading/DepositButton.vue'));
+Vue.component('withdraw-btn', require('./components/trading/WithdrawButton.vue'));
+
 Vue.component('search-stock', require('./components/trading/SearchStock.vue'));
 Vue.component('trade-stock', require('./components/trading/TradeStock.vue'));
 

@@ -89,10 +89,15 @@ class PortfoliosController extends Controller
     {
         $portfolio = $this->repo->createPortfolio(auth()->user(), $request->all());
 
-        return ['redirect' => route('positions.index', [$portfolio->slug,
-            'success' => "Portfolio '$portfolio->name' erfolgreich erstellt. Füge Positionen hinzu."
-        ])];
+        return ['redirect' => route('portfolios.fresh', [$portfolio])];
     }
+
+
+    public function fresh(Portfolio $portfolio)
+    {
+        return view('portfolios.fresh', compact('portfolio'));
+    }
+
 
     public function pay(PayRequest $request)
     {

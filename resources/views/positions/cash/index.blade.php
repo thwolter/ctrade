@@ -18,9 +18,9 @@
                     <td></td>
 
                     <td class="align-middle">
-                        <buy-sell-btn 
+                        <buy-sell-btn
                             event-buy="depositCash" event-sell="withdrawCash"
-                            id="{{ $portfolio->id }}" toggle="false">
+                            id="{{ $portfolio->id }}">
                         </buy-sell-btn>
                     </td>
                 </tr>

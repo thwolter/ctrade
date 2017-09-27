@@ -10637,7 +10637,13 @@ module.exports = Component.exports
 /* 11 */,
 /* 12 */,
 /* 13 */,
-/* 14 */
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10717,12 +10723,6 @@ var Input = {
 /* harmony default export */ __webpack_exports__["a"] = (Input);
 
 /***/ }),
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
 /* 21 */,
 /* 22 */,
 /* 23 */,
@@ -20481,7 +20481,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuelidate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vuelidate__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_resource__ = __webpack_require__(303);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_Form__ = __webpack_require__(191);
@@ -20659,7 +20659,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(20);
 //
 //
 //
@@ -20867,7 +20867,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__ = __webpack_require__(316);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuelidate_lib_validators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_Input_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave__ = __webpack_require__(260);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_cleave___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_cleave__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker__ = __webpack_require__(139);
@@ -23009,7 +23009,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['instrumentId', 'eventBuy', 'eventSell', 'toggle'],
+    props: ['instrumentId', 'eventBuy', 'eventSell'],
 
     data: function data() {
         return {
@@ -23057,9 +23057,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
-    mounted: function mounted() {
-        this.doToggle = this.toogle;
-    }
+    mounted: function mounted() {}
 });
 
 /***/ }),
@@ -23068,7 +23066,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuejs_datepicker__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuejs_datepicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuejs_datepicker__);
 //
 //
 //
@@ -23153,6 +23153,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -23160,7 +23168,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_Input_js__["a" /* default */]],
 
-    props: ['route', 'id', 'cash'],
+    props: ['route', 'id', 'cash', 'transaction'],
+
+    components: {
+        Datepicker: __WEBPACK_IMPORTED_MODULE_1_vuejs_datepicker___default.a
+    },
 
     data: function data() {
         return {
@@ -23179,8 +23191,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
 
             showDialog: false,
-
-            hasFormError: false
+            hasFormError: false,
+            disabled: {}
         };
     },
 
@@ -23237,16 +23249,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     mounted: function mounted() {
+        var _this2 = this;
+
         var vm = this;
 
         this.form.id = this.id;
 
-        Event.listen('depositCash', function (id) {
-            vm.show(id, 'deposit');
-        });
+        if (this.transaction === 'deposit' || this.transaction === 'withdraw') {
+            vm.show(this.id, this.transaction);
+        } else {
+            Event.listen('depositCash', function (id) {
+                vm.show(id, 'deposit');
+            });
 
-        Event.listen('withdrawCash', function (id) {
-            vm.show(id, 'withdraw');
+            Event.listen('withdrawCash', function (id) {
+                console.log('ok, withdraw');
+                vm.show(id, 'withdraw');
+            });
+        }
+
+        this.$refs.datepicker.$on('opened', function () {
+            _this2.form.errors.clear('executed');
+            _this2.updatePrice();
         });
     }
 });
@@ -23783,6 +23807,9 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
 
 Vue.component('cash-trade', __webpack_require__(278));
 Vue.component('buy-sell-btn', __webpack_require__(277));
+Vue.component('deposit-btn', __webpack_require__(339));
+Vue.component('withdraw-btn', __webpack_require__(342));
+
 Vue.component('search-stock', __webpack_require__(279));
 Vue.component('trade-stock', __webpack_require__(280));
 
@@ -55710,33 +55737,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Datum")]), _vm._v(" "), _c('div', {
     staticClass: "input-group"
-  }, [_vm._m(0), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.form.date),
-      expression: "form.date"
-    }],
-    class: ['form-control', {
-      'error': _vm.form.errors.has('date')
-    }],
+  }, [_vm._m(0), _vm._v(" "), _c('datepicker', {
+    ref: "datepicker",
     attrs: {
-      "type": "date",
-      "name": "date"
+      "name": "date",
+      "input-class": "form-control",
+      "language": "de",
+      "disabled": _vm.disabled,
+      "full-month-name": true,
+      "monday-first": true
     },
-    domProps: {
-      "value": (_vm.form.date)
-    },
-    on: {
-      "keydown": function($event) {
-        _vm.form.errors.clear('date')
+    model: {
+      value: (_vm.form.date),
+      callback: function($$v) {
+        _vm.form.date = $$v
       },
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.form.date = $event.target.value
-      }
+      expression: "form.date"
     }
-  })]), _vm._v(" "), (_vm.form.errors.has('date')) ? _c('p', {
+  })], 1), _vm._v(" "), (_vm.form.errors.has('date')) ? _c('p', {
     staticClass: "error-text"
   }, [_c('span', {
     domProps: {
@@ -58045,6 +58063,172 @@ exports.default = withParams;
 __webpack_require__(142);
 module.exports = __webpack_require__(143);
 
+
+/***/ }),
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BuySellBtn_vue__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BuySellBtn_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__BuySellBtn_vue__);
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    extends: __WEBPACK_IMPORTED_MODULE_0__BuySellBtn_vue___default.a
+});
+
+/***/ }),
+/* 339 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(338),
+  /* template */
+  __webpack_require__(340),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/trading/DepositButton.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] DepositButton.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-416ee9c6", Component.options)
+  } else {
+    hotAPI.reload("data-v-416ee9c6", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 340 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('a', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": _vm.doBuy
+    }
+  }, [_vm._v("Geld einzahlen")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-416ee9c6", module.exports)
+  }
+}
+
+/***/ }),
+/* 341 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BuySellBtn_vue__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BuySellBtn_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__BuySellBtn_vue__);
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    extends: __WEBPACK_IMPORTED_MODULE_0__BuySellBtn_vue___default.a
+});
+
+/***/ }),
+/* 342 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(341),
+  /* template */
+  __webpack_require__(343),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/Code/ctrade/resources/assets/js/components/trading/WithdrawButton.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] WithdrawButton.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-538de0ff", Component.options)
+  } else {
+    hotAPI.reload("data-v-538de0ff", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 343 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {}, [_c('a', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": _vm.doSell
+    }
+  }, [_vm._v("Geld auszahlen")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-538de0ff", module.exports)
+  }
+}
 
 /***/ })
 ],[329]);
