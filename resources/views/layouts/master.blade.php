@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" class="no-js"> <!--<![endif]-->
 <head>
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -14,8 +18,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    
-    
+
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="">
 
@@ -30,26 +34,28 @@
 
 <body class="layout-fixed">
 
-<div id="wrapper">
+@if (Auth::check())
 
-   @if (Auth::check())
+    <div id="wrapper">
+
         @include('layouts.navigation.appbar')
         @include('layouts.navigation.mainnav')
-    @endif
 
-       <div class="content">
-           <div class="container">
+        <div class="content">
+            <div class="container">
 
-               @include('partials.message')
-               @yield('content')
+                @include('partials.message')
+                @yield('content')
 
-           </div>
-       </div>
-
-</div> <!-- /#wrapper -->
-
-@if (Auth::check())
+            </div>
+        </div>
+    </div> <!-- /#wrapper -->
     @include('layouts.partials.footer')
+
+@else
+
+    @yield('content')
+
 @endif
 
 

@@ -5,20 +5,34 @@
 	background-color: $account-bg;
 }
 
-.account-wrapper {
+.account-container {
 	position: relative;
+	height: 100%;
+	background-image: linear-gradient(to bottom right,  #5f7fa7, #060606);
 
-	width: 90%;
-	padding: 0;
-	margin: 0 auto;
+	h1 {
+		color: $account-color;
+	}
+}
 
+.account-wrapper {
 	text-align: center;
-
 	.row {
 		& > div {
 			margin-bottom: 1em;
 		}
 	}
+
+	label {
+		color: $account-link-color;
+	}
+	.account-link {
+		color: $account-link-color;
+	}
+	.account-link:hover {
+		color: $account-link-hover-color;
+	}
+
 }
 
 .account-form {
@@ -39,6 +53,7 @@
 		padding-bottom: 8px;
 		margin-bottom: 1.25em;
 	}
+
 }
 
 .account-body {
@@ -49,15 +64,8 @@
 	
 	color: $account-body-color;
 
-	background-color: $account-body-bg;
-
-	border: 1px solid $account-body-border-color;
-
 	@include border-top-radius (4px);
 	@include border-bottom-radius (4px);
-
-	@include box-shadow (1px 1px 1px rgba(0,0,0,.15));
-	
 }
 
 .account-footer {
@@ -65,13 +73,27 @@
 	margin-top: 1.5em;
 }
 
+.account-social-line {
+	border-bottom: 1px solid grey;
+	line-height: 0;
+	text-align: center;
+}
 .account-or-social {
+	font-size: 10px;
+	color: $account-color;
 	display: block;
-
 	margin-top: 1em;
 }
 
-@media (min-width: $screen-sm) {
+.account-remember {
+	@extend .text-center;
+}
+
+.account-forget-pwd {
+	@extend .text-center;
+}
+
+@media (min-width: $screen-md) {
 	.account-wrapper {
 		width: 450px;
 		padding: 0;
@@ -86,12 +108,18 @@
 	.account-body {		
 		.account-form { 
 			padding: 0 25px;
-
 			text-align: left;
 		}
 	}
 
 	.account-or-social {
 		margin-top: 2em;
+	}
+
+	.account-remember {
+		float: left;
+	}
+	.account-forget-pwd {
+		float: right;
 	}
 }

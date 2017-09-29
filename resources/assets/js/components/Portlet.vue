@@ -1,7 +1,7 @@
 <template>
     <div class="portlet portlet-boxed" v-cloak>
 
-        <div class="portlet-header">
+        <div v-if="showHeader" class="portlet-header">
             <h3 class="portlet-title"><u>{{ title }}</u></h3>
         </div>
 
@@ -18,6 +18,15 @@
 
 <script>
     export default {
-        props: ['title'],
+        props: [
+            'title',
+            'noHeader'
+        ],
+
+        computed: {
+            showHeader() {
+                return this.noHeader === true;
+            }
+        }
     }
 </script>

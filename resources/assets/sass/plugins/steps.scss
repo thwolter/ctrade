@@ -3,9 +3,7 @@
 
 @mixin wizard-button-variant ($color, $bg, $border) {
   color: $color;
-
   background: $bg;
-
   border: 1px solid darken($border, 0%);
 
   &:hover,
@@ -23,9 +21,7 @@
 
   > .steps {
     position: relative;
-
     z-index: 101;
-
     font-size: 14px;
 
     > ul > li {
@@ -34,26 +30,21 @@
 
     .number {
       display: inline-block;
-
       position: relative;
 
       width: 24px;
       height: 24px;
 
       margin-right: 8px;
-
       color: #bbb;
 
       text-align: center;
-
       font-size: inherit;
       font-size: 13px;
       font-weight: 800;
-
       line-height: 21px;
 
       border: 1px solid #ccc;
-
       border-radius: 100px;
 
       &:after {

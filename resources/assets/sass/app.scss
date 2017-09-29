@@ -1,6 +1,5 @@
 @import "node_modules/font-awesome/scss/font-awesome";
-@import url('https://fonts.googleapis.com/css?family=Roboto+Slab|Roboto:400,600');
-
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700|Raleway:400,500|Viga');
 
 // Bootstrap Variables & Mixins ************************* /
 
@@ -26,6 +25,7 @@
 // mvp theme
 @import "components/alerts";
 @import "components/layout";
+@import "components/forms";
 @import "components/mega-menu";
 @import "components/portlet";
 @import "components/icons-list";
@@ -207,3 +207,28 @@ input.form-control.error {
 	}
 }
 
+.sidebar {
+
+	.btn-element {
+		float: none;
+		text-align: center;
+		width: 100%;
+		margin: 10px 0;
+	}
+}
+
+.btn-element {
+	@extend .col-md-2;
+	@extend .col-sm-4;
+	@extend .col-xs-6;
+
+	a {
+		width: 150px;
+	}
+}
+
+.vcenter {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}

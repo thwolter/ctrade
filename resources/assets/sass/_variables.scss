@@ -25,8 +25,8 @@ $brand-danger									: #d9534f;
 //
 //## []
 
-$font-stack-text                       : 'Roboto', sans-serif;
-$font-stack-heading                    : 'Roboto Slab', serif;
+$font-stack-text                       : 'Open Sans', sans-serif;
+$font-stack-heading                    : 'Raleway', sans-serif;
 $font-stack-icon                       : 'FontAwesome';
 
 
@@ -40,6 +40,16 @@ $navbar-admin-bg								: #000;
 $navbar-bg										: #000;
 
 
+//== Forms
+
+$input-color									: #555555;
+$input-bg										: #eee;
+$input-border-radius							: 2px;
+$input-border-focus							: $brand-layout;
+
+$state-danger-text							: #d74b4b;
+$state-danger-border							: #d74b4b;
+$state-danger-bg								: lighten($state-danger-border, 40%);
 
 
   //* 2. Bootstrap
@@ -275,6 +285,10 @@ $account-bg                            : $layout-bg;
 $account-body-bg                       : #fff;
 $account-body-color                    : #444;
 $account-body-border-color             : #ddd;
+
+$account-color									: #eee;
+$account-link-color							: #b5b3b3;
+$account-link-hover-color					: #eee;
 
 
 
