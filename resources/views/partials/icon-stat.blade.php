@@ -7,10 +7,10 @@
             <span class="icon-stat-value {{ $signClass }}">{{ $value }}</span> <!-- /.icon-stat-value -->
         </div><!-- /.col-xs-8 -->
 
-        <div class="col-xs-4 text-center">
+        {{--<div class="col-xs-4 text-center">
             <i class="fa {{ $icon }} icon-stat-visual {{ $iconColor }}"></i> <!-- /.icon-stat-visual -->
-        </div><!-- /.col-xs-4 -->
-    </div><!-- /.row -->
+        </div>--}}
+    </div>
 
     <div class="icon-stat-footer">
         <i class="fa fa-clock-o"></i> Updated {{ $date }}
