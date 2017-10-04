@@ -38,7 +38,7 @@
                         </div>
                     </div><!-- /currency -->
 
-                    <!-- manage -->
+                    <!-- manage --
                     <div class="form-group row">
                         <label for="manage" class="col-md-3 col-md-offset-1 col-form-label">Management</label>
                         <div class="col-md-7">
@@ -50,7 +50,7 @@
                             </select>
 
                         </div>
-                    </div><!-- /manage -->
+                    </div> -->
 
                     <div v-if="showCash">
 

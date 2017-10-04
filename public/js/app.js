@@ -54268,44 +54268,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": currency
       }
     }, [_vm._v("\n                                " + _vm._s(currency) + "\n                            ")])
-  })], 2)])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group row"
-  }, [_c('label', {
-    staticClass: "col-md-3 col-md-offset-1 col-form-label",
-    attrs: {
-      "for": "manage"
-    }
-  }, [_vm._v("Management")]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-7"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.form.manage),
-      expression: "form.manage"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "manage"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.form.manage = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.management), function(type) {
-    return _c('option', {
-      domProps: {
-        "value": type.value
-      }
-    }, [_vm._v("\n                                " + _vm._s(type.text) + "\n                            ")])
-  }))])]), _vm._v(" "), (_vm.showCash) ? _c('div', [_c('div', {
+  })], 2)])]), _vm._v(" "), (_vm.showCash) ? _c('div', [_c('div', {
     staticClass: "form-group row"
   }, [_c('label', {
     staticClass: "col-md-3 col-md-offset-1 col-form-label",

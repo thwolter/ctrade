@@ -9,7 +9,7 @@
 
 .portlet-header {
   padding: 0;
-  margin: 0;
+  margin-bottom: 20px;
 }
 
 .portlet-title {
@@ -30,6 +30,7 @@
   margin: 0;
   @include clearfix ();
 }
+
 
 .portlet-default {
   .portlet-title {
