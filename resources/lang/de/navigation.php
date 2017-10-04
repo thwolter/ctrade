@@ -24,8 +24,13 @@ return [
         'limits'        => 'Limite',
         'message'       => 'Nachrichten',
         'dashboard'     => 'Dashboard'
-        ]
+        ],
 
+    'transaction'   => [
+        'overview'      => 'Überblick',
+        'deposit'       => 'Einzahlung',
+        'withdrawal'    => 'Auszahlung'
+    ]
 
 
 

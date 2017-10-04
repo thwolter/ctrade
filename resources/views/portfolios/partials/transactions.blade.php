@@ -1,15 +1,11 @@
 <div class="row">
 
     <div class="btn-element">
-        <deposit-btn
-                event-buy="depositCash" event-sell="withdrawCash">
-        </deposit-btn>
+        <a data-toggle="modal" href="#deposit" class="btn btn-default">Cash einzahlen</a>
     </div>
 
     <div class="btn-element">
-        <withdraw-btn
-                event-buy="depositCash" event-sell="withdrawCash">
-        </withdraw-btn>
+        <a data-toggle="modal" href="#withdraw" class="btn btn-default">Cash auszahlen</a>
     </div>
 
     <div class="btn-element">
@@ -34,8 +30,20 @@
     </search-stock>
 </div>
 
-<cash-trade
-        route="{{ route('portfolios.pay', [], false) }}"
-        cash="{{ $portfolio->cash() }}"
-        id="{{ $portfolio->id }}">
-</cash-trade>
+<div id="deposit" class="modal fade">
+    <cash-trade
+            route="{{ route('portfolios.pay', [], false) }}"
+            cash="{{ $portfolio->cash() }}"
+            id="{{ $portfolio->id }}"
+            transaction="deposit">
+    </cash-trade>
+</div>
+
+<div id="withdraw" class="modal fade">
+    <cash-trade
+            route="{{ route('portfolios.pay', [], false) }}"
+            cash="{{ $portfolio->cash() }}"
+            id="{{ $portfolio->id }}"
+            transaction="withdraw">
+    </cash-trade>
+</div>

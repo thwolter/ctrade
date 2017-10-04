@@ -23193,13 +23193,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -23218,7 +23211,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             form: new Form({
                 amount: null,
-                transaction: null,
+                transaction: this.transaction,
                 date: new Date().toISOString().split('T')[0],
                 id: null
             }),
@@ -23230,7 +23223,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 numeralPositiveOnly: true
             },
 
-            showDialog: false,
             hasFormError: false,
             disabled: {}
         };
@@ -23271,11 +23263,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         show: function show(id, transaction) {
             this.form.transaction = transaction;
             this.form.id = id ? id : this.id;
-            this.showDialog = true;
         },
         hide: function hide() {
             this.form.reset();
-            this.showDialog = false;
         }
     },
 
@@ -55807,29 +55797,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.showDialog) ? _c('div', [_c('div', {
-    staticClass: "modal-backdrop fade in",
-    on: {
-      "click": _vm.hide
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "modal show",
-    attrs: {
-      "id": "cash-dialog",
-      "role": "dialog",
-      "aria-labelledby": "trade-dialog"
-    }
-  }, [_c('div', {
+  return _c('div', {
     staticClass: "modal-dialog"
   }, [_c('div', {
     staticClass: "modal-content"
-  }, [_c('form', {
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.onSubmit($event)
-      }
-    }
   }, [_c('div', {
     staticClass: "modal-header"
   }, [_c('button', {
@@ -55838,15 +55809,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "button",
       "data-dismiss": "modal",
       "aria-hidden": "true"
-    },
-    on: {
-      "click": _vm.hide
     }
-  }, [_vm._v("×\n                        ")]), _vm._v(" "), (_vm.deposit) ? _c('h3', {
+  }, [_vm._v("×")]), _vm._v(" "), (_vm.deposit) ? _c('h3', {
     staticClass: "modal-title"
   }, [_vm._v("Cash einzahlen")]) : _vm._e(), _vm._v(" "), (_vm.withdraw) ? _c('h3', {
     staticClass: "modal-title"
-  }, [_vm._v("Cash auszahlen")]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Cash auszahlen")]) : _vm._e()]), _vm._v(" "), _c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      }
+    }
+  }, [_c('div', {
     staticClass: "modal-body"
   }, [_c('div', {
     staticClass: "row"
@@ -55925,17 +55900,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]) : _vm._e(), _vm._v(" "), (_vm.exceedCash) ? _c('p', {
     staticClass: "error-text"
-  }, [_vm._v("\n                                            Betrag übersteigt verfügbaren Barbestand.\n                                        ")]) : _vm._e()])])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                                    Betrag übersteigt verfügbaren Barbestand.\n                                ")]) : _vm._e()])])])])]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
   }, [_c('div', {
     staticClass: "pull-right"
   }, [_c('button', {
     staticClass: "btn btn-default",
     attrs: {
-      "type": "reset"
-    },
-    on: {
-      "click": _vm.hide
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-hidden": "true"
     }
   }, [_vm._v("Abbrechen")]), _vm._v(" "), (_vm.deposit) ? _c('button', {
     staticClass: "btn btn-success",
@@ -55943,13 +55917,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "submit",
       "disabled": _vm.hasError
     }
-  }, [_vm._v("\n                                Einzahlen\n                            ")]) : _vm._e(), _vm._v(" "), (_vm.withdraw) ? _c('button', {
+  }, [_vm._v("\n                        Einzahlen\n                    ")]) : _vm._e(), _vm._v(" "), (_vm.withdraw) ? _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
       "type": "submit",
       "disabled": _vm.hasError
     }
-  }, [_vm._v("\n                                Auszahlen\n                            ")]) : _vm._e()])])])])])])]) : _vm._e()
+  }, [_vm._v("\n                        Auszahlen\n                    ")]) : _vm._e()])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "input-group-addon"

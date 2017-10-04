@@ -1,92 +1,85 @@
 <template>
-    <div v-if="showDialog">
-        <div class="modal-backdrop fade in" @click="hide"></div>
-        <div id="cash-dialog" class="modal show" role="dialog" aria-labelledby="trade-dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-                    <form @submit.prevent="onSubmit">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                                    @click="hide">&times;
-                            </button>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 v-if="deposit" class="modal-title">Cash einzahlen</h3>
+                <h3 v-if="withdraw" class="modal-title">Cash auszahlen</h3>
+            </div>
 
-                            <h3 v-if="deposit" class="modal-title">Cash einzahlen</h3>
-                            <h3 v-if="withdraw" class="modal-title">Cash auszahlen</h3>
-                        </div> <!-- /.modal-header -->
+            <form @submit.prevent="onSubmit">
 
-                        <div class="modal-body">
+                <div class="modal-body">
+                    <div class="row">
 
-                            <div class="row">
-
-                                <!-- date -->
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="date" class="col-form-label">Datum</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <datepicker
-                                                    v-model="form.date"
-                                                    name="date"
-                                                    input-class="form-control"
-                                                    language="de"
-                                                    :disabled="disabled"
-                                                    :full-month-name="true"
-                                                    :monday-first="true"
-                                                    ref="datepicker">
-                                            </datepicker>
-                                        </div>
-                                        <p v-if="form.errors.has('date')" class="error-text">
-                                            <span v-text="form.errors.get('date')"></span>
-                                        </p>
-
-                                    </div>
-                                </div><!-- /date -->
-
-                                <!-- amount -->
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="amount" class="control-label cursor-pointer">Betrag</label>
-                                        <div>
-                                            <div class="input-group">
-                                                <span class="input-group-addon">EUR</span>
-                                                <cleave v-model="form.amount" placeholder="Betrag"
-                                                        :options="cleave"
-                                                        :class="['form-control', { 'error': form.errors.has('date') }]"
-                                                        @input="form.errors.clear('amount')"></cleave>
-                                            </div>
-
-                                            <p v-if="form.errors.has('amount')" class="error-text">
-                                                <span v-text="form.errors.get('amount')"></span>
-                                            </p>
-                                            <p v-if="exceedCash" class="error-text">
-                                                Betrag übersteigt verfügbaren Barbestand.
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div> <!-- /amount -->
-
+                        <!-- date -->
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="date" class="col-form-label">Datum</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <datepicker
+                                            v-model="form.date"
+                                            name="date"
+                                            input-class="form-control"
+                                            language="de"
+                                            :disabled="disabled"
+                                            :full-month-name="true"
+                                            :monday-first="true"
+                                            ref="datepicker">
+                                    </datepicker>
+                                </div>
+                                <p v-if="form.errors.has('date')" class="error-text">
+                                    <span v-text="form.errors.get('date')"></span>
+                                </p>
 
                             </div>
-                        </div> <!-- /.modal-body -->
+                        </div><!-- /date -->
 
-                        <div class="modal-footer">
-                            <div class="pull-right">
-                                <button type="reset" class="btn btn-default" @click="hide">Abbrechen</button>
-                                <button type="submit" v-if="deposit" class="btn btn-success" :disabled="hasError">
-                                    Einzahlen
-                                </button>
-                                <button type="submit" v-if="withdraw" class="btn btn-primary" :disabled="hasError">
-                                    Auszahlen
-                                </button>
+                        <!-- amount -->
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="amount" class="control-label cursor-pointer">Betrag</label>
+                                <div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">EUR</span>
+                                        <cleave v-model="form.amount" placeholder="Betrag"
+                                                :options="cleave"
+                                                :class="['form-control', { 'error': form.errors.has('date') }]"
+                                                @input="form.errors.clear('amount')"></cleave>
+                                    </div>
+
+                                    <p v-if="form.errors.has('amount')" class="error-text">
+                                        <span v-text="form.errors.get('amount')"></span>
+                                    </p>
+                                    <p v-if="exceedCash" class="error-text">
+                                        Betrag übersteigt verfügbaren Barbestand.
+                                    </p>
+
+                                </div>
                             </div>
-                        </div> <!-- /.modal-footer -->
-                    </form>
-                </div> <!-- /.modal-content -->
-            </div> <!-- /.modal-dialog -->
-        </div> <!--/#cash-dialog -->
+                        </div> <!-- /amount -->
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
+                        <button type="submit" v-if="deposit" class="btn btn-success" :disabled="hasError">
+                            Einzahlen
+                        </button>
+                        <button type="submit" v-if="withdraw" class="btn btn-primary" :disabled="hasError">
+                            Auszahlen
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
+
 </template>
 
 <script>
@@ -112,7 +105,7 @@
             return {
                 form: new Form({
                     amount: null,
-                    transaction: null,
+                    transaction: this.transaction,
                     date: (new Date()).toISOString().split('T')[0],
                     id: null
                 }),
@@ -125,7 +118,6 @@
                     numeralPositiveOnly: true
                 },
 
-                showDialog: false,
                 hasFormError: false,
                 disabled: {}
             }
@@ -167,12 +159,10 @@
             show(id, transaction) {
                 this.form.transaction = transaction;
                 this.form.id = id ? id : this.id;
-                this.showDialog = true;
             },
 
             hide() {
                 this.form.reset();
-                this.showDialog = false;
             },
         },
 

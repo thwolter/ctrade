@@ -23,6 +23,14 @@
 
     <div class="row">
 
+        <div class="col-lg-3 col-md-4 col-sm-5 sidebar">
+
+            <portlet title="Limitauslastung">
+                <limit-stats pid="{{ $portfolio->id }}"></limit-stats>
+            </portlet>
+
+        </div>
+
         <div class="col-lg-9 col-md-8 col-sm-7">
 
             <portlet title="Positionen">
@@ -40,19 +48,7 @@
             </portlet>
         </div>
 
-
-        <div class="col-lg-3 col-md-4 col-sm-5 sidebar">
-
-            <portlet no-header="true">
-                @include('portfolios.partials.transactions')
-            </portlet>
-
-            <portlet title="Limitauslastung">
-                <limit-stats pid="{{ $portfolio->id }}"></limit-stats>
-            </portlet>
-        </div>
-
-    </div> <!-- /.row -->
+    </div>
 
 @endsection
 

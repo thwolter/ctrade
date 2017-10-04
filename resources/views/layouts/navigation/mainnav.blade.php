@@ -19,10 +19,46 @@
                         </a>
                     </li>
 
-                    <li class="{{ active_class(if_route_pattern(['transactions.*'])) }}">
-                        <a href="{{ route('transactions.index', $portfolio->slug) }}">
+                    <li class="dropdown {{ active_class(if_route_pattern(['transactions.*'])) }}">
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                             @lang('navigation.transactions')
+                            <i class="mainnav-caret"></i>
                         </a>
+
+                        <ul class="dropdown-menu" role="menu">
+
+                            <li>
+                                <a href="{{ route('transactions.index', $portfolio->slug) }}">
+                                    <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                                    @lang('navigation.transaction.overview')
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-toggle="modal" href="#deposit">
+                                    <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                                    @lang('navigation.transaction.deposit')
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-toggle="modal" href="#withdraw">
+                                    <i class="fa fa-minus-square-o" aria-hidden="true"></i>
+                                    @lang('navigation.transaction.withdrawal')
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-toggle="modal" href="#searchStocks">
+                                    <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                                    Aktien hinzufügen
+                                </a>
+                            </li>
+
+
+                        </ul>
                     </li>
 
                     <li class="{{ active_class(if_route_pattern(['positions.*', 'assets.*'])) }}">
@@ -88,7 +124,31 @@
             </ul>
 
         </nav>
+    </div>
+</div>
 
-    </div> <!-- /.container -->
+<div id="searchStocks" class="modal fade">
+    <search-stock
+            portfolio-id="{{ $portfolio->id }}"
+            instrument-type="{{ \App\Entities\Stock::class }}"
+            submit-route="{{ route('positions.create', [$portfolio->slug, '%entity%', '%instrument%'], false) }}">
+    </search-stock>
+</div>
 
-</div> <!-- /.mainnav -->
+<div id="deposit" class="modal fade">
+    <cash-trade
+            route="{{ route('portfolios.pay', [], false) }}"
+            cash="{{ $portfolio->cash() }}"
+            id="{{ $portfolio->id }}"
+            transaction="deposit">
+    </cash-trade>
+</div>
+
+<div id="withdraw" class="modal fade">
+    <cash-trade
+            route="{{ route('portfolios.pay', [], false) }}"
+            cash="{{ $portfolio->cash() }}"
+            id="{{ $portfolio->id }}"
+            transaction="withdraw">
+    </cash-trade>
+</div>
