@@ -1,4 +1,4 @@
-const { mix } = require('laravel-mix');
+const {mix} = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,21 +12,12 @@ const { mix } = require('laravel-mix');
  */
 
 
-mix.autoload({
-    jquery: ['$', 'window.jQuery', 'jQuery'],
-    'popper.js': ['Popper']
-    })
-    .js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
+mix.js('resources/assets/js/app.js', 'public/assets/js')
+    .sass('resources/assets/sass/app.scss', 'public/assets/css')
     .extract(['vue', 'axios', 'vue-numeric', 'chart.js', 'vuelidate'])
     .sourceMaps()
     .options({
         processCssUrls: false
     });
 
-/*
-mix.js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
-    .extract(['vue', 'axios', 'vue-numeric', 'chart.js', 'vuelidate'])
-    .sourceMaps();
-*/
+// mix.copyDirectory('resources/vendor/unity/html/assets/figures', 'public/assets/figures')

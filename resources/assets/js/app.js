@@ -47,11 +47,6 @@ Raven
 
 const app = new Vue({
     el: '#wrapper',
-    
-    components: {
-        popover,
-        //dropdown,
-    }
 });
 
 
