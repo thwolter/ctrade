@@ -1,10 +1,3 @@
-<div class="tab-pane fade in {{ active_tab('portfolio') }}" id="portfolio">
-
-    <div class="heading-block">
-        <h3>
-            Portfolio Einstellungen
-        </h3>
-    </div>
 
     @if (session('delete_portfolio'))
         <div class="alert alert-warning">
@@ -16,54 +9,60 @@
 
     @include('partials.errors')
 
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
+    <h2 class="h4 g-font-weight-300">Portfolio Einstellungen</h2>
+
+    <p class="g-mb-25">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
         eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
         montes.</p>
 
-    <br><br>
-
     {!! Form::open(['route' => ['portfolios.update', $portfolio->slug], 'method' => 'PUT',
-     'class' => 'form form-horizontal']) !!}
+     'class' => 'g-brd-gray-light-v4 g-pa-30 g-mb-30']) !!}
 
     <input type="hidden" name="tab" value="portfolio">
     <input type="hidden" name="id" value="{{ $portfolio->id }}">
 
 
     <!-- Portfolio name -->
-    <div class="form-group">
-        <label class="col-md-3 control-label">Portfolio Name</label>
-        <div class="col-md-7">
-            <input type="text" name="name" value="{{ $portfolio->name }}" class="form-control">
+    <div class="form-group row g-mb-25">
+        <label class="col-sm-3 col-form-label g-mb-10" for="name">Portfolio Name</label>
+        <div class="col-sm-9">
+            <input type="text" id="name" name="name" value="{{ $portfolio->name }}"
+                   class="form-control u-form-control rounded-0">
+            <small class="form-text text-muted g-font-size-default g-mt-10">
+                We'll never share your email with anyone else.
+            </small>
         </div>
     </div>
 
     <!-- Portfolio category -->
-    <div class="form-group">
-        <label class="col-md-3 control-label">Kategorie</label>
-        <div class="col-md-7">
-            <input type="text" name="category" value="" class="form-control">
+    <div class="form-group row g-mb-25">
+        <label class="col-sm-3 col-form-label g-mb-10" for="category">Kategorie</label>
+        <div class="col-sm-9">
+            <input type="text" id="category" name="category" value=""
+                   class="form-control u-form-control rounded-0">
+            <small class="form-text text-muted g-font-size-default g-mt-10">
+                We'll never share your email with anyone else.
+            </small>
         </div>
     </div>
 
     <!-- Portfolio desctiption -->
-    <div class="form-group">
-        <label class="col-md-3 control-label">Beschreibung</label>
-        <div class="col-md-7">
+    <div class="form-group row g-mb-25">
+        <label class="col-sm-3 col-form-label g-mb-10">Beschreibung</label>
+        <div class="col-sm-9">
             <textarea id="description-textarea" name="description" rows="6" class="form-control">{{ $portfolio->description }}</textarea>
         </div>
     </div>
 
+    <hr class="g-brd-gray-light-v4 g-my-25">
+
     <!-- Buttons -->
-    <div class="form-group">
-        <div class="col-md-7 col-md-push-3">
-            <button type="submit" class="btn btn-primary">Speichern</button>
-            <button type="reset" class="btn btn-default">Abbrechen</button>
-        </div>
+    <div class="text-sm-right">
+        <button type="submit" class="btn u-btn-darkgray rounded-0 g-py-12 g-px-25 g-mr-10">Speichern</button>
     </div>
 
     {!! Form::close() !!}
 
-    <br><hr>
     {!! Form::open([
         'route' => ['portfolios.destroy', $portfolio->slug],
         'method' => 'DELETE',
@@ -93,4 +92,3 @@
     @endif
     {!! Form::close() !!}
 
-</div>

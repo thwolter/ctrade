@@ -21,18 +21,21 @@
 
     <!-- CSS Global Icons -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/icon-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/icon-line/css/simple-line-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/icon-etlinefont/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/icon-line-pro/style.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/icon-line/css/simple-line-icons.css') }}">--}}
+    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/icon-etlinefont/style.css') }}">--}}
+    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/icon-line-pro/style.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/icon-hs/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/dzsparallaxer.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/dzsscroller/scroller.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/advancedscroller/plugin.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/animate.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/dzsparallaxer.css') }}">--}}
+    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/dzsscroller/scroller.css') }}">--}}
+    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/advancedscroller/plugin.css') }}">--}}
+    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/animate.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/hamburgers/hamburgers.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/hs-megamenu/src/hs.megamenu.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/slick-carousel/slick/slick.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fancybox/jquery.fancybox.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/hs-megamenu/src/hs.megamenu.css') }}">--}}
+    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/fancybox/jquery.fancybox.css') }}">--}}
+
+    <!-- CSS specific -->
+    @yield('link.header')
+
     <!-- CSS Global Compulsory -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/bootstrap.min.css') }}">
 
@@ -76,26 +79,11 @@
 <script src="{{ asset('assets/vendor/jquery.easing/js/jquery.easing.js') }}"></script>
 <script src="{{ asset('assets/vendor/popper.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/bootstrap/bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/bootstrap/offcanvas.js') }}"></script>
-
-<!-- JS Implementing Plugins -->
-<script src="{{ asset('assets/vendor/dzsparallaxer/dzsparallaxer.js') }}"></script>
-<script src="{{ asset('assets/vendor/dzsparallaxer/dzsscroller/scroller.js') }}"></script>
-<script src="{{ asset('assets/vendor/dzsparallaxer/advancedscroller/plugin.js') }}"></script>
-<script src="{{ asset('assets/vendor/masonry/dist/masonry.pkgd.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/slick-carousel/slick/slick.js') }}"></script>
-<script src="{{ asset('assets/vendor/fancybox/jquery.fancybox.min.js') }}"></script>
 
 <!-- JS Unify -->
 <script src="{{ asset('assets/js/hs.core.js') }}"></script>
-
 <script src="{{ asset('assets/js/components/hs.header.js') }}"></script>
 <script src="{{ asset('assets/js/helpers/hs.hamburgers.js') }}"></script>
-
-<script src="{{ asset('assets/js/components/hs.popup.js') }}"></script>
-<script src="{{ asset('assets/js/components/hs.carousel.js') }}"></script>
-
 <script src="{{ asset('assets/js/components/hs.go-to.js') }}"></script>
 
 
@@ -104,38 +92,14 @@
 <script src="{{ asset('assets/js/vendor.js') }}"></script>
 <script src="{{ asset('assets/js/app.js') }}"></script>
 
+<!-- JS specific -->
+@yield('script.footer')
+
 <!-- JS Plugins Init. -->
 <script>
     $(document).on('ready', function () {
         // initialization of go to
         $.HSCore.components.HSGoTo.init('.js-go-to');
-
-        // initialization of carousel
-        $.HSCore.components.HSCarousel.init('.js-carousel');
-
-        $('#we-provide').slick('setOption', 'responsive', [{
-            breakpoint: 992,
-            settings: {
-                slidesToShow: 2
-            }
-        }, {
-            breakpoint: 576,
-            settings: {
-                slidesToShow: 1
-            }
-        }], true);
-
-        // initialization of masonry
-        $('.masonry-grid').imagesLoaded().then(function () {
-            $('.masonry-grid').masonry({
-                columnWidth: '.masonry-grid-sizer',
-                itemSelector: '.masonry-grid-item',
-                percentPosition: true
-            });
-        });
-
-        // initialization of popups
-        $.HSCore.components.HSPopup.init('.js-fancybox');
     });
 
     $(window).on('load', function () {

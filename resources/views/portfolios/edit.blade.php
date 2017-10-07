@@ -2,88 +2,112 @@
 
 @section('content')
 
+    @include('layouts.partials.header')
+
+    <div class="container g-pt-100 g-pb-20">
+        <div class="row justify-content-between">
+
+            <!-- Sidebar -->
+        @include('layouts.partials.sidebar')
+
+        <!-- Main section -->
+            <div class="col-lg-9 order-lg-2 g-mb-80">
+                <!-- Nav tabs -->
+                <ul class="nav u-nav-v5-1 g-brd-bottom--md g-brd-gray-light-v4"
+                    role="tablist" data-target="nav-5-1-accordion-hor-left-border-bottom" data-tabs-mobile-type="accordion"
+                    data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-lightgray g-mb-20">
+
+                    <li class="nav-item">
+                        <a class="nav-link {{ active_tab('portfolio') }}" data-toggle="tab"
+                           href="#nav-5-1-accordion-hor-left-border-bottom--1" role="tab">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ active_tab('parameter') }}" data-toggle="tab"
+                           href="#nav-5-1-accordion-hor-left-border-bottom--2" role="tab">Parameter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ active_tab('limits') }}" data-toggle="tab"
+                           href="#nav-5-1-accordion-hor-left-border-bottom--3" role="tab">Limite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ active_tab('dashboard') }}" data-toggle="tab"
+                           href="#nav-5-1-accordion-hor-left-border-bottom--4" role="tab">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ active_tab('notifications') }}" data-toggle="tab"
+                           href="#nav-5-1-accordion-hor-left-border-bottom--4" role="tab">Email</a>
+                    </li>
+                </ul>
+                <!-- End Nav tabs -->
+
+                <!-- Tab panes -->
+                <div id="nav-5-1-accordion-hor-left-border-bottom" class="tab-content g-pt-20--md">
+                    <div class="tab-pane fade show {{ active_tab('portfolio') }}"
+                         id="nav-5-1-accordion-hor-left-border-bottom--1" role="tabpanel">
+                        @include('portfolios.edit.portfolio')
+                    </div>
+                    <div class="tab-pane fade {{ active_tab('parameter') }}" id="nav-5-1-accordion-hor-left-border-bottom--2" role="tabpanel">
+                        @include('portfolios.edit.parameter')
+                    </div>
+                    <div class="tab-pane fade {{ active_tab('limits') }}" id="nav-5-1-accordion-hor-left-border-bottom--3" role="tabpanel">
+                        @include('portfolios.edit.limits')
+                    </div>
+                    <div class="tab-pane fade" id="nav-5-1-accordion-hor-left-border-bottom--4" role="tabpanel">
+                        @include('portfolios.edit.dashboard')
+                    </div>
+                    <div class="tab-pane fade" id="nav-5-1-accordion-hor-left-border-bottom--5" role="tabpanel">
+                        @include('portfolios.edit.notifications')
+                    </div>
+                </div>
+                <!-- End Tab panes -->
+            </div>
+        </div>
+    </div>
+
+
+
     @if (session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
         </div>
     @endif
 
-    <div class="page-header">
-        <h3 class="page-title">Portfolio Einstellungen</h3>
-    </div> <!-- /.page-header -->
 
-    <div class="portlet portlet-boxed">
-        <div class="portlet-body">
-            <div class="layout layout-main-right layout-stack-sm">
+@endsection
 
-                <div class="col-md-3 col-sm-4 layout-sidebar">
+@section('link.header')
 
-                    <div class="nav-layout-sidebar-skip">
-                        <br class="xs-20 visible-xs"/>
-                        <strong>Tab Navigation</strong> / <a href="#settings-content">Skip to Content</a>
-                    </div>
+    <link rel="stylesheet" href="{{ asset('assets/vendor/chosen/chosen.css') }}">
 
-                    <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
+@endsection
 
-                        <li role="presentation" class="{{ active_tab('portfolio') }}">
-                            <a href="#portfolio" data-toggle="tab" role="tab">
-                                <i class="fa fa-pie-chart"></i>
-                                &nbsp;&nbsp;Portfolio
-                            </a>
-                        </li>
+@section('script.footer')
+    <!-- JS Implementing Plugins -->
+    <script src="{{ asset('assets/vendor/chosen/chosen.jquery.js') }}"></script>
+    <script  src="{{ asset('assets/vendor/jquery.maskedinput/src/jquery.maskedinput.js') }}"></script>
 
-                        <li role="presentation" class="{{ active_tab('parameter') }}">
-                            <a href="#parameter" data-toggle="tab" role="tab">
-                                <i class="fa fa-calculator"></i>
-                                &nbsp;&nbsp;Parameter
-                            </a>
-                        </li>
+    <!-- JS Unify -->
+    <script  src="{{ asset('assets/js/components/hs.tabs.js') }}"></script>
+    <script src="{{ asset('assets/js/components/hs.select.js') }}"></script>
+    <script  src="{{ asset('assets/js/components/hs.masked-input.js') }}"></script>
 
-                        <li role="presentation" class="{{ active_tab('limits') }}">
-                            <a href="#limits" data-toggle="tab" role="tab">
-                                <i class="fa fa-bar-chart"></i>
-                                &nbsp;&nbsp;Limite
-                            </a>
-                        </li>
+    <!-- JS Plugins Init. -->
+    <script >
+        $(document).on('ready', function () {
+            // initialization of tabs
+            $.HSCore.components.HSTabs.init('[role="tablist"]');
 
-                        <li role="presentation" class="{{ active_tab('dashboard') }}">
-                            <a href="#dashboard" data-toggle="tab" role="tab">
-                                <i class="fa fa-tachometer"></i>
-                                &nbsp;&nbsp;Dashboard
-                            </a>
-                        </li>
+            // initialization of custom select
+            $.HSCore.components.HSSelect.init('.js-custom-select');
 
-                        <li role="presentation" class="{{ active_tab('notifications') }}">
-                            <a href="#notifications" data-toggle="tab" role="tab">
-                                <i class="fa fa-envelope"></i>
-                                &nbsp;&nbsp;Benachrichtigungen
-                            </a>
-                        </li>
+            // initialization of forms
+            $.HSCore.components.HSMaskedInput.init('[data-mask]');
+        });
 
-                    </ul>
-
-                </div> <!-- /.col -->
-
-
-                <div class="col-md-9 col-sm-8 layout-main">
-
-                    <div id="settings-content" class="tab-content stacked-content">
-
-                        @include('portfolios.edit.portfolio')
-
-                        @include('portfolios.edit.parameter')
-
-                        @include('portfolios.edit.limits')
-
-                        @include('portfolios.edit.dashboard')
-
-                        @include('portfolios.edit.notifications')
-
-                    </div> <!-- /.tab-content -->
-
-                </div> <!-- /.col -->
-            </div> <!-- /.row -->
-        </div> <!-- /.portlet-body -->
-    </div> <!-- /.portlet -->
-
+        $(window).on('resize', function () {
+            setTimeout(function () {
+                $.HSCore.components.HSTabs.init('[role="tablist"]');
+            }, 200);
+        });
+    </script>
 @endsection

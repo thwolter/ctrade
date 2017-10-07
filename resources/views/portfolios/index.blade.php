@@ -51,3 +51,37 @@
 @endsection
 
 
+@section('link.header')
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/slick-carousel/slick/slick.css') }}">
+
+@endsection
+
+
+@section('script.footer')
+
+    <script src="{{ asset('assets/js/components/hs.carousel.js') }}"></script>
+    <script src="{{ asset('assets/vendor/slick-carousel/slick/slick.js') }}"></script>
+
+    <script>
+        $(document).on('ready', function () {
+
+            // initialization of carousel
+            $.HSCore.components.HSCarousel.init('.js-carousel');
+
+            $('#we-provide').slick('setOption', 'responsive', [{
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2
+                }
+            }, {
+                breakpoint: 576,
+                settings: {
+                    slidesToShow: 1
+                }
+            }], true);
+        });
+    </script>
+@endsection
+
+
