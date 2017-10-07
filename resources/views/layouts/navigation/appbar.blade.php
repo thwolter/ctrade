@@ -18,8 +18,8 @@
                 </button>
                 <!-- End Responsive Toggle Button -->
                 <!-- Logo -->
-                <a href="../../../index.html" class="navbar-brand">
-                    <img src="{{ asset('assets/img/logo/logo-1.png" alt="Image Description') }}">
+                <a href="#" class="navbar-brand">
+                    <img src="{{ asset('assets/img/logo/logo-1.png') }}" alt="Image Description') }}">
                 </a>
                 <!-- End Logo -->
 
@@ -32,96 +32,39 @@
                             </a>
                         </li>
 
-                        <li class="nav-item g-mx-20--lg">
+                        <li class="nav-item g-mx-20--lg {{ active_class(if_route_pattern(['blog'])) }}">
                             <a href="{{ route('home.blog') }}" class="nav-link px-0">Blog
-
                             </a>
                         </li>
 
-                        <li class="nav-item g-mx-20--lg active">
+                        <li class="nav-item g-mx-20--lg {{ active_class(if_route_pattern(['contact'])) }}">
                             <a href="{{ route('home.contact') }}" class="nav-link px-0">Kontakt
-                                <span class="sr-only">(current)</span>
                             </a>
                         </li>
 
-                        <li class="nav-item g-mx-20--lg active">
+                        <li class="nav-item g-mx-20--lg">
                             <a href="{{ route('home.about') }}" class="nav-link px-0">Über uns
-                                <span class="sr-only">(current)</span>
                             </a>
                         </li>
 
-                        <li class="nav-item g-mx-20--lg active">
-                            <a href="{{ route('faq.index') }}" class="nav-link px-0">FAQ
-                                <span class="sr-only">(current)</span>
-                            </a>
+                        <li class="nav-item g-mx-20--lg {{ active_class(if_route_pattern(['faq'])) }}">
+                            <a href="{{ route('faq.index') }}" class="nav-link px-0">FAQ</a>
                         </li>
 
                         @if (Auth::guest())
-                            <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                        @else
-                            <li class="nav-item dropdown g-mx-20--lg">
-                                <a href="#" class="nav-link dropdown-toggle g-px-0" id="nav-link-1" aria-haspopup="true"
-                                   aria-expanded="false" aria-controls="section-home-submenu" data-toggle="dropdown"
-                                   data-appear-speed="200" data-appear-easing="linear">Account
-
-                                </a>
-                                <!-- Submenu (Bootstrap) -->
-                                <ul class="dropdown-menu font-weight-normal rounded-0 g-text-transform-none g-brd-none g-brd-top g-brd-primary g-brd-top-1 g-mt-20 g-mt-10--lg--scrolling"
-                                    id="nav-submenu-1" aria-labelledby="nav-link-1">
-                                    <li class="active g-mx-5--lg">
-                                        <a class="nav-link g-color-primary--hover"
-                                           href="{{ route('users.edit', ['tab' => 'profile']) }}">
-                                            Mein Profil
-                                        </a>
-                                    </li>
-                                    <li class="g-mx-5--lg">
-                                        <a class="nav-link g-color-primary--hover"
-                                           href="{{ route('users.edit', ['tab' => 'password']) }}">
-                                            Passwort
-                                        </a>
-                                    </li>
-                                    <li class="g-mx-5--lg">
-                                        <a class="nav-link g-color-primary--hover"
-                                           href="{{ route('users.edit', ['tab' => 'messaging']) }}">
-                                            Emails
-                                        </a>
-                                    </li>
-                                    <li class="g-mx-5--lg">
-                                        <a class="nav-link g-color-primary--hover" href="{{ route('logout') }} onclick="
-                                           event.preventDefault(); document.getElementById('logout-form').submit();"">
-                                        Logout
-                                        </a>
-                                    </li>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                          style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
-                                </ul>
-                                <!-- End Submenu (Bootstrap) -->
+                            <li class="nav-item g-mx-20--lg {{ active_class(if_route_pattern(['login'])) }}">
+                                <a href="{{ route('login') }}" class="nav-link px-0">Login</a>
                             </li>
+                        @else
+
+                            @include('layouts.navigation.partials.portfolio')
+
+                            @include('layouts.navigation.partials.account')
+
+                            @include('layouts.navigation.partials.admin')
+
                         @endif
 
-                        @role('admin')
-                        <ul class="dropdown-menu font-weight-normal rounded-0 g-text-transform-none g-brd-none g-brd-top g-brd-primary g-brd-top-1 g-mt-20 g-mt-10--lg--scrolling"
-                            id="nav-submenu-1" aria-labelledby="nav-link-1">
-                            <li class="active g-mx-5--lg">
-                                <a class="nav-link g-color-primary--hover" href="/admin/dashboard">
-                                    Backpack
-                                </a>
-                            </li>
-                            <li class="g-mx-5--lg">
-                                <a class="nav-link g-color-primary--hover" href="/horizon">
-                                    Horizon
-                                </a>
-                            </li>
-                            <li class="g-mx-5--lg">
-                                <a class="nav-link g-color-primary--hover"
-                                   href="{{ route('users.edit', ['tab' => 'messaging']) }}">
-                                    Emails
-                                </a>
-                            </li>
-                        </ul>
-                        @endrole
 
                     </ul>
                 </div>

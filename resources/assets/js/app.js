@@ -11,21 +11,12 @@ import Form from './core/Form';
 import Event from './core/Event';
 import Colors from './core/Colors';
 
-/**
- * components from VueStrap
- * 
- */ 
-import popover from 'vue-strap';
 
 import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
 
 import { dropdown } from 'vue-strap';
 
-
-
-//import 'vue-instant/dist/vue-instant.css';
-//import VueInstant from 'vue-instant';
 
 window.Vue = Vue;
 window.Form = Form;

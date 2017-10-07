@@ -21,7 +21,7 @@ return [
 
     'menu' => [
         'unspecified'   => 'Meine Portfolios',
-        'create'        => 'Neues Portfolio',
+        'create'        => 'Neu',
         'overview'      => 'Überblick'
     ],
 

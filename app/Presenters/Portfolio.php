@@ -81,11 +81,7 @@ class Portfolio extends Presenter
     public function description()
     {
         $description = $this->entity->description;
-        if ($description) {
-            return '<p>$description</p>';
-        } else {
-            return '<p style="color: lightgrey;">Keine Beschreibung vorhanden.</p>';
-        }
+        return $description ? $description : 'Keine Beschreibung vorhanden.';
     }
 
 }
