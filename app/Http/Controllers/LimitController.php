@@ -21,25 +21,26 @@ class LimitController extends Controller
         $portfolio = Portfolio::find($request->id);
         $repo = new LimitRepository($portfolio);
 
-        $success = [];
         foreach (LimitType::all() as $type) {
 
+            session()->forget('limit_'.$type->code);
+            $task = $repo->active($type->code) ? 'changed' : 'set';
+
             if ($request->exists($type->code)) {
-                $success[$type->code] = $repo->set($type->code, $request->all());
+                $saved = $repo->set($type->code, $request->all());
+
+                if (!is_null($saved))
+                    session(['limit_'.$type->code => $saved ? $task : 'error']);
 
             } else {
-                $repo->inactivate($type->code);
+                $saved = $repo->inactivate($type->code);
+
+                if (!is_null($saved))
+                    session(['limit_'.$type->code => $saved ? 'inactive' : 'error']);
             }
         }
 
-        session(['active_tab' => $request->active_tab]);
-        $redirect = redirect(route('portfolios.edit', $portfolio->slug));
-
-        if (array_search(false, $success)) {
-            return $redirect->with('error', 'Limite konnten nicht angepasst werden. Bitte überprüfe die Werte.');
-
-        } else {
-            return $redirect->with('success', $success);
-        }
+        session(['active_tab' => $request->active_tab,]);
+        return redirect(route('portfolios.edit', $portfolio->slug));
     }
 }

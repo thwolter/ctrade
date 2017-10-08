@@ -29,7 +29,7 @@ class LimitRepository
      * @param string $type
      * @param array $attributes
      *
-     * @return bool
+     * @return null|bool
      */
     public function set($type, array $attributes)
     {
@@ -46,11 +46,12 @@ class LimitRepository
             $limit->value = (float)array_get($attributes, $type.'_value');
             $limit->date = array_get($attributes, $type.'_date');
             $limit->active = 1;
-            return $limit->save();
 
-        } else {
-            return false;
+            if ($limit->isDirty())
+                return $limit->save();
+
         }
+        return null;
     }
 
 
@@ -71,18 +72,21 @@ class LimitRepository
         return ($value !== null && !$missingDate);
     }
 
+
     /**
      * Inactivates the limit of a given type.
      *
-     * @param string $type
+     * @param $type
+     * @return bool
      */
     public function inactivate($type)
     {
         $limit = $this->get($type);
 
-        if ($limit) {
-            $limit->update(['active' => 0]);
-        }
+        if (optional($limit)->isDirty())
+            return $limit->update(['active' => 0]);
+
+        return null;
     }
 
 

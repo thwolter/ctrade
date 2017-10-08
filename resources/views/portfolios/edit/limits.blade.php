@@ -1,10 +1,9 @@
 <h2 class="h4 g-font-weight-300">Limits</h2>
 
-@include('partials.errors')
-
-<p class="g-mb-25">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
-    eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
-    montes.</p>
+<p class="g-mb-25">
+    Lege Limite für dein Portfolio fest. Bei Überschreitung der Limite wirst du automatisch per Mail
+    informiert.
+</p>
 
 <div id="form">
     {!! Form::open(['route' => 'limits.set', 'method' => 'POST',
@@ -17,12 +16,13 @@
     <!-- Absolute limit -->
     <div class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30">
         @php
-            $type = 'absolute';
-            $checked = ($limit->active($type)) ? "checked" : "";
-            $value = (string)optional($limit->get($type))->value;
+            $checked = ($limit->active('absolute')) ? "checked" : "";
+            $value = (string)optional($limit->get('absolute'))->value;
         @endphp
 
         <h4 class="h6 g-font-weight-700 g-mb-20">Absolutes Limit</h4>
+        @includeWhen(Session::has('limit_absolute'), 'portfolios.status.limit_'.Session::get('limit_absolute'))
+
 
         <div class="form-group">
             <label class="d-flex align-items-center">
@@ -57,13 +57,12 @@
     <!-- Relative limit -->
     <div class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30">
         @php
-            $type = 'relative';
-            $checked = ($limit->active($type)) ? "checked" : "";
-            $visible = ($checked) ? "inherit" : "none";
-            $value = ($checked) ? (string)$limit->get($type)->value : null;
+            $checked = ($limit->active('relative')) ? "checked" : "";
+            $value = (string)optional($limit->get('relative'))->value;
         @endphp
 
         <h4 class="h6 g-font-weight-700 g-mb-20">Relatives Limit</h4>
+        @includeWhen(Session::has('limit_relative'), 'portfolios.status.limit_'.Session::get('limit_relative'))
 
         <div class="form-group">
             <label class="d-flex align-items-center">
@@ -99,13 +98,12 @@
     <!-- Floor limit -->
     <div class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30">
         @php
-            $type = 'floor';
-            $checked = ($limit->active($type)) ? "checked" : "";
-            $visible = ($checked) ? "inherit" : "none";
-            $value = ($checked) ? (string)$limit->get($type)->value : null;
+            $checked = ($limit->active('floor')) ? "checked" : "";
+            $value = (string)optional($limit->get('floor'))->value;
         @endphp
 
         <h4 class="h6 g-font-weight-700 g-mb-20">Mindestwert</h4>
+        @includeWhen(Session::has('limit_floor'), 'portfolios.status.limit_'.Session::get('limit_floor'))
 
         <div class="form-group">
             <label class="d-flex align-items-center">
@@ -143,14 +141,13 @@
     <!-- Target limit -->
     <div class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30">
         @php
-            $type = 'target';
-            $checked = ($limit->active($type)) ? "checked" : "";
-            $visible = ($checked) ? "inherit" : "none";
-            $value = ($checked) ? (string)$limit->get($type)->value : null;
-            $date = ($checked) ? $limit->get($type)->date : null;
+            $checked = ($limit->active('target')) ? "checked" : "";
+            $value = (string)optional($limit->get('target'))->value;
+            $date = optional($limit->get('target'))->date;
         @endphp
 
         <h4 class="h6 g-font-weight-700 g-mb-20">Ziel Limit</h4>
+        @includeWhen(Session::has('limit_target'), 'portfolios.status.limit_'.Session::get('limit_target'))
 
         <div class="form-group">
             <label class="d-flex align-items-center">

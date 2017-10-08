@@ -13,7 +13,7 @@
         <!-- Main section -->
             <div class="col-lg-9 order-lg-2 g-mb-80">
                 <!-- Nav tabs -->
-                <ul class="nav u-nav-v5-1 g-brd-bottom--md g-brd-gray-light-v4"
+                <ul class="nav u-nav-v5-3 g-brd-bottom--md g-brd-gray-light-v4"
                     role="tablist" data-target="nav-5-1-accordion-hor-left-border-bottom" data-tabs-mobile-type="accordion"
                     data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-lightgray g-mb-20">
 

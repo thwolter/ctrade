@@ -1,8 +1,8 @@
 <h2 class="h4 g-font-weight-300">Parameter</h2>
 
-<p class="g-mb-25">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
-    eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
-    montes.</p>
+<p class="g-mb-25">
+    Lege die Parameter für die Berechnung der Risiken fest.
+</p>
 
 
 {!! Form::open(['route' => ['portfolios.update', $portfolio->slug], 'method' => 'PUT',
@@ -27,7 +27,8 @@
             ])
          !!}
         <small class="form-text text-muted g-font-size-default g-mt-10">
-            We'll never share your email with anyone else.
+            Wie risikofreudig bist du? Je höher das Sicherheitsniviau desto sicherer stellt das Risiko
+            den maximal möglichen Verluste deines Portfolios dar.
         </small>
     </div>
 </div>
@@ -47,7 +48,8 @@
             ])
         !!}
         <small class="form-text text-muted g-font-size-default g-mt-10">
-            We'll never share your email with anyone else.
+            Wie oft möchtest du Änderungen an deinem Portfolio vornehmen? Der gewählte Zeitraum sollte mit
+            dieser Zeit übereinstimmen.
         </small>
     </div>
 </div>
@@ -67,7 +69,9 @@
             ])
         !!}
         <small class="form-text text-muted g-font-size-default g-mt-10">
-            We'll never share your email with anyone else.
+            Welcher historische Zeitraum ist für dein Portfolio relevant? Je kürzer der Zeitraum
+            desto stärker werden kurzfristige Ereignisse berücksichtigt. Länger zurückliegende
+            Ereignisse werden nicht berücksichtigt.
         </small>
     </div>
 </div>

@@ -11,9 +11,9 @@
 
     <h2 class="h4 g-font-weight-300">Portfolio Einstellungen</h2>
 
-    <p class="g-mb-25">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
-        eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
-        montes.</p>
+    <p class="g-mb-25">
+        Allgemeine Angaben zu deinem Portfolio.
+    </p>
 
     {!! Form::open(['route' => ['portfolios.update', $portfolio->slug], 'method' => 'PUT',
      'class' => 'g-brd-gray-light-v4 g-pa-30 g-mb-30']) !!}
@@ -29,28 +29,21 @@
             <input type="text" id="name" name="name" value="{{ $portfolio->name }}"
                    class="form-control u-form-control rounded-0">
             <small class="form-text text-muted g-font-size-default g-mt-10">
-                We'll never share your email with anyone else.
+                Wie möchtest du dein Portfolio benennen?
             </small>
         </div>
     </div>
 
-    <!-- Portfolio category -->
-    <div class="form-group row g-mb-25">
-        <label class="col-sm-3 col-form-label g-mb-10" for="category">Kategorie</label>
-        <div class="col-sm-9">
-            <input type="text" id="category" name="category" value=""
-                   class="form-control u-form-control rounded-0">
-            <small class="form-text text-muted g-font-size-default g-mt-10">
-                We'll never share your email with anyone else.
-            </small>
-        </div>
-    </div>
 
     <!-- Portfolio desctiption -->
     <div class="form-group row g-mb-25">
         <label class="col-sm-3 col-form-label g-mb-10">Beschreibung</label>
         <div class="col-sm-9">
-            <textarea id="description-textarea" name="description" rows="6" class="form-control">{{ $portfolio->description }}</textarea>
+            <textarea id="description-textarea" name="description" rows="6" class="form-control"
+            placeholder="Beschreiben dein Portfolio">{{ $portfolio->description }}</textarea>
+            <small class="form-text text-muted g-font-size-default g-mt-10">
+                Notizen zu deinem Portfolio
+            </small>
         </div>
     </div>
 
