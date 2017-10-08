@@ -37,12 +37,12 @@
                             </a>
                         </li>
 
-                        <li class="nav-item g-mx-20--lg {{ active_class(if_route_pattern(['contact'])) }}">
+                        <li class="nav-item g-mx-20--lg {{ active_class(if_route('home.contact')) }}">
                             <a href="{{ route('home.contact') }}" class="nav-link px-0">Kontakt
                             </a>
                         </li>
 
-                        <li class="nav-item g-mx-20--lg">
+                        <li class="nav-item g-mx-20--lg {{ active_class(if_route('home.about')) }}">
                             <a href="{{ route('home.about') }}" class="nav-link px-0">Über uns
                             </a>
                         </li>
