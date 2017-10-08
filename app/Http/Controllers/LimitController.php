@@ -25,7 +25,7 @@ class LimitController extends Controller
         foreach (LimitType::all() as $type) {
 
             if ($request->exists($type->code)) {
-                $success[] = $repo->set($type->code, $request->all());
+                $success[$type->code] = $repo->set($type->code, $request->all());
 
             } else {
                 $repo->inactivate($type->code);
@@ -39,7 +39,7 @@ class LimitController extends Controller
             return $redirect->with('error', 'Limite konnten nicht angepasst werden. Bitte überprüfe die Werte.');
 
         } else {
-            return $redirect->with('success', 'Limite erfolgreich geändert.');
+            return $redirect->with('success', $success);
         }
     }
 }

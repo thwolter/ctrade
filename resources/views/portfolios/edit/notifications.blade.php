@@ -1,16 +1,9 @@
-<div class="tab-pane fade in {{ active_tab('notifications') }}" id="notifications">
+<h2 class="h4 g-font-weight-300">Email Einstellungen</h2>
 
-    <div class="heading-block">
-        <h3>
-            Notification Settings
-        </h3>
-    </div> <!-- /.heading-block -->
-
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
         eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
         montes.</p>
 
-    <br><br>
 
     <form action="./page-settings.html" class="form form-horizontal">
 
@@ -80,4 +73,3 @@
 
     </form>
 
-</div> <!-- /.tab-pane -->

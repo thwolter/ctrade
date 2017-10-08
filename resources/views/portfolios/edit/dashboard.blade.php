@@ -1,10 +1,4 @@
-<div class="tab-pane fade in {{ active_tab('dashboard') }}" id="dashboard">
-
-    <div class="heading-block">
-        <h3>
-            Dashboard
-        </h3>
-    </div>
+<h2 class="h4 g-font-weight-300">Dashboard</h2>
 
     @include('partials.errors')
 
@@ -12,7 +6,6 @@
         eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
         montes.</p>
 
-    <br><br>
 
     {!! Form::open(['route' => ['portfolios.update', $portfolio->slug], 'method' => 'PUT',
         'class' => 'form form-horizontal']) !!}
@@ -39,10 +32,8 @@
     <div class="form-group">
         <div class="col-md-7 col-md-push-3">
             <button type="submit" class="btn btn-primary">Speichern</button>
-            <button type="reset" class="btn btn-default">Abbrechen</button>
         </div>
     </div>
 
     {!! Form::close() !!}
 
-</div>

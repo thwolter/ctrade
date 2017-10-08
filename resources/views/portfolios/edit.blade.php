@@ -35,27 +35,27 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ active_tab('notifications') }}" data-toggle="tab"
-                           href="#nav-5-1-accordion-hor-left-border-bottom--4" role="tab">Email</a>
+                           href="#nav-5-1-accordion-hor-left-border-bottom--5" role="tab">Email</a>
                     </li>
                 </ul>
                 <!-- End Nav tabs -->
 
                 <!-- Tab panes -->
                 <div id="nav-5-1-accordion-hor-left-border-bottom" class="tab-content g-pt-20--md">
-                    <div class="tab-pane fade show {{ active_tab('portfolio') }}"
+                    <div class="tab-pane fade show {{ active_tab('portfolio', 'show active') }}"
                          id="nav-5-1-accordion-hor-left-border-bottom--1" role="tabpanel">
                         @include('portfolios.edit.portfolio')
                     </div>
-                    <div class="tab-pane fade {{ active_tab('parameter') }}" id="nav-5-1-accordion-hor-left-border-bottom--2" role="tabpanel">
+                    <div class="tab-pane fade {{ active_tab('parameter', 'show active') }}" id="nav-5-1-accordion-hor-left-border-bottom--2" role="tabpanel">
                         @include('portfolios.edit.parameter')
                     </div>
-                    <div class="tab-pane fade {{ active_tab('limits') }}" id="nav-5-1-accordion-hor-left-border-bottom--3" role="tabpanel">
+                    <div class="tab-pane fade {{ active_tab('limits', 'show active') }}" id="nav-5-1-accordion-hor-left-border-bottom--3" role="tabpanel">
                         @include('portfolios.edit.limits')
                     </div>
-                    <div class="tab-pane fade" id="nav-5-1-accordion-hor-left-border-bottom--4" role="tabpanel">
+                    <div class="tab-pane fade {{ active_tab('dashboard', 'show active') }}" id="nav-5-1-accordion-hor-left-border-bottom--4" role="tabpanel">
                         @include('portfolios.edit.dashboard')
                     </div>
-                    <div class="tab-pane fade" id="nav-5-1-accordion-hor-left-border-bottom--5" role="tabpanel">
+                    <div class="tab-pane fade {{ active_tab('notifications', 'show active') }}" id="nav-5-1-accordion-hor-left-border-bottom--5" role="tabpanel">
                         @include('portfolios.edit.notifications')
                     </div>
                 </div>
@@ -77,19 +77,31 @@
 
 @section('link.header')
 
+    <!-- CSS Implementing Plugins -->
+    <link  rel="stylesheet" href="{{ asset('assets/vendor/jquery-ui/themes/base/jquery-ui.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/chosen/chosen.css') }}">
 
 @endsection
 
 @section('script.footer')
+
+    <!-- jQuery UI Helpers -->
+    <script  src="{{ asset('assets/vendor/jquery-ui/ui/widgets/menu.js') }}"></script>
+    <script  src="{{ asset('assets/vendor/jquery-ui/ui/widgets/mouse.js') }}"></script>
+
+    <!-- jQuery UI Widgets -->
+    <script  src="{{ asset('assets/vendor/jquery-ui/ui/widgets/datepicker.js') }}"></script>
+
     <!-- JS Implementing Plugins -->
     <script src="{{ asset('assets/vendor/chosen/chosen.jquery.js') }}"></script>
     <script  src="{{ asset('assets/vendor/jquery.maskedinput/src/jquery.maskedinput.js') }}"></script>
 
     <!-- JS Unify -->
-    <script  src="{{ asset('assets/js/components/hs.tabs.js') }}"></script>
+    <script src="{{ asset('assets/js/components/hs.tabs.js') }}"></script>
     <script src="{{ asset('assets/js/components/hs.select.js') }}"></script>
-    <script  src="{{ asset('assets/js/components/hs.masked-input.js') }}"></script>
+    <script src="{{ asset('assets/js/components/hs.masked-input.js') }}"></script>
+    <script src="{{ asset('assets/js/components/hs.datepicker.js') }}"></script>
+
 
     <!-- JS Plugins Init. -->
     <script >
@@ -102,6 +114,7 @@
 
             // initialization of forms
             $.HSCore.components.HSMaskedInput.init('[data-mask]');
+            $.HSCore.components.HSDatepicker.init('#datepickerDefault');
         });
 
         $(window).on('resize', function () {

@@ -21,17 +21,12 @@
 
     <!-- CSS Global Icons -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/icon-awesome/css/font-awesome.min.css') }}">
-    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/icon-line/css/simple-line-icons.css') }}">--}}
-    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/icon-etlinefont/style.css') }}">--}}
-    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/icon-line-pro/style.css') }}">--}}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/icon-line/css/simple-line-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/icon-etlinefont/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/icon-line-pro/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/icon-hs/style.css') }}">
-    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/dzsparallaxer.css') }}">--}}
-    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/dzsscroller/scroller.css') }}">--}}
-    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/advancedscroller/plugin.css') }}">--}}
-    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/animate.css') }}">--}}
+
     <link rel="stylesheet" href="{{ asset('assets/vendor/hamburgers/hamburgers.min.css') }}">
-    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/hs-megamenu/src/hs.megamenu.css') }}">--}}
-    {{--<link rel="stylesheet" href="{{ asset('assets/vendor/fancybox/jquery.fancybox.css') }}">--}}
 
     <!-- CSS specific -->
     @yield('link.header')
