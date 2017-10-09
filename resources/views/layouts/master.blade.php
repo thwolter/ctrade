@@ -135,6 +135,12 @@
             breakpoint: 767
         });
     });
+
+    $(window).on('resize', function () {
+        setTimeout(function () {
+            $.HSCore.components.HSTabs.init('[role="tablist"]');
+        }, 200);
+    });
 </script>
 
 </body>

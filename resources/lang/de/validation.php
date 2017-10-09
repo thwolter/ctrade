@@ -121,7 +121,10 @@ return [
         'password' => 'Passwort',
         'email'    => 'E-Mail-Adresse',
         'name'     => 'Name',
-        'amount'   => 'Betrag'
+        'amount'   => 'Betrag',
+        'firstName' => 'Vorname',
+        'lastName' => 'Nachname',
+        'policy' => 'Nutzungsbedingungen'
     ],
 
 

@@ -2,70 +2,123 @@
 
 @section('content')
 
-    <div class="account-wrapper">
-        <div class="account-body">
-            
-            <h3>Kostenlosen Account erstellen.</h3>
-           
-            <form class="form account-form" role="form" method="POST" action="{{ route('register') }}">
+    <!-- Signup -->
+    <section class="g-bg-gray-light-v5">
+        <div class="container g-py-100">
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-9 col-lg-6">
+                    <div class="u-shadow-v21 g-bg-white rounded g-py-40 g-px-30">
+                        <header class="text-center mb-4">
+                            <h2 class="h2 g-color-black g-font-weight-600">Kostenlosen Account erstellen</h2>
+                        </header>
 
-                {{ csrf_field() }}
-                
-                @include('partials.errors')
+                        <!-- Form -->
+                        <form class="g-py-15" method="POST" action="{{ route('register') }}">
 
-                <!-- name input-->
-                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                    <label for="name" class="placeholder-hidden">Name</label>
-                    <input type="text" name="name" class="form-control" id="name" placeholder="Name"
-                           tabindex="1" value="{{ old('name') }}" required autofocus>
-                </div> <!-- /name input-->
+                            {{ csrf_field() }}
 
-                <!-- email input -->
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="placeholder-hidden">Email</label>
-                    <input type="text" name="email" class="form-control" id="email" placeholder="Email"
-                           tabindex="2" value="{{ old('email') }}" required>
-                </div> <!-- /email input -->
+                            @if ($errors->any())
+                                <div class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
+                                     role="alert">
+                                    <button type="button" class="close u-alert-close--light" data-dismiss="alert"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
 
-                <!-- password input -->
-                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                    <label for="password" class="placeholder-hidden">Passwort</label>
-                    <input type="password" name="password" class="form-control" id="password"
-                           placeholder="Passwort" tabindex="3" required>
-                </div> <!-- /password input -->
+                                    <div class="media">
+                                        <span class="d-flex g-mr-10 g-mt-5">
+                                            <i class="icon-ban g-font-size-25"></i>
+                                        </span>
+                                        <span class="media-body align-self-center">
+                                            <strong>Eingaben unvollständig!</strong> Bitte korrigiere deine Eingaben und versuche es erneut.
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- End Red Alert -->
+                            @endif
 
-                <!-- password confirmation -->
-                <div class="form-group">
-                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
-                           placeholder="Passwort bestätigen" tabindex="4" required>
-                </div> <!--/password confirmation -->
+                            <div class="row">
 
-                <!-- checkbox -->
-                <div class="form-group">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="agree" name="checkbox" class="" tabindex="5"
-                               value="true" {{ old('checkbox') ? 'checked' : '' }}>
-                        Ich akzeptiere <a href="javascript:;" target="_blank">Terms of Service</a> &amp; <a href="javascript:;" target="_blank">Privacy Policy</a>
-                    </label>
-                </div> <!-- /checkbox -->
+                                <!-- first name -->
+                                <div class="col-xs-12 col-sm-6 mb-4 {{ $errors->has('firstName') ? ' u-has-error-v1' : '' }}">
+                                    <label class="g-color-gray-dark-v2 g-font-weight-600 g-font-size-13">Vorname:</label>
+                                    <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15"
+                                           type="text" placeholder="Vorname" value="{{ old('firstName') }}"
+                                           name="firstName">
+                                    <small class="form-control-feedback">{{ $errors->first('firstName') }}</small>
+                                </div>
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="6">
-                        Account erstellen &nbsp; <i class="fa fa-play-circle"></i>
-                    </button>
-                </div> <!-- /.form-group -->
+                                <!-- last name -->
+                                <div class="col-xs-12 col-sm-6 mb-4 {{ $errors->has('lastName') ? ' u-has-error-v1' : '' }}">
+                                    <label class="g-color-gray-dark-v2 g-font-weight-600 g-font-size-13">Name:</label>
+                                    <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15"
+                                           type="text" placeholder="Nachname" value="{{ old('lastName') }}"
+                                           name="lastName">
+                                    <small class="form-control-feedback">{{ $errors->first('lastName') }}</small>
+                                </div>
+                            </div>
 
-            </form>
+                            <!-- email -->
+                            <div class="mb-4 {{ $errors->has('email') ? ' u-has-error-v1' : '' }}">
+                                <label class="g-color-gray-dark-v2 g-font-weight-600 g-font-size-13">Email:</label>
+                                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15"
+                                       type="email" placeholder="Email" value="{{ old('email') }}" name="email">
+                                <small class="form-control-feedback">{{ $errors->first('email') }}</small>
+                            </div>
 
-        </div> <!-- /.account-body -->
+                            <div class="row">
 
-        <div class="account-footer">
-            <p>
-                Du hast schon einen Account? &nbsp;
-                <a href="{{ route('login') }}" class="">Hier Einloggen!</a>
-            </p>
-        </div> <!-- /.account-footer -->
-        
-    </div> <!-- /.account-wrapper -->
+                                <!-- password -->
+                                <div class="col-xs-12 col-sm-6 mb-4 {{ $errors->has('password') ? ' u-has-error-v1' : '' }}">
+                                    <label class="g-color-gray-dark-v2 g-font-weight-600 g-font-size-13">Passwort:</label>
+                                    <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15"
+                                           type="password" placeholder="Passwort" name="password">
+                                    <small class="form-control-feedback">{{ $errors->first('password') }}</small>
+                                </div>
+
+                                <!-- password confirm -->
+                                <div class="col-xs-12 col-sm-6 mb-4">
+                                    <label class="g-color-gray-dark-v2 g-font-weight-600 g-font-size-13">Passwort
+                                        bestätigen:</label>
+                                    <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v4 g-brd-primary--hover rounded g-py-15 g-px-15"
+                                           type="password" placeholder="Passwort" name="password_confirmation">
+                                </div>
+                            </div>
+
+
+                            <!-- accept policy -->
+                            <div class="row justify-content-between mb-5">
+                                <div class="col-8 align-self-center {{ $errors->has('policy') ? ' u-has-error-v1' : '' }}">
+                                    <label class="form-check-inline u-check g-color-gray-dark-v5 g-font-size-13 g-pl-25">
+                                        <input class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0"
+                                               type="checkbox" name="policy"
+                                               value="1" {{ old('policy') ? 'checked' : '' }}>
+                                        <div class="u-check-icon-checkbox-v6 g-absolute-centered--y g-left-0">
+                                            <i class="fa" data-check-icon="&#xf00c"></i>
+                                        </div>
+                                        Ich akzeptiere die <a href="{{ route('home.policy') }}">Nutzungsbedingungen</a>
+                                    </label>
+                                    <p><small class="form-control-feedback">{{ $errors->first('policy') }}</small></p>
+
+                                </div>
+                                <div class="col-4 align-self-center text-right">
+                                    <button class="btn btn-md u-btn-primary rounded g-py-13 g-px-25" type="submit">
+                                        Anmelden
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- End Form -->
+
+                        <footer class="text-center">
+                            <p class="g-color-gray-dark-v5 g-font-size-13 mb-0">Du hast schon einen Account?
+                                <a class="g-font-weight-600" href="{{ route('login') }}">Login</a>
+                            </p>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection
 

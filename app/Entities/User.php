@@ -61,7 +61,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'settings', 'email_token', 'verified', 'avatar'
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'settings',
+        'email_token',
+        'verified',
+        'avatar'
     ];
 
     /**
@@ -75,7 +82,11 @@ class User extends Authenticatable
 
     protected $cascadeDeletes = ['portfolios'];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
 
 
 
@@ -166,14 +177,20 @@ class User extends Authenticatable
     |--------------------------------------------------------------------------
     */
 
-    public function getFirstNameAttribute($value)
-    {
-        return ucfirst(explode(' ', $this->name)[0]);
-    }
 
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = ucfirst($value);
+    }
+
+    public function setLastNameAttribute($value)
+    {
+        $this->attributes['last_name'] = ucfirst($value);
+    }
 }
