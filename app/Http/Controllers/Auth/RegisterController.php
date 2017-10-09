@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Entities\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
@@ -86,10 +87,14 @@ class RegisterController extends Controller
     public function register(Request $request)  
     {
         $this->validator($request->all())->validate();
-        event(new Registered($user = $this->create($request->all())));
+        $user = $this->create($request->all());
+
+        event(new Registered($user));
         dispatch(new SendVerificationEmail($user));
 
-        return redirect(route('register.success'));
+        return redirect()
+            ->action('Auth\RegisterController@success')
+            ->with('uuid', $user->uuid);
     }
 
 
@@ -116,6 +121,8 @@ class RegisterController extends Controller
 
     public function success()
     {
+        Auth::login(User::whereUuid(session('uuid'))->first());
+
         return view('auth.success');
     }
 }

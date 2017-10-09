@@ -48,7 +48,7 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        $examplesUser = User::whereName('examples')->first();
+        $examplesUser = User::whereLastName('examples')->first();
 
         if ($examplesUser) {
             $examples = $examplesUser->portfolios;

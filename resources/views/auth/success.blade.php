@@ -2,20 +2,16 @@
 
 @section('content')
 
-    <div class="content">
+    <section class="g-color-white g-bg-darkgray-radialgradient-circle g-pa-40">
         <div class="container">
-
-            <portlet title="Account angelegt">
-                <h2 class="text-center">Fast geschafft</h2>
-                <p class="text-center lead">Vielen Dank, dass du dich auf unserer Seite registierte hast. </p>
-                <p class="text-center lead">
-                    Bitte bestätige deine Email Adresse mit dem Link, dem wir dir per Email geschickt haben.
-                </p>
-                <p class="text-center">
-                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg">Login</a>
-                </p>
-            </portlet>
-
+            <div class="row">
+                <div class="col-md-8 align-self-center">
+                    <h2 class="h3 text-uppercase g-font-weight-300 g-mb-20 g-mb-0--md">
+                        <strong>Willkommen {{ Auth::user()->email }}</strong>
+                    </h2>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
 @endsection
