@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/icon-line-pro/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/icon-hs/style.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets/vendor/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/hs-megamenu/src/hs.megamenu.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/hamburgers/hamburgers.min.css') }}">
 
     <!-- CSS specific -->
@@ -45,8 +47,15 @@
 
 <main id="wrapper">
 
-    <!-- App bar -->
-    @include('layouts.navigation.appbar')
+    <!-- Header -->
+    <header id="js-header" class="u-header u-header--static--lg u-header--show-hide--lg u-header--change-appearance--lg"
+            data-header-fix-moment="500" data-header-fix-effect="slide">
+
+        @include('layouts.navigation.topbar')
+
+        @include('layouts.navigation.appbar')
+
+    </header>
 
     <!-- Content -->
     @yield('content')
@@ -75,12 +84,15 @@
 <script src="{{ asset('assets/vendor/popper.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/bootstrap/bootstrap.min.js') }}"></script>
 
+<!-- JS Implementing Plugins -->
+<script src="{{ asset('assets/vendor/hs-megamenu/src/hs.megamenu.js') }}"></script>
+
 <!-- JS Unify -->
 <script src="{{ asset('assets/js/hs.core.js') }}"></script>
 <script src="{{ asset('assets/js/components/hs.header.js') }}"></script>
 <script src="{{ asset('assets/js/helpers/hs.hamburgers.js') }}"></script>
+<script src="{{ asset('assets/js/components/hs.dropdown.js') }}"></script>
 <script src="{{ asset('assets/js/components/hs.go-to.js') }}"></script>
-
 
 <!-- JS Custom -->
 <script src="{{ asset('assets/js/manifest.js') }}"></script>
@@ -95,12 +107,33 @@
     $(document).on('ready', function () {
         // initialization of go to
         $.HSCore.components.HSGoTo.init('.js-go-to');
+
+        // initialization of HSDropdown component
+        $.HSCore.components.HSDropdown.init($('[data-dropdown-target]'), {
+            afterOpen: function(){
+                $(this).find('input[type="search"]').focus();
+            }
+        });
+
     });
 
     $(window).on('load', function () {
         // initialization of header
         $.HSCore.components.HSHeader.init($('#js-header'));
         $.HSCore.helpers.HSHamburgers.init('.hamburger');
+
+        // initialization of HSMegaMenu component
+        $('#dropdown-megamenu').HSMegaMenu({
+            event: 'hover',
+            pageContainer: $('.container'),
+            breakpoint: 767
+        });
+
+        $('#dropdown-account').HSMegaMenu({
+            event: 'hover',
+            pageContainer: $('.container'),
+            breakpoint: 767
+        });
     });
 </script>
 

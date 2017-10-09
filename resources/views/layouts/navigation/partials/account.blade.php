@@ -1,44 +1,36 @@
 <!-- Account -->
-<li class="nav-item dropdown g-mx-20--lg">
-    <a href="#" class="nav-link dropdown-toggle g-px-0" id="nav-link-1" aria-haspopup="true"
-       aria-expanded="false" aria-controls="section-home-submenu" data-toggle="dropdown"
-       data-appear-speed="200" data-appear-easing="linear">Account
-
+<li class="hs-has-sub-menu d-block d-md-inline-block g-pos-rel g-mx-4 g-mt-10">
+    <a href="#" id="dropdown-invoker-3"
+       class="g-color-white g-color-primary--hover g-text-underline--none--hover"
+       aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-3">ACCOUNT
     </a>
-    <!-- Submenu (Bootstrap) -->
-    <ul class="dropdown-menu font-weight-normal rounded-0 g-text-transform-none g-brd-none g-brd-top g-brd-primary g-brd-top-1 g-mt-20 g-mt-10--lg--scrolling"
-        id="nav-submenu-1" aria-labelledby="nav-link-1">
+    <ul id="dropdown-3" class="hs-sub-menu list-unstyled g-bg-gray-dark-v1 g-py-10 g-px-20 g-mt-13"
+        aria-labelledby="dropdown-invoker-3">
 
-        <li class="active g-mx-5--lg">
-            <a class="nav-link g-color-primary--hover"
+        <li class="g-py-10">
+            <a class="d-block g-text-underline--none--hover g-color-white g-color-primary--hover"
                href="{{ route('users.edit', ['tab' => 'profile']) }}">
                 Mein Profil
             </a>
         </li>
 
-        <li class="g-mx-5--lg">
-            <a class="nav-link g-color-primary--hover"
+        <li class="g-py-10">
+            <a class="d-block g-text-underline--none--hover g-color-white g-color-primary--hover"
                href="{{ route('users.edit', ['tab' => 'password']) }}">
                 Passwort
             </a>
         </li>
 
-        <li class="g-mx-5--lg">
-            <a class="nav-link g-color-primary--hover"
+        <li class="g-py-10">
+            <a class="d-block g-text-underline--none--hover g-color-white g-color-primary--hover"
                href="{{ route('users.edit', ['tab' => 'messaging']) }}">
                 Emails
             </a>
         </li>
 
-        <li class="g-mx-5--lg">
-            <a class="nav-link g-color-primary--hover"
-               href="{{ route('users.edit', ['tab' => 'messaging']) }}">
-                Emails
-            </a>
-        </li>
-
-        <li class="g-mx-5--lg">
-            <a class="nav-link g-color-primary--hover" href="{{ route('logout') }}"
+        <li class="g-py-10">
+            <a class="d-block g-text-underline--none--hover g-color-white g-color-primary--hover"
+               href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 Logout
             </a>
@@ -49,5 +41,4 @@
             {{ csrf_field() }}
         </form>
     </ul>
-    <!-- End Submenu (Bootstrap) -->
 </li>
