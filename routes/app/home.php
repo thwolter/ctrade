@@ -6,6 +6,8 @@ Route::get('/about', ['as' => 'home.about', 'uses' => 'HomeController@about']);
 Route::get('/blog', ['as' => 'home.blog', 'uses' => 'HomeController@blog']);
 Route::get('/coming', ['as' => 'home.coming', 'uses' => 'HomeController@coming']);
 Route::get('/legal', ['as' => 'home.legal', 'uses' => 'HomeController@legal']);
+Route::get('/privacy', ['as' => 'home.privacy', 'uses' => 'HomeController@privacy']);
+Route::get('/policy', ['as' => 'home.policy', 'uses' => 'HomeController@policy']);
 
 Route::get('/launch', ['as' => 'home.launch', 'uses' => 'HomeController@launch']);
 

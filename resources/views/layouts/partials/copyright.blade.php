@@ -8,15 +8,7 @@
                     <ul class="u-list-inline">
 
                         <li class="list-inline-item">
-                            <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Privacy Policy</a>
-                        </li>
-
-                        <li class="list-inline-item">
-                            <span>|</span>
-                        </li>
-
-                        <li class="list-inline-item">
-                            <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Terms of Use</a>
+                            <a class="g-color-white-opacity-0_8 g-color-white--hover" href="{{ route('home.privacy') }}">Datenschutz</a>
                         </li>
 
                         <li class="list-inline-item">
@@ -32,8 +24,9 @@
                         </li>
 
                         <li class="list-inline-item">
-                            <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Support</a>
+                            <a class="g-color-white-opacity-0_8 g-color-white--hover" href="{{ route('home.policy') }}">Nutzung</a>
                         </li>
+
                     </ul>
                 </div>
             </div>

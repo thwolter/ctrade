@@ -2,91 +2,79 @@
 
 @section('content')
 
-    <!-- Promo Block -->
-    <section class="container g-py-150">
+    <section class="g-color-white g-bg-gray-dark-v3 g-pa-40">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 align-self-center">
+                    <h2 class="h3 text-uppercase g-font-weight-300 g-mb-20 g-mb-0--md">Impressum</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container g-py-50">
         <div class="row">
             <div class="col-lg-6">
-                <div class="d-inline-block g-width-80 g-height-4 g-bg-black mb-3"></div>
-                <h2 class="g-color-black g-font-weight-700 g-font-size-50 g-line-height-1 mb-4">Terms &amp; Conditions</h2>
-                <p class="mb-0">This is where we sit down, grab a cup of coffee and dial in the details. Understanding the task at hand and ironing out the wrinkles is key. Now that we've aligned the details, it's time to get things mapped out and organized. This part is really
-                    crucial in keeping the project in line to completion.</p>
+                <h1>Impressum</h1>
+                <p>Angaben gemäß § 5 TMG</p>
+                <p>Thomas Wolter <br>
+                    Ulrich-von-Hutten Straße 45<br>
+                    16540 Hohen Neuendorf <br>
+                </p>
+                <p><strong>Vertreten durch: </strong><br>
+                    Thomas Wolter<br>
+                </p>
+                <p><strong>Kontakt:</strong> <br>
+                    Telefon: 3303-5089908<br>
+                    E-Mail: <a href='mailto:thwolter@gmail.com'>thwolter@gmail.com</a></br></p>
+                <p><strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</strong><br>
+                    Thomas Wolter <br>
+                    Ulrich-von-Hutten Straße 45<br>
+                    16540 Hohen Neuendorf <br>
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <div class='impressum'>
+
+                    <p>
+                        <strong>Haftungsausschluss: </strong><br><br>
+
+                        <strong>Haftung für Inhalte</strong><br><br>
+                        Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit,
+                        Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als
+                        Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den
+                        allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch
+                        nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach
+                        Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur
+                        Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben
+                        hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis
+                        einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden
+                        Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.<br><br>
+
+                        <strong>Haftung für Links</strong><br><br>
+                        Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss
+                        haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die
+                        Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten
+                        verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche
+                        Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht
+                        erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete
+                        Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen
+                        werden wir derartige Links umgehend entfernen.<br><br>
+                        <strong>Urheberrecht</strong><br><br>
+                        Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem
+                        deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
+                        Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des
+                        jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten,
+                        nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber
+                        erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter
+                        als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam
+                        werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen
+                        werden wir derartige Inhalte umgehend entfernen.<br><br>
+                </div>
+
             </div>
         </div>
     </section>
-    <!-- End Promo Block -->
-
-    <!-- Content -->
-    <section class="g-bg-gray-light-v5">
-        <div class="container g-py-100">
-            <div class="row">
-                <div id="stickyblock-start" class="col-md-4 g-mb-30">
-                    <div class="js-sticky-block g-sticky-block--lg" data-type="responsive" data-start-point="#stickyblock-start" data-end-point="#stickyblock-end">
-                        <ul class="list-unstyled mb-0">
-                            <li class="g-bg-gray-dark-v2 g-rounded-top-5 g-px-20 g-pt-30">
-                                <a class="js-go-to d-block g-color-white g-bg-primary--hover g-font-weight-600 g-font-size-12 text-uppercase g-text-underline--none--hover rounded g-px-20 g-py-15" href="#" data-target="#license">License</a>
-                            </li>
-                            <li class="g-bg-gray-dark-v2 g-px-20">
-                                <a class="js-go-to d-block g-color-white g-bg-primary--hover g-font-weight-600 g-font-size-12 text-uppercase g-text-underline--none--hover rounded g-px-20 g-py-15" href="#" data-target="#ownership">Ownership</a>
-                            </li>
-                            <li class="g-bg-gray-dark-v2 g-px-20">
-                                <a class="js-go-to d-block g-color-white g-bg-primary--hover g-font-weight-600 g-font-size-12 text-uppercase g-text-underline--none--hover rounded g-px-20 g-py-15" href="#" data-target="#usage">Usage</a>
-                            </li>
-                            <li class="g-bg-gray-dark-v2 g-rounded-bottom-5 g-px-20 g-pb-30">
-                                <a class="js-go-to d-block g-color-white g-bg-primary--hover g-font-weight-600 g-font-size-12 text-uppercase g-text-underline--none--hover rounded g-px-20 g-py-15" href="#" data-target="#refunds">Refunds</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-md-8">
-                    <!-- License -->
-                    <div id="license" class="u-shadow-v19 g-bg-white rounded g-pa-40 g-mb-50">
-                        <h2 class="h3 g-color-black mb-3">License</h2>
-                        <div class="d-inline-block g-width-50 g-height-2 g-bg-black mb-3"></div>
-                        <p>This is where we sit down, grab a cup of coffee and dial in the details. Understanding the task at hand and ironing out the wrinkles is key. Now that we've aligned the details, it's time to get things mapped out and organized. This part
-                            is really crucial in keeping the project in line to completion.</p>
-                        <p>Whether through commerce or just an experience to tell your brand's story, the time has come to start using development languages that fit your projects needs. Now that your brand is all dressed up and ready to party, it's time to release
-                            it to the world. By the way, let's celebrate already. We get it, you're busy and it's important that someone keeps up with marketing and driving people to your brand. We've got you covered.</p>
-                    </div>
-                    <!-- End License -->
-
-                    <!-- Ownership -->
-                    <div id="ownership" class="u-shadow-v19 g-bg-white rounded g-pa-40 g-mb-50">
-                        <h3 class="g-color-black mb-3">Ownership</h3>
-                        <div class="d-inline-block g-width-50 g-height-2 g-bg-black mb-3"></div>
-                        <p>This is where we sit down, grab a cup of coffee and dial in the details. Understanding the task at hand and ironing out the wrinkles is key. Now that we've aligned the details, it's time to get things mapped out and organized. This part
-                            is really crucial in keeping the project in line to completion.</p>
-                        <p>Whether through commerce or just an experience to tell your brand's story, the time has come to start using development languages that fit your projects needs. Now that your brand is all dressed up and ready to party, it's time to release
-                            it to the world. By the way, let's celebrate already. We get it, you're busy and it's important that someone keeps up with marketing and driving people to your brand. We've got you covered.</p>
-                    </div>
-                    <!-- End Ownership -->
-
-                    <!-- Usage -->
-                    <div id="usage" class="u-shadow-v19 g-bg-white rounded g-pa-40 g-mb-50">
-                        <h3 class="g-color-black mb-3">Usage</h3>
-                        <div class="d-inline-block g-width-50 g-height-2 g-bg-black mb-3"></div>
-                        <p>This is where we sit down, grab a cup of coffee and dial in the details. Understanding the task at hand and ironing out the wrinkles is key. Now that we've aligned the details, it's time to get things mapped out and organized. This part
-                            is really crucial in keeping the project in line to completion.</p>
-                        <p>Whether through commerce or just an experience to tell your brand's story, the time has come to start using development languages that fit your projects needs. Now that your brand is all dressed up and ready to party, it's time to release
-                            it to the world. By the way, let's celebrate already. We get it, you're busy and it's important that someone keeps up with marketing and driving people to your brand. We've got you covered.</p>
-                    </div>
-                    <!-- End Usage -->
-
-                    <!-- Refunds -->
-                    <div id="refunds" class="u-shadow-v19 g-bg-white rounded g-pa-40">
-                        <h3 class="g-color-black mb-3">Refunds</h3>
-                        <div class="d-inline-block g-width-50 g-height-2 g-bg-black mb-3"></div>
-                        <p>This is where we sit down, grab a cup of coffee and dial in the details. Understanding the task at hand and ironing out the wrinkles is key. Now that we've aligned the details, it's time to get things mapped out and organized. This part
-                            is really crucial in keeping the project in line to completion.</p>
-                        <p>Whether through commerce or just an experience to tell your brand's story, the time has come to start using development languages that fit your projects needs. Now that your brand is all dressed up and ready to party, it's time to release
-                            it to the world. By the way, let's celebrate already. We get it, you're busy and it's important that someone keeps up with marketing and driving people to your brand. We've got you covered.</p>
-                    </div>
-                    <!-- End Refunds -->
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Content -->
 
     <div id="stickyblock-end"></div>
 

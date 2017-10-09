@@ -6,7 +6,7 @@
     <section class="dzsparallaxer auto-init height-is-based-on-content use-loading mode-scroll loaded dzsprx-readyall" data-options="{direction: 'reverse', settings_mode_oneelement_max_offset: '150'}">
         <!-- Parallax Image -->
         <div class="divimage dzsparallaxer--target w-100 u-bg-overlay g-bg-size-cover g-bg-black-opacity-0_8--after"
-             style="height: 100%; background-image: url({{ asset('assets/img/portfolio.jpg') }});">
+             style="height: 100%; background-image: url({{ asset('assets/img/portfolio.jpg') }})">
         </div>
         <!-- End Parallax Image -->
 
@@ -119,5 +119,21 @@
         </div>
     </section>
     <!-- End Login -->
+
+@endsection
+
+
+@section('link.header')
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/dzsparallaxer/dzsparallaxer.css') }}">
+
+@endsection
+
+
+@section('script.footer')
+
+    <!-- JS Implementing Plugins -->
+    <script src="{{ asset('assets/vendor/dzsparallaxer/dzsparallaxer.js') }}"></script>
 
 @endsection

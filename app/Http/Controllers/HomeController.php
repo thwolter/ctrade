@@ -51,6 +51,16 @@ class HomeController extends Controller
         return view('home.legal');
     }
 
+    public function policy()
+    {
+        return view('home.policy');
+    }
+
+    public function privacy()
+    {
+        return view('home.privacy');
+    }
+
     public function launch()
     {
         return view('home.launch');
