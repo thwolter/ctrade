@@ -64,6 +64,7 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'email_new',
         'password',
         'settings',
         'email_token',
@@ -139,6 +140,12 @@ class User extends Authenticatable
         return !is_null($this->password);
     }
 
+
+    public function newEmailRequiresVerification()
+    {
+        return ($this->validToken()->count() && ($this->email_new));
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -163,11 +170,6 @@ class User extends Authenticatable
     public function scopeExpiredToken($query)
     {
         return $query->where('email_token_expires_at', '<', Carbon::now());
-    }
-
-    public function hasNewEmail()
-    {
-        return ($this->validToken()->count() && ($this->email_new));
     }
 
 

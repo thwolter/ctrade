@@ -129,3 +129,7 @@ Route::get('/update/stocks', function() {
 Route::get('/success', function() {
     return view('auth.success');
 });
+
+Route::get('/verified', function() {
+    return view('auth.confirmed.email');
+});

@@ -17,9 +17,20 @@ Route::prefix('user')->middleware('auth')->group(function() {
         'uses' => 'UserController@password'
     ]);
 
-    Route::get('verify/{token}', [
-        'as' => 'users.verify',
-        'uses' => 'VerificationController@verifyEmail'
+
+    Route::get('email/link', [
+        'as' => 'users.emailLink',
+        'uses' => 'UserController@emailLink'
+    ]);
+
+    Route::get('email/cancel', [
+        'as' => 'users.emailCancel',
+        'uses' => 'UserController@emailCancel'
     ]);
 
 });
+
+Route::get('user/verify/{token}', [
+    'as' => 'users.verify',
+    'uses' => 'VerificationController@verifyEmail'
+]);

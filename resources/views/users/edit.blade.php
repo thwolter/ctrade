@@ -2,73 +2,79 @@
 
 @section('content')
 
-    <div class="page-header">
-        <h3 class="page-title">@lang('user.title')</h3>
-    </div> <!-- /.page-header -->
+    <section class="g-color-white g-bg-black-opacity-0_8 g-pa-40">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 align-self-center">
+                    <h2 class="h3 text-uppercase g-font-weight-300 g-mb-20 g-mb-0--md">
+                        Benutzer <strong>Einstellungen</strong>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="portlet portlet-boxed">
-        <div class="portlet-body">
-            <div class="layout layout-main-right layout-stack-sm">
+    <section class="g-mb-100 g-pt-100">
+        <div class="container">
+            <div class="row">
 
-                <div class="col-md-3 col-sm-4 layout-sidebar">
+                <!-- Profile Sidebar -->
+                <div class="col-lg-3 g-mb-50 g-mb-0--lg">
 
-                    <div class="nav-layout-sidebar-skip">
-                        <br class="xs-20 visible-xs"/>
-                        <strong>Tab Navigation</strong> / <a href="#settings-content">Skip to Content</a>
-                    </div>
+                    @include('layouts.sidebar.user_image')
 
-                    <ul id="myTab" class="nav nav-layout-sidebar nav-stacked">
+                    @include('layouts.sidebar.navigation')
 
-                        <li role="presentation" class="{{ active_tab('profile') }}">
-                            <a href="#profile" data-toggle="tab" role="tab">
-                                <i class="fa fa-user"></i>
-                                &nbsp;&nbsp;@lang('user.profile.title')
+                </div>
+
+                <!-- Profle Content -->
+                <div class="col-lg-9">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-justified u-nav-v1-1 u-nav-primary g-brd-bottom--md g-brd-bottom-2 g-brd-primary g-mb-20"
+                        role="tablist" data-target="nav-1-1-default-hor-left-underline"
+                        data-tabs-mobile-type="slide-up-down"
+                        data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-primary g-mb-20">
+                        <li class="nav-item">
+                            <a class="nav-link g-py-10 active" data-toggle="tab"
+                               href="#nav-1-1-default-hor-left-underline--1" role="tab">
+                                @lang('user.profile.title')
                             </a>
                         </li>
-
-                        <li role="presentation" class="{{ active_tab('password') }}">
-                            <a href="#password" data-toggle="tab" role="tab">
-                                <i class="fa fa-lock"></i>
-                                &nbsp;&nbsp;@lang('user.password.title')
+                        <li class="nav-item">
+                            <a class="nav-link g-py-10" data-toggle="tab" href="#nav-1-1-default-hor-left-underline--2"
+                               role="tab">
+                                @lang('user.password.title')
                             </a>
                         </li>
-
-                        <li role="presentation" class="{{ active_tab('messaging') }}">
-                            <a href="#messaging" data-toggle="tab" role="tab">
-                                <i class="fa fa-bullhorn"></i>
+                        <li class="nav-item">
+                            <a class="nav-link g-py-10" data-toggle="tab" href="#nav-1-1-default-hor-left-underline--3"
+                               role="tab">
                                 @lang('user.messaging.title')
                             </a>
                         </li>
 
-                        <li role="presentation" class="{{ active_tab('categories') }}">
-                            <a href="#categories" data-toggle="tab" role="tab">
-                                <i class="fa fa-list"></i>
-                                &nbsp;&nbsp;@lang('user.categories.title')
-                            </a>
-                        </li>
-
                     </ul>
+                    <!-- End Nav tabs -->
 
-                </div> <!-- /.col -->
+                    <!-- Tab panes -->
+                    <div id="nav-1-1-default-hor-left-underline" class="tab-content">
+                        <!-- Edit Profile -->
+                    @include('users.edit.profile')
 
+                    <!-- Security Settings -->
+                    @include('users.edit.password')
+                    <!-- End Security Settings -->
 
-                <div class="col-md-9 col-sm-8 layout-main">
+                        <!-- Notification Settings -->
+                    @include('users.edit.messaging')
+                    <!-- End Payment Options -->
 
-                    <div id="settings-content" class="tab-content stacked-content">
+                    </div>
+                    <!-- End Tab panes -->
+                </div>
 
-                        @include('users.edit.profile')
-
-                        @include('users.edit.password')
-
-                        @include('users.edit.messaging')
-
-                        @include('users.edit.categories')
-
-                    </div> <!-- /.tab-content -->
-
-                </div> <!-- /.col -->
-            </div> <!-- /.row -->
-        </div> <!-- /.portlet-body -->
-    </div> <!-- /.portlet -->
+            </div>
+        </div>
+    </section>
 
 @endsection

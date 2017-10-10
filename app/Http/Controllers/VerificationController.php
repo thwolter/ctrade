@@ -18,15 +18,15 @@ class VerificationController extends Controller
         $user = User::where('email_token', $token)->verified()->first();
 
         if ($user) {
-            $user->email = $user->email_new;
-            $user->email_new = null;
-            $user->email_token = null;
-            $user->save();
+            $user->update([
+                'email' => $user->email_new,
+                'email_new' => null,
+                'email_token' => null
+            ]);
 
             return view('auth.confirmed.email', compact('user'));
-
-        } else {
-            return view('auth.invalid_token');
         }
+
+        return view('auth.invalid_token');
     }
 }

@@ -34,25 +34,22 @@ class UserController extends Controller
     public function update(UpdateProfile $request)
     {
         $message = null;
-
         $user = $request->user();
-        $user->name = $request->get('name');
-        $user->save();
 
+        $user->update([
+            'first_name' => $request->get('firstName'),
+            'last_name' => $request->get('lastName')
+        ]);
 
-        if ($user->email != $request->get('email'))
+        if ($user->email != $request->get('email_new'))
         {
-            $user->email_new = $request->get('email');
-            $user->save();
-
+            $user->update(['email_new' => $request->get('email_new')]);
             event(new EmailHasChanged($user));
         }
 
         return redirect()->route('users.edit')
-            ->with('success', 'Profil erfolgreich aktualisiert.')
-            ->with('info', 'Bitte bestätige deine neue Email-Adresse über den Link, den wir dir per Email geschickt haben.')
-            ->with('active_tab', $request->get('tab'))
-            ->with('email_new', $user->email_new);
+            ->with('status', 'success')
+            ->with('active_tab', $request->get('tab'));
     }
 
 
@@ -67,20 +64,18 @@ class UserController extends Controller
             ->with('active_tab', 'password');
     }
 
-    public function verifyEmail($token)
+
+    public function emailLink()
     {
-        $user = User::where('email_token', $token)->verified()->validToken()->first();
+        event(new EmailHasChanged(\Auth::user()));
 
-        if ($user) {
-            $user->email = $user->email_new;
-            $user->email_new = null;
-            $user->email_token = null;
-            $user->save();
+        return redirect()->back();
+    }
 
-            return view('auth.confirmed.email', compact('user'));
+    public function emailCancel()
+    {
+        \Auth::user()->update(['email_new' => null]);
 
-        } else {
-            return view('auth.invalid_token');
-        }
+        return redirect()->back();
     }
 }
