@@ -91,6 +91,8 @@
 <script src="{{ asset('assets/js/hs.core.js') }}"></script>
 <script src="{{ asset('assets/js/components/hs.header.js') }}"></script>
 <script src="{{ asset('assets/js/helpers/hs.hamburgers.js') }}"></script>
+<script src="{{ asset('assets/js/components/hs.tabs.js') }}"></script>
+
 <script src="{{ asset('assets/js/components/hs.dropdown.js') }}"></script>
 <script src="{{ asset('assets/js/components/hs.go-to.js') }}"></script>
 
@@ -105,6 +107,9 @@
 <!-- JS Plugins Init. -->
 <script>
     $(document).on('ready', function () {
+        // initialization of tabs
+        $.HSCore.components.HSTabs.init('[role="tablist"]');
+
         // initialization of go to
         $.HSCore.components.HSGoTo.init('.js-go-to');
 

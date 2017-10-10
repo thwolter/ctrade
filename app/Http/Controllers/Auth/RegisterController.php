@@ -121,8 +121,11 @@ class RegisterController extends Controller
 
     public function success()
     {
+        if (!session('uuid')) {
+            abort(404);
+        }
         Auth::login(User::whereUuid(session('uuid'))->first());
-
         return view('auth.success');
     }
+
 }

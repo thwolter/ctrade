@@ -7,11 +7,6 @@ Route::get('/verifyemail/{token}', [
     'uses' =>'Auth\RegisterController@verify'
 ]);
 
-Route::get('/register/success', [
-    'as' => 'register.success',
-    'uses' =>'Auth\RegisterController@success'
-]);
-
 Route::get('/social/{provider}/login', [
     'as' => 'social.login',
     'uses' => 'Auth\SocialAuthController@redirect'
@@ -20,6 +15,11 @@ Route::get('/social/{provider}/login', [
 Route::get('/{provider}/callback', [
     'as' => 'social.callback',
     'uses' => 'Auth\SocialAuthController@callback'
+]);
+
+Route::get('/register/success', [
+    'as' => 'register.success',
+    'uses' =>'Auth\RegisterController@success'
 ]);
 
 

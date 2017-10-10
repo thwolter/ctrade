@@ -125,3 +125,7 @@ Route::get('/update/stocks', function() {
 
     }
 });
+
+Route::get('/success', function() {
+    return view('auth.success');
+});
