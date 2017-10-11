@@ -4,11 +4,16 @@
 
     <div class="g-brd-bottom g-brd-gray-light-v4"></div>
 
-    <!-- Login -->
+    <!-- Email -->
     <section class="container g-py-100">
         <div class="row justify-content-center">
             <div class="col-sm-9 col-md-7 col-lg-5">
                 <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
+
+                    @if (session('status'))
+                        <div class="alert alert-info" role="alert">{{ session('status') }}</div>
+                    @endif
+
                     <header class="text-center mb-4">
                         <h1 class="h4 g-color-black g-font-weight-400">Passwort vergessen?</h1>
                         <p>Gib deine Email-Adresse ein.</p>
@@ -47,6 +52,5 @@
             </div>
         </div>
     </section>
-    <!-- End Login -->
 
 @endsection

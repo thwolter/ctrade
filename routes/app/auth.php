@@ -22,12 +22,16 @@ Route::get('/register/success', [
     'uses' =>'Auth\RegisterController@success'
 ]);
 
+Route::middleware('auth')->get('/password/changed', [
+    'as' => 'password.changed',
+    'uses' =>'Auth\ResetPasswordController@changed'
+]);
 
-Route::group(['middleware' => 'web', 'prefix' => config('backpack.base.route_prefix')], function () {
+/*Route::group(['middleware' => 'web', 'prefix' => config('backpack.base.route_prefix')], function () {
     Route::get('login', 'Admin\LoginController@showLoginForm');
     Route::get('register', 'Auth\RegisterController@showRegistrationForm');
     Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
     Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
     Route::get('logout', 'Auth\LoginController@logout');
-});
+});*/
 

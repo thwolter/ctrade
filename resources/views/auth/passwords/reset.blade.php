@@ -1,76 +1,65 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <div class="g-brd-bottom g-brd-gray-light-v4"></div>
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('password.request') }}">
+        <section class="container g-py-100">
+        <div class="row justify-content-center">
+            <div class="col-sm-9 col-md-7 col-lg-5">
+                <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
+                    <header class="text-center mb-4">
+                        <h1 class="h4 g-color-black g-font-weight-400">Passwort zurücksetzen</h1>
+                    </header>
+
+                    <!-- Form -->
+                    <form class="g-pt-15" role="form" method="POST" action="/password/reset">
                         {{ csrf_field() }}
 
                         <input type="hidden" name="token" value="{{ $token }}">
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                        <div class="mb-4 {{ $errors->has('email') ? 'u-has-error-v1-2' : '' }}">
+                            <div class="input-group g-rounded-left-5">
+                                 <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
+                                  <i class="icon-communication-025 u-line-icon-pro"></i>
+                                </span>
+                                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-5 g-py-15 g-px-15"
+                                        id="email" type="email" name="email" value="{{ $email or old('email') }}"
+                                        placeholder="Email-Adresse">
                             </div>
+                            <small class="form-control-feedback">{{ $errors->first('email') }}</small>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                        <div class="mb-4 {{ $errors->has('password') ? 'u-has-error-v1-2' : '' }}">
+                            <div class="input-group g-rounded-left-5">
+                                 <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
+                                  <i class="icon-lock u-line-icon-pro"></i>
+                                </span>
+                                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-5 g-py-15 g-px-15"
+                                        id="password" type="password" name="password" placeholder="Passwort" required>
                             </div>
+                            <small class="form-control-feedback">{{ $errors->first('password') }}</small>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                @endif
+                        <div class="mb-4 {{ $errors->has('password_confirmation') ? 'u-has-error-v1-2' : '' }}">
+                            <div class="input-group g-rounded-left-5">
+                                 <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
+                                  <i class="icon-lock u-line-icon-pro"></i>
+                                </span>
+                                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-5 g-py-15 g-px-15"
+                                       id="password-confirm" type="password" name="password_confirmation" placeholder="Passwort bestätigen" required>
                             </div>
+                            <small class="form-control-feedback">{{ $errors->first('password_confirmation') }}</small>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Reset Password
-                                </button>
-                            </div>
-                        </div>
+                        <button class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-15 g-px-25"
+                                type="submit">Passwort zurücksetzen
+                        </button>
                     </form>
+                    <!-- End Form -->
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+
 @endsection
