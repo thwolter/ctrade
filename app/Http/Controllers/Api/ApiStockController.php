@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Entities\Datasource;
 use App\Entities\Stock;
 use App\Facades\DataService;
+use App\Http\Resources\StockHistory;
 use Illuminate\Http\Request;
 
 class ApiStockController extends ApiBaseController
@@ -25,10 +26,7 @@ class ApiStockController extends ApiBaseController
         $stock = Stock::find($attributes['id']);
         $exchanges = $stock->exchangesToArray();
 
-        $exchange = array_get($attributes, 'exchange');
-        if (! $exchange) {
-            $exchange = array_get($exchanges, '0.code');
-        }
+        $exchange = array_get($attributes, 'exchange', array_get($exchanges, '0.code'));
 
         $repo = new DataService($stock->datasources()->whereExchange($exchange)->first());
 

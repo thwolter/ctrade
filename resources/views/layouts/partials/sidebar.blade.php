@@ -10,9 +10,10 @@
         $activeClass = 'g-bg-bluegray-lineargradient g-brd-none g-color-gray-light-v4';
     @endphp
 
-    <!-- Links -->
+        <h3 class="h5 g-color-black g-font-weight-600 mb-4">Portfolio</h3>
+
+        <!-- Links -->
         <div class="list-group g-mb-50">
-            <h3 class="h5 g-color-black g-font-weight-600 mb-4">Portfolio</h3>
 
             <a class="list-group-item {{ if_route('portfolios.show') ? $activeClass : 'g-color-gray-dark-v2' }}"
                href="{{ route('portfolios.show', $portfolio->slug) }}">

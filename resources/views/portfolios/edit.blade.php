@@ -19,43 +19,47 @@
 
                     <li class="nav-item">
                         <a class="nav-link {{ active_tab('portfolio') }}" data-toggle="tab"
-                           href="#nav-5-1-accordion-hor-left-border-bottom--1" role="tab">Portfolio</a>
+                           href="#portfolio" role="tab">Portfolio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ active_tab('parameter') }}" data-toggle="tab"
-                           href="#nav-5-1-accordion-hor-left-border-bottom--2" role="tab">Parameter</a>
+                           href="#parameter" role="tab">Parameter</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ active_tab('limits') }}" data-toggle="tab"
-                           href="#nav-5-1-accordion-hor-left-border-bottom--3" role="tab">Limite</a>
+                           href="#limits" role="tab">Limite</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ active_tab('dashboard') }}" data-toggle="tab"
-                           href="#nav-5-1-accordion-hor-left-border-bottom--4" role="tab">Dashboard</a>
+                           href="#dashboard" role="tab">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ active_tab('notifications') }}" data-toggle="tab"
-                           href="#nav-5-1-accordion-hor-left-border-bottom--5" role="tab">Email</a>
+                           href="#email" role="tab">Email</a>
                     </li>
                 </ul>
                 <!-- End Nav tabs -->
 
                 <!-- Tab panes -->
                 <div id="nav-5-1-accordion-hor-left-border-bottom" class="tab-content g-pt-20--md">
-                    <div class="tab-pane fade show {{ active_tab('portfolio', 'show active') }}"
-                         id="nav-5-1-accordion-hor-left-border-bottom--1" role="tabpanel">
+                    <div class="tab-pane fade {{ active_tab('portfolio', 'show active') }}"
+                         id="portfolio" role="tabpanel">
                         @include('portfolios.edit.portfolio')
                     </div>
-                    <div class="tab-pane fade {{ active_tab('parameter', 'show active') }}" id="nav-5-1-accordion-hor-left-border-bottom--2" role="tabpanel">
+                    <div class="tab-pane fade {{ active_tab('parameter', 'show active') }}"
+                         id="parameter" role="tabpanel">
                         @include('portfolios.edit.parameter')
                     </div>
-                    <div class="tab-pane fade {{ active_tab('limits', 'show active') }}" id="nav-5-1-accordion-hor-left-border-bottom--3" role="tabpanel">
+                    <div class="tab-pane fade {{ active_tab('limits', 'show active') }}"
+                         id="limits" role="tabpanel">
                         @include('portfolios.edit.limits')
                     </div>
-                    <div class="tab-pane fade {{ active_tab('dashboard', 'show active') }}" id="nav-5-1-accordion-hor-left-border-bottom--4" role="tabpanel">
+                    <div class="tab-pane fade {{ active_tab('dashboard', 'show active') }}"
+                         id="dashboard" role="tabpanel">
                         @include('portfolios.edit.dashboard')
                     </div>
-                    <div class="tab-pane fade {{ active_tab('notifications', 'show active') }}" id="nav-5-1-accordion-hor-left-border-bottom--5" role="tabpanel">
+                    <div class="tab-pane fade {{ active_tab('notifications', 'show active') }}"
+                         id="email" role="tabpanel">
                         @include('portfolios.edit.notifications')
                     </div>
                 </div>
