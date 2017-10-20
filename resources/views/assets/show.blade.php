@@ -18,65 +18,27 @@
 
                         @php $stock = $asset->positionable @endphp
 
-                        <div class="row">
-                            <div class="col-lg-8 col-md-7">
 
-                                <div class="u-heading-v3-1 g-mb-40">
-                                    <h2 class="h3 u-heading-v3__title">{{ $stock->name }} Aktie</h2>
-                                </div>
-
-
-                                <div class="col-md-6 g-mb-30">
-                                    <!-- List -->
-                                    <ul class="list-unstyled g-color-text">
-                                        <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
-                                            <span>Name:</span>
-                                            <span class="float-right g-color-black">{{ $stock->name }}</span>
-                                        </li>
-                                        <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
-                                            <span>ISIN:</span>
-                                            <span class="float-right g-color-black">{{ $stock->isin }}</span>
-                                        </li>
-                                        <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
-                                            <span>WKN:</span>
-                                            <span class="float-right g-color-black">{{ $stock->wkn }}</span>
-                                        </li>
-                                        <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
-                                            <span>Kurs:</span>
-                                            <span class="float-right g-color-black">{{ $stock->present()->price() }}</span>
-                                        </li>
-                                        <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
-                                            <span>Kursdatum:</span>
-                                            <span class="float-right g-color-black">Casual</span>
-                                        </li>
-                                    </ul>
-                                    <!-- End List -->
-                                </div>
-
-
-                                <div class="u-heading-v3-1 g-mb-40">
-                                    <h2 class="h3 u-heading-v3__title">Historie</h2>
-                                </div>
-
-                                <stock-chart
-                                        :exchanges="{{ json_encode($exchanges) }}"
-                                        :history="{{ json_encode($history) }}">
-                                </stock-chart>
-                            </div>
-
-                            <div class="col-lg-4 col-md-5">
-
-                                <div class="u-heading-v3-1 g-mb-40">
-                                    <h2 class="h3 u-heading-v3__title">Kennzahlen</h2>
-                                </div>
-
-                                <stock-performance
-                                        stock-id="{{ $stock->id }}"
-                                        locale="de-DE">
-                                </stock-performance>
-                            </div>
+                        <div class="u-heading-v3-1 g-mb-40">
+                            <h2 class="h3 u-heading-v3__title">{{ $stock->name }} Aktie</h2>
                         </div>
 
+                            <stock-performance
+                                    :exchanges="{{ json_encode($exchanges) }}"
+                                    :history="{{ json_encode($history) }}"
+                                    :stock="{{ json_encode($stock) }}"
+                                    locale="de-DE">
+                            </stock-performance>
+
+
+                            <div class="u-heading-v3-1 g-mb-40">
+                                <h2 class="h3 u-heading-v3__title">Historie</h2>
+                            </div>
+
+                            <stock-chart
+                                    :exchanges="{{ json_encode($exchanges) }}"
+                                    :history="{{ json_encode($history) }}">
+                            </stock-chart>
 
                     @endif
                 </div>
