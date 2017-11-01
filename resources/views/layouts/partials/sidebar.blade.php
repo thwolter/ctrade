@@ -1,11 +1,6 @@
 <div class="col-lg-3 order-lg-1 g-brd-right--lg g-brd-gray-light-v4 g-mb-80">
     <div class="g-pr-20--lg">
 
-        <div class="g-md-55">
-            <a class="btn btn-outline-secondary g-mr-10 g-mb-50"
-               href="#">Neue Transaktion</a>
-        </div>
-
     @php
         $activeClass = 'g-bg-bluegray-lineargradient g-brd-none g-color-gray-light-v4';
     @endphp
@@ -38,6 +33,12 @@
                href="{{ route('portfolios.edit', ['slug' => $portfolio->slug]) }}">
                 <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.settings.title')</a>
         </div>
+    </div>
+
+    <!-- Transaction button -->
+    <div class="g-md-55">
+        <a class="btn btn-outline-secondary g-mr-10 g-mb-50"
+           href="#">Neue Transaktion</a>
     </div>
 </div>
 

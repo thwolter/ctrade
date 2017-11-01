@@ -49,7 +49,7 @@
 <main id="wrapper">
 
     <!-- Header -->
-    <header id="js-header" class="u-header u-header--static--lg u-header--show-hide--lg u-header--change-appearance--lg"
+    <header id="js-header" class="u-header u-header--static u-header--change-appearance"
             data-header-fix-moment="500" data-header-fix-effect="slide">
 
         @include('layouts.navigation.topbar')

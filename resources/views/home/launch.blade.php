@@ -1,123 +1,96 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html lang="en" class="no-js"> <!--<![endif]-->
+<html lang="en">
 <head>
+    <!-- Title -->
+    <title>Coming soon | Unify - Responsive Website Template</title>
+
+    <!-- Required Meta Tags Always Come First -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>Launch - {{ config('app.name', 'CapMyRisk.com') }}</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../../favicon.ico">
 
-    <!-- Google Font: Open Sans -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400,300,700">
+    <!-- Google Fonts -->
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600" rel="stylesheet" type="text/css">
 
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/fontawesome/css/font-awesome.min.css') }}">
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="../../assets/vendor/bootstrap/bootstrap.min.css">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    <!-- CSS Unify -->
+    <link rel="stylesheet" href="../../assets/css/unify.css">
 
-    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/bower_components/vegas/dist/jquery.vegas.min.css') }}">
-
-    <link rel="stylesheet" href="{{ asset('vendor/mvp-theme/templates/launch/css/mvpready-launch.css') }}">
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <link rel="shortcut icon" href="favicon.ico">
-    {!! Analytics::render() !!}
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="../../assets/css/custom.css">
 </head>
 
-<body class="">
+<body>
+<main class="g-min-height-100vh g-flex-centered g-bg-size-cover g-bg-cover g-bg-bluegray-opacity-0_3--after g-pa-15" style="background-image: url(assets/img-temp/1920x1080/img1.jpg);">
+    <div class="text-center g-max-width-700 g-flex-centered-item g-z-index-1 g-color-white">
+        <h1 class="display-3 g-mb-30">Coming Soon</h1>
+        <p class="g-font-size-22 g-mb-50">Dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias</p>
 
-
-<div class="countdown-wrapper">
-
-    <header style="color: white;">CapMyRisk.com</header>
-
-    <main>
-
-        <div class="content">
-
-            <div class="intro">
-                <h2>
-                    Unsere Webseite ist fast fertig!
-                </h2>
-
-                <h4 class="">Bitte vergiss nicht, dich zu registrieren.</h4>
+        <div class="js-countdown row g-z-index-1"
+             data-end-date="2017/09/09"
+             data-month-format="%m"
+             data-days-format="%D"
+             data-hours-format="%H"
+             data-minutes-format="%M"
+             data-seconds-format="%S">
+            <div class="col-3 g-py-10">
+                <strong class="js-cd-days d-block display-4 mx-auto g-width-70 g-height-70 g-bg-white-opacity-0_2 g-font-weight-700 g-font-size-25 g-rounded-50x g-line-height-1 g-pa-20 mb-2"></strong>
+                <em class="g-font-style-normal g-font-size-20">Days</em>
             </div>
 
-            <div class="counter">
-
-                <h3 class="text-primary">Hey, nur noch ein paar Tage</h3>
-
-                <ul class="countdown list-inline">
-                    <li>
-                        <span class="days">00</span>
-                        <span class="days_ref">Tage</span>
-                    </li>
-                    <li>
-                        <span class="hours">00</span>
-                        <span class="hours_ref">Stunden</span>
-                    </li>
-                    <li>
-                        <span class="minutes">00</span>
-                        <span class="minutes_ref">Minuten</span>
-                    </li>
-                    <li>
-                        <span class="seconds">00</span>
-                        <span class="seconds_ref">Sekunden</span>
-                    </li>
-                </ul>
-
-            </div> <!-- /.counter -->
-
-        </div> <!-- /.content -->
-
-        <form role="form" class="newsletter" method="post" action="{{ route('taker.subscribe') }}">
-
-            {{ csrf_field() }}
-
-            <h3 class="">Wir lassen dich wissen, wenn's los geht!</h3>
-
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Email-Addresse" required="" value=""
-                       name="email" id="email">
-                <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary" value="Subscribe" name="subscribe">Registrieren</button>
-        </span>
+            <div class="col-3 g-brd-left g-brd-white-dark-v3 g-py-10">
+                <strong class="js-cd-hours d-block display-4 mx-auto g-width-70 g-height-70 g-bg-white-opacity-0_2 g-font-weight-700 g-font-size-25 g-rounded-50x g-line-height-1 g-pa-20 mb-2"></strong>
+                <em class="g-font-style-normal g-font-size-20">Hours</em>
             </div>
-        </form> <!-- /.newsletter-form -->
 
-    </main>
+            <div class="col-3 g-brd-left g-brd-white-dark-v3 g-py-10">
+                <strong class="js-cd-minutes d-block display-4 mx-auto g-width-70 g-height-70 g-bg-white-opacity-0_2 g-font-weight-700 g-font-size-25 g-rounded-50x g-line-height-1 g-pa-20 m2-3"></strong>
+                <em class="g-font-style-normal g-font-size-20">Minutes</em>
+            </div>
 
-    <footer>
-       <div></div>
-    </footer>
+            <div class="col-3 g-brd-left g-brd-white-dark-v3 g-py-10">
+                <strong class="js-cd-seconds d-block display-4 mx-auto g-width-70 g-height-70 g-bg-white-opacity-0_2 g-font-weight-700 g-font-size-25 g-rounded-50x g-line-height-1 g-pa-20 m2-3"></strong>
+                <em class="g-font-style-normal g-font-size-20">Seconds</em>
+            </div>
+        </div>
+    </div>
+</main>
 
-</div> <!-- /.wrapper -->
+<!-- JS Global Compulsory -->
+<script src="../../assets/vendor/jquery/jquery.min.js"></script>
+<script src="../../assets/vendor/jquery-migrate/jquery-migrate.min.js"></script>
+<script src="../../assets/vendor/tether.min.js"></script>
+<script src="../../assets/vendor/bootstrap/bootstrap.min.js"></script>
 
-<!-- Core JS -->
-<script src="{{ asset('vendor/mvp-theme/bower_components/jquery/dist/jquery.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/vendor/appear.js"></script>
+<script src="../../assets/vendor/jquery.countdown.min.js"></script>
 
-<script src="{{ asset('vendor/mvp-theme/bower_components/vegas/dist/jquery.vegas.min.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/bower_components/downcount/jquery.downCount.js') }}"></script>
+<!-- JS Unify -->
+<script src="../../assets/js/hs.core.js"></script>
+<script src="../../assets/js/components/hs.countdown.js"></script>
 
-<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-core.js') }}"></script>
-<script src="{{ asset('vendor/mvp-theme/global/js/mvpready-helpers.js') }}"></script>
-<script src="{{ asset('pages/launch/js/mvpready-launch.js') }}"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
 
+<!-- JS Plugins Init. -->
+<script>
+    $(document).on('ready', function () {
+        // initialization of countdowns
+        var countdowns = $.HSCore.components.HSCountdown.init('.js-countdown', {
+            yearsElSelector: '.js-cd-years',
+            monthElSelector: '.js-cd-month',
+            daysElSelector: '.js-cd-days',
+            hoursElSelector: '.js-cd-hours',
+            minutesElSelector: '.js-cd-minutes',
+            secondsElSelector: '.js-cd-seconds'
+        });
+    });
+</script>
 </body>
 </html>

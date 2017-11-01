@@ -22,7 +22,7 @@ class HomeController extends Controller
         if (\Auth::check())
             return redirect(route('portfolios.index'))->withSuccess(session('success'));
         else
-            //return redirect(route('home.launch'));
+            //return redirect(route('home.lunch'));
             return view('home.home');
     }
 
@@ -66,6 +66,9 @@ class HomeController extends Controller
         return view('home.launch');
     }
 
-
+    public function home()
+    {
+        return view('home.home');
+    }
 
 }
