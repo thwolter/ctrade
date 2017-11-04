@@ -26,4 +26,5 @@ Vue.component('spinner', require('./components/Spinner.vue'));
 Vue.component('limit-stats', require('./components/LimitsStats.vue'));
 
 Vue.component('notifications', require('./components/Notifications.vue'));
+Vue.component('create-limit', require('./components/CreateLimit.vue'));
 

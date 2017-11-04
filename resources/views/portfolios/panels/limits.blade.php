@@ -22,77 +22,8 @@
                         <i class="hs-icon hs-icon-close"></i>
                     </button>
 
-                    <!-- Info Blocks -->
-                    <div>
-                        <header class="text-uppercase g-mb-35">
-                            <div class="g-mb-30">
-                                <span class="d-block g-color-primary g-font-weight-700 g-font-size-default g-mb-15">Sichere dein Portfolio</span>
-                                <h2 class="h2 g-font-weight-700 mb-0">Schwellenwerte festlegen</h2>
-                            </div>
-                            <div class="g-width-70 g-brd-bottom g-brd-2 g-brd-primary"></div>
-                        </header>
+                    <create-limit></create-limit>
 
-                        <p class="g-mb-30">Lege eine oder mehrere Schwellen für dein Portfoliofest. Bei Überschreiten der Schwellen
-                        kannst du dich per Mail banachrichtigen lassen.</p>
-
-                        <div class="row align-items-stretch">
-                            <div class="btn col-sm-6">
-                                <a href="#" class="btn u-btn-content u-btn-darkgray g-brd-2 g-mr-10
-                                    g-brd-primary-left g-mb-15 g-pa-20 g-flex-centered">
-                                    <div class="text-left g-flex-middle-item">
-                                        <h4 class="h6 g-color-white g-font-weight-600 text-uppercase g-mb-10">
-                                            Absolute Wertänderung
-                                        </h4>
-                                        <p class="g-color-white-opacity-0_7">
-                                            Fester Wert in der Portfoliowährung
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div class="btn col-sm-6">
-                                <a href="#" class="btn u-btn-content u-btn-darkgray g-brd-2 g-mr-10
-                                    g-brd-primary-left g-mb-15 g-pa-20 g-flex-centered">
-                                    <div class="text-left g-flex-middle-item">
-                                        <h4 class="h6 g-color-white g-font-weight-600 text-uppercase g-mb-10">
-                                            Prozentuale Wertänderung
-                                        </h4>
-                                        <p class="g-color-white-opacity-0_7">
-                                            Eine Prozentwert des Portfolios
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div class="btn col-sm-6">
-                                <a href="#" class="btn u-btn-content u-btn-darkgray g-brd-2 g-mr-10
-                                    g-brd-primary-left g-mb-15 g-pa-20 g-flex-centered">
-                                    <div class="text-left g-flex-middle-item">
-                                        <h4 class="h6 g-color-white g-font-weight-600 text-uppercase g-mb-10">
-                                            Untergrenze
-                                        </h4>
-                                        <p class="g-color-white-opacity-0_7">
-                                            Sichere einen Mindesbetrag deines Portfolios
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div class="btn col-sm-6">
-                                <a href="#" class="btn u-btn-content u-btn-darkgray g-brd-2 g-mr-10
-                                    g-brd-primary-left g-mb-15 g-pa-20 g-flex-centered">
-                                    <div class="text-left g-flex-middle-item">
-                                        <h4 class="h6 g-color-white g-font-weight-600 text-uppercase g-mb-10">
-                                            Zielwert
-                                        </h4>
-                                        <p class="g-color-white-opacity-0_7">
-                                            Gib ein Datum und ein Zielwert für dein Portfolio an
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
 
