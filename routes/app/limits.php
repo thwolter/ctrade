@@ -6,4 +6,5 @@ Route::middleware('auth')->group(function () {
         'as' => 'limits.set',
         'uses' => 'LimitController@set'
     ]);
+
 });
