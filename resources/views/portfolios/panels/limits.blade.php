@@ -14,7 +14,6 @@
                     <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Limit hinzufügen
                 </a>
 
-
                 <!-- Modal window -->
                 <div id="modal1" class="text-left g-max-width-600 g-bg-white g-overflow-y-auto g-pa-20"
                      style="display: none;">
@@ -22,7 +21,9 @@
                         <i class="hs-icon hs-icon-close"></i>
                     </button>
 
-                    <create-limit></create-limit>
+                    <create-limit
+                        :portfolio-id="{{ $portfolio->id }}">
+                    </create-limit>
 
                 </div>
 
