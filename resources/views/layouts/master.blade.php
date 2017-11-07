@@ -14,7 +14,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="#">
 
     <!-- Google Fonts -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans%3A400%2C300%2C500%2C600%2C700">
@@ -38,6 +38,9 @@
 
     <!-- CSS Unify -->
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+
+    <!-- Localization -->
+    <script src="{{ route('resources.lang') }}"></script>
 
     <!-- Google Analytics -->
     {!! Analytics::render() !!}

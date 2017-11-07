@@ -208,6 +208,8 @@
         },
 
         mounted() {
+            console.log('mounted');
+            console.log('translation: ' + trans('auth.failed'));
             this.initDatapickerEvents();
         }
     }
