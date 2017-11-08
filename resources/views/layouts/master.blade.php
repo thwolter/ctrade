@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 
     <!-- Localization -->
-    <script src="{{ route('resources.lang') }}"></script>
+    <script src="{{ route('resources.lang', [ \App::getLocale() ]) }}"></script>
 
     <!-- Google Analytics -->
     {!! Analytics::render() !!}
