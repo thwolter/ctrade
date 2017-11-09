@@ -13,6 +13,10 @@ class LocalizationController extends Controller
             $locale = config('app.fallback_locale');
         }
 
+        if (config('app.debug')) {
+            \Cache::delete("lang-{$locale}.js");
+        };
+
         // Add locale to the cache key
         $json = \Cache::rememberForever("lang-{$locale}.js", function () use ($locale) {
             $lang = config('app.locale');

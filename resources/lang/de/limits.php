@@ -13,6 +13,17 @@ return [
         'save' => 'Speichern'
     ],
 
+    'limit' => 'Limit',
+    'date' => 'Datum',
+    'amount' => 'Betrag',
+    'date.target' => 'Zieldatum',
+
+    'email' => [
+        'option' => 'Bei Überschreitung per Email benachichtigen'
+    ],
+
+
+
     'absolute' => [
         'button' => [
             'title' => 'Absolut ',
@@ -20,7 +31,7 @@ return [
         ],
         'form' => [
             'title' => 'Absolute Warnschwelle',
-            'description' => 'Der Mindestwert, den das Portfolio am Ende einer festgelegten Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine Anpassung des Portfolio bis zum Ende der gewählten Period erfolgen soll.'
+            'text' => 'Der Mindestwert, den das Portfolio am Ende einer festgelegten Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine Anpassung des Portfolio bis zum Ende der gewählten Period erfolgen soll.'
         ]
     ],
 
@@ -32,7 +43,7 @@ return [
         ],
         'form' => [
             'title' => 'Relative Warnschwelle',
-            'description' => 'Der Mindestwert, den das Portfolio am Ende einer festgelegten Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine Anpassung des Portfolio bis zum Ende der gewählten Period erfolgen soll.'
+            'text' => 'Der Mindestwert, den das Portfolio am Ende einer festgelegten Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine Anpassung des Portfolio bis zum Ende der gewählten Period erfolgen soll.'
         ]
     ],
 
@@ -44,7 +55,7 @@ return [
         ],
         'form' => [
             'title' => 'Absolute Warnschwelle',
-            'description' => 'Der Mindestwert, den das Portfolio am Ende einer festgelegten Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine Anpassung des Portfolio bis zum Ende der gewählten Period erfolgen soll.'
+            'text' => 'Der Mindestwert, den das Portfolio am Ende einer festgelegten Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine Anpassung des Portfolio bis zum Ende der gewählten Period erfolgen soll.'
         ]
     ],
 
@@ -56,7 +67,7 @@ return [
         ],
         'form' => [
             'title' => 'Absolute Warnschwelle',
-            'description' => 'Der Mindestwert, den das Portfolio am Ende einer festgelegten Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine Anpassung des Portfolio bis zum Ende der gewählten Period erfolgen soll.'
+            'text' => 'Der Mindestwert, den das Portfolio am Ende einer festgelegten Periode ausweisen soll. Bei dieser Limitart wird davon ausgegangen, dass keine Anpassung des Portfolio bis zum Ende der gewählten Period erfolgen soll.'
         ]
     ]
 ];

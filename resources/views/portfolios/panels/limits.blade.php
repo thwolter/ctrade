@@ -22,7 +22,8 @@
                     </button>
 
                     <create-limit
-                        :portfolio-id="{{ $portfolio->id }}">
+                            :portfolio="{{ $portfolio }}"
+                            :route="{{ route('limits.set' }}"
                     </create-limit>
 
                 </div>

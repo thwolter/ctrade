@@ -17,10 +17,10 @@ class CreateLimitsTable extends Migration
             $table->increments('id');
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
-            $table->integer('type_id');
+            $table->enum('type', ['absolute', 'relative', 'floor', 'target']);
             $table->float('value');
             $table->date('date')->nullable();
-            $table->boolean('active')->default(false);
+            $table->enum('notify', ['no', 'email'])->default('no');
             $table->softDeletes();
             $table->timestamps();
         });

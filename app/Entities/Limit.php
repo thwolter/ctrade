@@ -38,7 +38,7 @@ class Limit extends Model
         'type',
         'value',
         'date',
-        'active'
+        'notify'
     ];
 
     protected $dates = [
@@ -53,20 +53,9 @@ class Limit extends Model
     }
 
 
-    public function type() {
-        return $this->belongsTo(LimitType::class)->withDefault();
-    }
-
-
     public function toArray()
     {
         return $this->getAttributes();
-    }
-
-
-    public function scopeActive($query)
-    {
-        return $query->whereActive(true);
     }
 
 
@@ -82,6 +71,6 @@ class Limit extends Model
 
     public function scopeOfType($query, $type)
     {
-        return $query->whereHas('type', function ($query) use ($type) {$query->whereCode($type);});
+        return $query->where('type', $type);
     }
 }

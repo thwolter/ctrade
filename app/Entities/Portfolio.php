@@ -301,6 +301,14 @@ class Portfolio extends Model
     }
 
 
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'currency' => $this->currency->code
+        ];
+    }
 
     /* --------------------------------------------
     * Functions for portfolio images

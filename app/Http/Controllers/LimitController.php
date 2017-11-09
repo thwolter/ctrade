@@ -16,6 +16,37 @@ class LimitController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+
+    }
+
+
+    public function edit(Request $request)
+    {
+
+    }
+
+
+    public function store(Request $request)
+    {
+        $attributes = $request->validate([
+            'id' => 'exist:portfolio,id',
+            'type' => 'in:absolute,relative,floor,absolute',
+            'amount' => 'required|numeric',
+            'date' => 'sometimes|date'
+        ]);
+
+        $portfolio = Portfolio::find($attributes['id']);
+
+        $portfolio->limits()->create($attributes);
+    }
+
+
+    public function update(Request $request)
+    {
+
+    }
 
     public function set(Request $request)
     {
