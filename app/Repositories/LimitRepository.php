@@ -123,36 +123,34 @@ class LimitRepository
     public function utilisation()
     {
         $risks = new RiskRepository($this->portfolio);
-
         $risk = $risks->portfolioRisk();
 
         $result = [];
-        foreach ($this->portfolio->limits()->active()->get() as $type) {
-            $limit = $this->get($type->type->code)->value;
-            $date = $this->get($type->type->code)->date;
+        foreach ($this->portfolio->limits as $limit) {
 
-            switch ($type->type->code) {
+            switch ($limit->type) {
                 case 'absolute':
-                    $quota = $risk / $limit;
+                    $quota = $risk / $limit->value;
                     break;
                 case 'relative':
-                    $quota = $risk / ($limit * $this->portfolio->total() / 100);
+                    $quota = $risk / ($limit->value * $this->portfolio->total() / 100);
                     break;
                 case 'floor':
-                    $quota = $risk / ($this->portfolio->total() - $limit);
+                    $quota = $risk / ($this->portfolio->total() - $limit->value);
                     break;
                 case 'target':
-                    $riskToTarget = $risks->portfolioRisk(Carbon::parse($date));
-                    $quota = $riskToTarget / ($this->portfolio->total() - $limit);
+                    $riskToTarget = $risks->portfolioRisk(Carbon::parse($limit->date));
+                    $quota = $riskToTarget / ($this->portfolio->total() - $limit->value);
                     break;
                 default:
                     $quota = null;
             }
-            $result[$type->type->code] = [
+            $key = $limit->type;
+            $result[$key] = [
                 'quota' => $quota,
                 'risk' => $risk,
-                'limit' => $limit,
-                'date' => $date,
+                'limit' => $limit->value,
+                'date' => $limit->date,
                 'ccy' => $this->portfolio->currency->code
             ];
         };

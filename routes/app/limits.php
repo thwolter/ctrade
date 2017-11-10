@@ -7,4 +7,9 @@ Route::middleware('auth')->group(function () {
         'uses' => 'LimitController@set'
     ]);
 
+    Route::post('/limits/store', [
+        'as' => 'limits.store',
+        'uses' => 'LimitController@store'
+    ]);
+
 });

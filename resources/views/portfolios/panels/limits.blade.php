@@ -23,7 +23,7 @@
 
                     <create-limit
                             :portfolio="{{ $portfolio }}"
-                            :route="{{ route('limits.set' }}"
+                            route="{{ route('limits.store') }}">
                     </create-limit>
 
                 </div>

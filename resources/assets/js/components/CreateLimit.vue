@@ -26,12 +26,12 @@
                         <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
                             {{ portfolio.currency }}
                         </div>
-                        <cleave id="amount"
-                                v-model="form.amount"
-                                :placeholder="trans('limits.amount')"
+                        <cleave id="value"
+                                v-model="form.value"
+                                :placeholder="trans('limits.value')"
                                 :options="cleave"
-                                :class="['form-control form-control-md', { 'error': form.errors.has('date') }]"
-                                @input="form.errors.clear('amount')"></cleave>
+                                :class="['form-control form-control-md', { 'error': form.errors.has('value') }]"
+                                @input="form.errors.clear('value')"></cleave>
                     </div>
 
                     <p v-if="form.errors.has('amount')" class="error-text">
@@ -155,7 +155,7 @@
 
                 form: new Form({
                     type: null,
-                    amount: null,
+                    value: null,
                     date: (new Date()).toISOString().split('T')[0],
                     email: false,
                     id: this.portfolio.id
@@ -176,7 +176,6 @@
             onSubmit() {
                 this.form.post(this.route)
                     .then(data => {
-                        this.hide();
                         window.location = data.redirect;
                     })
             },

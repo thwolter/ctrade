@@ -2,9 +2,21 @@
 
 @section('content')
 
+    <section class="g-color-white g-bg-primary-opacity-0_8 g-pa-40">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 align-self-center">
+                    <h2 class="h3 text-uppercase g-font-weight-300 g-mb-20 g-mb-0--md">
+                        Meine <strong>Portfolios</strong>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="offers-section" class="g-bg-secondary">
         <div class="container g-pt-100 g-pb-130">
-            <!-- Icon Blocks -->
+
             <div class="row no-gutters">
                 <div class="col-sm-6 col-lg-3">
                     <div class="g-pr-40 g-mt-20">
@@ -13,38 +25,91 @@
                                 <br>
                                 we provide?
                             </h2>
-                            <p class="g-font-weight-300 g-font-size-16">The time has come to bring those ideas and plans to life. This is where we really begin to visualize your napkin sketches and make them into beautiful pixels.</p>
+                            <p class="g-font-weight-300 g-font-size-16">The time has come to bring those ideas and plans
+                                to life. This is where we really begin to visualize your napkin sketches and make them
+                                into beautiful pixels.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-9">
-                    <div id="we-provide" class="js-carousel" data-infinite="true" data-slides-show="3" data-slides-scroll="3" data-center-mode="true" data-center-padding="1px" data-pagi-classes="u-carousel-indicators-v1 g-absolute-centered--x g-bottom-minus-30">
 
-                        @foreach($portfolios as $portfolio)
-                            <div class="js-slide">
-                                <div class="u-shadow-v21--hover g-brd-around g-brd-gray-light-v3 g-brd-left-none g-brd-transparent--hover g-bg-white--hover g-transition-0_3 g-cursor-pointer g-px-30 g-pt-30 g-pb-50 g-ml-minus-1">
-                                    <div class="mb-4">
-                                        <span class="d-block g-color-gray-dark-v4 g-font-weight-700 text-right mb-3">01</span>
-                                        <span class="u-icon-v3 u-shadow-v19 g-bg-white g-color-primary rounded-circle mb-4">
-                                        {{ $portfolio->present()->total() }}
-                                            {{ $portfolio->present()->risk() }}
-                                            {{ $portfolio->present()->profit() }}
-                                    </span>
-                                        <h3 class="h5 g-color-black g-font-weight-600 mb-3">{{ $portfolio->name }}</h3>
-                                        <p>{{ $portfolio->present()->description() }}</p>
+                    @foreach($portfolios as $portfolio)
+
+                        <div class="g-mb-30">
+                            <!-- Portfolio -->
+                            <article class="row align-items-stretch text-center mx-0">
+                                <!--Portfolio title-->
+                                <div class="col-sm-3 g-bg-black">
+                                    <button type="button"
+                                            class="btn btn-link pull-right g-color-white g-bg-transparent g-mr-minus-10"
+                                            data-toggle="popover"
+                                            data-placement="right"
+                                            data-title="Beschreibung"
+                                            data-content="{{ $portfolio->present()->description() }}">
+                                        <i class="fa fa fa-question-circle-o"></i>
+                                    </button>
+                                    <div class="g-py-30 g-py-45--sm">
+                                        <h3 class="h6 g-color-white g-font-weight-600 text-uppercase g-mb-25">
+                                            Portfolio
+                                            <span class="d-block g-color-primary g-font-weight-700">{{ $portfolio->name }}</span>
+                                        </h3>
+                                        <a class="btn btn-md u-btn-outline-white g-font-weight-600 g-font-size-11 text-uppercase"
+                                           href="{{ route('portfolios.show', $portfolio->slug) }}">Öffnen</a>
                                     </div>
-                                    <a class="g-brd-bottom g-brd-gray-dark-v5 g-brd-primary--hover g-color-gray-dark-v5 g-color-primary--hover g-font-weight-600 g-font-size-12 text-uppercase g-text-underline--none--hover"
-                                       href="{{ route('portfolios.show', $portfolio->slug) }}">Öffnen</a>
                                 </div>
+
+
+                                <!-- Portfolio summary -->
+                                <div class="col-sm-9 px-0 g-bg-gray-light-v4">
+                                    <div class="container row g-py-45 d-flex h-100">
+
+                                        <div class="col align-self-center g-mx-15">
+                                            <div class="g-font-size-32 g-font-weight-300 g-line-height-1 mb-0">
+                                                {{ $portfolio->present()->total() }}
+                                            </div>
+                                            <span>Wert</span>
+                                        </div>
+
+                                        <div class="col align-self-center g-mx-15">
+                                            <div class="g-font-size-32 g-font-weight-300 g-line-height-1 mb-0">
+                                                {{ $value = $portfolio->present()->risk() ? $value : '-'}}
+                                            </div>
+                                            <span>Risiko</span>
+                                        </div>
+
+                                        <div class="col align-self-center g-mx-15">
+                                            <div class="g-font-size-32 g-font-weight-300 g-line-height-1 mb-0">
+                                                {{ $value = $portfolio->present()->profit() ? $value : '-'}}
+                                            </div>
+                                            <span>Performance</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- End Article Image -->
+                            </article>
+                        </div>
+                    @endforeach
+
+                    <!-- Create New Portfolio -->
+                    <div class="g-mb-30">
+                        <!-- Article -->
+                        <article
+                                class="align-items-stretch text-center mx-0 g-bg-gray-light-v5 g-brd-around g-brd-gray-light-v4">
+                            <div class="g-px-30 g-py-45">
+                                <a class="g-color-gray-light-v4"
+                                   href="{{ route('portfolios.create') }}">
+                                        <span class="u-icon-v1 u-icon-size--2xl g-color-gray-light-v4 g-color-gray-light-v1--hover">
+                                            <i class="fa fa-plus-circle"></i>
+                                        </span>
+                                </a>
                             </div>
-                        @endforeach
-
-
+                        </article>
                     </div>
+
                 </div>
             </div>
-            <!-- End Icon Blocks -->
         </div>
     </section>
 
@@ -53,33 +118,20 @@
 
 @section('link.header')
 
-    <link rel="stylesheet" href="{{ asset('assets/vendor/slick-carousel/slick/slick.css') }}">
-
 @endsection
 
 
 @section('script.footer')
 
-    <script src="{{ asset('assets/js/components/hs.carousel.js') }}"></script>
-    <script src="{{ asset('assets/vendor/slick-carousel/slick/slick.js') }}"></script>
+    <!-- JS Implementing Plugins -->
+    <script src="{{ asset('assets/vendor/popper.min.js') }}"></script>
 
     <script>
         $(document).on('ready', function () {
 
-            // initialization of carousel
-            $.HSCore.components.HSCarousel.init('.js-carousel');
+            // initialization of popovers
+            $('[data-toggle="popover"]').popover();
 
-            $('#we-provide').slick('setOption', 'responsive', [{
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 2
-                }
-            }, {
-                breakpoint: 576,
-                settings: {
-                    slidesToShow: 1
-                }
-            }], true);
         });
     </script>
 @endsection

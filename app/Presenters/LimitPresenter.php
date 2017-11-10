@@ -11,7 +11,7 @@ class LimitPresenter extends Presenter
 
     public function value()
     {
-        if ($this->entity->type->code == 'relative') {
+        if ($this->entity->type == 'relative') {
             $string = $this->entity->value. '%';
 
         } else {
@@ -24,19 +24,7 @@ class LimitPresenter extends Presenter
 
     public function type()
     {
-        switch($this->entity->type->code) {
-            case 'absolute':
-                $string = 'Absolutes Limit'; break;
-            case 'relative':
-                $string ='Relatives Limit'; break;
-            case 'floor':
-                $string = 'Untergrenze'; break;
-            case 'target':
-                $string = 'Zielwert Limit'; break;
-            default:
-                $string = 'Limit';
-        }
-        return $string;
+        return trans('limits'.$this->entity->type.'form.title');
     }
 
     public function date()

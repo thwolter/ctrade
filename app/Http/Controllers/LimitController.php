@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Limit;
 use App\Entities\LimitType;
 use App\Entities\Portfolio;
-use App\Notifications\LimitChanged;
 use App\Repositories\LimitRepository;
 use Illuminate\Http\Request;
 
@@ -31,15 +29,16 @@ class LimitController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
-            'id' => 'exist:portfolio,id',
+            'id' => 'exists:portfolios,id',
             'type' => 'in:absolute,relative,floor,absolute',
-            'amount' => 'required|numeric',
+            'value' => 'required|numeric',
             'date' => 'sometimes|date'
         ]);
 
         $portfolio = Portfolio::find($attributes['id']);
+        $portfolio->limits()->create(array_only($attributes, ['type', 'value', 'date']));
 
-        $portfolio->limits()->create($attributes);
+        return ['redirect' => route('portfolios.show', [$portfolio])];
     }
 
 
