@@ -21,47 +21,48 @@
 
                     <!-- Limit amount -->
                     <div class="form-group g-mb-25 col-md-6">
-                    <label class="g-mb-10" for="amount">{{ trans('limits.limit') }}</label>
-                    <div class="input-group g-brd-primary--focus">
-                        <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
-                            {{ portfolio.currency }}
+                        <label class="g-mb-10" for="amount">{{ trans('limits.limit') }}</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
+                                {{ portfolio.currency }}
+                            </div>
+                            <cleave id="value"
+                                    v-model="form.value"
+                                    :placeholder="trans('limits.value')"
+                                    :options="cleave"
+                                    :class="['form-control form-control-md', { 'error': form.errors.has('value') }]"
+                                    @input="form.errors.clear('value')">
+                            </cleave>
                         </div>
-                        <cleave id="value"
-                                v-model="form.value"
-                                :placeholder="trans('limits.value')"
-                                :options="cleave"
-                                :class="['form-control form-control-md', { 'error': form.errors.has('value') }]"
-                                @input="form.errors.clear('value')"></cleave>
-                    </div>
 
-                    <p v-if="form.errors.has('amount')" class="error-text">
-                        <span v-text="form.errors.get('amount')"></span>
-                    </p>
-                </div>
+                        <p v-if="form.errors.has('amount')" class="error-text">
+                            <span v-text="form.errors.get('amount')"></span>
+                        </p>
+                    </div>
 
                     <!-- Limit target date -->
                     <div v-if="form.type === 'target'" class="form-group g-mb-25 col-md-6">
-                    <label class="g-mb-10" for="date">{{ trans('limits.date') }}</label>
-                    <div class="input-group g-brd-primary--focus">
-                        <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-dark-v5 rounded-0">
-                            <i class="icon-calendar"></i>
+                        <label class="g-mb-10" for="date">{{ trans('limits.date') }}</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-dark-v5 rounded-0">
+                                <i class="icon-calendar"></i>
+                            </div>
+                            <datepicker id="date"
+                                        v-model="form.date"
+                                        name="date"
+                                        input-class="form-control form-control-md u-datepicker-v1 g-width-auto g-brd-left-none rounded-0"
+                                        language="de"
+                                        :placeholder="trans('limits.date.target')"
+                                        :full-month-name="true"
+                                        :monday-first="true"
+                                        ref="datepicker">
+                            </datepicker>
                         </div>
-                        <datepicker id="date"
-                                    v-model="form.date"
-                                    name="date"
-                                    input-class="form-control form-control-md u-datepicker-v1 g-width-auto g-brd-left-none rounded-0"
-                                    language="de"
-                                    :placeholder="trans('limits.date.target')"
-                                    :full-month-name="true"
-                                    :monday-first="true"
-                                    ref="datepicker">
-                        </datepicker>
-                    </div>
 
-                    <p v-if="form.errors.has('date')" class="error-text">
-                        <span v-text="form.errors.get('date')"></span>
-                    </p>
-                </div>
+                        <p v-if="form.errors.has('date')" class="error-text">
+                            <span v-text="form.errors.get('date')"></span>
+                        </p>
+                    </div>
 
                 </div>
 
