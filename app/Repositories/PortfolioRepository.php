@@ -28,7 +28,7 @@ class PortfolioRepository
             'description' => array_get($attributes,'description')
         ]);
         $portfolio->currency()
-            ->associate(Currency::whereCode(array_get($attributes,'currency'))->first());
+            ->associate(Currency::find(array_get($attributes,'currency')));
 
         $category = array_get($attributes, 'category');
         if ($category) {
@@ -36,7 +36,6 @@ class PortfolioRepository
         }
 
         $user->obtain($portfolio);
-        $portfolio->deposit($attributes);
 
         return $portfolio;
     }

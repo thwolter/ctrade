@@ -48,17 +48,9 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        $examplesUser = User::whereLastName('examples')->first();
-
-        if ($examplesUser) {
-            $examples = $examplesUser->portfolios;
-        } else {
-            $examples = null;
-        }
-
         $portfolios = User::findOrFail(auth()->id())->portfolios;
 
-        return view('portfolios.index', compact('portfolios', 'examples'));
+        return view('portfolios.index', compact('portfolios'));
 
     }
 
@@ -69,14 +61,9 @@ class PortfoliosController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
-        $firstPortfolio = ! $user->portfolios->count();
-
         $currencies = Currency::getEnumValuesAsAssociativeArray('code');
-        $categories = Category::getNamesArray($user->id);
 
-        return view('portfolios.create', compact('currencies', 'categories'))
-            ->with('info', $firstPortfolio ? trans('portfolio.messages.create_first') : null);
+        return view('portfolios.create', compact('currencies'));
     }
 
     /**
@@ -89,13 +76,7 @@ class PortfoliosController extends Controller
     {
         $portfolio = $this->repo->createPortfolio(auth()->user(), $request->all());
 
-        return ['redirect' => route('portfolios.fresh', [$portfolio])];
-    }
-
-
-    public function fresh(Portfolio $portfolio)
-    {
-        return view('portfolios.fresh', compact('portfolio'));
+        return redirect()->route('portfolios.show', [$portfolio->slug]);
     }
 
 

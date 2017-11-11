@@ -32,7 +32,7 @@
                 <div class="row justify-content-center">
                 {!! Form::open([
                     'route' => 'portfolios.store',
-                    'method' => 'PUT',
+                    'method' => 'POST',
                     'class' => 'col-7 g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30 g-bg-brown-opacity-0_1'
                 ]) !!}
 
@@ -49,25 +49,23 @@
                     <div class="form-group g-mb-25 {{ $errors->has('currency') ? 'u-has-error-v1' : ''}}">
                         <label class="g-mb-10">Währung des Portfolios</label>
 
-                        {!! Form::select('currency', ['EUR', 'USD'], ['Euro', 'Dollar'], [
+                        {!! Form::select('currency', $currencies, null, [
+                            'placeholder' => 'Währung wählen',
                             'class' => 'js-custom-select u-select-v1 form-control form-control-md g-brd-gray-light-v2 g-color-gray-dark-v5 w-100 g-pt-11 g-pb-10',
                             'data-open-icon' => "fa fa-angle-down",
                             'data-close-icon' => "fa fa-angle-up"
                             ])
                         !!}
                         <small class="form-control-feedback">{{ $errors->first('currency')  }}</small>
-                        <small class="form-text text-muted g-font-size-default g-mt-10">
-                            Die Währung, in der das Portfolio geführt werden soll.
-                        </small>
                     </div>
 
                     <!-- Description Input -->
-                    <div class="form-group g-mb-20 {{ $errors->has('currency') ? 'u-has-error-v1' : ''}}">
+                    <div class="form-group g-mb-20 {{ $errors->has('description') ? 'u-has-error-v1' : ''}}">
                         <label class="g-mb-10" for="description">Beschreibung</label>
                         <textarea id="description" name="description"
                                   class="form-control form-control-md g-resize-none rounded-0"
                                   rows="3" placeholder="Text area"></textarea>
-                        <small class="form-control-feedback">{{ $errors->first('currency')  }}</small>
+                        <small class="form-control-feedback">{{ $errors->first('description')  }}</small>
                         <small class="form-text text-muted g-font-size-default g-mt-10">
                             Die Beschreibung hilft dir, bei mehreren Portfolios den Überblick zu behalten.
                         </small>
