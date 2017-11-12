@@ -24,4 +24,10 @@ Route::middleware('auth')->group(function() {
         'uses' => 'PositionsController@tradeStock'
     ]);
 
+    Route::get('/{portfolio}/positions/stock', [
+        'as' => 'positions.createStock',
+        'uses' => 'PositionsController@createStock'
+    ]);
+
+
 });

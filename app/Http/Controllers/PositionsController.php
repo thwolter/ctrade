@@ -66,6 +66,13 @@ class PositionsController extends Controller
         ]);
     }
 
+
+    public function createStock(Portfolio $portfolio)
+    {
+        return view('positions.createStock', compact('portfolio'));
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

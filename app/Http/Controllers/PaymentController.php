@@ -23,17 +23,9 @@ class PaymentController extends Controller
             ->with('portfolio', $portfolio);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id transaction id
-     * @return \Illuminate\Http\Response
-     *
-     */
-    public function show($id)
+
+    public function create(Portfolio $portfolio)
     {
-        $transaction = Transaction::find($id);
-        $portfolio = $transaction->portfolio;
-        return view('transactions.show', compact('portfolio', 'transaction'));
+        return view('payments.create', compact('portfolio'));
     }
 }

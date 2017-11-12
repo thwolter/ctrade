@@ -28,7 +28,7 @@
                         <ul class="dropdown-menu" role="menu">
 
                             <li>
-                                <a href="{{ route('transactions.index', $portfolio->slug) }}">
+                                <a href="{{ route('payments.index', $portfolio->slug) }}">
                                     <i class="fa fa-pie-chart" aria-hidden="true"></i>
                                     @lang('navigation.transaction.overview')
 
