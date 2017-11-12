@@ -3,6 +3,8 @@
 </template>
 
 <script>
+    import Cleave from 'cleave.js';
+
     export default {
 
         props: ['value', 'options'],
@@ -14,12 +16,14 @@
         destroyed() {
             this.cleave.destroy()
         },
+
         watch: {
             value: 'updateInput'
         },
+
         methods: {
             updateValue() {
-                var val = this.cleave.getRawValue()
+                let val = this.cleave.getRawValue();
                 if (val !== this.value) {
                     this.$emit('input', val)
                 }

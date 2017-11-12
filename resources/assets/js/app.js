@@ -11,7 +11,6 @@ import Form from './core/Form';
 import Event from './core/Event';
 import Colors from './core/Colors';
 
-
 import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
 

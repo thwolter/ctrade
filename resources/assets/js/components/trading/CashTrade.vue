@@ -1,101 +1,85 @@
 <template>
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <form @submit.prevent="onSubmit"
+          class="col-md-8 g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 v-if="deposit" class="modal-title">Cash einzahlen</h3>
-                <h3 v-if="withdraw" class="modal-title">Cash auszahlen</h3>
-            </div>
-
-            <form @submit.prevent="onSubmit">
-
-                <div class="modal-body">
-                    <div class="row">
-
-                        <!-- date -->
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="date" class="col-form-label">Datum</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <datepicker
-                                            v-model="form.date"
-                                            name="date"
-                                            input-class="form-control"
-                                            language="de"
-                                            :disabled="disabled"
-                                            :full-month-name="true"
-                                            :monday-first="true"
-                                            ref="datepicker">
-                                    </datepicker>
-                                </div>
-                                <p v-if="form.errors.has('date')" class="error-text">
-                                    <span v-text="form.errors.get('date')"></span>
-                                </p>
-
-                            </div>
-                        </div><!-- /date -->
-
-                        <!-- amount -->
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="amount" class="control-label cursor-pointer">Betrag</label>
-                                <div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon">EUR</span>
-                                        <cleave v-model="form.amount" placeholder="Betrag"
-                                                :options="cleave"
-                                                :class="['form-control', { 'error': form.errors.has('date') }]"
-                                                @input="form.errors.clear('amount')"></cleave>
-                                    </div>
-
-                                    <p v-if="form.errors.has('amount')" class="error-text">
-                                        <span v-text="form.errors.get('amount')"></span>
-                                    </p>
-                                    <p v-if="exceedCash" class="error-text">
-                                        Betrag übersteigt verfügbaren Barbestand.
-                                    </p>
-
-                                </div>
-                            </div>
-                        </div> <!-- /amount -->
-
-                    </div>
+        <div class="g-mb-15">
+            <label class="form-check-inline u-check g-pl-25 ml-0 g-mr-25">
+                <input class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0" name="radInline1_1" type="radio"
+                       v-model="form.deposit">
+                <div class="u-check-icon-radio-v4 g-absolute-centered--y g-left-0 g-width-18 g-height-18">
+                    <i class="g-absolute-centered d-block g-width-10 g-height-10 g-bg-primary--checked"></i>
                 </div>
+                Einzahlung
+            </label>
 
-                <div class="modal-footer">
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
-                        <button type="submit" v-if="deposit" class="btn btn-success" :disabled="hasError">
-                            Einzahlen
-                        </button>
-                        <button type="submit" v-if="withdraw" class="btn btn-primary" :disabled="hasError">
-                            Auszahlen
-                        </button>
-                    </div>
+            <label class="form-check-inline u-check g-pl-25 ml-0 g-mr-25">
+                <input class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0" name="radInline1_1" type="radio">
+                <div class="u-check-icon-radio-v4 g-absolute-centered--y g-left-0 g-width-18 g-height-18">
+                    <i class="g-absolute-centered d-block g-width-10 g-height-10 g-bg-primary--checked"></i>
                 </div>
-            </form>
-
+                Auszahlung
+            </label>
         </div>
-    </div>
 
+        <!-- Amount Input -->
+        <div class="form-group g-mb-20">
+            <label class="g-mb-10" for="amount">Betrag</label>
+            <div class="input-group g-brd-primary--focus">
+                <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
+                    {{ portfolio.currency }}
+                </div>
+                <cleave id="amount"
+                        v-model="form.amount"
+                        placeholder="Betrag"
+                        :options="cleave"
+                        :class="['form-control form-control-md', { 'error': form.errors.has('amount') }]"
+                        @input="form.errors.clear('amount')">
+                </cleave>
+            </div>
+            <small class="form-text text-muted g-font-size-default g-mt-10">We'll never share your email with
+                anyone else.
+            </small>
+        </div>
+
+        <!-- Select Date Input -->
+        <div class="form-group g-mb-30">
+            <label class="g-mb-10" for="date">Datum der Transaktion</label>
+            <div class="input-group g-brd-primary--focus">
+                <datepicker id="date"
+                            v-model="form.date"
+                            name="date"
+                            wrapper-class="w-100"
+                            input-class="form-control form-control-md w-100 g-brd-right-none rounded-0 g-bg-white"
+                            language="de"
+                            placeholder="Datum"
+                            :full-month-name="true"
+                            :monday-first="true"
+                            ref="datepicker">
+                </datepicker>
+                <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-dark-v5 rounded-0 g-brd-left-non">
+                    <i class="icon-calendar"></i>
+                </div>
+            </div>
+        </div>
+
+    </form>
 </template>
 
 <script>
-    import Input from '../../mixins/Input.js';
     import Datepicker from 'vuejs-datepicker';
 
     export default {
 
-        mixins: [Input],
-
-        props: [
-            'route',
-            'id',
-            'cash',
-            'transaction'
-        ],
+        props: {
+            portfolio: {
+                type: Object,
+                required: true
+            },
+            route: {
+                type: String,
+                required: true
+            }
+        },
 
         components: {
             Datepicker
@@ -105,9 +89,9 @@
             return {
                 form: new Form({
                     amount: null,
-                    transaction: this.transaction,
+                    deposit: true,
                     date: (new Date()).toISOString().split('T')[0],
-                    id: null
+                    id: this.portfolio.id
                 }),
 
 
@@ -131,39 +115,7 @@
                         this.hide();
                         window.location = data.redirect;
                     })
-            },
-
-            initEventListeners(vm) {
-                if (this.transaction === 'deposit' || this.transaction === 'withdraw') {
-                    vm.show(this.id, this.transaction);
-
-                } else {
-                    Event.listen('depositCash', function (id) {
-                        vm.show(id, 'deposit');
-                    });
-
-                    Event.listen('withdrawCash', function (id) {
-                        console.log('ok, withdraw');
-                        vm.show(id, 'withdraw');
-                    });
-                }
-            },
-
-            initDatapickerEvents() {
-                this.$refs.datepicker.$on('opened', () => {
-                    this.form.errors.clear('executed');
-                    this.updatePrice();
-                });
-            },
-
-            show(id, transaction) {
-                this.form.transaction = transaction;
-                this.form.id = id ? id : this.id;
-            },
-
-            hide() {
-                this.form.reset();
-            },
+            }
         },
 
         computed: {
@@ -178,14 +130,6 @@
 
             exceedCash() {
                 return ((parseFloat(this.cash) < this.form.amount) && this.withdraw)
-            },
-
-            deposit() {
-                return (this.form.transaction === 'deposit');
-            },
-
-            withdraw() {
-                return (this.form.transaction === 'withdraw');
             }
         },
 
@@ -196,11 +140,6 @@
                     this.hasFormError = this.form.errors.any();
                 }
             }
-        },
-
-        mounted() {
-            this.initEventListeners(this);
-            this.initDatapickerEvents();
         }
     }
 </script>

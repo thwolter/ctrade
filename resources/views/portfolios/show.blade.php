@@ -34,7 +34,6 @@
                             </div>
                         </div>
                     </a>
-
                 @else
 
                     <!-- Limits -->
