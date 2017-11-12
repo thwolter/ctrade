@@ -29,7 +29,7 @@ Route::prefix('portfolio')->middleware('auth')->group(function() {
         'uses' => 'PortfoliosController@pay'
     ]);
 
-    Route::put('{slug}/update', [
+    Route::put('{portfolio}/update', [
         'as' => 'portfolios.update',
         'uses' => 'PortfoliosController@update'
     ]);
@@ -45,7 +45,7 @@ Route::prefix('portfolio')->middleware('auth')->group(function() {
         'uses' => 'PortfoliosController@destroy'
     ]);
 
-    Route::get('{slug}/edit', [
+    Route::get('{portfolio}/edit', [
         'as' => 'portfolios.edit',
         'uses' => 'PortfoliosController@edit'
     ]);

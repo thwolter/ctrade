@@ -106,12 +106,11 @@ class PortfoliosController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Request $request
-     * @param $slug
+     * @param Portfolio $portfolio
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $slug)
+    public function edit(Request $request, Portfolio $portfolio)
     {
-        $portfolio = Auth::user()->portfolios()->whereSlug($slug)->first();
         $limit = new LimitRepository($portfolio);
 
         setActiveTab($request, 'portfolio');
@@ -124,16 +123,12 @@ class PortfoliosController extends Controller
      * Update the specified resource in storage.
      *
      * @param UpdatePortfolio|Request $request
-     * @param $slug
+     * @param Portfolio $portfolio
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePortfolio $request)
+    public function update(UpdatePortfolio $request, Portfolio $portfolio)
     {
-        $portfolio = Portfolio::find($request->id)->first();
-
-        $portfolio->name = $request->get('name', $portfolio->name);
-        $portfolio->description = $request->get('description', $portfolio->description);
-        $portfolio->save();
+        $portfolio->update($request->only('name', 'description'));
 
         $portfolio->settings()->merge($request->all());
 

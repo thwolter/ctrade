@@ -92,21 +92,18 @@
                         </div>
                     @endforeach
 
+
                     <!-- Create New Portfolio -->
-                    <div class="g-mb-30">
-                        <!-- Article -->
-                        <article
-                                class="align-items-stretch text-center mx-0 g-bg-gray-light-v5 g-brd-around g-brd-gray-light-v4">
-                            <div class="g-px-30 g-py-45">
-                                <a class="g-color-gray-light-v4"
-                                   href="{{ route('portfolios.create') }}">
-                                        <span class="u-icon-v1 u-icon-size--2xl g-color-gray-light-v4 g-color-gray-light-v1--hover">
-                                            <i class="fa fa-plus-circle"></i>
-                                        </span>
-                                </a>
+                    <a href="{{ route('portfolios.create') }}"
+                       class="g-mb-30 btn btn-block g-bg-gray-light-v5 g-brd-around
+                        g-brd-gray-light-v4 g-bg-gray-light-v4--hover g-color-gray-light-v1 g-color-gray-dark-v4--hover">
+                        <div class="align-items-stretch text-center mx-0">
+                            <div class="g-px-30 g-py-70">
+                                <i class="fa fa-plus-circle"></i>
+                                Neues Portfolio anlegen
                             </div>
-                        </article>
-                    </div>
+                        </div>
+                    </a>
 
                 </div>
             </div>

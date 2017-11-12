@@ -23,17 +23,33 @@
             <!-- Main section -->
             <div class="col-lg-9 order-lg-2 g-mb-80">
 
-                <!-- Limits -->
-                @include('portfolios.panels.limits')
+                @if( !count($portfolio->assets) )
+                    <a href="{{ route('portfolios.create') }}"
+                       class="g-mb-30 btn btn-block g-bg-gray-light-v5 g-brd-around
+                        g-brd-gray-light-v4 g-bg-gray-light-v4--hover g-color-gray-light-v1 g-color-gray-dark-v4--hover">
+                        <div class="align-items-stretch text-center mx-0">
+                            <div class="g-px-30 g-py-70">
+                                <i class="fa fa-plus-circle"></i>
+                                Neues Portfolio anlegen
+                            </div>
+                        </div>
+                    </a>
 
-                <!-- Key Figures -->
-                @include('portfolios.panels.keyfigures')
+                @else
 
-                <!-- Performance Graph -->
-                {{--@include('portfolios.panels.performance_graph')--}}
+                    <!-- Limits -->
+                    @include('portfolios.panels.limits')
 
-                <!-- Positions Graph -->
-                {{--@include('portfolios.panels.positions_graph')--}}
+                    <!-- Key Figures -->
+                    @include('portfolios.panels.keyfigures')
+
+                    <!-- Performance Graph -->
+                    {{--@include('portfolios.panels.performance_graph')--}}
+
+                    <!-- Positions Graph -->
+                    {{--@include('portfolios.panels.positions_graph')--}}
+
+                @endif
 
             </div>
         </div>
