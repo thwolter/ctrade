@@ -133,7 +133,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .vue-simple-spinner {
     transition: all 0.3s linear;
   }

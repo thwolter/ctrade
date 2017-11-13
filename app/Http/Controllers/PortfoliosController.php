@@ -80,16 +80,6 @@ class PortfoliosController extends Controller
     }
 
 
-    public function pay(PayRequest $request)
-    {
-        $portfolio = Portfolio::whereId($request->id)->first();
-
-        $transaction = $request->transaction;
-        $portfolio->$transaction($request->all());
-
-        return ['redirect' => route('positions.index', $portfolio->slug)];
-    }
-
     /**
      * Display the specified resource.
      *

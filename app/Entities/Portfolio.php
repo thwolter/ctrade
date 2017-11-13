@@ -257,9 +257,9 @@ class Portfolio extends Model
     public function withdraw($attributes)
     {
         $this->payments()->create([
-            'type' => 'withdraw',
+            'type' => 'withdrawal',
             'amount' => -$attributes['amount'],
-            'executed_at' => $attributes['executed']
+            'executed_at' => $attributes['date']
         ]);
 
         return $this;
@@ -306,7 +306,9 @@ class Portfolio extends Model
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'currency' => $this->currency->code
+            'currency' => $this->currency->code,
+            'cash' => $this->cash(),
+            'lastTransactionDate' => $this->latestTransactionDate()->toDateString()
         ];
     }
 

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Entities\Portfolio;
 use App\Entities\Transaction;
+use App\Http\Requests\PayRequest;
 use Illuminate\Http\Request;
 class PaymentController extends Controller
 {
@@ -27,5 +28,17 @@ class PaymentController extends Controller
     public function create(Portfolio $portfolio)
     {
         return view('payments.create', compact('portfolio'));
+    }
+
+
+    public function store(PayRequest $request)
+    {
+        $portfolio = Portfolio::find($request->get('id'));
+
+        $request->deposit
+            ? $portfolio->deposit($request->all())
+            : $portfolio->withdraw($request->all());
+
+        return ['redirect' => route('positions.index', $portfolio->slug)];
     }
 }

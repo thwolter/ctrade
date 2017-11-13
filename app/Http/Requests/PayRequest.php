@@ -29,7 +29,7 @@ class PayRequest extends FormRequest
     {
         return [
             'amount'        => 'required|min:0.01',
-            'transaction'   => 'required|in:deposit,withdraw',
+            'deposit'       => 'required|boolean',
             'id'            => 'required|exists:portfolios,id',
             'date'          => [
                 'required',

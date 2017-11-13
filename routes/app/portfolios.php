@@ -24,11 +24,6 @@ Route::prefix('portfolio')->middleware('auth')->group(function() {
         'uses' => 'PortfoliosController@fresh'
     ]);
 
-    Route::post('pay', [
-        'as' => 'portfolios.pay',
-        'uses' => 'PortfoliosController@pay'
-    ]);
-
     Route::put('{portfolio}/update', [
         'as' => 'portfolios.update',
         'uses' => 'PortfoliosController@update'

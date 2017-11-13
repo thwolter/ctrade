@@ -13,5 +13,10 @@ Route::group(['middleware' => 'auth'], function() {
         'uses' => 'PaymentController@create'
     ]);
 
+    Route::post('{portfolio}/payment/store', [
+        'as' => 'payments.store',
+        'uses' => 'PaymentController@store'
+    ]);
+
 });
 
