@@ -39,6 +39,6 @@ class PaymentController extends Controller
             ? $portfolio->deposit($request->all())
             : $portfolio->withdraw($request->all());
 
-        return ['redirect' => route('positions.index', $portfolio->slug)];
+        return ['totalCash' => $portfolio->cash()];
     }
 }

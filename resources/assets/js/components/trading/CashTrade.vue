@@ -116,7 +116,11 @@
     </div>
 
     <div v-else>
-        sucess
+        <p>
+            Du hast {{ transaction.amount }} {{ portfolio.currency }} in dein Portfolio {{ portfolio.name }} eingezahlt.
+            Dein Portfolio verfügt damit über einen akutellen Barbestand von {{ transaction.newTotalCash }} {{ portfolio.currency }}.
+        </p>
+
     </div>
 </template>
 
@@ -125,6 +129,7 @@
     import Spinner from 'vue-simple-spinner';
 
     let moment = require('moment');
+    let numeral =require('numeral');
 
     export default {
 
@@ -151,6 +156,12 @@
                     date: new Date(),
                     id: this.portfolio.id
                 }),
+
+                transaction: {
+                    amount: null,
+                    deposit: true,
+                    newTotalCash: null
+                },
 
                 rawDate: new Date(),
 
@@ -184,8 +195,12 @@
                 this.form.date = this.asDateString(this.rawDate);
                 this.showSpinner = true;
 
+                this.transaction.amount = this.form.amount;
+                this.transaction.deposit =this.form.deposit;
+
                 this.form.post(this.route)
                     .then(data => {
+                        this.transaction.newTotalCash = data.totalCash;
                         this.showDialog = false;
                         this.showSpinner = false;
                     })
