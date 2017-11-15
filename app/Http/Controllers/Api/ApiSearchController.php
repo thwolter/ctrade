@@ -30,12 +30,11 @@ class ApiSearchController extends ApiBaseController
     public function search(Request $request)
     {
         $request->validate([
-            'instrumentType' => 'required|string',
             'query' => 'required|string'
         ]);
 
         return json_encode($this->search
-            ->search($request->get('instrumentType'), $request->get('query'))
+            ->search(Stock::class, $request->get('query'))
         );
     }
 

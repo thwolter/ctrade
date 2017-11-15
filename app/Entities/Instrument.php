@@ -104,6 +104,16 @@ abstract class Instrument extends Model
         return $array;
     }
 
+    public function toArray()
+    {
+        return array_merge(
+            parent::toArray(), [
+                'type' => get_class($this),
+                'base' => class_basename($this)
+            ]
+        );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

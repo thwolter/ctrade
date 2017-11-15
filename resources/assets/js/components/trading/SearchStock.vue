@@ -1,148 +1,113 @@
 <template>
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <div class="d-flex justify-content-center">
+        <div class="g-width-600">
+            <form class="mx-auto w-100 g-pa-20">
+                <div class="form-group g-mb-20 g-max-width-570">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title">Wertpapier hinzufügen</h3>
-            </div>
+                    <!-- Query Input -->
+                    <div class="input-group u-shadow-v21 rounded g-brd-around g-brd-gray-light-v4">
+                        <input v-model="query"
+                               class="form-control form-control-md g-brd-white g-font-size-16 border-right-0 pr-0 g-py-15"
+                               type="text"
+                               placeholder="Welche Aktie möchtest du hinzufügen?"
+                               @keyup="onKeyup">
 
-            <div class="modal-body">
-
-                <!-- initiate search dialog -->
-                <div v-if="doSearch">
-                    <!-- Search input -->
-                    <div class="row">
-                        <form @submit.prevent="onSubmit">
-
-                            <!-- search form input -->
-                            <div class="form-group">
-                                <label for="query" class="control-label col-sm-2 col-sm-offset-1">Suchen</label>
-                                <div class="col-sm-8">
-
-                                    <input type="text" class="form-control" v-model="query" @keyup="onRefresh"
-                                           placeholder="Name, WKN, ISIN, ...">
-                                    <span class="help-block">
-                                        Suche nach Namen oder Branche
-                                    </span>
-                                </div>
+                        <div class="input-group-addon d-flex align-items-center g-bg-white g-brd-white g-color-gray-light-v1 g-pa-2">
+                            <div class="g-font-size-16 g-py-15 g-px-20">
+                                <i class="icon-magnifier g-pos-rel g-top-1"></i>
                             </div>
+                        </div>
+                    </div>
 
-                        </form>
-                    </div> <!-- /.row -->
+                    <!-- Search Results -->
+                    <div v-if="hasResult"
+                         class="g-bg-white g-brd-around g-brd-top-none g-brd-gray-light-v4 sticky-top u-shadow-v21 g-px-20 g-pt-10">
 
-                    <!-- Search results -->
-                    <div v-if="isResult">
-                        <table class="table table-striped table-hover positions-table">
-                            <thead>
-                            <tr>
-                                <th>Nr.</th>
-                                <th>Name/Sektor</th>
-                                <th>ISIN</th>
-                                <th>Währung</th>
-                            </tr>
-                            </thead>
-
+                        <table class="table table-hover table-responsive u-table--v1">
                             <tbody>
-                            <tr v-for="(item, index) in results">
-                                <td class="align-middle"> {{ parseInt(index)+1 }}</td>
-                                <td class="align-middle">
-                                     <span style="display:block">
-                                         <a href="#" @click.prevent="onClickLink(item.slug)">{{ item.name }}</a>
-                                     </span>
-                                    <span>{{ join(item.industry, item.sector) }}</span>
-
-                                </td>
-                                <td>{{ item.isin }}</td>
-                                <td>{{ item.currency }}</td>
-                            </tr>
-
+                                <tr v-for="(item, index) in results"
+                                    @click.prevent="onClick(item.base, item.slug)"
+                                    style="cursor: pointer"
+                                    class="g-bg-primary-opacity-0_2--hover">
+                                    <td class="font-weight-bold border-0">{{ item.name }}</td>
+                                    <td class="g-color-orange border-0">{{ item.industry }}</td>
+                                    <td class="g-color-orange border-0">{{ item.isin }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <div v-if="showNoResults">
-                        <p>Keine Ergebniss gefunden.</p>
-                    </div>
                 </div>
 
-            </div> <!-- /.modal-content -->
-        </div> <!-- /.modal-content -->
-    </div> <!-- /.modal-dialog -->
+                <p>Suche Aktien der Börsen XETRA und Suttgart.</p>
+
+            </form>
+        </div>
+    </div>
 </template>
+
 
 <script>
     export default {
 
-        props: [
-            'portfolioId',
-            'instrumentType',
-            'submitRoute'
-        ],
+        props: {
+            portfolio: {
+                type: Object,
+                required: true
+            },
+            route: {
+                type: String,
+                required: true
+            }
+        },
+
 
         data() {
             return {
                 searchRoute: '/api/search',
 
                 query: null,
-                results: [],
-                error: false,
-
-                doSearch: true,
-                instrumentId: null,
-
                 timeout: null,
+
+                results: [],
 
                 form: new Form({
                     instrumentType: this.instrumentType,
                     instrumentId: null,
-                }),
-
-                showNoResults: false
+                })
             }
         },
 
         methods: {
-            onSubmit() {
-                axios.get(this.searchRoute, {
-                    params: {
-                        query: this.query,
-                        instrumentType: this.instrumentType
-                    }
-                })
-                    .then(data => this.assign(data.data));
-            },
-
-            onRefresh() {
+            onKeyup() {
                 let self = this;
                 clearTimeout(this.timeout);
 
                 this.timeout = setTimeout(function () {
-                    this.error = false;
-                    if (this.query === '') {
-                        self.assign([]);
-                    } else {
-                        self.onSubmit();
-                    }
+                    if (self.query !== '') self.search(self.query);
                 }, 500);
             },
 
-            onClickLink(slug) {
-                let instrumentType = this.instrumentType.substr(this.instrumentType.lastIndexOf('\\') + 1).toLowerCase();
-                window.location = this.submitRoute
-                    .replace('%entity%', instrumentType)
-                    .replace('%instrument%', slug);
+            search(query) {
+                axios.get(this.searchRoute, {
+                        params: {
+                            query: this.query
+                        }
+                    })
+                    .then(data => {
+                        this.results = data.data;
+                    });
             },
 
-            assign(data) {
-                this.results = data;
-                this.showNoResults = (this.results.length === 0) && this.query;
+            onClick(type, slug) {
+                window.location = this.route
+                    .replace('%entity%', type)
+                    .replace('%instrument%', slug);
             },
 
             reset() {
                 this.query = null;
                 this.results = [];
-                this.doSearch = true;
+                this.showResults = false;
             },
 
             join(industry, sector) {
@@ -152,19 +117,9 @@
         },
 
         computed: {
-            isResult() {
-                return (this.results.length !== 0)
+            hasResult() {
+                return this.results.length;
             }
-        },
-
-        created() {
-            Event.listen('resetSearch', () => {
-                this.reset();
-            });
-
-            Event.listen('backToSearch', () => {
-                this.doSearch = true;
-            })
         }
     }
 </script>
