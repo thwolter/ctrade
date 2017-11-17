@@ -5,7 +5,7 @@
                 <div class="form-group g-mb-20 g-max-width-570">
 
                     <!-- Query Input -->
-                    <div class="input-group u-shadow-v21 rounded g-brd-around g-brd-gray-light-v4">
+                    <div class="input-group u-shadow-v25 rounded">
                         <input v-model="query"
                                class="form-control form-control-md g-brd-white g-font-size-16 border-right-0 pr-0 g-py-15"
                                type="text"
@@ -21,7 +21,7 @@
 
                     <!-- Search Results -->
                     <div v-if="hasResult"
-                         class="g-bg-white g-brd-around g-brd-top-none g-brd-gray-light-v4 sticky-top u-shadow-v21 g-px-20 g-pt-10">
+                         class="g-bg-white sticky-top u-shadow-v25 g-bg-lightblue-opacity-0_1 g-px-20 g-pt-10">
 
                         <table class="table table-hover table-responsive u-table--v1">
                             <tbody>
@@ -83,7 +83,11 @@
                 clearTimeout(this.timeout);
 
                 this.timeout = setTimeout(function () {
-                    if (self.query !== '') self.search(self.query);
+                    if (self.query !== '') {
+                        self.search(self.query);
+                    } else {
+                        self.reset();
+                    }
                 }, 500);
             },
 
@@ -105,9 +109,7 @@
             },
 
             reset() {
-                this.query = null;
                 this.results = [];
-                this.showResults = false;
             },
 
             join(industry, sector) {

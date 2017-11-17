@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Entities\Portfolio;
 use App\Entities\Stock;
 use App\Http\Requests\SearchRequest;
 use App\Repositories\SearchRepository;

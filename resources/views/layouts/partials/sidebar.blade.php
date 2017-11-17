@@ -51,7 +51,7 @@
                         <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i>Ein-/Auszahlung
                     </a>
                     <a class="dropdown-item list-group-item list-group-item-action"
-                       href="{{ route('positions.createStock', $portfolio) }}">
+                       href="{{ route('positions.search', $portfolio) }}">
                         <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i>Aktien
                     </a>
                 </div>

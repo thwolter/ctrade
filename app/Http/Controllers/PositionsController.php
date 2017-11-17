@@ -31,45 +31,26 @@ class PositionsController extends Controller
         return view('positions.index', array_merge(['portfolio' => $portfolio], $request->all()));
     }
 
-
-    /**
-     * Create a new resource for a stock model.
-     *
-     * @param Portfolio $portfolio
-     * @param Stock $stock
-     * @param $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function tradeStock(Portfolio $portfolio, Stock $stock, $transaction)
-    {
-        return view('positions.stocks.trade',
-            compact('portfolio', 'stock', 'transaction')
-        );
-    }
-
     /**
      * Create a new resource based on given entity and instrument.
      *
      * @param Portfolio $portfolio
-     * @param $entity
-     * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function create(Portfolio $portfolio, $entity, $slug)
+    public function search(Portfolio $portfolio)
     {
-        $instrument = resolve('App\\Entities\\'.ucfirst($entity));
-
-        return view('positions.'.str_plural($entity).'.trade', [
-            'portfolio' => $portfolio,
-            'stock' => $instrument::findBySlug($slug),
-            'transaction' => 'buy'
-        ]);
+        return view('positions.search', compact('portfolio'));
     }
 
 
-    public function createStock(Portfolio $portfolio)
+    public function show(Portfolio $portfolio, $entity, $slug)
     {
-        return view('positions.createStock', compact('portfolio'));
+        $instrument = resolve('App\\Entities\\'.ucfirst($entity));
+
+        return view('positions.show_'.strtolower($entity), [
+            'portfolio' => $portfolio,
+            'stock' => $instrument::findBySlug($slug),
+        ]);
     }
 
 
