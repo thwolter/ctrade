@@ -1,19 +1,22 @@
 <template>
+
     <form @submit.prevent="onSubmit">
 
         <!-- Spinner -->
-        <div v-if="showSpinner">
-            <spinner class="spinner-overlay"></spinner>
+        <div v-if="showSpinner" class="spinner-gritcode">
+            <vue-simple-spinner class="spinner-wrapper" message="Kurse laden"></vue-simple-spinner>
         </div>
 
-        <!-- Form -->
         <div class="row">
 
-            <!-- exchange -->
-            <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
-                <label for="exchange" class="control-label">Handelsplatz</label>
-                <div>
-                    <select name="exchange" v-model="exchange" class="form-control">
+            <!-- Select Exchange -->
+            <div class="col-md-6 g-mb-20">
+                <div class="form-group">
+                    <label for="exchange" class="g-mb-10">Handelsplatz</label>
+                    <select name="exchange" v-model="exchange"
+                            class="form-control form-control-md rounded-0"
+                            data-open-icon="fa fa-angle-down"
+                            data-close-icon="fa fa-angle-up">
                         <option v-for="(price, key) in stock.prices" :value="key">
                             {{ price.exchange }}
                         </option>
@@ -21,51 +24,77 @@
                 </div>
             </div>
 
-            <!-- price -->
-            <div class="form-group col-sm-4 col-md-3">
-                <label for="form.price" class="control-label">Preis</label>
-                <div class="input-group">
-                    <span class="input-group-addon">{{ form.currency }}</span>
-                    <cleave v-model="form.price" :options="cleavePrice" class="form-control"
-                        placeholder="Preis"></cleave>
-                </div>
-            </div>
-
-            <!-- amount -->
-            <div class="form-group col-sm-4 col-md-3">
-                <label for="form.amount" class="control-label">Anzahl</label>
-                <div>
-                    <cleave v-model="form.amount" :options="cleaveAmount" placeholder="Anzahl"
-                            :class="['form-control', { 'error': form.errors.has('amount') }]"
-                            @input="form.errors.clear('amount')"></cleave>
-                </div>
-                <p v-if="form.errors.has('amount')" class="error-text">
-                    <span v-text="form.errors.get('amount')"></span>
-                </p>
-            </div>
-
-            <!-- date -->
-            <div class="form-group col-sm-4 col-md-3 col-md-offset-1">
-                <label for="form.executed" class="control-label">Datum</label>
-                <div>
-                    <div class="input-group date" id="datepicker">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <datepicker
-                                v-model="form.executed"
-                                name="date"
-                                input-class="form-control"
-                                language="de"
-                                :disabled="disabled"
-                                :full-month-name="true"
-                                :monday-first="true"
-                                ref="datepicker">
-                        </datepicker>
+            <!-- Price Input -->
+            <div class="col-md-6 g-mb-20">
+                <div class="form-group">
+                    <label for="form.price" class="g-mb-10">Preis</label>
+                    <div class="input-group g-brd-primary--focus">
+                        <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
+                            {{ portfolio.currency }}
+                        </div>
+                        <cleave id="price"
+                                v-model="form.price"
+                                placeholder="Preis"
+                                :options="cleavePrice"
+                                class="form-control form-control-md rounded-0">
+                        </cleave>
+                        <small v-if="form.errors.has('amount')" class="form-control-feedback">
+                            {{ form.errors.get('amount') }}
+                        </small>
                     </div>
                 </div>
-                <p v-if="form.errors.has('executed')" class="error-text">
-                    <span v-text="form.errors.get('executed')"></span>
-                </p>
             </div>
+
+            <!-- Amount Input -->
+            <div class="col-md-6 g-mb-20">
+                <div class="form-group">
+                    <label for="form.amount" class="g-mb-10">Anzahl</label>
+                    <cleave v-model="form.amount"
+                            :options="cleaveAmount"
+                            placeholder="Anzahl"
+                            class="form-control form-control-md"
+                            @input="form.errors.clear('amount')">
+                    </cleave>
+                    <small v-if="form.errors.has('amount')" class="form-control-feedback">
+                        {{ form.errors.get('amount') }}
+                    </small>
+                </div>
+            </div>
+
+
+            <!-- Select Date -->
+            <div class="col-md-6 g-mb-20">
+                <div class="form-group"
+                     :class="[ overlap || form.errors.has('date') ? 'u-has-error-v1-2' : '' ]">
+                    <label for="executed" class="g-mb-10">Datum</label>
+                    <div>
+                        <div class="input-group g-brd-primary--focus">
+                            <datepicker id="executed"
+                                        v-model="form.executed"
+                                        name="executed"
+                                        wrapper-class="w-100"
+                                        input-class="form-control form-control-md w-100 g-brd-right-none rounded-0 g-bg-white"
+                                        language="de"
+                                        placeholder="Datum"
+                                        :full-month-name="true"
+                                        :monday-first="true"
+                                        :disabled="state.disabled"
+                                        :highlighted="state.highlighted"
+                                        ref="datepicker"
+                                        @input="form.errors.clear('executed')">
+                            </datepicker>
+                            <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-dark-v5 rounded-0 g-brd-left-non">
+                                <i class="icon-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <small v-if="form.errors.has('executed')" class="form-control-feedback">
+                        <span v-text="form.errors.get('executed')"></span>
+                    </small>
+                </div>
+
+            </div>
+
 
             <!-- fees -->
             <div class="form-group col-sm-4 col-md-3">
@@ -120,31 +149,44 @@
             Datepicker
         },
 
-        props: [
-            'portfolioId',
-            'instrumentType',
-            'instrumentId',
-            'storeRoute',
-            'cash',
-            'amount',
-            'transaction',
-            'minDate'
-        ],
+        props: {
+            portfolio: {
+                type: Object,
+                required: true
+            },
+            instrument: {
+                type: Object,
+                required: true
+            },
+            route: {
+                type: String,
+                required: true
+            },
+            transaction: {
+                type: String,
+                required: true
+            },
+            minDate: {
+                type: String,
+                required: true
+            }
+        },
 
         data() {
             return {
                 lookup: '/api/lookup',
 
                 form: new Form({
-                    portfolioId: this.portfolioId,
+                    portfolioId: this.portfolio.id,
+                    instrumentId: this.instrument.id,
+                    instrumentType: this.instrument.type,
+                    currency: this.instrument.currency,
+
                     transaction: this.transaction,
-                    instrumentId: null,
-                    instrumentType: this.instrumentType,
                     price: null,
                     amount: null,
                     executed: null,
                     fees: 0,
-                    currency: null,
                 }),
 
                 stock: [],
@@ -153,6 +195,15 @@
                 hasFormError: false,
                 showSpinner: true,
                 disabled: {},
+
+                state: {
+                    disabled: {
+                        from: new Date()
+                    },
+                    highlighted: {
+                        dates: [new Date()]
+                    }
+                },
 
                 cleavePrice: {
                     numeral: true,
@@ -177,7 +228,7 @@
                 this.showSpinner = true;
                 this.form.amount *= (this.transaction === 'sell') ? -1 : 1;
 
-                this.form.post(this.storeRoute)
+                this.form.post(this.route)
                     .then(data => {
                         window.location = data.redirect;
                     })
@@ -190,8 +241,8 @@
             fetch() {
                 axios.get(this.lookup, {
                     params: {
-                        instrumentId: this.instrumentId,
-                        instrumentType: this.instrumentType
+                        instrumentId: this.instrument.id,
+                        instrumentType: this.instrument.type
                     }
                 })
                     .then(data => {
@@ -207,9 +258,9 @@
             },
 
             initiateForm() {
-                this.form.currency = this.stock.item.currency;
-                this.form.instrumentType = this.stock.item.type;
-                this.form.instrumentId = this.stock.item.id;
+//                this.form.currency = this.stock.item.currency;
+//                this.form.instrumentType = this.stock.item.type;
+//                this.form.instrumentId = this.stock.item.id;
             },
 
             updateExchange(index) {
@@ -260,7 +311,7 @@
             },
 
             exceedCash() {
-                return (this.asNumeric(this.cash) < this.total);
+                return (this.asNumeric(this.portfolio.cash) < this.total);
             },
 
             clsTotal() {
@@ -277,6 +328,10 @@
 
             lastPrice() {
                 return _.first(Object.keys(this.stock.prices[this.exchange].history));
+            },
+
+            overlap() {
+
             }
         },
 
