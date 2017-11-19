@@ -104,141 +104,21 @@
                     <div id="buy-sell-dialog" class="collapse g-mt-20" role="tabpanel"
                          aria-labelledby="buy-sell-heading">
 
-                        <div class="justify-content-center d-flex">
-                            <div class="w-50">
-                                <div class="btn-group justified-content g-my-30">
-                                <label class="g-width-120 u-check">
-                                    <input class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0" name="radGroupBtn1_1"
-                                           type="radio" checked>
-                                    <span class="btn btn-md btn-block u-btn-outline-lightgray g-color-white--checked g-bg-primary--checked rounded-0">
-                                        Kauf
-                                    </span>
-                                </label>
-                                <label class="g-width-120 u-check">
-                                    <input class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0" name="radGroupBtn1_1"
-                                           type="radio">
-                                    <span class="btn btn-md btn-block u-btn-outline-lightgray g-color-white--checked g-bg-primary--checked g-brd-left-none--md rounded-0">
-                                        Verkauf
-                                    </span>
-                                </label>
-                            </div>
-                            </div>
-                        </div>
-
-                        <div class="row g-mb-20 row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="d-block g-color-gray-dark-v2 g-font-size-13">Handelsplatz</label>
-                                    <input id="inputGroup1"
-                                           class="form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15"
-                                           name="country" type="text" placeholder="Stuttgart" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="d-block g-color-gray-dark-v2 g-font-size-13">Preis</label>
-                                    <input id="inputGroup2"
-                                           class="form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15"
-                                           name="stateProvince" type="text" placeholder="10,20" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="d-block g-color-gray-dark-v2 g-font-size-13">Anzahl</label>
-                                    <input id="inputGroup3"
-                                           class="form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15"
-                                           name="zip" type="text" placeholder="10" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="d-block g-color-gray-dark-v2 g-font-size-13">Gebühren</label>
-                                    <input id="inputGroup3"
-                                           class="form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15"
-                                           name="zip" type="text" placeholder="12,45" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-
-                                <div class="row justify-content-end">
-                                    <div class="col-md-10">
-                                        <div class="d-flex g-bg-brown-opacity-0_1 g-my-20 g-pa-20 justify-content-between">
-                                            <span class="align-self-end g-pb-4">Total</span>
-                                            <span class="float-right g-font-size-30 pull-right">1200,40 €</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-end">
-                                    <div class="col-md-10">
-                                        <div class="d-flex g-bg-brown-opacity-0_1 g-my-20 g-pa-20 justify-content-between">
-                                            <span class="align-self-end g-pb-4">Risiko</span>
-                                            <span class="float-right g-font-size-30 pull-right">1200,40 €</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-end g-mt-10">
-                                    <div class="col-md-10">
-                                        <p>Das Risiko für dein Gesamtportfolio kann niedriger ausfallen und ist
-                                            abhängig von der Zusammensetzung deines Portfolios</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="pull-right py-3">
-                            <a href="#" class="btn btn-md u-btn-darkgray g-mr-10 g-mb-15">Kaufen</a>
-                        </div>
+                        <trade-stock
+                                :portfolio="{{ $portfolio }}"
+                                :instrument="{{ $stock }}"
+                                route="{{ route('positions.store', [], false) }}"
+                                min-date="{{ $portfolio->latestTransactionDate()->toDateString() }}">
+                        </trade-stock>
 
                     </div>
                 </div>
+
             </div>
             <!-- End Accordion -->
         </div>
     </div>
-    </div>
 
-
-    <!-- Modal window -->
-    <div id="buy" class="text-left g-max-width-600 g-bg-white g-overflow-y-auto g-pa-20"
-         style="display: none;">
-
-        <button type="button" class="close" onclick="Custombox.modal.close();">
-            <i class="hs-icon hs-icon-close"></i>
-        </button>
-
-        <header class="text-uppercase g-mb-35">
-            <div class="g-mb-30">
-                    <span class="d-block g-color-primary g-font-weight-700 g-font-size-default g-mb-15">
-                        Subtitle
-                    </span>
-                <h2 class="h2 g-font-weight-700 mb-0">Title</h2>
-            </div>
-            <div class="g-width-70 g-brd-bottom g-brd-2 g-brd-primary"></div>
-        </header>
-
-
-        <trade-stock
-                :portfolio="{{ $portfolio }}"
-                :instrument="{{ $stock }}"
-                transaction="buy"
-                route="{{ route('positions.store', [], false) }}"
-                min-date="{{ $portfolio->latestTransactionDate()->toDateString() }}">
-        </trade-stock>
-    </div>
-
-
-    <div id="sell" class="text-left g-max-width-600 g-bg-white g-overflow-y-auto g-pa-20"
-         style="display: none;">
-        <button type="button" class="close" onclick="Custombox.modal.close();">
-            <i class="hs-icon hs-icon-close"></i>
-        </button>
-
-        <trade-stock
-                :portfolio="{{ $portfolio }}"
-                :instrument="{{ $stock }}"
-                transaction="sell"
-                route="{{ route('positions.store', [], false) }}"
-                min-date="{{ $portfolio->latestTransactionDate()->toDateString() }}">
-        </trade-stock>
-    </div>
 
 @endsection
 

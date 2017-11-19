@@ -1,79 +1,72 @@
 <template>
+    <div style="position: relative;">
+        <form @submit.prevent="onSubmit">
 
-    <form @submit.prevent="onSubmit">
-
-        <!-- Spinner -->
-        <div v-if="showSpinner" class="spinner-gritcode">
-            <vue-simple-spinner class="spinner-wrapper" message="Kurse laden"></vue-simple-spinner>
-        </div>
-
-        <div class="row">
-
-            <!-- Select Exchange -->
-            <div class="col-md-6 g-mb-20">
-                <div class="form-group">
-                    <label for="exchange" class="g-mb-10">Handelsplatz</label>
-                    <select name="exchange" v-model="exchange"
-                            class="form-control form-control-md rounded-0"
-                            data-open-icon="fa fa-angle-down"
-                            data-close-icon="fa fa-angle-up">
-                        <option v-for="(price, key) in stock.prices" :value="key">
-                            {{ price.exchange }}
-                        </option>
-                    </select>
-                </div>
+            <!-- Spinner -->
+            <div v-if="showSpinner" class="spinner-gritcode">
+                <vue-simple-spinner class="spinner-wrapper" message="Kurse laden ..."></vue-simple-spinner>
             </div>
 
-            <!-- Price Input -->
-            <div class="col-md-6 g-mb-20">
-                <div class="form-group">
-                    <label for="form.price" class="g-mb-10">Preis</label>
-                    <div class="input-group g-brd-primary--focus">
-                        <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
-                            {{ portfolio.currency }}
-                        </div>
-                        <cleave id="price"
-                                v-model="form.price"
-                                placeholder="Preis"
-                                :options="cleavePrice"
-                                class="form-control form-control-md rounded-0">
-                        </cleave>
-                        <small v-if="form.errors.has('amount')" class="form-control-feedback">
-                            {{ form.errors.get('amount') }}
-                        </small>
+            <!-- Select Buttons -->
+            <div class="justify-content-center d-flex">
+                <div class="w-50">
+                    <div class="btn-group justified-content g-my-30">
+                        <label class="g-width-120 u-check">
+                            <input id="buy"
+                                   v-model="form.transaction"
+                                   type="radio"
+                                   value="buy"
+                                   class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0"
+                                   checked>
+                            <span class="btn btn-md btn-block u-btn-outline-lightgray g-color-white--checked g-bg-primary--checked rounded-0">
+                            Kauf
+                        </span>
+                        </label>
+                        <label class="g-width-120 u-check">
+                            <input id="sell"
+                                   v-model="form.transaction"
+                                   type="radio"
+                                   value="sell"
+                                   class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0">
+                            <span class="btn btn-md btn-block u-btn-outline-lightgray g-color-white--checked g-bg-primary--checked g-brd-left-none--md rounded-0">
+                            Verkauf
+                        </span>
+                        </label>
                     </div>
                 </div>
             </div>
 
-            <!-- Amount Input -->
-            <div class="col-md-6 g-mb-20">
-                <div class="form-group">
-                    <label for="form.amount" class="g-mb-10">Anzahl</label>
-                    <cleave v-model="form.amount"
-                            :options="cleaveAmount"
-                            placeholder="Anzahl"
-                            class="form-control form-control-md"
-                            @input="form.errors.clear('amount')">
-                    </cleave>
-                    <small v-if="form.errors.has('amount')" class="form-control-feedback">
-                        {{ form.errors.get('amount') }}
-                    </small>
-                </div>
-            </div>
+            <!-- Input Fields -->
+            <div class="row g-mb-20 row">
 
+                <!-- Left Column -->
+                <div class="col-md-6">
 
-            <!-- Select Date -->
-            <div class="col-md-6 g-mb-20">
-                <div class="form-group"
-                     :class="[ overlap || form.errors.has('date') ? 'u-has-error-v1-2' : '' ]">
-                    <label for="executed" class="g-mb-10">Datum</label>
-                    <div>
+                    <!-- Exchange Select -->
+                    <div class="mb-3">
+                        <label for="exchange" class="d-block g-color-gray-dark-v2 g-font-size-13">Handelsplatz</label>
+                        <select id="exchange"
+                                name="exchange"
+                                v-model="exchange"
+                                class="custom-select form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15 h-50"
+                                data-open-icon="fa fa-angle-down"
+                                data-close-icon="fa fa-angle-up">
+                            <option v-for="(price, key) in stock.prices" :value="key">
+                                {{ price.exchange }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Date Select -->
+                    <div class="mb-3"
+                         :class="[ overlap || form.errors.has('date') ? 'u-has-error-v1-2' : '' ]">
+                        <label class="d-block g-color-gray-dark-v2 g-font-size-13">Datum</label>
                         <div class="input-group g-brd-primary--focus">
                             <datepicker id="executed"
                                         v-model="form.executed"
                                         name="executed"
                                         wrapper-class="w-100"
-                                        input-class="form-control form-control-md w-100 g-brd-right-none rounded-0 g-bg-white"
+                                        input-class="form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15 g-brd-right-none w-100 g-bg-white"
                                         language="de"
                                         placeholder="Datum"
                                         :full-month-name="true"
@@ -83,65 +76,121 @@
                                         ref="datepicker"
                                         @input="form.errors.clear('executed')">
                             </datepicker>
-                            <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-dark-v5 rounded-0 g-brd-left-non">
+                            <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-dark-v5 rounded-0 g-brd-left-none">
                                 <i class="icon-calendar"></i>
                             </div>
                         </div>
                     </div>
-                    <small v-if="form.errors.has('executed')" class="form-control-feedback">
-                        <span v-text="form.errors.get('executed')"></span>
-                    </small>
+
+                    <!-- Price Input -->
+                    <div class="mb-3">
+                        <label for="price" class="d-block g-color-gray-dark-v2 g-font-size-13">Preis</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
+                                {{ portfolio.currency }}
+                            </div>
+                            <cleave id="price"
+                                    v-model="form.price"
+                                    class="form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15"
+                                    placeholder="Preis"
+                                    :options="cleavePrice">
+                            </cleave>
+                            <small v-if="form.errors.has('amount')" class="form-control-feedback">
+                                {{ form.errors.get('amount') }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Amount Input -->
+                    <div class="mb-3">
+                        <label for="amount" class="d-block g-color-gray-dark-v2 g-font-size-13">Anzahl</label>
+                        <cleave id="amount"
+                                v-model="form.amount"
+                                class="form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15"
+                                :options="cleaveAmount"
+                                placeholder="Anzahl"
+                                @input="form.errors.clear('amount')">
+                        </cleave>
+                        <small v-if="form.errors.has('amount')" class="form-control-feedback">
+                            {{ form.errors.get('amount') }}
+                        </small>
+                    </div>
+
+                    <!-- Fees Input -->
+                    <div class="mb-3">
+                        <label for="amount" class="d-block g-color-gray-dark-v2 g-font-size-13">Gebühren</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
+                                {{ form.currency }}
+                            </div>
+                            <cleave id="amount"
+                                    v-model="form.fees"
+                                    class="form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15"
+                                    :options="cleaveAmount"
+                                    placeholder="Betrag"
+                                    :class="['form-control', { 'error': form.errors.has('fees') }]"
+                                    @input="form.errors.clear('fees')">
+                            </cleave>
+                            <small v-if="form.errors.has('amount')" class="form-control-feedback">
+                                {{ form.errors.get('fees') }}
+                            </small>
+                        </div>
+                    </div>
+
                 </div>
 
-            </div>
+                <!-- Right Column -->
+                <div class="col-md-6">
 
+                    <!-- Total Result -->
+                    <div class="row justify-content-end">
+                        <div class="col-md-10">
+                            <div class="d-flex g-bg-brown-opacity-0_1 g-my-20 g-pa-20 justify-content-between">
+                                <span class="align-self-end g-pb-4">Total ({{ portfolio.currency }})</span>
+                                <span class="float-right g-font-size-30 pull-right">{{ total }}</span>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- fees -->
-            <div class="form-group col-sm-4 col-md-3">
-                <label for="form.fees" class="control-label">Gebühren</label>
-                <div class="input-group">
-                    <span class="input-group-addon">{{ form.currency }}</span>
-                    <cleave v-model="form.fees" :options="cleaveAmount" placeholder="Gebühren"
-                            :class="['form-control', { 'error': form.errors.has('fees') }]"
-                            @input="form.errors.clear('fees')"></cleave>
+                    <!-- Risk Result -->
+                    <div class="row justify-content-end">
+                        <div class="col-md-10">
+                            <div class="d-flex g-bg-brown-opacity-0_1 g-my-20 g-pa-20 justify-content-between">
+                                <span class="align-self-end g-pb-4">Risiko ({{ portfolio.currency }})</span>
+                                <span class="float-right g-font-size-30 pull-right">1200,40 €</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hint -->
+                    <div class="row justify-content-end g-mt-10">
+                        <div class="col-md-10">
+                            <p>Das Risiko für dein Gesamtportfolio kann niedriger ausfallen und ist
+                                abhängig von der Zusammensetzung deines Portfolios</p>
+                        </div>
+                    </div>
+
                 </div>
-                <p v-if="form.errors.has('fees')" class="error-text">
-                    <span v-text="form.errors.get('fees')"></span>
-                </p>
             </div>
 
-            <!-- total -->
-            <div class="form-group col-sm-4 col-md-3">
-                <label for="total" class="control-label">Gesamt</label>
-                <div class="input-group">
-                    <span class="input-group-addon">{{ form.currency }}</span>
-                    <cleave v-model="total" :options="cleavePrice" :class="clsTotal"
-                            readonly></cleave>
-                </div>
-                <div v-if="exceedCash" class="col-md-offset-1">
-                    <p class="error-text pull-left">
-                        Betrag übersteigt verfügbaren Barbestand.
-                    </p>
-                </div>
-
+            <!-- Submit Button -->
+            <div class="d-flex justify-content-end py-3">
+                <button v-if="form.transaction === 'sell'" class="btn btn-md u-btn-outline-blue g-mr-10 g-mb-15"
+                        :disabled="hasError">Verkaufen
+                </button>
+                <button v-else class="btn btn-md u-btn-blue g-mr-10 g-mb-15"
+                        :disabled="hasError">Kaufen
+                </button>
             </div>
-
-        </div><!-- /.row -->
-
-        <div class="modal-footer">
-
-            <div>
-                <button v-if="transaction === 'sell'" class="btn btn-warning" :disabled="hasError">Verkaufen</button>
-                <button v-else class="btn btn-primary" :disabled="hasError">Kaufen</button>
-            </div>
-        </div>
-
-    </form>
+        </form>
+    </div>
 </template>
+
 
 <script>
 
     import Datepicker from 'vuejs-datepicker';
+    import numeral from 'numeral';
 
     export default {
 
@@ -161,14 +210,6 @@
             route: {
                 type: String,
                 required: true
-            },
-            transaction: {
-                type: String,
-                required: true
-            },
-            minDate: {
-                type: String,
-                required: true
             }
         },
 
@@ -181,12 +222,11 @@
                     instrumentId: this.instrument.id,
                     instrumentType: this.instrument.type,
                     currency: this.instrument.currency,
-
-                    transaction: this.transaction,
+                    transaction: "buy",
                     price: null,
                     amount: null,
                     executed: null,
-                    fees: 0,
+                    fees: null,
                 }),
 
                 stock: [],
@@ -194,7 +234,6 @@
 
                 hasFormError: false,
                 showSpinner: true,
-                disabled: {},
 
                 state: {
                     disabled: {
@@ -226,7 +265,7 @@
 
             onSubmit() {
                 this.showSpinner = true;
-                this.form.amount *= (this.transaction === 'sell') ? -1 : 1;
+                this.form.amount *= (this.form.transaction === 'sell') ? -1 : 1;
 
                 this.form.post(this.route)
                     .then(data => {
@@ -247,7 +286,6 @@
                 })
                     .then(data => {
                         this.stock = data.data;
-                        this.initiateForm();
                         this.updateExchange(this.exchange);
 
                         this.form.executed = this.lastPrice;
@@ -257,16 +295,9 @@
                     })
             },
 
-            initiateForm() {
-//                this.form.currency = this.stock.item.currency;
-//                this.form.instrumentType = this.stock.item.type;
-//                this.form.instrumentId = this.stock.item.id;
-            },
-
             updateExchange(index) {
                 this.form.executed = _.first(Object.keys(this.stock.prices[index].history));
             },
-
 
             updatePrice() {
                 this.form.price = this.stock.prices[this.exchange].history[this.form.executed];
@@ -307,7 +338,8 @@
                 let price = this.asNumeric(this.form.price);
                 let amount = this.asNumeric(this.form.amount);
                 let fees = this.asNumeric(this.form.fees);
-                return ((price * amount) + fees).toFixed(2);
+                return numeral((price * amount) + fees).format('0,0.00');
+                //return ((price * amount) + fees).toFixed(2);
             },
 
             exceedCash() {
