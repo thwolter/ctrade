@@ -1,15 +1,15 @@
 <template>
-    <div v-if="transaction.success">
+    <div v-if="success">
         <div class="u-shadow-v4 g-bg-white g-brd-around g-brd-gray-light-v4 g-line-height-2 g-pa-40 g-mb-30" role="alert">
             <h3 class="h2 g-font-weight-300 g-mb-20">Kauf erfolgreich</h3>
             <p class="mb-0">
-                Deinem Portfolio wurden {{ transaction.amount }} {{ stock.name }} Aktien im Wert
-                von insgesamt {{ transaction.netTotal }} {{ portfolio.currency }} hinzugefügt.
+                Deinem Portfolio wurden {{ form.amount }} {{ stock.name }} Aktien im Wert
+                von insgesamt {{ netTotal }} {{ portfolio.currency }} hinzugefügt.
             </p>
 
             <div class="g-mt-20">
-                <button class="btn btn-md u-btn-blue g-mr-10 g-mb-15">Portfolioübersicht</button>
-                <button class="btn btn-md u-btn-outline-blue g-mr-10 g-mb-15">Neue Transaktion</button>
+                <button @click="onRedirect" class="btn u-btn-blue g-mr-10 g-mb-15">Portfolioübersicht</button>
+                <button @click="onTransaction" class="btn u-btn-outline-blue g-mr-10 g-mb-15">Neue Transaktion</button>
             </div>
         </div>
     </div>
@@ -110,8 +110,8 @@
                                     placeholder="Preis"
                                     :options="cleavePrice">
                             </cleave>
-                            <small v-if="form.errors.has('amount')" class="form-control-feedback">
-                                {{ form.errors.get('amount') }}
+                            <small v-if="form.errors.has('price')" class="form-control-feedback">
+                                {{ form.errors.get('price') }}
                             </small>
                         </div>
                     </div>
@@ -222,7 +222,11 @@
                 type: Object,
                 required: true
             },
-            route: {
+            store: {
+                type: String,
+                required: true
+            },
+            redirect: {
                 type: String,
                 required: true
             }
@@ -241,19 +245,17 @@
                     price: null,
                     amount: null,
                     executed: null,
-                    fees: null,
+                    fees: null
                 }),
 
                 stock: [],
                 exchange: 0,
-                transaction: {
-                    success: false,
-                    amount: null,
-                    netTotal: null
-                },
+
+                success: false,
 
                 hasFormError: false,
                 showSpinner: true,
+                message: null,
 
                 state: {
                     disabled: {
@@ -290,18 +292,28 @@
                     this.form.fees = 0;
                 }
 
-                this.transaction.amount = this.form.amount;
-                this.transaction.netTotal = this.netTotal;
+                this.form.doReset = false;
 
-                this.form.post(this.route)
+                this.form.post(this.store)
                     .then(data => {
-                        this.transaction.success = true;
+                        this.success = true;
                         this.showSpinner = false;
                     })
                     .catch(error => {
-                        this.transaction.success = false;
+                        this.success = false;
                         this.showSpinner = false;
                     });
+            },
+
+            onRedirect() {
+                window.location = this.redirect;
+            },
+
+            onTransaction() {
+                this.form.amount = 0;
+                this.form.fees = 0;
+                this.updatePrice();
+                this.success = false;
             },
 
 
@@ -399,7 +411,6 @@
 
 
         mounted() {
-
             this.$refs.datepicker.$on('opened', () => {
                 this.form.errors.clear('executed');
                 this.updatePrice();

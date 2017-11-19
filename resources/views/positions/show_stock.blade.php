@@ -107,7 +107,8 @@
                         <trade-stock
                                 :portfolio="{{ $portfolio }}"
                                 :instrument="{{ $stock }}"
-                                route="{{ route('positions.store', [], false) }}">
+                                store="{{ route('positions.store', [], false) }}"
+                                redirect="#">
                         </trade-stock>
 
                     </div>
