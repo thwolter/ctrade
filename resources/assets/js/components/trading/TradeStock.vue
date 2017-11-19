@@ -1,6 +1,21 @@
 <template>
-    <div style="position: relative;">
-        <form @submit.prevent="onSubmit">
+    <div v-if="transaction.success">
+        <div class="u-shadow-v4 g-bg-white g-brd-around g-brd-gray-light-v4 g-line-height-2 g-pa-40 g-mb-30" role="alert">
+            <h3 class="h2 g-font-weight-300 g-mb-20">Kauf erfolgreich</h3>
+            <p class="mb-0">
+                Deinem Portfolio wurden {{ transaction.amount }} {{ stock.name }} Aktien im Wert
+                von insgesamt {{ transaction.netTotal }} {{ portfolio.currency }} hinzugefügt.
+            </p>
+
+            <div class="g-mt-20">
+                <button class="btn btn-md u-btn-blue g-mr-10 g-mb-15">Portfolioübersicht</button>
+                <button class="btn btn-md u-btn-outline-blue g-mr-10 g-mb-15">Neue Transaktion</button>
+            </div>
+        </div>
+    </div>
+
+    <div v-else style="position: relative;">
+        <form @submit.prevent="onSubmit" class="g-pa-20 g-b g-bg-brown-opacity-0_1">
 
             <!-- Spinner -->
             <div v-if="showSpinner" class="spinner-gritcode">
@@ -175,10 +190,10 @@
 
             <!-- Submit Button -->
             <div class="d-flex justify-content-end py-3">
-                <button v-if="form.transaction === 'sell'" class="btn btn-md u-btn-outline-blue g-mr-10 g-mb-15"
+                <button v-if="form.transaction === 'sell'" class="btn btn-md u-btn-outline-blue g-mr-10"
                         :disabled="hasError">Verkaufen
                 </button>
-                <button v-else class="btn btn-md u-btn-blue g-mr-10 g-mb-15"
+                <button v-else class="btn btn-md u-btn-blue g-mr-10"
                         :disabled="hasError">Kaufen
                 </button>
             </div>
@@ -231,6 +246,11 @@
 
                 stock: [],
                 exchange: 0,
+                transaction: {
+                    success: false,
+                    amount: null,
+                    netTotal: null
+                },
 
                 hasFormError: false,
                 showSpinner: true,
@@ -266,12 +286,20 @@
             onSubmit() {
                 this.showSpinner = true;
                 this.form.amount *= (this.form.transaction === 'sell') ? -1 : 1;
+                if (this.form.fees === null) {
+                    this.form.fees = 0;
+                }
+
+                this.transaction.amount = this.form.amount;
+                this.transaction.netTotal = this.netTotal;
 
                 this.form.post(this.route)
                     .then(data => {
-                        window.location = data.redirect;
+                        this.transaction.success = true;
+                        this.showSpinner = false;
                     })
                     .catch(error => {
+                        this.transaction.success = false;
                         this.showSpinner = false;
                     });
             },
@@ -334,21 +362,23 @@
         },
 
         computed: {
+            netTotal() {
+                let price = this.asNumeric(this.form.price);
+                let amount = this.asNumeric(this.form.amount);
+                return numeral(price * amount).format('0,0.00');
+            },
+
             total() {
                 let price = this.asNumeric(this.form.price);
                 let amount = this.asNumeric(this.form.amount);
                 let fees = this.asNumeric(this.form.fees);
                 return numeral((price * amount) + fees).format('0,0.00');
-                //return ((price * amount) + fees).toFixed(2);
             },
 
             exceedCash() {
                 return (this.asNumeric(this.portfolio.cash) < this.total);
             },
 
-            clsTotal() {
-                return this.exceedCash ? 'form-control error' : 'form-control';
-            },
 
             hasError() {
                 return (this.hasFormError || this.exceedCash);

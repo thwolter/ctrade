@@ -107,8 +107,7 @@
                         <trade-stock
                                 :portfolio="{{ $portfolio }}"
                                 :instrument="{{ $stock }}"
-                                route="{{ route('positions.store', [], false) }}"
-                                min-date="{{ $portfolio->latestTransactionDate()->toDateString() }}">
+                                route="{{ route('positions.store', [], false) }}">
                         </trade-stock>
 
                     </div>
