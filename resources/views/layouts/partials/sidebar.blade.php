@@ -15,10 +15,33 @@
                 <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.dashboard')
             </a>
 
-            <a class="list-group-item list-group-item-action {{ if_route_pattern(['transactions.*']) ? $activeClass : 'g-color-gray-dark-v2' }}"
-               href="{{ route('payments.index', $portfolio->slug) }}">
-                <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.transactions')
-            </a>
+            <div id="transaction" class="" role="tablist" aria-multiselectable="true">
+                <a class="collapsed g-color-gray-dark-v2 list-group-item list-group-item-action" href="#transaction-menu"
+                   data-toggle="collapse" aria-expanded="false">
+                    <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.transactions')
+                    <span class="ml-3 fa fa-angle-down"></span>
+                </a>
+
+                <div id="transaction-menu" class="collapse" role="tabpanel">
+                    <div class="">
+                        <div class="list-group">
+                            <a class="list-group-item list-group-item-action g-pl-50 {{ if_route_pattern(['transactions.*']) ? $activeClass : 'g-color-gray-dark-v2' }}"
+                               href="{{ route('payments.index', $portfolio->slug) }}">
+                                <i class="mr-2 fa fa-angle-right"></i>Überblick
+                            </a>
+                            <a class="list-group-item list-group-item-action g-pl-50"
+                               href="{{ route('payments.create', $portfolio) }}">
+                                <i class="mr-2 fa fa-angle-right"></i>Ein-/Auszahlung
+                            </a>
+                            <a class="list-group-item list-group-item-action g-pl-50 g-brd-bottom-0"
+                               href="{{ route('positions.search', $portfolio) }}">
+                                <i class="mr-2 fa fa-angle-right"></i>Aktien
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
             <a class="list-group-item list-group-item-action {{ if_route_pattern(['positions.*', 'assets.*']) ? $activeClass : 'g-color-gray-dark-v2' }}"
                href="{{ route('positions.index', $portfolio->slug) }}">
@@ -35,27 +58,10 @@
                 <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.settings.title')
             </a>
 
-        </div>
-
-        <!-- Transaction button -->
-        <div class="drowdown g-mb-50">
-
-            <a class="dropdown-toggle btn btn-block btn-outline-secondary g-color-white-opacity-0_9--hover rounded-0 btn-md"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Neue Transaktion
-                </a>
-            <div class="dropdown-menu rounded-0 g-mt-10">
-                <div class="list-group">
-                    <a class="dropdown-item list-group-item list-group-item-action"
-                       href="{{ route('payments.create', $portfolio) }}">
-                        <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i>Ein-/Auszahlung
-                    </a>
-                    <a class="dropdown-item list-group-item list-group-item-action"
-                       href="{{ route('positions.search', $portfolio) }}">
-                        <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i>Aktien
-                    </a>
-                </div>
-            </div>
+            <a class="list-group-item list-group-item-action {{ if_route('portfolios.edit') ? $activeClass : 'g-color-gray-dark-v2' }}"
+               href="#transaction-menu">
+                <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.settings.title')
+            </a>
 
         </div>
     </div>
