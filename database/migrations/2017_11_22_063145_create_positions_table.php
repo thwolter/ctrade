@@ -17,6 +17,8 @@ class CreatePositionsTable extends Migration
             $table->increments('id');
             $table->integer('asset_id')->unsigned();
             $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
+            $table->integer('payment_id')->unsigned();
+            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade');
             $table->float('amount');
             $table->float('price');
             $table->dateTime('executed_at');

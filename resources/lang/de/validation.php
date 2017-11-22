@@ -137,7 +137,7 @@ return [
     */
 
     'transaction' => [
-        'after' => 'Datum muss aktueller sein als bereits vorhande Transaktionen.',
+        'after' => 'Datum darf nicht älter sein, als die letzte Transaktion.',
         'today' => 'Transaktion darf nicht in der Zukunft liegen.'
     ],
 

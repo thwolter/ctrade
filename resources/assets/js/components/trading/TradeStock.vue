@@ -74,7 +74,7 @@
 
                     <!-- Date Select -->
                     <div class="mb-3"
-                         :class="[ overlap || form.errors.has('date') ? 'u-has-error-v1-2' : '' ]">
+                         :class="[ overlap || form.errors.has('executed') ? 'u-has-error-v1-2' : '' ]">
                         <label class="d-block g-color-gray-dark-v2 g-font-size-13">Datum</label>
                         <div class="input-group g-brd-primary--focus">
                             <datepicker id="executed"
@@ -95,10 +95,14 @@
                                 <i class="icon-calendar"></i>
                             </div>
                         </div>
+                        <small v-if="form.errors.has('executed')" class="form-control-feedback">
+                            {{ form.errors.get('executed') }}
+                        </small>
                     </div>
 
                     <!-- Price Input -->
-                    <div class="mb-3">
+                    <div class="mb-3"
+                         :class="[ form.errors.has('price') ? 'u-has-error-v1-2' : '' ]">
                         <label for="price" class="d-block g-color-gray-dark-v2 g-font-size-13">Preis</label>
                         <div class="input-group g-brd-primary--focus">
                             <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
@@ -108,16 +112,18 @@
                                     v-model="form.price"
                                     class="form-control u-form-control g-placeholder-gray-light-v1 rounded-0 g-py-15"
                                     placeholder="Preis"
-                                    :options="cleavePrice">
+                                    :options="cleavePrice"
+                                    @input="form.errors.clear('price')">
                             </cleave>
-                            <small v-if="form.errors.has('price')" class="form-control-feedback">
-                                {{ form.errors.get('price') }}
-                            </small>
                         </div>
+                        <small v-if="form.errors.has('price')" class="form-control-feedback">
+                            {{ form.errors.get('price') }}
+                        </small>
                     </div>
 
                     <!-- Amount Input -->
-                    <div class="mb-3">
+                    <div class="mb-3"
+                         :class="[ form.errors.has('amount') ? 'u-has-error-v1-2' : '' ]">
                         <label for="amount" class="d-block g-color-gray-dark-v2 g-font-size-13">Anzahl</label>
                         <cleave id="amount"
                                 v-model="form.amount"
@@ -132,7 +138,8 @@
                     </div>
 
                     <!-- Fees Input -->
-                    <div class="mb-3">
+                    <div class="mb-3"
+                         :class="[ form.errors.has('fees') ? 'u-has-error-v1-2' : '' ]">
                         <label for="amount" class="d-block g-color-gray-dark-v2 g-font-size-13">Gebühren</label>
                         <div class="input-group g-brd-primary--focus">
                             <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
@@ -146,7 +153,7 @@
                                     :class="['form-control', { 'error': form.errors.has('fees') }]"
                                     @input="form.errors.clear('fees')">
                             </cleave>
-                            <small v-if="form.errors.has('amount')" class="form-control-feedback">
+                            <small v-if="form.errors.has('fees')" class="form-control-feedback">
                                 {{ form.errors.get('fees') }}
                             </small>
                         </div>

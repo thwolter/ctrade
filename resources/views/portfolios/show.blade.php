@@ -24,16 +24,21 @@
             <div class="col-lg-9 order-lg-2 g-mb-80">
 
                 @if( !count($portfolio->assets) )
-                    <a href="{{ route('portfolios.create') }}"
-                       class="g-mb-30 btn btn-block g-bg-gray-light-v5 g-brd-around
-                        g-brd-gray-light-v4 g-bg-gray-light-v4--hover g-color-gray-light-v1 g-color-gray-dark-v4--hover">
-                        <div class="align-items-stretch text-center mx-0">
-                            <div class="g-px-30 g-py-70">
-                                <i class="fa fa-plus-circle"></i>
-                                Neues Portfolio anlegen
-                            </div>
+                    <div class="alert alert-dismissible fade show g-bg-teal g-color-white rounded-0" role="alert">
+                        <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+
+                        <div class="media">
+                        <span class="d-flex g-mr-10 g-mt-5">
+                            <i class="icon-check g-font-size-25"></i>
+                        </span>
+                            <span class="media-body align-self-center">
+                                <strong>Glückwunsch!</strong> Du hast dein erstes Portfolio erfolgreich eingerichtet.
+                                Füge neue Positionen über den Menüpunt Transaktionen hinzu.
+                            </span>
                         </div>
-                    </a>
+                    </div>
                 @else
 
                     <!-- Limits -->
