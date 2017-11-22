@@ -212,47 +212,23 @@ class Portfolio extends Model
      */
     public function storeTrade($attributes)
     {
-        $payment = $this->payTrade($attributes);
-
-        $asset = $this->assets()->firstOrCreate([
-            'positionable_type' => $attributes['instrumentType'],
-            'positionable_id' => $attributes['instrumentId']
-        ]);
-
         $position = Position::make([
             'amount' => $attributes['amount'],
             'price' => $attributes['price'],
             'executed_at' => $attributes['executed']
         ]);
 
-        $position->payment()->associate($payment);
-        $position->asset()->associate($asset);
+        $this->assets()->firstOrCreate([
+            'positionable_type' => $attributes['instrumentType'],
+            'positionable_id' => $attributes['instrumentId']
+        ])->obtain($position);
 
-        $position->save();
+        $this
+            ->payTrade($attributes, $position)
+            ->payFees($attributes, $position);
 
         return $this;
     }
-
-
-    /**
-     * Persist the payment for a trade.
-     *
-     * @param $attributes
-     * @param $position
-     * @return $this
-     */
-    private function payTrade($attributes)
-    {
-        $payment = $this->payments()->create([
-            'type' => $attributes['transaction'],
-            'amount' => -$attributes['price'] * $attributes['amount'],
-            'fees' => $attributes['fees'],
-            'executed_at' => $attributes['executed']
-        ]);
-
-        return $payment;
-    }
-
 
 
     /**
@@ -285,6 +261,41 @@ class Portfolio extends Model
             'amount' => -$attributes['amount'],
             'executed_at' => $attributes['date']
         ]);
+
+        return $this;
+    }
+
+    /**
+     * Persist the payment for a trade.
+     *
+     * @param $attributes
+     * @param $position
+     * @return $this
+     */
+    private function payTrade($attributes, $position)
+    {
+        $this->payments()->create([
+            'type' => $attributes['transaction'],
+            'amount' => -$attributes['price'] * $attributes['amount'],
+            'executed_at' => $attributes['executed']
+        ])->position()->associate($position)->save();
+
+        return $this;
+    }
+
+    /**
+     * Deduct fees from portfolio cash.
+     *
+     * @param array $attributes
+     * @return Portfolio
+     */
+    public function payFees($attributes, $position = null)
+    {
+        $this->payments()->create([
+            'type' => 'fees',
+            'amount' => -$attributes['fees'],
+            'executed_at' => $attributes['executed']
+        ])->position()->associate($position)->save();
 
         return $this;
     }

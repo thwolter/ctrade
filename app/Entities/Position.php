@@ -71,9 +71,9 @@ class Position extends Model
     }
 
 
-    public function payment()
+    public function payments()
     {
-        return $this->belongsTo(Payment::class);
+        return $this->hasMany(Payment::class);
     }
 
 
