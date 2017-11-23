@@ -164,10 +164,20 @@
                 <!-- Right Column -->
                 <div class="col-md-6">
 
+                    <!-- Available Cash -->
+                    <div class="row justify-content-end">
+                        <div class="col-md-10">
+                            <div class="d-flex g-bg-brown-opacity-0_1 g-mt-20 g-pa-20 justify-content-between">
+                                <span class="align-self-end g-pb-4">Cash ({{ portfolio.currency }})</span>
+                                <span class="float-right g-font-size-30 pull-right">{{ portfolio.cash }}</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Total Result -->
                     <div class="row justify-content-end">
                         <div class="col-md-10">
-                            <div class="d-flex g-bg-brown-opacity-0_1 g-my-20 g-pa-20 justify-content-between">
+                            <div class="d-flex g-bg-brown-opacity-0_1 g-mt-20 g-pa-20 justify-content-between">
                                 <span class="align-self-end g-pb-4">Total ({{ portfolio.currency }})</span>
                                 <span class="float-right g-font-size-30 pull-right">{{ total }}</span>
                             </div>
@@ -177,7 +187,7 @@
                     <!-- Risk Result -->
                     <div class="row justify-content-end">
                         <div class="col-md-10">
-                            <div class="d-flex g-bg-brown-opacity-0_1 g-my-20 g-pa-20 justify-content-between">
+                            <div class="d-flex g-bg-brown-opacity-0_1 g-mt-20 g-pa-20 justify-content-between">
                                 <span class="align-self-end g-pb-4">Risiko ({{ portfolio.currency }})</span>
                                 <span class="float-right g-font-size-30 pull-right">1200,40 €</span>
                             </div>
@@ -185,7 +195,7 @@
                     </div>
 
                     <!-- Hint -->
-                    <div class="row justify-content-end g-mt-10">
+                    <div class="row justify-content-end g-mt-20">
                         <div class="col-md-10">
                             <p>Das Risiko für dein Gesamtportfolio kann niedriger ausfallen und ist
                                 abhängig von der Zusammensetzung deines Portfolios</p>
@@ -197,12 +207,21 @@
 
             <!-- Submit Button -->
             <div class="d-flex justify-content-end py-3">
-                <button v-if="form.transaction === 'sell'" class="btn btn-md u-btn-outline-blue g-mr-10"
-                        :disabled="hasError">Verkaufen
-                </button>
-                <button v-else class="btn btn-md u-btn-blue g-mr-10"
-                        :disabled="hasError">Kaufen
-                </button>
+
+                <div class="g-mr-10" style="position: relative;">
+                    <!-- Button -->
+                    <button v-if="form.transaction === 'sell'" class="btn btn-md u-btn-outline-blue"
+                            :disabled="this.hasFormError">Verkaufen
+                    </button>
+                    <button v-else class="btn btn-md u-btn-blue"
+                            :disabled="this.hasFormError">Kaufen
+                    </button>
+
+                    <!-- Spinner -->
+                    <div v-if="submitting" class="spinner-gritcode g-bg-black-opacity-0_4">
+                        <vue-simple-spinner class="spinner-wrapper" message="" size="small"></vue-simple-spinner>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -258,6 +277,7 @@
                 stock: [],
                 exchange: 0,
 
+                submitting: false,
                 success: false,
 
                 hasFormError: false,
@@ -293,7 +313,7 @@
         methods: {
 
             onSubmit() {
-                this.showSpinner = true;
+                this.submitting = true;
                 this.form.amount *= (this.form.transaction === 'sell') ? -1 : 1;
                 if (this.form.fees === null) {
                     this.form.fees = 0;
@@ -304,11 +324,12 @@
                 this.form.post(this.store)
                     .then(data => {
                         this.success = true;
-                        this.showSpinner = false;
+                        this.submitting = false;
                     })
                     .catch(error => {
+                        alert(error);
                         this.success = false;
-                        this.showSpinner = false;
+                        this.submitting = false;
                     });
             },
 
@@ -398,10 +419,6 @@
                 return (this.asNumeric(this.portfolio.cash) < this.total);
             },
 
-
-            hasError() {
-                return (this.hasFormError || this.exceedCash);
-            },
 
             firstPrice() {
                 return _.last(Object.keys(this.stock.prices[this.exchange].history));
