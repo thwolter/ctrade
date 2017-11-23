@@ -248,6 +248,10 @@
                 type: Object,
                 required: true
             },
+            prices: {
+                type: Object,
+                required: true
+            },
             store: {
                 type: String,
                 required: true
@@ -260,7 +264,6 @@
 
         data() {
             return {
-                lookup: '/api/lookup',
 
                 form: new Form({
                     portfolioId: this.portfolio.id,
@@ -274,14 +277,18 @@
                     fees: null
                 }),
 
-                stock: [],
+                stock: {
+                    item: this.instrument,
+                    prices: this.prices
+                },
+
                 exchange: 0,
 
                 submitting: false,
                 success: false,
 
                 hasFormError: false,
-                showSpinner: true,
+                showSpinner: false,
                 message: null,
 
                 state: {
@@ -343,24 +350,6 @@
                 this.success = false;
             },
 
-
-            fetch() {
-                axios.get(this.lookup, {
-                    params: {
-                        instrumentId: this.instrument.id,
-                        instrumentType: this.instrument.type
-                    }
-                })
-                    .then(data => {
-                        this.stock = data.data;
-                        this.updateExchange(this.exchange);
-
-                        this.form.executed = this.lastPrice;
-                        this.updatePrice();
-
-                        this.showSpinner = false;
-                    })
-            },
 
             updateExchange(index) {
                 this.form.executed = _.first(Object.keys(this.stock.prices[index].history));
@@ -443,7 +432,9 @@
                 this.updatePrice();
             });
 
-            this.fetch();
+            this.updateExchange(this.exchange);
+            this.form.executed = this.lastPrice;
+            this.updatePrice();
         }
     }
 </script>

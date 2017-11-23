@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Entities\Stock;
 use App\Http\Requests\TradeRequest;
+use App\Repositories\DatasourceRepository;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\Position;
@@ -46,10 +47,13 @@ class PositionsController extends Controller
     public function show(Portfolio $portfolio, $entity, $slug)
     {
         $instrument = resolve('App\\Entities\\'.ucfirst($entity));
+        $stock = $instrument::findBySlug($slug);
+        $prices = resolve(DatasourceRepository::class)->collectHistories($stock->datasources);
 
         return view('positions.show_'.strtolower($entity), [
             'portfolio' => $portfolio,
-            'stock' => $instrument::findBySlug($slug),
+            'stock' => $stock,
+            'prices' => $prices
         ]);
     }
 

@@ -107,6 +107,7 @@
                         <trade-stock
                                 :portfolio="{{ $portfolio }}"
                                 :instrument="{{ $stock }}"
+                                :prices="{{ json_encode($prices) }}"
                                 store="{{ route('positions.store', [], false) }}"
                                 redirect="#">
                         </trade-stock>
