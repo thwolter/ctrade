@@ -2,6 +2,7 @@
 
 @section('content')
 
+    <!-- Header -->
     <section class="g-color-white g-bg-darkgray-radialgradient-circle g-pa-40">
         <div class="container">
             <div class="row">
@@ -104,16 +105,19 @@
                     <div id="buy-sell-dialog" class="collapse g-mt-20" role="tabpanel"
                          aria-labelledby="buy-sell-heading">
 
-                        <trade-stock
-                                :portfolio="{{ $portfolio }}"
-                                :instrument="{{ $stock }}"
+                        <stock-trade
+                                :portfolio="{{ json_encode($portfolio) }}"
+                                :instrument="{{ json_encode($stock) }}"
                                 :prices="{{ json_encode($prices) }}"
                                 store="{{ route('positions.store', [], false) }}"
                                 redirect="#">
-                        </trade-stock>
+                        </stock-trade>
 
                     </div>
                 </div>
+
+                <!-- History Chart -->
+                @include('positions.panel.history_graph')
 
             </div>
             <!-- End Accordion -->

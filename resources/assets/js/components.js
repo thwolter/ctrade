@@ -2,20 +2,19 @@
  * vue components
  */
 
-Vue.component('cash-trade', require('./components/trading/CashTrade.vue'));
-Vue.component('buy-sell-btn', require('./components/trading/BuySellBtn.vue'));
-Vue.component('deposit-btn', require('./components/trading/DepositButton.vue'));
-Vue.component('withdraw-btn', require('./components/trading/WithdrawButton.vue'));
+/* Cash */
+Vue.component('cash-trade', require('./components/cash/CashTrade.vue'));
 
-Vue.component('search-stock', require('./components/trading/SearchStock.vue'));
-Vue.component('trade-stock', require('./components/trading/TradeStock.vue'));
+/* Stocks */
+Vue.component('stock-trade', require('./components/stocks/StockTrade.vue'));
+Vue.component('stock-performance', require('./components/stocks/StockPerformance.vue'));
+Vue.component('stock-chart', require('./components/stocks/StockChart.vue'));
 
-Vue.component('stock-performance', require('./components/stock/StockPerformance.vue'));
-Vue.component('stock-chart', require('./components/stock/StockChart.vue'));
+/* Search Instrument */
+Vue.component('search-instrument', require('./components/trading/SearchInstrument.vue'));
 
-Vue.component('portlet', require('./components/Portlet.vue'));
+
 Vue.component('icon-stat', require('./components/IconStat.vue'));
-Vue.component('cash-success', require('./components/CashSuccess.vue'));
 Vue.component('cleave', require('./components/Cleave.vue'));
 Vue.component('graph', require('./components/Graph.vue'));
 Vue.component('chart', require('./components/Chart.vue'));

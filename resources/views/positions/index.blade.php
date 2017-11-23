@@ -8,9 +8,9 @@
         <div class="row justify-content-between">
 
             <!-- Sidebar -->
-            @include('layouts.partials.sidebar')
+        @include('layouts.partials.sidebar')
 
-            <!-- Main section -->
+        <!-- Main section -->
             <div class="col-lg-9 order-lg-2 g-mb-80">
 
                 @unless ( $portfolio->payments->count() )
@@ -21,11 +21,12 @@
                     </div>
                 @endunless
 
-                <div class="u-heading-v3-1 g-mb-40">
-                    <h2 class="h3 u-heading-v3__title">Positionen</h2>
-                </div>
 
-                @include('positions.stocks.index')
+                <!-- Cash Table -->
+                @include('positions.panel.table_cash')
+
+                <!-- Stocks Table -->
+                @include('positions.panel.table_stocks')
 
             </div>
         </div>

@@ -22,10 +22,10 @@
                         </h2>
                     </div>
 
-                    <search-stock
+                    <search-instrument
                         :portfolio="{{ $portfolio }}"
                         route="{{ route('positions.show', [$portfolio->slug, '%entity%', '%instrument%'], false) }}">
-                    </search-stock>
+                    </search-instrument>
 
                 </div>
             </div>
