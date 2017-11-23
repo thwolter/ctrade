@@ -167,9 +167,9 @@
                     <!-- Available Cash -->
                     <div class="row justify-content-end">
                         <div class="col-md-10">
-                            <div class="d-flex g-bg-brown-opacity-0_1 g-mt-20 g-pa-20 justify-content-between">
-                                <span class="align-self-end g-pb-4">Cash ({{ portfolio.currency }})</span>
-                                <span class="float-right g-font-size-30 pull-right">{{ portfolio.cash }}</span>
+                            <div class="g-bg-brown-opacity-0_1 g-mt-20 g-pa-10">
+                                <div>Cash ({{ portfolio.currency }})</div>
+                                <div class="d-flex g-font-size-30 justify-content-end g-pr-20">{{ portfolio.cash }}</div>
                             </div>
                         </div>
                     </div>
@@ -177,9 +177,9 @@
                     <!-- Total Result -->
                     <div class="row justify-content-end">
                         <div class="col-md-10">
-                            <div class="d-flex g-bg-brown-opacity-0_1 g-mt-20 g-pa-20 justify-content-between">
-                                <span class="align-self-end g-pb-4">Total ({{ portfolio.currency }})</span>
-                                <span class="float-right g-font-size-30 pull-right">{{ total }}</span>
+                            <div class="g-bg-brown-opacity-0_1 g-mt-20 g-pa-10">
+                                <div>Total ({{ portfolio.currency }})</div>
+                                <div class="d-flex g-font-size-30 justify-content-end g-pr-20">{{ total }}</div>
                             </div>
                         </div>
                     </div>
@@ -187,9 +187,9 @@
                     <!-- Risk Result -->
                     <div class="row justify-content-end">
                         <div class="col-md-10">
-                            <div class="d-flex g-bg-brown-opacity-0_1 g-mt-20 g-pa-20 justify-content-between">
-                                <span class="align-self-end g-pb-4">Risiko ({{ portfolio.currency }})</span>
-                                <span class="float-right g-font-size-30 pull-right">1200,40 €</span>
+                            <div class="g-bg-brown-opacity-0_1 g-mt-20 g-pa-10">
+                                <div>Risiko ({{ portfolio.currency }})</div>
+                                <div class="d-flex g-font-size-30 justify-content-end g-pr-20">1200,40 €</div>
                             </div>
                         </div>
                     </div>
@@ -211,10 +211,10 @@
                 <div class="g-mr-10" style="position: relative;">
                     <!-- Button -->
                     <button v-if="form.transaction === 'sell'" class="btn btn-md u-btn-outline-blue"
-                            :disabled="this.hasFormError">Verkaufen
+                            :disabled="hasError">Verkaufen
                     </button>
                     <button v-else class="btn btn-md u-btn-blue"
-                            :disabled="this.hasFormError">Kaufen
+                            :disabled="hasError">Kaufen
                     </button>
 
                     <!-- Spinner -->
@@ -327,7 +327,6 @@
                         this.submitting = false;
                     })
                     .catch(error => {
-                        alert(error);
                         this.success = false;
                         this.submitting = false;
                     });
@@ -419,6 +418,10 @@
                 return (this.asNumeric(this.portfolio.cash) < this.total);
             },
 
+
+            hasError() {
+                return (this.hasFormError || !this.form.amount);
+            },
 
             firstPrice() {
                 return _.last(Object.keys(this.stock.prices[this.exchange].history));

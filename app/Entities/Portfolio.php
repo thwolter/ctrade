@@ -291,11 +291,14 @@ class Portfolio extends Model
      */
     public function payFees($attributes, $position = null)
     {
-        $this->payments()->create([
-            'type' => 'fees',
-            'amount' => -$attributes['fees'],
-            'executed_at' => $attributes['executed']
-        ])->position()->associate($position)->save();
+        if ($attributes['fees'] != 0) {
+
+            $this->payments()->create([
+                'type' => 'fees',
+                'amount' => -$attributes['fees'],
+                'executed_at' => $attributes['executed']
+            ])->position()->associate($position)->save();
+        }
 
         return $this;
     }
