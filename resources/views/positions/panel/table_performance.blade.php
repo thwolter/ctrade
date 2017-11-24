@@ -1,4 +1,4 @@
-<!-- Performance graph -->
+<!-- Performance Table -->
 <div class="card border-0 rounded-0 g-mb-40">
 
     <!-- Panel Header -->
@@ -35,10 +35,12 @@
     <!-- Panel Body -->
     <div class="card-block u-info-v1-1 g-pa-0">
 
-        <stock-chart
-            exchanges=""
-            history="">
-        </stock-chart>
+        <stock-performance
+                :exchanges="{{ json_encode($exchanges) }}"
+                :history="{{ json_encode($history) }}"
+                :stock="{{ json_encode($stock) }}"
+                locale="de-DE">
+        </stock-performance>
 
     </div>
     <!-- End Panel Body -->

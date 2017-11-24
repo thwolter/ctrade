@@ -25,7 +25,7 @@
             <div class="col-lg-9 order-lg-2 g-mb-80">
 
                 <!-- Summary Card -->
-                <div class="card g-bg-secondary g-brd-none rounded-0">
+                <div class="card g-bg-secondary border-0 rounded-0 g-mb-40">
 
                     <!-- Header -->
                     <div class="card-header d-flex justify-content-between g-bg-teal g-color-white">
@@ -90,20 +90,25 @@
                     </div>
                 </div>
 
-                <!-- Buy/Sell Form -->
-                <div id="accordion-01" class="mb-4" role="tablist" aria-multiselectable="true">
-                    <div id="buy-sell-heading" class="g-brd-y g-brd-gray-light-v2 g-brd-top-0 py-3" role="tab">
-                        <h5 class="g-font-weight-400 g-font-size-default mb-0">
-                            <a class="g-color-gray-dark-v4 g-text-underline--none--hover" href="#buy-sell-dialog"
-                               data-toggle="collapse" data-parent="#accordion-01" aria-expanded="false"
-                               aria-controls="accordion-01-body-01">
+                <!-- Transaction Form -->
+                <div id="transaction" class="card border-0 rounded-0 g-mb-40" role="tablist" aria-multiselectable="true">
+
+                    <!-- Transaction Heading -->
+                    <div id="transaction-heading" role="tab"
+                         class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
+                        <h3 class="h6 g-pa-5">
+                            <a class="g-color-gray-dark-v3 g-text-underline--none--hover" href="#transaction-body"
+                               data-toggle="collapse" data-parent="#transaction" aria-expanded="false"
+                               aria-controls="transaction-body-01">
                                 Neue Transaktion
-                                <span class="ml-3 fa fa-angle-down"></span></a>
-                        </h5>
+                                <span class="ml-3 fa fa-angle-down"></span>
+                            </a>
+                        </h3>
                     </div>
 
-                    <div id="buy-sell-dialog" class="collapse g-mt-20" role="tabpanel"
-                         aria-labelledby="buy-sell-heading">
+                    <!-- Transaction Body -->
+                    <div id="transaction-body" class="collapse g-mt-20" role="tabpanel"
+                         aria-labelledby="transaction-heading">
 
                         <stock-trade
                                 :portfolio="{{ json_encode($portfolio) }}"
@@ -117,7 +122,11 @@
                 </div>
 
                 <!-- History Chart -->
-                @include('positions.panel.history_graph')
+                @include('positions.panel.graph_history')
+
+                <!-- Performance Table -->
+               @include('positions.panel.table_performance')
+
 
             </div>
             <!-- End Accordion -->

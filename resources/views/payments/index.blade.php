@@ -52,7 +52,7 @@
                                 <td class="align-middle">{{ $payment->present()->paymentType() }}</td>
                                 <td class="align-middle">{{ $payment->present()->instrumentType() }}</td>
                                 <td class="align-middle">
-                                    <a href="{{ route('assets.show', [$portfolio, optional($payment->asset)->slug]) }}">
+                                    <a href="{{ route('positions.show',[$portfolio, $stock->type(), $stock->slug])  }}">
                                         {{ $payment->present()->name}}
                                     </a>
                                 </td>

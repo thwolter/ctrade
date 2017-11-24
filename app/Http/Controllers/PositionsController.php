@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Stock;
+use App\Facades\DataService;
 use App\Http\Requests\TradeRequest;
 use App\Repositories\DatasourceRepository;
 use Illuminate\Http\Request;
@@ -50,11 +51,15 @@ class PositionsController extends Controller
         $stock = $instrument::findBySlug($slug);
         $prices = resolve(DatasourceRepository::class)->collectHistories($stock->datasources);
 
-        return view('positions.show_'.strtolower($entity), [
-            'portfolio' => $portfolio,
-            'stock' => $stock,
-            'prices' => $prices
-        ]);
+        $exchanges = $stock->exchangesToArray();
+        $exchange = array_get($exchanges, '0.code');
+
+        $repo = new DataService($stock->datasources()->whereExchange($exchange)->first());
+        $history = array_add($repo->allDataHistory([]), 'currency', 'EUR');
+
+        return view('positions.show_'.strtolower($entity),
+            compact('portfolio', 'stock', 'prices', 'exchanges', 'history')
+        );
     }
 
 
