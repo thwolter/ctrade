@@ -31,9 +31,9 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/hamburgers/hamburgers.min.css') }}">
 
     <!-- CSS specific -->
-    @yield('link.header')
+@yield('link.header')
 
-    <!-- CSS Global Compulsory -->
+<!-- CSS Global Compulsory -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/bootstrap.min.css') }}">
 
     <!-- CSS Unify -->
@@ -61,19 +61,57 @@
 
     </header>
 
-    <!-- Content -->
-    @yield('content')
+    @section('header')
 
-    <!-- Call To Action -->
-    @include('layouts.partials.call_to_action')
+        @isset ($portfolio)
+        <!-- Header -->
+            <section class="g-color-white g-bg-darkgray-radialgradient-circle g-pa-40">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 align-self-center">
+                            <h2 class="h3 text-uppercase g-font-weight-300 g-mb-20 g-mb-0--md">
+                                <strong>{{ $portfolio->name }}</strong>
+                                Portfolio</h2>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endisset
 
-    <!-- Footer -->
-    @include('layouts.partials.footer')
+    @show
 
-    <!-- Copyright Footer -->
-    @include('layouts.partials.copyright')
+<!-- Content -->
+{{--@yield('content')--}}
 
-    <!-- Arrow up -->
+@section('content')
+     <div class="container g-pt-100 g-pb-20">
+         <div class="row justify-content-between">
+
+             <!-- Sidebar -->
+             @isset ($portfolio)
+                 @include('layouts.partials.sidebar')
+             @endisset
+
+             <!-- Main section -->
+             <div class="col-lg-9 order-lg-2 g-mb-80">
+
+                 @yield('content-main')
+
+             </div>
+         </div>
+     </div>
+ @show
+
+<!-- Call To Action -->
+@include('layouts.partials.call_to_action')
+
+<!-- Footer -->
+@include('layouts.partials.footer')
+
+<!-- Copyright Footer -->
+@include('layouts.partials.copyright')
+
+<!-- Arrow up -->
     <a class="js-go-to u-go-to-v1" href="#" data-type="fixed" data-position='{"bottom": 15, "right": 15}'
        data-offset-top="400" data-compensation="#js-header" data-show-effect="zoomIn">
         <i class="hs-icon hs-icon-arrow-top"></i>
@@ -119,7 +157,7 @@
 
         // initialization of HSDropdown component
         $.HSCore.components.HSDropdown.init($('[data-dropdown-target]'), {
-            afterOpen: function(){
+            afterOpen: function () {
                 $(this).find('input[type="search"]').focus();
             }
         });

@@ -55,11 +55,6 @@
                 <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.settings.title')
             </a>
 
-            <a class="list-group-item list-group-item-action {{ if_route('portfolios.edit') ? $activeClass : 'g-color-gray-dark-v2' }}"
-               href="#transaction-menu">
-                <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.settings.title')
-            </a>
-
         </div>
     </div>
 </div>

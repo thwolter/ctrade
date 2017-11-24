@@ -15,7 +15,7 @@
     </div>
 
     <div v-else style="position: relative;">
-        <form @submit.prevent="onSubmit" class="g-pa-20 g-b g-bg-brown-opacity-0_1">
+        <form @submit.prevent="onSubmit" class="g-pa-20">
 
             <!-- Spinner -->
             <div v-if="showSpinner" class="spinner-gritcode">
