@@ -19,114 +19,140 @@
         <div class="row justify-content-between">
 
             <!-- Sidebar -->
-        @include('layouts.partials.sidebar')
+            @include('layouts.partials.sidebar')
 
-        <!-- Main section -->
+            <!-- Main section -->
             <div class="col-lg-9 order-lg-2 g-mb-80">
 
                 <!-- Summary Card -->
-                <div class="card g-bg-secondary border-0 rounded-0 g-mb-40">
+                @component('layouts.components.section', ['collapse' => false])
 
-                    <!-- Header -->
-                    <div class="card-header d-flex justify-content-between g-bg-teal g-color-white">
-                        <h5 class="font-weight-bold">{{ $stock->name }}</h5>
-                        <div class="g-font-size-14 align-self-center">
-                            <span>ISIN: {{ $stock->isin }}</span>
-                        </div>
+                    @slot('title')
+                        {{ $stock->name }}
+                    @endslot
 
-                    </div>
+                    @slot('subtitle')
+                        ISIN: {{ $stock->isin }}
+                    @endslot
 
-                    <!-- Content -->
-                    <div class="card-block">
-                        <div class="row">
-
-                            <!-- Key Figures -->
-                            <div class="col-md-10">
-                                <div class="g-mb-10">
-                                    <div class="row">
-                                        <a class="col-md-4 btn" data-toggle="popover" data-placement="bottom"
-                                           data-title="Kurs"
-                                           data-content="Schlusskurs der Börse Stuttgart vom 10.02.2017">
-                                            <div class="font-weight-bold g-bg-black-opacity-0_8 g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
-                                                Kurs
-                                            </div>
-                                            <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
-                                                <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
-                                                    {{ $stock->present()->price() }}
-                                                </p>
-                                            </div>
-                                        </a>
-                                        <a class="col-md-4 btn" data-toggle="popover" data-placement="top"
-                                           data-title="Rendite"
-                                           data-content="Gewinn/Verlust über einen Zeitraum von 52 Wochen. Der Zeitraum kann in den <a href='#'>Einstellungen</a> festgelegt werden.">
-                                            <div class="font-weight-bold g-bg-blue g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
-                                                Rendite
-                                            </div>
-                                            <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
-                                                <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
-                                                    {{ $stock->present()->price() }}
-                                                </p>
-                                            </div>
-                                        </a>
-                                        <a class="col-md-4 btn" data-toggle="popover" data-placement="bottom"
-                                           data-title="Risiko"
-                                           data-content="Das Risiko der Aktie für einen Zeitraum von 1 Monat mit einer Sicherheit von 95%. Zeitraum und Sicherheitslevel können über die <a href='#'>Einstellungen</a> festgelegt werden.">
-                                            <div class="font-weight-bold g-bg-red g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
-                                                Risiko
-                                            </div>
-                                            <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
-                                                <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
-                                                    {{ $stock->present()->price() }}
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </div>
-
+                        <!-- Key Figures -->
+                        <div class="col-md-10">
+                            <div class="g-mb-10">
+                                <div class="row">
+                                    <a class="col-md-4 btn" data-toggle="popover" data-placement="bottom"
+                                       data-title="Kurs"
+                                       data-content="Schlusskurs der Börse Stuttgart vom 10.02.2017">
+                                        <div class="font-weight-bold g-bg-black-opacity-0_8 g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
+                                            Kurs
+                                        </div>
+                                        <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
+                                            <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
+                                                {{ $stock->present()->price() }}
+                                            </p>
+                                        </div>
+                                    </a>
+                                    <a class="col-md-4 btn" data-toggle="popover" data-placement="top"
+                                       data-title="Rendite"
+                                       data-content="Gewinn/Verlust über einen Zeitraum von 52 Wochen. Der Zeitraum kann in den <a href='#'>Einstellungen</a> festgelegt werden.">
+                                        <div class="font-weight-bold g-bg-blue g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
+                                            Rendite
+                                        </div>
+                                        <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
+                                            <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
+                                                {{ $stock->present()->price() }}
+                                            </p>
+                                        </div>
+                                    </a>
+                                    <a class="col-md-4 btn" data-toggle="popover" data-placement="bottom"
+                                       data-title="Risiko"
+                                       data-content="Das Risiko der Aktie für einen Zeitraum von 1 Monat mit einer Sicherheit von 95%. Zeitraum und Sicherheitslevel können über die <a href='#'>Einstellungen</a> festgelegt werden.">
+                                        <div class="font-weight-bold g-bg-red g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
+                                            Risiko
+                                        </div>
+                                        <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
+                                            <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
+                                                {{ $stock->present()->price() }}
+                                            </p>
+                                        </div>
+                                    </a>
                                 </div>
 
                             </div>
 
                         </div>
-                    </div>
-                </div>
+
+                @endcomponent
 
                 <!-- Transaction Form -->
-                <div id="transaction" class="card border-0 rounded-0 g-mb-40" role="tablist" aria-multiselectable="true">
+                @component('layouts.components.section')
 
-                    <!-- Transaction Heading -->
-                    <div id="transaction-heading" role="tab"
-                         class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
-                        <h3 class="h6 g-pa-5">
-                            <a class="g-color-gray-dark-v3 g-text-underline--none--hover" href="#transaction-body"
-                               data-toggle="collapse" data-parent="#transaction" aria-expanded="false"
-                               aria-controls="transaction-body-01">
-                                Neue Transaktion
-                                <span class="ml-3 fa fa-angle-down"></span>
-                            </a>
-                        </h3>
-                    </div>
+                    @slot('title')
+                        Neue Transaktion
+                    @endslot
 
-                    <!-- Transaction Body -->
-                    <div id="transaction-body" class="collapse g-mt-20" role="tabpanel"
-                         aria-labelledby="transaction-heading">
+                    <stock-trade
+                            :portfolio="{{ json_encode($portfolio) }}"
+                            :instrument="{{ json_encode($stock) }}"
+                            :prices="{{ json_encode($prices) }}"
+                            store="{{ route('positions.store', [], false) }}"
+                            redirect="#">
+                    </stock-trade>
 
-                        <stock-trade
-                                :portfolio="{{ json_encode($portfolio) }}"
-                                :instrument="{{ json_encode($stock) }}"
-                                :prices="{{ json_encode($prices) }}"
-                                store="{{ route('positions.store', [], false) }}"
-                                redirect="#">
-                        </stock-trade>
-
-                    </div>
-                </div>
+                @endcomponent
 
                 <!-- History Chart -->
-                @include('positions.panel.graph_history')
+                @component('layouts.components.section')
+
+                    @slot('title')
+                        Wertentwicklung
+                    @endslot
+
+                    @slot('menu')
+                        <a class="dropdown-item g-px-10" href="#">
+                            <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Projects
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item g-px-10" href="#">
+                            <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> View More
+                        </a>
+                    @endslot
+
+                    <stock-chart
+                            :exchanges="{{ json_encode($exchanges) }}"
+                            :history="{{ json_encode($history) }}">
+                    </stock-chart>
+
+                @endcomponent
 
                 <!-- Performance Table -->
-               @include('positions.panel.table_performance')
+                @component('layouts.components.section')
 
+                    @slot('title')
+                        Table
+                    @endslot
+
+                    @slot('menu')
+                        <a class="dropdown-item g-px-10" href="#">
+                            <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Projects
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item g-px-10" href="#">
+                            <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> View More
+                        </a>
+                    @endslot
+
+                    <stock-performance
+                            :exchanges="{{ json_encode($exchanges) }}"
+                            :history="{{ json_encode($history) }}"
+                            :stock="{{ json_encode($stock) }}"
+                            locale="de-DE">
+                    </stock-performance>
+
+                @endcomponent
 
             </div>
             <!-- End Accordion -->
