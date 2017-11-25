@@ -10,11 +10,13 @@
         <!-- Links -->
         <div class="list-group g-mb-50">
 
+            <!-- Dashboard -->
             <a class="list-group-item list-group-item-action {{ if_route('portfolios.show') ? $activeClass : 'g-color-gray-dark-v2' }}"
                href="{{ route('portfolios.show', $portfolio->slug) }}">
                 <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.dashboard')
             </a>
 
+            <!-- Transactions -->
             <a class="collapsed list-group-item list-group-item-action
                     {{ if_route_pattern(['payments.*']) ? $activeClass : 'g-color-gray-dark-v2' }}"
                href="#transaction-menu" data-toggle="collapse" aria-expanded="false">
@@ -39,17 +41,27 @@
                 </div>
             </div>
 
-
-            <a class="list-group-item list-group-item-action {{ if_route_pattern(['positions.*', 'assets.*']) ? $activeClass : 'g-color-gray-dark-v2' }}"
-               href="{{ route('positions.index', $portfolio->slug) }}">
+            <!-- Positions -->
+            <a class="list-group-item list-group-item-action
+                {{ if_route_pattern(['positions.*', 'assets.*']) ? $activeClass : 'g-color-gray-dark-v2' }}"
+                href="{{ route('positions.index', $portfolio->slug) }}">
                 <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.positions')
             </a>
 
+            <!-- Positions -->
+            <a class="list-group-item list-group-item-action
+                {{ if_route_pattern(['limits.*'])  ? $activeClass  : 'g-color-gray-dark-v2' }}"
+                href="{{ route('limits.index', $portfolio->slug) }}">
+                <i class="mr-2 fa fa-angle-right"></i>Limite
+            </a>
+
+            <!-- Optimization -->
             <a class="list-group-item list-group-item-action g-color-gray-dark-v2"
                href="{{ route('home.coming') }}">
                 <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.optimize')
             </a>
 
+            <!-- Settings -->
             <a class="list-group-item list-group-item-action {{ if_route('portfolios.edit') ? $activeClass : 'g-color-gray-dark-v2' }}"
                href="{{ route('portfolios.edit', ['slug' => $portfolio->slug]) }}">
                 <i class="mr-2 fa fa-angle-right"></i>@lang('navigation.settings.title')

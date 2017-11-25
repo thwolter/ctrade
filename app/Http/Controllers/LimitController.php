@@ -14,9 +14,15 @@ class LimitController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Portfolio $portfolio)
     {
+        return view('limits.index', compact('portfolio'));
+    }
 
+
+    public function create(Portfolio $portfolio)
+    {
+        return view('limits.create', compact('portfolio'));
     }
 
 
