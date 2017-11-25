@@ -13,16 +13,21 @@ Vue.component('stock-chart', require('./components/stocks/StockChart.vue'));
 /* Search Instrument */
 Vue.component('search-instrument', require('./components/trading/SearchInstrument.vue'));
 
+/* Limits */
+Vue.component('create-limit', require('./components/limits/CreateLimit.vue'));
 
-Vue.component('icon-stat', require('./components/IconStat.vue'));
-Vue.component('cleave', require('./components/Cleave.vue'));
-Vue.component('graph', require('./components/Graph.vue'));
-Vue.component('chart', require('./components/Chart.vue'));
-Vue.component('positions-chart', require('./components/PositionsChart.vue'));
-Vue.component('value-chart', require('./components/ValueChart.vue'));
-Vue.component('spinner', require('./components/Spinner.vue'));
+
+
+Vue.component('graph', require('./components/charts/Graph.vue'));
+Vue.component('chart', require('./components/charts/Chart.vue'));
+Vue.component('positions-chart', require('./components/charts/PositionsChart.vue'));
+Vue.component('value-chart', require('./components/charts/ValueChart.vue'));
+
+/* Helper */
+Vue.component('cleave', require('./components/helper/Cleave.vue'));
+
+
+
 Vue.component('limit-stats', require('./components/LimitsStats.vue'));
-
 Vue.component('notifications', require('./components/Notifications.vue'));
-Vue.component('create-limit', require('./components/CreateLimit.vue'));
 

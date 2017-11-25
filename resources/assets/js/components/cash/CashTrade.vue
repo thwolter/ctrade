@@ -7,11 +7,6 @@
             <form v-if="showDialog" @submit.prevent="onSubmit"
                   class="col-md-8 g-brd-around g-brd-gray-light-v4 g-mb-30 g-bg-secondary">
 
-                <!-- Spinner -->
-                <div v-if="showSpinner" class="spinner-gritcode">
-                    <vue-simple-spinner class="spinner-wrapper" message="Transaktion durchführen"></vue-simple-spinner>
-                </div>
-
                 <div class="g-pa-30">
 
                     <!-- Transaction Type -->
@@ -58,13 +53,8 @@
                         </div>
                         <small v-if="exceed" class="form-control-feedback">Betrag übertsteigt vohandenen Geldbetrag.
                         </small>
-                        <small v-if="form.errors.has('amount')" class="form-control-feedback">{{
-                            form.errors.get('amount')
-                            }}
-                        </small>
-                        <small class="form-text text-muted g-font-size-default g-mt-10">We'll never share your email
-                            with
-                            anyone else.
+                        <small v-if="form.errors.has('amount')" class="form-control-feedback">
+                            {{ form.errors.get('amount') }}
                         </small>
 
                     </div>
@@ -101,13 +91,17 @@
                     </div>
 
                     <!-- Buttons -->
-                    <div class="form-group pull-right g-mb-30 g-mt-20">
+                    <div class="g-mr-10" style="position: relative;">
                         <button v-if="form.deposit" class="btn u-btn-teal" :disabled="hasError">
                             Einzahlen
                         </button>
                         <button v-else type="submit" class="btn u-btn-deeporange" :disabled="hasError">
                             Auszahlen
                         </button>
+                        <!-- Spinner -->
+                        <div v-if="submitting" class="spinner-gritcode g-bg-black-opacity-0_4">
+                            <vue-simple-spinner class="spinner-wrapper" message="" size="small"></vue-simple-spinner>
+                        </div>
                     </div>
 
                 </div>
@@ -182,7 +176,7 @@
                 },
 
                 showDialog: true,
-                showSpinner: false,
+                submitting: false,
 
                 hasFormError: false,
                 exceedCash: false,
@@ -193,7 +187,7 @@
         methods: {
             onSubmit() {
                 this.form.date = this.asDateString(this.rawDate);
-                this.showSpinner = true;
+                this.submitting = true;
 
                 this.transaction.amount = this.form.amount;
                 this.transaction.deposit =this.form.deposit;
@@ -202,10 +196,10 @@
                     .then(data => {
                         this.transaction.newTotalCash = data.totalCash;
                         this.showDialog = false;
-                        this.showSpinner = false;
+                        this.submitting = false;
                     })
                     .catch(error => {
-                        this.showSpinner = false;
+                        this.submitting = false;
                     });
             },
 
@@ -221,11 +215,11 @@
             },
 
             exceed() {
-                return (parseFloat(this.portfolio.cash) < this.form.amount) && !this.deposit
+                return (parseFloat(this.portfolio.cash) < this.form.amount) && !this.form.deposit
             },
 
             hasError() {
-                return (this.hasFormError || this.exceedCash);
+                return (this.hasFormError || this.exceed);
             }
         },
 
