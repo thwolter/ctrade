@@ -80,27 +80,25 @@
 
     @show
 
-<!-- Content -->
-{{--@yield('content')--}}
 
-@section('content')
-     <div class="container g-pt-100 g-pb-20">
-         <div class="row justify-content-between">
+    @section('content')
+         <div class="container g-pt-100 g-pb-20">
+             <div class="row justify-content-between">
 
-             <!-- Sidebar -->
-             @isset ($portfolio)
-                 @include('layouts.partials.sidebar')
-             @endisset
+                 <!-- Sidebar -->
+                 @isset ($portfolio)
+                     @include('layouts.partials.sidebar')
+                 @endisset
 
-             <!-- Main section -->
-             <div class="col-lg-9 order-lg-2 g-mb-80">
+                 <!-- Main section -->
+                 <div class="col-lg-9 order-lg-2 g-mb-80">
 
-                 @yield('content-main')
+                     @yield('content-main')
 
+                 </div>
              </div>
          </div>
-     </div>
- @show
+    @show
 
 <!-- Call To Action -->
 @include('layouts.partials.call_to_action')

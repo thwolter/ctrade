@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
-@section('content')
-
+@section('header')
     <section class="g-color-white g-bg-primary-opacity-0_8 g-pa-40">
         <div class="container">
             <div class="row">
@@ -13,7 +12,10 @@
             </div>
         </div>
     </section>
+@endsection
 
+
+@section('content')
     <section id="offers-section" class="g-bg-secondary">
         <div class="container g-pt-100 g-pb-130">
 

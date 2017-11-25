@@ -158,6 +158,11 @@ class Asset extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getTypeAttribute()
+    {
+        return strtolower(class_basename($this->positionable_type));
+    }
+
     public function getSlugAttribute()
     {
         return $this->positionable->slug;
