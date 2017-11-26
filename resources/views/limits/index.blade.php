@@ -2,7 +2,39 @@
 
 @section('content-main')
 
+    <!-- Loop over existing limits -->
+    @foreach($limits as $limit)
 
+        @component('layouts.components.section')
+
+            @slot('id')
+                limit_{{ $limit->id }}
+            @endslot
+
+            @slot('title')
+                {{ $limit->present()->type() }} {{ $limit->present()->value() }}
+            @endslot
+
+            @slot('subtitle')
+                <a href="#">bearbeiten</a>
+            @endslot
+                Limit Panel
+        @endcomponent
+
+    @endforeach
+
+    <!-- Create New Limit -->
+    @component('layouts.components.section')
+        @slot('title')
+            Neues Limit einrichten
+        @endslot
+
+        <create-limit
+                :portfolio="{{ $portfolio }}"
+                route="{{ route('limits.store') }}">
+        </create-limit>
+
+    @endcomponent
 
 @endsection
 

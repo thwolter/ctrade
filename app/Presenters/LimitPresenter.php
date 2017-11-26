@@ -24,7 +24,7 @@ class LimitPresenter extends Presenter
 
     public function type()
     {
-        return trans('limits'.$this->entity->type.'form.title');
+        return trans('limits.'.$this->entity->type.'.long');
     }
 
     public function date()

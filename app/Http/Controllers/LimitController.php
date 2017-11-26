@@ -16,7 +16,8 @@ class LimitController extends Controller
 
     public function index(Portfolio $portfolio)
     {
-        return view('limits.index', compact('portfolio'));
+        $limits = $portfolio->limits;
+        return view('limits.index', compact('portfolio', 'limits'));
     }
 
 
@@ -44,7 +45,7 @@ class LimitController extends Controller
         $portfolio = Portfolio::find($attributes['id']);
         $portfolio->limits()->create(array_only($attributes, ['type', 'value', 'date']));
 
-        return ['redirect' => route('portfolios.show', [$portfolio])];
+        return ['redirect' => route('limits.index', $portfolio)];
     }
 
 

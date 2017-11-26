@@ -10,13 +10,7 @@ Provide a wrapper for sections with a collapsible card body and a dropdown menu.
 --}}
 
 @php
-    if (isset($title)) {
-        $id = kebab_case(html_entity_decode($title));
-    } else {
-        $title = "Please provide a slot named 'title'";
-        $id = html_entity_decode($title);
-    }
-
+    if (!isset($id)) $id = kebab_case(html_entity_decode($title));
     $doCollapse = !(isset($collapse) && $collapse === false);
 @endphp
 
