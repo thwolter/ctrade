@@ -42,22 +42,12 @@ abstract class Presenter
         return $value ? $this->priceFormat->formatCurrency($value, $currencyCode) : null;
     }
 
+
     public function formatPercentage($value)
     {
         return sprintf('%01.1f %%', $value);
     }
 
-
-
-    public function valueAtRisk()
-    {
-        return $this->formatPrice($this->entity->valueAtRisk(), $this->entity->currency->code);
-    }
-
-    public function percentRisk()
-    {
-        return sprintf('%01.1f%%', $this->entity->percentRisk());
-    }
 
 
     public function formatDate($date)
