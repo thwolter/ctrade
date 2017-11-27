@@ -11,6 +11,9 @@ return [
     |
     */
 
-    'previous' => '&laquo; Zurück',
-    'next'     => 'Weiter &raquo;',
+    'previous' => 'Zurück',
+    'next'     => 'Weiter',
+    'page'     => 'Seite',
+    'of'       => 'von',
+    'pageof'   => 'Seite :page von :total'
 ];

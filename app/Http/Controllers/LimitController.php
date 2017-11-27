@@ -16,7 +16,10 @@ class LimitController extends Controller
 
     public function index(Portfolio $portfolio)
     {
-        $limits = $portfolio->limits;
+        $limits = $portfolio
+            ->limits()
+            ->with(['portfolio', 'portfolio.currency'])
+            ->paginate(5);
         return view('limits.index', compact('portfolio', 'limits'));
     }
 

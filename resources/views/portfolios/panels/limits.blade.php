@@ -21,11 +21,6 @@
                         <i class="hs-icon hs-icon-close"></i>
                     </button>
 
-                    <create-limit
-                            :portfolio="{{ $portfolio }}"
-                            route="{{ route('limits.store') }}">
-                    </create-limit>
-
                 </div>
 
 

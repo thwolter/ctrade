@@ -2,6 +2,20 @@
 
 @section('content-main')
 
+    <!-- Create New Limit -->
+    @component('layouts.components.section-1')
+        @slot('title')
+            Neues Limit einrichten
+        @endslot
+
+        <create-limit
+                :portfolio="{{ $portfolio }}"
+                route="{{ route('limits.store') }}">
+        </create-limit>
+
+    @endcomponent
+
+
     <!-- Loop over existing limits -->
     @foreach($limits as $limit)
 
@@ -23,18 +37,9 @@
 
     @endforeach
 
-    <!-- Create New Limit -->
-    @component('layouts.components.section')
-        @slot('title')
-            Neues Limit einrichten
-        @endslot
-
-        <create-limit
-                :portfolio="{{ $portfolio }}"
-                route="{{ route('limits.store') }}">
-        </create-limit>
-
-    @endcomponent
+    <div class="g-mb-60">
+        {{ $limits->links('layouts.pagination.default-1') }}
+    </div>
 
 @endsection
 

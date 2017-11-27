@@ -130,17 +130,21 @@ class LimitRepository
 
             switch ($limit->type) {
                 case 'absolute':
-                    $quota = $risk / $limit->value;
+                    $quota = 1;
+//                    $quota = $risk / $limit->value;
                     break;
                 case 'relative':
-                    $quota = $risk / ($limit->value * $this->portfolio->total() / 100);
+                    $quota = 1;
+//                    $quota = $risk / ($limit->value * $this->portfolio->total() / 100);
                     break;
                 case 'floor':
-                    $quota = $risk / ($this->portfolio->total() - $limit->value);
+                    $quota = 1;
+//                    $quota = $risk / ($this->portfolio->total() - $limit->value);
                     break;
                 case 'target':
+                    $quota = 1;
                     $riskToTarget = $risks->portfolioRisk(Carbon::parse($limit->date));
-                    $quota = $riskToTarget / ($this->portfolio->total() - $limit->value);
+//                    $quota = $riskToTarget / ($this->portfolio->total() - $limit->value);
                     break;
                 default:
                     $quota = null;

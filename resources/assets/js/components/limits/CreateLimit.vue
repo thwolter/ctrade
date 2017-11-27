@@ -95,7 +95,7 @@
                 </div>
                 <div class="align-items-end col-md-3 d-flex justify-content-end">
                     <div style="position: relative;">
-                        <button @click="onSubmit" class="btn u-btn-darkgray rounded-0 g-py-12 g-px-25">
+                        <button class="btn u-btn-darkgray rounded-0 g-py-12 g-px-25">
                             {{ trans('limits.save') }}
                         </button>
 
@@ -161,10 +161,18 @@
 
             onSubmit() {
                 this.submitting = true;
+
+                if (this.form.type !== 'target') {
+                    this.form.date = null;
+                }
+
                 this.form.post(this.route)
                     .then(data => {
                         this.showForm = false;
                         window.location = data.redirect;
+                    })
+                    .catch(data => {
+                        alert(data);
                     })
             }
         },
