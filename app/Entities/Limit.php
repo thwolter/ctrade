@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Classes\Limits\AbstractLimit;
 use App\Presenters\LimitPresenter;
 use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
@@ -79,6 +80,11 @@ class Limit extends Model
         return $this->getAttributes();
     }
 
+
+    public function calc()
+    {
+        return app(AbstractLimit::class, [$this]);
+    }
 
     /*
     |--------------------------------------------------------------------------

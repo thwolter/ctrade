@@ -49,6 +49,11 @@ class RiskRepository
     }
 
 
+    public function portfolioValue($date = null)
+    {
+        return array_last($this->portfolio->keyFigure('value')->values);
+    }
+
     public function portfolioReturn()
     {
         return null;

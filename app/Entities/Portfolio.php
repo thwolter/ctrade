@@ -6,6 +6,8 @@ use App\Entities\Traits\UuidModel;
 use App\Facades\TimeSeries;
 use App\Presenters\Presentable;
 use App\Repositories\CurrencyRepository;
+use App\Repositories\PortfolioRepository;
+use App\Repositories\RiskRepository;
 use App\Settings\PortfolioSettings;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -154,6 +156,7 @@ class Portfolio extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
 
     public function settings($key = null)
     {

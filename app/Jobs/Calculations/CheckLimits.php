@@ -37,13 +37,9 @@ class CheckLimits implements ShouldQueue
      */
     public function handle()
     {
-        $repo = new LimitRepository($this->portfolio);
-
-        foreach ($repo->utilisation() as $key => $value)
+        foreach ($this->portfolio->limits as $limit)
         {
-            if (array_get($value, 'quota') >= 1) {
-
-                $limit = $repo->get($key);
+            if ($limit->calc()->utilisation() > 1) {
                 event(new LimitHasBreached($limit));
             }
         }

@@ -43,7 +43,7 @@ class LimitController extends Controller
             'id' => 'exists:portfolios,id',
             'type' => 'in:absolute,relative,floor,absolute',
             'value' => 'required|numeric',
-            'date' => 'sometimes|date'
+            'date' => 'sometimes|date|nullable'
         ]);
 
         $portfolio = Portfolio::find($attributes['id']);

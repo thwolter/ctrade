@@ -38,8 +38,7 @@ class LimitPresenter extends Presenter
 
     public function utilisation()
     {
-        $helper = app(AbstractLimit::class, [$this->entity]);
-        return $this->formatPercentage($helper->utilisation(), 0);
+        return $this->formatPercentage($this->entity->calc()->utilisation(), 0);
     }
 
 

@@ -19,7 +19,7 @@
     <!-- Loop over existing limits -->
     @foreach($limits as $limit)
 
-        @component('layouts.components.section')
+        @component('layouts.components.section', ['collapse' => false])
 
             @slot('id')
                 limit_{{ $loop->index }}
@@ -78,7 +78,7 @@
                 </div>
             @endslot
 
-            <div class="collapse g-bg-lightblue g-px-20 g-pt-30 g-pb-20 show">
+            <div class="g-bg-gray-gradient-opacity-v1 g-px-20 g-pt-30 g-pb-20 show">
 
                 <div class="row">
                     <div class="col-4">
@@ -89,24 +89,25 @@
                         <h6>Limit Auslastung
                             <span class="float-right g-ml-10">{{ $limit->present()->utilisation() }}</span>
                         </h6>
+                        @php( $utilisation = $limit->calc()->utilisation() )
                         <div class="progress g-bg-black-opacity-0_7 g-height-20 rounded-0">
                             <div class="progress-bar"
                                  role="progressbar"
-                                 style="width: 84%;"
-                                 aria-valuenow="84"
+                                 style="width: {{ $utilisation }}%;"
+                                 aria-valuenow="{{ $utilisation }}"
                                  aria-valuemin="0"
-                                 aria-valuemax="100">
+                                 aria-valuemax="{{ $limit->value }}">
 
                             </div>
                         </div>
                         <p class="d-flex g-pt-5 justify-content-between small">
                             <span>Limithöhe {{ $limit->present()->value() }}</span>
-                            <span>Zieldatum {{ $limit->present()->date() }}</span>
+                            @if ($date = $limit->present()->date)
+                                <span>Zieldatum {{ $date }}</span>
+                            @endif
                         </p>
                     </div>
                 </div>
-
-
             </div>
 
         @endcomponent
