@@ -26,7 +26,7 @@
             @endslot
 
             @slot('title')
-                {{ $limit->present()->type() }} {{ $limit->present()->value() }}
+                {{ $limit->present()->type() }} {{ $limit->present()->utilisation() }}
             @endslot
 
             @slot('subtitle')

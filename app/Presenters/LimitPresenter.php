@@ -3,8 +3,8 @@
 namespace App\Presenters;
 
 
-use App\Repositories\RiskRepository;
-use Carbon\Carbon;
+use App\Classes\Limits\AbstractLimit;
+
 
 class LimitPresenter extends Presenter
 {
@@ -30,5 +30,11 @@ class LimitPresenter extends Presenter
     public function date()
     {
         return $this->formatDate($this->entity->date);
+    }
+
+    public function utilisation()
+    {
+        $helper = app(AbstractLimit::class, [$this->entity]);
+        return $helper->utilisation();
     }
 }

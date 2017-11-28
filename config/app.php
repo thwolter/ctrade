@@ -235,6 +235,7 @@ return [
         App\Providers\ObserverServiceProvider::class,
         \App\Providers\MetadataServiceProvider::class,
         App\Providers\QuandlServiceProvider::class,
+        \App\Providers\LimitServiceProvider::class,
 
     ],
 
