@@ -24,17 +24,27 @@ class LimitPresenter extends Presenter
 
     public function type()
     {
-        return trans('limits.'.$this->entity->type.'.long');
+        return trans("limits.{$this->entity->type}.long");
     }
+
 
     public function date()
     {
-        return $this->formatDate($this->entity->date);
+        $date = $this->entity->date;
+
+        return $date ? $this->formatDate($this->entity->date) : null;
     }
+
 
     public function utilisation()
     {
         $helper = app(AbstractLimit::class, [$this->entity]);
-        return $helper->utilisation();
+        return $this->formatPercentage($helper->utilisation(), 0);
+    }
+
+
+    public function description()
+    {
+        return 'description';
     }
 }

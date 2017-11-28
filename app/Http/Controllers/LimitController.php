@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Limit;
 use App\Entities\LimitType;
 use App\Entities\Portfolio;
 use App\Repositories\LimitRepository;
@@ -57,31 +58,17 @@ class LimitController extends Controller
 
     }
 
-    public function set(Request $request)
+
+    public function destroy(Request $request)
     {
-        $portfolio = Portfolio::find($request->id);
-        $repo = new LimitRepository($portfolio);
+        $attributes = $request->validate([
+            'id' => 'exists:limits,id',
+            'portfolio' => 'string'
+        ]);
 
-        foreach (LimitType::all() as $type) {
+        Limit::find($attributes['id'])->delete();
 
-            session()->forget('limit_'.$type->code);
-            $task = $repo->active($type->code) ? 'changed' : 'set';
-
-            if ($request->exists($type->code)) {
-                $saved = $repo->set($type->code, $request->all());
-
-                if (!is_null($saved))
-                    session(['limit_'.$type->code => $saved ? $task : 'error']);
-
-            } else {
-                $saved = $repo->inactivate($type->code);
-
-                if (!is_null($saved))
-                    session(['limit_'.$type->code => $saved ? 'inactive' : 'error']);
-            }
-        }
-
-        session(['active_tab' => $request->active_tab,]);
-        return redirect(route('portfolios.edit', $portfolio->slug));
+        return redirect()->route('limits.index', $attributes['portfolio']);
     }
+
 }
