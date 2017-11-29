@@ -236,6 +236,7 @@ return [
         \App\Providers\MetadataServiceProvider::class,
         App\Providers\QuandlServiceProvider::class,
         \App\Providers\LimitServiceProvider::class,
+        \App\Providers\PortfolioRepositoryServiceProvider::class,
 
     ],
 

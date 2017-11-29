@@ -7,10 +7,20 @@ use App\Entities\Category;
 use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\User;
-use App\Facades\TimeSeries;
+use Illuminate\Database\Eloquent\Model;
+use App\Repositories\Contracts\PortfolioInterface;
 
-class PortfolioRepository
+
+class PortfolioRepository implements PortfolioInterface
 {
+
+    protected $portfolioModel;
+
+
+    public function __construct(Model $portfolio)
+    {
+        $this->portfolioModel = $portfolio;
+    }
 
     /**
      * Create a portfolio with attributes which may be received from a request and persist

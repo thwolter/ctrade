@@ -18,6 +18,7 @@ use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\DeletePortfolio;
 use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
+use App\Repositories\Contracts\PortfolioInterface;
 use App\Repositories\LimitRepository;
 use App\Repositories\PortfolioRepository;
 use App\Settings\InitialSettings;
@@ -35,7 +36,7 @@ class PortfoliosController extends Controller
     protected $repo;
 
 
-    public function __construct(PortfolioRepository $repo)
+    public function __construct(PortfolioInterface $repo)
     {
         $this->middleware('auth');
         $this->repo = $repo;
