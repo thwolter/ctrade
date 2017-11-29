@@ -3,8 +3,8 @@
 
 namespace App\Classes\Limits;
 
+use App\Classes\KeyFigures;
 use App\Entities\Limit;
-use App\Repositories\RiskRepository;
 
 abstract class AbstractLimit
 {
@@ -15,7 +15,7 @@ abstract class AbstractLimit
     public function __construct(Limit $limit)
     {
         $this->limit = $limit;
-        $this->figures = $this->limit->portfolio->figures();
+        $this->figures = new KeyFigures($limit->portfolio);
     }
 
     abstract public function utilisation();

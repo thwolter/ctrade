@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Repositories;
+namespace App\Classes;
 
 
 use App\Entities\Portfolio;
 
-class FigureRepository
+class KeyFigures
 {
 
     protected $portfolio;
