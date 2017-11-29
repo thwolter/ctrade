@@ -99,7 +99,6 @@ class Keyfigure extends Model
         $this->update(['values' => $values, 'expires_at' => null]);
     }
 
-
     public function has($key)
     {
         return array_key_exists($key, $this->values);
@@ -125,7 +124,6 @@ class Keyfigure extends Model
 
         return min(array_diff($compare, [null]))->endOfDay();
     }
-
 
     public function firstExecutedPositionEnteredAfter($date)
     {
@@ -176,11 +174,23 @@ class Keyfigure extends Model
         return count($this->values) > 0;
     }
 
+
+
     /*
     |--------------------------------------------------------------------------
     | ACCESORS
     |--------------------------------------------------------------------------
     */
+
+    public function getValueAttribute()
+    {
+        return $this->values ? array_last($this->values) : [];
+    }
+
+    public function getDateAttribute()
+    {
+        return Carbon::parse(array_last(array_keys($this->values)));
+    }
 
     /*
     |--------------------------------------------------------------------------

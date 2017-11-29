@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
+use App\Repositories\FigureRepository;
 
 
 /**
@@ -67,6 +68,8 @@ class Portfolio extends Model
     */
 
     protected $presenter = \App\Presenters\Portfolio::class;
+
+    protected $figuresInstance;
 
     protected $fillable = [
         'name',
@@ -370,6 +373,17 @@ class Portfolio extends Model
 
         return $keyFigure;
     }
+
+
+    public function figures()
+    {
+        if (!isset($this->figuresInstance)) {
+            $this->figuresInstance = new FigureRepository($this);
+        }
+
+        return $this->figuresInstance;
+    }
+
 
     public function sluggable()
     {

@@ -31,27 +31,19 @@ class RiskRepository
 
     public function portfolioRisk($date = null)
     {
-        $risks = $this->portfolio->keyFigure('risk')->values;
-        $referenceDate = Carbon::parse(array_last(array_keys($risks)));
-        $dailyRisk = array_get(array_last($risks), (string)$this->confidence);
+        $risk = $this->portfolio->keyFigure('risk')->value;
+        $referenceDate = $this->portfolio->keyFigure('risk')->date;
+        $dailyRisk = array_get($risk, (string)$this->confidence);
 
-        if (is_null($date)) {
-            $factor = sqrt($this->period);
+        $period = $date ? $referenceDate->diffInDays($date, false) : $this->period;
 
-        } else {
-            $factor = sqrt(max(
-                0,
-                $referenceDate->diffInDays($date, false))
-            );
-        }
-
-        return $dailyRisk * $factor;
+        return $dailyRisk * sqrt(max(0, $period));
     }
 
 
     public function portfolioValue($date = null)
     {
-        return array_last($this->portfolio->keyFigure('value')->values);
+        return $this->portfolio->keyFigure('value')->value;
     }
 
     public function portfolioReturn()

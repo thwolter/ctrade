@@ -9,12 +9,13 @@ use App\Repositories\RiskRepository;
 abstract class AbstractLimit
 {
     protected $limit;
-    protected $risk;
+    protected $figures;
+
 
     public function __construct(Limit $limit)
     {
         $this->limit = $limit;
-        $this->risk = new RiskRepository($this->limit->portfolio);
+        $this->figures = $this->limit->portfolio->figures();
     }
 
     abstract public function utilisation();
