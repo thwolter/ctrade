@@ -6,7 +6,7 @@ namespace App\Presenters;
 use App\Repositories\RiskRepository;
 use Carbon\Carbon;
 
-class Portfolio extends Presenter
+class PortfolioPresenter extends Presenter
 {
 
     public function cash()

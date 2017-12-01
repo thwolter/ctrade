@@ -64,6 +64,8 @@
                     <th class="text-right">Preis</th>
                     <th class="text-center">Stück</th>
                     <th class="text-right">Gesamt</th>
+                    <th class="text-right">Risiko</th>
+                    <th class="text-right">Risiko (%)</th>
                 </tr>
                 </thead>
 
@@ -90,6 +92,8 @@
                                 <div>({{ $asset->present->value($portfolio->currency->code) }})</div>
                             @endif
                         </td>
+                        <td class="align-middle text-right">{{ $asset->present()->risk() }}</td>
+                        <td class="align-middle text-right">{{ $asset->present()->riskRatio() }}</td>
                     </tr>
 
                 @endforeach

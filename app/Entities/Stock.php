@@ -5,6 +5,8 @@ namespace App\Entities;
 
 
 use App\Presenters\Presentable;
+use App\Presenters\StockPresenter;
+use App\Services\StockMetrics;
 use Backpack\CRUD\CrudTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
@@ -40,7 +42,10 @@ use Venturecraft\Revisionable\RevisionableTrait;
  */
 class Stock extends Instrument
 {
-    use Presentable, CrudTrait, RevisionableTrait, Sluggable, SluggableScopeHelpers;
+    use CrudTrait, RevisionableTrait, Sluggable, SluggableScopeHelpers;
+
+    use Presentable;
+
 
     /*
     |--------------------------------------------------------------------------
@@ -50,7 +55,7 @@ class Stock extends Instrument
 
     protected $fillable = ['name', 'name_overwrite', 'wkn', 'isin'];
 
-    protected $presenter = \App\Presenters\Stock::class;
+    protected $presenter = StockPresenter::class;
 
 
     /*

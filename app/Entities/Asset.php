@@ -2,8 +2,11 @@
 
 namespace App\Entities;
 
+use App\Presenters\AssetPresenter;
 use App\Presenters\Presentable;
 use App\Repositories\CurrencyRepository;
+use App\Services\AssetMetrics;
+use App\Services\Metricsable;
 use Carbon\Carbon;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Asset extends Model
 {
-    use Presentable, SoftDeletes, CascadeSoftDeletes;
+    use SoftDeletes, CascadeSoftDeletes;
+
+    use Presentable, Metricsable;
 
     /*
     |--------------------------------------------------------------------------
@@ -19,9 +24,13 @@ class Asset extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $presenter = 'App\Presenters\Asset';
+    protected $presenter = AssetPresenter::class;
+    protected $metrics = AssetMetrics::class;
 
-    protected $fillable = ['positionable_type', 'positionable_id'];
+    protected $fillable = [
+        'positionable_type',
+        'positionable_id'
+    ];
 
     /*
     |--------------------------------------------------------------------------

@@ -6,7 +6,7 @@ namespace App\Presenters;
 
 use Carbon\Carbon;
 
-class Stock extends Presenter
+class StockPresenter extends Presenter
 {
 
     public function priceDate()
@@ -24,5 +24,10 @@ class Stock extends Presenter
     {
         return $this->formatPrice($this->entity->price(), $this->entity->currency->code);
     }
+
+   /* public function risk()
+    {
+        return $this->formatPrice($this->entity->price(), $this->entity->currency->code);
+    }*/
 
 }

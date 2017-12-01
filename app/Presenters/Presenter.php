@@ -45,7 +45,7 @@ abstract class Presenter
 
     public function formatPercentage($value, $decimal = 1)
     {
-        return sprintf("%01.{$decimal}f %%", $value);
+        return sprintf("%01.{$decimal}f %%", 100 * $value);
     }
 
 

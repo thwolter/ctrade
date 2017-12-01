@@ -75,14 +75,14 @@
 
                                         <div class="col align-self-center g-mx-15">
                                             <div class="g-font-size-32 g-font-weight-300 g-line-height-1 mb-0">
-                                                {{ $portfolio->present()->risk() ? $portfolio->present()->risk() : '-'}}
+                                                {{ $portfolio->present()->risk() ?? '-'}}
                                             </div>
                                             <span>Risiko</span>
                                         </div>
 
                                         <div class="col align-self-center g-mx-15">
                                             <div class="g-font-size-32 g-font-weight-300 g-line-height-1 mb-0">
-                                                {{ $portfolio->present()->profit() ? $portfolio->present()->profit() : '-'}}
+                                                {{ $portfolio->present()->profit() ?? '-'}}
                                             </div>
                                             <span>Performance</span>
                                         </div>

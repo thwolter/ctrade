@@ -2,10 +2,13 @@
 
 namespace App\Entities;
 
+use App\Presenters\PortfolioPresenter;
+use App\Services\Metricsable;
 use App\Services\PortfolioMetrics;
 use App\Entities\Traits\UuidModel;
 use App\Presenters\Presentable;
 use App\Services\PortfolioService;
+use App\Services\Servicable;
 use App\Settings\PortfolioSettings;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -56,7 +59,9 @@ use Illuminate\Http\UploadedFile;
  */
 class Portfolio extends Model
 {
-    use Presentable, UuidModel, Sluggable, SluggableScopeHelpers, SoftDeletes, CascadeSoftDeletes;
+    use UuidModel, Sluggable, SluggableScopeHelpers, SoftDeletes, CascadeSoftDeletes;
+
+    use Presentable, Servicable, Metricsable;
 
     /*
     |--------------------------------------------------------------------------
@@ -64,10 +69,10 @@ class Portfolio extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $presenter = \App\Presenters\Portfolio::class;
+    protected $presenter = PortfolioPresenter::class;
+    protected $service = PortfolioService::class;
+    protected $metrics = PortfolioMetrics::class;
 
-    protected $serviceInstance;
-    protected $metricsInstance;
 
     protected $fillable = [
         'name',
@@ -157,21 +162,6 @@ class Portfolio extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-    public function service()
-    {
-        return isset($this->serviceInstance)
-            ? $this->serviceInstance
-            : new PortfolioService($this);
-    }
-
-
-    public function metrics()
-    {
-        return isset($this->metricsInstance)
-            ? $this->metricsInstance
-            : new PortfolioMetrics($this);
-    }
 
 
     public function settings($key = null)

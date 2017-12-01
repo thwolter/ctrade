@@ -3,7 +3,7 @@
 namespace App\Presenters;
 
 
-class Asset extends Presenter
+class AssetPresenter extends Presenter
 {
 
     public function amount()
@@ -20,6 +20,17 @@ class Asset extends Presenter
         }
     }
 
+    public function risk()
+    {
+        return $this->formatPrice($this->entity->metrics()->risk(), $this->entity->currency->code);
+    }
+
+
+    public function riskRatio()
+    {
+        return $this->formatPercentage($this->entity->metrics()->riskRatio());
+
+    }
 
 
 }
