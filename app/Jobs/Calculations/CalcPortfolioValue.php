@@ -3,6 +3,7 @@
 namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
+use App\Jobs\Traits\CalculationPeriod;
 use App\Models\Rscript;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -15,6 +16,8 @@ use App\Repositories\TradesRepository;
 class CalcPortfolioValue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    use CalculationPeriod;
 
     protected $portfolio;
 
@@ -39,24 +42,5 @@ class CalcPortfolioValue
         {
             dispatch(new CalcPortfolioValueChunk($this->portfolio, $dates));
         }
-    }
-
-
-    private function period()
-    {
-        $interval = new \DateInterval('P1D');
-        $period = new \DatePeriod($this->startDate(), $interval, Carbon::now()->endOfDay());
-
-        return collect($period);
-    }
-
-
-    /**
-     * @return Carbon
-     */
-    private function startDate()
-    {
-        $start = $this->portfolio->keyFigure('value')->firstDayToCalculate();
-        return $start;
     }
 }

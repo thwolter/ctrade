@@ -36,8 +36,8 @@ class PaymentController extends Controller
         $portfolio = Portfolio::find($request->get('id'));
 
         $request->deposit
-            ? $portfolio->deposit($request->all())
-            : $portfolio->withdraw($request->all());
+            ? $portfolio->service()->deposit($request->all())
+            : $portfolio->service()->withdraw($request->all());
 
         return ['totalCash' => $portfolio->cash()];
     }

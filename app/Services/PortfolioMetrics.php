@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Classes;
-
+namespace App\Services;
 
 use App\Entities\Portfolio;
 
-class KeyFigures
+
+class PortfolioMetrics
 {
 
     protected $portfolio;
@@ -18,7 +18,14 @@ class KeyFigures
     public function __construct(Portfolio $portfolio)
     {
         $this->portfolio = $portfolio;
-        $this->parameters();
+        $this->setParameters();
+    }
+
+
+    private function setParameters()
+    {
+        $this->confidence = $this->portfolio->settings('confidence');
+        $this->period = $this->portfolio->settings('period');
     }
 
 
@@ -42,9 +49,5 @@ class KeyFigures
     }
 
 
-    private function parameters()
-    {
-        $this->confidence = $this->portfolio->settings('confidence');
-        $this->period = $this->portfolio->settings('period');
-    }
+
 }

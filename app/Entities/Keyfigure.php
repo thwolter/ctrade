@@ -104,37 +104,10 @@ class Keyfigure extends Model
         return array_key_exists($key, $this->values);
     }
 
-    /**
-     * Return the start date for calculations as the latest date of already calculated values.
-     *
-     * @param KeyFigure
-     * @return Carbon
-     */
-    public function firstDayToCalculate()
+    private function hasValues()
     {
-        $previous = $this->lastDayOfCalculation();
-
-        if (!$previous) return $this->portfolio->created_at;
-
-        $compare = [
-            optional($this->firstExecutedPaymentEnteredAfter($previous))->executed_at,
-            optional($this->firstExecutedPositionEnteredAfter($previous))->executed_at,
-            $previous->addDay()
-        ];
-
-        return min(array_diff($compare, [null]))->endOfDay();
+        return count($this->values) > 0;
     }
-
-    public function firstExecutedPositionEnteredAfter($date)
-    {
-        return $this->portfolio->positions()->createdOrUpdatedAfter($date)->orderBy('executed_at')->first();
-    }
-
-    public function firstExecutedPaymentEnteredAfter($date)
-    {
-        return $this->portfolio->payments()->createdOrUpdatedAfter($date)->orderBy('executed_at')->first();
-    }
-
 
     public static function boot()
     {
@@ -157,24 +130,6 @@ class Keyfigure extends Model
         });
     }
 
-    /**
-     * @return mixed
-     */
-    public function lastDayOfCalculation()
-    {
-
-        return $this->hasValues() ? Carbon::parse(max(array_keys($this->values))) : null;
-    }
-
-    /**
-     * @return bool
-     */
-    private function hasValues()
-    {
-        return count($this->values) > 0;
-    }
-
-
 
     /*
     |--------------------------------------------------------------------------
@@ -189,7 +144,7 @@ class Keyfigure extends Model
 
     public function getDateAttribute()
     {
-        return Carbon::parse(array_last(array_keys($this->values)));
+        return $this->values ? Carbon::parse(array_last(array_keys($this->values))) : null;
     }
 
     /*

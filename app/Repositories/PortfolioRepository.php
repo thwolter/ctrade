@@ -22,6 +22,11 @@ class PortfolioRepository implements PortfolioInterface
         $this->portfolioModel = $portfolio;
     }
 
+    public function getPortfolioById($id)
+    {
+        return $this->portfolioModel->where('id', $id)->first();
+    }
+
     /**
      * Create a portfolio with attributes which may be received from a request and persist
      * the portfolio with an assigned user.

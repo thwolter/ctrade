@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Stock;
 use App\Facades\DataService;
 use App\Http\Requests\TradeRequest;
 use App\Repositories\DatasourceRepository;
+use App\Services\PortfolioService;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\Position;
-
 
 
 class PositionsController extends Controller
@@ -71,7 +70,8 @@ class PositionsController extends Controller
      */
     public function store(TradeRequest $request)
     {
-        Portfolio::find($request->portfolioId)->storeTrade($request->all());
+        Portfolio::find($request->portfolioId)
+            ->service()->storeTrade($request->all());
 
         return ['status' => 'success'];
     }

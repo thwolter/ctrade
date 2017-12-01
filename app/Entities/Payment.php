@@ -3,13 +3,14 @@
 namespace App\Entities;
 
 use App\Presenters\Presentable;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
 
     use Presentable;
+    use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -57,20 +58,16 @@ class Payment extends Model
     |--------------------------------------------------------------------------
     */
 
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
 
-    public function scopeLastExecution($query)
+    public function scopeUpdatedAfter($query, $date)
     {
-        return $query->orderBy('executed_at', 'desc')->first();
-    }
-
-    public function scopeCreatedOrUpdatedAfter($query, $date)
-    {
-        return $query->where('updated_at', '>=', Carbon::parse($date));
+        return $query->where($this->getTable().'.updated_at', '>=', $date);
     }
 
     /*

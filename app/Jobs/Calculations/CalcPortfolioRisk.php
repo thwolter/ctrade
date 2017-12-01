@@ -3,16 +3,12 @@
 namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
-use App\Events\PortfolioRiskWasCalculated;
-use App\Models\Rscript;
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
+use App\Jobs\Traits\CalculationPeriod;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Repositories\TradesRepository;
 
 /**
  * Calculate the risk and risk distribution for a given portfolio based on the composition
@@ -27,6 +23,8 @@ use App\Repositories\TradesRepository;
 class CalcPortfolioRisk
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    use CalculationPeriod;
 
     protected $portfolio;
 
@@ -48,26 +46,15 @@ class CalcPortfolioRisk
      */
     public function handle()
     {
-        foreach ($this->period()->chunk(config('calculation.chunk.risk')) as $dates)
-        {
-            dispatch(new CalcPortfolioRiskChunk($this->portfolio, $dates));
+        $daysToCompute = $this->daysToCompute('risk');
+
+        if ($daysToCompute) {
+
+            foreach ($daysToCompute->chunk(config('calculation.chunk.risk')) as $dates)
+            {
+                dispatch(new CalcPortfolioRiskChunk($this->portfolio, $dates));
+            }
         }
     }
 
-
-    private function period()
-    {
-        $interval = new \DateInterval('P1D');
-        $period = new \DatePeriod($this->startDate(), $interval, Carbon::now()->endOfDay());
-
-        return collect($period);
-    }
-
-    /**
-     * @return Carbon
-     */
-    private function startDate()
-    {
-        return $this->portfolio->keyFigure('risk')->firstDayToCalculate();
-    }
 }

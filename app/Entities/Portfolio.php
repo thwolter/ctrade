@@ -2,12 +2,10 @@
 
 namespace App\Entities;
 
+use App\Services\PortfolioMetrics;
 use App\Entities\Traits\UuidModel;
-use App\Facades\TimeSeries;
 use App\Presenters\Presentable;
-use App\Repositories\CurrencyRepository;
-use App\Repositories\PortfolioRepository;
-use App\Repositories\RiskRepository;
+use App\Services\PortfolioService;
 use App\Settings\PortfolioSettings;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -68,7 +66,8 @@ class Portfolio extends Model
 
     protected $presenter = \App\Presenters\Portfolio::class;
 
-    protected $figuresInstance;
+    protected $serviceInstance;
+    protected $metricsInstance;
 
     protected $fillable = [
         'name',
@@ -159,12 +158,48 @@ class Portfolio extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function service()
+    {
+        return isset($this->serviceInstance)
+            ? $this->serviceInstance
+            : new PortfolioService($this);
+    }
+
+
+    public function metrics()
+    {
+        return isset($this->metricsInstance)
+            ? $this->metricsInstance
+            : new PortfolioMetrics($this);
+    }
+
 
     public function settings($key = null)
     {
         $settings = new PortfolioSettings($this);
         return $key ? $settings->get($key) : $settings;
     }
+
+
+    public function firstTransactionEnteredAfter($date)
+    {
+        if (!$date) return null;
+
+        return collect(array_merge(
+            $this->payments()->updatedAfter($date)->get()->all(),
+            $this->positions()->updatedAfter($date)->get()->all()
+        ))->sortBy('executed_at')->first();
+    }
+
+
+    public function lastTransaction()
+    {
+        return collect(array_merge(
+            $this->payments->all(),
+            $this->positions->all()
+        ))->sortByDesc('executed_at')->first();
+    }
+
 
     public function cash($date = null)
     {
@@ -200,112 +235,24 @@ class Portfolio extends Model
         $this->currency()->associate(Currency::firstOrCreate(['code' => $code]));
     }
 
-    public function saveKeyFigure($key, $value, $date)
-    {
-        $keyFigure = Keyfigure::make($key, $value, $date);
-        $this->keyFigures()->save($keyFigure);
-
-        return $this;
-    }
-
 
     /**
-     * A buy transaction for position with a given id.
+     * Return the keyFigures of chosen type. If not exists in database it will be craated.
      *
-     * @param array $attributes
-     * @return Portfolio
+     * @param string $type
+     * @return Keyfigure
      */
-    public function storeTrade($attributes)
+    public function keyFigure($type)
     {
-        $position = Position::make([
-            'amount' => $attributes['amount'],
-            'price' => $attributes['price'],
-            'executed_at' => $attributes['executed']
-        ]);
+        $keyFigure = $this->keyfigures()->ofType($type)->first();
 
-        $this->assets()->firstOrCreate([
-            'positionable_type' => $attributes['instrumentType'],
-            'positionable_id' => $attributes['instrumentId']
-        ])->obtain($position);
-
-        $this
-            ->payTrade($attributes, $position)
-            ->payFees($attributes, $position);
-
-        return $this;
-    }
-
-
-    /**
-     * Deposit an amount of cash.
-     *
-     * @param array $attributes
-     * @return $this
-     */
-    public function deposit($attributes)
-    {
-        $this->payments()->create([
-            'type' => 'deposit',
-            'amount' => $attributes['amount'],
-            'executed_at' => $attributes['date']
-        ]);
-
-        return $this;
-    }
-
-    /**
-     * Withdraw an amount of cash.
-     *
-     * @param array $attributes
-     * @return $this
-     */
-    public function withdraw($attributes)
-    {
-        $this->payments()->create([
-            'type' => 'withdrawal',
-            'amount' => -$attributes['amount'],
-            'executed_at' => $attributes['date']
-        ]);
-
-        return $this;
-    }
-
-    /**
-     * Persist the payment for a trade.
-     *
-     * @param $attributes
-     * @param $position
-     * @return $this
-     */
-    private function payTrade($attributes, $position)
-    {
-        $this->payments()->create([
-            'type' => $attributes['transaction'],
-            'amount' => -$attributes['price'] * $attributes['amount'],
-            'executed_at' => $attributes['executed']
-        ])->position()->associate($position)->save();
-
-        return $this;
-    }
-
-    /**
-     * Deduct fees from portfolio cash.
-     *
-     * @param array $attributes
-     * @return Portfolio
-     */
-    public function payFees($attributes, $position = null)
-    {
-        if ($attributes['fees'] != 0) {
-
-            $this->payments()->create([
-                'type' => 'fees',
-                'amount' => -$attributes['fees'],
-                'executed_at' => $attributes['executed']
-            ])->position()->associate($position)->save();
+        if (!$keyFigure) {
+            $keyFigure = new Keyfigure();
+            $keyFigure->type()->associate(KeyfigureType::firstOrCreate(['code' => $type]));
+            $this->keyFigures()->save($keyFigure);
         }
 
-        return $this;
+        return $keyFigure;
     }
 
 
@@ -316,9 +263,10 @@ class Portfolio extends Model
             'name' => $this->name,
             'currency' => $this->currency->code,
             'cash' => $this->cash(),
-            'lastTransactionDate' => optional($this->latestTransactionDate())->toDateString()
+            'lastTransactionDate' => optional($this->latestTransaction())->executed_at->toDateString()
         ];
     }
+
 
     /* --------------------------------------------
     * Functions for portfolio images
@@ -354,27 +302,6 @@ class Portfolio extends Model
     }
 
 
-    /**
-     * Return the keyFigures of chosen type. If not exists in database it will be craated.
-     *
-     * @param string $type
-     * @return Keyfigure
-     */
-    public function keyFigure($type)
-    {
-        $keyFigure = $this->keyfigures()->ofType($type)->first();
-
-        if (!$keyFigure) {
-            $keyFigure = new Keyfigure();
-            $keyFigure->type()->associate(KeyfigureType::firstOrCreate(['code' => $type]));
-            $this->keyFigures()->save($keyFigure);
-        }
-
-        return $keyFigure;
-    }
-
-
-
     public function sluggable()
     {
         return ['slug' => ['source' => 'name']];
@@ -383,14 +310,6 @@ class Portfolio extends Model
     public function getRouteKeyName()
     {
         return 'slug';
-    }
-
-    public function latestTransactionDate()
-    {
-        $payment = $this->payments()->lastExecution()->first();
-        $position = $this->positions()->lastExecution()->first();
-
-        return max(optional($payment)->executed_at, optional($position)->executed_at);
     }
 
 
@@ -416,7 +335,6 @@ class Portfolio extends Model
 
         return $query->where('user_id', $user->getKey());
     }
-
 
 
     /*

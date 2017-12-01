@@ -3,19 +3,19 @@
 
 namespace App\Classes\Limits;
 
-use App\Classes\KeyFigures;
+use App\Services\PortfolioMetrics;
 use App\Entities\Limit;
 
 abstract class AbstractLimit
 {
     protected $limit;
-    protected $figures;
+    protected $metrics;
 
 
     public function __construct(Limit $limit)
     {
         $this->limit = $limit;
-        $this->figures = new KeyFigures($limit->portfolio);
+        $this->metrics = new PortfolioMetrics($limit->portfolio);
     }
 
     abstract public function utilisation();
