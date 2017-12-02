@@ -4,7 +4,7 @@ namespace App\Jobs\Calculations;
 
 use App\Events\PortfolioWasCalculated;
 use App\Models\Rscript;
-use App\Notifications\RiskCalculated;
+use App\Notifications\StatusCalculation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

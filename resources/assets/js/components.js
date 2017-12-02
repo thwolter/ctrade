@@ -16,6 +16,8 @@ Vue.component('search-instrument', require('./components/trading/SearchInstrumen
 /* Limits */
 Vue.component('create-limit', require('./components/limits/CreateLimit.vue'));
 
+/* Notifications */
+Vue.component('status-calculation', require('./components/notifications/StatusCalculation'));
 
 
 Vue.component('graph', require('./components/charts/Graph.vue'));

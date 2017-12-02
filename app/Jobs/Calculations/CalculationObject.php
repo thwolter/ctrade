@@ -5,7 +5,7 @@ namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
 use App\Events\PortfolioWasCalculated;
-use App\Notifications\RiskCalculated;
+use App\Notifications\StatusCalculation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -16,6 +16,7 @@ class CalculationObject
 
     protected $dates;
     protected $chunk;
+    protected $ratio;
 
     protected $user;
     protected $effective_at;
@@ -31,7 +32,8 @@ class CalculationObject
 
     public function __destruct()
     {
-        \Cache::forget($this->cacheTag());
+        \Cache::forget($this->cacheTagTotal());
+        \Cache::forget($this->cacheTagRemainder());
     }
 
 
@@ -44,7 +46,9 @@ class CalculationObject
         $this->user = $this->portfolio->user;
 
         if ($this->dates) {
-            \Cache::forever($this->cacheTag(), $this->dates->count());
+            \Cache::forever($this->cacheTagTotal(), $this->dates->count());
+            \Cache::forever($this->cacheTagRemainder(), $this->dates->count());
+
             $this->keyFigure()->update(['effective_at' => $this->effective_at]);
 
             Log::info("Start calculation with date {$this->dates->first()} ...");
@@ -55,9 +59,21 @@ class CalculationObject
     }
 
 
-    private function cacheTag()
+    private function cacheTagRemainder()
     {
-        return 'calculate-' . implode('.', [$this->type, $this->portfolio->id]);
+        return $this->cacheTag('remainder');
+    }
+
+
+    private function cacheTagTotal()
+    {
+        return $this->cacheTag('total');
+    }
+
+
+    private function cacheTag($attribute)
+    {
+        return implode('.', ['calculate', $this->type, $attribute, $this->portfolio->id]);
     }
 
 
@@ -67,17 +83,12 @@ class CalculationObject
     }
 
 
-    /**
-     * @return mixed
-     */
     public function getDates()
     {
         return $this->dates;
     }
 
-    /**
-     * @param mixed $chunk
-     */
+
     public function setChunk($chunk)
     {
         $this->chunk = $chunk;
@@ -108,6 +119,42 @@ class CalculationObject
         return $this->effective_at;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRatio()
+    {
+        return $this->ratio;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+
+    public function total()
+    {
+        return \Cache::get($this->cacheTagTotal());
+    }
+
+
+    public function remainder()
+    {
+        return \Cache::get($this->cacheTagRemainder());
+    }
 
 
     private function keyFigure()
@@ -121,14 +168,15 @@ class CalculationObject
         $this->keyFigure()->set($key, $value);
     }
 
+
     public function notifyCompletion(Carbon $date)
     {
-        \Cache::decrement($this->cacheTag());
-        $ratio = \Cache::get($this->cacheTag()) / $this->dates->count();
+        \Cache::decrement($this->cacheTagRemainder());
+        $remainder = \Cache::get($this->cacheTagRemainder());
 
-        $this->user->notify(new RiskCalculated($ratio));
+        $this->user->notify(new StatusCalculation($this));
 
-        if ($ratio == 0) {
+        if ($remainder === 0) {
             event(new PortfolioWasCalculated($this->portfolio));
             Log::info("Calculation of '{$this->type}' for portfolio {$this->portfolio->id} finished.");
         }
@@ -154,11 +202,34 @@ class CalculationObject
      */
     private function startDate()
     {
-        $keyFigureDate = $this->portfolio->keyFigure($this->type)->effective_at;
+        $effective = $this->keyFigure()->effective_at;
+        $calculated = $this->keyFigure()->date;
+        $executed = optional($this->portfolio->firstTransactionEnteredAfter($effective))->executed_at;
 
-        return $keyFigureDate
-            ? optional($this->portfolio->firstTransactionEnteredAfter($keyFigureDate))->executed_at
-            : $this->portfolio->created_at;
+        $date = min(array_filter([$effective, $calculated, $executed], function ($v) {
+            return !is_null($v);
+        }));
+
+        return $date ? $date : $this->portfolio->created_at;
     }
 
+
+
+    /* ---------------------------------------------------
+    // Static Function
+    // -------------------------------------------------*/
+
+
+    static public function getStatus(Portfolio $portfolio, array $types)
+    {
+        $result = [];
+        foreach ($types as $type)
+        {
+            $result[$type] = [
+                'total' => \Cache::get(implode('.', ['calculate', $type, 'total', $portfolio->id])),
+                'remaining' => \Cache::get(implode('.', ['calculate', $type, 'remaining', $portfolio->id]))
+            ];
+        }
+        return json_encode($result);
+    }
 }
