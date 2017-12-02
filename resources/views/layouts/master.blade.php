@@ -93,6 +93,8 @@
                  <!-- Main section -->
                  <div class="col-lg-9 order-lg-2 g-mb-80">
 
+                     @include('calculation_running')
+
                      @yield('content-main')
 
                  </div>

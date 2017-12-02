@@ -31,7 +31,7 @@ class PortfolioMetrics
 
     public function value()
     {
-        return $this->portfolio->keyfigures()->ofType('value')->first()->value;
+        return optional($this->portfolio->keyfigures()->ofType('value')->first())->value;
     }
 
 

@@ -30,7 +30,7 @@ class AfterLatestTransaction implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ($date = $this->portfolio->latestTransactionDate()) {
+        if ($date = $this->portfolio->lastTransaction()->executed_at) {
             return $value >= $date->toDateString();
         } else {
             return true;

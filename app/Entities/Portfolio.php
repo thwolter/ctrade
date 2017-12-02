@@ -253,7 +253,7 @@ class Portfolio extends Model
             'name' => $this->name,
             'currency' => $this->currency->code,
             'cash' => $this->cash(),
-            'lastTransactionDate' => optional($this->latestTransaction())->executed_at->toDateString()
+            'lastTransactionDate' => optional($this->lastTransaction())->executed_at->toDateString()
         ];
     }
 

@@ -46,15 +46,15 @@ class CalcPortfolioRisk
      */
     public function handle()
     {
-        $daysToCompute = $this->daysToCompute('risk');
+        $object = new CalculationObject($this->portfolio, 'risk');
 
-        if ($daysToCompute) {
+        if ($object->hasDates()) {
 
-            foreach ($daysToCompute->chunk(config('calculation.chunk.risk')) as $dates)
+            foreach ($object->getDates()->chunk(config('calculation.chunk.risk')) as $dates)
             {
-                dispatch(new CalcPortfolioRiskChunk($this->portfolio, $dates));
+                $object->setChunk($dates);
+                dispatch(new CalcPortfolioRiskChunk($object));
             }
         }
     }
-
 }

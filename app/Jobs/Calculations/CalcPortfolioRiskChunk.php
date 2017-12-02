@@ -4,6 +4,7 @@ namespace App\Jobs\Calculations;
 
 use App\Events\PortfolioWasCalculated;
 use App\Models\Rscript;
+use App\Notifications\RiskCalculated;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -14,10 +15,9 @@ class CalcPortfolioRiskChunk implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $object;
 
-    protected $portfolio;
-
-    protected $dates;
+    protected $user;
 
 
     /**
@@ -25,10 +25,9 @@ class CalcPortfolioRiskChunk implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($portfolio, $dates)
+    public function __construct(CalculationObject $object)
     {
-        $this->portfolio = $portfolio;
-        $this->dates = $dates;
+        $this->object = $object;
     }
 
     /**
@@ -38,16 +37,16 @@ class CalcPortfolioRiskChunk implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->dates as $date)
+        foreach ($this->object->getChunk() as $date)
         {
             $key = $date->toDateString();
             $risk = $this->calculateRisk($date);
 
-            $this->portfolio->keyFigure('risk')->set($key, $this->toRiskArray($risk));
-            $this->portfolio->keyFigure('contribution')->set($key, $this->toContribArray($risk));
-        }
+            $this->object->getPortfolio()->keyFigure('risk')->set($key, $this->toRiskArray($risk));
+            $this->object->getPortfolio()->keyFigure('contribution')->set($key, $this->toContribArray($risk));
 
-        event(new PortfolioWasCalculated($this->portfolio));
+            $this->object->notifyCompletion($date);
+        }
     }
 
     /**
@@ -88,7 +87,7 @@ class CalcPortfolioRiskChunk implements ShouldQueue
      */
     private function calculateRisk($date)
     {
-        $rscript = new Rscript($this->portfolio);
+        $rscript = new Rscript($this->object->getPortfolio());
         return $rscript->portfolioRisk($date->toDateString(), config('calculation.risk.period'));
     }
 }
