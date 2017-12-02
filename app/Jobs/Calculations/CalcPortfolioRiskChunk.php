@@ -17,8 +17,6 @@ class CalcPortfolioRiskChunk implements ShouldQueue
 
     protected $object;
 
-    protected $user;
-
 
     /**
      * Create a new job instance.
@@ -37,13 +35,19 @@ class CalcPortfolioRiskChunk implements ShouldQueue
      */
     public function handle()
     {
+        $kpiRisk = $this->object->getPortfolio()->keyFigure('risk');
+        $kpiContrib = $this->object->getPortfolio()->keyFigure('contribution');
+
+        $kpiRisk->effective_at = $this->object->getEffectiveAt();
+        $kpiContrib->effective_at = $this->object->getEffectiveAt();
+
         foreach ($this->object->getChunk() as $date)
         {
             $key = $date->toDateString();
             $risk = $this->calculateRisk($date);
 
-            $this->object->getPortfolio()->keyFigure('risk')->set($key, $this->toRiskArray($risk));
-            $this->object->getPortfolio()->keyFigure('contribution')->set($key, $this->toContribArray($risk));
+            $kpiRisk->set($key, $this->toRiskArray($risk));
+            $kpiContrib->set($key, $this->toContribArray($risk));
 
             $this->object->notifyCompletion($date);
         }
@@ -90,4 +94,5 @@ class CalcPortfolioRiskChunk implements ShouldQueue
         $rscript = new Rscript($this->object->getPortfolio());
         return $rscript->portfolioRisk($date->toDateString(), config('calculation.risk.period'));
     }
+
 }

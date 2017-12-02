@@ -15,10 +15,10 @@ class CalculationObject
     protected $type;
 
     protected $dates;
-    protected $done;
     protected $chunk;
 
     protected $user;
+    protected $effective_at;
 
     public function __construct(Portfolio $portfolio, $type)
     {
@@ -31,16 +31,26 @@ class CalculationObject
 
     private function init()
     {
+        $this->effective_at = Carbon::now();
+
+        Log::info("Check key figure '{$this->type}' on portfolio {$this->portfolio->id} ...");
+
         $this->dates = $this->datesToCompute();
         $this->user = $this->portfolio->user;
 
-        \Cache::forever($this->cacheTag(), $this->dates->count());
+        if ($this->dates) {
+            \Cache::forever($this->cacheTag(), $this->dates->count());
+            Log::info("Start calculation with date {$this->dates->first()} ...");
+
+        } else {
+            Log::info('Nothing to calculate; all values up-to-date.');
+        }
     }
 
 
     private function cacheTag()
     {
-        return 'calculate-'.implode([$this->type, $this->portfolio->id]);
+        return 'calculate-' . implode('.', [$this->type, $this->portfolio->id]);
     }
 
 
@@ -83,6 +93,14 @@ class CalculationObject
         return $this->portfolio;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getEffectiveAt()
+    {
+        return $this->effective_at;
+    }
+
 
     public function notifyCompletion(Carbon $date)
     {
@@ -93,9 +111,9 @@ class CalculationObject
 
         if ($ratio == 0) {
             event(new PortfolioWasCalculated($this->portfolio));
+            Log::info("Calculation of '{$this->type}' for portfolio {$this->portfolio->id} finished.");
         }
     }
-
 
 
     /**
@@ -103,20 +121,13 @@ class CalculationObject
      */
     private function datesToCompute()
     {
-        Log::info("Check key figure {$this->type} on portfolio {$this->portfolio->id} ...");
         $startDate = $this->startDate();
+        if (!$startDate) return null;
 
-        if ($startDate) {
-            $interval = new \DateInterval('P1D');
-            $period = new \DatePeriod($startDate, $interval, Carbon::now()->endOfDay());
+        $interval = new \DateInterval('P1D');
+        $period = new \DatePeriod($startDate, $interval, Carbon::now()->endOfDay());
 
-            Log::info("Start calculation with date {$startDate} ...");
-            return collect($period);
-
-        } else {
-            Log::info('Nothing to calculate; all values up-to-date');
-            return null;
-        }
+        return collect($period);
     }
 
     /**
@@ -124,7 +135,7 @@ class CalculationObject
      */
     private function startDate()
     {
-        $keyFigureDate = $this->portfolio->keyFigure($this->type)->date;
+        $keyFigureDate = $this->portfolio->keyFigure($this->type)->effective_at;
 
         return $keyFigureDate
             ? optional($this->portfolio->firstTransactionEnteredAfter($keyFigureDate))->executed_at

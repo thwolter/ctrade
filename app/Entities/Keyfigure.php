@@ -48,7 +48,8 @@ class Keyfigure extends Model
 
     protected $fillable = [
         'values',
-        'expires_at'
+        'expires_at',
+        'effective_at'
     ];
 
     protected $casts = [
@@ -59,7 +60,8 @@ class Keyfigure extends Model
         'created_at',
         'updated_at',
         'expires_at',
-        'deleted_at'
+        'deleted_at',
+        'effective_at'
     ];
 
 
