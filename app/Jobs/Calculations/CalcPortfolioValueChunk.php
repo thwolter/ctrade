@@ -16,9 +16,8 @@ class CalcPortfolioValueChunk implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
-    protected $portfolio;
+    protected $object;
 
-    protected $dates;
 
 
     /**
@@ -26,10 +25,9 @@ class CalcPortfolioValueChunk implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Portfolio $portfolio, $dates)
+    public function __construct(CalculationObject $object)
     {
-        $this->portfolio = $portfolio;
-        $this->dates = $dates;
+        $this->object = $object;
     }
 
     /**
@@ -39,16 +37,13 @@ class CalcPortfolioValueChunk implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->dates as $date)
+        foreach ($this->object->getChunk() as $date)
         {
             $key = $date->toDateString();
             $value = $this->calculateValue($date);
 
-            $this->portfolio->keyFigure('value')->set($key, array_first_or_null($value['value']));
+            $this->object->set($key, array_first_or_null($value['value']));
         }
-
-        event(new PortfolioWasCalculated($this->portfolio));
-
     }
 
     /**
@@ -56,7 +51,7 @@ class CalcPortfolioValueChunk implements ShouldQueue
      */
     private function calculateValue($date)
     {
-        $rscript = new Rscript($this->portfolio);
+        $rscript = new Rscript($this->object->getPortfolio());
         return $rscript->portfolioValue($date->toDateString());
     }
 }

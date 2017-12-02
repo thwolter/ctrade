@@ -35,10 +35,7 @@ class CalcPortfolioRiskChunk implements ShouldQueue
      */
     public function handle()
     {
-        $kpiRisk = $this->object->getPortfolio()->keyFigure('risk');
         $kpiContrib = $this->object->getPortfolio()->keyFigure('contribution');
-
-        $kpiRisk->effective_at = $this->object->getEffectiveAt();
         $kpiContrib->effective_at = $this->object->getEffectiveAt();
 
         foreach ($this->object->getChunk() as $date)
@@ -46,7 +43,7 @@ class CalcPortfolioRiskChunk implements ShouldQueue
             $key = $date->toDateString();
             $risk = $this->calculateRisk($date);
 
-            $kpiRisk->set($key, $this->toRiskArray($risk));
+            $this->object->set($key, $this->toRiskArray($risk));
             $kpiContrib->set($key, $this->toContribArray($risk));
 
             $this->object->notifyCompletion($date);

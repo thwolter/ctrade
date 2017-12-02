@@ -17,8 +17,6 @@ class CalcPortfolioValue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    use CalculationPeriod;
-
     protected $portfolio;
 
     /**
@@ -38,9 +36,15 @@ class CalcPortfolioValue
      */
     public function handle()
     {
-        foreach ($this->period()->chunk(config('calculation.chunk.value')) as $dates)
-        {
-            dispatch(new CalcPortfolioValueChunk($this->portfolio, $dates));
+        $object = new CalculationObject($this->portfolio, 'value');
+
+        if ($object->hasDates()) {
+
+            foreach ($object->getDates()->chunk(config('calculation.chunk.value')) as $dates)
+            {
+                $object->setChunk($dates);
+                dispatch(new CalcPortfolioValueChunk($object));
+            }
         }
     }
 }

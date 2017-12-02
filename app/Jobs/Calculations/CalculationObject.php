@@ -38,7 +38,6 @@ class CalculationObject
     private function init()
     {
         $this->effective_at = Carbon::now();
-
         Log::info("Check key figure '{$this->type}' on portfolio {$this->portfolio->id} ...");
 
         $this->dates = $this->datesToCompute();
@@ -46,6 +45,8 @@ class CalculationObject
 
         if ($this->dates) {
             \Cache::forever($this->cacheTag(), $this->dates->count());
+            $this->keyFigure()->update(['effective_at' => $this->effective_at]);
+
             Log::info("Start calculation with date {$this->dates->first()} ...");
 
         } else {
@@ -107,6 +108,18 @@ class CalculationObject
         return $this->effective_at;
     }
 
+
+
+    private function keyFigure()
+    {
+        return $this->portfolio->keyFigure($this->type);
+    }
+
+
+    public function set($key, $value)
+    {
+        $this->keyFigure()->set($key, $value);
+    }
 
     public function notifyCompletion(Carbon $date)
     {

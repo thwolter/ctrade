@@ -24,8 +24,6 @@ class CalcPortfolioRisk
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    use CalculationPeriod;
-
     protected $portfolio;
 
 
