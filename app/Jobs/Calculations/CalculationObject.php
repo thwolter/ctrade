@@ -20,12 +20,18 @@ class CalculationObject
     protected $user;
     protected $effective_at;
 
+
     public function __construct(Portfolio $portfolio, $type)
     {
         $this->portfolio = $portfolio;
         $this->type = $type;
 
         $this->init();
+    }
+
+    public function __destruct()
+    {
+        \Cache::forget($this->cacheTag());
     }
 
 
