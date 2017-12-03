@@ -1,5 +1,5 @@
 <template>
-    <div class="u-header u-header--sticky-bottom">
+    <div v-show="show" class="u-header u-header--sticky-bottom">
         <div class="alert fade show g-bg-gray-light-v5 rounded-0" role="alert">
             <button type="button" class="close u-alert-close--light g-ml-10 g-mt-1" data-dismiss="alert"
                     aria-label="Close">
@@ -42,13 +42,39 @@
 
         data() {
             return {
-                ratio: 0
+                risk: this.status.risk,
+                value: this.status.value,
+
+                notification: null
+            }
+        },
+
+        methods: {
+            asNumber(value) {
+                return value == null ? 0 : value;
             }
         },
 
         computed: {
+
+            total() {
+                return (this.risk.total || 0) + (this.value.total || 0);
+            },
+
+            remainder() {
+                return (this.risk.remainder || 0) + (this.value.remainder || 0);
+            },
+
+            ratio() {
+                if (this.total > 0) {
+                    return 1 - this.remainder / this.total;
+                } else {
+                    return 1;
+                }
+            },
+
             show() {
-                return this.ratio > 0;
+                return this.ratio < 1;
             }
         },
 
@@ -56,9 +82,20 @@
         mounted() {
             Echo.private('App.Entities.User.' + this.userId)
                 .notification((data) => {
-                   /* this.notifications.push({
-                        'title': data.title
-                    });*/
+
+                    console.log('notification received for portfolio '+ data.portfolio_id);
+                    this.notification = data;
+
+                    if (data.portfolio_id === this.portfolioId) {
+                        if (data.metric === 'risk') {
+                            this.risk.total = data.total;
+                            this.risk.remainder = data.remainder;
+                        }
+                        if (data.metric === 'value') {
+                            this.value.total = data.total;
+                            this.value.remainder = data.remainder;
+                        }
+                    }
                 });
         }
     };

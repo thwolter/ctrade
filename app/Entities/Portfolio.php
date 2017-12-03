@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Notifications\Notifiable;
 
 
 /**
@@ -62,6 +63,7 @@ class Portfolio extends Model
     use UuidModel, Sluggable, SluggableScopeHelpers, SoftDeletes, CascadeSoftDeletes;
 
     use Presentable, Servicable, Metricsable;
+
 
     /*
     |--------------------------------------------------------------------------

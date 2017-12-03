@@ -45,7 +45,7 @@ class StatusCalculation extends Notification
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'pid' => $this->calculation->getPortfolio()->id,
+            'portfolio_id' => $this->calculation->getPortfolio()->id,
             'metric' => $this->calculation->getType(),
             'total' => $this->calculation->total(),
             'remainder' => $this->calculation->remainder()

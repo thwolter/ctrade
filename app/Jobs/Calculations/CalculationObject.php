@@ -18,7 +18,6 @@ class CalculationObject
     protected $chunk;
     protected $ratio;
 
-    protected $user;
     protected $effective_at;
 
 
@@ -43,7 +42,6 @@ class CalculationObject
         Log::info("Check key figure '{$this->type}' on portfolio {$this->portfolio->id} ...");
 
         $this->dates = $this->datesToCompute();
-        $this->user = $this->portfolio->user;
 
         if ($this->dates) {
             \Cache::forever($this->cacheTagTotal(), $this->dates->count());
@@ -136,24 +134,18 @@ class CalculationObject
         return $this->type;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
+
 
 
     public function total()
     {
-        return \Cache::get($this->cacheTagTotal());
+        return intval(\Cache::get($this->cacheTagTotal()));
     }
 
 
     public function remainder()
     {
-        return \Cache::get($this->cacheTagRemainder());
+        return intval(\Cache::get($this->cacheTagRemainder()));
     }
 
 
@@ -172,11 +164,10 @@ class CalculationObject
     public function notifyCompletion(Carbon $date)
     {
         \Cache::decrement($this->cacheTagRemainder());
-        $remainder = \Cache::get($this->cacheTagRemainder());
 
-        $this->user->notify(new StatusCalculation($this));
+        $this->portfolio->user->notify(new StatusCalculation($this));
 
-        if ($remainder === 0) {
+        if ($this->remainder() === 0) {
             event(new PortfolioWasCalculated($this->portfolio));
             Log::info("Calculation of '{$this->type}' for portfolio {$this->portfolio->id} finished.");
         }
@@ -206,11 +197,13 @@ class CalculationObject
         $calculated = $this->keyFigure()->date;
         $executed = optional($this->portfolio->firstTransactionEnteredAfter($effective))->executed_at;
 
-        $date = min(array_filter([$effective, $calculated, $executed], function ($v) {
+        $dates = array_filter([$effective, $calculated, $executed], function ($v) {
             return !is_null($v);
-        }));
+        });
 
-        return $date ? $date : $this->portfolio->created_at;
+        $startDate = $dates ? min($dates) : null;
+
+        return $startDate ? $startDate : $this->portfolio->created_at;
     }
 
 
@@ -227,7 +220,7 @@ class CalculationObject
         {
             $result[$type] = [
                 'total' => \Cache::get(implode('.', ['calculate', $type, 'total', $portfolio->id])),
-                'remaining' => \Cache::get(implode('.', ['calculate', $type, 'remaining', $portfolio->id]))
+                'remainder' => \Cache::get(implode('.', ['calculate', $type, 'remainder', $portfolio->id]))
             ];
         }
         return json_encode($result);
