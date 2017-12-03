@@ -1,6 +1,6 @@
 <template>
     <div v-show="show" class="u-header u-header--sticky-bottom">
-        <div class="alert fade show g-bg-gray-light-v5 rounded-0" role="alert">
+        <div class="alert fade show g-bg-lightblue-radialgradient-ellipse rounded-0" role="alert">
             <button type="button" class="close u-alert-close--light g-ml-10 g-mt-1" data-dismiss="alert"
                     aria-label="Close">
                 <span aria-hidden="true">×</span>
@@ -11,8 +11,15 @@
                     bild
                 </div>
                 <div class="media-body">
-                    <p class="m-0"><strong>Htmlstream</strong> released a new update.</p>
-                    <span class="g-font-size-12 g-color-gray">2 hours ago</span>
+                    <p class="m-0"><strong>Bitte habe etwas Geduld.</strong> Wir berechnen gerade dein Portfolio.</p>
+                    <span class="g-font-size-12 g-color-gray">Fortschritt</span>
+                    <div>
+                        <div class="js-hr-progress-bar progress rounded-0 g-mb-20">
+                            <div class="js-hr-progress-bar-indicator progress-bar g-nowrap g-bg-blue-lineargradient-v4" role="progressbar"
+                                 :style="'width: ' + nextRatio * 100 + '%;'" :aria-valuenow="ratio"
+                                 aria-valuemin="0" aria-valuemax="100">{{ Math.ceil(nextRatio * 100) }}%</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,6 +78,10 @@
                 } else {
                     return 1;
                 }
+            },
+
+            nextRatio() {
+                return this.total > 0 ? Math.min(1, 1 - (this.remainder - 1) / this.total) : 1;
             },
 
             show() {

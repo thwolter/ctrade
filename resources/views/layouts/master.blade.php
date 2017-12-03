@@ -128,12 +128,14 @@
 
 <!-- JS Implementing Plugins -->
 <script src="{{ asset('assets/vendor/hs-megamenu/src/hs.megamenu.js') }}"></script>
+<script src="{{ asset('assets/vendor/appear.js') }}"></script>
 
 <!-- JS Unify -->
 <script src="{{ asset('assets/js/hs.core.js') }}"></script>
 <script src="{{ asset('assets/js/components/hs.header.js') }}"></script>
 <script src="{{ asset('assets/js/helpers/hs.hamburgers.js') }}"></script>
 <script src="{{ asset('assets/js/components/hs.tabs.js') }}"></script>
+<script src="{{ asset('assets/js/components/hs.progress-bar.js') }}"></script>
 
 <script src="{{ asset('assets/js/components/hs.dropdown.js') }}"></script>
 <script src="{{ asset('assets/js/components/hs.go-to.js') }}"></script>
@@ -160,6 +162,12 @@
             afterOpen: function () {
                 $(this).find('input[type="search"]').focus();
             }
+        });
+
+        // initialization of horizontal progress bars
+        var horizontalProgressBars = $.HSCore.components.HSProgressBar.init('.js-hr-progress-bar', {
+            direction: 'horizontal',
+            indicatorSelector: '.js-hr-progress-bar-indicator'
         });
 
     });
