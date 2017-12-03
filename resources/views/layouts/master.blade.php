@@ -51,6 +51,8 @@
 
 <main id="wrapper">
 
+    @include('calculation_running')
+
     <!-- Header -->
     <header id="js-header" class="u-header u-header--static u-header--change-appearance"
             data-header-fix-moment="500" data-header-fix-effect="slide">
@@ -92,8 +94,6 @@
 
                  <!-- Main section -->
                  <div class="col-lg-9 order-lg-2 g-mb-80">
-
-                     @include('calculation_running')
 
                      @yield('content-main')
 

@@ -87,9 +87,8 @@ class PortfoliosController extends Controller
      * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show(Portfolio $portfolio)
     {
-        $portfolio = Auth::user()->portfolios()->whereSlug($slug)->first();
         return view('portfolios.show', compact('portfolio'));
     }
 

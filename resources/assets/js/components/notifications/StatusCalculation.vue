@@ -6,20 +6,45 @@
                 <span aria-hidden="true">×</span>
             </button>
 
-            <div class="media">
+            <div v-if="calculating" class="media">
                 <div class="d-flex g-mr-10">
-                    bild
+                    <span class="u-icon-v1 g-mr-20 g-mb-20">
+                        <i class="fa fa-refresh spin"></i>
+                    </span>
                 </div>
                 <div class="media-body">
-                    <p class="m-0"><strong>Bitte habe etwas Geduld.</strong> Wir berechnen gerade dein Portfolio.</p>
-                    <span class="g-font-size-12 g-color-gray">Fortschritt</span>
-                    <div>
-                        <div class="js-hr-progress-bar progress rounded-0 g-mb-20">
-                            <div class="js-hr-progress-bar-indicator progress-bar g-nowrap g-bg-blue-lineargradient-v4" role="progressbar"
-                                 :style="'width: ' + nextRatio * 100 + '%;'" :aria-valuenow="ratio"
-                                 aria-valuemin="0" aria-valuemax="100">{{ Math.ceil(nextRatio * 100) }}%</div>
+                    <div  class="row">
+                        <div class="col-lg-3 col-md-5 col-sm-12">
+                            <p class="m-0"><strong>Bitte habe etwas Geduld.</strong></p>
+                            <p class="m-0">Wir berechnen gerade dein Portfolio.</p>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <span class="g-font-size-12 g-color-gray">Fortschritt</span>
+                            <div class="js-hr-progress-bar progress rounded-0 g-mb-20">
+                                <div class="js-hr-progress-bar-indicator progress-bar g-nowrap g-bg-blue-lineargradient-v4" role="progressbar"
+                                     :style="'width: ' + ratio * 100 + '%;'" :aria-valuenow="ratio"
+                                     aria-valuemin="0" aria-valuemax="100">{{ Math.ceil(ratio * 100) }}%</div>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div v-else class="media">
+                <div class="d-flex g-mr-10">
+                    <span class="u-icon-v1 g-mr-20 g-mb-20">
+                        <i class="fa fa-thumbs-o-up shake"></i>
+                    </span>
+                </div>
+                <div class="d-md-flex justify-content-between media-body">
+                    <div>
+                        <p class="m-0"><strong>Dein Portfolio wurde neu berechnet!</strong></p>
+                        <p class="m-0">Bitte lade die Seite neu umd die aktuellen Werte anzuzeigen.</p>
+                    </div>
+                    <div class="g-mt-10">
+                        <a :href="currentRoute" class="btn u-btn-blue">Neu laden</a>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -43,6 +68,11 @@
 
             status: {
                 type: Object,
+                required: true
+            },
+
+            currentRoute: {
+                type: String,
                 required: true
             }
         },
@@ -85,6 +115,10 @@
             },
 
             show() {
+                return this.total > 0;
+            },
+
+            calculating() {
                 return this.ratio < 1;
             }
         },
