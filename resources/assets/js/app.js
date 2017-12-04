@@ -2,7 +2,7 @@
 require('./bootstrap');
 
 
-import Vue from 'vue'
+import Vue from 'vue';
 import axios from 'axios';
 import Vuelidate from 'vuelidate';
 import VueResource from 'vue-resource';
