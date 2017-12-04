@@ -10,6 +10,11 @@ Route::get('test', function() {
     return App\Entities\CcyPair::whereSymbol('EURUSD')->first()->price();
 });
 
+Route::get('{portfolio}/fire', function(\App\Entities\Portfolio $portfolio) {
+    $object = new \App\Jobs\Calculations\CalculationObject($portfolio, 'risk');
+    event(new \App\Events\CalculationStatusUpdate($object));
+});
+
 Route::get('portfolio/index', function() {
    redirect('http://ctrade.dev/portfolio')->with('success', 'hi, it works');
 });

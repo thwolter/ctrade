@@ -15,3 +15,7 @@ Broadcast::channel('App.Entities.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
+Broadcast::channel('portfolio.{portfolioId}', function ($user, $portfolioId) {
+    return $user->id === \App\Entities\Portfolio::find($portfolioId)->user_id;
+});
+

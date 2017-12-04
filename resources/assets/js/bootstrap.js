@@ -44,6 +44,8 @@ if (token) {
 
 import Echo from 'laravel-echo'
 
+/* Echo with Pusher
+
 window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
@@ -52,4 +54,9 @@ window.Echo = new Echo({
     cluster: 'eu',
     encrypted: true
 });
+*/
 
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: window.location.hostname + ':6001'
+});

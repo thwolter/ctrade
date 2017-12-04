@@ -135,6 +135,10 @@ class CalculationObject
     }
 
 
+    public function getUserId()
+    {
+        return $this->portfolio->user_id;
+    }
 
 
     public function total()

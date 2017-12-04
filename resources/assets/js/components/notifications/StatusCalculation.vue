@@ -56,10 +56,6 @@
     export default {
 
         props: {
-            userId: {
-                type: Number,
-                required: true
-            },
 
             portfolioId: {
                 type: Number,
@@ -81,8 +77,6 @@
             return {
                 risk: this.status.risk,
                 value: this.status.value,
-
-                notification: null
             }
         },
 
@@ -125,13 +119,12 @@
 
 
         mounted() {
-            Echo.private('App.Entities.User.' + this.userId)
-                .notification((data) => {
 
-                    console.log('notification received for portfolio '+ data.portfolio_id);
-                    this.notification = data;
+            Echo.private(`portfolio.${this.portfolioId}`)
+                .listen('CalculationStatusUpdate', (data) => {
 
-                    if (data.portfolio_id === this.portfolioId) {
+                    console.log('CalculationStatusUpdate received for portfolio '+ this.portfolioId);
+
                         if (data.metric === 'risk') {
                             this.risk.total = data.total;
                             this.risk.remainder = data.remainder;
@@ -140,8 +133,8 @@
                             this.value.total = data.total;
                             this.value.remainder = data.remainder;
                         }
-                    }
                 });
+
         }
     };
 

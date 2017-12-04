@@ -31,9 +31,9 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/hamburgers/hamburgers.min.css') }}">
 
     <!-- CSS specific -->
-@yield('link.header')
+    @yield('link.header')
 
-<!-- CSS Global Compulsory -->
+    <!-- CSS Global Compulsory -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/bootstrap.min.css') }}">
 
     <!-- CSS Unify -->
@@ -41,6 +41,8 @@
 
     <!-- Localization -->
     <script src="{{ route('resources.lang', [ \App::getLocale() ]) }}"></script>
+
+    <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
 
     <!-- Google Analytics -->
     {!! Analytics::render() !!}
