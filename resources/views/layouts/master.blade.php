@@ -31,9 +31,9 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/hamburgers/hamburgers.min.css') }}">
 
     <!-- CSS specific -->
-    @yield('link.header')
+@yield('link.header')
 
-    <!-- CSS Global Compulsory -->
+<!-- CSS Global Compulsory -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/bootstrap.min.css') }}">
 
     <!-- CSS Unify -->
@@ -50,24 +50,26 @@
 
 <body>
 
+<!-- Header -->
+@section('header')
+    @guest
+        @include('layouts.navigation.header-guest')
+    @endguest
+
+    @auth
+        @include('layouts.navigation.header-auth')
+    @endauth
+@show
+
 
 <main id="wrapper">
 
-    @include('calculation_running')
+@include('layouts.partials.calculation_running')
 
-    <!-- Header -->
-    <header id="js-header" class="u-header u-header--static u-header--change-appearance"
-            data-header-fix-moment="500" data-header-fix-effect="slide">
 
-        @include('layouts.navigation.topbar')
+@section('breadcrumbs')
 
-        @include('layouts.navigation.appbar')
-
-    </header>
-
-    @section('header')
-
-        @isset ($portfolio)
+    @isset ($portfolio)
         <!-- Header -->
             <section class="g-color-white g-bg-darkgray-radialgradient-circle g-pa-40">
                 <div class="container">
@@ -86,23 +88,23 @@
 
 
     @section('content')
-         <div class="container g-pt-100 g-pb-20">
-             <div class="row justify-content-between">
+        <div class="container g-pt-100 g-pb-20">
+            <div class="row justify-content-between">
 
-                 <!-- Sidebar -->
-                 @isset ($portfolio)
-                     @include('layouts.partials.sidebar')
-                 @endisset
+                <!-- Sidebar -->
+            @isset ($portfolio)
+                @include('layouts.partials.sidebar')
+            @endisset
 
-                 <!-- Main section -->
-                 <div class="col-lg-9 order-lg-2 g-mb-80">
+            <!-- Main section -->
+                <div class="col-lg-9 order-lg-2 g-mb-80">
 
-                     @yield('content-main')
+                    @yield('content-main')
 
-                 </div>
-             </div>
-         </div>
-    @show
+                </div>
+            </div>
+        </div>
+@show
 
 <!-- Call To Action -->
 @include('layouts.partials.call_to_action')
@@ -153,6 +155,18 @@
 <!-- JS Plugins Init. -->
 <script>
     $(document).on('ready', function () {
+
+        // initialization of header
+        $.HSCore.components.HSHeader.init($('#js-header'));
+        $.HSCore.helpers.HSHamburgers.init('.hamburger');
+
+        // initialization of HSMegaMenu component
+        $('.js-mega-menu').HSMegaMenu({
+            event: 'hover',
+            pageContainer: $('.container'),
+            breakpoint: 767
+        });
+
         // initialization of tabs
         $.HSCore.components.HSTabs.init('[role="tablist"]');
 
@@ -172,25 +186,6 @@
             indicatorSelector: '.js-hr-progress-bar-indicator'
         });
 
-    });
-
-    $(window).on('load', function () {
-        // initialization of header
-        $.HSCore.components.HSHeader.init($('#js-header'));
-        $.HSCore.helpers.HSHamburgers.init('.hamburger');
-
-        // initialization of HSMegaMenu component
-        $('#dropdown-megamenu').HSMegaMenu({
-            event: 'hover',
-            pageContainer: $('.container'),
-            breakpoint: 767
-        });
-
-        $('#dropdown-account').HSMegaMenu({
-            event: 'hover',
-            pageContainer: $('.container'),
-            breakpoint: 767
-        });
     });
 
     $(window).on('resize', function () {
