@@ -10,7 +10,7 @@
         </div>
         <!-- End Parallax Image -->
 
-        <div class="container g-pt-100 g-pb-20">
+        <div class="container g-pt-170 g-pb-20">
             <div class="row justify-content-between">
                 <div class="col-md-6 col-lg-5 flex-md-unordered align-self-center g-mb-80">
                     <div class="g-bg-white rounded g-pa-50">

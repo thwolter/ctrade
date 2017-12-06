@@ -4,7 +4,7 @@
 
     <!-- Signup -->
     <section class="g-bg-gray-light-v5">
-        <div class="container g-py-100">
+        <div class="container container g-pb-100 g-pt-170">
             <div class="row justify-content-center">
                 <div class="col-sm-10 col-md-9 col-lg-6">
                     <div class="u-shadow-v21 g-bg-white rounded g-py-40 g-px-30">
