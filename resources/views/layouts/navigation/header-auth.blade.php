@@ -45,7 +45,6 @@
         </div>
 
 
-
         <!-- Appbar -->
         <div class="js-mega-menu navbar navbar-expand-lg g-brd-y g-brd-2 g-brd-primary-dark-v1 g-bg-primary g-pa-0">
             <div class="container-fluid">
@@ -111,9 +110,6 @@
             </div>
         </div>
 
-
     </div>
 
 </header>
-
-<div class="g-mt-125"></div>

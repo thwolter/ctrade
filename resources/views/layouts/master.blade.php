@@ -71,7 +71,7 @@
 
     @isset ($portfolio)
         <!-- Header -->
-            <section class="g-color-white g-bg-darkgray-radialgradient-circle g-pa-40">
+            <section class="g-mt-165 g-color-white g-bg-darkgray-radialgradient-circle g-pa-40">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8 align-self-center">

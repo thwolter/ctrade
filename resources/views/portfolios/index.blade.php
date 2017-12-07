@@ -38,60 +38,59 @@
 
                     @foreach($portfolios as $portfolio)
 
-                        <div class="g-mb-30">
-                            <!-- Portfolio -->
-                            <article class="row align-items-stretch text-center mx-0">
-                                <!--Portfolio title-->
-                                <div class="col-sm-3 g-bg-black">
-                                    <button type="button"
-                                            class="btn btn-link pull-right g-color-white g-bg-transparent g-mr-minus-10"
-                                            data-toggle="popover"
-                                            data-placement="right"
-                                            data-title="Beschreibung"
-                                            data-content="{{ $portfolio->present()->description() }}">
-                                        <i class="fa fa fa-question-circle-o"></i>
-                                    </button>
-                                    <div class="g-py-30 g-py-45--sm">
-                                        <h3 class="h6 g-color-white g-font-weight-600 text-uppercase g-mb-25">
-                                            Portfolio
-                                            <span class="d-block g-color-primary g-font-weight-700">{{ $portfolio->name }}</span>
-                                        </h3>
-                                        <a class="btn btn-md u-btn-outline-white g-font-weight-600 g-font-size-11 text-uppercase"
-                                           href="{{ route('portfolios.show', $portfolio->slug) }}">Öffnen</a>
+                        <div class="card g-mb-40 rounded-0">
+                            <h3 class="card-header h5 text-white g-bg-primary g-brd-transparent rounded-0">
+                                <i class="fa fa-tasks g-font-size-default g-mr-5"></i>
+                                <span>Portfolio</span> {{ $portfolio->name }}
+                            </h3>
+
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h2 class="h4 text-uppercase g-letter-spacing-1 g-mb-20">
+                                            <span>Portfolio</span>
+                                            {{ $portfolio->name }}
+                                        </h2>
+                                        <p class="lead mb-0 g-line-height-2 g-mb-30"
+                                           style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                            {{ $portfolio->present()->description() }}
+                                        </p>
+
+                                        <h6 class="text-uppercase g-font-size-12 g-font-weight-600 g-letter-spacing-0_5 g-pos-rel g-z-index-2">Successful of marketing</h6>
+
+                                        <div class="js-hr-progress-bar progress g-height-20 rounded-0 g-overflow-visible">
+                                            <div class="js-hr-progress-bar-indicator progress-bar g-pos-rel" role="progressbar" style="width: 64%;" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100">
+                                                <div class="text-center u-progress__pointer-v1 g-font-size-11 g-color-white g-bg-primary g-rounded-50x">64%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 align-self-center g-py-20">
+                                        <img class="w-100" src="{{ asset('assets/img-temp/200x100/img1.jpg') }}" alt="Iamge Description">
+                                    </div>
+
+                                    <div class="col-md-3 text-right">
+                                        <div class="row h-100">
+                                            <div class="col-12">
+                                                <div class="h4">{{ $portfolio->present()->total() }}</div>
+                                                <div>
+                                                    <i class="fa fa-caret-up g-color-green" aria-hidden="true"></i>
+                                                    200 €
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 align-self-end justify-content-end g-mt-20">
+                                                <a class="btn btn-md u-btn-primary g-font-weight-600 g-font-size-11 text-uppercase"
+                                                   href="{{ route('portfolios.show', $portfolio->slug) }}">Öffnen</a>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                 </div>
-
-
-                                <!-- Portfolio summary -->
-                                <div class="col-sm-9 px-0 g-bg-gray-light-v4">
-                                    <div class="container row g-py-45 d-flex h-100">
-
-                                        <div class="col align-self-center g-mx-15">
-                                            <div class="g-font-size-32 g-font-weight-300 g-line-height-1 mb-0">
-                                                {{ $portfolio->present()->total() }}
-                                            </div>
-                                            <span>Wert</span>
-                                        </div>
-
-                                        <div class="col align-self-center g-mx-15">
-                                            <div class="g-font-size-32 g-font-weight-300 g-line-height-1 mb-0">
-                                                {{ $portfolio->present()->risk() ?? '-'}}
-                                            </div>
-                                            <span>Risiko</span>
-                                        </div>
-
-                                        <div class="col align-self-center g-mx-15">
-                                            <div class="g-font-size-32 g-font-weight-300 g-line-height-1 mb-0">
-                                                {{ $portfolio->present()->profit() ?? '-'}}
-                                            </div>
-                                            <span>Performance</span>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- End Article Image -->
-                            </article>
+                            </div>
                         </div>
+
                     @endforeach
 
 
