@@ -9,6 +9,15 @@ use Carbon\Carbon;
 class PortfolioPresenter extends Presenter
 {
 
+    protected $repo;
+
+
+    public function __construct($entity)
+    {
+        parent::__construct($entity);
+        $this->repo = new RiskRepository($this->entity);
+    }
+
     public function cash()
     {
         return $this->formatPrice($this->entity->cash(), $this->entity->currency->code);
@@ -24,26 +33,28 @@ class PortfolioPresenter extends Presenter
         return $this->formatPrice($this->entity->total(), $this->entity->currency->code);
     }
 
+    public function valueChange($days)
+    {
+        return $this->formatPrice($this->repo->valueChange($days));
+    }
+
     public function risk()
     {
-        $repo = new RiskRepository($this->entity);
-        $risk = $repo->portfolioRisk();
+        $risk = $this->repo->portfolioRisk();
 
         return $this->formatPrice($risk, $this->entity->currency->code);
     }
 
     public function return()
     {
-        $repo = new RiskRepository($this->entity);
-        $return = $repo->portfolioReturn();
+        $return = $this->repo->portfolioReturn();
 
         return $this->formatPercentage($return);
     }
 
     public function profit()
     {
-        $repo = new RiskRepository($this->entity);
-        $profit = $repo->portfolioProfit();
+        $profit = $this->repo->portfolioProfit();
 
         return $this->formatprice($profit, $this->entity->currency->code);
     }
@@ -80,8 +91,15 @@ class PortfolioPresenter extends Presenter
 
     public function description()
     {
-        $description = $this->entity->description;
-        return $description ? $description : 'Keine Beschreibung vorhanden.';
+        $decription = $this->entity->description;
+
+        $text = $decription
+            ? $decription
+            : implode(', ', $this->entity->assets->pluck('name')->all());
+
+        return $text
+            ? mb_strimwidth($text, 0, 50, "...")
+            : 'Portfolio enthält noch keine Assets.';
     }
 
 }

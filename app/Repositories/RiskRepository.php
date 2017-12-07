@@ -51,6 +51,13 @@ class RiskRepository
         return null;
     }
 
+    public function valueChange($days)
+    {
+        $values = array_values($this->portfolio->keyFigure('value')->values);
+
+        return $values[0] && $values[$days] ? $values[0] - $values[$days] : null;
+    }
+
     public function portfolioProfit()
     {
         return array_get($this->getPortfolioDelta(), 'delta');

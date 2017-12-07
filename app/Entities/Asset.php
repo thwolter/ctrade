@@ -182,6 +182,11 @@ class Asset extends Model
         return $this->positionable->currency;
     }
 
+    public function getNameAttribute()
+    {
+        return $this->positionable->name;
+    }
+
 
     /*
     |--------------------------------------------------------------------------

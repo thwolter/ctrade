@@ -75,7 +75,7 @@
                                                 <div class="h4">{{ $portfolio->present()->total() }}</div>
                                                 <div>
                                                     <i class="fa fa-caret-up g-color-green" aria-hidden="true"></i>
-                                                    200 €
+                                                    {{ $portfolio->present()->valueChange(1) }}
                                                 </div>
                                             </div>
 

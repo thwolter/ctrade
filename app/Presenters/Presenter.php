@@ -32,8 +32,10 @@ abstract class Presenter
     }
 
 
-    public function formatPrice($value, $currencyCode)
+    public function formatPrice($value, $currencyCode = null)
     {
+        if (!$currencyCode) $currencyCode = $this->entity->currency->code;
+
         if (! $this->priceFormat) {
             $this->priceFormat = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
         }
