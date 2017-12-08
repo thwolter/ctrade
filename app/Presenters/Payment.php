@@ -34,12 +34,16 @@ class Payment extends Presenter
 
     public function total()
     {
-        return $this->formatPrice($this->entity->amount, $this->currencyCode());
+        return $this->formatPrice($this->entity->amount, [
+            'currency' => $this->currencyCode()
+        ]);
     }
 
     public function price()
     {
-        return $this->position ? $this->formatPrice($this->position->price, $this->currencyCode()) : null;
+        return $this->position ? $this->formatPrice($this->position->price, [
+            'currency' => $this->currencyCode()
+        ]) : null;
     }
 
     public function amount()

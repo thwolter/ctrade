@@ -42,6 +42,18 @@ class PortfolioMetrics
     }
 
 
+    public function riskToDate($date = null)
+    {
+        $risk = $this->portfolio->keyFigure('risk')->value;
+        $referenceDate = $this->portfolio->keyFigure('risk')->date;
+        $dailyRisk = array_get($risk, (string)$this->confidence);
+
+        $period = $date ? $referenceDate->diffInDays($date, false) : $this->period;
+
+        return $dailyRisk * sqrt(max(0, $period));
+    }
+
+
     public function dailyRisk()
     {
         $riskArray = $this->portfolio->keyfigures()->ofType('risk')->first()->value;
@@ -49,6 +61,22 @@ class PortfolioMetrics
         return array_get($riskArray, (string)$this->confidence);
     }
 
+
+    public function profit($days, $percent = false)
+    {
+        $values = array_reverse(
+            array_values($this->portfolio->keyFigure('value')->values)
+        );
+
+        if ($values[0] && $values[$days]) {
+            $valueAbsolute = $values[0] - $values[$days];
+            $valuePercent = $valueAbsolute / $values[$days];
+        } else {
+            $valueAbsolute = $valuePercent = null;
+        }
+
+        return $percent ? $valuePercent : $valueAbsolute;
+    }
 
 
 }

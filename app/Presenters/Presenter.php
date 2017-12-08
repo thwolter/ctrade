@@ -13,7 +13,7 @@ abstract class Presenter
 
     protected $replace = '/[^0-9,"."]/';
 
-    protected $priceFormat;
+    private $priceFormat;
 
 
     public function __construct($entity)
@@ -32,16 +32,15 @@ abstract class Presenter
     }
 
 
-    public function formatPrice($value, $currencyCode = null)
+    public function formatPrice($value, $format = [])
     {
-        if (!$currencyCode) $currencyCode = $this->entity->currency->code;
-
-        if (! $this->priceFormat) {
-            $this->priceFormat = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
-        }
+        $currencyCode = array_get($format, 'currency', $this->entity->currency->code);
 
         $value = is_array($value) ? array_first($value) : $value;
-        return $value ? $this->priceFormat->formatCurrency($value, $currencyCode) : null;
+
+        return ($value || array_get($format, 'showNull'))
+            ? $this->priceFormatter()->formatCurrency($value, $currencyCode)
+            : array_get($format, 'nullString', null);
     }
 
 
@@ -57,5 +56,14 @@ abstract class Presenter
         if ($date) {
             return Carbon::parse($date)->formatLocalized('%d.%m.%Y');
         }
+    }
+
+    private function priceFormatter()
+    {
+        if (!$this->priceFormat) {
+            $this->priceFormat = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
+        }
+
+        return $this->priceFormat;
     }
 }

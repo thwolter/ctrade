@@ -3,61 +3,82 @@
 namespace App\Presenters;
 
 
-use App\Repositories\RiskRepository;
+use App\Services\PortfolioMetrics;
+use App\Entities\Stock;
 use Carbon\Carbon;
+use Illuminate\Support\HtmlString;
 
 class PortfolioPresenter extends Presenter
 {
 
-    protected $repo;
+    protected $service;
 
 
     public function __construct($entity)
     {
         parent::__construct($entity);
-        $this->repo = new RiskRepository($this->entity);
+        $this->service = new PortfolioMetrics($this->entity);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CALCULATED
+    |--------------------------------------------------------------------------
+    */
 
     public function cash()
     {
-        return $this->formatPrice($this->entity->cash(), $this->entity->currency->code);
+        return $this->formatPrice($this->entity->cash());
     }
 
     public function stockTotal()
     {
-        return $this->formatPrice($this->entity->total(\App\Entities\Stock::class), $this->entity->currency->code);
+        return $this->formatPrice($this->entity->total(Stock::class));
     }
 
     public function total()
     {
-        return $this->formatPrice($this->entity->total(), $this->entity->currency->code);
+        return $this->formatPrice($this->entity->total());
     }
 
-    public function valueChange($days)
+    public function profit($days)
     {
-        return $this->formatPrice($this->repo->valueChange($days));
+        return $this->formatPrice($this->service->profit($days));
+    }
+
+    public function htmlProfit($days)
+    {
+        $profit = $this->service->profit($days);
+        $percent = $this->service->profit($days, true);
+
+        if ($profit > 0)
+            $class = "fa fa-caret-up g-color-green";
+        elseif ($profit < 0)
+            $class = "fa fa-caret-down g-color-red";
+        elseif ($profit === 0)
+            $class = "fa fa-caret-down g-color-red";
+        else
+            $class="";
+
+        return new HtmlString(sprintf('<i class="%s" aria-hidden="true"></i> %s (%s)',
+            $class,
+            $this->formatPrice(abs($profit), ['showNull' => true]),
+            $this->formatPercentage($percent)
+        ));
     }
 
     public function risk()
     {
-        $risk = $this->repo->portfolioRisk();
-
-        return $this->formatPrice($risk, $this->entity->currency->code);
+        return $this->formatPrice($this->service->risk());
     }
 
-    public function return()
-    {
-        $return = $this->repo->portfolioReturn();
 
-        return $this->formatPercentage($return);
-    }
-
-    public function profit()
-    {
-        $profit = $this->repo->portfolioProfit();
-
-        return $this->formatprice($profit, $this->entity->currency->code);
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | DATES
+    |--------------------------------------------------------------------------
+    */
 
     public function updatedRisk()
     {
@@ -82,6 +103,13 @@ class PortfolioPresenter extends Presenter
         $date = array_last(array_keys($this->entity->keyFigure('value')->values));
         return $this->formatDate($date);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | OTHERS
+    |--------------------------------------------------------------------------
+    */
 
     public function image()
     {

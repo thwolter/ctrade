@@ -4,11 +4,8 @@
 namespace App\Repositories;
 
 
-use App\Entities\Limit;
-use App\Entities\LimitType;
 use App\Entities\Portfolio;
-use App\Notifications\LimitChanged;
-use App\Repositories\Exceptions\LimitException;
+use App\Services\PortfolioMetrics;
 use Carbon\Carbon;
 
 class LimitRepository
@@ -30,8 +27,8 @@ class LimitRepository
      */
     public function utilisation()
     {
-        $risks = new RiskRepository($this->portfolio);
-        $risk = $risks->portfolioRisk();
+        $risks = new PortfolioMetrics($this->portfolio);
+        $risk = $risks->risk();
 
         $result = [];
         foreach ($this->portfolio->limits as $limit) {
@@ -51,7 +48,7 @@ class LimitRepository
                     break;
                 case 'target':
                     $quota = 1;
-                    $riskToTarget = $risks->portfolioRisk(Carbon::parse($limit->date));
+                    $riskToTarget = $risks->riskToDate(Carbon::parse($limit->date));
 //                    $quota = $riskToTarget / ($this->portfolio->total() - $limit->value);
                     break;
                 default:

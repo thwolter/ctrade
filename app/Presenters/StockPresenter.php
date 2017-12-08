@@ -22,7 +22,7 @@ class StockPresenter extends Presenter
 
     public function price()
     {
-        return $this->formatPrice($this->entity->price(), $this->entity->currency->code);
+        return $this->formatPrice($this->entity->price());
     }
 
    /* public function risk()

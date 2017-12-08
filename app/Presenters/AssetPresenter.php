@@ -14,7 +14,7 @@ class AssetPresenter extends Presenter
     public function value($currencyCode = null)
     {
         if (is_null($currencyCode)) {
-            return $this->formatPrice($this->entity->value(), $this->entity->currency->code);
+            return $this->formatPrice($this->entity->value());
         } else {
             return $this->formatPrice($this->entity->value($currencyCode), $currencyCode);
         }
@@ -22,7 +22,7 @@ class AssetPresenter extends Presenter
 
     public function risk()
     {
-        return $this->formatPrice($this->entity->metrics()->risk(), $this->entity->currency->code);
+        return $this->formatPrice($this->entity->metrics()->risk());
     }
 
 

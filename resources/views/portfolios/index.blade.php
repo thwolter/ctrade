@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-
-
 @section('breadcrumbs')
     <section class="g-color-white g-bg-primary-opacity-0_8 g-pa-40">
         <div class="container">
@@ -76,8 +74,7 @@
                                             <div class="col-12">
                                                 <div class="h4">{{ $portfolio->present()->total() }}</div>
                                                 <div>
-                                                    <i class="fa fa-caret-up g-color-green" aria-hidden="true"></i>
-                                                    {{ $portfolio->present()->valueChange(1) }}
+                                                   {{ $portfolio->present()->htmlProfit(1) }}
                                                 </div>
                                             </div>
 
