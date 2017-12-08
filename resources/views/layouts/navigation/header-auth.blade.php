@@ -3,7 +3,7 @@
         data-header-fix-effect="slide">
     <div class="u-header__section g-transition-0_3"
          data-header-fix-moment-exclude="g-mt-0"
-         data-header-fix-moment-classes="g-mt-minus-55 g-mt-minus-65--md">
+         data-header-fix-moment-classes="g-mt-minus-61 g-mt-minus-66--md">
 
         <!-- Topbar -->
         <nav class="navbar navbar-expand-lg g-bg-white">

@@ -26485,6 +26485,14 @@ pre[class*="language-"] .toolbar-item a {
 
 /* Add here all your css styles (customizations) */
 /* Add here all your css styles (customizations) */
+.g-mt-minus-61 {
+  margin-top: -61px !important;
+}
+
+.g-mt-minus-66--md {
+  margin-top: -66px !important;
+}
+
 /*------------------------------------
   Globals
 ------------------------------------*/

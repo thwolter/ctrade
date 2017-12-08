@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+
+
 @section('breadcrumbs')
     <section class="g-color-white g-bg-primary-opacity-0_8 g-pa-40">
         <div class="container">
