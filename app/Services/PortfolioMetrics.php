@@ -68,6 +68,8 @@ class PortfolioMetrics
             array_values($this->portfolio->keyFigure('value')->values)
         );
 
+        if ($values === []) return null;
+
         if ($values[0] && $values[$days]) {
             $valueAbsolute = $values[0] - $values[$days];
             $valuePercent = $valueAbsolute / $values[$days];

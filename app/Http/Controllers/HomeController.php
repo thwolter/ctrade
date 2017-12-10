@@ -36,10 +36,6 @@ class HomeController extends Controller
         return view('home.about');
     }
 
-    public function blog()
-    {
-        return redirect(config('links.blog', route('home.coming')));
-    }
 
     public function coming()
     {
