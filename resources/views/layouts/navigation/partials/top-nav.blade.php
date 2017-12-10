@@ -11,7 +11,7 @@
         </li>
 
         <li class="nav-item g-my-8 {{ active_class(if_route_pattern(['blog'])) }}">
-            <a href="{{ route('home.blog') }}"
+            <a href="{{ route('blog.index') }}"
                class="nav-link g-bg-primary-dark-v1--hover g-font-weight-600 g-font-size-default g-px-17 g-px-23--xl">
                 Blog
             </a>

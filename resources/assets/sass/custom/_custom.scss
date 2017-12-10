@@ -8,3 +8,12 @@
 	margin-top: -66px !important;
 }
 
+
+
+.header-space {
+	@include px-to-rem(margin-top, 117px !important);
+
+	@media (min-width: $g-lg) {
+		@include px-to-rem(margin-top, 122px !important);
+	}
+}

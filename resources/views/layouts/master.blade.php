@@ -64,26 +64,26 @@
 
 <main id="wrapper">
 
-@include('layouts.partials.calculation_running')
+    @include('layouts.partials.calculation_running')
 
 
-@section('breadcrumbs')
+    @section('breadcrumbs')
 
-    @isset ($portfolio)
-        <!-- Header -->
+        @isset ($portfolio)
+            <!-- Header -->
             <section class="g-mt-165 g-color-white g-bg-darkgray-radialgradient-circle g-pa-40">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8 align-self-center">
                             <h2 class="h3 text-uppercase g-font-weight-300 g-mb-20 g-mb-0--md">
                                 <strong>{{ $portfolio->name }}</strong>
-                                Portfolio</h2>
+                                Portfolio
+                            </h2>
                         </div>
                     </div>
                 </div>
             </section>
         @endisset
-
     @show
 
 
