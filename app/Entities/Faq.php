@@ -2,13 +2,10 @@
 
 namespace App\Entities;
 
-use Backpack\CRUD\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\App;
+use Corcel\Model\Post;
 
-class Faq extends Model
+class Faq extends Post
 {
-    use CrudTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -16,7 +13,7 @@ class Faq extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $fillable = ['faq_type_id', 'question', 'answer', 'question_de', 'answer_de'];
+    protected $postType = 'faq';
 
 
     /*
@@ -26,10 +23,6 @@ class Faq extends Model
     */
 
 
-    public function type()
-    {
-        return $this->belongsTo(FaqType::class, 'faq_type_id');
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -51,25 +44,6 @@ class Faq extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getQuestionAttribute($value)
-    {
-        return (App::getLocale('de') && $this->question_de) ? $this->question_de : $value;
-    }
-
-    public function getAnswerAttribute($value)
-    {
-        return (App::getLocale('de') && $this->answer_de) ? $this->answer_de : $value;
-    }
-
-    public function getOriginalQuestionAttribute($value)
-    {
-        return $this->getOriginal('question');
-    }
-
-    public function getOriginalAnswerAttribute($value)
-    {
-        return $this->getOriginal('answer');
-    }
 
     /*
     |--------------------------------------------------------------------------

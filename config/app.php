@@ -224,6 +224,7 @@ return [
         \Morrislaptop\LaravelQueueClear\LaravelQueueClearServiceProvider::class,
         \Cviebrock\EloquentSluggable\ServiceProvider::class,
         Ipunkt\LaravelAnalytics\AnalyticsServiceProvider::class,
+        \Corcel\Laravel\CorcelServiceProvider::class,
 
 
         /*

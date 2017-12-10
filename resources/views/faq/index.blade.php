@@ -51,16 +51,16 @@
                         <div id="accordion" class="u-accordion u-accordion-color-primary" role="tablist"
                              aria-multiselectable="true">
 
-                        @foreach ($category->faqs as $faq)
+                        @foreach ($category->posts as $faq)
                             <!-- Card -->
                                 <div class="card g-brd-none rounded-0 g-mb-20">
-                                    <div id="accordion-heading-{{ $faq->id }}" class="g-brd-bottom g-brd-gray-light-v4 g-pa-0"
+                                    <div id="accordion-heading-{{ $faq->ID }}" class="g-brd-bottom g-brd-gray-light-v4 g-pa-0"
                                          role="tab">
                                         <h5 class="mb-0">
                                             <a class="collapsed d-flex justify-content-between g-color-main g-text-underline--none--hover rounded-0 g-px-30 g-py-20"
-                                               href="#accordion-body-{{ $faq->id }}" data-toggle="collapse" data-parent="#accordion"
+                                               href="#accordion-body-{{ $faq->ID }}" data-toggle="collapse" data-parent="#accordion"
                                                aria-expanded="false" aria-controls="accordion-body-01">
-                                                {{ $faq->question }}
+                                                {{ $faq->post_name }}
                                                 <span class="u-accordion__control-icon">
                                                     <i class="fa fa-angle-down"></i>
                                                     <i class="fa fa-angle-up"></i>
@@ -68,10 +68,10 @@
                                             </a>
                                         </h5>
                                     </div>
-                                    <div id="accordion-body-{{ $faq->id }}" class="collapse" role="tabpanel"
-                                         aria-labelledby="accordion-heading-{{ $faq->id }}">
+                                    <div id="accordion-body-{{ $faq->ID }}" class="collapse" role="tabpanel"
+                                         aria-labelledby="accordion-heading-{{ $faq->ID }}">
                                         <div class="u-accordion__body g-color-gray-dark-v4 g-pa-30">
-                                            {{ $faq->answer }}
+                                            {{ $faq->post_content }}
                                         </div>
                                     </div>
                                 </div>
