@@ -25,12 +25,7 @@ function setActiveTab(Illuminate\Http\Request $request, $default)
     session(['active_tab' => $tab]);
 }
 
-function format_price($value)
-{
-    $fmt = numfmt_create('de_DE', NumberFormatter::CURRENCY);
 
-    return numfmt_format_currency($fmt, $value, "EUR") . "\n";
-}
 
 /**
  * Return the array's value or 0 in case of null value.
