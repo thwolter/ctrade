@@ -3,12 +3,23 @@
      class="collapse navbar-collapse align-items-center justify-content-end order-lg-last g-brd-top g-brd-none--lg g-brd-primary-dark-v1">
     <ul class="navbar-nav g-py-30 g-py-0--lg">
 
+        @auth
+            <li class="nav-item g-my-8">
+                <a href="{{ route('portfolios.index') }}"
+                   class="nav-link g-bg-primary-dark-v1--hover g-font-weight-600 g-font-size-default g-px-17 g-px-23--xl">
+                    Portfolios
+                </a>
+            </li>
+        @endauth
+
+        @guest
         <li class="nav-item g-my-8">
-            <a href="#"
+            <a href="{{ route('home') }}"
                class="nav-link g-bg-primary-dark-v1--hover g-font-weight-600 g-font-size-default g-px-17 g-px-23--xl">
                 Home
             </a>
         </li>
+        @endguest
 
         <li class="nav-item g-my-8 {{ active_class(if_route_pattern(['blog'])) }}">
             <a href="{{ route('blog.index') }}"

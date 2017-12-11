@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Settings;
+namespace App\Services\Settings;
 
 
-class PortfolioSettings extends Settings
+class PortfolioSettings extends BaseSettings
 {
     protected $settings = [
         'confidence' => 0.95,

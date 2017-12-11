@@ -42,7 +42,7 @@ class PortfolioPresenter extends Presenter
         return $this->formatPrice($this->entity->total());
     }
 
-    public function profit($days)
+    public function profit($days = null)
     {
         return $this->formatPrice($this->service->profit($days));
     }

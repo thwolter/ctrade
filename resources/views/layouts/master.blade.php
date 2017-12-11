@@ -52,20 +52,14 @@
 
 <!-- Header -->
 @section('header')
-    @guest
-        @include('layouts.navigation.header-guest')
-    @endguest
-
-    @auth
-        @include('layouts.navigation.header-auth')
-    @endauth
+    @includeWhen(!auth(), 'layouts.header.guest')
+    @includeWhen(auth(), 'layouts.header.auth')
 @show
 
 
 <main id="wrapper">
 
     @include('layouts.partials.calculation_running')
-
 
     @section('breadcrumbs')
 

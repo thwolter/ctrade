@@ -1,8 +1,12 @@
 @extends('layouts.master')
 
-@section('content')
+@section('header')
+    @include('layouts.header.auth-floating')
+@endsection
 
-    <section class="g-color-white g-bg-black-opacity-0_8 g-pa-40">
+@section('breadcrumbs')
+
+    <section class="g-color-white g-bg-gray-dark-v5 g-pa-40">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 align-self-center">
@@ -13,6 +17,11 @@
             </div>
         </div>
     </section>
+
+@endsection
+
+
+@section('content')
 
     <section class="g-mb-100 g-pt-100">
         <div class="container">

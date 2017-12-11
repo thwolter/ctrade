@@ -3,8 +3,8 @@
 namespace App\Entities;
 
 use App\Entities\Traits\UuidModel;
-use App\Settings\InitialSettings;
-use App\Settings\Settings;
+use App\Services\Settings\Settingable;
+use App\Services\Settings\UserSettings;
 use Carbon\Carbon;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -48,11 +48,16 @@ class User extends Authenticatable
 {
     use Notifiable, CrudTrait, HasRoles, UuidModel, SoftDeletes, CascadeSoftDeletes, HasApiTokens;
 
+    use Settingable;
+
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
+
+    protected $settingsService = UserSettings::class;
+
 
     /**
      * The attributes that are mass assignable.
@@ -76,11 +81,19 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token', 'id'];
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'id'
+    ];
 
-    protected $cast = ['settings' => 'json'];
+    protected $casts = [
+        'settings' => 'json'
+    ];
 
-    protected $cascadeDeletes = ['portfolios'];
+    protected $cascadeDeletes = [
+        'portfolios'
+    ];
 
     protected $dates = [
         'created_at',
@@ -114,13 +127,6 @@ class User extends Authenticatable
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-    public function settings($key = null)
-    {
-        $settings = new Settings($this);
-
-        return $key ? $settings->get($key) : $settings;
-    }
 
 
     public function hasPassword()

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Thomas
- * Date: 17.04.17
- * Time: 16:41
- */
 
 namespace App\Services;
-
 
 use App\Exceptions\ServiceException;
 

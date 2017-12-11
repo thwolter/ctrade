@@ -1,11 +1,12 @@
 <?php
 
 
-namespace App\Settings;
+namespace App\Services\Settings;
+
+use App\Exceptions\Settings\SettingsException;
 
 
-
-class Settings
+class BaseSettings
 {
 
     protected $settings = [];

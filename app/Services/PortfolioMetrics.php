@@ -62,15 +62,17 @@ class PortfolioMetrics
     }
 
 
-    public function profit($days, $percent = false)
+    public function profit($days = null, $percent = false)
     {
+        $days = $days ?? $this->period;
+
         $values = array_reverse(
             array_values($this->portfolio->keyFigure('value')->values)
         );
 
         if ($values === []) return null;
 
-        if ($values[0] && $values[$days]) {
+        if (array_has($values, 0) && array_has($values, $days)) {
             $valueAbsolute = $values[0] - $values[$days];
             $valuePercent = $valueAbsolute / $values[$days];
         } else {

@@ -9,7 +9,8 @@ use App\Entities\Traits\UuidModel;
 use App\Presenters\Presentable;
 use App\Services\PortfolioService;
 use App\Services\Servicable;
-use App\Settings\PortfolioSettings;
+use App\Services\Settings\PortfolioSettings;
+use App\Services\Settings\Settingable;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
@@ -62,7 +63,7 @@ class Portfolio extends Model
 {
     use UuidModel, Sluggable, SluggableScopeHelpers, SoftDeletes, CascadeSoftDeletes;
 
-    use Presentable, Servicable, Metricsable;
+    use Presentable, Servicable, Metricsable, Settingable;
 
 
     /*
@@ -74,6 +75,7 @@ class Portfolio extends Model
     protected $presenter = PortfolioPresenter::class;
     protected $service = PortfolioService::class;
     protected $metrics = PortfolioMetrics::class;
+    protected $settingsService = PortfolioSettings::class;
 
 
     protected $fillable = [
@@ -83,11 +85,11 @@ class Portfolio extends Model
         'img_url'
     ];
 
+    protected $hidden = ['id'];
+
     protected $casts = [
         'settings' => 'json'
     ];
-
-    protected $hidden = ['id'];
 
     protected $cascadeDeletes = [
         'positions',
@@ -101,6 +103,7 @@ class Portfolio extends Model
         'created_at',
         'updated_at',
         'deleted_at'];
+
 
     public $imagesPath = 'public/images';
 
@@ -164,13 +167,6 @@ class Portfolio extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-
-    public function settings($key = null)
-    {
-        $settings = new PortfolioSettings($this);
-        return $key ? $settings->get($key) : $settings;
-    }
 
 
     public function firstTransactionEnteredAfter($date)
