@@ -8,8 +8,4 @@
        @include('layouts.navigation.navbar')
     </div>
 
-    @isset($portfolio)
-        @include('layouts.navigation.appbar')
-    @endisset
-
 </header>

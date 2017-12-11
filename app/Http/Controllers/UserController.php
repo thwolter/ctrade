@@ -22,10 +22,7 @@ class UserController extends Controller
     public function edit(Request $request)
     {
         $user = $request->user();
-
-        if (!session('active_tab')) {
-            session(['active_tab' => $request->get('tab', 'profile')]);
-        }
+        setActiveTab($request, 'profile');
 
         return view('users.edit', compact('user'));
     }
@@ -61,7 +58,7 @@ class UserController extends Controller
 
         return redirect()->route('users.edit')
             ->with('success', 'Passwort erfolgreich geändert')
-            ->with('active_tab', 'password');
+            ->with('active_tab', $request->get('active_tab'));
     }
 
 

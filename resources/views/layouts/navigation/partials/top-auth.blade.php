@@ -8,7 +8,7 @@
 
     <li class="nav-item g-my-8 g-mx-5">
         <a href="{{ route('register') }}"
-           class="nav-link g-bg-primary g-bg-primary-opacity-0_8--hover g-font-weight-600 g-font-size-default g-px-17">
+           class="nav-link g-bg-primary g-bg-primary-opacity-0_6--hover g-font-weight-600 g-font-size-default g-px-17">
             Register
         </a>
     </li>

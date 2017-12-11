@@ -105,8 +105,7 @@ class PortfoliosController extends Controller
 
         setActiveTab($request, 'portfolio');
 
-        return view('portfolios.edit',
-            compact('portfolio', 'limit'));
+        return view('portfolios.edit', compact('portfolio', 'limit'));
     }
 
     /**

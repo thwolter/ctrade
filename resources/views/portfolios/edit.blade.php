@@ -4,8 +4,10 @@
 
 
     <!-- Nav tabs -->
-    <ul class="nav u-nav-v5-3 g-brd-bottom--md g-brd-gray-light-v4"
-        role="tablist" data-target="nav-5-1-accordion-hor-left-border-bottom" data-tabs-mobile-type="accordion"
+    <ul class="nav nav-justified u-nav-v1-1 u-nav-primary g-brd-bottom--md g-brd-bottom-2 g-brd-primary g-mb-20"
+        role="tablist"
+        data-target="tab-panes"
+        data-tabs-mobile-type="slide-up-down"
         data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-lightgray g-mb-20">
 
         <li class="nav-item">
@@ -15,10 +17,6 @@
         <li class="nav-item">
             <a class="nav-link {{ active_tab('parameter') }}" data-toggle="tab"
                href="#parameter" role="tab">Parameter</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link {{ active_tab('limits') }}" data-toggle="tab"
-               href="#limits" role="tab">Limite</a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ active_tab('dashboard') }}" data-toggle="tab"
@@ -32,7 +30,7 @@
     <!-- End Nav tabs -->
 
     <!-- Tab panes -->
-    <div id="nav-5-1-accordion-hor-left-border-bottom" class="tab-content g-pt-20--md">
+    <div id="tab-panes" class="tab-content g-pt-20--md">
         <div class="tab-pane fade {{ active_tab('portfolio', 'show active') }}"
              id="portfolio" role="tabpanel">
             @include('portfolios.edit.portfolio')
@@ -41,10 +39,6 @@
              id="parameter" role="tabpanel">
             @include('portfolios.edit.parameter')
         </div>
-        {{--<div class="tab-pane fade {{ active_tab('limits', 'show active') }}"
-             id="limits" role="tabpanel">
-            @include('portfolios.edit.limits')
-        </div>--}}
         <div class="tab-pane fade {{ active_tab('dashboard', 'show active') }}"
              id="dashboard" role="tabpanel">
             @include('portfolios.edit.dashboard')
@@ -55,8 +49,6 @@
         </div>
     </div>
     <!-- End Tab panes -->
-
-
 
 
     @if (session('error'))

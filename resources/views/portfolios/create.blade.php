@@ -17,23 +17,26 @@
     <div class="container g-pt-100 g-pb-20">
         <div class="row justify-content-between g-mb-40">
 
-            <div class="col-md-3">
+
+            <div class="col-md-5">
                 <header class="text-uppercase g-mb-35">
                     <div class="g-mb-30">
-                        <h2 class="h2 g-font-weight-700 mb-0">Portfolio eröffnen</h2>
+                        <h2 class="h2 g-font-weight-700 mb-0">Neues Portfolio anlegen</h2>
                     </div>
                     <div class="g-width-70 g-brd-bottom g-brd-2 g-brd-primary"></div>
                 </header>
 
-                <p class="g-mb-30">{{ trans('limits.dialog.text') }}</p>
+                <p class="g-mb-30">Wähle Namen und Beschreibung für dein Portfolio sowie die Währung, in der das Portfolio
+                geführt werden soll.</p>
             </div>
 
-            <div class="col-md-9">
+
+            <div class="col-md-7">
                 <div class="row justify-content-center">
                 {!! Form::open([
                     'route' => 'portfolios.store',
                     'method' => 'POST',
-                    'class' => 'col-7 g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30 g-bg-brown-opacity-0_1'
+                    'class' => 'g-max-width-500 g-brd-around g-bg-gray-light-v4 g-pa-30 g-mb-30 g-bg-brown-opacity-0_1'
                 ]) !!}
 
                 <!-- Name Input -->
@@ -73,7 +76,7 @@
 
                     <!-- Buttons -->
                     <div class="text-sm-right">
-                        <button type="submit" class="btn u-btn-darkgray rounded-0 g-py-12 g-px-25 g-mr-10">
+                        <button type="submit" class="btn btn-primary rounded-0 g-py-12 g-px-25 g-mr-10">
                             Portfolio anlegen
                         </button>
                     </div>
