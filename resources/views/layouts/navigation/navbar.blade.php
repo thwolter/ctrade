@@ -16,9 +16,21 @@
         </button>
         <!-- End Responsive Toggle Button -->
 
-        @include('layouts.navigation.partials.top-logo')
+        <!-- Logo -->
+        @include('layouts.navigation.partials.logo')
 
-        @include('layouts.navigation.partials.top-nav')
+
+        <!-- Navigation -->
+        <div id="navBar"
+             class="collapse navbar-collapse align-items-center justify-content-end order-lg-last g-brd-top g-brd-none--lg g-brd-primary-dark-v1">
+            <ul class="navbar-nav g-py-30 g-py-0--lg">
+
+                @include('layouts.navigation.partials.home')
+                @include('layouts.navigation.partials.main')
+                @include('layouts.navigation.partials.auth')
+
+            </ul>
+        </div>
 
     </div>
 </nav>
