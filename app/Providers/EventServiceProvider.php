@@ -66,8 +66,8 @@ class EventServiceProvider extends ServiceProvider
         /*
          * Email verification events
          */
-        'App\Events\Verification\EmailHasChanged' => [
-            'App\Listeners\Verification\SendNewEmailVerificationReminder'
+        'App\Events\Verification\UserRequestedEmailChange' => [
+            'App\Listeners\Verification\SendEmailChangeVerification'
         ]
     ];
 

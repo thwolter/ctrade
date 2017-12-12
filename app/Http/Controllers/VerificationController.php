@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Entities\User;
 use App\Http\Requests\ChangePassword;
 use App\Http\Requests\UpdateProfile;
-use App\Jobs\Auth\NewEmailVerification;
+use App\Jobs\Auth\SendEmailChangeVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 

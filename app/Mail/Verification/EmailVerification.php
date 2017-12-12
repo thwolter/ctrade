@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Verification;
 
 use App\Entities\User;
 use Illuminate\Bus\Queueable;
@@ -12,7 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * Class EmailVerification
  * @package App\Mail
  */
-class NewEmailVerification extends Mailable
+class EmailVerification extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -36,6 +36,6 @@ class NewEmailVerification extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.newEmailVerification');
+        return $this->markdown('emails.emailVerification');
     }
 }

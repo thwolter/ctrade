@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Entities\User;
-use App\Events\Verification\EmailHasChanged;
+use App\Events\Verification\UserRequestedEmailChange;
 use App\Http\Requests\ChangePassword;
 use App\Http\Requests\UpdateProfile;
-use App\Jobs\Auth\NewEmailVerification;
+use App\Jobs\Auth\SendEmailChangeVerification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +19,12 @@ class UserController extends Controller
     }
 
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function edit(Request $request)
     {
         $user = $request->user();
@@ -28,6 +34,12 @@ class UserController extends Controller
     }
 
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param UpdateProfile|Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function update(UpdateProfile $request)
     {
         $request->user()->update($request->only(['first_name', 'last_name', 'email_new']));
@@ -38,11 +50,15 @@ class UserController extends Controller
     }
 
 
+    /**
+     * Update the user's password in storage.
+     *
+     * @param ChangePassword|Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function password(ChangePassword $request)
     {
-        $request->user()
-            ->fill(['password' => Hash::make($request->password)])
-            ->save();
+        $request->user()->update(['password' => Hash::make($request->password)]);
 
         return redirect()->route('users.edit')
             ->with('status', 'password_changed')
@@ -52,7 +68,7 @@ class UserController extends Controller
 
     public function emailLink()
     {
-        event(new EmailHasChanged(\Auth::user()));
+        event(new UserRequestedEmailChange(\Auth::user()));
 
         return redirect()->back();
     }

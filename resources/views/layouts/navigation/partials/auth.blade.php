@@ -39,22 +39,8 @@
 
             <li class="dropdown-item g-px-5">
                 <a class="nav-link g-color-text g-font-weight-600"
-                   href="{{ route('users.edit', ['tab' => 'profile']) }}">
-                    Mein Profil
-                </a>
-            </li>
-
-            <li class="dropdown-item g-px-5">
-                <a class="nav-link g-color-text g-font-weight-600"
-                   href="{{ route('users.edit', ['tab' => 'password']) }}">
-                    Passwort
-                </a>
-            </li>
-
-            <li class="dropdown-item g-px-5">
-                <a class="nav-link g-color-text g-font-weight-600"
-                   href="{{ route('users.edit', ['tab' => 'messaging']) }}">
-                    Emails
+                   href="{{ route('users.edit') }}">
+                    Einstellungen
                 </a>
             </li>
 

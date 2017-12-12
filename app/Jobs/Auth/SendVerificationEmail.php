@@ -1,32 +1,37 @@
 <?php
 
-namespace App\Jobs\Auth;
+namespace App\Jobs\Jobs;
 
-use App\Entities\User;
-use App\Mail\NewEmailVerification as EmailVerification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Mail;
+use Mail;
+use App\Mail\Verification\EmailVerification;
+use App\Entities\User;
 
-class NewEmailVerification implements ShouldQueue
+
+class SendVerificationEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * @var User
+     */
     protected $user;
 
 
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param User $user
      */
     public function __construct(User $user)
     {
         $this->user = $user;
     }
+
 
     /**
      * Execute the job.
@@ -35,10 +40,7 @@ class NewEmailVerification implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->user->validToken()->count()) {
-
-            $email = new EmailVerification($this->user);
-            Mail::to($this->user->email_new)->send($email);
-        }
+        $email = new EmailVerification($this->user);
+        Mail::to($this->user->email)->send($email);
     }
 }
