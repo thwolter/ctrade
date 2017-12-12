@@ -25,9 +25,9 @@ class UpdateProfile extends FormRequest
     public function rules()
     {
         return [
-            'firstName' => 'required|max:255',
-            'lastName' => 'required|max:255',
-            'email_new' => 'required|email|max:255'
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email_new' => 'nullable|email|max:255'
         ];
     }
 
@@ -41,9 +41,7 @@ class UpdateProfile extends FormRequest
     {
         $validator->after(function ($validator) {
 
-            $user = User::find($this->id);
-
-            if (User::whereEmail($this->email)->where('id', '!=', $user->id)->count()) {
+            if (User::whereEmail($this->email)->where('id', '!=', $this->user()->id)->first()) {
                 $validator->errors()->add('email',trans('profile.email'));
             }
         });

@@ -5,6 +5,7 @@ namespace App\Observers;
 
 
 use App\Entities\User;
+use App\Events\Verification\EmailHasChanged;
 use App\Helpers\UuidHelper;
 use Carbon\Carbon;
 
@@ -27,6 +28,8 @@ class UserObserver
 
             $user->email_token = str_random(30);
             $user->email_token_expires_at = Carbon::now()->addDays(7);
+
+            event(new EmailHasChanged($user));
         }
     }
 }

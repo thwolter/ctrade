@@ -1,6 +1,13 @@
-<h2 class="h4 g-font-weight-300">@lang('user.password.title')</h2>
-<p class="g-mb-25">Reset your password, change verifications and so on.</p>
+@if (session('status') === 'password_changed')
+    @component('layouts.alerts.success')
+        Dein Passwort wurde geändert.
+    @endcomponent
+@endif
 
+<div class="g-pb-40">
+    <h2 class="h4 g-font-weight-300">@lang('user.password.title')</h2>
+    <p class="g-mb-25">Setze dein Passwort zurück.</p>
+</div>
 
 {!! Form::open(['route' => 'users.password', 'method' => 'PUT', 'class' => 'form form-horizontal']) !!}
 
@@ -10,7 +17,9 @@
 @if($user->hasPassword())
     <!-- Old Password -->
     <div class="form-group row g-mb-25 {{ $errors->has('oldpassword') ? ' u-has-error-v1-2' : '' }}">
-        <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">aktuelles Passwort</label>
+        <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">
+            Aktuelles Passwort
+        </label>
         <div class="col-sm-9">
             <div class="input-group g-brd-primary--focus">
                 <input type="password" name="oldpassword" placeholder="aktuelles Passwort"
@@ -59,7 +68,7 @@
 </div>
 
 
-<div class="text-sm-right">
+<div class="text-sm-right g-pt-30">
     <button class="btn u-btn-primary rounded-0 g-py-12 g-px-25" type="submit">Speichern</button>
 </div>
 

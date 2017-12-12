@@ -1,6 +1,5 @@
 @extends('layouts.master')
 
-
 @section('breadcrumbs')
 
     <section class="g-color-white g-bg-gray-dark-v5 g-pa-40">
@@ -22,7 +21,7 @@
 
     <section class="g-mb-100 g-pt-100">
         <div class="container">
-            <div class="row">
+            <div class="row justify-content-center">
 
                 <!-- Profile Content -->
                 <div class="col-lg-9">
@@ -35,17 +34,17 @@
                         data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-primary g-mb-20">
 
                         <li class="nav-item">
-                            <a class="nav-link {{ active_tab('profile') }}" data-toggle="tab"
+                            <a class="nav-link {{ $active_tab === 'profile' ? 'active' : '' }}" data-toggle="tab"
                                href="#profile" role="tab">@lang('user.profile.title')
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ active_tab('password') }}" data-toggle="tab"
+                            <a class="nav-link {{ $active_tab === 'password' ? 'active' : '' }}" data-toggle="tab"
                                href="#password" role="tab">@lang('user.password.title')
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ active_tab('messaging') }}" data-toggle="tab"
+                            <a class="nav-link {{ $active_tab === 'messaging' ? 'active' : '' }}" data-toggle="tab"
                                href="#messaging" role="tab">@lang('user.messaging.title')
                             </a>
                         </li>
@@ -55,17 +54,17 @@
 
                     <!-- Tab panes -->
                     <div id="tab-panes" class="tab-content g-pt-20--md">
-                        <div class="tab-pane fade {{ active_tab('profile', 'show active') }}"
+                        <div class="tab-pane fade {{ $active_tab === 'profile' ? 'show active' : '' }}"
                              id="profile" role="tabpanel">
                             @include('users.edit.profile')
                         </div>
 
-                        <div class="tab-pane fade {{ active_tab('password', 'show active') }}"
+                        <div class="tab-pane fade {{ $active_tab === 'password' ? 'show active' : '' }}"
                              id="password" role="tabpanel">
                             @include('users.edit.password')
                         </div>
 
-                        <div class="tab-pane fade {{ active_tab('messaging', 'show active') }}"
+                        <div class="tab-pane fade {{ $active_tab === 'messaging' ? 'show active' : '' }}"
                              id="messaging" role="tabpanel">
                             @include('users.edit.messaging')
                         </div>

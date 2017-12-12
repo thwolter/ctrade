@@ -1,5 +1,14 @@
-<h2 class="h4 g-font-weight-300">@lang('user.profile.title')</h2>
-<p>Ändere hier deinen Namen und deine Email-Adresse.</p>
+@if (session('status') === 'profile_updated')
+    @component('layouts.alerts.success')
+        Dein Profil wurde erfolgreich angepasst.
+    @endcomponent
+@endif
+
+<div class="g-pb-40">
+    <h2 class="h4 g-font-weight-300">@lang('user.profile.title')</h2>
+    <p>Ändere hier deinen Namen und deine Email-Adresse.</p>
+</div>
+
 
 @if ($user->newEmailRequiresVerification())
     <div class="alert alert-dismissible fade show g-bg-yellow rounded-0 g-my-30" role="alert">
@@ -34,36 +43,35 @@
 
 {!! Form::open(['route' => ['users.update'], 'method' => 'PUT', 'class' => '']) !!}
 
-<input type="hidden" name="tab" value="profile">
-<input type="hidden" name="id" value="{{ $user->id }}">
+<input type="hidden" name="active_tab" value="profile">
 
 <!-- First name -->
-<div class="form-group row g-mb-25 {{ $errors->has('firstName') ? ' u-has-error-v1-2' : '' }}">
+<div class="form-group row g-mb-25 {{ $errors->has('first_name') ? ' u-has-error-v1-2' : '' }}">
     <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Vorname</label>
     <div class="col-sm-9">
         <div class="input-group g-brd-primary--focus">
-            <input type="text" name="firstName" value="{{ $user->first_name }}"
+            <input type="text" name="first_name" value="{{ $user->first_name }}"
                    class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0"/>
             <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
                 <i class="icon-user"></i>
             </div>
         </div>
-        <small class="form-control-feedback">{{ $errors->first('firstName') }}</small>
+        <small class="form-control-feedback">{{ $errors->first('first_name') }}</small>
     </div>
 </div>
 
 <!-- Last name -->
-<div class="form-group row g-mb-25 {{ $errors->has('lastName') ? ' u-has-error-v1-2' : '' }}">
+<div class="form-group row g-mb-25 {{ $errors->has('last_name') ? ' u-has-error-v1-2' : '' }}">
     <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Nachname</label>
     <div class="col-sm-9">
         <div class="input-group g-brd-primary--focus">
-            <input type="text" name="lastName" value="{{ $user->last_name }}"
+            <input type="text" name="last_name" value="{{ $user->last_name }}"
                    class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0"/>
             <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
                 <i class="icon-user"></i>
             </div>
         </div>
-        <small class="form-control-feedback">{{ $errors->first('lastName') }}</small>
+        <small class="form-control-feedback">{{ $errors->first('last_name') }}</small>
     </div>
 </div>
 
@@ -73,7 +81,7 @@
         Addresse</label>
     <div class="col-sm-9">
         <div class="input-group g-brd-primary--focus">
-            <input type="text" name="currentEmail" value="{{ $user->email }}"
+            <input type="text" name="email" value="{{ $user->email }}"
                    class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0"/>
             <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
                 <i class="icon-communication-025 u-line-icon-pro"></i>
@@ -102,7 +110,7 @@
     </div>
 </div>
 
-<div class="text-sm-right">
+<div class="text-sm-right g-pt-30">
     <button class="btn u-btn-primary rounded-0 g-py-12 g-px-25" type="submit">Speichern</button>
 </div>
 

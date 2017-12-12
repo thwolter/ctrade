@@ -9,6 +9,7 @@ function set_active($path, $active = 'active')
 
 function active_tab($tab, $active = 'active')
 {
+    $a=1;
     return session('active_tab') === $tab ? $active : '';
 }
 
@@ -21,7 +22,7 @@ function active_tab($tab, $active = 'active')
  */
 function setActiveTab(Illuminate\Http\Request $request, $default)
 {
-    $tab = $request->get('tab', session('active_tab', $default));
+    $tab = $request->get('active_tab', session('active_tab', $default));
     session(['active_tab' => $tab]);
 }
 
