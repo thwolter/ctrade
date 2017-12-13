@@ -9,6 +9,6 @@ class AbsoluteLimit extends AbstractLimit
 
     public function utilisation()
     {
-        return $this->metrics->risk() / $this->limit->value;
+        return $this->metrics->risk($this->limit->portfolio) / $this->limit->value;
     }
 }

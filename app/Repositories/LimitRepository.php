@@ -5,7 +5,7 @@ namespace App\Repositories;
 
 
 use App\Entities\Portfolio;
-use App\Services\PortfolioMetrics;
+use App\Services\Metrics\PortfolioMetricService;
 use Carbon\Carbon;
 
 class LimitRepository
@@ -13,10 +13,14 @@ class LimitRepository
 
     protected $portfolio;
 
+    protected $metrics;
+
 
     public function __construct(Portfolio $portfolio)
     {
         $this->portfolio = $portfolio;
+
+        $this->metrics = app()->make(PortfolioMetricService::class);
     }
 
 
@@ -27,8 +31,7 @@ class LimitRepository
      */
     public function utilisation()
     {
-        $risks = new PortfolioMetrics($this->portfolio);
-        $risk = $risks->risk();
+        $risk = $this->metrics->risk($this->portfolio);
 
         $result = [];
         foreach ($this->portfolio->limits as $limit) {
@@ -48,7 +51,7 @@ class LimitRepository
                     break;
                 case 'target':
                     $quota = 1;
-                    $riskToTarget = $risks->riskToDate(Carbon::parse($limit->date));
+                    $riskToTarget = $this->metrics->riskToDate($this->portfolio, Carbon::parse($limit->date));
 //                    $quota = $riskToTarget / ($this->portfolio->total() - $limit->value);
                     break;
                 default:

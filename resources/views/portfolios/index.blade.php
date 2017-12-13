@@ -58,7 +58,7 @@
 
                                         <!-- Progress bar -->
                                         <h6 class="text-uppercase g-font-size-12 g-font-weight-600 g-letter-spacing-0_5 g-pos-rel g-z-index-2">
-                                            Successful of marketing
+                                            Limitauslastung
                                         </h6>
 
                                         <div class="js-hr-progress-bar progress g-height-20 rounded-0 g-overflow-visible">

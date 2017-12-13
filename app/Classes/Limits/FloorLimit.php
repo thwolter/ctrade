@@ -9,6 +9,6 @@ class FloorLimit extends AbstractLimit
 
     public function utilisation()
     {
-        return $this->metrics->risk() / ($this->limit->value - $this->metrics->value());
+        return $this->metrics->risk($this) / ($this->limit->value - $this->metrics->value());
     }
 }

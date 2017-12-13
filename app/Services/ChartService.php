@@ -3,7 +3,7 @@
 namespace App\Services;
 
 
-use App\Services\Metrics\PortfolioMetricsService;
+use App\Services\Metrics\PortfolioMetricService;
 
 class ChartService
 {
@@ -11,7 +11,7 @@ class ChartService
     protected $metrics;
 
 
-    public function __construct(PortfolioMetricsService $metrics)
+    public function __construct(PortfolioMetricService $metrics)
     {
         $this->metrics = $metrics;
     }

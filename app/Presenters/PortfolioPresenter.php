@@ -3,7 +3,7 @@
 namespace App\Presenters;
 
 
-use App\Services\PortfolioMetrics;
+use App\Services\Metrics\PortfolioMetricService;
 use App\Entities\Stock;
 use Carbon\Carbon;
 use Illuminate\Support\HtmlString;
@@ -11,13 +11,13 @@ use Illuminate\Support\HtmlString;
 class PortfolioPresenter extends Presenter
 {
 
-    protected $service;
+    protected $metrics;
 
 
     public function __construct($entity)
     {
         parent::__construct($entity);
-        $this->service = new PortfolioMetrics($this->entity);
+        $this->metrics = app()->make(PortfolioMetricService::class);
     }
 
 
@@ -39,7 +39,7 @@ class PortfolioPresenter extends Presenter
 
     public function total()
     {
-        return $this->formatPrice($this->entity->total());
+        return $this->formatPrice($this->entity->total(), ['showNull' => true]);
     }
 
     public function profit($days = null)
@@ -49,8 +49,8 @@ class PortfolioPresenter extends Presenter
 
     public function htmlProfit($days)
     {
-        $profit = $this->service->profit($days);
-        $percent = $this->service->profit($days, true);
+        $profit = $this->metrics->profit($this->entity, $days);
+        $percent = $this->metrics->profit($this->entity, $days, true);
 
         if ($profit > 0)
             $class = "fa fa-caret-up g-color-green";
@@ -70,7 +70,7 @@ class PortfolioPresenter extends Presenter
 
     public function risk()
     {
-        return $this->formatPrice($this->service->risk());
+        return $this->formatPrice($this->metrics->risk($this->entity));
     }
 
 

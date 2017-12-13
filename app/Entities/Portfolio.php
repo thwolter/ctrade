@@ -3,8 +3,6 @@
 namespace App\Entities;
 
 use App\Presenters\PortfolioPresenter;
-use App\Services\Metricsable;
-use App\Services\PortfolioMetrics;
 use App\Entities\Traits\UuidModel;
 use App\Presenters\Presentable;
 use App\Services\PortfolioService;
@@ -19,7 +17,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Notifications\Notifiable;
 
 
 /**
@@ -63,7 +60,7 @@ class Portfolio extends Model
 {
     use UuidModel, Sluggable, SluggableScopeHelpers, SoftDeletes, CascadeSoftDeletes;
 
-    use Presentable, Servicable, Metricsable, Settingable;
+    use Presentable, Servicable, Settingable;
 
 
     /*
@@ -74,7 +71,6 @@ class Portfolio extends Model
 
     protected $presenter = PortfolioPresenter::class;
     protected $service = PortfolioService::class;
-    protected $metrics = PortfolioMetrics::class;
     protected $settingsService = PortfolioSettings::class;
 
 
