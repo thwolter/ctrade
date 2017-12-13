@@ -3,13 +3,19 @@
 namespace App\Services;
 
 
+use App\Services\Metrics\PortfolioMetricsService;
+
 class ChartService
 {
 
-    public function __construct()
-    {
+    protected $metrics;
 
+
+    public function __construct(PortfolioMetricsService $metrics)
+    {
+        $this->metrics = $metrics;
     }
+
 
     public function midget($portfolio)
     {
@@ -25,7 +31,7 @@ class ChartService
                     'borderWidth'       => 5,
                     'fill'              => false,
                     'pointRadios'       => 0,
-                    'data'              => [1, 3, 2, 5, 2, 7]
+                    'data'              => $this->metrics->valueHistory($portfolio, 5)
                 ]
             ])
             ->options([])

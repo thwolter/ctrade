@@ -35,51 +35,19 @@ class CalcPortfolioRiskChunk implements ShouldQueue
      */
     public function handle()
     {
-        $kpiContrib = $this->object->getPortfolio()->keyFigure('contribution');
-        $kpiContrib->effective_at = $this->object->getEffectiveAt();
 
         foreach ($this->object->getChunk() as $date)
         {
             $key = $date->toDateString();
             $risk = $this->calculateRisk($date);
 
-            $this->object->set($key, $this->toRiskArray($risk));
-            $kpiContrib->set($key, $this->toContribArray($risk));
+            $this->storeRiskKpis($key, $risk);
+            $this->storeContributionKpi($key, $risk);
 
             $this->object->notifyCompletion($date);
         }
     }
 
-    /**
-     * Returns a formatted array with risk figures per confidence level.
-     *
-     * @param array $risk
-     * @return array
-     */
-    private function toRiskArray($risk)
-    {
-        return [
-            '0.95' => array_first_or_null($risk['total95']),
-            '0.975' => array_first_or_null($risk['total975']),
-            '0.99' => array_first_or_null($risk['total99'])
-        ];
-    }
-
-
-    /**
-     * Returns a formatted array with risk contributions for required confidence levels.
-     *
-     * @param array $risk
-     * @return mixed
-     */
-    private function toContribArray($risk)
-    {
-        return [
-            '0.95' => $risk['contrib95'],
-            '0.975' => $risk['contrib975'],
-            '0.99' => $risk['contrib99']
-        ];
-    }
 
     /**
      * Calculate the risk on the given date.
@@ -92,4 +60,41 @@ class CalcPortfolioRiskChunk implements ShouldQueue
         return $rscript->portfolioRisk($date->toDateString(), config('calculation.risk.period'));
     }
 
+
+    /**
+     * @param $key
+     * @param $risk
+     */
+    private function storeRiskKpis($key, $risk): void
+    {
+        $this->storeKpi('risk.95', $key, array_first_or_null($risk['total95']));
+        $this->storeKpi('risk.975', $key, array_first_or_null($risk['total975']));
+        $this->storeKpi('risk.99', $key, array_first_or_null($risk['total99']));
+    }
+
+    /**
+     * @param $key
+     * @param $risk
+     */
+    private function storeContributionKpi($key, $risk): void
+    {
+        $kpiContrib = $this->object->getPortfolio()->keyFigure('contribution');
+        $kpiContrib->effective_at = $this->object->getEffectiveAt();
+
+        $this->storeKpi('contribution.95', $key, $risk['contrib95']);
+        $this->storeKpi('contribution.975', $key, $risk['contrib975']);
+        $this->storeKpi('contribution.99', $key, $risk['contrib99']);
+    }
+
+
+    /**
+     * @param $kpiName
+     * @param $key
+     * @param $value
+     */
+    private function storeKpi($kpiName, $key, $value)
+    {
+        $this->object->getPortfolio()->keyFigure($kpiName)
+            ->set($key, $value);
+    }
 }
