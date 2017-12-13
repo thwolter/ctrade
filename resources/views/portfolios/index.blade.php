@@ -47,7 +47,7 @@
                             <div class="card-block">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h2 class="h4 text-uppercase g-letter-spacing-1 g-mb-20">
+                                        <h2 class="h4 text-uppercase g-letter-spacing-1">
                                             <span>Portfolio</span>
                                             {{ $portfolio->name }}
                                         </h2>
@@ -56,7 +56,10 @@
                                             {{ $portfolio->present()->description() }}
                                         </p>
 
-                                        <h6 class="text-uppercase g-font-size-12 g-font-weight-600 g-letter-spacing-0_5 g-pos-rel g-z-index-2">Successful of marketing</h6>
+                                        <!-- Progress bar -->
+                                        <h6 class="text-uppercase g-font-size-12 g-font-weight-600 g-letter-spacing-0_5 g-pos-rel g-z-index-2">
+                                            Successful of marketing
+                                        </h6>
 
                                         <div class="js-hr-progress-bar progress g-height-20 rounded-0 g-overflow-visible">
                                             <div class="js-hr-progress-bar-indicator progress-bar g-pos-rel" role="progressbar" style="width: 64%;" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100">
@@ -65,17 +68,16 @@
                                         </div>
                                     </div>
 
+                                    <!-- Midget Graph -->
                                     <div class="col-md-3 align-self-center g-py-20">
-                                        <img class="w-100" src="{{ asset('assets/img-temp/200x100/img1.jpg') }}" alt="Iamge Description">
+                                        {!! $chart->midget($portfolio)->render() !!}
                                     </div>
 
                                     <div class="col-md-3 text-right">
                                         <div class="row h-100">
                                             <div class="col-12">
                                                 <div class="h4">{{ $portfolio->present()->total() }}</div>
-                                                <div>
-                                                   {{ $portfolio->present()->htmlProfit(1) }}
-                                                </div>
+                                                <div>{{ $portfolio->present()->htmlProfit(1) }}</div>
                                             </div>
 
                                             <div class="col-12 align-self-end justify-content-end g-mt-20">
@@ -83,9 +85,8 @@
                                                    href="{{ route('portfolios.show', $portfolio->slug) }}">Öffnen</a>
                                             </div>
                                         </div>
-
-
                                     </div>
+
                                 </div>
                             </div>
                         </div>

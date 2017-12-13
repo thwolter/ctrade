@@ -22,6 +22,7 @@
         "dirkolbrich/yahoo-finance-query": "dev-master",
         "doctrine/dbal": "^2.5",
         "filp/whoops": "^2.1",
+        "fx3costa/laravelchartjs": "^2.3",
         "guzzlehttp/guzzle": "^6.3",
         "hieu-le/active": "^3.4",
         "iatstuti/laravel-cascade-soft-deletes": "1.0.*",

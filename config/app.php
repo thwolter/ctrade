@@ -225,6 +225,7 @@ return [
         \Cviebrock\EloquentSluggable\ServiceProvider::class,
         Ipunkt\LaravelAnalytics\AnalyticsServiceProvider::class,
         \Corcel\Laravel\CorcelServiceProvider::class,
+        \Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
 
 
         /*
@@ -238,6 +239,7 @@ return [
         App\Providers\QuandlServiceProvider::class,
         \App\Providers\LimitServiceProvider::class,
         \App\Providers\PortfolioRepositoryServiceProvider::class,
+        \App\Providers\ViewServiceProvider::class,
 
     ],
 

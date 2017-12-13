@@ -1,6 +1,6 @@
 
 <script>
-    import chart from './Chart.vue'
+    import chart from './ApiChart.vue'
 
     export default {
 

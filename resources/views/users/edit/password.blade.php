@@ -12,7 +12,6 @@
 {!! Form::open(['route' => 'users.password', 'method' => 'PUT', 'class' => 'form form-horizontal']) !!}
 
 <input type="hidden" name="active_tab" value="password">
-<input type="hidden" name="id" value="{{ $user->id }}">
 
 @if($user->hasPassword())
     <!-- Old Password -->

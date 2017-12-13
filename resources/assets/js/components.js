@@ -19,11 +19,12 @@ Vue.component('create-limit', require('./components/limits/CreateLimit.vue'));
 /* Notifications */
 Vue.component('status-calculation', require('./components/notifications/StatusCalculation'));
 
-
-Vue.component('graph', require('./components/charts/Graph.vue'));
-Vue.component('chart', require('./components/charts/Chart.vue'));
-Vue.component('positions-chart', require('./components/charts/PositionsChart.vue'));
+/* Charting */
+Vue.component('chart', require('./components/charts/ApiChart.vue'));
 Vue.component('value-chart', require('./components/charts/ValueChart.vue'));
+Vue.component('positions-chart', require('./components/charts/PositionsChart.vue'));
+Vue.component('midget-chart', require('./components/charts/MidgetChart.vue'));
+
 
 /* Helper */
 Vue.component('cleave', require('./components/helper/Cleave.vue'));
@@ -32,4 +33,5 @@ Vue.component('cleave', require('./components/helper/Cleave.vue'));
 
 Vue.component('limit-stats', require('./components/LimitsStats.vue'));
 Vue.component('notifications', require('./components/Notifications.vue'));
+Vue.component('graph', require('./components/charts/Graph.vue'));
 

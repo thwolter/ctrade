@@ -28,10 +28,10 @@
         @include('portfolios.panels.keyfigures')
 
         <!-- Performance Graph -->
-        {{--@include('portfolios.panels.performance_graph')--}}
+        @include('portfolios.panels.performance_graph')
 
         <!-- Positions Graph -->
-        {{--@include('portfolios.panels.positions_graph')--}}
+        @include('portfolios.panels.positions_graph')
 
     @endif
 

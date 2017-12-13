@@ -36,6 +36,13 @@ class PortfolioMetrics
     }
 
 
+    public function history($days)
+    {
+        $kpi = $this->portfolio->keyfigures()->ofType('value');
+        return array_first($kpi->value);
+    }
+
+
     public function risk()
     {
         return $this->dailyRisk() * sqrt($this->period);
