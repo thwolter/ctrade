@@ -8,33 +8,47 @@ use App\Entities\Portfolio;
 class PortfolioMetricsService
 {
 
-    private $withDate;
+    private $withDate = false;
 
 
     public function withDate()
     {
         $this->withDate = true;
+        return $this;
     }
 
 
-    private function returnWithDate
+    private function format($result)
+    {
+        if ($this->withDate) {
+            $this->withDate = false;
+            return $result;
+
+        } else {
+            $output = array_values($result);
+            return (count($output) === 1) ? $output[0] : $output;
+        }
+    }
 
     public function value(Portfolio $portfolio)
     {
-        return array_first($this->getValues($portfolio));
+        return $this->format(
+            array_splice($this->getValues($portfolio), -1, 1, true)
+        );
     }
 
 
     public function valueHistory(Portfolio $portfolio, $days)
     {
-        $a=1;
         return array_slice($this->getValues($portfolio), -$days, $days, true);
     }
 
 
     public function risk(Portfolio $portfolio)
     {
-        return $this->dailyRisk($portfolio) * sqrt($this->getPeriod($portfolio));
+        return $this->format(
+            $this->dailyRisk($portfolio) * sqrt($this->getPeriod($portfolio))
+        );
     }
 
 
