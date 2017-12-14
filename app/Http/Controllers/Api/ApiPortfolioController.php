@@ -3,13 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\LimitType;
-use App\Entities\Portfolio;
-use App\Repositories\CurrencyRepository;
-use App\Repositories\LimitRepository;
-use App\Repositories\PortfolioRepository;
-use App\Repositories\RiskRepository;
 use App\Repositories\StatisticsRepository;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ApiPortfolioController extends ApiBaseController

@@ -3,6 +3,8 @@
 namespace App\Services\Metrics;
 
 
+use App\Entities\Portfolio;
+
 class MetricService
 {
 
@@ -25,13 +27,13 @@ class MetricService
         }
     }
 
-    protected function getConfidence($entity)
+    protected function getConfidence(Portfolio $portfolio)
     {
-        return trim($entity->settings('confidence'), '0.');
+        return trim($portfolio->settings('confidence'), '0.');
     }
 
-    protected function getPeriod($entity)
+    protected function getPeriod(Portfolio $portfolio)
     {
-        return $entity->settings('period');
+        return $portfolio->settings('period');
     }
 }

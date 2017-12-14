@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Entities\Portfolio;
 use App\Events\PortfolioHasChanged;
 use App\Rules\AfterLatestTransaction;
+use App\Rules\AfterPortfolioCreation;
 use App\Rules\BeforOrEqualToday;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
@@ -39,7 +40,8 @@ class TradeRequest extends FormRequest
             'fees'              => 'required|nullable|numeric|min:0',
             'executed'          => [
                 'required',
-                new AfterLatestTransaction(Portfolio::find($this->portfolioId)),
+                new AfterPortfolioCreation(Portfolio:: find($this->portfolioId)),
+                //new AfterLatestTransaction(Portfolio::find($this->portfolioId)),
                 new BeforOrEqualToday()
             ],
 

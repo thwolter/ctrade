@@ -11,7 +11,7 @@ use App\Entities\Portfolio;
 use App\Entities\Position;
 
 
-class PositionsController extends Controller
+class #PositionsController extends Controller
 {
 
     public function __construct()

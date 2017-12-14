@@ -44,7 +44,7 @@ class CalcPortfolioRisk
      */
     public function handle()
     {
-        $object = new CalculationObject($this->portfolio, 'risk');
+        $object = new CalculationObject($this->portfolio, 'risk.95');
 
         if ($object->hasDates()) {
 

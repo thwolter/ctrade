@@ -78,9 +78,6 @@ class CalcPortfolioRiskChunk implements ShouldQueue
      */
     private function storeContributionKpi($key, $risk): void
     {
-        $kpiContrib = $this->object->getPortfolio()->keyFigure('contribution');
-        $kpiContrib->effective_at = $this->object->getEffectiveAt();
-
         $this->storeKpi('contribution.95', $key, $risk['contrib95']);
         $this->storeKpi('contribution.975', $key, $risk['contrib975']);
         $this->storeKpi('contribution.99', $key, $risk['contrib99']);
@@ -94,7 +91,8 @@ class CalcPortfolioRiskChunk implements ShouldQueue
      */
     private function storeKpi($kpiName, $key, $value)
     {
-        $this->object->getPortfolio()->keyFigure($kpiName)
-            ->set($key, $value);
+        $kpi = $this->object->getPortfolio()->keyFigure($kpiName);
+        $kpi->effective_at = $this->object->getEffectiveAt();
+        $kpi->set($key, $value);
     }
 }
