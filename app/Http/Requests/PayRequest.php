@@ -33,7 +33,7 @@ class PayRequest extends FormRequest
             'id'            => 'required|exists:portfolios,id',
             'date'          => [
                 'required',
-                new AfterLatestTransaction(Portfolio::find($this->id)),
+                //new AfterLatestTransaction(Portfolio::find($this->id)),
                 new BeforOrEqualToday()
 
             ],

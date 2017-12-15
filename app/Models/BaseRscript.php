@@ -81,7 +81,7 @@ class BaseRscript
      */
     protected function cleanup($result, $log)
     {
-        $keys = ['Error', 'Fehler'];
+        $keys = ['Error', 'Fehler', 'sh'];
         $logtext = file_get_contents($log);
 
         $pos = false;

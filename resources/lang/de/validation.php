@@ -138,7 +138,8 @@ return [
 
     'transaction' => [
         'after' => 'Datum darf nicht älter sein, als die letzte Transaktion.',
-        'today' => 'Transaktion darf nicht in der Zukunft liegen.'
+        'today' => 'Transaktion darf nicht in der Zukunft liegen.',
+        ''
     ],
 
     'portfolio' => [

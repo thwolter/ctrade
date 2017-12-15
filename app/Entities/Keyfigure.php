@@ -48,7 +48,6 @@ class Keyfigure extends Model
 
     protected $fillable = [
         'values',
-        'expires_at',
         'effective_at'
     ];
 
@@ -59,7 +58,6 @@ class Keyfigure extends Model
     protected $dates = [
         'created_at',
         'updated_at',
-        'expires_at',
         'deleted_at',
         'effective_at'
     ];
@@ -98,7 +96,7 @@ class Keyfigure extends Model
         $values = $this->values;
         $values[$key] = $value;
 
-        $this->update(['values' => $values, 'expires_at' => null]);
+        $this->update(['values' => $values]);
     }
 
     public function has($key)

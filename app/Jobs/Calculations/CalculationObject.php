@@ -13,6 +13,7 @@ class CalculationObject
 {
     protected $portfolio;
     protected $type;
+    protected $typeRoot;
 
     protected $dates;
     protected $chunk;
@@ -25,6 +26,7 @@ class CalculationObject
     {
         $this->portfolio = $portfolio;
         $this->type = $type;
+        $this->typeRoot = explode('.', $type)[0];
 
         $this->init();
     }
@@ -39,7 +41,7 @@ class CalculationObject
     private function init()
     {
         $this->effective_at = Carbon::now();
-        Log::info("Check key figure '{$this->type}' on portfolio {$this->portfolio->id} ...");
+        Log::info("Check key figure '{$this->typeRoot}' on portfolio {$this->portfolio->id} ...");
 
         $this->dates = $this->datesToCompute();
 
@@ -159,12 +161,6 @@ class CalculationObject
     }
 
 
-    public function set($key, $value)
-    {
-        $this->keyFigure()->set($key, $value);
-    }
-
-
     public function notifyCompletion(Carbon $date)
     {
         \Cache::decrement($this->cacheTagRemainder());
@@ -173,7 +169,7 @@ class CalculationObject
 
         if ($this->remainder() === 0) {
             event(new PortfolioWasCalculated($this->portfolio));
-            Log::info("Calculation of '{$this->type}' for portfolio {$this->portfolio->id} finished.");
+            Log::info("Calculation of '{$this->typeRoot}' for portfolio {$this->portfolio->id} finished.");
         }
     }
 
@@ -201,7 +197,7 @@ class CalculationObject
         $calculated = $this->keyFigure()->date;
         $executed = optional($this->portfolio->firstTransactionEnteredAfter($effective))->executed_at;
 
-        $dates = array_filter([$effective, $calculated, $executed], function ($v) {
+        $dates = array_filter([$effective, $calculated, $executed, $this->portfolio->created_at], function ($v) {
             return !is_null($v);
         });
 
