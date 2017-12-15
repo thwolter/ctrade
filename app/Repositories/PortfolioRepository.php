@@ -56,4 +56,5 @@ class PortfolioRepository implements PortfolioInterface
 
         return $portfolio;
     }
+    
 }
