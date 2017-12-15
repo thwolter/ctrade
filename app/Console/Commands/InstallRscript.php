@@ -21,7 +21,7 @@ class InstallRscript extends Command
     protected $description = 'Install R command line and required R packages.';
 
 
-  
+
     /**
      * Create a new command instance.
      *
@@ -41,4 +41,5 @@ class InstallRscript extends Command
     {
         echo "Please call 'sudo bash ".base_path('rscripts/Install/install.sh')."'\n";
     }
+
 }
