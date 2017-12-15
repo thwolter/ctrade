@@ -2,6 +2,7 @@
 
 namespace App\Services\Metrics;
 
+use Carbon\Carbon;
 use App\Entities\Portfolio;
 
 
@@ -46,16 +47,15 @@ class PortfolioMetricService extends MetricService
         );
     }
 
-    // todo: to update
+    
     public function riskToDate($date = null)
     {
-        $risk = $this->portfolio->keyFigure('risk')->value;
-        $referenceDate = $this->portfolio->keyFigure('risk')->date;
-        $dailyRisk = array_get($risk, (string)$this->confidence);
+        $referenceDate = $this->getRiskDate($portfolio);
+        $period = $date 
+            ? $referenceDate->diffInDays($date, false) 
+            : $this->getPeriod($portfolio);
 
-        $period = $date ? $referenceDate->diffInDays($date, false) : $this->period;
-
-        return $dailyRisk * sqrt(max(0, $period));
+        return sqrt(max(0, $period)) * $this->dailyRisk($portfolio);
     }
 
 
@@ -69,14 +69,30 @@ class PortfolioMetricService extends MetricService
 
     private function getValues($portfolio)
     {
-        return $portfolio->keyfigures()->ofType('value')->first()->values;
+        return $this->toArray($portfolio->keyfigure('value'));
     }
+
 
 
     private function getRisks($portfolio)
     {
-        return $portfolio->keyfigures()
-            ->ofType('risk.' . $this->getConfidence($portfolio))->first()->values;
+        return $this->toArray(
+            $portfolio->keyfigure('risk.' . $this->getConfidence($portfolio))
+        );
+    }
+    
+    
+    
+    private function getRiskDate($portfolio)
+    {
+        return Carbon::parse(array_last(array_keys($this->getRisks($portfolio))));
+    }
+    
+    
+    
+    private function toArray($keyfigure)
+    {
+        return $keyfigure ? $keyfigure->values : [];
     }
 
 
