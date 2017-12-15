@@ -25,6 +25,7 @@ class CreatePortfoliosTable extends Migration
             $table->integer('currency_id');
             $table->json('settings')->nullable();
             $table->boolean('public')->default(false);
+            $table->datetime('opened_at');
             $table->softDeletes();
             $table->timestamps();
         });

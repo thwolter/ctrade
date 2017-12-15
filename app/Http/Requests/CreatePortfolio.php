@@ -28,6 +28,7 @@ class CreatePortfolio extends FormRequest
     {
         return [
             'name'          => 'required|min:1|max:60',
+            'date'          => 'required|date',
             'currency'      => 'exists:currencies,id',
             'description'   => 'sometimes|max:250'
         ];

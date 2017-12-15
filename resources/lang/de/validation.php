@@ -123,8 +123,9 @@ return [
         'name'     => 'Name',
         'amount'   => 'Betrag',
         'firstName' => 'Vorname',
-        'lastName' => 'Nachname',
-        'policy' => 'Nutzungsbedingungen'
+        'lastName'  => 'Nachname',
+        'policy'    => 'Nutzungsbedingungen',
+        'date'      => 'Datum'
     ],
 
 

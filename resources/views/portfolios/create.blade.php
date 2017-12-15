@@ -61,7 +61,21 @@
                         !!}
                         <small class="form-control-feedback">{{ $errors->first('currency')  }}</small>
                     </div>
-
+                    
+                    <!-- Data Input -->
+                    <div class="form-group g-mb-20 {{ $errors->has('date') ? 'u-has-error-v1' : ''}}">
+                        <label class="g-mb-10" for="date">Eröffnung des Portfolios</label>
+                           
+                        <div class="input-group g-brd-primary--focus">
+                          <input id="datepicker" name="date" class="form-control form-control-md u-datepicker-v1 g-brd-right-none rounded-0" type="text" 
+                                placeholder="Datum" data-range="true">
+                          <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-dark-v5 rounded-0">
+                            <i class="icon-calendar"></i>
+                          </div>
+                        </div>
+                         <small class="form-control-feedback">{{ $errors->first('date')  }}</small>
+                    </div>
+                
                     <!-- Description Input -->
                     <div class="form-group g-mb-20 {{ $errors->has('description') ? 'u-has-error-v1' : ''}}">
                         <label class="g-mb-10" for="description">Beschreibung</label>
@@ -76,7 +90,7 @@
 
                     <!-- Buttons -->
                     <div class="text-sm-right">
-                        <button type="submit" class="btn btn-primary rounded-0 g-py-12 g-px-25 g-mr-10">
+                        <button type="submit" class="btn u-btn-primary rounded-0 g-py-12 g-px-25 g-mr-10">
                             Portfolio anlegen
                         </button>
                     </div>
@@ -124,6 +138,9 @@
 
             // initialization of custom select
             $.HSCore.components.HSSelect.init('.js-custom-select');
+            
+            // intiialization of datepicker
+            $.HSCore.components.HSDatepicker.init('#datepicker');
 
         });
 

@@ -78,7 +78,8 @@ class Portfolio extends Model
         'name',
         'description',
         'settings',
-        'img_url'
+        'img_url',
+        'opened_at'
     ];
 
     protected $hidden = ['id'];
@@ -96,9 +97,11 @@ class Portfolio extends Model
     ];
 
     protected $dates = [
+        'opened_at',
         'created_at',
         'updated_at',
-        'deleted_at'];
+        'deleted_at'
+    ];
 
 
     public $imagesPath = 'public/images';

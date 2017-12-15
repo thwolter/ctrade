@@ -7,6 +7,7 @@ use App\Entities\Category;
 use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Contracts\PortfolioInterface;
 
@@ -40,6 +41,7 @@ class PortfolioRepository implements PortfolioInterface
         $portfolio = new Portfolio([
             'name' => array_get($attributes,'name'),
             'cash' => 0,
+            'opened_at' => Carbon::parse(array_get($attributes, 'date')),
             'description' => array_get($attributes,'description')
         ]);
         $portfolio->currency()
