@@ -28,7 +28,7 @@
 
         props: {
             exchanges: {
-                type: Object,
+                type: Array,
                 required: true
             },
             history: {

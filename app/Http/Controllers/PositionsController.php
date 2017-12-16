@@ -14,15 +14,13 @@ class PositionsController extends Controller
 {
 
     protected $transaction;
-    protected $dataservice;
 
 
-    public function __construct(TransactionService $transaction, Service $dataservice)
+    public function __construct(TransactionService $transaction)
     {
         $this->middleware('auth');
 
         $this->transaction = $transaction;
-        $this->dataservice = $dataservice;
     }
 
 
@@ -55,15 +53,8 @@ class PositionsController extends Controller
     {
         $stock = $this->getInstrument($entity, $slug);
 
-        $exchanges = $stock->exchangesToArray();
-        $exchange = array_get($exchanges, '0.code');
-
-        $prices = $this->dataservice->historiesByExchange($stock->datasources);
-        $history = $this->dataservice->dataHistory($stock->getDatasource($exchange));
-
         return view('positions.show_'.strtolower($entity),
-            compact('portfolio', 'stock', 'prices', 'exchanges', 'history')
-        );
+            compact( 'portfolio', 'stock'));
     }
 
 

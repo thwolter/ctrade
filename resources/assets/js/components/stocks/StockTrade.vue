@@ -249,7 +249,7 @@
                 required: true
             },
             prices: {
-                type: Object,
+                type: Array,
                 required: true
             },
             store: {

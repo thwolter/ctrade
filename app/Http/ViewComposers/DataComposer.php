@@ -6,7 +6,7 @@ use App\Services\ChartService;
 use App\Services\DataService;
 use Illuminate\View\View;
 
-class ShowPositionComposer {
+class DataComposer {
 
     protected $dataService;
 
@@ -19,6 +19,6 @@ class ShowPositionComposer {
 
     public function compose(View $view)
     {
-        $view->with('priceData', $this->dataService);
+        $view->with('data', $this->dataService);
     }
 }

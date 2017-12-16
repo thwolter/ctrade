@@ -71,7 +71,7 @@
         <stock-trade
                 :portfolio="{{ json_encode($portfolio) }}"
                 :instrument="{{ json_encode($stock) }}"
-                :prices="{{ json_encode($prices) }}"
+                :prices="{{ json_encode($data->historiesByExchange($stock)) }}"
                 store="{{ route('positions.store', [], false) }}"
                 redirect="#">
         </stock-trade>
@@ -98,8 +98,8 @@
         @endslot
 
         <stock-chart
-                :exchanges="{{ json_encode($exchanges) }}"
-                :history="{{ json_encode($history) }}">
+                :exchanges="{{ json_encode($stock->exchangesToArray()) }}"
+                :history="{{ json_encode($data->dataHistory($stock)) }}">
         </stock-chart>
 
     @endcomponent
@@ -124,8 +124,8 @@
         @endslot
 
         <stock-performance
-                :exchanges="{{ json_encode($exchanges) }}"
-                :history="{{ json_encode($history) }}"
+                :exchanges="{{ json_encode($stock->exchangesToArray()) }}"
+                :history="{{ json_encode($data->dataHistory($stock)) }}"
                 :stock="{{ json_encode($stock) }}"
                 locale="de-DE">
         </stock-performance>

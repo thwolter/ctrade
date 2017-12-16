@@ -88,7 +88,7 @@
 
         props: {
             exchanges: {
-                type: Object,
+                type: Array,
                 required: true
             },
             history: {
@@ -107,17 +107,6 @@
 
         data() {
             return {
-                lookup: '/api/stock/history',
-
-                routeParams: {
-                    id: this.stock.id,
-                    date: null,
-                    count: 250,
-                    exchange: null
-                },
-
-                history: null,
-                exchanges: null,
                 exchange: null
             }
         },
