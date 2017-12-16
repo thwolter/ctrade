@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Facades\DataService;
 use App\Http\Requests\TradeRequest;
 use App\Repositories\DatasourceRepository;
-use App\Services\PortfolioService;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\Position;
@@ -14,16 +14,21 @@ use App\Entities\Position;
 class PositionsController extends Controller
 {
 
-    public function __construct()
+    protected $transaction;
+
+
+    public function __construct(TransactionService $transaction)
     {
         $this->middleware('auth');
+
+        $this->transaction = $transaction;
     }
 
     /**
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @param string $slug
+     * @param Portfolio $portfolio
      *
      * @return \Illuminate\Http\Response
      */
@@ -70,8 +75,8 @@ class PositionsController extends Controller
      */
     public function store(TradeRequest $request)
     {
-        Portfolio::find($request->portfolioId)
-            ->service()->storeTrade($request->all());
+        $portfolio = Portfolio::find($request->portfolioId);
+        $this->transaction->trade($portfolio, $request->all());
 
         return ['status' => 'success'];
     }
@@ -85,8 +90,10 @@ class PositionsController extends Controller
      */
     public function destroy($id)
     {
-        $position = Position::find($id)->delete();
+        $position = Position::find($id);
+        $portfolio = $position->portfolio;
+        $position->delete();
 
-        return redirect(route('positions.index', $position->portfolio->id));
+        return redirect(route('positions.index', $portfolio->id));
     }
 }

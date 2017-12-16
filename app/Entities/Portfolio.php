@@ -60,7 +60,7 @@ class Portfolio extends Model
 {
     use UuidModel, Sluggable, SluggableScopeHelpers, SoftDeletes, CascadeSoftDeletes;
 
-    use Presentable, Servicable, Settingable;
+    use Presentable, Settingable;
 
 
     /*
@@ -70,7 +70,6 @@ class Portfolio extends Model
     */
 
     protected $presenter = PortfolioPresenter::class;
-    protected $service = PortfolioService::class;
     protected $settingsService = PortfolioSettings::class;
 
 

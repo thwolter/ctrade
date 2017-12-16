@@ -15,8 +15,8 @@ class TransactionService
         $position = $this->makePosition($attributes);
         $portfolio->assets()->save($this->makeAsset($position, $attributes));
 
-        $this->payTrade($portfolio, $position, $attributes);
-        $this->payFees($portfolio, $position, $attributes);
+        $this->payTrade($portfolio, $attributes, $position);
+        $this->payFees($portfolio, $attributes, $position);
     }
 
 
@@ -78,7 +78,7 @@ class TransactionService
         return Asset::firstOrCreate([
             'positionable_type' => $attributes['instrumentType'],
             'positionable_id' => $attributes['instrumentId']
-        ])->obtain($position);
+        ]);
     }
 
 }

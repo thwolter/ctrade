@@ -61,6 +61,7 @@ class Asset extends Model
     public function obtain($position)
     {
         $this->positions()->save($position);
+        return $this;
     }
 
     public function value($date = null)
