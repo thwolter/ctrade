@@ -144,14 +144,18 @@
                     .toLocaleString(this.locale, {style: 'currency', currency: this.currency});
             },
 
-            date() {
+            date: function () {
                 return new Date(this.history.data[0][this.column('Date')])
                     .toLocaleDateString(this.locale);
             },
 
-            volume() {
-                return this.history.data[0][this.column('Volume')]
-                    .toLocaleString(this.locale);
+            volume: function () {
+                try {
+                    return this.history.data[0][this.column('Volume')]
+                        .toLocaleString(this.locale);
+                }catch(e){
+                    return null;
+                }
             },
 
             high: function () {
