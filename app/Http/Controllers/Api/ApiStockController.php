@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Datasource;
 use App\Entities\Stock;
-use App\Facades\DataService;
-use App\Http\Resources\StockHistory;
+use App\Services\DataService;
 use Illuminate\Http\Request;
 
 class ApiStockController extends ApiBaseController
 {
+
+    protected $dataService;
+
+
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
 
 
     public function history(Request $request)
@@ -28,11 +34,9 @@ class ApiStockController extends ApiBaseController
 
         $exchange = array_get($attributes, 'exchange', array_get($exchanges, '0.code'));
 
-        $repo = new DataService($stock->datasources()->whereExchange($exchange)->first());
-
         return [
             'exchanges' => $exchanges,
-            'history' => array_add($repo->allDataHistory($attributes), 'currency', 'EUR')
+            'data' => $this->dataService->dataHistory($stock->getDatasource($exchange))
         ];
     }
 }

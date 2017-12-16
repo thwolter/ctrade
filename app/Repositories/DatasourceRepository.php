@@ -67,12 +67,4 @@ class DatasourceRepository
         };
         return $prices;
     }
-
-
-    public function updatedAfter($timestamp)
-    {
-        return DB::table('datasources')
-            ->where('updated_at', '>', $timestamp);
-    }
-
 }

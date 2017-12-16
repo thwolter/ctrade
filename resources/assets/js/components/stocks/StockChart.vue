@@ -26,10 +26,16 @@
 
     export default {
 
-        props: [
-            'exchanges',
-            'history'
-        ],
+        props: {
+            exchanges: {
+                type: Object,
+                required: true
+            },
+            history: {
+                type: Object,
+                required: true
+            }
+        },
 
         data() {
             return {

@@ -6,7 +6,7 @@ interface DataServiceInterface
 {
     public function price($date);
 
-    public function history($dates);
+    public function priceHistory($dates);
 
-    public function allDataHistory($attributes);
+    public function dataHistory($attributes);
 }

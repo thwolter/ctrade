@@ -86,10 +86,24 @@
 <script>
     export default {
 
-        props: [
-            'stock',
-            'locale'
-        ],
+        props: {
+            exchanges: {
+                type: Object,
+                required: true
+            },
+            history: {
+                type: Object,
+                required: true
+            },
+            stock: {
+                type: Object,
+                required: true
+            },
+            locale: {
+                type: String,
+                required: true
+            }
+        },
 
         data() {
             return {
@@ -109,16 +123,6 @@
         },
 
         methods: {
-            fetch() {
-                axios.get(this.lookup, {
-                    params: this.routeParams
-                })
-                    .then(data => {
-                        this.history = data.data.history;
-                        this.exchanges = data.data.exchanges;
-
-                    })
-            },
 
             column(name) {
                 return this.history.columns.findIndex((element) => (element === name));
@@ -194,10 +198,6 @@
                     this.exchange = this.exchanges[0].code;
                 }
             }
-        },
-
-        mounted() {
-            this.fetch();
         }
     }
 </script>

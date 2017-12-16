@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Facades\DataService;
 use App\Http\Requests\TradeRequest;
-use App\Repositories\DatasourceRepository;
+use App\Services\DataService as Service;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
@@ -15,14 +14,17 @@ class PositionsController extends Controller
 {
 
     protected $transaction;
+    protected $dataservice;
 
 
-    public function __construct(TransactionService $transaction)
+    public function __construct(TransactionService $transaction, Service $dataservice)
     {
         $this->middleware('auth');
 
         $this->transaction = $transaction;
+        $this->dataservice = $dataservice;
     }
+
 
     /**
      * Display a listing of the resource.
@@ -51,15 +53,13 @@ class PositionsController extends Controller
 
     public function show(Portfolio $portfolio, $entity, $slug)
     {
-        $instrument = resolve('App\\Entities\\'.ucfirst($entity));
-        $stock = $instrument::findBySlug($slug);
-        $prices = resolve(DatasourceRepository::class)->collectHistories($stock->datasources);
+        $stock = $this->getInstrument($entity, $slug);
 
         $exchanges = $stock->exchangesToArray();
         $exchange = array_get($exchanges, '0.code');
 
-        $repo = new DataService($stock->datasources()->whereExchange($exchange)->first());
-        $history = array_add($repo->allDataHistory([]), 'currency', 'EUR');
+        $prices = $this->dataservice->historiesByExchange($stock->datasources);
+        $history = $this->dataservice->dataHistory($stock->getDatasource($exchange));
 
         return view('positions.show_'.strtolower($entity),
             compact('portfolio', 'stock', 'prices', 'exchanges', 'history')
@@ -85,15 +85,27 @@ class PositionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
     public function destroy($id)
     {
         $position = Position::find($id);
         $portfolio = $position->portfolio;
+
         $position->delete();
 
         return redirect(route('positions.index', $portfolio->id));
+    }
+
+    /**
+     * @param $entity
+     * @return mixed
+     */
+    private function getInstrument($entity, $slug)
+    {
+        $instrument = resolve('App\\Entities\\' . ucfirst($entity));
+        return $instrument::findBySlug($slug);
     }
 }

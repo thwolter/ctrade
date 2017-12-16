@@ -62,13 +62,6 @@ class Datasource extends Model
     |--------------------------------------------------------------------------
     */
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
     public function provider()
     {
         return $this->belongsTo(Provider::class);
@@ -103,6 +96,13 @@ class Datasource extends Model
     {
         return $this->belongsTo(Exchange::class);
     }
+
+
+    /*
+   |--------------------------------------------------------------------------
+   | FUNCTIONS
+   |--------------------------------------------------------------------------
+   */
 
 
     public function assign($instrument)
@@ -234,6 +234,20 @@ class Datasource extends Model
     | ACCESORS
     |--------------------------------------------------------------------------
     */
+
+
+    public function getCurrencyAttribute($value)
+    {
+        if ($this->stocks->count()) {
+            return $this->stocks->first()->currency;
+
+        } else if ($this->ccyPairs->count()) {
+            return $this->ccyPairs->first()->currency;
+
+        } else {
+            return null;
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------

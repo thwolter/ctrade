@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\ViewComposers\ChartComposer;
+use App\Http\ViewComposers\ShowPositionComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +20,10 @@ class ViewServiceProvider extends ServiceProvider
             'portfolios.index',
             'portfolios.show'
         ], ChartComposer::class);
+
+        View::composer([
+            'positions.show*',
+        ], ShowPositionComposer::class);
     }
 
     /**

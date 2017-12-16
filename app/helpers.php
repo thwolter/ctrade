@@ -9,7 +9,7 @@ function set_active($path, $active = 'active')
 
 function active_tab($tab, $active = 'active')
 {
-    $a=1;
+    $a = 1;
     return session('active_tab') === $tab ? $active : '';
 }
 
@@ -25,7 +25,6 @@ function setActiveTab(Illuminate\Http\Request $request, $default)
     $tab = $request->get('active_tab', session('active_tab', $default));
     session(['active_tab' => $tab]);
 }
-
 
 
 /**
@@ -59,8 +58,26 @@ function doneInfo($entities, $name)
 function array_dissociate($array)
 {
     $result = [];
-    foreach($array as $key => $value) {
+    foreach ($array as $key => $value) {
         $result[] = array_flatten(array_prepend($value, $key));
     }
     return $result;
 }
+
+
+/**
+ * Returns the specified columns of an array.
+ *
+ * @param array $array of column names
+ * @param array $columns
+ * @return array
+ */
+function array_columns($array, $columns)
+{
+    $row = [];
+    foreach ($columns as $key => $value) {
+        $row[] = $array[array_index($value, $columns)];
+    }
+    return $row;
+}
+

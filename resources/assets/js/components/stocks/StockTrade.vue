@@ -352,11 +352,11 @@
 
 
             updateExchange(index) {
-                this.form.executed = _.first(Object.keys(this.stock.prices[index].history));
+                this.form.executed = _.first(Object.keys(this.stock.prices[index].data));
             },
 
             updatePrice() {
-                this.form.price = this.stock.prices[this.exchange].history[this.form.executed];
+                this.form.price = this.stock.prices[this.exchange].data[this.form.executed];
 
                 let firstPrice = new Date(this.firstPrice);
                 let date = this.minDate ? new Date(Math.max(firstPrice, new Date(this.minDate))) : firstPrice;
@@ -413,11 +413,11 @@
             },
 
             firstPrice() {
-                return _.last(Object.keys(this.stock.prices[this.exchange].history));
+                return _.last(Object.keys(this.stock.prices[this.exchange].data));
             },
 
             lastPrice() {
-                return _.first(Object.keys(this.stock.prices[this.exchange].history));
+                return _.first(Object.keys(this.stock.prices[this.exchange].data));
             },
 
             overlap() {

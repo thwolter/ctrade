@@ -71,11 +71,18 @@ class Stock extends Instrument
     |--------------------------------------------------------------------------
     */
 
-
+    //TODO: perhaps not required?
     protected function datasource()
     {
         return $this->datasources->first();
     }
+
+
+    public function getDatasource($exchange)
+    {
+        return $this->datasources()->whereExchange($exchange)->first();
+    }
+
 
 
     public function toSearchableArray()
@@ -141,6 +148,7 @@ class Stock extends Instrument
     {
         return $this->name . ' Stock';
     }
+
 
 
     /*
