@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Rscript;
 
 use Illuminate\Console\Command;
 
 class InstallRscript extends Command
 {
+    protected $shScript;
+
     /**
      * The name and signature of the console command.
      *
@@ -30,6 +32,7 @@ class InstallRscript extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->shScript = storage_path('install/rscript-install.sh');
     }
 
     /**
@@ -39,7 +42,9 @@ class InstallRscript extends Command
      */
     public function handle()
     {
-        echo "Please call 'sudo bash ".base_path('rscripts/Install/install.sh')."'\n";
+        echo "Running 'sudo bash {$this->shScript} ...'\n";
+        shell_exec($this->shScript);
+
     }
 
 }
