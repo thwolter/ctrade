@@ -3,8 +3,8 @@
 namespace App\Entities;
 
 use App\Entities\Traits\UuidModel;
-use App\Services\Settings\Settingable;
-use App\Services\Settings\UserSettings;
+use App\Services\SettingServices\Settingable;
+use App\Services\SettingServices\UserSettings;
 use Carbon\Carbon;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\SoftDeletes;

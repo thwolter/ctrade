@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Settings;
+namespace App\Services\SettingServices;
 
 use App\Exceptions\ServiceException;
 

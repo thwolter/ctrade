@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Settings;
+namespace App\Services\SettingServices;
 
 
 class UserSettings extends BaseSettings
