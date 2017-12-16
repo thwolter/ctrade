@@ -10,6 +10,7 @@ class PortfolioMetricService extends MetricService
 {
 
 
+
     public function value(Portfolio $portfolio)
     {
         return $this->shapeOutput(
@@ -81,18 +82,10 @@ class PortfolioMetricService extends MetricService
         );
     }
     
-    
-    
+
     private function getRiskDate($portfolio)
     {
         return Carbon::parse(array_last(array_keys($this->getRisks($portfolio))));
-    }
-    
-    
-    
-    private function toArray($keyfigure)
-    {
-        return $keyfigure ? $keyfigure->values : [];
     }
 
 

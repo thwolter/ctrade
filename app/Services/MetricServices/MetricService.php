@@ -36,4 +36,9 @@ class MetricService
     {
         return $portfolio->settings('period');
     }
+
+    protected function toArray($keyfigure)
+    {
+        return $keyfigure ? $keyfigure->values : [];
+    }
 }

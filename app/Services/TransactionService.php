@@ -13,10 +13,30 @@ class TransactionService
     public function trade($portfolio, $attributes)
     {
         $position = $this->makePosition($attributes);
-        $portfolio->assets()->makeAsset($position, $attributes);
+        $portfolio->assets()->save($this->makeAsset($position, $attributes));
 
         $this->payTrade($portfolio, $position, $attributes);
         $this->payFees($portfolio, $position, $attributes);
+    }
+
+
+    public function deposit($portfolio, $attributes)
+    {
+        $portfolio->payments()->create([
+            'type' => 'deposit',
+            'amount' => $attributes['amount'],
+            'executed_at' => $attributes['date']
+        ]);
+    }
+
+
+    public function withdraw($portfolio, $attributes)
+    {
+        $portfolio->payments()->create([
+            'type' => 'withdrawal',
+            'amount' => -$attributes['amount'],
+            'executed_at' => $attributes['date']
+        ]);
     }
 
 
@@ -43,26 +63,6 @@ class TransactionService
     }
 
 
-    public function deposit($portfolio, $attributes)
-    {
-        $portfolio->payments()->create([
-            'type' => 'deposit',
-            'amount' => $attributes['amount'],
-            'executed_at' => $attributes['date']
-        ]);
-    }
-
-
-    public function withdraw($portfolio, $attributes)
-    {
-        $portfolio->payments()->create([
-            'type' => 'withdrawal',
-            'amount' => -$attributes['amount'],
-            'executed_at' => $attributes['date']
-        ]);
-    }
-
-
     private function makePosition($attributes)
     {
         return Position::make([
@@ -73,7 +73,7 @@ class TransactionService
     }
 
 
-    private function makeAseet($position, $attributes)
+    private function makeAsset($position, $attributes)
     {
         return Asset::firstOrCreate([
             'positionable_type' => $attributes['instrumentType'],

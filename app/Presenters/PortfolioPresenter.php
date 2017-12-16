@@ -17,6 +17,7 @@ class PortfolioPresenter extends Presenter
     public function __construct($entity)
     {
         parent::__construct($entity);
+
         $this->metrics = app()->make(PortfolioMetricService::class);
     }
 
@@ -44,7 +45,7 @@ class PortfolioPresenter extends Presenter
 
     public function profit($days = null)
     {
-        return $this->formatPrice($this->service->profit($days));
+        return $this->formatPrice($this->metrics->profit($this->entity, $days));
     }
 
     public function htmlProfit($days)
