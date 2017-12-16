@@ -3,7 +3,7 @@
 namespace App\Services;
 
 
-use App\Services\Metrics\PortfolioMetricService;
+use App\Services\MetricServices\PortfolioMetricService;
 
 class ChartService
 {

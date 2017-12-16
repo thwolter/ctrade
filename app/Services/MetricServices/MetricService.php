@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Metrics;
+namespace App\Services\MetricServices;
 
 
 use App\Entities\Portfolio;

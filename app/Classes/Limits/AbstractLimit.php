@@ -3,7 +3,7 @@
 
 namespace App\Classes\Limits;
 
-use App\Services\Metrics\PortfolioMetricService;
+use App\Services\MetricServices\PortfolioMetricService;
 use App\Entities\Limit;
 
 abstract class AbstractLimit

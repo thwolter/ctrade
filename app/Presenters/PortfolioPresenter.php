@@ -3,7 +3,7 @@
 namespace App\Presenters;
 
 
-use App\Services\Metrics\PortfolioMetricService;
+use App\Services\MetricServices\PortfolioMetricService;
 use App\Entities\Stock;
 use Carbon\Carbon;
 use Illuminate\Support\HtmlString;

@@ -5,7 +5,7 @@ namespace App\Repositories;
 
 
 use App\Entities\Portfolio;
-use App\Services\Metrics\PortfolioMetricService;
+use App\Services\MetricServices\PortfolioMetricService;
 use Carbon\Carbon;
 
 class LimitRepository
