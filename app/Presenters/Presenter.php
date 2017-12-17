@@ -21,6 +21,7 @@ abstract class Presenter
         $this->entity = $entity;
     }
 
+
     public function __get($property)
     {
         if (method_exists($this, $property)) {
@@ -57,6 +58,7 @@ abstract class Presenter
             return Carbon::parse($date)->formatLocalized('%d.%m.%Y');
         }
     }
+
 
     private function priceFormatter()
     {

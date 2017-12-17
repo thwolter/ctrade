@@ -2,12 +2,12 @@
 
 namespace App\Classes\DataProvider;
 
+use App\Classes\TimeSeries;
 use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;
-use App\Events\PriceData\FetchingFailed;
 use App\Exceptions\DataServiceException;
 use App\Models\PriceHistory;
-use Illuminate\Support\Facades\Log;
+
 
 class QuandlPriceData implements DataServiceInterface
 {
@@ -23,6 +23,12 @@ class QuandlPriceData implements DataServiceInterface
     protected $fieldData = 'dataset.data';
 
     protected $priceColumnNames = ['Close'];
+
+    protected $fields = [
+        'data'      => 'dataset.data',
+        'columns'   => 'dataset.column_names',
+        'exchange'  => 'exchange'
+    ];
 
 
 
@@ -40,11 +46,22 @@ class QuandlPriceData implements DataServiceInterface
      * @return array
      * @throws DataServiceException
      */
-    public function price($date = null)
+   /* public function price($attributes = [])
     {
-        return $this->getPriceHistory()->price($date);
-    }
+        return $this->getPriceHistory()->price($attributes);
+    }*/
 
+
+    public function history()
+    {
+        $item = json_decode($this->getJson(), true);
+
+        foreach ($this->fields as $key => $value) {
+            $attributes[$key] = array_get($item, $value);
+        }
+
+        return new TimeSeries($attributes);
+    }
 
     /**
      * Return an array with the history of close prices of an item.
@@ -54,9 +71,23 @@ class QuandlPriceData implements DataServiceInterface
      * @throws DataServiceException
      * @throws \Exception
      */
-    public function priceHistory($attributes = [])
+/*    public function priceHistory($attributes = [])
     {
         return $this->getPriceHistory($attributes)->history($attributes);
+    }*/
+
+
+    /**
+     * Get the item's price history.
+     *
+     * @return PriceHistory
+     * @throws DataServiceException
+     */
+    public function getPriceHistory($attributes = [])
+    {
+        $data =  $this->dataHistory($attributes);
+
+        return new PriceHistory($data['data'], $this->priceColumn($data['columns']));
     }
 
 
@@ -72,20 +103,6 @@ class QuandlPriceData implements DataServiceInterface
         $item = json_decode($this->getJson(), true);
 
         return $this->timeSeries($item, $attributes);
-    }
-
-
-    /**
-     * Get the item's price history.
-     *
-     * @return PriceHistory
-     * @throws DataServiceException
-     */
-    private function getPriceHistory($attributes = [])
-    {
-        $data =  $this->dataHistory($attributes);
-
-        return new PriceHistory($data['data'], $this->priceColumn($data['columns']));
     }
 
 

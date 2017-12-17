@@ -12,6 +12,15 @@ use Illuminate\Database\Eloquent\Collection;
 class DataService implements DataServiceInterface
 {
 
+
+    public function history($entity, $exchange = null)
+    {
+        $datasource = $this->getDatasource($entity, ['exchange' => $exchange]);
+
+        return $this->provider($datasource)->history();
+    }
+
+
     /**
      * Return the entity's price histories for all exchanges.
      *
@@ -33,9 +42,9 @@ class DataService implements DataServiceInterface
     }
 
 
-    public function price($datasource, $date = null)
+    public function price($entity, $attributes = [])
     {
-        return $this->provider($datasource)->price($date);
+        return $this->history($entity)->count(1)->column('Close')->get();
     }
 
 
@@ -48,9 +57,13 @@ class DataService implements DataServiceInterface
      */
     public function priceHistory($entity, $attributes = [])
     {
-        $datasource = $this->getDatasource($entity, $attributes);
-
-        return $this->provider($datasource)->priceHistory($attributes);
+        return $this->history($entity)
+            ->count(array_get($attributes, 'count'))
+            ->from(array_get($attributes, 'from'))
+            ->to(array_get($attributes, 'to'))
+            ->dates(array_get($attributes, 'dates'))
+            ->column('Close')
+            ->get();
     }
 
 
@@ -63,24 +76,15 @@ class DataService implements DataServiceInterface
      */
     public function dataHistory($entity, $attributes = null)
     {
-        $datasource = $this->getDatasource($entity, $attributes);
+        $data = $this->history($entity, array_get($attributes, 'exchange'));
 
-        return $this->addMetaData(
-            $this->provider($datasource)->dataHistory($attributes),
-            $datasource
-        );
+        return $this->addMetaData([
+            'data' => array_values($data->getData()),
+            'columns' => $data->getColumns()
+        ], $this->getDatasource($entity, $attributes));
+
     }
 
-
-    public function statistics($entity, $attributes)
-    {
-        $prices = $this->priceHistory($entity, $attributes);
-        return [
-            'yearHigh' => max($prices),
-            'yearLow' => min($prices),
-            'yearReturn' => array_first($prices)/array_last($prices) - 1
-        ];
-    }
 
     /**
      * Get the datasource provider.
