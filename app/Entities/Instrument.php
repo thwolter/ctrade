@@ -91,6 +91,7 @@ abstract class Instrument extends Model
         return $array;
     }
 
+
     public function exchangesToArray()
     {
         $array = [];
@@ -103,6 +104,19 @@ abstract class Instrument extends Model
         }
         return $array;
     }
+
+
+    /**
+     * Return the first of all related exchanges.
+     *
+     * @return array
+     */
+    public function firstExchange()
+    {
+        $exchange = $this->datasources->first()->exchange;
+        return [$exchange->code => $exchange->name];
+    }
+
 
     public function toArray()
     {

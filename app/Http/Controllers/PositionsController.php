@@ -49,12 +49,13 @@ class PositionsController extends Controller
     }
 
 
-    public function show(Portfolio $portfolio, $entity, $slug)
+    public function show(Portfolio $portfolio, Request $request, $entity, $slug)
     {
         $stock = $this->getInstrument($entity, $slug);
+        $exchange = $request->get('exchange', key($stock->firstExchange()));
 
         return view('positions.show_'.strtolower($entity),
-            compact( 'portfolio', 'stock'));
+            compact( 'portfolio', 'stock', 'exchange'));
     }
 
 

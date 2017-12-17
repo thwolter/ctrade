@@ -19,12 +19,18 @@ class PriceHistory
     }
 
     
-    public function history($dates = null)
+    public function history($attributes = [])
     {
-        if (is_array($dates))
-            return $this->historyWithDates($dates);
-        else
-            return array_slice($this->data, 0);
+        if (array_has($attributes, 'dates'))
+            return $this->historyWithDates($attributes['dates']);
+
+        if (array_has($attributes, 'count'))
+            return array_slice($this->data, 0, $attributes['count'], true);
+
+        if (array_has($attributes, 'from') && array_has($attributes, 'to'))
+            throw new \Exception("from/to attributres not yet implemented in function 'history'");
+
+        return $this->data;
     }
 
 

@@ -18,15 +18,15 @@ class DataService implements DataServiceInterface
      * @param $datasources
      * @return array
      */
-    public function historiesByExchange($entity)
+    public function historiesByExchange($entity, $attributes = [])
     {
-        $datasources = $this->getDatasource($entity, true);
+        $datasources = $this->getDatasource($entity, ['exchange' => '*']);
 
         $prices = [];
         foreach ($datasources as $datasource) {
             $prices[] = [
                 'exchange' => $datasource->exchange->code,
-                'data' => $this->priceHistory($datasource),
+                'data' => $this->priceHistory($datasource, $attributes),
                 'datasourceId' => $datasource->id];
         };
         return $prices;
@@ -42,13 +42,15 @@ class DataService implements DataServiceInterface
     /**
      * Return the history of a datasource's prices as array with dates as key.
      *
-     * @param $datasource
-     * @param null $dates
+     * @param $entity
+     * @param array $attributes
      * @return mixed
      */
-    public function priceHistory($datasource, $dates = null)
+    public function priceHistory($entity, $attributes = [])
     {
-        return $this->provider($datasource)->priceHistory($dates);
+        $datasource = $this->getDatasource($entity, $attributes);
+
+        return $this->provider($datasource)->priceHistory($attributes);
     }
 
 
@@ -61,7 +63,7 @@ class DataService implements DataServiceInterface
      */
     public function dataHistory($entity, $attributes = null)
     {
-        $datasource = $this->getDatasource($entity);
+        $datasource = $this->getDatasource($entity, $attributes);
 
         return $this->addMetaData(
             $this->provider($datasource)->dataHistory($attributes),
@@ -69,6 +71,16 @@ class DataService implements DataServiceInterface
         );
     }
 
+
+    public function statistics($entity, $attributes)
+    {
+        $prices = $this->priceHistory($entity, $attributes);
+        return [
+            'yearHigh' => max($prices),
+            'yearLow' => min($prices),
+            'yearReturn' => array_first($prices)/array_last($prices) - 1
+        ];
+    }
 
     /**
      * Get the datasource provider.
@@ -106,7 +118,7 @@ class DataService implements DataServiceInterface
      * @param bool $all
      * @return mixed
      */
-    private function getDatasource($entity, $all = false)
+    private function getDatasource($entity, $attributes)
     {
         $class = get_class($entity);
         if ($class === Datasource::class || $class === Collection::class) {
@@ -114,7 +126,7 @@ class DataService implements DataServiceInterface
 
         } else {
             $method = 'getDatasource' . class_basename(get_class($entity));
-            return $this->$method($entity, $all);
+            return $this->$method($entity, $attributes);
         }
     }
 
@@ -126,12 +138,23 @@ class DataService implements DataServiceInterface
      * @param $all
      * @return mixed
      */
-    private function getDatasourceStock($stock, $all)
+    private function getDatasourceStock($stock, $attributes)
     {
-        $exchanges = $stock->exchangesToArray();
-        return $all
-            ? $stock->datasources
-            : $stock->getDatasource(array_get($exchanges, '0.code'));
+        switch (array_get($attributes, 'exchange')) {
+
+            case '*':
+                return $stock->datasources;
+                break;
+
+            case null:
+                $exchanges = $exchanges = $stock->exchangesToArray();
+                return $stock->getDatasource(array_get($exchanges, '0.code'));
+                break;
+
+            default:
+                return $stock->datasources()->whereExchange($attributes['exchange'])->first();
+                break;
+        }
     }
 
 }

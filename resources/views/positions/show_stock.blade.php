@@ -2,6 +2,22 @@
 
 @section('content-main')
 
+
+    <div class="btn-group d-flex justify-content-end g-mb-40">
+        @foreach ($stock->exchangesAsAssociativeArray() as $key => $value )
+
+            @if ($exchange === $key)
+                <span class="btn btn-sm rounded-0 u-btn-primary">{{ $value }}</span>
+
+            @else
+                <a href="{{ route('positions.show',[$portfolio, $stock->type(), $stock->slug, 'exchange' => $key]) }}"
+                   class="btn btn-sm rounded-0 u-btn-outline-lightgray">{{ $value }}
+                </a>
+            @endif
+
+        @endforeach
+    </div>
+
     <!-- Summary Card -->
     @component('layouts.components.section', ['collapse' => false])
 
@@ -99,7 +115,7 @@
 
         <stock-chart
                 :exchanges="{{ json_encode($stock->exchangesToArray()) }}"
-                :history="{{ json_encode($data->dataHistory($stock)) }}">
+                :history="{{ json_encode($data->dataHistory($stock, ['exchange' => $exchange])) }}">
         </stock-chart>
 
     @endcomponent
@@ -123,12 +139,7 @@
             </a>
         @endslot
 
-        <stock-performance
-                :exchanges="{{ json_encode($stock->exchangesToArray()) }}"
-                :history="{{ json_encode($data->dataHistory($stock)) }}"
-                :stock="{{ json_encode($stock) }}"
-                locale="de-DE">
-        </stock-performance>
+        @include('positions.partials.performance')
 
     @endcomponent
 

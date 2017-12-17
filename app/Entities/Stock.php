@@ -139,10 +139,12 @@ class Stock extends Instrument
         return ($this->name_overwrite) ? $this->name_overwrite : $value;
     }
 
+
     public function getOriginalNameAttribute($value)
     {
         return $this->fresh()->getOriginal('name');
     }
+
 
     public function getNameWithTypeAttribute($value)
     {

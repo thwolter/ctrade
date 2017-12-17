@@ -49,13 +49,14 @@ class QuandlPriceData implements DataServiceInterface
     /**
      * Return an array with the history of close prices of an item.
      *
-     * @param null $dates
+     * @param array $attributes
      * @return array|mixed
      * @throws DataServiceException
+     * @throws \Exception
      */
-    public function priceHistory($dates = null)
+    public function priceHistory($attributes = [])
     {
-        return $this->getPriceHistory()->history($dates);
+        return $this->getPriceHistory($attributes)->history($attributes);
     }
 
 
@@ -80,14 +81,11 @@ class QuandlPriceData implements DataServiceInterface
      * @return PriceHistory
      * @throws DataServiceException
      */
-    private function getPriceHistory()
+    private function getPriceHistory($attributes = [])
     {
-        $data = json_decode($this->getJson(), true);
+        $data =  $this->dataHistory($attributes);
 
-        $prices = array_get($data, $this->fieldData);
-        $columns = array_get($data, $this->fieldColumnNames);
-
-        return new PriceHistory($prices, $this->priceColumn($columns));
+        return new PriceHistory($data['data'], $this->priceColumn($data['columns']));
     }
 
 
