@@ -4,5 +4,5 @@ namespace App\Contracts;
 
 interface DataServiceInterface
 {
-    public function history($attributes);
+    public function history();
 }
