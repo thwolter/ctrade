@@ -6,10 +6,11 @@ namespace App\Services;
 
 use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;
+use App\Entities\Stock;
 use Illuminate\Database\Eloquent\Collection;
 
 
-class DataService implements DataServiceInterface
+class DataService
 {
 
 
@@ -24,7 +25,7 @@ class DataService implements DataServiceInterface
     /**
      * Return the entity's price histories for all exchanges.
      *
-     * @param $datasources
+     * @param $attributes
      * @return array
      */
     public function historiesByExchange($entity, $attributes = [])
@@ -119,7 +120,7 @@ class DataService implements DataServiceInterface
      * Get the entity's datasource if entity is not yet a datasource or collection.
      *
      * @param $entity
-     * @param bool $all
+     * @param $attributes
      * @return mixed
      */
     private function getDatasource($entity, $attributes)
@@ -138,8 +139,8 @@ class DataService implements DataServiceInterface
     /**
      * Get the stock's datasource.
      *
-     * @param Stock $stock
-     * @param $all
+     * @param $stock
+     * @param $attributes
      * @return mixed
      */
     private function getDatasourceStock($stock, $attributes)

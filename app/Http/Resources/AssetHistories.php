@@ -4,10 +4,13 @@ namespace App\Http\Resources;
 
 use App\Facades\TimeSeries;
 use App\Repositories\CurrencyRepository;
+use App\Services\DataService;
 use Illuminate\Http\Resources\Json\Resource;
 
 class AssetHistories extends Resource
 {
+
+
     /**
      * Transform the resource into an array.
      *
@@ -38,7 +41,8 @@ class AssetHistories extends Resource
      */
     private function assetHistory($asset, $days)
     {
-        return [$asset->label() => $asset->positionable->history($days)];
+        $dataService = new DataService();
+        return [$asset->label() => $dataService->history($asset->positionable)->dates($days)->get()];
     }
 
     /**

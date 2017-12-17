@@ -5,24 +5,16 @@ namespace App\Classes\DataProvider;
 use App\Classes\TimeSeries;
 use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;
+use App\Events\PriceData\FetchingFailed;
 use App\Exceptions\DataServiceException;
-use App\Models\PriceHistory;
 
 
 class QuandlPriceData implements DataServiceInterface
 {
-    use TimeSeriesData, FetchQuandlData;
-
 
     protected $datasource;
 
     protected $client;
-
-    protected $fieldColumnNames = 'dataset.column_names';
-
-    protected $fieldData = 'dataset.data';
-
-    protected $priceColumnNames = ['Close'];
 
     protected $fields = [
         'data'      => 'dataset.data',
@@ -39,18 +31,6 @@ class QuandlPriceData implements DataServiceInterface
     }
 
 
-    /**
-     * Get the item's latest price.
-     *
-     * @param null $date
-     * @return array
-     * @throws DataServiceException
-     */
-   /* public function price($attributes = [])
-    {
-        return $this->getPriceHistory()->price($attributes);
-    }*/
-
 
     public function history()
     {
@@ -63,34 +43,8 @@ class QuandlPriceData implements DataServiceInterface
         return new TimeSeries($attributes);
     }
 
-    /**
-     * Return an array with the history of close prices of an item.
-     *
-     * @param array $attributes
-     * @return array|mixed
-     * @throws DataServiceException
-     * @throws \Exception
-     */
-/*    public function priceHistory($attributes = [])
-    {
-        return $this->getPriceHistory($attributes)->history($attributes);
-    }*/
 
-
-    /**
-     * Get the item's price history.
-     *
-     * @return PriceHistory
-     * @throws DataServiceException
-     */
-    public function getPriceHistory($attributes = [])
-    {
-        $data =  $this->dataHistory($attributes);
-
-        return new PriceHistory($data['data'], $this->priceColumn($data['columns']));
-    }
-
-
+//Todo: replace this function in ApiStockController
     /**
      * Returns an nested array with column names and prices history.
      *
@@ -107,22 +61,72 @@ class QuandlPriceData implements DataServiceInterface
 
 
     /**
-     * Find the item's price column based on set priceColumnNames array.
+     * Get the symbol used as identifier for a data item in Quandl api.
      *
-     * @param $columnNames
-     * @return false|int|string
+     * @return string
      */
-    private function priceColumn($columnNames)
+    protected function symbol()
     {
-        $i = 0;
-        $count = count($this->priceColumnNames);
-
-        while (!isset($column) and $i < $count) {
-            $column = array_search($this->priceColumnNames[$i++], $columnNames);
-        }
-
-        return ($column) ? $column : 1;
+        return sprintf('%s/%s', $this->datasource->database->code, $this->datasource->dataset->code);
     }
 
 
+    /**
+     * Receive the tags for caching a dataset.
+     *
+     * @return array
+     */
+    protected function getTags()
+    {
+        return [$this->datasource->provider->code, $this->datasource->database->code];
+    }
+
+
+    /**
+     * Get the json representation of Quandl data for an item.
+     *
+     * @return string
+     * @throws DataServiceException
+     */
+    protected function getJson()
+    {
+        Log::debug(sprintf('Check cache for %s from %s', $this->getKey(), implode(', ', $this->getTags())));
+        $json = \Cache::tags($this->getTags())->get($this->getKey());
+
+        if (!$json) {
+            Log::debug(sprintf('Caching %s from %s', $this->getKey(), implode(', ', $this->getTags())));
+
+            $json = $this->fetchFromQuandl();
+            \Cache::tags($this->getTags())->forever($this->getKey(), $json);
+        }
+        return $json;
+    }
+
+
+    /**
+     * Fetch json data for given symbol from Quandl API.
+     *
+     * @return string
+     * @throws DataServiceException
+     */
+    protected function fetchFromQuandl()
+    {
+        Log::debug(sprintf('Fetching %s from %s', $this->getKey(), implode(', ', $this->getTags())));
+
+        $json = $this->client->getSymbol(
+            $this->symbol($this->datasource), ['limit' => config('quandl.length')]
+        );
+
+        if ($this->client->error) {
+            event(new FetchingFailed($this->datasource, $this->client->last_url, $this->client->error));
+            throw new DataServiceException($this->client->error);
+        }
+        return $json;
+    }
+
+
+    protected function getKey()
+    {
+        return $this->datasource->dataset->code;
+    }
 }
