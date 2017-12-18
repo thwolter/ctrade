@@ -32,6 +32,15 @@ class TimeSeries
         $this->data = $this->normalize($data);
     }
 
+
+    public function __get($name)
+    {
+        if (substr($name, 0, 3) === 'get') {
+            $field = str_replace('get', null, $name);
+            return $this->column($field)->get();
+        }
+    }
+
     public function get()
     {
         $output = array_is_multidimensional($this->output) ? $this->column('Close')->output : $this->output;

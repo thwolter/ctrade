@@ -4,11 +4,25 @@ namespace App\Services\MetricServices;
 
 
 use App\Entities\Portfolio;
+use App\Services\DataService;
 
 class MetricService
 {
-
     protected $withDate = false;
+
+    protected $entity;
+
+    protected $dataService;
+
+
+
+    public function __construct($entity)
+    {
+        $this->entity = $entity;
+
+        $this->dataService = new DataService();
+    }
+
 
     public function withDate()
     {

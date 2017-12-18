@@ -3,13 +3,17 @@
 
 namespace App\Presenters;
 
-
 use Carbon\Carbon;
+use Prophecy\Exception\Doubler\MethodNotFoundException;
+use Symfony\Component\Debug\Exception\UndefinedMethodException;
+
 
 abstract class Presenter
 {
 
     public $entity;
+
+    protected $metric;
 
     protected $replace = '/[^0-9,"."]/';
 
@@ -19,17 +23,29 @@ abstract class Presenter
     public function __construct($entity)
     {
         $this->entity = $entity;
+
+        $this->metric = app('MetricService', [$entity]);
     }
 
 
+    /**
+     * @param $property
+     * @return mixed
+     * @throws \Exception
+     */
     public function __get($property)
     {
         if (method_exists($this, $property)) {
-
             return $this->$property();
         }
 
-        return $this->entity->$property();
+        if (method_exists($this->entity, $property)) {
+            return $this->entity->$property();
+
+        } else {
+            $class = get_class($this->entity);
+            throw new \Exception("Method '{$property}' not found in {$class}");
+        }
     }
 
 

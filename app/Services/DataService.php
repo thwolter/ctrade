@@ -43,9 +43,9 @@ class DataService
     }
 
 
-    public function price($entity, $attributes = [])
+    public function price($entity, $exchange = null)
     {
-        return $this->history($entity)->count(1)->column('Close')->get();
+        return $this->history($entity, $exchange)->count(1)->column('Close')->get();
     }
 
 

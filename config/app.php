@@ -242,6 +242,7 @@ return [
         \App\Providers\LimitServiceProvider::class,
         \App\Providers\PortfolioRepositoryServiceProvider::class,
         \App\Providers\ViewServiceProvider::class,
+        \App\Providers\MetricServiceProvider::class,
 
     ],
 

@@ -10,44 +10,32 @@ use Carbon\Carbon;
 class StockPresenter extends Presenter
 {
 
-    protected $dataService;
-
-
-
-    public function __construct($entity)
-    {
-        parent::__construct($entity);
-
-        $this->dataService = app()->make(DataService::class);
-    }
-
-
     public function isin()
     {
         return $this->entity->isin;
     }
 
-    public function priceDate()
+
+    public function price($exchange = null)
+    {
+        return $this->formatPrice(
+            $this->metric->price($exchange)
+        );
+    }
+
+
+    public function priceDate($exchange = null)
     {
         return $this->formatDate(
-            key($this->dataService->price($this->entity))
+            key($this->metric->price($exchange))
         );
     }
 
 
-    public function price()
+    public function previousPrice($exchange = null)
     {
         return $this->formatPrice(
-            $this->dataService->price($this->entity)
-        );
-    }
-
-
-    public function previousPrice()
-    {
-        $this->dataService->priceHistory($this->entity, ['count' => 1]);
-        return $this->formatPrice(
-            array_last($this->dataService->priceHistory($this->entity, ['count' => 2]))
+            $this->metric->previousPrice($exchange)
         );
     }
 
