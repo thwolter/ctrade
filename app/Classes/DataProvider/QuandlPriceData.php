@@ -21,8 +21,7 @@ class QuandlPriceData implements DataServiceInterface
         'columns'   => 'dataset.column_names',
         'exchange'  => 'exchange'
     ];
-
-
+    
 
     public function __construct(Datasource $datasource)
     {
@@ -31,16 +30,18 @@ class QuandlPriceData implements DataServiceInterface
     }
 
 
-
+    /**
+     * @return TimeSeries
+     * @throws DataServiceException
+     */
     public function history()
     {
         $item = json_decode($this->getJson(), true);
 
-        foreach ($this->fields as $key => $value) {
-            $attributes[$key] = array_get($item, $value);
-        }
+        $data = array_get($item, $this->fields['data']);
+        $columns = array_get($item, $this->fields['columns']);
 
-        return new TimeSeries($attributes);
+        return new TimeSeries($data, $columns);
     }
 
 
@@ -90,11 +91,11 @@ class QuandlPriceData implements DataServiceInterface
      */
     protected function getJson()
     {
-        Log::debug(sprintf('Check cache for %s from %s', $this->getKey(), implode(', ', $this->getTags())));
+        \Log::debug(sprintf('Check cache for %s from %s', $this->getKey(), implode(', ', $this->getTags())));
         $json = \Cache::tags($this->getTags())->get($this->getKey());
 
         if (!$json) {
-            Log::debug(sprintf('Caching %s from %s', $this->getKey(), implode(', ', $this->getTags())));
+            \Log::debug(sprintf('Caching %s from %s', $this->getKey(), implode(', ', $this->getTags())));
 
             $json = $this->fetchFromQuandl();
             \Cache::tags($this->getTags())->forever($this->getKey(), $json);
@@ -111,7 +112,7 @@ class QuandlPriceData implements DataServiceInterface
      */
     protected function fetchFromQuandl()
     {
-        Log::debug(sprintf('Fetching %s from %s', $this->getKey(), implode(', ', $this->getTags())));
+        \Log::debug(sprintf('Fetching %s from %s', $this->getKey(), implode(', ', $this->getTags())));
 
         $json = $this->client->getSymbol(
             $this->symbol($this->datasource), ['limit' => config('quandl.length')]

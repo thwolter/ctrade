@@ -30,17 +30,23 @@ class PortfolioPresenter extends Presenter
 
     public function cash()
     {
-        return $this->formatPrice($this->entity->cash());
+        return $this->formatPrice(
+            $this->metrics->cash($this->entity)
+        );
     }
 
     public function stockTotal()
     {
-        return $this->formatPrice($this->entity->total(Stock::class));
+        return $this->formatPrice(
+            $this->metrics->total($this->entity,Stock::class)
+        );
     }
 
     public function total()
     {
-        return $this->formatPrice($this->entity->total(), ['showNull' => true]);
+        return $this->formatPrice(
+            $this->metrics->total($this->entity), ['showNull' => true]
+        );
     }
 
     public function profit($days = null)

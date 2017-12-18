@@ -13,18 +13,23 @@ class TimeSeries
 
     private $columns;
 
-    private $exchange;
+    private $accepted = [
+        'Date',
+        'High',
+        'Low',
+        'Open',
+        'Close',
+        'Volume'
+    ];
 
     private $output;
 
 
 
-    public function __construct($attributes)
+    public function __construct($data, $columns)
     {
-        $this->columns = $attributes['columns'];
-        $this->data = $this->normalize($attributes['data']);
-
-        $this->exchange = array_get($attributes, 'exchange');
+        $this->columns = $this->checkColumns($columns);
+        $this->data = $this->normalize($data);
     }
 
     public function get()
@@ -57,9 +62,15 @@ class TimeSeries
 
     public function column($column = null)
     {
-        if ($column)
+        if ($column && array_has($this->columns, $column)) {
             $this->output = array_column($this->output(), $this->getColumn($column), $this->getColumn('Date'));
 
+        } else {
+            $this->output = array_combine(
+                array_keys($this->output()),
+                array_fill(0, count($this->output()), null)
+            );
+        }
         return $this;
     }
 
@@ -149,5 +160,15 @@ class TimeSeries
     private function getColumn($column)
     {
         return array_search($column, $this->columns);
+    }
+
+
+    private function checkColumns($columns)
+    {
+        foreach ($columns as $key => $value) {
+            if (array_search($value, $this->accepted) === false)
+                array_forget($columns, $key);
+        }
+        return $columns;
     }
 }

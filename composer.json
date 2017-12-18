@@ -51,6 +51,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.0",
+        "cybercog/laravel-whoops-editor": "^3.0",
         "fzaninotto/faker": "dev-master",
         "laravel/dusk": "^2.0",
         "mockery/mockery": "0.9.*",

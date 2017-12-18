@@ -9,6 +9,17 @@ use App\Entities\Asset;
 class AssetMetricService extends MetricService
 {
 
+
+    public function price(Asset $asset)
+    {
+        return null;
+    }
+
+    public function value(Asset $asset, $currency = null)
+    {
+        return null;
+    }
+
     public function risk(Asset $asset)
     {
         $dailyRisk = $this->withDate()->dailyRisk($asset);

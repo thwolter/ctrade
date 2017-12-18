@@ -22,6 +22,11 @@ class StockPresenter extends Presenter
     }
 
 
+    public function isin()
+    {
+        return $this->entity->isin;
+    }
+
     public function priceDate()
     {
         return $this->formatDate(
@@ -83,7 +88,7 @@ class StockPresenter extends Presenter
         $prices = $this->dataService->priceHistory($this->entity, ['count' => $count, 'exchange' => $exchange]);
 
         return $this->formatPercentage(
-            array_first($prices)/array_last($prices) - 1
+            array_last($prices) ? array_first($prices)/array_last($prices) - 1 : null
         );
     }
 

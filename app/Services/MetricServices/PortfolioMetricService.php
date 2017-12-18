@@ -9,7 +9,15 @@ use App\Entities\Portfolio;
 class PortfolioMetricService extends MetricService
 {
 
+    public function total(Portfolio $portfolio, $class = null)
+    {
+        return null;
+    }
 
+    public function cash()
+    {
+        return null;
+    }
 
     public function value(Portfolio $portfolio)
     {

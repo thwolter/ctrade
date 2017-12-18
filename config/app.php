@@ -40,6 +40,8 @@ return [
 
     'debug' => env('APP_DEBUG', false),
 
+    'editor' => env('APP_EDITOR', 'phpstorm'),
+
     /*
     |--------------------------------------------------------------------------
     | Application URL
