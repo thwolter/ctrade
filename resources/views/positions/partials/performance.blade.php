@@ -47,7 +47,7 @@
             <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
                 <span>Low/High</span>
                 <span class="float-right g-color-black">
-                    {{ $stock->present()->minPrice($exchange) }} / {{ $stock->present()->maxPrice($exchange) }}
+                    {{ $stock->present()->lowPrice($exchange) }} / {{ $stock->present()->highPrice($exchange) }}
                 </span>
             </li>
             <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">

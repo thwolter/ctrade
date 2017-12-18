@@ -2,6 +2,7 @@
 
 namespace App\Classes\DataProvider;
 
+use App\Classes\Metadata\Quandl\QuandlFSE;
 use App\Classes\TimeSeries;
 use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;
@@ -41,7 +42,23 @@ class QuandlPriceData implements DataServiceInterface
         $data = array_get($item, $this->fields['data']);
         $columns = array_get($item, $this->fields['columns']);
 
-        return new TimeSeries($data, $columns);
+        return new TimeSeries($data, $this->mapColumns($columns));
+    }
+
+
+    private function mapColumns($columns)
+    {
+        $class = 'App\Classes\Metadata\Quandl\Quandl'.$this->datasource->database->code;
+
+        $mapping = (new $class)->columns;
+
+        foreach ($columns as $key => $value)
+        {
+            $mappedKey = array_search($value, $mapping, true);
+            if ($mappedKey) $columns[$key] = $mappedKey;
+        }
+
+        return $columns;
     }
 
 

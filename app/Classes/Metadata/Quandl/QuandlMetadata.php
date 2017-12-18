@@ -15,7 +15,7 @@ abstract class QuandlMetadata extends BaseMetadata
     protected $nextPage = 0;
     protected $totalPages = 2;
 
-    protected $columns = [
+    public $columns = [
         //
     ];
 

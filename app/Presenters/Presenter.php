@@ -20,6 +20,7 @@ abstract class Presenter
     private $priceFormat;
 
 
+
     public function __construct($entity)
     {
         $this->entity = $entity;

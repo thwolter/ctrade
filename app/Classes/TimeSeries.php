@@ -13,27 +13,18 @@ class TimeSeries
 
     private $columns;
 
-    private $accepted = [
-        'Date',
-        'High',
-        'Low',
-        'Open',
-        'Close',
-        'Volume'
-    ];
-
     private $output;
 
 
 
     public function __construct($data, $columns)
     {
-        $this->columns = $this->checkColumns($columns);
+        $this->columns = $columns;
         $this->data = $this->normalize($data);
     }
 
 
-    public function __get($name)
+    public function __call($name, $arguments)
     {
         if (substr($name, 0, 3) === 'get') {
             $field = str_replace('get', null, $name);
@@ -43,7 +34,7 @@ class TimeSeries
 
     public function get()
     {
-        $output = array_is_multidimensional($this->output) ? $this->column('Close')->output : $this->output;
+        $output = $this->output;
 
         $this->output = null;
         return $output;
@@ -71,8 +62,9 @@ class TimeSeries
 
     public function column($column = null)
     {
-        if ($column && array_has($this->columns, $column)) {
-            $this->output = array_column($this->output(), $this->getColumn($column), $this->getColumn('Date'));
+        $key = $this->getColumn($column);
+        if ($column && $key) {
+            $this->output = array_column($this->output(), $key, $this->getColumn('Date'));
 
         } else {
             $this->output = array_combine(
@@ -171,13 +163,4 @@ class TimeSeries
         return array_search($column, $this->columns);
     }
 
-
-    private function checkColumns($columns)
-    {
-        foreach ($columns as $key => $value) {
-            if (array_search($value, $this->accepted) === false)
-                array_forget($columns, $key);
-        }
-        return $columns;
-    }
 }

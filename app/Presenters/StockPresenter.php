@@ -5,10 +5,12 @@ namespace App\Presenters;
 
 
 use App\Services\DataService;
+use App\Services\MetricServices\StockMetricService;
 use Carbon\Carbon;
 
 class StockPresenter extends Presenter
 {
+
 
     public function isin()
     {
@@ -40,17 +42,17 @@ class StockPresenter extends Presenter
     }
 
 
-    public function minPrice($exchange)
+    public function lowPrice($exchange)
     {
         return $this->formatPrice(
-            $this->dataService->history($this->entity, $exchange)->count(1)->column('Low')->get()
+            $this->metric->lowPrice($exchange)
         );
     }
 
-    public function maxPrice($exchange)
+    public function HighPrice($exchange)
     {
         return $this->formatPrice(
-            $this->dataService->history($this->entity, $exchange)->count(1)->column('High')->get()
+            $this->metric->highPrice($exchange)
         );
     }
 
@@ -58,7 +60,7 @@ class StockPresenter extends Presenter
     public function periodLow($exchange, $count)
     {
         return $this->formatPrice(
-            min($this->dataService->priceHistory($this->entity, ['count' => $count, 'exchange' => $exchange]))
+            $this->metric->periodHigh($exchange, $count)
         );
     }
 
@@ -66,18 +68,16 @@ class StockPresenter extends Presenter
     public function periodHigh($exchange, $count)
     {
         return $this->formatPrice(
-            max($this->dataService->priceHistory($this->entity, ['count' => $count, 'exchange' => $exchange]))
+            $this->metric->periodHigh($exchange, $count)
         );
     }
 
 
     public function periodReturn($exchange, $count)
     {
-        $prices = $this->dataService->priceHistory($this->entity, ['count' => $count, 'exchange' => $exchange]);
-
-        return $this->formatPercentage(
-            array_last($prices) ? array_first($prices)/array_last($prices) - 1 : null
-        );
+       return $this->formatPercentage(
+           $this->metric->periodReturn($exchange, $count)
+       );
     }
 
 

@@ -20,7 +20,7 @@ class QuandlFSE extends QuandlMetadata implements MetadataInterface
         'description'   => ['description', '/.*/', 0]
     ];
 
-    protected $columns = [
+    public $columns = [
         'Date'   => 'Date',
         'Open'   => 'Open',
         'High'   => 'High',

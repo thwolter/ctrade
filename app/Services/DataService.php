@@ -43,12 +43,6 @@ class DataService
     }
 
 
-    public function price($entity, $exchange = null)
-    {
-        return $this->history($entity, $exchange)->count(1)->column('Close')->get();
-    }
-
-
     /**
      * Return the history of a datasource's prices as array with dates as key.
      *
