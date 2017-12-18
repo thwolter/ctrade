@@ -41,15 +41,18 @@ class MetricService
         }
     }
 
+
     protected function getConfidence(Portfolio $portfolio)
     {
         return trim($portfolio->settings('confidence'), '0.');
     }
 
+
     protected function getPeriod(Portfolio $portfolio)
     {
         return $portfolio->settings('period');
     }
+
 
     protected function toArray($keyfigure)
     {

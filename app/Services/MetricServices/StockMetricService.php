@@ -59,8 +59,24 @@ class StockMetricService extends MetricService
     }
 
 
-    public function risk()
+    public function dataHistory($entity, $exchange)
     {
+        $data = $this->history($entity, $exchange)->get();
 
+        $datasource = $this->entity->datasource;
+
+        return [
+            'data' => array_values($data->getData()),
+            'columns' => $data->getColumns(),
+            'currency' => $datasource->currency->code,
+            'exchange' => $datasource->exchange->code,
+            'datasource_id' => $datasource->id
+        ];
+    }
+
+
+    public function risk($exchange)
+    {
+        //
     }
 }

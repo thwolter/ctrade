@@ -82,9 +82,11 @@ class StockPresenter extends Presenter
 
 
 
-   /* public function risk()
+   public function risk()
     {
-        return $this->formatPrice($this->entity->price(), $this->entity->currency->code);
-    }*/
+        return $this->formatPrice(
+            $this->metric->risk($exchange)
+        );
+    }
 
 }
