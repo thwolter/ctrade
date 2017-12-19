@@ -70,13 +70,13 @@
 
                                     <!-- Midget Graph -->
                                     <div class="col-md-3 align-self-center g-py-20">
-                                        {!! $chart->midget($portfolio)->render() !!}
+                                         {{--$chart->midget($portfolio)->render()--}}
                                     </div>
 
                                     <div class="col-md-3 text-right">
                                         <div class="row h-100">
                                             <div class="col-12">
-                                                <div class="h4">{{ $portfolio->present()->total() }}</div>
+                                                <div class="h4">{{ $portfolio->present()->value() }}</div>
                                                 <div>{{ $portfolio->present()->htmlProfit(1) }}</div>
                                             </div>
 

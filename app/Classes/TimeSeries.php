@@ -17,10 +17,12 @@ class TimeSeries
 
 
 
-    public function __construct($data, $columns)
+    public function __construct($data, $columns = null)
     {
-        $this->columns = $columns;
-        $this->data = $this->normalize($data);
+        $this->columns = $columns ? $columns : ['Value'];
+        $this->data = array_is_multidimensional($data) ? $this->normalize($data) : $data;
+
+        krsort($this->data);
     }
 
 

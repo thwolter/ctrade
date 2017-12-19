@@ -11,32 +11,31 @@ class PortfolioPresenter extends Presenter
 {
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | CALCULATED
-    |--------------------------------------------------------------------------
-    */
+    public function value()
+    {
+        return $this->formatPrice(
+            $this->metrics->value($this->entity)->getValue(), ['showNull' => true]
+        );
+    }
+
 
     public function cash()
     {
         return $this->formatPrice(
-            $this->metrics->cash($this->entity)
+            $this->metrics->cash($this->entity)->getValue()
         );
     }
+
 
     public function stockTotal()
     {
         return $this->formatPrice(
-            $this->metrics->total($this->entity,Stock::class)
+            $this->metrics->total($this->entity, Stock::class)
         );
     }
 
-    public function total()
-    {
-        return $this->formatPrice(
-            $this->metrics->total($this->entity), ['showNull' => true]
-        );
-    }
+
+
 
     public function profit($days = null)
     {
@@ -55,7 +54,7 @@ class PortfolioPresenter extends Presenter
         elseif ($profit === 0)
             $class = "fa fa-caret-down g-color-red";
         else
-            $class="";
+            $class = "";
 
         return new HtmlString(sprintf('<i class="%s" aria-hidden="true"></i> %s (%s)',
             $class,
@@ -78,26 +77,30 @@ class PortfolioPresenter extends Presenter
 
     public function updatedRisk()
     {
-        $date = array_last(array_keys($this->entity->keyFigure('risk')->values));
-        return $this->formatDate($date);
+        return $this->formatDate(
+            array_last(array_keys($this->entity->keyFigure('risk')->values))
+        );
     }
 
     public function updatedValue()
     {
-        $date = array_last(array_keys($this->entity->keyFigure('value')->values));
-        return $this->formatDate($date);
+        return $this->formatDate(
+            array_last(array_keys($this->entity->keyFigure('value')->values))
+        );
     }
 
     public function updatedToday()
     {
-        $date = Carbon::now();
-        return $this->formatDate($date);
+        return $this->formatDate(
+            Carbon::now()
+        );
     }
 
     public function updatedReturn()
     {
-        $date = array_last(array_keys($this->entity->keyFigure('value')->values));
-        return $this->formatDate($date);
+        return $this->formatDate(
+            array_last(array_keys($this->entity->keyFigure('value')->values))
+        );
     }
 
 
@@ -110,7 +113,7 @@ class PortfolioPresenter extends Presenter
     public function image()
     {
         $url = $this->entity->imageUrl;
-        return (! is_null($url)) ? asset('storage/'.$url) : asset('img/portfolios/bg-1.jpg');
+        return (!is_null($url)) ? asset('storage/' . $url) : asset('img/portfolios/bg-1.jpg');
     }
 
     public function description()

@@ -42,7 +42,7 @@ class AssetHistories extends Resource
     private function assetHistory($asset, $days)
     {
         $dataService = new DataService();
-        return [$asset->label() => $dataService->history($asset->positionable)->dates($days)->get()];
+        return [$asset->label() => $dataService->history($asset->positionable)->dates($days)->getClose()];
     }
 
     /**

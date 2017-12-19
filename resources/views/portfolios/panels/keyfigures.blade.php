@@ -38,7 +38,7 @@
             <div class="col-lg-3 col-sm-6 g-mb-50">
                 <span class="u-label g-bg-bluegray g-mr-10 g-mb-15">Portfoliowert</span>
                 <div class="g-font-size-35 g-font-weight-300 g-mb-7">
-                    {{ $portfolio->present()->total() }}
+                    {{ $portfolio->present()->value() }}
                 </div>
                 <p> {{ $portfolio->present()->updatedValue() }}</p>
             </div>

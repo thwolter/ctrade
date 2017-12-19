@@ -15,9 +15,7 @@ class CalcPortfolioValueChunk implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-
     protected $object;
-
 
 
     /**
@@ -42,7 +40,7 @@ class CalcPortfolioValueChunk implements ShouldQueue
             $key = $date->toDateString();
             $value = $this->calculateValue($date);
 
-            $this->object->set($key, array_first_or_null($value['value']));
+            $this->storeKpi('value', $key, array_first_or_null($value['value']));
         }
     }
 
@@ -53,5 +51,18 @@ class CalcPortfolioValueChunk implements ShouldQueue
     {
         $rscript = new Rscript($this->object->getPortfolio());
         return $rscript->portfolioValue($date->toDateString());
+    }
+
+
+    /**
+     * @param $kpiName
+     * @param $key
+     * @param $value
+     */
+    private function storeKpi($kpiName, $key, $value)
+    {
+        $kpi = $this->object->getPortfolio()->keyFigure($kpiName);
+        $kpi->effective_at = $this->object->getEffectiveAt();
+        $kpi->set($key, $value);
     }
 }

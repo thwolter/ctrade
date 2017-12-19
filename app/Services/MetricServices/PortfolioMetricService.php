@@ -2,18 +2,85 @@
 
 namespace App\Services\MetricServices;
 
+use App\Classes\Price;
+use App\Classes\TimeSeries;
 use Carbon\Carbon;
 use App\Entities\Portfolio;
+use App\Facades\MetricService\AssetMetricService;
 
 
 class PortfolioMetricService extends MetricService
 {
 
+    /**
+     * Calculates the Portfolio's value based on latest available price data.
+     *
+     * @param Portfolio $portfolio
+     * @return Price
+     */
     public function value(Portfolio $portfolio)
     {
-        return $this->shapeOutput(
-            array_splice($this->getValues($portfolio), -1, 1, true)
-        );
+        $value = 0;
+        $date = null;
+
+        foreach ($portfolio->assets as $asset)
+        {
+            $assetValue = AssetMetricService::value($asset);
+            $value =+ array_first($assetValue);
+
+            $assetValueDate = Carbon::parse(key($assetValue));
+            $date = max($date, $assetValueDate);
+        }
+
+        return new Price($date, $value + $this->cash($portfolio)->getValue());
+    }
+
+
+    /**
+     * Return the Portfolio's profit over a specified period.
+     *
+     * @param Portfolio $portfolio
+     * @param null $count
+     * @param bool $percent
+     * @return float|int|mixed|null
+     */
+    public function profit(Portfolio $portfolio, $count = null, $percent = false)
+    {
+        $values = $this->getDbValues($portfolio)
+            ->count(1 + ($count || $this->getPeriod($portfolio)))
+            ->get();
+
+        return $percent ? $this->deltaPercent($values, $count) : $this->deltaAbsolute($count, $values);
+    }
+
+
+    /**
+     * Return the Portfolio's cash position at a given date.
+     *
+     * @param Portfolio $portfolio
+     * @param null $date
+     * @return Price
+     */
+    public function cash(Portfolio $portfolio, $date = null)
+    {
+        $date = $date ? Carbon::parse($date) : Carbon::now();
+
+        $cash = $portfolio->payments()
+            ->where('executed_at', '<=', $date->endOfDay())
+            ->sum('amount');
+
+        return new Price($date, $cash);
+    }
+
+
+
+
+
+
+    public function cashFlow(Portfolio $portfolio, $from, $to)
+    {
+        return $portfolio->payments()
+            ->whereBetween('executed_at', [$from, $to])->sum('amount');
     }
 
 
@@ -27,29 +94,6 @@ class PortfolioMetricService extends MetricService
         return $sum;
     }
 
-
-    public function cash(Portfolio $portfolio, $date = null)
-    {
-        $toDate = $date ? Carbon::parse($date) : Carbon::now();
-
-        return $portfolio->payments()
-            ->where('executed_at', '<=', $toDate->endOfDay())
-            ->sum('amount');
-    }
-
-
-    public function cashFlow(Portfolio $portfolio, $from, $to)
-    {
-        return $portfolio->payments()
-            ->whereBetween('executed_at', [$from, $to])->sum('amount');
-    }
-
-
-
-    public function valueHistory(Portfolio $portfolio, $days)
-    {
-        return array_slice($this->getValues($portfolio), -$days, $days, true);
-    }
 
 
     public function risk(Portfolio $portfolio)
@@ -67,14 +111,6 @@ class PortfolioMetricService extends MetricService
         return array_slice($this->getRisks($portfolio), -$days, $days, true);
     }
 
-
-    public function dailyRisk(Portfolio $portfolio)
-    {
-        return $this->shapeOutput(
-            array_slice($this->getRisks($portfolio), -1, 1, true)
-        );
-    }
-
     
     public function riskToDate(Portfolio $portfolio, $date = null)
     {
@@ -87,41 +123,67 @@ class PortfolioMetricService extends MetricService
     }
 
 
-    public function profit(Portfolio $portfolio, $days = null, $percent = false)
-    {
-        $values = $this->valueHistory($portfolio, 1 + ($days || $this->getPeriod($portfolio)));
 
-        return $percent ? $this->deltaPercent($values, $days) : $this->deltaAbsolute($days, $values);
+
+
+    /**
+     * Return the Portfolio's risk as latest value stored in the database.
+     *
+     * @param Portfolio $portfolio
+     * @return Price
+     */
+    private function dailyRisk(Portfolio $portfolio)
+    {
+        $value = $this->getDbRisks($portfolio)->count(1)->get();
+
+        return new Price(key($value), array_first($value));
     }
 
 
-    private function getValues($portfolio)
+    /**
+     * Receive the Portfolio's value history from the database.
+     *
+     * @param $portfolio
+     * @return TimeSeries
+     */
+    private function getDbValues($portfolio)
     {
-        return $this->toArray($portfolio->keyfigure('value'));
+        return new TimeSeries($portfolio->keyfigure('value')->values);
     }
 
 
-
-    private function getRisks($portfolio)
+    /**
+     * Receive the Portfolio's risk history from the database.
+     *
+     * @param $portfolio
+     * @return TimeSeries
+     */
+    private function getDbRisks($portfolio)
     {
-        return $this->toArray(
-            $portfolio->keyfigure('risk.' . $this->getConfidence($portfolio))
-        );
-    }
-    
-
-    private function getRiskDate($portfolio)
-    {
-        return Carbon::parse(array_last(array_keys($this->getRisks($portfolio))));
+        return new TimeSeries($portfolio->keyfigure('risk.' . $this->getConfidence($portfolio))->values);
     }
 
 
+    /**
+     * Return the absolute delta for an array with two values.
+     *
+     * @param $values
+     * @param $days
+     * @return mixed|null
+     */
     private function deltaAbsolute($values, $days)
     {
         return count($values) === $days ? array_last($values) - array_first($values) : null;
     }
 
 
+    /**
+     * Return the percentage delta for an array with two values.
+     *
+     * @param $values
+     * @param $days
+     * @return float|int|null
+     */
     private function deltaPercent($values, $days)
     {
         if (!array_first($values)) return null;
