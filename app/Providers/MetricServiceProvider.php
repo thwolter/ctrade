@@ -2,11 +2,6 @@
 
 namespace App\Providers;
 
-use App\Classes\DataProvider\QuandlPriceData;
-use App\Contracts\DataServiceInterface;
-use App\Contracts\MetricServiceInterface;
-use App\Entities\Datasource;
-use App\Exceptions\DataServiceException;
 use App\Exceptions\MetricServiceException;
 use App\Services\MetricServices\MetricService;
 use Illuminate\Support\ServiceProvider;
@@ -22,10 +17,9 @@ class MetricServiceProvider extends ServiceProvider
     {
         $this->app->bind('MetricService', function ($app, $parameter) {
 
-            $entity = $parameter[0];
-            $service = $this->getServiceClass($entity);
+            $service = $this->getServiceClass(array_first($parameter));
 
-            return new $service($entity);
+            return new $service;
         });
 
     }

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Http\ViewComposers\ChartComposer;
 use App\Http\ViewComposers\DataComposer;
+use App\Http\ViewComposers\MetricComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +25,10 @@ class ViewServiceProvider extends ServiceProvider
         View::composer([
             'positions.show*',
         ], DataComposer::class);
+
+        View::composer([
+            'positions.show*',
+        ], MetricComposer::class);
     }
 
     /**

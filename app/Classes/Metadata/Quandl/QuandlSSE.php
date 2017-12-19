@@ -26,7 +26,7 @@ class QuandlSSE extends QuandlMetadata implements MetadataInterface
         'description'   => ['description', '/.*/', 0]
     ];
 
-    protected $columns = [
+    public $columns = [
         'Date'   => 'Date',
         'High'   => 'High',
         'Low'    => 'Low',

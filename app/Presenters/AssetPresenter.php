@@ -3,20 +3,9 @@
 namespace App\Presenters;
 
 
-use App\Services\MetricServices\AssetMetricService;
 
 class AssetPresenter extends Presenter
 {
-
-    protected $metrics;
-
-
-    public function __construct($entity)
-    {
-        parent::__construct($entity);
-
-        $this->metrics = app()->make(AssetMetricService::class);
-    }
 
 
     public function amount()

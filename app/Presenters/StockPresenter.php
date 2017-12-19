@@ -4,9 +4,6 @@
 namespace App\Presenters;
 
 
-use App\Services\DataService;
-use App\Services\MetricServices\StockMetricService;
-use Carbon\Carbon;
 
 class StockPresenter extends Presenter
 {
@@ -21,7 +18,7 @@ class StockPresenter extends Presenter
     public function price($exchange = null)
     {
         return $this->formatPrice(
-            $this->metric->price($exchange)
+            $this->metrics->price($this->entity, $exchange)
         );
     }
 
@@ -29,7 +26,7 @@ class StockPresenter extends Presenter
     public function priceDate($exchange = null)
     {
         return $this->formatDate(
-            key($this->metric->price($exchange))
+            key($this->metrics->price($this->entity, $exchange))
         );
     }
 
@@ -37,7 +34,7 @@ class StockPresenter extends Presenter
     public function previousPrice($exchange = null)
     {
         return $this->formatPrice(
-            $this->metric->previousPrice($exchange)
+            $this->metrics->previousPrice($this->entity, $exchange)
         );
     }
 
@@ -45,14 +42,14 @@ class StockPresenter extends Presenter
     public function lowPrice($exchange)
     {
         return $this->formatPrice(
-            $this->metric->lowPrice($exchange)
+            $this->metrics->lowPrice($this->entity, $exchange)
         );
     }
 
     public function HighPrice($exchange)
     {
         return $this->formatPrice(
-            $this->metric->highPrice($exchange)
+            $this->metrics->highPrice($this->entity, $exchange)
         );
     }
 
@@ -60,7 +57,7 @@ class StockPresenter extends Presenter
     public function periodLow($exchange, $count)
     {
         return $this->formatPrice(
-            $this->metric->periodHigh($exchange, $count)
+            $this->metrics->periodHigh($this->entity, $exchange, $count)
         );
     }
 
@@ -68,7 +65,7 @@ class StockPresenter extends Presenter
     public function periodHigh($exchange, $count)
     {
         return $this->formatPrice(
-            $this->metric->periodHigh($exchange, $count)
+            $this->metrics->periodHigh($this->entity, $exchange, $count)
         );
     }
 
@@ -76,16 +73,16 @@ class StockPresenter extends Presenter
     public function periodReturn($exchange, $count)
     {
        return $this->formatPercentage(
-           $this->metric->periodReturn($exchange, $count)
+           $this->metrics->periodReturn($this->entity, $exchange, $count)
        );
     }
 
 
 
-   public function risk()
+   public function risk($exchange)
     {
         return $this->formatPrice(
-            $this->metric->risk($exchange)
+            $this->metrics->risk($this->entity, $exchange)
         );
     }
 

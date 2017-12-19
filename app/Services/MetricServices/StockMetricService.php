@@ -2,58 +2,56 @@
 
 namespace App\Services\MetricServices;
 
-use App\Entities\Stock;
-use Carbon\Carbon;
 
 
 class StockMetricService extends MetricService
 {
 
-    public function price($exchange = null)
+    public function price($stock, $exchange = null)
     {
-        return $this->dataService->history($this->entity, $exchange)->count(1)->getClose();
+        return $this->dataService->history($stock, $exchange)->count(1)->getClose();
     }
 
 
-    public function previousPrice($exchange = null)
+    public function previousPrice($stock, $exchange = null)
     {
         return array_last(
-            $this->dataService->history($this->entity, $exchange)->count(2)->getClose()
+            $this->dataService->history($stock, $exchange)->count(2)->getClose()
         );
     }
 
 
-    public function lowPrice($exchange)
+    public function lowPrice($stock, $exchange)
     {
-        return $this->dataService->history($this->entity, $exchange)->count(1)->getLow();
+        return $this->dataService->history($stock, $exchange)->count(1)->getLow();
     }
 
 
-    public function highPrice($exchange)
+    public function highPrice($stock, $exchange)
     {
-        return $this->dataService->history($this->entity, $exchange)->count(1)->getHigh();
+        return $this->dataService->history($stock, $exchange)->count(1)->getHigh();
     }
 
 
-    public function periodHigh($exchange, $count)
+    public function periodHigh($stock, $exchange, $count)
     {
         return max(
-            $this->dataService->history($this->entity, $exchange)->count($count)->getClose()
+            $this->dataService->history($stock, $exchange)->count($count)->getClose()
         );
     }
 
 
-    public function periodLow($exchange, $count)
+    public function periodLow($stock, $exchange, $count)
     {
         return min(
-            $this->dataService->history($this->entity, $exchange)->count($count)->getClose()
+            $this->dataService->history($stock, $exchange)->count($count)->getClose()
         );
     }
 
 
-    public function periodReturn($exchange, $count)
+    public function periodReturn($stock, $exchange, $count)
     {
-        $prices = $this->dataService->history($this->entity, $exchange)->count($count)->getClose();
+        $prices = $this->dataService->history($stock, $exchange)->count($count)->getClose();
 
         return array_first($prices) ? array_first($prices)/array_last($prices) - 1 : null;
     }
@@ -75,7 +73,7 @@ class StockMetricService extends MetricService
     }
 
 
-    public function risk($exchange)
+    public function risk($stock, $exchange)
     {
         //
     }

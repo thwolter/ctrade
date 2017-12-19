@@ -10,15 +10,12 @@ class MetricService
 {
     protected $withDate = false;
 
-    protected $entity;
-
     protected $dataService;
 
 
 
-    public function __construct($entity)
+    public function __construct()
     {
-        $this->entity = $entity;
 
         $this->dataService = new DataService();
     }

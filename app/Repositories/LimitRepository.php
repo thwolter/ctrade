@@ -20,7 +20,7 @@ class LimitRepository
     {
         $this->portfolio = $portfolio;
 
-        $this->metrics = app()->make(PortfolioMetricService::class);
+        $this->metrics = PortfolioMetricService::class;
     }
 
 

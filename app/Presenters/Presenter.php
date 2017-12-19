@@ -25,7 +25,7 @@ abstract class Presenter
     {
         $this->entity = $entity;
 
-        $this->metric = app('MetricService', [$entity]);
+        $this->metrics = app('MetricService', [$entity]);
     }
 
 

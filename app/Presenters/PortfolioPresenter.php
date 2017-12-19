@@ -3,23 +3,12 @@
 namespace App\Presenters;
 
 
-use App\Services\MetricServices\PortfolioMetricService;
 use App\Entities\Stock;
 use Carbon\Carbon;
 use Illuminate\Support\HtmlString;
 
 class PortfolioPresenter extends Presenter
 {
-
-    protected $metrics;
-
-
-    public function __construct($entity)
-    {
-        parent::__construct($entity);
-
-        $this->metrics = app()->make(PortfolioMetricService::class);
-    }
 
 
     /*

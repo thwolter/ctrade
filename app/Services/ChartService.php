@@ -3,7 +3,6 @@
 namespace App\Services;
 
 
-use App\Services\MetricServices\PortfolioMetricService;
 
 class ChartService
 {
@@ -11,9 +10,9 @@ class ChartService
     protected $metrics;
 
 
-    public function __construct(PortfolioMetricService $metrics)
+    private function metric($entity)
     {
-        $this->metrics = $metrics;
+        return app()->make('MetricService', [$entity]);
     }
 
 
@@ -31,7 +30,7 @@ class ChartService
                     'borderWidth'       => 5,
                     'fill'              => false,
                     'pointRadios'       => 0,
-                    'data'              => $this->metrics->valueHistory($portfolio, 5)
+                    'data'              => $this->metric($portfolio)->valueHistory($portfolio, 5)
                 ]
             ])
             ->options([])
