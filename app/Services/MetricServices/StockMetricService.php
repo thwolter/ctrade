@@ -4,6 +4,8 @@ namespace App\Services\MetricServices;
 
 
 
+use App\Entities\Stock;
+
 class StockMetricService extends MetricService
 {
 
@@ -57,19 +59,39 @@ class StockMetricService extends MetricService
     }
 
 
-    public function dataHistory($entity, $exchange)
+    public function dataHistory($stock, $exchange)
     {
-        $data = $this->history($entity, $exchange)->get();
+        $data = $this->dataService->history($stock, $exchange);
 
-        $datasource = $this->entity->datasource;
+        $datasource = $this->dataService->getDatasource($stock, $exchange);
 
         return [
-            'data' => array_values($data->getData()),
+            'data' => array_values($data->get()),
             'columns' => $data->getColumns(),
             'currency' => $datasource->currency->code,
             'exchange' => $datasource->exchange->code,
             'datasource_id' => $datasource->id
         ];
+    }
+
+    /**
+     * Return the entity's price histories for all exchanges.
+     *
+     * @param $attributes
+     * @return array
+     */
+    public function historiesByExchange(Stock $stock, $count = null)
+    {
+        $prices = [];
+        foreach ($stock->datasources  as $datasource) {
+            $exchange = $datasource->exchange->code;
+
+            $prices[] = [
+                'exchange' => $exchange,
+                'data' => $this->dataService->history($stock, $exchange)->count($count)->getClose(),
+                'datasourceId' => $datasource->id];
+        };
+        return $prices;
     }
 
 

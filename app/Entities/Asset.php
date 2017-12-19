@@ -185,6 +185,11 @@ class Asset extends Model
         return $this->positionable->name;
     }
 
+    public function getAmountAttribute()
+    {
+        return $this->positions()->sum('amount');
+    }
+
 
     /*
     |--------------------------------------------------------------------------

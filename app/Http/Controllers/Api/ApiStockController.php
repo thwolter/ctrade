@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Entities\Stock;
 use App\Services\DataService;
+use App\Services\MetricServices\StockMetricService;
 use Illuminate\Http\Request;
 
 class ApiStockController extends ApiBaseController
 {
 
-    protected $dataService;
+    protected $metrics;
 
 
-    public function __construct(DataService $dataService)
+    public function __construct(StockMetricService $metrics)
     {
-        $this->dataService = $dataService;
+        $this->metrics = $metrics;
     }
 
 
@@ -32,11 +33,9 @@ class ApiStockController extends ApiBaseController
         $stock = Stock::find($attributes['id']);
         $exchanges = $stock->exchangesToArray();
 
-        $exchange = array_get($attributes, 'exchange', array_get($exchanges, '0.code'));
-
         return [
             'exchanges' => $exchanges,
-            'data' => $this->dataService->dataHistory($stock->getDatasource($exchange))
+            'data' => $this->metrics->dataHistory($stock, $stock->firstExchange())
         ];
     }
 }

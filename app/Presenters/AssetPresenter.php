@@ -10,7 +10,7 @@ class AssetPresenter extends Presenter
 
     public function amount()
     {
-        return $this->entity->amount();
+        return $this->entity->amount;
     }
 
 

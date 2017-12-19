@@ -187,18 +187,6 @@ class Portfolio extends Model
     }
 
 
-    public function cash($date = null)
-    {
-        return $this->payments()
-            ->where('executed_at', '<=', Carbon::parse($date)->endOfDay())
-            ->sum('amount');
-    }
-
-    public function cashFlow($from, $to)
-    {
-        return $this->payments()->whereBetween('executed_at', [$from, $to])->sum('amount');
-    }
-
     public function totalOfType($type = null)
     {
         $assets = $type ? $this->assets()->ofType($type) : $this->assets();

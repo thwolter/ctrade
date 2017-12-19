@@ -34,7 +34,7 @@ class TimeSeries
 
     public function get()
     {
-        $output = $this->output;
+        $output = $this->output();
 
         $this->output = null;
         return $output;

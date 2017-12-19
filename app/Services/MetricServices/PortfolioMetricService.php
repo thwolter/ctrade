@@ -9,22 +9,41 @@ use App\Entities\Portfolio;
 class PortfolioMetricService extends MetricService
 {
 
-    public function total(Portfolio $portfolio, $class = null)
-    {
-        return null;
-    }
-
-    public function cash()
-    {
-        return null;
-    }
-
     public function value(Portfolio $portfolio)
     {
         return $this->shapeOutput(
             array_splice($this->getValues($portfolio), -1, 1, true)
         );
     }
+
+
+    public function totalOfType(Portfolio $portfolio, $type)
+    {
+        $sum = 0;
+        foreach($portfolio->assets()->ofType($type)->get() as $asset)
+        {
+            $sum += $asset->value();
+        }
+        return $sum;
+    }
+
+
+    public function cash(Portfolio $portfolio, $date = null)
+    {
+        $toDate = $date ? Carbon::parse($date) : Carbon::now();
+
+        return $portfolio->payments()
+            ->where('executed_at', '<=', $toDate->endOfDay())
+            ->sum('amount');
+    }
+
+
+    public function cashFlow(Portfolio $portfolio, $from, $to)
+    {
+        return $portfolio->payments()
+            ->whereBetween('executed_at', [$from, $to])->sum('amount');
+    }
+
 
 
     public function valueHistory(Portfolio $portfolio, $days)
@@ -57,7 +76,7 @@ class PortfolioMetricService extends MetricService
     }
 
     
-    public function riskToDate($date = null)
+    public function riskToDate(Portfolio $portfolio, $date = null)
     {
         $referenceDate = $this->getRiskDate($portfolio);
         $period = $date 

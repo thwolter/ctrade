@@ -10,17 +10,28 @@ class AssetMetricService extends MetricService
 {
 
 
-    public function price(Asset $asset)
+    public function price(Asset $asset, $exchange = null)
     {
-        return null;
+        $metric = app()->make('MetricService', [$asset->positionable]);
+        return $metric->price($asset->positionable, $exchange);
     }
 
-    public function value(Asset $asset, $currency = null)
+
+    public function value(Asset $asset, $exchange = null)
     {
-        return null;
+        return array_map(function($value) use ($asset) {
+            return $value * $asset->amount;
+        }, $this->price($asset, $exchange));
     }
+
 
     public function risk(Asset $asset)
+    {
+        return $this->riskDb($asset);
+    }
+
+
+    public function riskDb(Asset $asset, $data = null)
     {
         $dailyRisk = $this->withDate()->dailyRisk($asset);
 

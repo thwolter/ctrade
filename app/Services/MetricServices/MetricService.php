@@ -16,7 +16,6 @@ class MetricService
 
     public function __construct()
     {
-
         $this->dataService = new DataService();
     }
 
