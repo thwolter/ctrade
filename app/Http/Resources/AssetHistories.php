@@ -2,14 +2,12 @@
 
 namespace App\Http\Resources;
 
-use App\Facades\TimeSeries;
 use App\Repositories\CurrencyRepository;
-use App\Services\DataService;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Facades\DataService;
 
 class AssetHistories extends Resource
 {
-
 
     /**
      * Transform the resource into an array.
@@ -19,17 +17,15 @@ class AssetHistories extends Resource
      */
     public function toArray($request)
     {
-        $days = TimeSeries::getWeekDaysSeries($request->all());
-
-        $result = [];
+        $assetHistory = [];
         foreach ($this->assets as $asset) {
 
-            $result += $this->assetHistory($asset, $days);
+            $assetHistory += $this->assetHistory($asset, $request->all());
 
             if ($asset->hasForeignCurrency())
-                $result += $this->currencyHistory($asset, $days);
+                $assetHistory += $this->currencyHistory($asset, array_keys($assetHistory));
         }
-        return $result;
+        return $assetHistory;
     }
 
     /**
@@ -39,10 +35,21 @@ class AssetHistories extends Resource
      * @param $days
      * @return array
      */
-    private function assetHistory($asset, $days)
+    private function assetHistory($asset, $attributes)
     {
-        $dataService = new DataService();
-        return [$asset->label() => $dataService->history($asset->positionable)->dates($days)->getClose()];
+        $history = DataService::history($asset->positionable)->weekdays();
+
+        if (array_has($attributes, ['count', 'date'])) {
+            $data = $history->count($attributes['count'])->to($attributes['date']);
+
+        } elseif (array_has($attributes, ['from', 'to'])) {
+            $data = $history->from($attributes['from'])->to($attributes['to']);
+
+        } else {
+            $data = $history;
+        }
+
+        return [$asset->label() => $data->fill('previous')->getClose()];
     }
 
     /**
@@ -56,7 +63,6 @@ class AssetHistories extends Resource
     {
         $currency = new CurrencyRepository($this->currency->code, $asset->currency->code);
         return [$currency->label() => $currency->history($days)];
-
     }
 
 

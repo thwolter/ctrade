@@ -1,44 +1,14 @@
 <?php
 
-
 namespace App\Facades;
 
-use App\Contracts\DataServiceInterface;
-use App\Entities\Datasource;
 
+use Illuminate\Support\Facades\Facade;
 
-class DataService
+class DataService extends Facade
 {
-
-    protected $datasource;
-
-
-    public function __construct(Datasource $datasource)
+    protected static function getFacadeAccessor()
     {
-        $this->datasource = $datasource;
-    }
-
-
-    public function price($date = null)
-    {
-        return $this->provider()->price($date);
-    }
-
-
-    public function history($dates = null)
-    {
-        return $this->provider()->history($dates);
-    }
-
-
-    public function allDataHistory($attributes)
-    {
-        return $this->provider()->allDataHistory($attributes);
-    }
-
-
-    private function provider()
-    {
-        return app(DataServiceInterface::class, [$this->datasource]);
+        return 'dataService';
     }
 }

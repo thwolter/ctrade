@@ -34,6 +34,13 @@ fetchHistories <- function(url, token = NULL) {
 
     dat <- content(request)$data
     len <- length(dat)
+    
+    histLength = unique(sapply(1:len, function(x) length(dat[[x]])))
+    
+    if (length(histLength) != 1) {
+        stop(paste("Received histories from url:", url, "have different lengths or are empty."))
+    }
+        
     dimnames = list(names(dat[[1]]), names(dat))
     m <- matrix(unlist(dat), ncol=len, dimnames=dimnames)
 

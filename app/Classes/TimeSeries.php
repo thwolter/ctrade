@@ -9,148 +9,187 @@ use Carbon\Carbon;
 class TimeSeries
 {
 
+    /**
+     * Time series data.
+     *
+     * @var array
+     */
     private $data;
 
+    /**
+     * Columns names matching the column in the 'data' array.
+     *
+     * @var array|null
+     */
     private $columns;
 
-    private $output;
+    /**
+     * Filter elements used to prepare the data output.
+     *
+     * @var array
+     */
+    private $filter = [];
 
 
-
+    /**
+     * TimeSeries constructor.
+     *
+     * @param $data
+     * @param null $columns
+     */
     public function __construct($data, $columns = null)
     {
         $this->columns = $columns ? $columns : ['Value'];
         $this->data = array_is_multidimensional($data) ? $this->normalize($data) : $data;
-
-        krsort($this->data);
     }
 
 
+    /**
+     * Dynamic handling of getters for time series columns.
+     *
+     * @param $name
+     * @param $arguments
+     * @return array|mixed
+     */
     public function __call($name, $arguments)
     {
         if (substr($name, 0, 3) === 'get') {
             $field = str_replace('get', null, $name);
+
             return $this->column($field)->get();
         }
     }
 
+
+    /**
+     * Method is called to prepare and receive time series data as array.
+     *
+     * @return array|mixed
+     */
     public function get()
     {
-        $output = $this->output();
+        $data = $this->fillDates($this->data);
+        $data = $this->sortByDates($data);
 
-        $this->output = null;
-        return $output;
+        $data = $this->filterByDates($data);
+
+        $data = $this->filtercolumn(
+            array_slice($data, 0, array_get($this->filter, 'count'))
+        );
+
+        $this->filter = [];
+        return $data;
     }
 
 
-    public function count($count = null)
+    /**
+     * Number of data to be returned.
+     *
+     * @param $count
+     * @return $this
+     */
+    public function count($count)
     {
-        if ($count)
-            $this->output = array_slice($this->output(), 0, $count);
-
+        array_set($this->filter, 'count', $count);
         return $this;
     }
 
-    public function from($date = null)
+    /**
+     * Starting date of the data to be returned.
+     *
+     * @param $date
+     * @return $this
+     */
+    public function from($date)
     {
+        array_set($this->filter, 'from', $date);
         return $this;
     }
 
-    public function to($date = null)
+    /**
+     * End date of the data to be returned.
+     *
+     * @param $date
+     * @return $this
+     */
+    public function to($date)
     {
+        array_set($this->filter, 'to', $date);
+        return $this;
+    }
+
+    /**
+     * Defines wether only the weekday shall be returned.
+     *
+     * @return $this
+     */
+    public function weekdays()
+    {
+        array_set($this->filter, 'days', 'isWeekday');
+        return $this;
+    }
+
+    /**
+     * Fill the data to be returned between 'from' and 'to' date. The
+     * 'type' is not yet evaluated to specify the approach how to fill not available data.
+     *
+     * @param $type
+     * @return $this
+     */
+    public function fill($type)
+    {
+        array_set($this->filter, 'fill', $type);
+        return $this;
+    }
+
+    /**
+     * Specify the column of the data to be returned.
+     *
+     * @param $column
+     * @return $this
+     */
+    public function column($column)
+    {
+        array_set($this->filter, 'column', $column);
         return $this;
     }
 
 
-    public function column($column = null)
+    /**
+     * Filter by columns specified in the filter settings.
+     *
+     * @param $data
+     * @return array
+     */
+    private function filterColumn($data)
     {
-        $key = $this->getColumn($column);
-        if ($column && $key) {
-            $this->output = array_column($this->output(), $key, $this->getColumn('Date'));
+        $key = $this->getColumn(array_get($this->filter, 'column'));
+
+        if (!array_is_multidimensional($data)) {
+            $filteredData = $data;
+
+        } elseif ($key) {
+            $filteredData = array_column($data, $key, $this->getColumn('Date'));
 
         } else {
-            $this->output = array_combine(
-                array_keys($this->output()),
-                array_fill(0, count($this->output()), null)
+            $filteredData = array_combine(
+                array_keys($data),
+                array_fill(0, count($data), null)
             );
         }
-        return $this;
-    }
-
-
-    public function dates($dates = null)
-    {
-        if ($dates)
-            $this->output = $this->extractDates($dates);
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getColumns()
-    {
-        return $this->columns;
+        return $filteredData;
     }
 
 
     /**
-     * @return mixed
+     * Make an associative array with dates as key.
+     *
+     * @param $data
+     * @return array
      */
-    public function getData()
-    {
-        return $this->output ? $this->output : $this->data;
-    }
-
-
-    private function extractDates(array $dates)
-    {
-        $earliest = min(array_keys($this->data));
-
-        foreach ($dates as $key) {
-
-            $result[$key] = array_get($this->data, $key);
-
-            if (is_null($result[$key])) {
-
-                $date = new Carbon($key);
-                while (is_null($result[$key]) and $date > $earliest) {
-                    $result[$key] = array_get($this->data, $date->subDay(1)->toDateString());
-                }
-            }
-        }
-        $result = $this->replaceNullValues($result);
-
-        return $result;
-    }
-
-
-    /**
-     * @param $result
-     * @return mixed
-     */
-    private function replaceNullValues($result)
-    {
-        foreach ($result as $key => $value) {
-            if (is_null($value)) $result[$key] = 0;
-        }
-        return $result;
-    }
-
-
     private function normalize($data)
     {
         return array_combine(array_column($data, $this->getColumn('Date')), $data);
-    }
-
-
-    /**
-     * @return mixed
-     */
-    private function output()
-    {
-        return $this->output ? $this->output : $this->data;
     }
 
 
@@ -163,6 +202,69 @@ class TimeSeries
     private function getColumn($column)
     {
         return array_search($column, $this->columns);
+    }
+
+    /**
+     * Fill required dates with values from previous day.
+     *
+     * @param $data
+     * @return array
+     */
+    private function fillDates($data)
+    {
+        if (array_has($this->filter, ['from', 'to', 'fill'])) {
+
+            $current = Carbon::parse($this->filter['from']);
+            while (Carbon::parse($this->filter['to'])->diffInDays($current, false) < 0) {
+                $yesterday = $current->copy()->subDay();
+                $data = array_add($data, $current->format('Y-m-d'), $data[$yesterday->format('Y-m-d')]);
+                $current->addDay();
+            }
+        }
+        return $this->sortByDates($data);
+    }
+
+    /**
+     * Sort data by dates.
+     *
+     * @param $data
+     * @return mixed
+     */
+    private function sortByDates($data)
+    {
+        krsort($data);
+        return $data;
+    }
+
+    /**
+     * Adopt the dates filter to limit the returned data.
+     * @param $data
+     * @return array
+     */
+    private function filterByDates($data)
+    {
+        $filter = $this->filter;
+        $days = array_get($this->filter, 'days');
+
+        $output = array_filter($data, function ($key) use ($filter, $days) {
+
+            $check = [];
+            $date = Carbon::parse($key);
+
+            if (array_has($filter,['to']))
+                $check[] = $date->diffInDays(Carbon::parse(array_get($filter, 'to')), false) >= 0;
+
+            if (array_has($filter,['from']))
+                $check[] = $date->diffInDays(Carbon::parse(array_get($filter, 'from')), false) <= 0;
+
+            if ($days)
+                $check[] = Carbon::parse($key)->$days();
+
+            return (count(array_unique($check)) === 1) ? current($check) : false;
+
+        }, ARRAY_FILTER_USE_KEY);
+
+        return $output;
     }
 
 }
