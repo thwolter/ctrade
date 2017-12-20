@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Classes\TimeSeries;
 use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;
+use App\Entities\Portfolio;
 use Illuminate\Database\Eloquent\Collection;
 
 
@@ -25,6 +26,22 @@ class DataService
         $datasource = $this->getDatasource($entity, $exchange);
 
         return $this->provider($datasource)->history();
+    }
+
+
+    public function dbPortfolioValue(Portfolio $portfolio)
+    {
+        return new TimeSeries(
+            $portfolio->keyfigures()->ofType('value')->first()->values
+        );
+    }
+
+
+    public function dbPortfolioRisk(Portfolio $portfolio, $confidence)
+    {
+        return new TimeSeries(
+            $portfolio->keyfigures()->ofType('risk.'.$confidence)->first()->values
+        );
     }
 
 

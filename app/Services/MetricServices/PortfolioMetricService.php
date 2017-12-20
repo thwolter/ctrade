@@ -46,7 +46,7 @@ class PortfolioMetricService extends MetricService
      */
     public function profit(Portfolio $portfolio, $count = null, $percent = false)
     {
-        $values = $this->getDbValues($portfolio)
+        $values = $this->dataService->dbPortfolioValue($portfolio)
             ->count(1 + ($count || $this->getPeriod($portfolio)))
             ->get();
 
@@ -134,21 +134,12 @@ class PortfolioMetricService extends MetricService
      */
     private function dailyRisk(Portfolio $portfolio)
     {
-        $value = $this->getDbRisks($portfolio)->count(1)->get();
+        $value = $this->dataService
+            ->dbPortfolioRisk($portfolio, $this->getConfidence($portfolio))
+            ->count(1)
+            ->get();
 
         return new Price(key($value), array_first($value));
-    }
-
-
-    /**
-     * Receive the Portfolio's value history from the database.
-     *
-     * @param $portfolio
-     * @return TimeSeries
-     */
-    private function getDbValues($portfolio)
-    {
-        return new TimeSeries($portfolio->keyfigure('value')->values);
     }
 
 

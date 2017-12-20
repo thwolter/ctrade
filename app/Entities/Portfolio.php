@@ -210,6 +210,7 @@ class Portfolio extends Model
     }
 
 
+    //todo: to be replaced
     /**
      * Return the keyFigures of chosen type. If not exists in database it will be craated.
      *
