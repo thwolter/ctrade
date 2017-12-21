@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Facades\MetricService\PortfolioMetricService;
 use App\Presenters\PortfolioPresenter;
 use App\Entities\Traits\UuidModel;
 use App\Presenters\Presentable;
@@ -160,6 +161,11 @@ class Portfolio extends Model
             'portfolio_id', 'asset_id');
     }
 
+    public function histories()
+    {
+        return $this->hasMany(History::class, 'historable');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -200,6 +206,7 @@ class Portfolio extends Model
 
     public function total()
     {
+        $a=1;
         return $this->totalOfType(null) + $this->cash();
     }
 
@@ -237,7 +244,7 @@ class Portfolio extends Model
             'id' => $this->id,
             'name' => $this->name,
             'currency' => $this->currency->code,
-            'cash' => $this->cash(),
+            'cash' => PortfolioMetricService::cash($this)->getValue(),
             'lastTransactionDate' => $this->lastTransactionDateString()
         ];
     }

@@ -2,7 +2,6 @@
 
 namespace App\Entities;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\DatasourceException;
 

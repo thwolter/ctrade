@@ -11,11 +11,11 @@
             </li>
             <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
                 <span>Sector</span>
-                <span class="float-right g-color-black">{{ $stock->sector->name }}</span>
+                <span class="float-right g-color-black">{{ $stock->present()->sector() }}</span>
             </li>
             <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
                 <span>Industry</span>
-                <span class="float-right g-color-black">{{ $stock->industry->name }}</span>
+                <span class="float-right g-color-black">{{ $stock->present()->industry() }}</span>
             </li>
         </ul>
     </div>

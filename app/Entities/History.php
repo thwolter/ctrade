@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Term;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -41,9 +42,9 @@ class History extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function type()
+    public function term()
     {
-        return $this->belongsTo(Type::class);
+        return $this->belongsTo(Term::class);
     }
 
     public function historable()

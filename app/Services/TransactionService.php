@@ -13,7 +13,11 @@ class TransactionService
     public function trade($portfolio, $attributes)
     {
         $position = $this->makePosition($attributes);
-        $portfolio->assets()->save($this->makeAsset($position, $attributes));
+
+        $portfolio->assets()->firstOrCreate([
+            'positionable_type' => $attributes['instrumentType'],
+            'positionable_id' => $attributes['instrumentId']
+        ])->obtain($position);
 
         $this->payTrade($portfolio, $attributes, $position);
         $this->payFees($portfolio, $attributes, $position);
@@ -71,14 +75,4 @@ class TransactionService
             'executed_at' => $attributes['executed']
         ]);
     }
-
-
-    private function makeAsset($position, $attributes)
-    {
-        return Asset::firstOrCreate([
-            'positionable_type' => $attributes['instrumentType'],
-            'positionable_id' => $attributes['instrumentId']
-        ]);
-    }
-
 }

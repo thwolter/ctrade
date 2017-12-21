@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Calculations;
 
+use App\Entities\History;
 use App\Events\PortfolioWasCalculated;
 use App\Models\Rscript;
 use App\Notifications\StatusCalculation;
@@ -21,7 +22,7 @@ class CalcPortfolioRiskChunk implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param CalculationObject $object
      */
     public function __construct(CalculationObject $object)
     {
@@ -94,5 +95,9 @@ class CalcPortfolioRiskChunk implements ShouldQueue
         $kpi = $this->object->getPortfolio()->keyFigure($kpiName);
         $kpi->effective_at = $this->object->getEffectiveAt();
         $kpi->set($key, $value);
+
+        $history = $this->object->getPortfolio()->histories()->whereName;
+        $history->effective_at = $this->object->getEffectiveAt();
+        $history->set($key, $value);
     }
 }

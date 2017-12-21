@@ -4,6 +4,7 @@ namespace App\Classes;
 
 
 use Carbon\Carbon;
+use Closure;
 
 class Price
 {
@@ -43,4 +44,10 @@ class Price
     }
 
 
+    public function multiply($factor)
+    {
+        $this->value = $this->value * $factor;
+
+        return $this;
+    }
 }

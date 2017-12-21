@@ -4,6 +4,7 @@
 namespace App\Classes\Limits;
 
 use App\Entities\Limit;
+use App\Facades\MetricService\PortfolioMetricService;
 
 abstract class AbstractLimit
 {
@@ -14,6 +15,8 @@ abstract class AbstractLimit
     public function __construct(Limit $limit)
     {
         $this->limit = $limit;
+
+        $this->metrics = new PortfolioMetricService();
     }
 
     abstract public function utilisation();

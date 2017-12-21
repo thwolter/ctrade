@@ -3,7 +3,6 @@
 namespace App\Services\MetricServices;
 
 use App\Classes\Price;
-use App\Classes\TimeSeries;
 use Carbon\Carbon;
 use App\Entities\Portfolio;
 use App\Facades\MetricService\AssetMetricService;
@@ -23,16 +22,27 @@ class PortfolioMetricService extends MetricService
         $value = 0;
         $date = null;
 
-        foreach ($portfolio->assets as $asset)
-        {
+        foreach ($portfolio->assets as $asset) {
             $assetValue = AssetMetricService::value($asset);
-            $value =+ array_first($assetValue);
+            $value = +array_first($assetValue);
 
             $assetValueDate = Carbon::parse(key($assetValue));
             $date = max($date, $assetValueDate);
         }
 
         return new Price($date, $value + $this->cash($portfolio)->getValue());
+    }
+
+
+    /**
+     * Return the risk for the portfolio's confidence level.
+     *
+     * @param Portfolio $portfolio
+     * @return Price
+     */
+    public function risk(Portfolio $portfolio)
+    {
+        return $this->dailyRisk($portfolio)->multiply(sqrt($this->getPeriod($portfolio)));
     }
 
 
@@ -73,10 +83,6 @@ class PortfolioMetricService extends MetricService
     }
 
 
-
-
-
-
     public function cashFlow(Portfolio $portfolio, $from, $to)
     {
         return $portfolio->payments()
@@ -87,22 +93,10 @@ class PortfolioMetricService extends MetricService
     public function totalOfType(Portfolio $portfolio, $type)
     {
         $sum = 0;
-        foreach($portfolio->assets()->ofType($type)->get() as $asset)
-        {
+        foreach ($portfolio->assets()->ofType($type)->get() as $asset) {
             $sum += $asset->value();
         }
         return $sum;
-    }
-
-
-
-    public function risk(Portfolio $portfolio)
-    {
-        $dailyRisk = $this->withDate()->dailyRisk($portfolio);
-
-        return $this->shapeOutput(
-            [key($dailyRisk) => array_first($dailyRisk) * sqrt($this->getPeriod($portfolio))]
-        );
     }
 
 
@@ -111,19 +105,16 @@ class PortfolioMetricService extends MetricService
         return array_slice($this->getRisks($portfolio), -$days, $days, true);
     }
 
-    
+
     public function riskToDate(Portfolio $portfolio, $date = null)
     {
         $referenceDate = $this->getRiskDate($portfolio);
-        $period = $date 
-            ? $referenceDate->diffInDays($date, false) 
+        $period = $date
+            ? $referenceDate->diffInDays($date, false)
             : $this->getPeriod($portfolio);
 
         return sqrt(max(0, $period)) * $this->dailyRisk($portfolio);
     }
-
-
-
 
 
     /**
@@ -140,18 +131,6 @@ class PortfolioMetricService extends MetricService
             ->get();
 
         return new Price(key($value), array_first($value));
-    }
-
-
-    /**
-     * Receive the Portfolio's risk history from the database.
-     *
-     * @param $portfolio
-     * @return TimeSeries
-     */
-    private function getDbRisks($portfolio)
-    {
-        return new TimeSeries($portfolio->keyfigure('risk.' . $this->getConfidence($portfolio))->values);
     }
 
 

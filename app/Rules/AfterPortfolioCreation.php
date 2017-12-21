@@ -30,7 +30,7 @@ class AfterPortfolioCreation implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ($date = $this->portfolio->created_at) {
+        if ($date = $this->portfolio->opened_at) {
             return $value >= $date->toDateString();
         } else {
             return true;

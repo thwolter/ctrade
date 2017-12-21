@@ -234,7 +234,6 @@ return [
         * Custom Service Providers...
         */
         App\Providers\DatasourceServiceProvider::class,
-        App\Providers\HelpersServiceProvider::class,
         App\Providers\DataServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
         \App\Providers\MetadataServiceProvider::class,
@@ -311,7 +310,6 @@ return [
          * Custom Classes
          */
         'Datasource' => App\Facades\Datasource::class,
-        'Mapping' => App\Facades\Mapping::class,
 
     ],
 

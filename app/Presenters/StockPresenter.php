@@ -86,4 +86,15 @@ class StockPresenter extends Presenter
         );
     }
 
+
+    public function sector()
+    {
+        return optional($this->entity->sector)->name;
+    }
+
+
+    public function industry()
+    {
+        return optional($this->entity->industry)->name;
+    }
 }

@@ -4,7 +4,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\Portfolio;
-use App\Facades\TimeSeries;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;

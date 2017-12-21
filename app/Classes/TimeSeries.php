@@ -248,7 +248,7 @@ class TimeSeries
 
         $output = array_filter($data, function ($key) use ($filter, $days) {
 
-            $check = [];
+            $check = [true];
             $date = Carbon::parse($key);
 
             if (array_has($filter,['to']))
