@@ -16,8 +16,8 @@ class CreateTermsTable extends Migration
         Schema::create('terms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code');
-            $table->string('name');
-            $table->string('taxonomy');
+            $table->string('name')->nullable();
+            $table->enum('taxonomy', ['keyfigure']);
             $table->timestamps();
         });
     }

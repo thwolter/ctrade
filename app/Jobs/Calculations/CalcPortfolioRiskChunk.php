@@ -2,10 +2,8 @@
 
 namespace App\Jobs\Calculations;
 
-use App\Entities\History;
-use App\Events\PortfolioWasCalculated;
+use App\Facades\KeyfigureRepository;
 use App\Models\Rscript;
-use App\Notifications\StatusCalculation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -92,12 +90,10 @@ class CalcPortfolioRiskChunk implements ShouldQueue
      */
     private function storeKpi($kpiName, $key, $value)
     {
-        $kpi = $this->object->getPortfolio()->keyFigure($kpiName);
-        $kpi->effective_at = $this->object->getEffectiveAt();
-        $kpi->set($key, $value);
+        $keyfigure = KeyfigureRepository::getForPortfolio($this->object->getPortfolio(), $kpiName);
+        $keyfigure->effective_at = $this->object->getEffectiveAt();
+        $keyfigure->set($key, $value);
 
-        $history = $this->object->getPortfolio()->histories()->whereName;
-        $history->effective_at = $this->object->getEffectiveAt();
-        $history->set($key, $value);
+
     }
 }

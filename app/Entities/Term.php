@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use App\Entities\History;
 use Illuminate\Database\Eloquent\Model;
@@ -13,8 +13,4 @@ class Term extends Model
         'taxonomy'
     ];
 
-    public function history()
-    {
-        return $this->hasMany(History::class);
-    }
 }

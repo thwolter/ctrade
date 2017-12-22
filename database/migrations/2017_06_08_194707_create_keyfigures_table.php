@@ -15,10 +15,8 @@ class CreateKeyfiguresTable extends Migration
     {
         Schema::create('keyfigures', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('portfolio_id')->unsigned();
-            $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
-            $table->integer('type_id');
-            $table->unique(array('portfolio_id', 'type_id'));
+            $table->morphs('keyfigureable');
+            $table->integer('term_id');
             $table->json('values')->nullable();
             $table->dateTime('effective_at')->nullable();
             $table->softDeletes();

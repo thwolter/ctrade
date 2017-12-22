@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 class CalculationObject
 {
     protected $portfolio;
-    protected $type;
+    protected $term;
     protected $typeRoot;
 
     protected $dates;
@@ -22,11 +22,11 @@ class CalculationObject
     protected $effective_at;
 
 
-    public function __construct(Portfolio $portfolio, $type)
+    public function __construct(Portfolio $portfolio, $term)
     {
         $this->portfolio = $portfolio;
-        $this->type = $type;
-        $this->typeRoot = explode('.', $type)[0];
+        $this->term = $term;
+        $this->typeRoot = explode('.', $term)[0];
 
         $this->init();
     }
@@ -73,7 +73,7 @@ class CalculationObject
 
     private function cacheTag($attribute)
     {
-        return implode('.', ['calculate', $this->type, $attribute, $this->portfolio->id]);
+        return implode('.', ['calculate', $this->term, $attribute, $this->portfolio->id]);
     }
 
 
@@ -133,7 +133,7 @@ class CalculationObject
      */
     public function getType()
     {
-        return $this->type;
+        return $this->term;
     }
 
 
@@ -157,7 +157,7 @@ class CalculationObject
 
     private function keyFigure()
     {
-        return $this->portfolio->keyFigure($this->type);
+        return $this->portfolio->keyFigure($this->term);
     }
 
 
@@ -213,14 +213,14 @@ class CalculationObject
     // -------------------------------------------------*/
 
 
-    static public function getStatus(Portfolio $portfolio, array $types)
+    static public function getStatus(Portfolio $portfolio, array $terms)
     {
         $result = [];
-        foreach ($types as $type)
+        foreach ($terms as $term)
         {
-            $result[$type] = [
-                'total' => \Cache::get(implode('.', ['calculate', $type, 'total', $portfolio->id])),
-                'remainder' => \Cache::get(implode('.', ['calculate', $type, 'remainder', $portfolio->id]))
+            $result[$term] = [
+                'total' => \Cache::get(implode('.', ['calculate', $term, 'total', $portfolio->id])),
+                'remainder' => \Cache::get(implode('.', ['calculate', $term, 'remainder', $portfolio->id]))
             ];
         }
         return json_encode($result);

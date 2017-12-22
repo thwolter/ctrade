@@ -48,6 +48,7 @@ class Keyfigure extends Model
 
     protected $fillable = [
         'values',
+        'term_id',
         'effective_at'
     ];
 
@@ -69,15 +70,18 @@ class Keyfigure extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function type()
+
+    public function keyfigureable()
     {
-        return $this->belongsTo(KeyfigureType::class);
+        return $this->morphTo();
     }
 
-    public function portfolio()
+    public function term()
     {
-        return $this->belongsTo(Portfolio::class);
+        return $this->belongsTo(Term::class);
     }
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -125,7 +129,7 @@ class Keyfigure extends Model
 
     public function scopeOfType($query, $type)
     {
-        return $query->whereHas('type', function ($query) use ($type) {
+        return $query->whereHas('term', function ($query) use ($type) {
             $query->whereCode($type);
         });
     }

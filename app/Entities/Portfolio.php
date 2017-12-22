@@ -130,9 +130,9 @@ class Portfolio extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function keyFigures()
+    public function keyfigures()
     {
-        return $this->hasMany(Keyfigure::class);
+        return $this->morphMany(Keyfigure::class, 'keyfigureable');
     }
 
     public function limits()
@@ -161,10 +161,6 @@ class Portfolio extends Model
             'portfolio_id', 'asset_id');
     }
 
-    public function histories()
-    {
-        return $this->hasMany(History::class, 'historable');
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -224,13 +220,13 @@ class Portfolio extends Model
      * @param string $type
      * @return Keyfigure
      */
-    public function keyFigure($type)
+    public function keyFigure($term)
     {
-        $keyFigure = $this->keyfigures()->ofType($type)->first();
+        $keyFigure = $this->keyfigures()->ofType($term)->first();
 
         if (!$keyFigure) {
             $keyFigure = new Keyfigure();
-            $keyFigure->type()->associate(KeyfigureType::firstOrCreate(['code' => $type]));
+            $keyFigure->term()->associate(KeyfigureType::firstOrCreate(['code' => $term]));
             $this->keyFigures()->save($keyFigure);
         }
 
