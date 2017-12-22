@@ -9,6 +9,8 @@
 namespace App\Presenters;
 
 
+use App\Facades\MetricService\AssetMetricService;
+
 class Payment extends Presenter
 {
 
@@ -25,25 +27,19 @@ class Payment extends Presenter
         return $this->position ? $this->position->asset->positionable : null;
     }
 
-    private function currencyCode()
-    {
-        return $this->instrument()
-            ? $this->instrument()->currency->code
-            : $this->entity->portfolio->currency->code;
-    }
 
     public function total()
     {
-        return $this->formatPrice($this->entity->amount, [
-            'currency' => $this->currencyCode()
-        ]);
+        return $this->formatPrice(
+            AssetMetricService::value($this->position->asset)->getValue()
+        );
     }
 
     public function price()
     {
-        return $this->position ? $this->formatPrice($this->position->price, [
-            'currency' => $this->currencyCode()
-        ]) : null;
+        return $this->formatPrice(
+            AssetMetricService::price($this->position->asset)->getValue()
+        );
     }
 
     public function amount()

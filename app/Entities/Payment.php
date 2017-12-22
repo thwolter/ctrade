@@ -81,6 +81,10 @@ class Payment extends Model
         return optional($this->position)->asset;
     }
 
+    public function getCurrencyAttribute()
+    {
+        return $this->portfolio->currency;
+    }
 
     /*
     |--------------------------------------------------------------------------

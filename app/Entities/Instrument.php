@@ -4,14 +4,10 @@
 namespace App\Entities;
 
 
-use App\Exceptions\InstrumentException;
-use App\Repositories\Contracts\InstrumentInterface;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use App\Repositories\Financable;
 
-use App\Models\QuantModel;
 
 
 abstract class Instrument extends Model

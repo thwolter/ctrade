@@ -10,19 +10,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Category;
 use App\Entities\Currency;
-use App\Entities\PortfolioImage;
 use App\Entities\Transaction;
 use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\DeletePortfolio;
-use App\Http\Requests\PayRequest;
 use App\Http\Requests\UpdatePortfolio;
-use App\Repositories\Contracts\PortfolioInterface;
 use App\Repositories\LimitRepository;
 use App\Repositories\PortfolioRepository;
 use App\Settings\InitialSettings;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
@@ -36,7 +31,7 @@ class PortfoliosController extends Controller
     protected $repo;
 
 
-    public function __construct(PortfolioInterface $repo)
+    public function __construct(PortfolioRepository $repo)
     {
         $this->middleware('auth');
         $this->repo = $repo;

@@ -239,7 +239,6 @@ return [
         \App\Providers\MetadataServiceProvider::class,
         App\Providers\QuandlServiceProvider::class,
         \App\Providers\LimitServiceProvider::class,
-        \App\Providers\PortfolioRepositoryServiceProvider::class,
         \App\Providers\ViewServiceProvider::class,
         \App\Providers\MetricServiceProvider::class,
         \App\Providers\RepositoryProvider::class,

@@ -3,7 +3,7 @@
 namespace App\Services\MetricServices;
 
 use App\Classes\Price;
-use App\Facades\KeyfigureRepository;
+use App\Facades\Repositories\KeyfigureRepository;
 use Carbon\Carbon;
 use App\Entities\Portfolio;
 use App\Facades\MetricService\AssetMetricService;
@@ -25,10 +25,9 @@ class PortfolioMetricService extends MetricService
 
         foreach ($portfolio->assets as $asset) {
             $assetValue = AssetMetricService::value($asset);
-            $value = +array_first($assetValue);
+            $value += $assetValue->getValue();
 
-            $assetValueDate = Carbon::parse(key($assetValue));
-            $date = max($date, $assetValueDate);
+            $date = max($date, $assetValue->getDate());
         }
 
         return new Price($date, $value + $this->cash($portfolio)->getValue());

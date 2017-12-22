@@ -4,7 +4,6 @@ namespace App\Classes;
 
 
 use Carbon\Carbon;
-use Closure;
 
 class Price
 {

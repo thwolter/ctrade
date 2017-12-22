@@ -9,10 +9,9 @@ use App\Entities\Portfolio;
 use App\Entities\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use App\Repositories\Contracts\PortfolioInterface;
 
 
-class PortfolioRepository implements PortfolioInterface
+class PortfolioRepository
 {
 
 
