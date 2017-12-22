@@ -3,6 +3,7 @@
 namespace App\Services\MetricServices;
 
 use App\Classes\Price;
+use App\Facades\KeyfigureRepository;
 use Carbon\Carbon;
 use App\Entities\Portfolio;
 use App\Facades\MetricService\AssetMetricService;
@@ -56,9 +57,8 @@ class PortfolioMetricService extends MetricService
      */
     public function profit(Portfolio $portfolio, $count = null, $percent = false)
     {
-        $values = $this->dataService->dbPortfolioValue($portfolio)
-            ->count(1 + ($count || $this->getPeriod($portfolio)))
-            ->get();
+        $values = KeyfigureRepository::getForPortfolio($portfolio, 'value')->timeseries()
+            ->count(1 + ($count || $this->getPeriod($portfolio)))->get();
 
         return $percent ? $this->deltaPercent($values, $count) : $this->deltaAbsolute($count, $values);
     }
@@ -125,10 +125,9 @@ class PortfolioMetricService extends MetricService
      */
     private function dailyRisk(Portfolio $portfolio)
     {
-        $value = $this->dataService
-            ->dbPortfolioRisk($portfolio, $this->getConfidence($portfolio))
-            ->count(1)
-            ->get();
+        $term = 'risk.' . $this->getConfidence($portfolio);
+        $value = KeyfigureRepository::getForPortfolio($portfolio, $term)->timeseries()
+            ->count(1)->get();
 
         return new Price(key($value), array_first($value));
     }

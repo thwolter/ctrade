@@ -34,8 +34,12 @@ histories <- fetchHistories(url.hist, token)
 pf <- Portfolio$new(pfdata, histories)
 
 result <- list(
-    value = ifelse(length(pfdata$items), pf$value(), pf$cash),
-    date = toString(index(tail(histories[[1]],1)))
+    data = list(
+        value = ifelse(length(pfdata$items), pf$value(), pf$cash)
+    ),
+    meta = list(
+        date = toString(index(tail(histories[[1]],1)))
+    )
 )
 
 jsonlite::toJSON(result)

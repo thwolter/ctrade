@@ -2,31 +2,18 @@
 
 namespace App\Jobs\Calculations;
 
-use App\Entities\Portfolio;
-use App\Events\PortfolioWasCalculated;
 use App\Models\Rscript;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class CalcPortfolioValueChunk implements ShouldQueue
+class CalcPortfolioValueChunk extends Calculation implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $object;
-
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct(CalculationObject $object)
-    {
-        $this->object = $object;
-    }
 
     /**
      * Execute the job.
@@ -37,32 +24,19 @@ class CalcPortfolioValueChunk implements ShouldQueue
     {
         foreach ($this->object->getChunk() as $date)
         {
-            $key = $date->toDateString();
-            $value = $this->calculateValue($date);
-
-            $this->storeKpi('value', $key, array_first_or_null($value['value']));
+            $this->storeKpis($date, $this->calculateValue($date));
         }
     }
 
     /**
+     * Start R for calculating the portfolio's value.
+     *
+     * @param Carbon $date
      * @return array
      */
     private function calculateValue($date)
     {
         $rscript = new Rscript($this->object->getPortfolio());
         return $rscript->portfolioValue($date->toDateString());
-    }
-
-
-    /**
-     * @param $kpiName
-     * @param $key
-     * @param $value
-     */
-    private function storeKpi($kpiName, $key, $value)
-    {
-        $kpi = $this->object->getPortfolio()->keyFigure($kpiName);
-        $kpi->effective_at = $this->object->getEffectiveAt();
-        $kpi->set($key, $value);
     }
 }

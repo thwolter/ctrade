@@ -8,6 +8,7 @@ use App\Classes\TimeSeries;
 use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;
 use App\Entities\Portfolio;
+use App\Facades\KeyfigureRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 
@@ -29,22 +30,6 @@ class DataService
     }
 
 
-    public function dbPortfolioValue(Portfolio $portfolio)
-    {
-        return new TimeSeries(
-            $portfolio->keyfigures()->ofType('value')->first()->values
-        );
-    }
-
-
-    public function dbPortfolioRisk(Portfolio $portfolio, $confidence)
-    {
-        return new TimeSeries(
-            $portfolio->keyfigures()->ofType('risk.'.$confidence)->first()->values
-        );
-    }
-
-
     /**
      * Get the datasource provider.
      *
@@ -61,7 +46,7 @@ class DataService
      * Get the entity's datasource if entity is not yet a datasource or collection.
      *
      * @param $entity
-     * @param $attributes
+     * @param string $exchange
      * @return mixed
      */
     public function getDatasource($entity, $exchange)

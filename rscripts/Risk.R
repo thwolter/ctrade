@@ -49,24 +49,32 @@ if (length(pfdata$items) && sum(as.numeric(pfdata$items$amount))) {
 
 
     result <- list(
-        contrib95 = as.list(output950$contribution),
-        contrib975 = as.list(output975$contribution),
-        contrib99 = as.list(output990$contribution),
-        total95 = as.numeric(output950$MVaR),
-        total975 = as.numeric(output975$MVaR),
-        total99 = as.numeric(output990$MVaR),
-        date = toString(index(tail(histories[[1]],1)))
+        data = list(
+            contribution.95 = as.list(output950$contribution),
+            contribution.975 = as.list(output975$contribution),
+            contribution.99 = as.list(output990$contribution),
+            risk.95 = as.numeric(output950$MVaR),
+            risk.975 = as.numeric(output975$MVaR),
+            risk.99 = as.numeric(output990$MVaR)
+        ),
+        meta = list(
+            date = toString(index(tail(histories[[1]],1)))
+        )
     )
     
 } else {
     result <- list(
-        contrib95 = 0,
-        contrib975 = 0,
-        contrib99 = 0,
-        total95 = 0,
-        total975 = 0,
-        total99 = 0,
-        date = toString(index(tail(histories[[1]],1)))
+        data = list(
+            contribution.95 = 0,
+            contribution.975 = 0,
+            contribution.99 = 0,
+            risk.95 = 0,
+            risk.975 = 0,
+            risk.99 = 0
+        ),
+        meta = list(
+            date = toString(index(tail(histories[[1]],1)))
+        )
     )
 }
 

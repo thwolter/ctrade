@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Classes\TimeSeries;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -103,15 +104,16 @@ class Keyfigure extends Model
         $this->update(['values' => $values]);
     }
 
+    public function timeseries()
+    {
+        return new TimeSeries($this->values);
+    }
+
     public function has($key)
     {
         return array_key_exists($key, $this->values);
     }
 
-    private function hasValues()
-    {
-        return count($this->values) > 0;
-    }
 
     public static function boot()
     {
