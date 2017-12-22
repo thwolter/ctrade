@@ -13,6 +13,7 @@ url <- parameter('url', args)
 id <- parameter('id', args)
 date <- parameter('date', args)
 
+
 source(paste(base, 'Class/Instrument.R', sep='/'))
 source(paste(base, 'Class/Stock.R', sep='/'))
 source(paste(base, 'Class/Portfolio.R', sep='/'))

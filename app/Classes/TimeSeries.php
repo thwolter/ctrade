@@ -189,7 +189,12 @@ class TimeSeries
      */
     private function normalize($data)
     {
-        return array_combine(array_column($data, $this->getColumn('Date')), $data);
+        if ($this->isDate(key($data))) {
+            return array_combine(array_keys($data), array_flatten($data));
+
+        } else {
+            return array_combine(array_column($data, $this->getColumn('Date')), $data);
+        }
     }
 
 
@@ -265,6 +270,19 @@ class TimeSeries
         }, ARRAY_FILTER_USE_KEY);
 
         return $output;
+    }
+
+
+    private function isDate($string)
+    {
+        try {
+            $date = Carbon::createFromFormat('Y-m-d', $string);
+
+        } catch(\Exception $exception) {
+            return false;
+        }
+
+        return $date->toDateString() === $string;
     }
 
 }

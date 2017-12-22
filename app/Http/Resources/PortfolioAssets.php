@@ -46,7 +46,7 @@ class PortfolioAssets extends Resource
         return [
             'name' => $this->name,
             'currency' => $this->currency->code,
-            'cash' => PortfolioMetricService::cash($this->resource, $date)
+            'cash' => PortfolioMetricService::cash($this->resource, $date)->getValue()
         ];
     }
 }

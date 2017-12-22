@@ -65,7 +65,7 @@ class PortfolioPresenter extends Presenter
 
     public function risk()
     {
-        return $this->formatPrice($this->metrics->risk($this->entity));
+        return $this->formatPrice($this->metrics->risk($this->entity)->getValue());
     }
 
 
