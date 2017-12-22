@@ -2,25 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\LimitType;
-use App\Repositories\StatisticsRepository;
+use App\Facades\Repositories\KeyfigureRepository;
+use App\Facades\Repositories\PortfolioRepository;
+use App\Http\Resources\AssetResource;
+use App\Http\Resources\TimeSeriesResource;
 use Illuminate\Http\Request;
 
 class ApiPortfolioController extends ApiBaseController
 {
 
-    protected $statistic;
-
-    public function __construct(StatisticsRepository $statistic)
-    {
-        $this->statistic = $statistic;
-    }
 
     /**
      * Returns the positions list with price, total and share for portfolio with given id.
      *
      * @param Request $request
-     * @return string
+     * @return AssetResource
      */
     public function assets(Request $request)
     {
@@ -28,16 +24,17 @@ class ApiPortfolioController extends ApiBaseController
             'id' => 'required|exists:portfolios,id'
         ]);
 
-        return $this->statistic->getAssetsArray($attributes);
+        $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
+
+        return new AssetResource($portfolio);
     }
 
 
     /**
-     * Returns the time series of risk for a given portfolio and confidence level
-     * from database. Confidence levels can be 0.95, 0.975, or 0.99.
+     * Returns the time series of risk for a given portfolio and confidence level from database.
      *
      * @param Request $request
-     * @return array
+     * @return TimeSeriesResource
      */
     public function risk(Request $request)
     {
@@ -46,7 +43,10 @@ class ApiPortfolioController extends ApiBaseController
             'conf' => 'required|numeric'
         ]);
 
-        return $this->statistic->getRisks($attributes);
+        $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
+        $keyfigure = KeyfigureRepository::getForPortfolio($portfolio, 'risk.'.$attributes['conf']);
+
+        return new TimeSeriesResource($keyfigure);
     }
 
 
@@ -54,7 +54,7 @@ class ApiPortfolioController extends ApiBaseController
      * Returns the historic values of a given portfolio from database.
      *
      * @param Request $request
-     * @return \Illuminate\Support\Collection
+     * @return TimeSeriesResource
      */
     public function value(Request $request)
     {
@@ -63,13 +63,17 @@ class ApiPortfolioController extends ApiBaseController
             'conf' => 'required|numeric'
         ]);
 
-        return collect([
-            'values' => $this->getPortfolio($request)->keyFigure('value')->values,
-            'risk' => $this->statistic->getRisks($attributes)
-        ]);
+        $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
+        $keyfigure = KeyfigureRepository::getForPortfolio($portfolio, 'value');
+
+        return new TimeSeriesResource($keyfigure);
     }
 
 
+    /**
+     * @param Request $request
+     * @return TimeSeriesResource
+     */
     public function contribution(Request $request)
     {
         $attributes = $request->validate([
@@ -78,7 +82,10 @@ class ApiPortfolioController extends ApiBaseController
             'conf' => 'required|numeric'
         ]);
 
-       return $this->statistic->getRiskContribution($attributes);
+        $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
+        $keyfigure = KeyfigureRepository::getForPortfolio($portfolio, 'contribution.'.$attributes['conf']);
+
+        return new TimeSeriesResource($keyfigure);
     }
 
 
@@ -94,7 +101,7 @@ class ApiPortfolioController extends ApiBaseController
             'id' => 'required|exists:portfolios,id',
         ]);
 
-        $this->statistic->getLimitUtilisation($attributes);
+        return null;
     }
 
 
@@ -107,7 +114,7 @@ class ApiPortfolioController extends ApiBaseController
             'count' => 'required|numeric'
         ]);
 
-        return $this->statistic->getTimeSeries($attributes);
+        return null;
     }
 
 

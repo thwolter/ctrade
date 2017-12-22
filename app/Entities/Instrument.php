@@ -17,7 +17,6 @@ use App\Models\QuantModel;
 abstract class Instrument extends Model
 {
     
-    use Financable;
 
     /*
     |--------------------------------------------------------------------------

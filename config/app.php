@@ -242,7 +242,7 @@ return [
         \App\Providers\PortfolioRepositoryServiceProvider::class,
         \App\Providers\ViewServiceProvider::class,
         \App\Providers\MetricServiceProvider::class,
-        \App\Providers\KeyfigureRepositoryProvider::class,
+        \App\Providers\RepositoryProvider::class,
 
     ],
 

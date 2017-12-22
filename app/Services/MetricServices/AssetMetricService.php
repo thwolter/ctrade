@@ -4,6 +4,7 @@
 namespace App\Services\MetricServices;
 
 
+use App\Classes\Price;
 use App\Entities\Asset;
 
 class AssetMetricService extends MetricService
@@ -12,16 +13,17 @@ class AssetMetricService extends MetricService
 
     public function price(Asset $asset, $exchange = null)
     {
-        $metric = app()->make('MetricService', [$asset->positionable]);
-        return $metric->price($asset->positionable, $exchange);
+        $price = app()
+            ->make('MetricService', [$asset->positionable])
+            ->price($asset->positionable, $exchange);
+
+        return new Price(key($price), array_first($price));
     }
 
 
     public function value(Asset $asset, $exchange = null)
     {
-        return array_map(function($value) use ($asset) {
-            return $value * $asset->amount;
-        }, $this->price($asset, $exchange));
+        return $this->price($asset, $exchange)->multiply($asset->amount);
     }
 
 

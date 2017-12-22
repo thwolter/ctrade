@@ -33,6 +33,12 @@ class Price
         return $this->date;
     }
 
+
+    public function getDateString()
+    {
+        return $this->date->toDateString();
+    }
+
     /**
      * Get the price's value.
      *

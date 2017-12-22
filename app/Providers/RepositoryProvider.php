@@ -2,15 +2,11 @@
 
 namespace App\Providers;
 
-use App\Classes\DataProvider\QuandlPriceData;
-use App\Contracts\DataServiceInterface;
-use App\Entities\Datasource;
-use App\Exceptions\DataServiceException;
 use App\Repositories\KeyfigureRepository;
-use App\Services\DataService;
+use App\Repositories\PortfolioRepository;
 use Illuminate\Support\ServiceProvider;
 
-class KeyfigureRepositoryProvider extends ServiceProvider
+class RepositoryProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -30,5 +26,7 @@ class KeyfigureRepositoryProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('keyfigureRepository', KeyfigureRepository::class);
+
+        $this->app->bind('portfolioRepository', PortfolioRepository::class);
     }
 }

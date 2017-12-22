@@ -24,8 +24,6 @@ use Illuminate\Database\Eloquent\Model;
 class CcyPair extends Model
 {
 
-    use Financable;
-
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES

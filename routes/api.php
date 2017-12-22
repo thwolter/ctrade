@@ -39,7 +39,7 @@ Route::get('/lookup', 'Api\ApiSearchController@lookup');
 | provides the historic values of the portfolio.
 |
 */
-Route::group(['middleware' => ['auth:api']], function() {
+//Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/portfolio/assets', 'Api\ApiPortfolioController@assets');
     Route::get('/portfolio/value', 'Api\ApiPortfolioController@value');
     Route::get('/portfolio/risk', 'Api\ApiPortfolioController@risk');
@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/portfolio/utilisation', 'Api\ApiPortfolioController@utilisation');
     Route::get('/portfolio/contribution', 'Api\ApiPortfolioController@contribution');
     Route::get('/portfolio/keyFigures', 'Api\ApiPortfolioController@keyFigures');
-});
+//});
 
 
 /*

@@ -2,7 +2,6 @@
 
 namespace App\Classes\DataProvider;
 
-use App\Classes\Metadata\Quandl\QuandlFSE;
 use App\Classes\TimeSeries;
 use App\Contracts\DataServiceInterface;
 use App\Entities\Datasource;

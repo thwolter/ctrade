@@ -15,17 +15,10 @@ use App\Repositories\Contracts\PortfolioInterface;
 class PortfolioRepository implements PortfolioInterface
 {
 
-    protected $portfolioModel;
-
-
-    public function __construct(Model $portfolio)
-    {
-        $this->portfolioModel = $portfolio;
-    }
 
     public function getPortfolioById($id)
     {
-        return $this->portfolioModel->where('id', $id)->first();
+        return Portfolio::where('id', $id)->first();
     }
 
     /**
