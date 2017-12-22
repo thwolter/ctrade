@@ -50,7 +50,9 @@ class Keyfigure extends Model
     protected $fillable = [
         'values',
         'term_id',
-        'effective_at'
+        'effective_at',
+        'instrument_type',
+        'instrument_id'
     ];
 
     protected $casts = [
@@ -76,6 +78,7 @@ class Keyfigure extends Model
     {
         return $this->morphTo();
     }
+
 
     public function term()
     {

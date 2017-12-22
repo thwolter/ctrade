@@ -16,6 +16,8 @@ class CreateKeyfiguresTable extends Migration
         Schema::create('keyfigures', function (Blueprint $table) {
             $table->increments('id');
             $table->morphs('keyfigureable');
+            $table->string('instrument_type')->nullable();
+            $table->integer('instrument_id')->nullable();
             $table->integer('term_id');
             $table->json('values')->nullable();
             $table->dateTime('effective_at')->nullable();

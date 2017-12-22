@@ -94,7 +94,7 @@ class Asset extends Model
 
     public function label()
     {
-        return class_basename($this->positionable_type).$this->positionable_id;
+        return implode('.', [$this->positionable_type, $this->positionable_id]);
     }
 
     public function toArray($date = null)

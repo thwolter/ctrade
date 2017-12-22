@@ -4,6 +4,7 @@ namespace App\Presenters;
 
 
 use App\Entities\Stock;
+use App\Facades\MetricService\PortfolioMetricService;
 use Carbon\Carbon;
 use Illuminate\Support\HtmlString;
 
@@ -78,14 +79,14 @@ class PortfolioPresenter extends Presenter
     public function updatedRisk()
     {
         return $this->formatDate(
-            array_last(array_keys($this->entity->keyFigure('risk')->values))
+            PortfolioMetricService::risk($this->entity)->getDateString()
         );
     }
 
     public function updatedValue()
     {
         return $this->formatDate(
-            array_last(array_keys($this->entity->keyFigure('value')->values))
+            PortfolioMetricService::value($this->entity)->getDateString()
         );
     }
 

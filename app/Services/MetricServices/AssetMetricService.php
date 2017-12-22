@@ -6,6 +6,8 @@ namespace App\Services\MetricServices;
 
 use App\Classes\Price;
 use App\Entities\Asset;
+use App\Facades\DataService;
+use App\Facades\Repositories\KeyfigureRepository;
 
 class AssetMetricService extends MetricService
 {
@@ -29,38 +31,12 @@ class AssetMetricService extends MetricService
 
     public function risk(Asset $asset)
     {
-        return $this->riskDb($asset);
+        $a = $this->dailyRisk($asset);
     }
-
-
-    public function riskDb(Asset $asset, $data = null)
-    {
-        $dailyRisk = $this->withDate()->dailyRisk($asset);
-
-        return $this->shapeOutput(
-            [key($dailyRisk) => array_first($dailyRisk) * sqrt($this->getPeriod($asset->portfolio))]
-        );
-    }
-
-
-    public function riskRatio(Asset $asset)
-    {
-
-    }
-
 
     public function dailyRisk(Asset $asset)
     {
-        return $this->shapeOutput(
-            array_slice($this->getRisks($asset), -1, 1, true)
-        );
+        //
     }
 
-
-    private function getRisks($asset)
-    {
-        return $this->toArray(
-            $asset->portfolio->keyfigure('risk.' . $this->getConfidence($asset->portfolio))
-        );
-    }
 }

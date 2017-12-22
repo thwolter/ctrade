@@ -5,6 +5,7 @@ namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
 use App\Events\PortfolioWasCalculated;
+use App\Facades\Repositories\KeyfigureRepository;
 use App\Notifications\StatusCalculation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -48,8 +49,6 @@ class CalculationObject
         if ($this->dates) {
             \Cache::forever($this->cacheTagTotal(), $this->dates->count());
             \Cache::forever($this->cacheTagRemainder(), $this->dates->count());
-
-            $this->keyFigure()->update(['effective_at' => $this->effective_at]);
 
             Log::info("Start calculation with date {$this->dates->first()} ...");
 
@@ -155,9 +154,9 @@ class CalculationObject
     }
 
 
-    private function keyFigure()
+    private function keyfigure()
     {
-        return $this->portfolio->keyFigure($this->term);
+        return KeyfigureRepository::getForPortfolio($this->portfolio, $this->term);
     }
 
 
@@ -193,8 +192,8 @@ class CalculationObject
      */
     private function startDate()
     {
-        $effective = $this->keyFigure()->effective_at;
-        $calculated = $this->keyFigure()->date;
+        $effective = $this->keyfigure()->effective_at;
+        $calculated = $this->keyfigure()->date;
         $executed = optional($this->portfolio->firstTransactionEnteredAfter($effective))->executed_at;
 
         $dates = array_filter([$effective, $calculated, $executed, $this->portfolio->created_at], function ($v) {

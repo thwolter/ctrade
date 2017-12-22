@@ -189,48 +189,10 @@ class Portfolio extends Model
     }
 
 
-    public function totalOfType($type = null)
-    {
-        $assets = $type ? $this->assets()->ofType($type) : $this->assets();
-        $sum = 0;
-        foreach($assets->get() as $asset)
-        {
-            $sum += $asset->value();
-        }
-        return $sum;
-    }
-
-    public function total()
-    {
-        $a=1;
-        return $this->totalOfType(null) + $this->cash();
-    }
-
 
     public function setCurrency($code)
     {
         $this->currency()->associate(Currency::firstOrCreate(['code' => $code]));
-    }
-
-
-    //todo: to be replaced
-    /**
-     * Return the keyFigures of chosen type. If not exists in database it will be craated.
-     *
-     * @param string $type
-     * @return Keyfigure
-     */
-    public function keyFigure($term)
-    {
-        $keyFigure = $this->keyfigures()->ofType($term)->first();
-
-        if (!$keyFigure) {
-            $keyFigure = new Keyfigure();
-            $keyFigure->term()->associate(KeyfigureType::firstOrCreate(['code' => $term]));
-            $this->keyFigures()->save($keyFigure);
-        }
-
-        return $keyFigure;
     }
 
 
@@ -252,44 +214,12 @@ class Portfolio extends Model
     }
 
 
-    /* --------------------------------------------
-    * Functions for portfolio images
-    * --------------------------------------------
-    */
-
-    public function addImage(UploadedFile $file)
-    {
-        $image = PortfolioImage::fromForm($file);
-        $file->storeAs($this->imagesPath . '', $image->path);
-
-        return $this->image()->save($image);
-    }
-
-    public function updateImage(UploadedFile $file)
-    {
-        $image = PortfolioImage::fromForm($file);
-
-        \Storage::delete($this->imagesPath . $this->image->path);
-
-        $file->storeAs($this->imagesPath, $image->path);
-        $this->image->path = $image->path;
-
-        $this->image->update();
-
-        return $this;
-    }
-
-    public function deleteImage()
-    {
-        \Storage::delete('public/images/' . $this->image->path);
-
-    }
-
 
     public function sluggable()
     {
         return ['slug' => ['source' => 'name']];
     }
+
 
     public function getRouteKeyName()
     {
