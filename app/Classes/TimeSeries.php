@@ -77,6 +77,9 @@ class TimeSeries
             array_slice($data, 0, array_get($this->filter, 'count'))
         );
 
+        if (array_get($this->filter, 'reverse', false))
+            $data = array_reverse($data);
+
         $this->filter = [];
         return $data;
     }
@@ -151,6 +154,13 @@ class TimeSeries
     public function column($column)
     {
         array_set($this->filter, 'column', $column);
+        return $this;
+    }
+
+
+    public function reverse()
+    {
+        array_set($this->filter, 'reverse', true);
         return $this;
     }
 

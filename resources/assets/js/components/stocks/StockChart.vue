@@ -2,15 +2,15 @@
     <div v-cloak>
 
         <div class="btn-group btn-group-xs g-mb-20" role="group">
-            <button @click.prevent="length=null" class="btn btn-xs btn-outline-secondary"
+            <button @click.prevent="length=null" class="btn btn-xs u-btn-outline-primary"
                     :class="{active: length==null}">Alle</button>
-            <button @click="length=1250" class="btn btn-xs btn-outline-secondary"
+            <button @click="length=1250" class="btn btn-xs u-btn-outline-primary"
                     :class="{active: length==1250}">5 Jahre</button>
-            <button @click="length=250" class="btn btn-xs btn-outline-secondary"
+            <button @click="length=250" class="btn btn-xs u-btn-outline-primary"
                     :class="{active: length==250}">1 Jahr</button>
-            <button @click="length=125" class="btn btn-xs btn-outline-secondary"
+            <button @click="length=125" class="btn btn-xs u-btn-outline-primary"
                     :class="{active: length==125}">6 Monate</button>
-            <button @click="length=20" class="btn btn-xs btn-outline-secondary"
+            <button @click="length=20" class="btn btn-xs u-btn-outline-primary"
                     :class="{active: length==20}">1 Monat</button>
         </div>
         <span v-text="exchange" class="pull-right"></span>
@@ -53,11 +53,11 @@
                 new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: this.dateColumn,
+                        labels: _.keys(this.history.data),
 
                         datasets: [{
                             label: 'Value',
-                            data: this.priceColumn,
+                            data: _.values(this.history.data),
                             pointRadius: 0,
                         }]
                     },
@@ -72,31 +72,6 @@
                         }
                     },
                 });
-            },
-
-            column(name) {
-                return this.history.columns.findIndex((element) => (element === name));
-            }
-        },
-
-        computed: {
-            priceColumn() {
-                return _.zip.apply(_, this.timeSeries)[this.column('Close')];
-            },
-
-            dateColumn() {
-                let dates = _.zip.apply(_, this.timeSeries)[this.column('Date')];
-                let copy = [];
-
-                dates.forEach( (element) => {
-                    copy.push((new Date(element)).toLocaleDateString());
-                });
-
-                return copy;
-            },
-
-            timeSeries() {
-                return _.reverse(_.take(this.history.data, this.length));
             }
         },
 
