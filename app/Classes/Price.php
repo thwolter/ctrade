@@ -3,7 +3,9 @@
 namespace App\Classes;
 
 
+use App\Exceptions\PriceException;
 use Carbon\Carbon;
+
 
 class Price
 {
@@ -16,6 +18,10 @@ class Price
 
     protected $percent;
 
+    protected $formats = [
+        'decimal' => 1
+    ];
+
 
 
     public function __construct($date, $value)
@@ -26,9 +32,9 @@ class Price
     }
 
 
-    static public function make($data, $value)
+    static public function make($date, $value)
     {
-        return new Price($data, $value);
+        return new Price($date, $value);
     }
 
 
@@ -98,6 +104,40 @@ class Price
         $this->percent = $percent;
 
         return $this;
+    }
+
+
+    /**
+     * Returns a formatted string of the value with currency.
+     *
+     * @return string
+     * @throws \Throwable
+     */
+    public function toLocalCurrencyFormat()
+    {
+        throw_unless($this->currency, new PriceException("'currency' variable not set."));
+
+        return $this->currencyFormater()->formatCurrency($this->value, $this->currency);
+    }
+
+
+    public function toLocalPercentageFormat()
+    {
+        $decimal = array_get($this->formats, 'decimal', 1);
+
+        return sprintf("%01.{$decimal}f %%", 100 * $this->value);
+    }
+
+
+    public function toLocalDateFormat()
+    {
+        return Carbon::parse($this->date)->formatLocalized('%d.%m.%Y');
+    }
+
+
+    private function currencyFormater()
+    {
+        return new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
     }
 
 }

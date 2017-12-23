@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 
+use App\Classes\Price;
 use App\Entities\Stock;
 use App\Facades\MetricService\PortfolioMetricService;
 use Carbon\Carbon;
@@ -14,58 +15,52 @@ class PortfolioPresenter extends Presenter
 
     public function value()
     {
-        return $this->formatPrice(
-            $this->metrics->value($this->entity)->getValue(), ['showNull' => true]
-        );
+        return $this->metrics->value($this->entity)->toLocalCurrencyFormat();
     }
 
 
     public function cash()
     {
-        return $this->formatPrice(
-            $this->metrics->cash($this->entity)->getValue()
-        );
+        return $this->metrics->cash($this->entity)->toLocalCurrencyFormat();
     }
 
 
     public function stockTotal()
     {
-        return $this->formatPrice(
-            $this->metrics->total($this->entity, Stock::class)
-        );
+        return $this->metrics->total($this->entity, Stock::class)->toLocalCurrencyFormat();
     }
 
 
     public function profit($days = null)
     {
-        return $this->formatPrice($this->metrics->profit($this->entity, $days)->getValue());
+        return $this->metrics->profit($this->entity, $days)->toLocalCurrencyFormat();
     }
 
 
     public function htmlProfit($days)
     {
-        $profit = $this->metrics->profit($this->entity, $days)->getValue();
+        $profit = $this->metrics->profit($this->entity, $days);
         $percent = $this->metrics->profit($this->entity, $days, true)->getValue();
 
-        if ($profit > 0)
+        if ($profit->getValue() > 0)
             $class = "fa fa-caret-up g-color-green";
-        elseif ($profit < 0)
+        elseif ($profit->getValue() < 0)
             $class = "fa fa-caret-down g-color-red";
-        elseif ($profit === 0)
+        elseif ($profit->getValue() === 0)
             $class = "fa fa-caret-down g-color-red";
         else
             $class = "";
 
         return new HtmlString(sprintf('<i class="%s" aria-hidden="true"></i> %s (%s)',
             $class,
-            $this->formatPrice(abs($profit), ['showNull' => true]),
-            $this->formatPercentage($percent)
+            $profit->toLocalCurrencyFormat(),
+            $percent->toLocalPercentageFormat()
         ));
     }
 
     public function risk()
     {
-        return $this->formatPrice($this->metrics->risk($this->entity)->getValue());
+        return $this->metrics->risk($this->entity)->toLocalCurrencyFormat();
     }
 
 
@@ -77,30 +72,22 @@ class PortfolioPresenter extends Presenter
 
     public function updatedRisk()
     {
-        return $this->formatDate(
-            PortfolioMetricService::risk($this->entity)->getDateString()
-        );
+        return PortfolioMetricService::risk($this->entity)->toLocalDateFormat();
     }
 
     public function updatedValue()
     {
-        return $this->formatDate(
-            PortfolioMetricService::value($this->entity)->getDateString()
-        );
+        return PortfolioMetricService::value($this->entity)->toLocalDateFormat();
     }
 
     public function updatedToday()
     {
-        return $this->formatDate(
-            Carbon::now()
-        );
+        return Price::make(Carbon::now()->toDateString(), 0)->toLocalDateFormat();
     }
 
     public function updatedReturn()
     {
-        return $this->formatDate(
-            array_last(array_keys($this->entity->keyFigure('value')->values))
-        );
+        return $this->updatedValue();
     }
 
 
