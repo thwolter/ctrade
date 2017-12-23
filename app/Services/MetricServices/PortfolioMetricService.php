@@ -30,7 +30,8 @@ class PortfolioMetricService extends MetricService
             $date = max($date, $assetValue->getDate());
         }
 
-        return new Price($date, $value + $this->cash($portfolio)->getValue());
+        return Price::make($date, $value + $this->cash($portfolio)->getValue())
+            ->setCurrency($portfolio->currency->code);
     }
 
 
@@ -42,7 +43,11 @@ class PortfolioMetricService extends MetricService
      */
     public function risk(Portfolio $portfolio)
     {
-        return $this->dailyRisk($portfolio)->multiply(sqrt($this->getPeriod($portfolio)));
+        $dailyRisk = $this->dailyRisk($portfolio);
+
+        $value = Price::make(key($dailyRisk), array_first($dailyRisk) * sqrt($this->getPeriod($portfolio)));
+
+        return $value->setCurrency($portfolio->currency->code);
     }
 
 
@@ -52,14 +57,16 @@ class PortfolioMetricService extends MetricService
      * @param Portfolio $portfolio
      * @param null $count
      * @param bool $percent
-     * @return float|int|mixed|null
+     * @return Price
      */
     public function profit(Portfolio $portfolio, $count = null, $percent = false)
     {
         $values = KeyfigureRepository::getForPortfolio($portfolio, 'value')->timeseries()
             ->count(1 + ($count || $this->getPeriod($portfolio)))->get();
 
-        return $percent ? $this->deltaPercent($values, $count) : $this->deltaAbsolute($count, $values);
+        return $percent
+            ? Price::make($this->deltaPercent($values, $count), key($values))->setCurrency($portfolio->currency->code)
+            : Price::make($this->deltaAbsolute($count, $values), key($values))->setPercent(true);
     }
 
 
@@ -78,8 +85,9 @@ class PortfolioMetricService extends MetricService
             ->where('executed_at', '<=', $date->endOfDay())
             ->sum('amount');
 
-        return new Price($date, $cash);
+        return Price::make($date, $cash)->setCurrency($portfolio->currency->code);
     }
+
 
 
     public function cashFlow(Portfolio $portfolio, $from, $to)
@@ -120,15 +128,13 @@ class PortfolioMetricService extends MetricService
      * Return the Portfolio's risk as latest value stored in the database.
      *
      * @param Portfolio $portfolio
-     * @return Price
+     * @return array
      */
     private function dailyRisk(Portfolio $portfolio)
     {
         $term = 'risk.' . $this->getConfidence($portfolio);
-        $value = KeyfigureRepository::getForPortfolio($portfolio, $term)->timeseries()
-            ->count(1)->get();
 
-        return new Price(key($value), array_first($value));
+        return KeyfigureRepository::getForPortfolio($portfolio, $term)->timeseries()->count(1)->get();
     }
 
 
@@ -137,7 +143,7 @@ class PortfolioMetricService extends MetricService
      *
      * @param $values
      * @param $days
-     * @return mixed|null
+     * @return float|null
      */
     private function deltaAbsolute($values, $days)
     {
@@ -150,7 +156,7 @@ class PortfolioMetricService extends MetricService
      *
      * @param $values
      * @param $days
-     * @return float|int|null
+     * @return float|null
      */
     private function deltaPercent($values, $days)
     {

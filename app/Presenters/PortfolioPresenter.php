@@ -45,8 +45,8 @@ class PortfolioPresenter extends Presenter
 
     public function htmlProfit($days)
     {
-        $profit = $this->metrics->profit($this->entity, $days);
-        $percent = $this->metrics->profit($this->entity, $days, true);
+        $profit = $this->metrics->profit($this->entity, $days)->getValue();
+        $percent = $this->metrics->profit($this->entity, $days, true)->getValue();
 
         if ($profit > 0)
             $class = "fa fa-caret-up g-color-green";
