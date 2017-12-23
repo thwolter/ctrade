@@ -23,11 +23,9 @@ class AssetMetricService extends MetricService
      */
     public function price(Asset $asset, $exchange = null)
     {
-        $price = app()
+        return app()
             ->make('MetricService', [$asset->positionable])
             ->price($asset->positionable, $exchange);
-
-        return Price::make(key($price), array_first($price))->setCurrency($asset->currency()->code);
     }
 
 

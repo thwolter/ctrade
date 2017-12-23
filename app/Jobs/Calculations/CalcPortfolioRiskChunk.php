@@ -2,8 +2,7 @@
 
 namespace App\Jobs\Calculations;
 
-use App\Facades\KeyfigureRepository;
-use App\Models\Rscript;
+use App\Services\RscriptService\RscriptService;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -39,7 +38,7 @@ class CalcPortfolioRiskChunk extends Calculation implements ShouldQueue
      */
     private function calculateRisk($date)
     {
-        $rscript = new Rscript($this->object->getPortfolio());
+        $rscript = new RscriptService($this->object->getPortfolio());
         return $rscript->portfolioRisk($date->toDateString(), config('calculation.risk.period'));
     }
 

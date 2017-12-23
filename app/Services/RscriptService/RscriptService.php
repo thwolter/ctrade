@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Services\RscriptService;
 
 
 use Illuminate\Support\Facades\Log;
 
-class Rscript extends BaseRscript
+class RscriptService extends BaseRscript
 {
 
     public function portfolioRisk($date, $count)
@@ -37,4 +37,8 @@ class Rscript extends BaseRscript
     }
 
 
+    public function stockRisk($date, $count)
+    {
+        return ['2010-10-10' => 0];
+    }
 }

@@ -41,7 +41,7 @@
                         </div>
                         <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
                             <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
-                                {{ $stock->present()->price() }}
+                                {{ $stock->present()->price($exchange) }}
                             </p>
                         </div>
                     </a>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
                             <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
-                                {{ $stock->present()->price() }}
+                                {{ $stock->present()->expectedReturn($exchange) }}
                             </p>
                         </div>
                     </a>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
                             <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
-                                {{ $stock->present()->price() }}
+                                {{ $stock->present()->risk($exchange) }}
                             </p>
                         </div>
                     </a>

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Models;
+namespace App\Services\RscriptService;
 
 use Carbon\Carbon;
 

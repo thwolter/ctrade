@@ -242,6 +242,7 @@ return [
         \App\Providers\ViewServiceProvider::class,
         \App\Providers\MetricServiceProvider::class,
         \App\Providers\RepositoryProvider::class,
+        \App\Providers\RscriptServiceProvider::class,
 
     ],
 

@@ -4,58 +4,71 @@ namespace App\Services\MetricServices;
 
 
 
+use App\Classes\Price;
 use App\Entities\Stock;
+use App\Services\RscriptService\RscriptService;
+use Carbon\Carbon;
+
 
 class StockMetricService extends MetricService
 {
 
     public function price($stock, $exchange = null)
     {
-        return $this->dataService->history($stock, $exchange)->count(1)->getClose();
+        $value = $this->dataService->history($stock, $exchange)->count(1)->getClose();
+
+        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
     }
 
 
     public function previousPrice($stock, $exchange = null)
     {
-        return array_last(
-            $this->dataService->history($stock, $exchange)->count(2)->getClose()
-        );
+        $value = $this->dataService->history($stock, $exchange)->count(2)->getClose();
+
+        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
     }
 
 
     public function lowPrice($stock, $exchange)
     {
-        return $this->dataService->history($stock, $exchange)->count(1)->getLow();
+        $value = $this->dataService->history($stock, $exchange)->count(1)->getLow();
+
+        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
+
     }
 
 
     public function highPrice($stock, $exchange)
     {
-        return $this->dataService->history($stock, $exchange)->count(1)->getHigh();
+        $value = $this->dataService->history($stock, $exchange)->count(1)->getHigh();
+
+        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
     }
 
 
     public function periodHigh($stock, $exchange, $count)
     {
-        return max(
-            $this->dataService->history($stock, $exchange)->count($count)->getClose()
-        );
+        $value = max($this->dataService->history($stock, $exchange)->count($count)->getClose());
+
+        return Price::make(null, $value)->setCurrency($stock->currency->code);
+
     }
 
 
     public function periodLow($stock, $exchange, $count)
     {
-        return min(
-            $this->dataService->history($stock, $exchange)->count($count)->getClose()
-        );
+        $value = min($this->dataService->history($stock, $exchange)->count($count)->getClose());
+
+        return Price::make(null, $value)->setCurrency($stock->currency->code);
+
     }
 
 
     public function periodReturn($stock, $exchange, $count)
     {
-        $prices = $this->dataService->history($stock, $exchange)->count($count)->getClose();
+        $value = $this->dataService->history($stock, $exchange)->count($count)->getClose();
 
-        return array_first($prices) ? array_first($prices)/array_last($prices) - 1 : null;
+        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
     }
 
 
@@ -76,7 +89,9 @@ class StockMetricService extends MetricService
     /**
      * Return the entity's price histories for all exchanges.
      *
-     * @param $attributes
+     * @param Stock $stock
+     * @param integer $count
+     *
      * @return array
      */
     public function historiesByExchange(Stock $stock, $count = null)
@@ -96,6 +111,16 @@ class StockMetricService extends MetricService
 
     public function risk($stock, $exchange)
     {
-        //
+        $rscript = new RscriptService($stock->portfolio);
+
+        $value = $rscript->stockRisk($this->price($stock, $exchange)->getDateString(), 250);
+
+        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
+    }
+
+
+    public function expectedReturn($stock, $exchange)
+    {
+        return Price::make(Carbon::now()->toDateString(), 0)->setCurrency($stock->currency->code);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Calculations;
 
-use App\Models\Rscript;
+use App\Services\RscriptService\RscriptService;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -36,7 +36,7 @@ class CalcPortfolioValueChunk extends Calculation implements ShouldQueue
      */
     private function calculateValue($date)
     {
-        $rscript = new Rscript($this->object->getPortfolio());
+        $rscript = new RscriptService($this->object->getPortfolio());
         return $rscript->portfolioValue($date->toDateString());
     }
 }
