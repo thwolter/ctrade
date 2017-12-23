@@ -36,12 +36,11 @@ class PortfolioPresenter extends Presenter
     }
 
 
-
-
     public function profit($days = null)
     {
-        return $this->formatPrice($this->metrics->profit($this->entity, $days));
+        return $this->formatPrice($this->metrics->profit($this->entity, $days)->getValue());
     }
+
 
     public function htmlProfit($days)
     {
