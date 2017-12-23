@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Facades\Rscript;
+namespace App\Facades\RscriptService;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -11,13 +11,6 @@ use Illuminate\Support\Facades\Log;
 class BaseRscript
 {
 
-    protected $entity;
-
-    public function __construct($entity)
-    {
-        $this->entity = $entity;
-    }
-
     /**
      * Transforms array with parameters into a string to be used within exec call of Rscript
      *
@@ -37,13 +30,16 @@ class BaseRscript
     /**
      * Executes an Rscript.
      *
+     * @param $entity
      * @param string $script
      * @param array $args
+     *
      * @return array
+     * @throws RscriptException
      */
-    protected function execute($script, $args)
+    protected function execute($entity, $script, $args)
     {
-        if ($this->entity->positions->count() == 0) {
+        if ($entity->positions->count() == 0) {
             return null;
         }
 
@@ -77,6 +73,7 @@ class BaseRscript
      *
      * @param string $result
      * @param string $log
+     *
      * @throws RscriptException
      */
     protected function cleanup($result, $log)
