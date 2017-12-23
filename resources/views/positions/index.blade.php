@@ -93,7 +93,7 @@
                             @endif
                         </td>
                         <td class="align-middle text-right">{{ $asset->present()->risk() }}</td>
-                        <td class="align-middle text-right">{{ $asset->present()->riskRatio() }}</td>
+                        <td class="align-middle text-right">{{ $asset->present()->riskToValueRatio() }}</td>
                     </tr>
 
                 @endforeach

@@ -64,10 +64,19 @@ class Asset extends Model
         return $this;
     }
 
-    public function value($date = null)
+
+  /*  public function value($date = null)
     {
         return $this->amount($date) * array_first($this->price($date));
     }
+
+
+    public function price($date = null)
+    {
+        return $this->positionable->price($date);
+    }*/
+
+
 
     public function amount($date = null)
     {
@@ -76,15 +85,18 @@ class Asset extends Model
             ->sum('amount');
     }
 
+
     public function price($date = null)
     {
         return $this->positionable->price($date);
     }
 
+
     public function currency()
     {
         return $this->positionable->currency;
     }
+
 
     public function convert($currencyCode = null)
     {
@@ -92,10 +104,12 @@ class Asset extends Model
         return array_first((new CurrencyRepository($this->currency->code, $currencyCode))->price());
     }
 
+
     public function label()
     {
         return implode('.', [$this->positionable_type, $this->positionable_id]);
     }
+
 
     public function toArray($date = null)
     {
@@ -108,17 +122,6 @@ class Asset extends Model
         ];
     }
 
-    public function toArrayWithPrice()
-    {
-        $price = $this->price();
-
-        return array_merge($this->toArray(), [
-            'price' => head($price),
-            'total' => $this->value(),
-            'date' => key($price),
-            'currency' => $this->currency()
-        ]);
-    }
 
 
     public function isType($type)
