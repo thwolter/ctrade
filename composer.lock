@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd23e11c979f0560a0cd15c1f771b192",
+    "content-hash": "cd0d1b1eb3a88db90323a38ec449bddf",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -1097,6 +1097,40 @@
                 }
             ],
             "time": "2016-07-01T11:01:46+00:00"
+        },
+        {
+            "name": "cturbelin/rserve-php",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cturbelin/rserve-php.git",
+                "reference": "d26370a57dae61cf5d3e683521d4489c39096fae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cturbelin/rserve-php/zipball/d26370a57dae61cf5d3e683521d4489c39096fae",
+                "reference": "d26370a57dae61cf5d3e683521d4489c39096fae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Clément Turbelin",
+                    "email": "clement.turbelin@gmail.com"
+                }
+            ],
+            "description": "Rserve client library for PHP",
+            "homepage": "https://github.com/cturbelin/rserve-php",
+            "keywords": [
+                "Rserve",
+                "r",
+                "stats"
+            ],
+            "time": "2016-04-17T13:55:14+00:00"
         },
         {
             "name": "cviebrock/eloquent-sluggable",
