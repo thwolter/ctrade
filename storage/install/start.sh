@@ -1,13 +1,9 @@
-Install Supervisor
-sudo apt-get install supervisor
-
-# copy laravel.conf
 sudo cp storage/install/laravel.conf /etc/supervisor/conf.d/laravel.conf
 
 
-Start Supervisor
-
 sudo service supervisor start
+
+sudo service supervisorctl stop-all
 
 sudo supervisorctl reread
 sudo supervisorctl update
@@ -15,4 +11,6 @@ sudo supervisorctl update
 sudo supervisorctl start redis-server
 sudo supervisorctl start horizon
 sudo supervisorctl start echo-server
-sudo supervisorctl start rserv
+sudo supervisorctl start rserve
+
+sudo supervisorctl status
