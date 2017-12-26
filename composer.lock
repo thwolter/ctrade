@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd0d1b1eb3a88db90323a38ec449bddf",
+    "content-hash": "3b9cae9c23e170699536c0694afad320",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -145,16 +145,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.48.4",
+            "version": "3.48.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ffcb011ac0fbd839cdad1a10f0a86c5b7669f594"
+                "reference": "e72f243a122f6a46c731450547e5e4d32c4b5d34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ffcb011ac0fbd839cdad1a10f0a86c5b7669f594",
-                "reference": "ffcb011ac0fbd839cdad1a10f0a86c5b7669f594",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e72f243a122f6a46c731450547e5e4d32c4b5d34",
+                "reference": "e72f243a122f6a46c731450547e5e4d32c4b5d34",
                 "shasum": ""
             },
             "require": {
@@ -221,7 +221,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-12-21T23:06:20+00:00"
+            "time": "2017-12-22T20:53:25+00:00"
         },
         {
             "name": "backpack/backupmanager",
@@ -1100,16 +1100,16 @@
         },
         {
             "name": "cturbelin/rserve-php",
-            "version": "v1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cturbelin/rserve-php.git",
-                "reference": "d26370a57dae61cf5d3e683521d4489c39096fae"
+                "reference": "826b07a7f02e8de7f056f689384652592ec7bf05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cturbelin/rserve-php/zipball/d26370a57dae61cf5d3e683521d4489c39096fae",
-                "reference": "d26370a57dae61cf5d3e683521d4489c39096fae",
+                "url": "https://api.github.com/repos/cturbelin/rserve-php/zipball/826b07a7f02e8de7f056f689384652592ec7bf05",
+                "reference": "826b07a7f02e8de7f056f689384652592ec7bf05",
                 "shasum": ""
             },
             "require": {
@@ -1130,7 +1130,7 @@
                 "r",
                 "stats"
             ],
-            "time": "2016-04-17T13:55:14+00:00"
+            "time": "2016-09-15T13:12:31+00:00"
         },
         {
             "name": "cviebrock/eloquent-sluggable",
@@ -3791,16 +3791,16 @@
         },
         {
             "name": "league/oauth2-server",
-            "version": "6.0.2",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/oauth2-server.git",
-                "reference": "925776958fc3f5278e74363663c20147af32b668"
+                "reference": "a0cabb573c7cd5ee01803daec992d6ee3677c4ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/925776958fc3f5278e74363663c20147af32b668",
-                "reference": "925776958fc3f5278e74363663c20147af32b668",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/a0cabb573c7cd5ee01803daec992d6ee3677c4ae",
+                "reference": "a0cabb573c7cd5ee01803daec992d6ee3677c4ae",
                 "shasum": ""
             },
             "require": {
@@ -3817,7 +3817,7 @@
                 "lncd/oauth2": "*"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8 || ^5.0",
+                "phpunit/phpunit": "^4.8.38 || ^5.7.21",
                 "zendframework/zend-diactoros": "^1.0"
             },
             "type": "library",
@@ -3855,7 +3855,7 @@
                 "secure",
                 "server"
             ],
-            "time": "2017-08-03T15:09:23+00:00"
+            "time": "2017-12-23T23:33:42+00:00"
         },
         {
             "name": "livecontrol/eloquent-datatable",
@@ -8887,6 +8887,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "cturbelin/rserve-php": 20,
         "dirkolbrich/yahoo-finance-query": 20,
         "fzaninotto/faker": 20
     },

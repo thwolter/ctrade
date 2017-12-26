@@ -6,7 +6,7 @@ namespace App\Services\MetricServices;
 
 use App\Classes\Price;
 use App\Entities\Stock;
-use App\Services\RscriptService\RscriptService;
+use App\Facades\RscriptService\RscriptService;
 use Carbon\Carbon;
 
 
@@ -111,9 +111,7 @@ class StockMetricService extends MetricService
 
     public function risk($stock, $exchange)
     {
-        $rscript = new RscriptService($stock->portfolio);
-
-        $value = $rscript->stockRisk($this->price($stock, $exchange)->getDateString(), 250);
+        $value = RscriptService::stockRisk($stock, $exchange);
 
         return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
     }

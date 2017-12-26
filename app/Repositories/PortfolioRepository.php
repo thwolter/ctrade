@@ -7,6 +7,7 @@ use App\Entities\Category;
 use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\User;
+use App\Facades\MetricService\PortfolioMetricService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,5 +49,32 @@ class PortfolioRepository
 
         return $portfolio;
     }
-    
+
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request
+     * @return array
+     */
+    public function getPortfolioResource($portfolio, $date)
+    {
+        $date = Carbon::parse($date)->endOfDay();
+
+        $array = [];
+        foreach ($portfolio->assets()->get() as $asset) {
+            $array[$asset->id] = $asset->toArray($date);
+        }
+
+
+        return [
+            'portfolio' => [
+                'name' => $portfolio->name,
+                'currency' => $portfolio->currency->code,
+                'cash' => PortfolioMetricService::cash($portfolio, $date)->getValue()
+            ],
+            'assets' => $array
+        ];
+    }
+
 }

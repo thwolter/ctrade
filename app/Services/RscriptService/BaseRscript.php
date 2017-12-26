@@ -4,6 +4,7 @@
 namespace App\Services\RscriptService;
 
 
+use App\Entities\Portfolio;
 use App\Exceptions\RscriptException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -21,32 +22,27 @@ class BaseRscript
     {
 
         $s = null;
-        foreach ($args as $key => $value) {
+        foreach ($args as $key => $value)
+        {
             $s = $s . "--{$key}={$value} ";
         }
         return trim($s);
     }
 
+
     /**
      * Executes an Rscript.
      *
-     * @param $entity
      * @param string $script
      * @param array $args
      *
      * @return array
      * @throws RscriptException
      */
-    protected function execute($entity, $script, $args)
+    protected function execute($script, $args)
     {
-        if ($entity->positions->count() == 0) {
-            return null;
-        }
 
-        if (!File::exists((storage_path('app/tmp')))) {
-            File::makeDirectory(storage_path('app/tmp'));
-        }
-        $file = uniqid('app/tmp/rscript');
+        $file = $this->makeUniqueFile();
 
         $result = storage_path($file . '.json');
         $log = storage_path($file . '.log');
@@ -66,6 +62,7 @@ class BaseRscript
         Log::debug("Finished '{$execute}'");
         return json_decode($json, true);
     }
+
 
     /**
      * Delete the 'json' and 'log' files use for calling rscript and throw an error message
@@ -97,4 +94,18 @@ class BaseRscript
         }
 
     }
+
+
+    /**
+     * @return string
+     */
+    private function makeUniqueFile(): string
+    {
+        if (!File::exists((storage_path('app/tmp')))) {
+            File::makeDirectory(storage_path('app/tmp'));
+        }
+        $file = uniqid('app/tmp/rscript');
+        return $file;
+    }
+
 }

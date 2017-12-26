@@ -3,7 +3,9 @@
 namespace App\Services\RscriptService;
 
 
+use App\Facades\DataService;
 use Illuminate\Support\Facades\Log;
+
 
 
 class RscriptService extends BaseRscript
@@ -18,8 +20,9 @@ class RscriptService extends BaseRscript
      */
     public function portfolioRisk($portfolio, $date)
     {
+        if (!$this->isEmpty($portfolio)) return null;
+
         Log::info(("Calculate risk for portfolio {$portfolio->id} on {$date}"));
-        $script = 'Risk.R';
 
         $args = [
             'id' => $portfolio->id,
@@ -27,7 +30,7 @@ class RscriptService extends BaseRscript
             'count' => $portfolio->settings('history')
         ];
 
-        return $this->execute($portfolio, $script, $args);
+        return $this->execute('Risk.R', $args);
     }
 
 
@@ -40,20 +43,38 @@ class RscriptService extends BaseRscript
      */
     public function portfolioValue($portfolio, $date)
     {
+        if (!$this->isEmpty($portfolio)) return null;
+
         Log::info(("Calculate value for portfolio {$portfolio->id} on {$date}"));
-        $script = 'Value.R';
 
         $args = [
             'id' => $portfolio->id,
             'date' => $date
         ];
 
-        return $this->execute($portfolio, $script, $args);
+        return $this->execute('Value.R', $args);
     }
 
 
-    public function stockRisk($portfolio, $date)
+    /**
+     * @param $stock
+     * @param $exchange
+     * @return array
+     * @throws \App\Exceptions\RscriptException
+     */
+    public function stockRisk($stock, $exchange)
     {
-        return ['2010-10-10' => 0];
+        $args = [
+            'id' => $stock->id,
+            'conf' => 0.95
+        ];
+
+        return $this->execute('StockRisk.R', $args);
+    }
+
+
+    private function isEmpty($portfolio)
+    {
+        return $portfolio->positions->count() == 0;
     }
 }

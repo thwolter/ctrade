@@ -17,7 +17,7 @@
         "backpack/permissionmanager": "^2.1",
         "backpack/settings": "^2.0",
         "barryvdh/laravel-ide-helper": "^2.3",
-        "cturbelin/rserve-php": "^1.0",
+        "cturbelin/rserve-php": "dev-master",
         "cviebrock/eloquent-sluggable": "^4.2",
         "dannyben/php-quandl": "^0.5.2",
         "dirkolbrich/yahoo-finance-query": "dev-master",

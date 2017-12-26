@@ -1,5 +1,5 @@
 library(R6)
-require(xts)
+library(xts)
 
 
 Portfolio <- R6Class('Portfolio',
