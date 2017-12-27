@@ -22,13 +22,20 @@ class Price
         'decimal' => 1
     ];
 
+    protected $allowed = [
+        'double',
+        'float',
+        'integer',
+        'NULL'
+    ];
+
 
 
     public function __construct($date, $value)
     {
         $this->date = Carbon::parse($date);
 
-        $this->value = $value;
+        $this->value = $this->checkType($value);
     }
 
 
@@ -138,6 +145,23 @@ class Price
     private function currencyFormater()
     {
         return new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
+    }
+
+    /**
+     * @param $value
+     * @throws \Throwable
+     *
+     * @return mixed
+     */
+    private function checkType($value)
+    {
+        $type = gettype($value);
+
+        throw_unless(
+            in_array($type, $this->allowed),
+            new PriceException("'value' must be numeric, is: $type"));
+
+        return $value;
     }
 
 }

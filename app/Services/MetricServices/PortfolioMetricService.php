@@ -65,8 +65,8 @@ class PortfolioMetricService extends MetricService
             ->count(1 + ($count || $this->getPeriod($portfolio)))->get();
 
         return $percent
-            ? Price::make($this->deltaPercent($values, $count), key($values))->setPercent(true)
-            : Price::make($this->deltaAbsolute($count, $values), key($values))->setCurrency($portfolio->currency->code);
+            ? Price::make(key($values), $this->deltaPercent($values))->setPercent(true)
+            : Price::make(key($values), $this->deltaAbsolute($count, $values))->setCurrency($portfolio->currency->code);
     }
 
 

@@ -3,7 +3,9 @@
 
 namespace App\Classes;
 
+use App\Exceptions\TimeSeriesException;
 use Carbon\Carbon;
+use Throwable;
 
 
 class TimeSeries
@@ -73,9 +75,7 @@ class TimeSeries
 
         $data = $this->filterByDates($data);
 
-        $data = $this->filtercolumn(
-            array_slice($data, 0, array_get($this->filter, 'count'))
-        );
+        $data = $this->filtercolumn($this->limitByCount($data));
 
         if (array_get($this->filter, 'reverse', false))
             $data = array_reverse($data);
@@ -293,6 +293,18 @@ class TimeSeries
         }
 
         return $date->toDateString() === $string;
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    private function limitByCount($data): array
+    {
+        $count = array_get($this->filter, 'count');
+        $result = array_slice($data, 0, $count, true);
+
+        return count($result) === $count ? $result : [];
     }
 
 }
