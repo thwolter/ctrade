@@ -2,7 +2,7 @@
     <div v-cloak>
 
         <div class="btn-group btn-group-xs g-mb-20" role="group">
-            <button @click.prevent="length=null" class="btn btn-xs u-btn-outline-primary"
+            <button @click.prevent="length=Infinity" class="btn btn-xs u-btn-outline-primary"
                     :class="{active: length==null}">Alle</button>
             <button @click="length=1250" class="btn btn-xs u-btn-outline-primary"
                     :class="{active: length==1250}">5 Jahre</button>
@@ -53,11 +53,11 @@
                 new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: _.keys(this.history.data),
+                        labels: _.reverse(_.slice(_.keys(this.history.data), 0, this.length)),
 
                         datasets: [{
                             label: 'Value',
-                            data: _.values(this.history.data),
+                            data: _.reverse(_.slice(_.values(this.history.data), 0, this.length)),
                             pointRadius: 0,
                         }]
                     },

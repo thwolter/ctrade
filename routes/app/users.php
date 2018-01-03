@@ -12,6 +12,11 @@ Route::prefix('user')->middleware('auth')->group(function() {
         'uses' => 'UserController@update'
     ]);
 
+    Route::put('parameter', [
+        'as' => 'users.parameter',
+        'uses' => 'UserController@parameter'
+    ]);
+
     Route::put('password', [
         'as' => 'users.password',
         'uses' => 'UserController@password'

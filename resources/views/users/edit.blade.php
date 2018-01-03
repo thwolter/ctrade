@@ -48,6 +48,11 @@
                                href="#messaging" role="tab">@lang('user.messaging.title')
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $active_tab === 'parameter' ? 'active' : '' }}" data-toggle="tab"
+                               href="#parameter" role="tab">@lang('user.parameter.title')
+                            </a>
+                        </li>
 
                     </ul>
                     <!-- End Nav tabs -->
@@ -67,6 +72,11 @@
                         <div class="tab-pane fade {{ $active_tab === 'messaging' ? 'show active' : '' }}"
                              id="messaging" role="tabpanel">
                             @include('users.edit.messaging')
+                        </div>
+
+                        <div class="tab-pane fade {{ $active_tab === 'parameter' ? 'show active' : '' }}"
+                             id="parameter" role="tabpanel">
+                            @include('users.edit.parameter')
                         </div>
 
                     </div>

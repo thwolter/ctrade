@@ -66,6 +66,16 @@ class UserController extends Controller
     }
 
 
+    public function parameter(Request $request)
+    {
+        $request->user()->settings()->merge($request->all());
+
+        return redirect()->route('users.edit')
+            ->with('status', 'parameter_updated')
+            ->with('active_tab', $request->get('active_tab'));
+    }
+
+
     public function emailLink()
     {
         event(new UserRequestedEmailChange(\Auth::user()));

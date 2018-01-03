@@ -81,7 +81,7 @@ class StockMetricService extends MetricService
         $datasource = $this->dataService->getDatasource($stock, $exchange);
 
         return [
-            'data' => $data->reverse()->getClose(),
+            'data' => $data->getClose(),
             'currency' => $datasource->currency->code,
             'exchange' => $exchange,
             'datasource_id' => $datasource->id
