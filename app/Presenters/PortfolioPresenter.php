@@ -41,7 +41,7 @@ class PortfolioPresenter extends Presenter
     {
         $profit = $this->metrics->profit($this->entity, $days);
 
-        if ($profit) return null;
+        if (!$profit) return null;
 
         $percent = $this->metrics->profit($this->entity, $days, true)->getValue();
 

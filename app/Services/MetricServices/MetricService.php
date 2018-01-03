@@ -38,15 +38,15 @@ class MetricService
     }
 
 
-    protected function getConfidence(Portfolio $portfolio)
+    protected function getConfidence($entity)
     {
-        return trim($portfolio->settings('confidence'), '0.');
+        return trim($entity->settings('confidence'), '0.');
     }
 
 
-    protected function getPeriod(Portfolio $portfolio)
+    protected function getPeriod($entity)
     {
-        return $portfolio->settings('period');
+        return $entity->settings('period');
     }
 
 

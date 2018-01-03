@@ -2,14 +2,14 @@
 
 namespace App\Services\MetricServices;
 
-
-
 use App\Classes\Price;
 use App\Entities\Stock;
 use App\Facades\DataService;
 use App\Facades\RscriptService\RscriptService;
 use Carbon\Carbon;
 use MathPHP\Statistics\Circular;
+use MathPHP\Statistics\RandomVariable;
+use MathPHP\Probability\Distribution\Continuous;
 
 
 class StockMetricService extends MetricService
@@ -110,14 +110,18 @@ class StockMetricService extends MetricService
         return $prices;
     }
 
-    // Todo: get parameters from user settings
 
     public function risk($stock, $exchange)
     {
+        $user = \Auth::user();
         $history = DataService::history($stock, $exchange)->count(250)->getClose();
 
+        $standardNormal = new Continuous\StandardNormal();
+        $inv_cdf = $standardNormal->inverse($this->getConfidence($user)/100);
+
+        // Todo: double check calculation of risk
         $sd = Circular::standardDeviation($history);
-        $risk = $sd * 1.95 * sqrt(20);
+        $risk = $sd * $inv_cdf * sqrt($this->getPeriod($user));
 
         return Price::make(key($history), $risk)->setCurrency($stock->currency->code);
     }
@@ -126,6 +130,7 @@ class StockMetricService extends MetricService
 
     public function expectedReturn($stock, $exchange)
     {
+        $user = \Auth::user();
         $history = DataService::history($stock, $exchange)->count(250)->getClose();
 
         $mean = Circular::mean($history);
