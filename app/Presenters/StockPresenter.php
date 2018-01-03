@@ -23,7 +23,7 @@ class StockPresenter extends Presenter
 
     public function priceDate($exchange = null)
     {
-        return $this->metrics->price($this->entity, $exchange)->toLocalCurrencyFormat();
+        return $this->metrics->price($this->entity, $exchange)->toLocalDateFormat();
     }
 
 
@@ -46,7 +46,7 @@ class StockPresenter extends Presenter
 
     public function periodLow($exchange, $count)
     {
-        return $this->metrics->periodHigh($this->entity, $exchange, $count)->toLocalCurrencyFormat();
+        return $this->metrics->periodLow($this->entity, $exchange, $count)->toLocalCurrencyFormat();
     }
 
 

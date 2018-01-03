@@ -299,12 +299,17 @@ class TimeSeries
      * @param $data
      * @return array
      */
-    private function limitByCount($data): array
+    private function limitByCount($data)
     {
         $count = array_get($this->filter, 'count');
-        $result = array_slice($data, 0, $count, true);
 
-        return count($result) === $count ? $result : [];
+        if ($count) {
+            $data = array_slice($data, 0, $count, true);
+            return count($data) === $count ? $data : [];
+
+        } else {
+            return $data;
+        }
     }
 
 }

@@ -27,12 +27,14 @@
                 <span class="float-right g-color-black">{{ $stock->present()->price() }}</span>
             </li>
             <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
-                <span>Kursdatum</span>
-                <span class="float-right g-color-black">{{ $stock->present()->priceDate() }}</span>
-            </li>
-            <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
                 <span>Vortag</span>
                 <span class="float-right g-color-black">{{ $stock->present()->previousPrice() }}</span>
+            </li>
+            <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
+                <span>Low/High</span>
+                <span class="float-right g-color-black">
+                    {{ $stock->present()->lowPrice($exchange) }} / {{ $stock->present()->highPrice($exchange) }}
+                </span>
             </li>
             <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
                 <span>Volume</span>
@@ -45,10 +47,8 @@
     <div class="col-md-4 g-mb-30">
         <ul class="list-unstyled g-color-text">
             <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
-                <span>Low/High</span>
-                <span class="float-right g-color-black">
-                    {{ $stock->present()->lowPrice($exchange) }} / {{ $stock->present()->highPrice($exchange) }}
-                </span>
+                <span>Kursdatum</span>
+                <span class="float-right g-color-black">{{ $stock->present()->priceDate() }}</span>
             </li>
             <li class="g-brd-bottom g-brd-gray-light-v3 pt-1 mb-3">
                 <span>52 Wo. hoch</span>

@@ -40,6 +40,9 @@ class PortfolioPresenter extends Presenter
     public function htmlProfit($days)
     {
         $profit = $this->metrics->profit($this->entity, $days);
+
+        if ($profit) return null;
+
         $percent = $this->metrics->profit($this->entity, $days, true)->getValue();
 
         if ($profit->getValue() > 0)

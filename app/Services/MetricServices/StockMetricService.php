@@ -6,8 +6,10 @@ namespace App\Services\MetricServices;
 
 use App\Classes\Price;
 use App\Entities\Stock;
+use App\Facades\DataService;
 use App\Facades\RscriptService\RscriptService;
 use Carbon\Carbon;
+use MathPHP\Statistics\Circular;
 
 
 class StockMetricService extends MetricService
@@ -108,17 +110,27 @@ class StockMetricService extends MetricService
         return $prices;
     }
 
+    // Todo: get parameters from user settings
 
     public function risk($stock, $exchange)
     {
-        $value = RscriptService::stockRisk($stock, $exchange);
+        $history = DataService::history($stock, $exchange)->count(250)->getClose();
 
-        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
+        $sd = Circular::standardDeviation($history);
+        $risk = $sd * 1.95 * sqrt(20);
+
+        return Price::make(key($history), $risk)->setCurrency($stock->currency->code);
     }
 
+    // Todo: get parameters from user settings
 
     public function expectedReturn($stock, $exchange)
     {
-        return Price::make(Carbon::now()->toDateString(), 0)->setCurrency($stock->currency->code);
+        $history = DataService::history($stock, $exchange)->count(250)->getClose();
+
+        $mean = Circular::mean($history);
+        $expected = $mean;
+
+        return Price::make(key($history), $expected)->setCurrency($stock->currency->code);
     }
 }

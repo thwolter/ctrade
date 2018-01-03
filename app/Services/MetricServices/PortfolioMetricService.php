@@ -64,9 +64,11 @@ class PortfolioMetricService extends MetricService
         $values = KeyfigureRepository::getForPortfolio($portfolio, 'value')->timeseries()
             ->count(1 + ($count || $this->getPeriod($portfolio)))->get();
 
+        if (count($values) != $count) return null;
+
         return $percent
             ? Price::make(key($values), $this->deltaPercent($values))->setPercent(true)
-            : Price::make(key($values), $this->deltaAbsolute($count, $values))->setCurrency($portfolio->currency->code);
+            : Price::make(key($values), $this->deltaAbsolute($values))->setCurrency($portfolio->currency->code);
     }
 
 
@@ -145,9 +147,9 @@ class PortfolioMetricService extends MetricService
      * @param $days
      * @return float|null
      */
-    private function deltaAbsolute($values, $days)
+    private function deltaAbsolute($values)
     {
-        return count($values) === $days ? array_last($values) - array_first($values) : null;
+        return array_last($values) - array_first($values);
     }
 
 
@@ -160,9 +162,7 @@ class PortfolioMetricService extends MetricService
      */
     private function deltaPercent($values, $days)
     {
-        if (!array_first($values)) return null;
-
-        return count($values) === $days ? $this->deltaAbsolute($values, $days) / array_first($values) : null;
+        return $this->deltaAbsolute($values) / array_first($values);
     }
 
 }
