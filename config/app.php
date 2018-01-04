@@ -243,6 +243,7 @@ return [
         \App\Providers\MetricServiceProvider::class,
         \App\Providers\RepositoryProvider::class,
         \App\Providers\RscriptServiceProvider::class,
+        \App\Providers\RiskServiceProvider::class,
 
     ],
 
