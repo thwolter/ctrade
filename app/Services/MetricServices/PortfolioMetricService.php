@@ -20,6 +20,18 @@ class PortfolioMetricService extends MetricService
      */
     public function value(Portfolio $portfolio)
     {
+        list($value, $date) = $this->valueStocks($portfolio);
+
+        return Price::make($date, $value + $this->cash($portfolio)->getValue())
+            ->setCurrency($portfolio->currency->code);
+    }
+
+    /**
+     * @param Portfolio $portfolio
+     * @return array
+     */
+    public function valueStocks(Portfolio $portfolio)
+    {
         $value = 0;
         $date = null;
 
@@ -29,9 +41,7 @@ class PortfolioMetricService extends MetricService
 
             $date = max($date, $assetValue->getDate());
         }
-
-        return Price::make($date, $value + $this->cash($portfolio)->getValue())
-            ->setCurrency($portfolio->currency->code);
+        return array($value, $date);
     }
 
 

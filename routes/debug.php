@@ -138,3 +138,11 @@ Route::get('/success', function() {
 Route::get('/verified', function() {
     return view('auth.confirmed.email');
 });
+
+Route::get('/portfolioVaR', function() {
+    return \App\Facades\RiskService::portfolioVaR(\App\Entities\Portfolio::find(1), [
+        'confidence' => 0.95,
+        'period' => 1,
+        'date' => '2018-01-03'
+    ]);
+});

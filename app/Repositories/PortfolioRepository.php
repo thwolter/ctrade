@@ -7,6 +7,7 @@ use App\Entities\Category;
 use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\User;
+use App\Facades\DataService;
 use App\Facades\MetricService\PortfolioMetricService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -76,5 +77,4 @@ class PortfolioRepository
             'assets' => $array
         ];
     }
-
 }

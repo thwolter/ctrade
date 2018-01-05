@@ -101,7 +101,7 @@ Portfolio <- R6Class('Portfolio',
                
             args <- lapply(nms, 
                 function(nm) {
-                    x <- quantmod::dailyReturn(self$hist[[nm]])
+                    x <- quantmod::dailyReturn(self$hist[[nm]], type='log')
                     x[is.infinite(x)] <- 0
                     x[is.nan(x)] <- 0
                     x

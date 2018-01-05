@@ -35,9 +35,7 @@ class MetricServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('stockMetricService', StockMetricService::class);
-
         $this->app->bind('assetMetricService', AssetMetricService::class);
-
         $this->app->bind('portfolioMetricService', PortfolioMetricService::class);
     }
 

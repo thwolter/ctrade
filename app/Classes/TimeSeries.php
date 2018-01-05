@@ -301,7 +301,7 @@ class TimeSeries
      */
     private function limitByCount($data)
     {
-        $count = array_get($this->filter, 'count');
+        $count = (int)array_get($this->filter, 'count');
 
         if ($count) {
             $data = array_slice($data, 0, $count, true);

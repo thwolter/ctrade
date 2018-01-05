@@ -20,7 +20,7 @@ class RscriptService extends BaseRscript
      */
     public function portfolioRisk($portfolio, $date)
     {
-        if (!$this->isEmpty($portfolio)) return null;
+        if ($this->isEmpty($portfolio)) return null;
 
         Log::info(("Calculate risk for portfolio {$portfolio->id} on {$date}"));
 
@@ -43,7 +43,7 @@ class RscriptService extends BaseRscript
      */
     public function portfolioValue($portfolio, $date)
     {
-        if (!$this->isEmpty($portfolio)) return null;
+        if ($this->isEmpty($portfolio)) return null;
 
         Log::info(("Calculate value for portfolio {$portfolio->id} on {$date}"));
 
