@@ -1,27 +1,30 @@
 <?php
 
-namespace App\Services;
-
+namespace App\Services\RiskService;
 
 use App\Entities\Asset;
 use App\Entities\Portfolio;
-use App\Facades\MetricService\AssetMetricService;
 use Carbon\Carbon;
 use MathPHP\LinearAlgebra\Matrix;
 use MathPHP\LinearAlgebra\Vector;
 use MathPHP\Statistics\Correlation;
-use MathPHP\Statistics\Descriptive;
-use MathPHP\Probability\Distribution\Continuous;
 use App\Facades\PortfolioService;
 
 
 class RiskService
 {
+    use RiskHelperTrait;
 
 
-    public function singleVaR($x, $confidence, $period)
+    private $register = [
+        'Stock' => StockRisk::class
+    ];
+
+
+    public function VaR(Asset $asset, $parameter = [])
     {
-        return $this->standardDeviation($x) * $this->inverseCdf($confidence) * sqrt($period);
+        $type = class_basename($asset->positionable);
+        return resolve($this->register[$type])->VaR($asset, $parameter);
     }
 
 
@@ -32,7 +35,7 @@ class RiskService
      *
      * @throws \Exception
      */
-    public function portfolioVaR(Portfolio $portfolio, $parameter = [])
+    public function portfolioVaR($portfolio, $parameter = [])
     {
         $confidence = array_get($parameter, 'confidence', $portfolio->settings('confidence'));
         $period = array_get($parameter, 'period', $portfolio->settings('period'));
@@ -40,7 +43,7 @@ class RiskService
         $returns = $this->getPortfolioLogReturns($portfolio, $parameter);
 
         $C = new Matrix($this->covarianceMatrix($returns));
-        $V = new Vector($this->deltaVector($portfolio));
+        $V = new Vector($this->deltaVector($portfolio, $parameter));
 
         return $this->multiplyVCV($V, $C) * $this->inverseCdf($confidence) * sqrt($period);
     }
@@ -69,81 +72,33 @@ class RiskService
      * Return the delta vector for portfolio assets.
      *
      * @param Portfolio $portfolio
+     * @param array $parameter
+     *
      * @return array
      * @throws \Exception
      */
-    public function deltaVector(Portfolio $portfolio)
+    private function deltaVector(Portfolio $portfolio, $parameter)
     {
-        $delta = [];
-        foreach ($portfolio->assets as $asset) {
-
-            $type = class_basename($asset->positionable);
-            switch ($type) {
-                case 'Stock': $delta[] = $this->stockDelta($asset); break;
-                default: throw new \Exception("Cannot calculate delta for $type");
-            }
+       foreach ($portfolio->assets as $asset)
+        {
+            $delta[] = $this->delta($asset, $parameter);
         }
-
         return $delta;
     }
 
 
     /**
-     * Return the delta for a stock asset.
+     * Return the asset's delta.
      *
-     * @param Asset $asset
+     * @param $asset
      * @return mixed
      */
-    private function stockDelta(Asset $asset)
+    private function delta($asset, $parameter)
     {
-        return AssetMetricService::value($asset)->getValue();
+        $type = class_basename($asset->positionable);
+        return resolve($this->register[$type])->delta($asset, $parameter);
     }
 
-
-    /**
-     * Calculates the daily standard deviation of an time series based on log-returns.
-     *
-     * @param array $x
-     * @return number
-     */
-    private function standardDeviation(array $x)
-    {
-        return Descriptive::standardDeviation($this->logReturn($x));
-    }
-
-
-    /**
-     * Calculates the log-returns of an one-dimensional time-series.
-     *
-     * @param array $x
-     * @return array
-     */
-    private function logReturn(array $x)
-    {
-        $values = array_values($x);
-        $keys = array_keys($x);
-
-        $result = [];
-        for ($i = 0; $i < count($values)-1; $i++) {
-            $result[] = log($values[$i] / $values[$i+1]);
-        }
-
-        $newKeys = array_slice($keys, 0, count($keys) - 1);
-        return array_combine($newKeys, $result);
-    }
-
-    /**
-     * Calculates the confidence scaling factor.
-     *
-     * @param float $confidence
-     * @return float
-     */
-    private function inverseCdf($confidence)
-    {
-        $standardNormal = new Continuous\StandardNormal();
-
-        return $standardNormal->inverse($confidence);
-    }
 
     /**
      * Return the portfolios assets log returns as an array.
@@ -174,5 +129,4 @@ class RiskService
         $stddev = sqrt($V->dotProduct($C->vectorMultiply($V)));
         return $stddev;
     }
-
 }

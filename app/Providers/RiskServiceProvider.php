@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App\Services\RiskService;
+use App\Services\RiskService\RiskService;
 use Illuminate\Support\ServiceProvider;
-use App\Services\RscriptService\RscriptService;
 
 
 class RiskServiceProvider extends ServiceProvider

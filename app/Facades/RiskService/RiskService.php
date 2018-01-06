@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Facades;
+namespace App\Facades\RiskService;
 
 
 use Illuminate\Support\Facades\Facade;

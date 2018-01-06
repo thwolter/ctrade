@@ -17,7 +17,16 @@ class StockMetricService extends MetricService
 
     public function price($stock, $exchange = null)
     {
-        $value = $this->dataService->history($stock, $exchange)->count(1)->getClose();
+        return $this->priceAtDate($stock, ['exchange' => $exchange]);
+    }
+
+
+    public function priceAtDate($stock, $parameter = [])
+    {
+        $exchange = array_get($parameter, 'exchange');
+        $date = array_get($parameter, 'date');
+
+        $value = $this->dataService->history($stock, $exchange)->count(1)->to($date)->getClose();
 
         return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
     }
