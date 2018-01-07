@@ -2,7 +2,8 @@
 
 namespace App\Services\MetricServices;
 
-use App\Classes\Price;
+use App\Classes\Output\Percent;
+use App\Classes\Output\Price;
 use App\Entities\Stock;
 use App\Facades\DataService;
 use App\Facades\RiskService\RiskService;
@@ -29,7 +30,7 @@ class StockMetricService extends MetricService
 
         $value = $this->dataService->history($stock, $exchange)->count(1)->to($date)->getClose();
 
-        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
+        return new Price(key($value), array_first($value), $stock->currency->code);
     }
 
 
@@ -37,7 +38,7 @@ class StockMetricService extends MetricService
     {
         $value = $this->dataService->history($stock, $exchange)->count(2)->getClose();
 
-        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
+        return new Price(key($value), array_first($value), $stock->currency->code);
     }
 
 
@@ -45,7 +46,7 @@ class StockMetricService extends MetricService
     {
         $value = $this->dataService->history($stock, $exchange)->count(1)->getLow();
 
-        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
+        return new Price(key($value), array_first($value), $stock->currency->code);
 
     }
 
@@ -54,7 +55,7 @@ class StockMetricService extends MetricService
     {
         $value = $this->dataService->history($stock, $exchange)->count(1)->getHigh();
 
-        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
+        return new Price(key($value), array_first($value), $stock->currency->code);
     }
 
 
@@ -62,7 +63,7 @@ class StockMetricService extends MetricService
     {
         $value = max($this->dataService->history($stock, $exchange)->count($count)->getClose());
 
-        return Price::make(null, $value)->setCurrency($stock->currency->code);
+        return new Price(null, $value, $stock->currency->code);
 
     }
 
@@ -71,7 +72,7 @@ class StockMetricService extends MetricService
     {
         $value = min($this->dataService->history($stock, $exchange)->count($count)->getClose());
 
-        return Price::make(null, $value)->setCurrency($stock->currency->code);
+        return new Price(null, $value, $stock->currency->code);
 
     }
 
@@ -80,7 +81,7 @@ class StockMetricService extends MetricService
     {
         $value = $this->dataService->history($stock, $exchange)->count($count)->getClose();
 
-        return Price::make(key($value), array_first($value))->setCurrency($stock->currency->code);
+        return new Price(key($value), array_first($value), $stock->currency->code);
     }
 
 
@@ -128,15 +129,16 @@ class StockMetricService extends MetricService
 
         $risk = RiskService::instrumentVaR($stock, $parameter);
 
-        return Price::make(Carbon::now()->toDateString(), $risk)->setCurrency($stock->currency->code);
+        return new Price(Carbon::now()->toDateString(), $risk, $stock->currency->code);
     }
 
 
     public function riskToPrice($stock, $exchange)
     {
-        return $this->risk($stock)
-            ->multiply(1 / $this->price($stock, $exchange)->getValue())
-            ->setPercent(true);
+        $risk = $this->risk($stock);
+        $ratio = $risk->getValue() / $this->price($stock, $exchange)->getValue();
+
+        return new Percent($risk->getDate(), $ratio);
     }
 
 
@@ -147,14 +149,15 @@ class StockMetricService extends MetricService
         $history = DataService::history($stock, $exchange)->count($history)->getClose();
         $expected = Circular::mean($history);
 
-        return Price::make(key($history), $expected)->setCurrency($stock->currency->code);
+        return new Price(key($history), $expected, $stock->currency->code);
     }
 
 
     public function expectedReturnToPrice($stock, $exchange)
     {
-        return $this->expectedReturn($stock, $exchange)
-            ->multiply(1 / $this->price($stock, $exchange)->getValue())
-            ->setPercent(true);
+        $return = $this->expectedReturn($stock, $exchange);
+        $ratio = $return->getValue() / $this->price($stock, $exchange)->getValue();
+
+        return new Percent($return->getDate(), $ratio);
     }
 }

@@ -4,9 +4,9 @@
 namespace App\Services\MetricServices;
 
 
-use App\Classes\Price;
+use App\Classes\Output\Percent;
+use App\Classes\Output\Price;
 use App\Entities\Asset;
-use App\Facades\DataService;
 use App\Facades\Repositories\KeyfigureRepository;
 
 class AssetMetricService extends MetricService
@@ -52,10 +52,9 @@ class AssetMetricService extends MetricService
     public function risk(Asset $asset)
     {
         $dailyRisk = $this->dailyRisk($asset);
+        $risk = array_first($dailyRisk) * sqrt($this->getPeriod($asset->portfolio));
 
-        $value = Price::make(key($dailyRisk), array_first($dailyRisk) * sqrt($this->getPeriod($asset->portfolio)));
-
-        return $value->setCurrency($asset->portfolio->currency->code);
+        return new Price(key($dailyRisk), $risk, $asset->portfolio->currency->code);
     }
 
 
@@ -63,14 +62,14 @@ class AssetMetricService extends MetricService
      * Return the risk to value ratio.
      *
      * @param Asset $asset
-     * @return Price
+     * @return Percent
      */
     public function riskToValueRatio(Asset $asset)
     {
         $risk = $this->risk($asset);
         $value = $this->value($asset);
 
-        return Price::make($risk->getDate(), $risk->getValue() / $value->getValue())->setPercent(true);
+        return new Percent($risk->getDate(), $risk->getValue() / $value->getValue());
     }
 
 

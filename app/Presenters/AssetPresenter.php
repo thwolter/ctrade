@@ -42,7 +42,7 @@ class AssetPresenter extends Presenter
      */
     public function risk()
     {
-        return $this->metrics->risk($this->entity)->toLocalCurrencyFormat();
+        return $this->metrics->risk($this->entity)->formatValue();
     }
 
 
@@ -53,6 +53,6 @@ class AssetPresenter extends Presenter
      */
     public function riskToValueRatio()
     {
-        return $this->metrics->riskToValueRatio($this->entity)->toLocalPercentageFormat();
+        return $this->metrics->riskToValueRatio($this->entity)->formatValue();
     }
 }

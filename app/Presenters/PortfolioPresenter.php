@@ -3,10 +3,11 @@
 namespace App\Presenters;
 
 
-use App\Classes\Price;
+use App\Classes\Output\Price;
 use App\Entities\Stock;
 use App\Facades\MetricService\PortfolioMetricService;
 use Carbon\Carbon;
+use Classes\Output\Output;
 use Illuminate\Support\HtmlString;
 
 class PortfolioPresenter extends Presenter
@@ -15,25 +16,25 @@ class PortfolioPresenter extends Presenter
 
     public function value()
     {
-        return $this->metrics->value($this->entity)->toLocalCurrencyFormat();
+        return $this->metrics->value($this->entity)->formatValue();
     }
 
 
     public function cash()
     {
-        return $this->metrics->cash($this->entity)->toLocalCurrencyFormat();
+        return $this->metrics->cash($this->entity)->formatValue();
     }
 
 
     public function stockTotal()
     {
-        return $this->metrics->total($this->entity, Stock::class)->toLocalCurrencyFormat();
+        return $this->metrics->total($this->entity, Stock::class)->formatValue();
     }
 
 
     public function profit($days = null)
     {
-        return $this->metrics->profit($this->entity, $days)->toLocalCurrencyFormat();
+        return $this->metrics->profit($this->entity, $days)->formatValue();
     }
 
 
@@ -56,14 +57,14 @@ class PortfolioPresenter extends Presenter
 
         return new HtmlString(sprintf('<i class="%s" aria-hidden="true"></i> %s (%s)',
             $class,
-            $profit->toLocalCurrencyFormat(),
-            $percent->toLocalPercentageFormat()
+            $profit->formatValue(),
+            $percent->formatValue()
         ));
     }
 
     public function risk()
     {
-        return $this->metrics->risk($this->entity)->toLocalCurrencyFormat();
+        return $this->metrics->risk($this->entity)->formatValue();
     }
 
 
@@ -75,17 +76,17 @@ class PortfolioPresenter extends Presenter
 
     public function updatedRisk()
     {
-        return PortfolioMetricService::risk($this->entity)->toLocalDateFormat();
+        return PortfolioMetricService::risk($this->entity)->formatDate();
     }
 
     public function updatedValue()
     {
-        return PortfolioMetricService::value($this->entity)->toLocalDateFormat();
+        return PortfolioMetricService::value($this->entity)->formatDate();
     }
 
     public function updatedToday()
     {
-        return Price::make(Carbon::now()->toDateString(), 0)->toLocalDateFormat();
+        return (new Output(Carbon::now()->toDateString()))->formatDate();
     }
 
     public function updatedReturn()

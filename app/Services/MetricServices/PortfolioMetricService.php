@@ -2,7 +2,8 @@
 
 namespace App\Services\MetricServices;
 
-use App\Classes\Price;
+use App\Classes\Output\Percent;
+use App\Classes\Output\Price;
 use App\Facades\Repositories\KeyfigureRepository;
 use Carbon\Carbon;
 use App\Entities\Portfolio;
@@ -21,9 +22,9 @@ class PortfolioMetricService extends MetricService
     public function value(Portfolio $portfolio)
     {
         list($value, $date) = $this->valueStocks($portfolio);
+        $total = $value + $this->cash($portfolio)->getValue();
 
-        return Price::make($date, $value + $this->cash($portfolio)->getValue())
-            ->setCurrency($portfolio->currency->code);
+        return new Price($date, $total, $portfolio->currency->code);
     }
 
     /**
@@ -55,9 +56,9 @@ class PortfolioMetricService extends MetricService
     {
         $dailyRisk = $this->dailyRisk($portfolio);
 
-        $value = Price::make(key($dailyRisk), array_first($dailyRisk) * sqrt($this->getPeriod($portfolio)));
+        $risk = array_first($dailyRisk) * sqrt($this->getPeriod($portfolio));
 
-        return $value->setCurrency($portfolio->currency->code);
+        return new Price(key($dailyRisk), $risk, $portfolio->currency->code);
     }
 
 
@@ -67,7 +68,7 @@ class PortfolioMetricService extends MetricService
      * @param Portfolio $portfolio
      * @param null $count
      * @param bool $percent
-     * @return Price
+     * @return Percent|Price
      */
     public function profit(Portfolio $portfolio, $count = null, $percent = false)
     {
@@ -77,8 +78,8 @@ class PortfolioMetricService extends MetricService
         if (count($values) != $count) return null;
 
         return $percent
-            ? Price::make(key($values), $this->deltaPercent($values))->setPercent(true)
-            : Price::make(key($values), $this->deltaAbsolute($values))->setCurrency($portfolio->currency->code);
+            ? new Percent(key($values), $this->deltaPercent($values))
+            : new Price(key($values), $this->deltaAbsolute($values), $portfolio->currency->code);
     }
 
 
@@ -97,7 +98,7 @@ class PortfolioMetricService extends MetricService
             ->where('executed_at', '<=', $date->endOfDay())
             ->sum('amount');
 
-        return Price::make($date, $cash)->setCurrency($portfolio->currency->code);
+        return new Price($date, $cash, $portfolio->currency->code);
     }
 
 
@@ -170,7 +171,7 @@ class PortfolioMetricService extends MetricService
      * @param $days
      * @return float|null
      */
-    private function deltaPercent($values, $days)
+    private function deltaPercent($values)
     {
         return $this->deltaAbsolute($values) / array_first($values);
     }
