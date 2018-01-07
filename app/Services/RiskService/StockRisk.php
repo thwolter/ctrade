@@ -3,6 +3,7 @@
 namespace App\Services\RiskService;
 
 use App\Entities\Asset;
+use App\Entities\Stock;
 use App\Facades\DataService;
 use App\Facades\MetricService\StockMetricService;
 use Carbon\Carbon;
@@ -12,6 +13,25 @@ class StockRisk implements RiskInterface
 {
     use RiskHelperTrait;
 
+
+    public function assetVaR(Asset $asset, $parameter)
+    {
+        $delta = $this->delta($asset, $parameter);
+        $volatility = $this->stockVolatility($asset->positionable, $parameter);
+
+        return $this->scaleRisk($delta * $volatility, $parameter);
+    }
+
+
+    public function instrumentVaR($entity, $parameter)
+    {
+        $delta = $this->instrumentDelta($entity, $parameter);
+        $volatility = $this->stockVolatility($entity, $parameter);
+
+        return $this->scaleRisk($delta * $volatility, $parameter);
+    }
+
+
     /**
      * Return the delta for a stock asset and specified date.
      *
@@ -20,28 +40,36 @@ class StockRisk implements RiskInterface
      *
      * @return mixed
      */
-    public function delta(Asset $asset, $parameter)
+    public function assetDelta(Asset $asset, $parameter)
     {
         $date = array_get($parameter, 'date', Carbon::now()->toDateString());
 
-        $price = StockMetricService::priceAtDate($asset->positionable, ['date' => $date]);
-        $amount = $asset->amount($date);
-
-        return $price->getValue() * $amount;
+        return $this->instrumentDelta($asset->positionable, $parameter) * $asset->amount($date);
     }
 
 
-    public function VaR(Asset $asset, $parameter)
+    public function instrumentDelta($entity, $parameter)
     {
         $date = array_get($parameter, 'date', Carbon::now()->toDateString());
 
-        $delta = $this->delta($asset, $parameter);
-        $history = DataService::history($asset->positionable)
+        return StockMetricService::priceAtDate($entity, ['date' => $date])->getValue();
+    }
+
+
+    /**
+     * @param Stock $stock
+     * @param $parameter
+     * @return number
+     */
+    private function stockVolatility($stock, $parameter)
+    {
+        $date = array_get($parameter, 'date', Carbon::now()->toDateString());
+
+        $history = DataService::history($stock)
             ->count($parameter['count'])->to($date)->fill('previous')->getClose();
 
-        $volatility = $this->standardDeviation($this->logReturn($history));
-
-        return $this->scaleRisk($delta * $volatility, $parameter);
+        return $this->standardDeviation($this->logReturn($history));
     }
+
 
 }

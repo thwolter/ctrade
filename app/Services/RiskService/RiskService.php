@@ -30,12 +30,29 @@ class RiskService
      * @return mixed
      * @throws \Throwable
      */
-    public function VaR(Asset $asset, $parameter)
+    public function assetVaR(Asset $asset, $parameter)
     {
-        $this->checkConfidenceAndPeriod($parameter);
+        $this->checkParameter($parameter, ['period', 'confidence', 'count']);
 
         $type = class_basename($asset->positionable);
-        return resolve($this->register[$type])->VaR($asset, $parameter);
+        return resolve($this->register[$type])->assetVaR($asset, $parameter);
+    }
+
+
+    /**
+     * Return the instrument Value-at-Risk for specified confidence level and period.
+     *
+     * @param $entity
+     * @param $parameter
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function instrumentVaR($entity, $parameter)
+    {
+        $this->checkParameter($parameter, ['period', 'confidence', 'count']);
+
+        $type = class_basename($entity);
+        return resolve($this->register[$type])->instrumentVaR($entity, $parameter);
     }
 
 
@@ -90,7 +107,7 @@ class RiskService
     private function deltaVector(Portfolio $portfolio, $parameter)
     {
        foreach ($portfolio->assets as $asset) {
-            $delta[] = $this->delta($asset, $parameter);
+            $delta[] = $this->assetDelta($asset, $parameter);
         }
         return $delta;
     }
@@ -137,19 +154,6 @@ class RiskService
     private function multiplyVCV($V, $C): float
     {
         return sqrt($V->dotProduct($C->vectorMultiply($V)));
-    }
-
-
-    /**
-     * Throws and exception if confidence and period are not specified in parameters array.
-     *
-     * @param $parameter
-     * @throws \Throwable
-     */
-    private function checkConfidenceAndPeriod($parameter)
-    {
-        throw_unless(array_has($parameter, ['confidence', 'period']),
-            new RiskServiceException("Parameters 'confidence' and/or 'period' missing"));
     }
 
 

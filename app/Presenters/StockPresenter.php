@@ -67,10 +67,20 @@ class StockPresenter extends Presenter
         return $this->metrics->expectedReturn($this->entity, $exchange)->toLocalCurrencyFormat();
     }
 
-
-   public function risk($exchange)
+    public function expectedReturnToPrice($exchange)
     {
-        return $this->metrics->risk($this->entity, $exchange)->toLocalCurrencyFormat();
+        return $this->metrics->expectedReturnToPrice($this->entity, $exchange)->toLocalPercentageFormat();
+    }
+
+   public function risk()
+    {
+        return $this->metrics->risk($this->entity)->toLocalCurrencyFormat();
+    }
+
+
+    public function riskToPrice($exchange)
+    {
+        return $this->metrics->riskToPrice($this->entity, $exchange)->toLocalPercentageFormat();
     }
 
 

@@ -2,7 +2,7 @@
 
 @section('content-main')
 
-
+    <!-- Exchange chooser -->
     <div class="btn-group d-flex justify-content-end g-mb-40">
         @foreach ($stock->exchangesAsAssociativeArray() as $key => $value )
 
@@ -30,50 +30,57 @@
         @endslot
 
         <!-- Key Figures -->
-        <div class="col-md-10">
-            <div class="g-mb-10">
-                <div class="row">
-                    <a class="col-md-4 btn" data-toggle="popover" data-placement="bottom"
-                       data-title="Kurs"
-                       data-content="Schlusskurs der Börse Stuttgart vom 10.02.2017">
-                        <div class="font-weight-bold g-bg-black-opacity-0_8 g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
-                            Kurs
+        <div class="col-md-12">
+            <div class="row">
+                <a class="col-md-4 btn" data-toggle="popover" data-placement="bottom"
+                   data-title="Kurs"
+                   data-content="Schlusskurs der Börse Stuttgart vom 10.02.2017">
+                    <div class="font-weight-bold g-bg-black-opacity-0_8 g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
+                        Kurs
+                    </div>
+                    <div class="g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
+                        <div class="g-pt-10 g-color-gray-dark-v3 g-font-size-20">
+                            {{ $stock->present()->price($exchange) }}
                         </div>
-                        <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
-                            <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
-                                {{ $stock->present()->price($exchange) }}
-                            </p>
+                        <p class="g-font-size-12 g-color-black-opacity-0_3">
+                            {{ $stock->present()->priceDate($exchange) }}
+                        </p>
+                    </div>
+                </a>
+                <a class="col-md-4 btn" data-toggle="popover" data-placement="top"
+                   data-title="Rendite"
+                   data-content="Gewinn/Verlust über einen Zeitraum von 52 Wochen. Der Zeitraum kann in den <a href='#'>Einstellungen</a> festgelegt werden.">
+                    <div class="font-weight-bold g-bg-blue g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
+                        Rendite
+                    </div>
+                    <div class="g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
+                        <div class="g-pt-10 g-color-gray-dark-v3 g-font-size-20">
+                            {{ $stock->present()->expectedReturn($exchange) }}
                         </div>
-                    </a>
-                    <a class="col-md-4 btn" data-toggle="popover" data-placement="top"
-                       data-title="Rendite"
-                       data-content="Gewinn/Verlust über einen Zeitraum von 52 Wochen. Der Zeitraum kann in den <a href='#'>Einstellungen</a> festgelegt werden.">
-                        <div class="font-weight-bold g-bg-blue g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
-                            Rendite
+                        <p class="g-font-size-12 g-color-black-opacity-0_3">
+                            {{ $stock->present()->expectedReturnToPrice($exchange) }}
+                        </p>
+                    </div>
+                </a>
+                <a class="col-md-4 btn" data-toggle="popover" data-placement="bottom"
+                   data-title="Risiko"
+                   data-content="Das Risiko der Aktie für einen Zeitraum von 1 Monat mit einer Sicherheit von 95%. Zeitraum und Sicherheitslevel können über die <a href='#'>Einstellungen</a> festgelegt werden.">
+                    <div class="font-weight-bold g-bg-red g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
+                        Risiko
+                    </div>
+                    <div class="g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
+                        <div class="g-pt-10 g-color-gray-dark-v3 g-font-size-20">
+                            {{ $stock->present()->risk($exchange) }}
                         </div>
-                        <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
-                            <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
-                                {{ $stock->present()->expectedReturn($exchange) }}
-                            </p>
-                        </div>
-                    </a>
-                    <a class="col-md-4 btn" data-toggle="popover" data-placement="bottom"
-                       data-title="Risiko"
-                       data-content="Das Risiko der Aktie für einen Zeitraum von 1 Monat mit einer Sicherheit von 95%. Zeitraum und Sicherheitslevel können über die <a href='#'>Einstellungen</a> festgelegt werden.">
-                        <div class="font-weight-bold g-bg-red g-color-white g-font-size-12 text-center text-uppercase g-pa-3">
-                            Risiko
-                        </div>
-                        <div class="d-flex g-bg-white g-height-70 justify-content-center g-bg-bluegray-opacity-0_1">
-                            <p class="align-self-center g-color-gray-dark-v3 g-font-size-20 g-font-weight-200">
-                                {{ $stock->present()->risk($exchange) }}
-                            </p>
-                        </div>
-                    </a>
-                </div>
-
+                        <p class="g-font-size-12 g-color-black-opacity-0_3">
+                            {{ $stock->present()->riskToPrice($exchange) }}
+                        </p>
+                    </div>
+                </a>
             </div>
 
         </div>
+
 
     @endcomponent
 

@@ -141,12 +141,18 @@ Route::get('/verified', function() {
 
 Route::get('/portfolioVaR', function() {
     echo \App\Facades\RiskService\RiskService::portfolioVaR(\App\Entities\Portfolio::find(1), [
-        'confidence' => 0.95, 'period' => 1, 'date' => '2018-01-03', 'count' => 5
+        'confidence' => 0.95, 'period' => 1, 'date' => '2018-01-03', 'count' => 90
     ]);
 
     echo "\n";
 
-    echo \App\Facades\RiskService\RiskService::VaR(\App\Entities\Asset::find(1), [
-        'confidence' => 0.95, 'period' => 1, 'date' => '2018-01-03', 'count' => 5
+    echo \App\Facades\RiskService\RiskService::assetVaR(\App\Entities\Asset::find(1), [
+        'confidence' => 0.95, 'period' => 1, 'date' => '2018-01-03', 'count' => 90
+    ]);
+
+    echo "\n";
+
+    echo \App\Facades\RiskService\RiskService::instrumentVaR(\App\Entities\Asset::find(1)->positionable, [
+        'confidence' => 0.95, 'period' => 1, 'date' => '2018-01-03', 'count' => 90
     ]);
 });

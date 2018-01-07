@@ -8,8 +8,12 @@ use MathPHP\Statistics\Descriptive;
 
 interface RiskInterface
 {
-    public function delta(Asset $asset, $parameter);
+    public function assetDelta(Asset $asset, $parameter);
 
-    public function VaR(Asset $asset, $parameter);
+    public function assetVaR(Asset $asset, $parameter);
+
+    public function instrumentDelta($entity, $parameter);
+
+    public function instrumentVaR($entity, $parameter);
 
 }

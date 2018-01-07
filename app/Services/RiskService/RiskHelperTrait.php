@@ -2,6 +2,7 @@
 
 namespace App\Services\RiskService;
 
+use App\Exceptions\RiskServiceException;
 use MathPHP\Probability\Distribution\Continuous;
 use MathPHP\Statistics\Descriptive;
 
@@ -67,5 +68,20 @@ trait RiskHelperTrait
         $standardNormal = new Continuous\StandardNormal();
 
         return $standardNormal->inverse($confidence);
+    }
+
+    /**
+     * Throws and exception if confidence and period are not specified in parameters array.
+     *
+     * @param array $parameter
+     * @param array $required
+     * @throws \Throwable
+     */
+    protected function checkParameter($parameter, $required)
+    {
+        throw_unless(array_has($parameter, $required),
+            new RiskServiceException('Parameters missing. ' .
+                'Required: ' . implode(',', $required) .
+                '. Given: ' . implode(',', array_keys($parameter))));
     }
 }

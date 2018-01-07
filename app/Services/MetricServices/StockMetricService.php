@@ -5,6 +5,7 @@ namespace App\Services\MetricServices;
 use App\Classes\Price;
 use App\Entities\Stock;
 use App\Facades\DataService;
+use App\Facades\RiskService\RiskService;
 use App\Facades\RscriptService\RscriptService;
 use Carbon\Carbon;
 use MathPHP\Statistics\Circular;
@@ -120,31 +121,40 @@ class StockMetricService extends MetricService
     }
 
 
-    public function risk($stock, $exchange)
+    public function risk($stock)
     {
-        $user = \Auth::user();
-        $history = DataService::history($stock, $exchange)->count(250)->getClose();
+        $parameter = \Auth::user()->settings()->only(['confidence', 'period', 'history']);
+        $parameter = array_replace_key($parameter, 'history', 'count');
 
-        $standardNormal = new Continuous\StandardNormal();
-        $inv_cdf = $standardNormal->inverse($this->getConfidence($user)/100);
+        $risk = RiskService::instrumentVaR($stock, $parameter);
 
-        // Todo: double check calculation of risk
-        $sd = Circular::standardDeviation($history);
-        $risk = $sd * $inv_cdf * sqrt($this->getPeriod($user));
-
-        return Price::make(key($history), $risk)->setCurrency($stock->currency->code);
+        return Price::make(Carbon::now()->toDateString(), $risk)->setCurrency($stock->currency->code);
     }
 
-    // Todo: get parameters from user settings
+
+    public function riskToPrice($stock, $exchange)
+    {
+        return $this->risk($stock)
+            ->multiply(1 / $this->price($stock, $exchange)->getValue())
+            ->setPercent(true);
+    }
+
 
     public function expectedReturn($stock, $exchange)
     {
-        $user = \Auth::user();
-        $history = DataService::history($stock, $exchange)->count(250)->getClose();
+        $history = \Auth::user()->settings('history');
 
-        $mean = Circular::mean($history);
-        $expected = $mean;
+        $history = DataService::history($stock, $exchange)->count($history)->getClose();
+        $expected = Circular::mean($history);
 
         return Price::make(key($history), $expected)->setCurrency($stock->currency->code);
+    }
+
+
+    public function expectedReturnToPrice($stock, $exchange)
+    {
+        return $this->expectedReturn($stock, $exchange)
+            ->multiply(1 / $this->price($stock, $exchange)->getValue())
+            ->setPercent(true);
     }
 }

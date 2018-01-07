@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Collection;
 class DataService
 {
 
+    private $datasource;
+
+
     /**
      * Return a TimeSeries Object for chosen entity and exchange.
      *
@@ -52,14 +55,18 @@ class DataService
      */
     public function getDatasource($entity, $exchange)
     {
-        $class = get_class($entity);
-        if ($class === Datasource::class || $class === Collection::class) {
-            return $entity;
+        if (!$this->datasource) {
 
-        } else {
-            $method = 'getDatasource' . class_basename(get_class($entity));
-            return $this->$method($entity, $exchange);
+            $class = get_class($entity);
+            if ($class === Datasource::class || $class === Collection::class) {
+                return $entity;
+
+            } else {
+                $method = 'getDatasource' . class_basename(get_class($entity));
+                $this->datasource = $this->$method($entity, $exchange);
+            }
         }
+        return $this->datasource;
     }
 
 

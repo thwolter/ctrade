@@ -81,3 +81,19 @@ function array_columns($array, $columns)
     return $row;
 }
 
+/**
+ * Replace a key in a given array.
+ *
+ * @param array $parameter
+ * @param string $old
+ * @param string $new
+ *
+ * @return array
+ */
+function array_replace_key($parameter, $old, $new)
+{
+    $parameter[$new] = $parameter[$old];
+    unset($parameter[$old]);
+
+    return $parameter;
+}
