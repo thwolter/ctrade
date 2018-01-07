@@ -4,6 +4,7 @@ namespace App\Services\RiskService;
 
 use App\Entities\Asset;
 use App\Entities\Portfolio;
+use App\Exceptions\RiskServiceException;
 use Carbon\Carbon;
 use MathPHP\LinearAlgebra\Matrix;
 use MathPHP\LinearAlgebra\Vector;
@@ -21,8 +22,18 @@ class RiskService
     ];
 
 
-    public function VaR(Asset $asset, $parameter = [])
+    /**
+     * Returns the Value-at-Risk for a given asset and specified confidence level and period.
+     *
+     * @param Asset $asset
+     * @param array $parameter
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function VaR(Asset $asset, $parameter)
     {
+        $this->checkConfidenceAndPeriod($parameter);
+
         $type = class_basename($asset->positionable);
         return resolve($this->register[$type])->VaR($asset, $parameter);
     }
@@ -37,15 +48,14 @@ class RiskService
      */
     public function portfolioVaR($portfolio, $parameter = [])
     {
-        $confidence = array_get($parameter, 'confidence', $portfolio->settings('confidence'));
-        $period = array_get($parameter, 'period', $portfolio->settings('period'));
+        $parameter = $this->parameterOrDefault($portfolio, $parameter);
 
         $returns = $this->getPortfolioLogReturns($portfolio, $parameter);
 
         $C = new Matrix($this->covarianceMatrix($returns));
         $V = new Vector($this->deltaVector($portfolio, $parameter));
 
-        return $this->multiplyVCV($V, $C) * $this->inverseCdf($confidence) * sqrt($period);
+        return $this->scaleRisk($this->multiplyVCV($V, $C), $parameter);
     }
 
 
@@ -79,8 +89,7 @@ class RiskService
      */
     private function deltaVector(Portfolio $portfolio, $parameter)
     {
-       foreach ($portfolio->assets as $asset)
-        {
+       foreach ($portfolio->assets as $asset) {
             $delta[] = $this->delta($asset, $parameter);
         }
         return $delta;
@@ -117,6 +126,7 @@ class RiskService
         return array_map([$this, 'logReturn'], $histories);
     }
 
+
     /**
      * Multiply V^t * C * V.
      *
@@ -126,7 +136,32 @@ class RiskService
      */
     private function multiplyVCV($V, $C): float
     {
-        $stddev = sqrt($V->dotProduct($C->vectorMultiply($V)));
-        return $stddev;
+        return sqrt($V->dotProduct($C->vectorMultiply($V)));
+    }
+
+
+    /**
+     * Throws and exception if confidence and period are not specified in parameters array.
+     *
+     * @param $parameter
+     * @throws \Throwable
+     */
+    private function checkConfidenceAndPeriod($parameter)
+    {
+        throw_unless(array_has($parameter, ['confidence', 'period']),
+            new RiskServiceException("Parameters 'confidence' and/or 'period' missing"));
+    }
+
+
+    /**
+     * Returns the parameter filled with default settings where required.
+     *
+     * @param Portfolio $portfolio
+     * @param array $parameter
+     * @return array
+     */
+    private function parameterOrDefault($portfolio, $parameter)
+    {
+        return array_merge($portfolio->settings()->only(['period', 'confidence']), $parameter);
     }
 }

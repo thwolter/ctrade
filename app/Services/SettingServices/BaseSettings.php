@@ -54,6 +54,11 @@ class BaseSettings
         return $this->settings;
     }
 
+    public function only($attributes)
+    {
+        return array_only($this->all(), $attributes);
+    }
+
     public function merge(array $attributes)
     {
         $attributes = $this->mapAttributes($attributes);

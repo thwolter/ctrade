@@ -12,10 +12,6 @@ class StockRisk implements RiskInterface
 {
     use RiskHelperTrait;
 
-    const ASSESSMENT_PERIOD = 250;
-    const DEFAULT_CONFIDENCE = 0.95;
-    const DEFAULT_PERIOD = 1;
-
     /**
      * Return the delta for a stock asset and specified date.
      *
@@ -38,15 +34,14 @@ class StockRisk implements RiskInterface
     public function VaR(Asset $asset, $parameter)
     {
         $date = array_get($parameter, 'date', Carbon::now()->toDateString());
-        $count = array_get($parameter, 'count', self::ASSESSMENT_PERIOD);
-        $confidence = array_get($parameter, 'confidence', self::DEFAULT_CONFIDENCE);
-        $period = array_get($parameter, 'period', self::DEFAULT_PERIOD);
 
         $delta = $this->delta($asset, $parameter);
-        $history = DataService::history($asset->positionable)->count($count)->to($date)->fill('previous')->getClose();
+        $history = DataService::history($asset->positionable)
+            ->count($parameter['count'])->to($date)->fill('previous')->getClose();
+
         $volatility = $this->standardDeviation($this->logReturn($history));
 
-        return $delta * $volatility * $this->inverseCdf($confidence) * sqrt($period);
+        return $this->scaleRisk($delta * $volatility, $parameter);
     }
 
 }

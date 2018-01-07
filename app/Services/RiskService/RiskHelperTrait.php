@@ -9,6 +9,21 @@ trait RiskHelperTrait
 {
 
     /**
+     * Return risk scaled by time and confidence intervall.
+     *
+     * @param float $risk
+     * @param array $parameter
+     * @return float|int
+     */
+    public function scaleRisk($risk, $parameter)
+    {
+        $factor = $this->inverseCdf($parameter['confidence']) * sqrt($parameter['period']);
+
+        return $risk * $factor;
+    }
+
+
+    /**
      * Calculates the log-returns of an one-dimensional time-series.
      *
      * @param array $x
