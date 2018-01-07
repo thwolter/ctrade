@@ -4,7 +4,7 @@ namespace App\Classes\Output;
 
 
 
-class Percent extends Output
+class Percent extends Output implements OutputInterface
 {
    const DEFAULT_DECIMAL =1;
 

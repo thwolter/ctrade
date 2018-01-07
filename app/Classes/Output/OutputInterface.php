@@ -1,11 +1,9 @@
 <?php
 
-namespace Classes\Output;
+namespace App\Classes\Output;
 
 
 interface OutputInterface
 {
-    public function __construct();
-
     public function formatValue();
 }

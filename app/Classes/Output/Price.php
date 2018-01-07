@@ -4,7 +4,7 @@ namespace App\Classes\Output;
 
 
 
-class Price extends Output
+class Price extends Output implements OutputInterface
 {
 
 
