@@ -86,7 +86,7 @@ class PortfolioPresenter extends Presenter
 
     public function updatedToday()
     {
-        return (new Output(Carbon::now()->toDateString()))->formatDate();
+        return (new \App\Classes\Output\Output(Carbon::now()->toDateString()))->formatDate();
     }
 
     public function updatedReturn()

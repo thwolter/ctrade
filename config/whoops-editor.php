@@ -27,7 +27,7 @@ return [
     | See: https://github.com/filp/whoops/blob/master/docs/Open%20Files%20In%20An%20Editor.md
     |
     */
-    'editor' => env('APP_EDITOR', null),
+    'editor' => env('APP_EDITOR', 'phpstorm'),
 
     /*
     |--------------------------------------------------------------------------

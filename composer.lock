@@ -2093,12 +2093,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "a39ec0abd28cde2337b7fbe06885231edd99d34a"
+                "reference": "251ec160bcbb54141cb0d707fd56898fd01bdbdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/a39ec0abd28cde2337b7fbe06885231edd99d34a",
-                "reference": "a39ec0abd28cde2337b7fbe06885231edd99d34a",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/251ec160bcbb54141cb0d707fd56898fd01bdbdb",
+                "reference": "251ec160bcbb54141cb0d707fd56898fd01bdbdb",
                 "shasum": ""
             },
             "require": {
@@ -2135,7 +2135,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-12-30T09:39:42+00:00"
+            "time": "2018-01-08T16:49:22+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

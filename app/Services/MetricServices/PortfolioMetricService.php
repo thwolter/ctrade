@@ -5,6 +5,7 @@ namespace App\Services\MetricServices;
 use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 use App\Facades\Repositories\KeyfigureRepository;
+use App\Facades\RiskService\RiskService;
 use Carbon\Carbon;
 use App\Entities\Portfolio;
 use App\Facades\MetricService\AssetMetricService;
@@ -55,10 +56,25 @@ class PortfolioMetricService extends MetricService
     public function risk(Portfolio $portfolio)
     {
         $dailyRisk = $this->dailyRisk($portfolio);
-
-        $risk = array_first($dailyRisk) * sqrt($this->getPeriod($portfolio));
+        $risk = array_first($dailyRisk) * sqrt($portfolio->settings('period'));
 
         return new Price(key($dailyRisk), $risk, $portfolio->currency->code);
+    }
+
+
+    /**
+     * Return the Portfolio's risk as latest value stored in the database.
+     *
+     * @param Portfolio $portfolio
+     * @return float
+     *
+     * @throws \Exception
+     */
+    private function dailyRisk(Portfolio $portfolio)
+    {
+        $parameter = $portfolio->settings()->only(['confidence', 'period']);
+
+        return RiskService::portfolioVaR($portfolio, $portfolio->settings()->only($parameter));
     }
 
 
@@ -134,20 +150,6 @@ class PortfolioMetricService extends MetricService
             : $this->getPeriod($portfolio);
 
         return sqrt(max(0, $period)) * $this->dailyRisk($portfolio);
-    }
-
-
-    /**
-     * Return the Portfolio's risk as latest value stored in the database.
-     *
-     * @param Portfolio $portfolio
-     * @return array
-     */
-    private function dailyRisk(Portfolio $portfolio)
-    {
-        $term = 'risk.' . $this->getConfidence($portfolio);
-
-        return KeyfigureRepository::getForPortfolio($portfolio, $term)->timeseries()->count(1)->get();
     }
 
 
