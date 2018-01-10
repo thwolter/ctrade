@@ -3,17 +3,19 @@
 namespace App\Presenters;
 
 
-
-
 class LimitPresenter extends Presenter
 {
 
     private $utilisation;
+    private $value;
 
 
     public function value()
     {
-        return $this->metrics->value($this->entity)->formatValue();
+        if (!$this->value) {
+            $this->value = $this->metrics->value($this->entity);
+        }
+        return $this->value->formatValue();
     }
 
 
@@ -33,8 +35,6 @@ class LimitPresenter extends Presenter
 
     public function utilisation()
     {
-        //$this->get('utilisation', $this->metrics->utilisation($this->entity))->formatValue();
-
         if (!$this->utilisation) {
             $this->utilisation = $this->metrics->utilisation($this->entity);
         }

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Exceptions\MetricServiceException;
 use App\Services\MetricServices\AssetMetricService;
+use App\Services\MetricServices\LimitMetricService;
 use App\Services\MetricServices\MetricService;
 use App\Services\MetricServices\PortfolioMetricService;
 use App\Services\MetricServices\StockMetricService;
@@ -37,6 +38,7 @@ class MetricServiceProvider extends ServiceProvider
         $this->app->bind('stockMetricService', StockMetricService::class);
         $this->app->bind('assetMetricService', AssetMetricService::class);
         $this->app->bind('portfolioMetricService', PortfolioMetricService::class);
+        $this->app->bind('limitMetricService', LimitMetricService::class);
     }
 
 

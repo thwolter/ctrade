@@ -17,18 +17,22 @@ class Price extends Output implements OutputInterface
     /**
      * Returns a formatted string of the value with currency.
      *
+     * @param int $digits
      * @return string
      * @throws \Throwable
      */
-    public function formatValue()
+    public function formatValue($digits = 2)
     {
-        return $this->currencyFormatter()->formatCurrency($this->value, $this->currency);
+        return $this->currencyFormatter($digits)->formatCurrency($this->value, $this->currency);
     }
 
 
-    private function currencyFormatter()
+    private function currencyFormatter($digits)
     {
-        return new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
+        $fmt = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
+        $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $digits);
+
+        return $fmt;
     }
 
 

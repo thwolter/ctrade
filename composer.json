@@ -28,7 +28,7 @@
         "hieu-le/active": "^3.4",
         "iatstuti/laravel-cascade-soft-deletes": "1.0.*",
         "ipunkt/laravel-analytics": "^1.3",
-        "itsgoingd/clockwork": "~1.13",
+        "itsgoingd/clockwork": "^2.0",
         "jenssegers/model": "^1.1",
         "jgrossi/corcel": "^2.5",
         "khill/lavacharts": "^3.1",

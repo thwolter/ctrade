@@ -4,7 +4,9 @@ namespace App\Presenters;
 
 
 use App\Classes\Output\Price;
+use App\Entities\Limit;
 use App\Entities\Stock;
+use App\Facades\MetricService\LimitMetricService;
 use App\Facades\MetricService\PortfolioMetricService;
 use Carbon\Carbon;
 use Classes\Output\Output;
@@ -12,6 +14,8 @@ use Illuminate\Support\HtmlString;
 
 class PortfolioPresenter extends Presenter
 {
+
+    private $utilisation;
 
 
     public function value()
@@ -62,9 +66,62 @@ class PortfolioPresenter extends Presenter
         ));
     }
 
-    public function risk()
+    public function risk($digits = 2)
     {
-        return $this->metrics->risk($this->entity)->formatValue();
+        return $this->metrics->risk($this->entity)->formatValue($digits);
+    }
+
+
+    public function limitUtilisation()
+    {
+        return $this->getLimitUtilisation()->formatValue();
+    }
+
+
+    public function limitUtilisationNumber()
+    {
+        return $this->getLimitUtilisation()->getValue();
+    }
+
+
+    /**
+     * Return the amount of portfolio's limit.
+     *
+     * @param int $digits
+     *
+     * @return string
+     * @throws \Throwable
+     */
+    public function limitAmount($digits = 2)
+    {
+        $amount = new Price(null, $this->getPortfolioLimit()->value, $this->entity->currency->code);
+
+        return $amount->formatValue($digits);
+    }
+
+    /**
+     * Return the portfolio's limit.
+     *
+     * @return mixed
+     */
+    private function getLimitUtilisation()
+    {
+        if (!$this->utilisation) {
+            $limit = $this->getPortfolioLimit();
+            $this->utilisation = LimitMetricService::utilisation($limit);
+        }
+
+        return $this->utilisation;
+    }
+
+    /**
+     * Return the portfolio's limit.
+     *
+     * @return Limit
+     */
+    private function getPortfolioLimit()
+    {
+        return $this->entity->limits->first();
     }
 
 
