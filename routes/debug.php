@@ -156,3 +156,5 @@ Route::get('/portfolioVaR', function() {
         'confidence' => 0.95, 'period' => 1, 'date' => '2018-01-03', 'count' => 90
     ]);
 });
+
+

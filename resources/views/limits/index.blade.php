@@ -2,19 +2,6 @@
 
 @section('content-main')
 
-    <!-- Create New Limit -->
-    @component('layouts.components.section-1')
-        @slot('title')
-            Neues Limit einrichten
-        @endslot
-
-        <create-limit
-                :portfolio="{{ $portfolio }}"
-                route="{{ route('limits.store') }}">
-        </create-limit>
-
-    @endcomponent
-
 
     <!-- Loop over existing limits -->
     @foreach($limits as $limit)
@@ -29,7 +16,6 @@
                 <span class="g-font-weight-800 g-pr-15">
                     {{ $limit->present()->type() }} {{ $limit->present()->value() }}
                 </span>
-                {{ $limit->present()->utilisation() }} Auslastung
             @endslot
 
             @slot('menu')
@@ -86,26 +72,23 @@
                     </div>
 
                     <div class="col-8">
-                        <h6>Limit Auslastung
-                            <span class="float-right g-ml-10">{{ $limit->present()->utilisation() }}</span>
-                        </h6>
-                        @php( $utilisation = $limit->calc()->utilisation() )
-                        <div class="progress g-bg-black-opacity-0_7 g-height-20 rounded-0">
-                            <div class="progress-bar"
-                                 role="progressbar"
-                                 style="width: {{ $utilisation }}%;"
-                                 aria-valuenow="{{ $utilisation }}"
+                        <div class="progress g-height-20 rounded-0 g-overflow-visible g-mb-20">
+                            <div class="progress-bar g-pos-rel" role="progressbar"
+                                 style="width: {{ $limit->present()->utilisationNumber * 100 }}%;"
+                                 aria-valuenow="{{ $limit->present()->utilisationNumber * 100 }}"
                                  aria-valuemin="0"
-                                 aria-valuemax="{{ $limit->value }}">
-
+                                 aria-valuemax="100">
+                                <div class="text-center u-progress__pointer-v2 g-font-size-11 g-color-white g-bg-primary">
+                                    {{ $limit->present()->utilisation() }}
+                                </div>
                             </div>
                         </div>
-                        <p class="d-flex g-pt-5 justify-content-between small">
-                            <span>Limithöhe {{ $limit->present()->value() }}</span>
-                            @if ($date = $limit->present()->date)
-                                <span>Zieldatum {{ $date }}</span>
-                            @endif
-                        </p>
+
+                        <h6>Betrag<span class="float-right g-ml-10">{{ $limit->present()->value() }}</span></h6>
+                        @if( $date = $limit->present()->date() )
+                            <h6>Zieldatum<span class="float-right g-ml-10">{{ $limit->present()->date() }}</span></h6>
+                        @endif
+
                     </div>
                 </div>
             </div>
@@ -117,6 +100,21 @@
     <div class="g-mb-60">
         {{ $limits->links('layouts.pagination.default-1') }}
     </div>
+
+
+    <!-- Create New Limit -->
+    @component('layouts.components.section-1')
+        @slot('title')
+            Neues Limit einrichten
+        @endslot
+
+        <create-limit
+                :portfolio="{{ $portfolio }}"
+                route="{{ route('limits.store') }}">
+        </create-limit>
+
+    @endcomponent
+
 
 @endsection
 

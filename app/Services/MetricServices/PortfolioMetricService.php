@@ -52,13 +52,14 @@ class PortfolioMetricService extends MetricService
      *
      * @param Portfolio $portfolio
      * @return Price
+     * @throws \Exception
      */
     public function risk(Portfolio $portfolio)
     {
         $dailyRisk = $this->dailyRisk($portfolio);
-        $risk = array_first($dailyRisk) * sqrt($portfolio->settings('period'));
+        $risk = $dailyRisk * sqrt($portfolio->settings('period'));
 
-        return new Price(key($dailyRisk), $risk, $portfolio->currency->code);
+        return new Price(Carbon::now()->toDateString(), $risk, $portfolio->currency->code);
     }
 
 
@@ -74,7 +75,7 @@ class PortfolioMetricService extends MetricService
     {
         $parameter = $portfolio->settings()->only(['confidence', 'period']);
 
-        return RiskService::portfolioVaR($portfolio, $portfolio->settings()->only($parameter));
+        return RiskService::portfolioVaR($portfolio, $parameter);
     }
 
 

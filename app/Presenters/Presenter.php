@@ -15,6 +15,8 @@ abstract class Presenter
 
     protected $metric;
 
+    protected $metricService;
+
     protected $replace = '/[^0-9,"."]/';
 
     private $priceFormat;

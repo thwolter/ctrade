@@ -8,12 +8,12 @@ use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 use App\Facades\MetricService\PortfolioMetricService;
 
-class AbsoluteLimit extends AbstractLimit
+class RelativeLimit extends AbstractLimit
 {
 
     public function utilisation()
     {
-        $risk = PortfolioMetricService::risk($this->limit->portfolio)->getValue();
+        $risk = PortfolioMetricService::risk($this->limit->portfolio);
 
         return new Percent($this->limit->date, $risk / $this->limit->value);
     }

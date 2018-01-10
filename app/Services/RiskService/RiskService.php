@@ -119,10 +119,10 @@ class RiskService
      * @param $asset
      * @return mixed
      */
-    private function delta($asset, $parameter)
+    private function assetDelta($asset, $parameter)
     {
         $type = class_basename($asset->positionable);
-        return resolve($this->register[$type])->delta($asset, $parameter);
+        return resolve($this->register[$type])->assetDelta($asset, $parameter);
     }
 
 

@@ -3,24 +3,17 @@
 namespace App\Presenters;
 
 
-use App\Classes\Limits\AbstractLimit;
 
 
 class LimitPresenter extends Presenter
 {
 
+    private $utilisation;
+
+
     public function value()
     {
-        if ($this->entity->type == 'relative') {
-            $string = $this->entity->value. '%';
-
-        } else {
-            $string = $this->formatPrice($this->entity->value, [
-                'currency' => $this->entity->portfolio->currency->code
-            ]);
-
-        }
-        return $string;
+        return $this->metrics->value($this->entity)->formatValue();
     }
 
 
@@ -40,7 +33,21 @@ class LimitPresenter extends Presenter
 
     public function utilisation()
     {
-        return $this->formatPercentage($this->entity->calc()->utilisation(), 0);
+        //$this->get('utilisation', $this->metrics->utilisation($this->entity))->formatValue();
+
+        if (!$this->utilisation) {
+            $this->utilisation = $this->metrics->utilisation($this->entity);
+        }
+        return $this->utilisation->formatValue();
+    }
+
+
+    public function utilisationNumber()
+    {
+        if (!$this->utilisation) {
+            $this->utilisation = $this->metrics->utilisation($this->entity);
+        }
+        return $this->utilisation->getValue();
     }
 
 

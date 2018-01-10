@@ -8,27 +8,6 @@ use App\Presenters\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * App\Entities\Limit
- *
- * @property int $id
- * @property int $portfolio_id
- * @property int $type_id
- * @property float $limit
- * @property string $date
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property-read \App\Entities\Portfolio $portfolio
- * @property-read \App\Entities\LimitType $type
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Limit whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Limit whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Limit whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Limit whereLimit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Limit wherePortfolioId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Limit whereTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Limit whereUpdatedAt($value)
- * @mixin \Eloquent
- */
 class Limit extends Model
 {
     use Presentable, SoftDeletes;
@@ -80,11 +59,6 @@ class Limit extends Model
         return $this->getAttributes();
     }
 
-
-    public function calc()
-    {
-        return app(AbstractLimit::class, [$this]);
-    }
 
     /*
     |--------------------------------------------------------------------------

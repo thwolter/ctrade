@@ -62,15 +62,19 @@
                                         </h6>
 
                                         <div class="js-hr-progress-bar progress g-height-20 rounded-0 g-overflow-visible">
-                                            <div class="js-hr-progress-bar-indicator progress-bar g-pos-rel" role="progressbar" style="width: 64%;" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100">
-                                                <div class="text-center u-progress__pointer-v1 g-font-size-11 g-color-white g-bg-primary g-rounded-50x">64%</div>
+                                            <div class="js-hr-progress-bar-indicator progress-bar g-pos-rel"
+                                                 role="progressbar" style="width: 64%;" aria-valuenow="64"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                <div class="text-center u-progress__pointer-v1 g-font-size-11 g-color-white g-bg-primary g-rounded-50x">
+                                                    64%
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Midget Graph -->
                                     <div class="col-md-3 align-self-center g-py-20">
-                                         {{--$chart->midget($portfolio)->render()--}}
+                                        {{--$chart->midget($portfolio)->render()--}}
                                     </div>
 
                                     <div class="col-md-3 text-right">
@@ -91,10 +95,72 @@
                             </div>
                         </div>
 
-                    @endforeach
+                        <div class="card g-mb-40 rounded-0">
+                            <div class="card-header h5 g-py-5 text-white g-bg-primary g-brd-transparent rounded-0">
+                                <div class="row align-items-center d-flex">
+                                    <h3 class="col-8 col-10-md h4 g-mb-0">
+                                        <i class="fa fa-tasks g-font-size-default g-mr-5"></i>
+                                        <span class="mb-0">{{ $portfolio->name }}</span>
+                                    </h3>
+                                    <div class="col">
+                                        <a href="{{ route('portfolios.show', $portfolio->slug) }}"
+                                           class="btn u-btn-outline-white float-right">
+                                            Öffnen
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-4">
+                                        <p class="lead">Portfolio enthält folgende Werte.</p>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <span>Wert </span>
+                                                <h5>{{ $portfolio->present()->value() }}</h5>
+                                            </div>
+                                            <div class="col-4">
+                                                <span>Risiko </span>
+                                                <h5>{{ $portfolio->present()->risk() }}</h5>
+                                            </div>
+                                            <div class="col-4">
+                                                <span>Limit </span>
+                                                <h5>1200 €</h5>
+                                            </div>
+                                            <div class="col g-mt-20">
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <h6>Limitauslastung </h6>
+                                                        <div class="js-hr-progress-bar progress g-height-15 rounded-0 g-overflow-visible">
+                                                            <div class="js-hr-progress-bar-indicator progress-bar g-pos-rel"
+                                                                 role="progressbar" style="width: 64%;" aria-valuenow="64"
+                                                                 aria-valuemin="0" aria-valuemax="100">
+                                                                <div class="text-center u-progress__pointer-v1 g-font-size-11 g-color-white g-bg-primary g-rounded-50x">
+                                                                    64%
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-secondary btn-sm" type="button">...
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                @endforeach
 
 
-                    <!-- Create New Portfolio -->
+                <!-- Create New Portfolio -->
                     <a href="{{ route('portfolios.create') }}"
                        class="g-mb-30 btn btn-block g-bg-gray-light-v5 g-brd-around
                         g-brd-gray-light-v4 g-bg-gray-light-v4--hover g-color-gray-light-v1 g-color-gray-dark-v4--hover">
