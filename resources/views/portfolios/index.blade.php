@@ -23,13 +23,12 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="g-pr-40 g-mt-20">
                         <div class="g-mb-30">
-                            <h2 class="h2 g-color-black g-font-weight-600 g-line-height-1_2 mb-4">What can
-                                <br>
-                                we provide?
+                            <h2 class="h2 g-color-black g-font-weight-600 g-line-height-1_2 mb-4">
+                                Meine Portfolios
                             </h2>
-                            <p class="g-font-weight-300 g-font-size-16">The time has come to bring those ideas and plans
-                                to life. This is where we really begin to visualize your napkin sketches and make them
-                                into beautiful pixels.</p>
+                            <p class="g-font-weight-300 g-font-size-16">Du hast 3 Portfolios angelegt mit einem Gesamtwert von
+                            4.500 €. Alle Portfolios sind in innerhalb der gesetzten Risikolimie. Für das Portfolio "Dubadi" hast
+                            du noch kein Limit gesetzt.</p>
                         </div>
                     </div>
                 </div>
@@ -67,6 +66,12 @@
                                     </div>
                                     <div class="col">
                                         <div class="row">
+
+                                            <!-- Portfolio Key Figures -->
+                                            <div class="col-4">
+                                                <span class="font-weight-bold">Wert</span>
+                                                <h5>{{ $portfolio->present()->value() }}</h5>
+                                            </div>
                                             <div class="col-4">
                                                 <span class="font-weight-bold">Risiko</span>
                                                 <h5>{{ $portfolio->present()->risk(0) }}</h5>
@@ -75,13 +80,11 @@
                                                 <span class="font-weight-bold">Limit</span>
                                                 <h5>{{ $portfolio->present()->limitAmount(0) }}</h5>
                                             </div>
-                                            <div class="col-4">
-                                                <span class="font-weight-bold">Wert</span>
-                                                <h5>{{ $portfolio->present()->value() }}</h5>
-                                            </div>
+
+                                            <!-- Limit Utilisation -->
                                             <div class="col g-mt-20">
                                                 <div class="row">
-                                                    <div class="col-9">
+                                                    <div class="col-11">
                                                         <span class="font-weight-bold">Limitauslastung</span>
 
                                                         <div class="js-hr-progress-bar progress g-height-20 rounded-0 g-overflow-visible g-mb-20">
@@ -97,10 +100,21 @@
                                                         </div>
 
                                                     </div>
-                                                    <div class="col d-flex justify-content-center align-items-center">
-                                                        <button class="btn btn-secondary btn-sm" type="button">...
-                                                        </button>
+
+                                                    <div class="col-1 d-flex justify-content-center align-items-center">
+                                                        <a class="collapsed g-color-gray-dark-v3 g-text-underline--none--hover"
+                                                           href="#thresholds-body"
+                                                           data-toggle="collapse" data-parent="#thresholds" aria-expanded="false"
+                                                           aria-controls="thresholds-body">
+                                                            <span class="fa fa-angle-down btn btn-sm u-btn-primary"></span>
+                                                        </a>
                                                     </div>
+
+                                                    <div id="thresholds-body" class="col-11 collapse g-mt-20" role="tabpanel"
+                                                         aria-labelledby="thresholds-heading">
+                                                        keine weiteren Schwellenwerte definiert
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

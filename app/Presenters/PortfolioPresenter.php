@@ -15,6 +15,10 @@ use Illuminate\Support\HtmlString;
 class PortfolioPresenter extends Presenter
 {
 
+    private $limit;
+
+    private $risk;
+
     private $utilisation;
 
 
@@ -68,19 +72,22 @@ class PortfolioPresenter extends Presenter
 
     public function risk($digits = 2)
     {
-        return $this->metrics->risk($this->entity)->formatValue($digits);
+        if (!$this->risk)
+            $this->risk = $this->metrics->risk($this->entity);
+
+        return $this->risk->formatValue($digits);
     }
 
 
     public function limitUtilisation()
     {
-        return $this->getLimitUtilisation()->formatValue();
+        return $this->utilisation()->formatValue();
     }
 
 
     public function limitUtilisationNumber()
     {
-        return $this->getLimitUtilisation()->getValue();
+        return $this->utilisation()->getValue();
     }
 
 
@@ -94,7 +101,7 @@ class PortfolioPresenter extends Presenter
      */
     public function limitAmount($digits = 2)
     {
-        $amount = new Price(null, $this->getPortfolioLimit()->value, $this->entity->currency->code);
+        $amount = new Price(null, $this->limit()->value, $this->entity->currency->code);
 
         return $amount->formatValue($digits);
     }
@@ -104,12 +111,10 @@ class PortfolioPresenter extends Presenter
      *
      * @return mixed
      */
-    private function getLimitUtilisation()
+    private function utilisation()
     {
-        if (!$this->utilisation) {
-            $limit = $this->getPortfolioLimit();
-            $this->utilisation = LimitMetricService::utilisation($limit);
-        }
+        if (!$this->utilisation)
+            $this->utilisation = LimitMetricService::utilisation($this->limit());
 
         return $this->utilisation;
     }
@@ -119,9 +124,12 @@ class PortfolioPresenter extends Presenter
      *
      * @return Limit
      */
-    private function getPortfolioLimit()
+    private function limit()
     {
-        return $this->entity->limits->first();
+        if (!$this->limit)
+            $this->limit = $this->entity->limits->first();
+
+        return $this->limit;
     }
 
 

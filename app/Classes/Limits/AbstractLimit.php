@@ -20,11 +20,15 @@ abstract class AbstractLimit
     }
 
     /**
+     * Return the limit utilisation.
+     *
      * @return Percent
      */
     abstract public function utilisation();
 
     /**
+     * Return the limit value.
+     *
      * @return Price|Percent
      */
     abstract public function value();
