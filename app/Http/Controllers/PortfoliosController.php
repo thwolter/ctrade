@@ -11,19 +11,16 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Currency;
-use App\Entities\Transaction;
-use App\Http\Requests\CreatePortfolio;
-use App\Http\Requests\DeletePortfolio;
-use App\Http\Requests\UpdatePortfolio;
-use App\Repositories\LimitRepository;
-use App\Repositories\PortfolioRepository;
-use App\Settings\InitialSettings;
-use Illuminate\Http\Request;
 use App\Entities\Portfolio;
 use App\Entities\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
+
+use App\Facades\Repositories\LimitRepository;
+use App\Http\Requests\CreatePortfolio;
+use App\Http\Requests\UpdatePortfolio;
+
+use App\Repositories\PortfolioRepository;
+use Illuminate\Http\Request;
+
 
 class PortfoliosController extends Controller
 {
@@ -47,7 +44,6 @@ class PortfoliosController extends Controller
         $portfolios = User::findOrFail(auth()->id())->portfolios;
 
         return view('portfolios.index', compact('portfolios'));
-
     }
 
     /**
@@ -96,11 +92,9 @@ class PortfoliosController extends Controller
      */
     public function edit(Request $request, Portfolio $portfolio)
     {
-        $limit = new LimitRepository($portfolio);
-
         setActiveTab($request, 'portfolio');
 
-        return view('portfolios.edit', compact('portfolio', 'limit'));
+        return view('portfolios.edit', compact('portfolio'));
     }
 
     /**

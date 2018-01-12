@@ -11,4 +11,15 @@ class FloorLimit extends AbstractLimit
     {
         return $this->metrics->risk($this) / ($this->limit->value - $this->metrics->value());
     }
+
+
+    public function value()
+    {
+        // TODO: Implement value() method.
+    }
+
+    public function title()
+    {
+        return 'Untergrenze';
+    }
 }

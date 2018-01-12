@@ -5,67 +5,31 @@ namespace App\Repositories;
 
 
 use App\Entities\Portfolio;
-use App\Services\MetricServices\PortfolioMetricService;
-use Carbon\Carbon;
+
 
 class LimitRepository
 {
 
-    protected $portfolio;
-
-    protected $metrics;
+    private $limits;
 
 
-    public function __construct(Portfolio $portfolio)
+    public function getFirstLimit(Portfolio $portfolio)
     {
-        $this->portfolio = $portfolio;
-
-        $this->metrics = PortfolioMetricService::class;
+        return $this->limits($portfolio)->first();
     }
 
 
-    /**
-     * Return the utilisation for each limit.
-     *
-     * @return array
-     */
-    public function utilisation()
+    public function getLimits(Portfolio $portfolio)
     {
-        $risk = $this->metrics->risk($this->portfolio);
+        return $this->limits($portfolio);
+    }
 
-        $result = [];
-        foreach ($this->portfolio->limits as $limit) {
 
-            switch ($limit->type) {
-                case 'absolute':
-                    $quota = 1;
-//                    $quota = $risk / $limit->value;
-                    break;
-                case 'relative':
-                    $quota = 1;
-//                    $quota = $risk / ($limit->value * $this->portfolio->total() / 100);
-                    break;
-                case 'floor':
-                    $quota = 1;
-//                    $quota = $risk / ($this->portfolio->total() - $limit->value);
-                    break;
-                case 'target':
-                    $quota = 1;
-                    $riskToTarget = $this->metrics->riskToDate($this->portfolio, Carbon::parse($limit->date));
-//                    $quota = $riskToTarget / ($this->portfolio->total() - $limit->value);
-                    break;
-                default:
-                    $quota = null;
-            }
-            $key = $limit->type;
-            $result[$key] = [
-                'quota' => $quota,
-                'risk' => $risk,
-                'limit' => $limit->value,
-                'date' => $limit->date,
-                'ccy' => $this->portfolio->currency->code
-            ];
-        };
-        return $result;
+    private function limits($portfolio)
+    {
+        if (!$this->limits)
+            $this->limits = $portfolio->limits()->orderBy('order')->get();
+
+        return $this->limits;
     }
 }

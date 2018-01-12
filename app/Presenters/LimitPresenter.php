@@ -2,20 +2,23 @@
 
 namespace App\Presenters;
 
+use App\Classes\Limits\LimitEnhancer;
+
 
 class LimitPresenter extends Presenter
 {
+    use LimitEnhancer;
 
     private $utilisation;
     private $value;
 
 
-    public function value()
+    public function value($digits = 2)
     {
         if (!$this->value) {
             $this->value = $this->metrics->value($this->entity);
         }
-        return $this->value->formatValue();
+        return $this->value->formatValue($digits);
     }
 
 
@@ -53,6 +56,12 @@ class LimitPresenter extends Presenter
 
     public function description()
     {
-        return 'description';
+        //
+    }
+
+
+    public function title()
+    {
+        return $this->enhance($this->entity)->title();
     }
 }

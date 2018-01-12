@@ -4,8 +4,6 @@ namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
 use App\Events\Limits\LimitHasBreached;
-use App\Notifications\LimitBreached;
-use App\Repositories\LimitRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

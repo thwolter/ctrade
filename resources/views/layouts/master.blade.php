@@ -173,13 +173,6 @@
                 $(this).find('input[type="search"]').focus();
             }
         });
-
-        // initialization of horizontal progress bars
-        var horizontalProgressBars = $.HSCore.components.HSProgressBar.init('.js-hr-progress-bar', {
-            direction: 'horizontal',
-            indicatorSelector: '.js-hr-progress-bar-indicator'
-        });
-
     });
 
     $(window).on('resize', function () {
@@ -188,6 +181,8 @@
         }, 200);
     });
 </script>
+
+@stack('stack.scripts.footer')
 
 </body>
 </html>

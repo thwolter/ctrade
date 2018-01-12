@@ -24,7 +24,8 @@ class Limit extends Model
         'type',
         'value',
         'date',
-        'notify'
+        'notify',
+        'order'
     ];
 
     protected $dates = [

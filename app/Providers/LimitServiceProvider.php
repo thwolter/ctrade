@@ -2,11 +2,7 @@
 
 namespace App\Providers;
 
-use App\Classes\DataProvider\QuandlPriceData;
-use App\Contracts\DataServiceInterface;
-use App\Entities\Datasource;
 use App\Entities\Limit;
-use App\Exceptions\DataServiceException;
 use App\Classes\Limits\AbstractLimit;
 use Illuminate\Support\ServiceProvider;
 

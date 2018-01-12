@@ -32,4 +32,7 @@ abstract class AbstractLimit
      * @return Price|Percent
      */
     abstract public function value();
+
+    abstract public function title();
+
 }

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Limit;
-use App\Entities\LimitType;
 use App\Entities\Portfolio;
-use App\Repositories\LimitRepository;
 use Illuminate\Http\Request;
 
 class LimitController extends Controller
@@ -21,6 +19,7 @@ class LimitController extends Controller
             ->limits()
             ->with(['portfolio', 'portfolio.currency'])
             ->paginate(5);
+
         return view('limits.index', compact('portfolio', 'limits'));
     }
 

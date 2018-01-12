@@ -79,60 +79,7 @@ class PortfolioPresenter extends Presenter
     }
 
 
-    public function limitUtilisation()
-    {
-        return $this->utilisation()->formatValue();
-    }
-
-
-    public function limitUtilisationNumber()
-    {
-        return $this->utilisation()->getValue();
-    }
-
-
-    /**
-     * Return the amount of portfolio's limit.
-     *
-     * @param int $digits
-     *
-     * @return string
-     * @throws \Throwable
-     */
-    public function limitAmount($digits = 2)
-    {
-        $amount = new Price(null, $this->limit()->value, $this->entity->currency->code);
-
-        return $amount->formatValue($digits);
-    }
-
-    /**
-     * Return the portfolio's limit.
-     *
-     * @return mixed
-     */
-    private function utilisation()
-    {
-        if (!$this->utilisation)
-            $this->utilisation = LimitMetricService::utilisation($this->limit());
-
-        return $this->utilisation;
-    }
-
-    /**
-     * Return the portfolio's limit.
-     *
-     * @return Limit
-     */
-    private function limit()
-    {
-        if (!$this->limit)
-            $this->limit = $this->entity->limits->first();
-
-        return $this->limit;
-    }
-
-
+   
     /*
     |--------------------------------------------------------------------------
     | DATES

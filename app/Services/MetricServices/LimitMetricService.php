@@ -3,14 +3,14 @@
 
 namespace App\Services\MetricServices;
 
-use App\Classes\Limits\AbstractLimit;
-use App\Classes\Output\Output;
+use App\Classes\Limits\LimitEnhancer;
 use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 
 
 class LimitMetricService extends MetricService
 {
+    use LimitEnhancer;
 
     /**
      * @param $limit
@@ -18,7 +18,7 @@ class LimitMetricService extends MetricService
      */
     public function utilisation($limit)
     {
-        return app(AbstractLimit::class, [$limit])->utilisation();
+        return $this->enhance($limit)->utilisation();
     }
 
     /**
@@ -27,6 +27,7 @@ class LimitMetricService extends MetricService
      */
     public function value($limit)
     {
-        return app(AbstractLimit::class, [$limit])->value();
+        return $this->enhance($limit)->value();
     }
+
 }

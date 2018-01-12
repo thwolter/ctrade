@@ -23,4 +23,10 @@ class AbsoluteLimit extends AbstractLimit
     {
         return new Price($this->limit->date, $this->limit->value, $this->limit->portfolio->currency->code);
     }
+
+
+    public function title()
+    {
+        return 'Absolutes Limit';
+    }
 }
