@@ -44,7 +44,7 @@
                         <div class="card g-mb-40 rounded-0">
 
                             <!-- Card Header -->
-                            <div class="card-header g-height-50 g-bg-gray-light-v5 g-color-black-opacity-0_5 rounded-0 g-brd-primary-bottom">
+                            <div class="card-header g-height-50 g-bg-primary-opacity-0_2 g-color-black-opacity-0_5 rounded-0 g-brd-primary-bottom">
                                 <div class="row align-items-center d-flex">
                                     <h3 class="h5 col-8 col-10-md g-mb-0 font-weight-bold">
                                         <i class="fa fa-tasks g-font-size-default g-mr-5"></i>
@@ -89,7 +89,7 @@
                                         <!-- Limits -->
                                         <div class="row">
                                             <div class="col-12">
-                                                @include('layouts.components.progress_bar', ['limit' => $limits->first()])
+                                                @include('layouts.components.progress', ['limit' => $limits->first()])
                                             </div>
 
                                             <div id="thresholds-body" class="col-12 collapse"
@@ -101,7 +101,7 @@
                                                         @if ($index === 0)
                                                             @continue;
                                                         @endif
-                                                        @include('layouts.components.progress_bar', ['limit' => $limit])
+                                                        @include('layouts.components.progress', ['limit' => $limit])
                                                     @endforeach
                                                 @endif
                                             </div>

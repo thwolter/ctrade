@@ -25,6 +25,12 @@ class AbsoluteLimit extends AbstractLimit
     }
 
 
+    public function description()
+    {
+        return 'Das Absolute Limit soll den Verlust in deines Portfolio in einem festen Betrag beschränken.';
+    }
+
+
     public function title()
     {
         return 'Absolutes Limit';

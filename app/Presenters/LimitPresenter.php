@@ -56,7 +56,7 @@ class LimitPresenter extends Presenter
 
     public function description()
     {
-        //
+        return $this->enhance($this->entity)->description();
     }
 
 
