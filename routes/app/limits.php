@@ -22,6 +22,11 @@ Route::middleware('auth')->group(function () {
         'uses' => 'LimitController@store'
     ]);
 
+    Route::put('/limits/update', [
+        'as' => 'limits.update',
+        'uses' => 'LimitController@update'
+    ]);
+
     Route::delete('/limits/delete', [
         'as' => 'limits.destroy',
         'uses' => 'LimitController@destroy'

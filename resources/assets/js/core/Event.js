@@ -8,6 +8,6 @@ class Event {
     listen(event, callback) {
         this.vue.$on(event, callback);
     }
-};
+}
 
 export default Event;

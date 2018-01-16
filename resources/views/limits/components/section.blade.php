@@ -14,22 +14,20 @@
                 <i class="icon-options-vertical g-pos-rel g-top-1"></i>
             </span>
             <div class="dropdown-menu dropdown-menu-right rounded-0 g-mt-10">
-                <a class="dropdown-item g-px-10" href="#">
+                <a-limit cls="dropdown-item g-px-10" event="showLimitUpdate" :id="{{ $limit->id }}">
                     <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Anpassen
-                </a>
-
+                </a-limit>
                 <a class="dropdown-item g-px-10" href="#">
                     <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Optimieren
                 </a>
 
                 <div class="dropdown-divider"></div>
-
                 <a class="dropdown-item g-px-10" href="#delete_{{ $limit->id }}"
                    data-modal-target="#delete_{{ $limit->id }}" data-modal-effect="fadein">
                     <i class="fa fa-trash-o g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> Löschen
                 </a>
 
-                <!-- Modal Window -->
+                <!-- Delete -->
                 <div id="delete_{{ $limit->id }}" style="display: none;"
                      class="text-left g-max-width-600 g-bg-white g-overflow-y-auto g-pa-20">
                     <div class="g-brd-bottom g-brd-gray-light-v4 g-mb-20">
@@ -57,6 +55,7 @@
                         {!! Form::close() !!}
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

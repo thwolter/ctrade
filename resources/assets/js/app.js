@@ -1,27 +1,24 @@
 
 require('./bootstrap');
 
-
 import Vue from 'vue';
-//import VueResource from 'vue-resource';
 
 import Form from './core/Form';
-import Event from './core/Event';
 import Colors from './core/Colors';
 
 import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
 
-//import { dropdown } from 'vue-strap';
 
 
 window.Vue = Vue;
 window.Form = Form;
-window.Event = new Event;
 window.Colors = new Colors;
 
-//Vue.use(VueResource);
-//Vue.use(InstantSearch);
+
+// EventBus
+import Event from './core/Event';
+window.Event = new Event();
 
 // Localization
 window.trans = (string, args) => {
@@ -48,6 +45,8 @@ Raven
 
 const app = new Vue({
     el: '#wrapper',
+
 });
+
 
 

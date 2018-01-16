@@ -54,7 +54,16 @@ class LimitController extends Controller
 
     public function update(Request $request)
     {
+        $attributes = $request->validate([
+            'id' => 'exists:limits,id',
+            'type' => 'in:absolute,relative,floor,absolute',
+            'value' => 'required|numeric',
+            'date' => 'sometimes|date|nullable'
+        ]);
 
+        $limit = Limit::find($attributes['id']);
+
+        return ['redirect' => route('limits.index', $limit->portfolio)];
     }
 
 

@@ -7,9 +7,7 @@
     @foreach($limits as $limit)
 
         <div class="col-12">
-        @component('limits.components.section', ['limit' => $limit])
-
-            <div class="show">
+            @component('limits.components.section', ['limit' => $limit])
 
                 <div class="row">
                     <div class="col-4">
@@ -38,9 +36,17 @@
 
                     </div>
                 </div>
-            </div>
 
-        @endcomponent
+                <!-- Edit -->
+                <div id="edit_{{ $limit->id }}" class="row g-mt-40">
+                    <update-limit
+                            :portfolio="{{ $limit->portfolio }}"
+                            :limit="{{ $limit }}"
+                            route="{{ route('limits.update') }}">
+                    </update-limit>
+                </div>
+
+            @endcomponent
         </div>
 
     @endforeach
