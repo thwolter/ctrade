@@ -66,8 +66,7 @@
             <!-- Buttons -->
 
             <div class="float-right g-mt-30">
-                <button class="btn btn-md u-btn-outline-lightgray" role="button" data-toggle="collapse" :href="id"
-                    @click="onCancel" :data-target="id">
+                <button class="btn btn-md u-btn-outline-lightgray" role="button" @click="onCancel">
                     {{ trans('buttons.cancel') }}
                 </button>
 
@@ -117,7 +116,7 @@
                     value: numeral(this.limit.value).format('0,0.00'),
                     date: this.limit.date,
                     email: this.limit.notify,
-                    type: null,
+                    type: this.limit.type,
                     id: this.limit.id
                 }),
 
@@ -127,6 +126,7 @@
                 cleave: {
                     numeral: true,
                     numeralDecimalMark: ',',
+                    numeralDecimalScale: 2,
                     delimiter: '.',
                     numeralPositiveOnly: true
                 },
@@ -142,6 +142,8 @@
                     this.form.date = null;
                 }
 
+                this.form.value = this.asNumeric(this.form.value);
+
                 this.form.put(this.route)
                     .then(data => {
                         this.show = false;
@@ -154,7 +156,12 @@
 
             onCancel() {
                 this.show = false;
-            }
+            },
+
+            asNumeric(value) {
+                let number = parseFloat(value);
+                return (isNaN(number) || !value) ? 0 : number;
+            },
         },
 
         mounted() {
