@@ -17,7 +17,8 @@ class UserSeeder extends Seeder
         ]);
 
         User::firstOrCreate([
-            'last_name' => 'Thomas Wolter',
+            'first_name' => 'Thomas',
+            'last_name' => 'Wolter',
             'email' => 'thwolter@gmail.com',
             'password' => bcrypt('123'),
             'verified' => true

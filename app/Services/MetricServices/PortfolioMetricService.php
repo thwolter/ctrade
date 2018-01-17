@@ -56,8 +56,13 @@ class PortfolioMetricService extends MetricService
      */
     public function risk(Portfolio $portfolio)
     {
-        $dailyRisk = $this->dailyRisk($portfolio);
-        $risk = $dailyRisk * sqrt($portfolio->settings('period'));
+        $risk = 0;
+
+        if ($portfolio->assets->count()) {
+
+            $dailyRisk = $this->dailyRisk($portfolio);
+            $risk = $dailyRisk * sqrt($portfolio->settings('period'));
+        }
 
         return new Price(Carbon::now()->toDateString(), $risk, $portfolio->currency->code);
     }

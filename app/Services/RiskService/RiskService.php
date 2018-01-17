@@ -87,7 +87,7 @@ class RiskService
         $m = array_values($returns);
 
         for ($i = 0; $i < count($m); $i++) {
-            for ($j =  0; $j < count($m); $j++) {
+            for ($j = 0; $j < count($m); $j++) {
                 $corr[$i][$j] = Correlation::covariance(array_values($m[$i]), array_values($m[$j]));
             }
         }
@@ -106,7 +106,7 @@ class RiskService
      */
     private function deltaVector(Portfolio $portfolio, $parameter)
     {
-       foreach ($portfolio->assets as $asset) {
+        foreach ($portfolio->assets as $asset) {
             $delta[] = $this->assetDelta($asset, $parameter);
         }
         return $delta;

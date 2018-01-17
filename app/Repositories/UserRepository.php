@@ -19,6 +19,7 @@ class UserRepository
         return ($account) ? $account->user : null;
     }
 
+
     public function createUser(ProviderUser $providerUser, $provider)
     {
         $account = new SocialAccount([

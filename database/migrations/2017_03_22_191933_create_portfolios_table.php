@@ -20,9 +20,8 @@ class CreatePortfoliosTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
             $table->string('slug');
-            $table->string('description')->nullable();
-            $table->integer('category_id')->nullable();
             $table->integer('currency_id');
+            $table->string('description')->nullable();
             $table->json('settings')->nullable();
             $table->boolean('public')->default(false);
             $table->datetime('opened_at');

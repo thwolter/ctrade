@@ -53,7 +53,6 @@ class Portfolio extends Model
 
     protected $cascadeDeletes = [
         'positions',
-        'category',
         'keyFigures',
         'limits',
         'image'
@@ -88,10 +87,6 @@ class Portfolio extends Model
         return $this->hasOne(PortfolioImage::class);
     }
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
 
     public function keyfigures()
     {

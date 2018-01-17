@@ -34,17 +34,11 @@ class PortfolioRepository
     {
         $portfolio = new Portfolio([
             'name' => array_get($attributes,'name'),
-            'cash' => 0,
             'opened_at' => Carbon::parse(array_get($attributes, 'date')),
             'description' => array_get($attributes,'description')
         ]);
         $portfolio->currency()
             ->associate(Currency::find(array_get($attributes,'currency')));
-
-        $category = array_get($attributes, 'category');
-        if ($category) {
-            Category::make(['name' => $category])->user()->associate($user)->save();
-        }
 
         $user->obtain($portfolio);
 

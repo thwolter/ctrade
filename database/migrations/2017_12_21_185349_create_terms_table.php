@@ -17,7 +17,7 @@ class CreateTermsTable extends Migration
             $table->increments('id');
             $table->string('code');
             $table->string('name')->nullable();
-            $table->enum('taxonomy', ['keyfigure']);
+            $table->string('taxonomy');
             $table->timestamps();
         });
     }

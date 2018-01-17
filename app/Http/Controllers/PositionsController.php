@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TradeRequest;
-use App\Services\DataService as Service;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use App\Entities\Portfolio;

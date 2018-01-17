@@ -30,12 +30,6 @@ class LimitController extends Controller
     }
 
 
-    public function edit(Request $request)
-    {
-
-    }
-
-
     public function store(Request $request)
     {
         $attributes = $request->validate([
@@ -58,7 +52,8 @@ class LimitController extends Controller
             'id' => 'exists:limits,id',
             'type' => 'in:absolute,relative,floor,absolute',
             'value' => 'required|numeric',
-            'date' => 'sometimes|date|nullable'
+            'date' => 'sometimes|date|nullable',
+            'email' => 'boolean'
         ]);
 
         $limit = Limit::find($attributes['id']);

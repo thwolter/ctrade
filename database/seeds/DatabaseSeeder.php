@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SettingsTableSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(ExchangeSeeder::class);
-        $this->call(UserSeeder::class);
         $this->call(LanguageTableSeeder::class);
 
         $this->dev();
@@ -26,8 +25,9 @@ class DatabaseSeeder extends Seeder
 
     private function dev()
     {
-        if (App::environment('local')) {
-            //
+        if (! App::environment('production')) {
+            $this->call(UserSeeder::class);
+            $this->call(PortfolioSeeder::class);
         }
     }
 }

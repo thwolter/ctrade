@@ -30,7 +30,7 @@
                         </div>
 
                         <h6>Betrag<span class="float-right g-ml-10">{{ $limit->present()->value() }}</span></h6>
-                        @if( $date = $limit->present()->date() )
+                        @if( $limit->type = 'target')
                             <h6>Zieldatum<span class="float-right g-ml-10">{{ $limit->present()->date() }}</span></h6>
                         @endif
 

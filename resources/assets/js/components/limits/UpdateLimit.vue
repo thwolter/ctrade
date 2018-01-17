@@ -115,7 +115,7 @@
                 form: new Form({
                     value: numeral(this.limit.value).format('0,0.00'),
                     date: this.limit.date,
-                    email: this.limit.notify,
+                    email: this.limit.notify === 1,
                     type: this.limit.type,
                     id: this.limit.id
                 }),

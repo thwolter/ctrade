@@ -244,6 +244,7 @@ return [
         \App\Providers\RscriptServiceProvider::class,
         \App\Providers\RiskServiceProvider::class,
         \App\Providers\PortfolioServiceProvider::class,
+        \App\Providers\TransactionServiceProvider::class,
 
 
     ],
