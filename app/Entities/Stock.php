@@ -10,36 +10,10 @@ use App\Services\StockMetrics;
 use Backpack\CRUD\CrudTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Illuminate\Support\Facades\Cache;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-/**
- * App\Entities\Stock
- *
- * @property int $id
- * @property string $name
- * @property int $currency_id
- * @property string $wkn
- * @property string $isin
- * @property int $sector_id
- * @property int $industry_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \App\Entities\Currency $currency
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Datasource[] $datasources
- * @property-read \App\Entities\Industry $industry
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entities\Position[] $positions
- * @property-read \App\Entities\Sector $sector
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Stock whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Stock whereCurrencyId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Stock whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Stock whereIndustryId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Stock whereIsin($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Stock whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Stock whereSectorId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Stock whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Stock whereWkn($value)
- * @mixin \Eloquent
- */
+
 class Stock extends Instrument
 {
     use CrudTrait, RevisionableTrait, Sluggable, SluggableScopeHelpers;
@@ -70,14 +44,6 @@ class Stock extends Instrument
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-
-
-    public function getDatasource($exchange)
-    {
-        return $this->datasources()->whereExchange($exchange)->first();
-    }
-
 
 
     public function toSearchableArray()

@@ -120,6 +120,7 @@
             </a>
         @endslot
 
+<!-- //todo: should use asAssociativeArray or toArray -->
         <stock-chart
                 :exchanges="{{ json_encode($stock->exchangesToArray()) }}"
                 :history="{{ json_encode($metrics->dataHistory($stock, $exchange)) }}">

@@ -7,30 +7,6 @@ use App\Exceptions\DatasourceException;
 
 
 
-/**
- * App\Entities\Datasource
- *
- * @property int $id
- * @property int $provider_id
- * @property int $database_id
- * @property int $dataset_id
- * @property bool $valid
- * @property string $checked_at
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \App\Entities\Database $database
- * @property-read \App\Entities\Dataset $dataset
- * @property-read \App\Entities\Provider $provider
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Datasource whereCheckedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Datasource whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Datasource whereDatabaseId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Datasource whereDatasetId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Datasource whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Datasource whereProviderId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Datasource whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Entities\Datasource whereValid($value)
- * @mixin \Eloquent
- */
 class Datasource extends Model
 {
     /*
@@ -52,6 +28,10 @@ class Datasource extends Model
         'refreshed_at',
         'newest_date',
         'oldest_date'
+    ];
+
+    protected $touches = [
+        'stocks'
     ];
 
 
@@ -77,7 +57,13 @@ class Datasource extends Model
     {
         return $this->belongsTo(Dataset::class);
     }
-    
+
+
+    public function exchange()
+    {
+        return $this->belongsTo(Exchange::class);
+    }
+
 
     public function stocks()
     {
@@ -88,12 +74,6 @@ class Datasource extends Model
     public function ccyPairs()
     {
         return $this->morphedByMany(CcyPair::class, 'sourcable')->withTimestamps();
-    }
-
-
-    public function exchange()
-    {
-        return $this->belongsTo(Exchange::class);
     }
 
 

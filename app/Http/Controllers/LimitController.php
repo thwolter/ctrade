@@ -57,6 +57,7 @@ class LimitController extends Controller
         ]);
 
         $limit = Limit::find($attributes['id']);
+        $limit->update($request);
 
         return ['redirect' => route('limits.index', $limit->portfolio)];
     }

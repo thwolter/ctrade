@@ -7,7 +7,7 @@ namespace App\Entities;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-
+use Illuminate\Support\Facades\Cache;
 
 
 abstract class Instrument extends Model
@@ -79,7 +79,7 @@ abstract class Instrument extends Model
     public function exchangesAsAssociativeArray()
     {
         $array = [];
-        foreach ($this->datasources as $datasource)
+        foreach ($this->cached_datasources as $datasource)
         {
             $array[$datasource->exchange->code] = $datasource->exchange->name;
         }
@@ -90,7 +90,7 @@ abstract class Instrument extends Model
     public function exchangesToArray()
     {
         $array = [];
-        foreach ($this->datasources as $datasource)
+        foreach ($this->cached_datasources as $datasource)
         {
             $array[] = [
                 'code' => $datasource->exchange->code,
@@ -108,7 +108,7 @@ abstract class Instrument extends Model
      */
     public function firstExchange()
     {
-        $exchange = $this->datasources->first()->exchange;
+        $exchange = $this->cached_datasources->first()->exchange;
         return [$exchange->code => $exchange->name];
     }
 
@@ -121,6 +121,25 @@ abstract class Instrument extends Model
                 'base' => class_basename($this)
             ]
         );
+    }
+
+
+    public function cacheKey($name)
+    {
+        return sprintf(
+            "%s/%s-%s",
+            $this->getTable(),
+            $this->getKey(),
+            $this->updated_at->timestamp
+        ).':'.$name;
+    }
+
+
+    public function getDatasource($exchange)
+    {
+        return Cache::remember($this->cacheKey('exchange_datasource'), 15, function () use ($exchange) {
+            return $this->datasources()->whereExchange($exchange)->first();
+        });
     }
 
     /*
@@ -151,6 +170,13 @@ abstract class Instrument extends Model
     public function getCurrencyCodeAttribute()
     {
         return $this->currency()->first()->code;
+    }
+
+    public function getCachedDatasourcesAttribute()
+    {
+        return Cache::remember($this->cacheKey('datasources'), 15, function () {
+            return $this->datasources;
+        });
     }
 
 

@@ -86,12 +86,12 @@ class DataService
                 break;
 
             case null:
-                $exchanges = $exchanges = $entity->exchangesToArray();
-                return $entity->getDatasource(array_get($exchanges, '0.code'));
+                $exchange = key($entity->exchangesAsAssociativeArray());
+                return $entity->getDatasource($exchange);
                 break;
 
             default:
-                return $entity->datasources()->whereExchange($exchange)->first();
+                return $entity->getDatasource($exchange);
                 break;
         }
     }

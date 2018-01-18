@@ -31,6 +31,8 @@ class ApiStockController extends ApiBaseController
         ]);
 
         $stock = Stock::find($attributes['id']);
+
+        //todo: should use asAssociativeArray or toArray
         $exchanges = $stock->exchangesToArray();
 
         return [
