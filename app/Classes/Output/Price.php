@@ -10,6 +10,8 @@ class Price extends Output implements OutputInterface
 
     public function __construct($date, $value, $currency)
     {
+        // We require the parameters.
+        // As they are optional in the parent class, let's specify it.
         parent::__construct($date, $value, $currency);
     }
 

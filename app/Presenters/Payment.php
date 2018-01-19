@@ -9,6 +9,8 @@
 namespace App\Presenters;
 
 
+use App\Classes\Output\Output;
+use App\Classes\Output\Price;
 use App\Facades\MetricService\AssetMetricService;
 
 class Payment extends Presenter
@@ -22,25 +24,50 @@ class Payment extends Presenter
         $this->position = $this->getPosition();
     }
 
-    private function instrument()
+    /**
+     * @return mixed
+     */
+    private function getPosition()
     {
-        return $this->position ? $this->position->asset->positionable : null;
+        return in_array($this->entity->type, ['buy', 'sell']) ? $this->entity->position : null;
     }
 
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function total()
     {
-        return $this->formatPrice(
-            AssetMetricService::value($this->position->asset)->getValue()
-        );
+        $total = $this->position
+            ? AssetMetricService::value($this->position->asset)
+            : $this->payment();
+
+        return $total->formatValue();
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function price()
     {
-        return $this->formatPrice(
-            AssetMetricService::price($this->position->asset)->getValue()
-        );
+        $price = $this->position
+            ? AssetMetricService::price($this->position->asset)
+            : $this->payment();
+
+        return $price->formatValue();
     }
+
+
+    /**
+     * @return Price
+     */
+    private function payment()
+    {
+        return new Price(null, $this->entity->amount, $this->entity->currency->code);
+    }
+
 
     public function amount()
     {
@@ -49,12 +76,18 @@ class Payment extends Presenter
 
     public function date()
     {
-        return $this->formatDate($this->entity->executed_at);
+        $date = new Output($this->entity->executed_at);
+        return $date->formatDate();
     }
 
     public function name()
     {
        return $this->instrument() ? $this->instrument()->name : null;
+    }
+
+    private function instrument()
+    {
+        return $this->position ? $this->position->asset->positionable : null;
     }
 
     public function paymentType()
@@ -71,13 +104,5 @@ class Payment extends Presenter
     public function isin()
     {
         return $this->instrument() ? $this->instrument()->isin : null;
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getPosition()
-    {
-        return in_array($this->entity->type, ['buy', 'sell']) ? $this->entity->position : null;
     }
 }

@@ -9,11 +9,12 @@ use App\Entities\Exchange;
 use App\Entities\Industry;
 use App\Entities\Sector;
 use App\Entities\Stock;
-use App\Repositories\DatasourceRepository;
+use App\Facades\Repositories\DatasourceRepository;
 use Illuminate\Support\Facades\Log;
 
 trait StockMetadata
 {
+    private $default = 'N/A';
 
     protected $legalForm = [
         'Ag' => 'AG',
@@ -25,45 +26,45 @@ trait StockMetadata
 
     public function create($item)
     {
-        if ($this->valid($item)) {
+        if ($valid = $this->valid($item)) {
 
             $instrument = $this->persistStock($this->toArray($item));
-
-            $repo = new DatasourceRepository();
-            $datasource = $repo->create([
-                'provider' => $this->provider,
-                'database' => $this->database,
-                'dataset' => $this->symbol($item),
-                'exchange' => $this->exchange($item),
-                'valid' => (int)$this->valid($item),
-                'refreshed_at' => $this->refreshed($item),
-                'oldest_date' => $this->oldestPrice($item),
-                'newest_date' => $this->newestPrice($item),
-            ]);
-
-            $datasource->assign($instrument);
-
-            return true;
+            DatasourceRepository::create($this->datasourceArray($item))->assign($instrument);
         }
+        return $valid;
     }
 
 
     public function update($item)
     {
-        $this->datasource($item)->update([
+        $this->datasource($item)->update($this->datasourceArray($item));
+
+        Stock::whereIsin($this->isin($item))->first()
+            ->update([
+                'name' => $this->name($item),
+                'wkn' => $this->wkn($item)
+            ]);
+    }
+
+
+    /**
+     * Return values which specifying the item's datasource.
+     *
+     * @param $item
+     * @return array
+     */
+    private function datasourceArray($item)
+    {
+        return [
+            'provider' => $this->provider,
+            'database' => $this->database,
+            'dataset' => $this->symbol($item),
+            'exchange' => $this->exchange($item),
             'valid' => (int)$this->valid($item),
             'refreshed_at' => $this->refreshed($item),
             'oldest_date' => $this->oldestPrice($item),
-            'newest_date' => $this->newestPrice($item)
-        ]);
-
-        $stock = Stock::whereIsin($this->isin($item))->first();
-        $stock->name = $this->name($item);
-
-        $wkn = $this->wkn($item);
-        if ($wkn) $stock->wkn = $wkn;
-
-        $stock->update();
+            'newest_date' => $this->newestPrice($item),
+        ];
     }
 
 
@@ -72,23 +73,38 @@ trait StockMetadata
         $stock = Stock::firstOrNew(array_only($parameter, ['isin']));
         $stock->wkn = array_get($parameter, 'wkn');
 
-
         if (!$stock->checked_at) {
             $stock->name = array_get($parameter, 'name');
         }
 
-        $stock->currency()->associate(Currency::firstOrCreate(['code' => $parameter['currency']]));
-
-        if (!is_null(array_get($parameter, 'sector')))
-            $stock->sector()->associate(Sector::firstOrCreate(['name' => $parameter['sector']]));
-
-        if (!is_null(array_get($parameter, 'industry')))
-            $stock->industry()->associate(Industry::firstOrCreate(['name' => $parameter['industry']]));
+        $stock->currency()->associate($this->getCurrency($parameter));
+        $stock->sector()->associate($this->getSector($parameter));
+        $stock->industry()->associate($this->getIndustry($parameter));
 
         $stock->save();
+
         return $stock;
     }
 
+
+    private function getSector($parameter)
+    {
+        $sector = array_get($parameter, 'sector');
+        return Sector::firstOrCreate(['name' => $sector ?? $this->default]);
+    }
+
+
+    private function getIndustry($parameter)
+    {
+        $industry = array_get($parameter, 'industry');
+        return Industry::firstOrCreate(['name' => $industry ?? $this->default]);
+    }
+
+
+    private function getCurrency($parameter)
+    {
+        return Currency::firstOrCreate(['code' => $parameter['currency']]);
+    }
 
     protected function model($item)
     {
@@ -198,4 +214,5 @@ trait StockMetadata
         }
         return $name;
     }
+
 }

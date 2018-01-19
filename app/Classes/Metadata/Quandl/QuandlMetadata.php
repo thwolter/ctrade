@@ -24,7 +24,7 @@ abstract class QuandlMetadata extends BaseMetadata
     public function getFirstItems()
     {
         $this->nextPage = 0;
-        return $this->getNextItems($this->chunk);
+        return $this->getNextItems();
 
     }
 
@@ -78,6 +78,4 @@ abstract class QuandlMetadata extends BaseMetadata
         $item = $this->client->getSymbol($this->database . '/' . $symbol);
         return array_get(json_decode($item, true), 'dataset');
     }
-
-
 }

@@ -4,8 +4,9 @@
 namespace App\Repositories;
 
 use App\Contracts\DataServiceInterface;
-use App\Facades\Datasource;
 use Clockwork\DataSource\DataSourceInterface;
+use App\Facades\Repositories\DatasourceRepository;
+
 
 
 class CurrencyRepository
@@ -61,14 +62,14 @@ class CurrencyRepository
 
     private function direct()
     {
-        $datasource = Datasource::withDataset($this->origin . $this->target)->first();
+        $datasource = DatasourceRepository::withDataset($this->origin . $this->target)->first();
         return app(DataServiceInterface::class, [$datasource]);
     }
 
 
     private function oblique($currency)
     {
-        $datasource = Datasource::withDataset($this->baseCurrency . $currency)->first();
+        $datasource = DatasourceRepository::withDataset($this->baseCurrency . $currency)->first();
         return app(DataSourceInterface::class, [$datasource]);
     }
 

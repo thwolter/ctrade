@@ -73,7 +73,7 @@ class Output
      * Multiply the value with a factor.
      *
      * @param $factor
-     * @return Output
+     * @return mixed
      */
     public function multiply($factor)
     {

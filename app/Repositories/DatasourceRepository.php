@@ -15,6 +15,20 @@ use Illuminate\Support\Facades\DB;
 class DatasourceRepository
 {
 
+    public function find($provider, $database, $dataset)
+    {
+        if ($datasetCol = Dataset::whereCode($dataset)->first()) {
+
+            return Datasource::where('dataset_id', $datasetCol->id)
+                ->where('provider_id', Provider::whereCode($provider)->first()->id)
+                ->where('database_id', Database::whereCode($database)->first()->id)
+                ->first();
+        }
+
+        return null;
+    }
+
+
     public function make($provider, $database, $dataset, $attributes = [])
     {
         $datasource = new Datasource($attributes);
@@ -28,11 +42,6 @@ class DatasourceRepository
 
     public function create($attributes)
     {
-        $provider = Provider::firstOrCreate(['code' => array_get($attributes, 'provider')]);
-        $database = Database::firstOrCreate(['code' => array_get($attributes, 'database')]);
-        $dataset = Dataset::firstOrCreate(['code' => array_get($attributes, 'dataset')]);
-        $exchange = Exchange::firstOrCreate(['code' => array_get($attributes, 'exchange')]);
-
         $datasource = new Datasource(array_only($attributes, [
             'valid',
             'refreshed_at',
@@ -41,10 +50,10 @@ class DatasourceRepository
         ]));
 
         $datasource
-            ->provider()->associate($provider)
-            ->database()->associate($database)
-            ->dataset()->associate($dataset)
-            ->exchange()->associate($exchange)
+            ->provider()->associate($this->getProvider($attributes))
+            ->database()->associate($this->getDatabase($attributes))
+            ->dataset()->associate($this->getDataset($attributes))
+            ->exchange()->associate($this->getExchange($attributes))
             ->save();
 
         return $datasource;
@@ -66,5 +75,41 @@ class DatasourceRepository
                 'datasourceId' => $datasource->id];
         };
         return $prices;
+    }
+
+    public function exist($provider, $database, $dataset)
+    {
+        return !is_null($this->find($provider, $database, $dataset));
+    }
+
+    public function withDataset($dataset)
+    {
+        $set = Dataset::whereCode($dataset)->first();
+
+        return (count($set)) ? Datasource::where('dataset_id', $set->id)->get() : null;
+    }
+
+
+    private function getProvider($attributes)
+    {
+        return Provider::firstOrCreate(['code' => array_get($attributes, 'provider')]);
+    }
+
+
+    private function getDatabase($attributes)
+    {
+        return Database::firstOrCreate(['code' => array_get($attributes, 'database')]);
+    }
+
+
+    private function getDataset($attributes)
+    {
+        return Dataset::firstOrCreate(['code' => array_get($attributes, 'dataset')]);
+    }
+
+
+    private function getExchange($attributes)
+    {
+        return Exchange::firstOrCreate(['code' => array_get($attributes, 'exchange')]);
     }
 }

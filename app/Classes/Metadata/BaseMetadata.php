@@ -4,10 +4,11 @@
 namespace App\Classes\Metadata;
 
 
+use App\Entities\Datasource;
 use App\Events\MetadataUpdateHasCanceled;
 use App\Events\MetadataUpdateHasFinished;
 use App\Events\MetadataUpdateHasStarted;
-use App\Facades\Datasource;
+use App\Facades\Repositories\DatasourceRepository;
 use App\Jobs\Metadata\RunBulkUpdate;
 use App\Exceptions\MetadataException;
 use Carbon\Carbon;
@@ -98,7 +99,7 @@ abstract class BaseMetadata
         while ($items) {
 
             dispatch(new RunBulkUpdate($items, $this))->onQueue($this->queue);
-            if (App::environment('local')) break;
+            if (App::isLocal()) break;
 
             $items = $this->fetchNextItems();
         }
@@ -106,17 +107,6 @@ abstract class BaseMetadata
         $this->notifyAboutFinished();
     }
 
-
-    /**
-     * Provide the datasource for a given $item if available.
-     *
-     * @param $item
-     * @return Datasource|null
-     */
-    public function datasource($item)
-    {
-        return Datasource::get($this->provider, $this->database, $this->dataset($item));
-    }
 
 
     /**
@@ -131,6 +121,18 @@ abstract class BaseMetadata
         $updated = $this->refreshed($item);
 
         return $current < $updated;
+    }
+
+
+    /**
+     * Provide the datasource for a given $item if available.
+     *
+     * @param $item
+     * @return Datasource|null
+     */
+    public function datasource($item)
+    {
+        return DatasourceRepository::find($this->provider, $this->database, $this->dataset($item));
     }
 
 
@@ -157,15 +159,14 @@ abstract class BaseMetadata
 
     private function fetchFirstItems()
     {
-        if (App::environment('local')) {
-            $items = Cache::get($this->provider . $this->database);
-            if (!$items) {
-                $items = $this->getFirstItems($this->chunk);
-                Cache::forever($this->provider . $this->database, $items);
-            }
+        if (App::isLocal()) {
+
+            $items = Cache::rememberForever($this->cacheKey('first_items'), function() {
+                return $this->getFirstItems();
+            });
 
         } else {
-            $items = $this->getFirstItems($this->chunk);
+            $items = $this->getFirstItems();
         }
         return $items;
     }
@@ -173,7 +174,15 @@ abstract class BaseMetadata
 
     private function fetchNextItems()
     {
-        return $this->getNextItems($this->chunk);
+        return $this->getNextItems();
+    }
+
+    /**
+     * @return string
+     */
+    private function cacheKey($name)
+    {
+        return sprintf('%s/%s:$s', $this->provider, $this->database, $name);
     }
 
 }

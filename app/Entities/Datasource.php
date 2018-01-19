@@ -96,60 +96,6 @@ class Datasource extends Model
         return $this->save();
     }
 
-    //todo: change to use the function from repository
-    public function make($provider, $database, $dataset, $attributes = [])
-    {
-        $source = new Datasource($attributes);
-        $source
-            ->provider()->associate(Provider::firstOrCreate(['code' => $provider]))
-            ->database()->associate(Database::firstOrCreate(['code' => $database]))
-            ->dataset()->associate(Dataset::firstOrCreate(['code' => $dataset]))
-            ->save();
-
-        return $source;
-    }
-
-    //todo: change to use the function from repository
-    public function exist($provider, $database, $dataset)
-    {
-        return is_null(self::get($provider, $database, $dataset)) ? false : true;
-    }
-
-    //todo: change to use the function from repository
-    public function get($provider, $database, $dataset)
-    {
-        $datasetCol = Dataset::whereCode($dataset)->first();
-
-        if (is_null($datasetCol))
-            return null;
-
-        $source = self::where('dataset_id', $datasetCol->id)
-            ->where('provider_id', Provider::whereCode($provider)->first()->id)
-            ->where('database_id', Database::whereCode($database)->first()->id)
-            ->first();
-
-        return is_null($source) ? null : $source;
-    }
-
-    //todo: change to use the function from repository
-    public function withDataset($dataset)
-    {
-        $set = Dataset::whereCode($dataset)->first();
-    
-        return (count($set)) ? self::where('dataset_id', $set->id)->get() : null;
-    }
-
-    //todo: change to use the function from repository
-    public function withDatasetOrFail($dataset)
-    {
-        $set = Dataset::whereCode($dataset)->first();
-    
-        if (!count($set))
-            throw new DatasourceException("No dataset available for '{$dataset}'");
-            
-        return self::where('dataset_id', $set->id)->get();
-    }
-
 
     public function key()
     {
@@ -215,18 +161,6 @@ class Datasource extends Model
     */
 
 
-    public function getCurrencyAttribute($value)
-    {
-        if ($this->stocks->count()) {
-            return $this->stocks->first()->currency;
-
-        } else if ($this->ccyPairs->count()) {
-            return $this->ccyPairs->first()->currency;
-
-        } else {
-            return null;
-        }
-    }
 
     /*
     |--------------------------------------------------------------------------

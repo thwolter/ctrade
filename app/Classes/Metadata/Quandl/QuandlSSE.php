@@ -17,7 +17,7 @@ class QuandlSSE extends QuandlMetadata implements MetadataInterface
         'isin'      => ['name', '/(?i)(?<=ISIN )(\w{1,})/', 0],
         'wkn'       => ['name', '/(?i)(?<=WKN )(\w{1,})/', 0],
         'currency'  => ['description', '/(?i)(?<=CURRENCY:)(\w{1,})/', 0],
-        'name'  => ['name', '/.+?(?= WKN)/', 0],
+        'name'      => ['name', '/.+?(?= WKN)/', 0],
         'symbol'    => ['dataset_code', '/.*/', 0],
         'sector'    => ['description', '/(?i)(?<=Sector: )(.*(?= -))/', 0],
         'industry'  => ['description', '/(?i)(?<=Sector: ).*(?<=-)(.*)/', 1],
