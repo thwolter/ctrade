@@ -18,6 +18,14 @@ class Payment extends Presenter
 
     private $position;
 
+    private $labels = [
+        'buy'       => 'g-bg-teal',
+        'sell'      => 'g-bg-red',
+        'deposit'   => 'g-bg-blue',
+        'withdraw'  => 'g-bg-orange',
+        'fees'      => 'g-bg-yellow'
+    ];
+
     public function __construct($entity)
     {
         parent::__construct($entity);
@@ -82,7 +90,7 @@ class Payment extends Presenter
 
     public function name()
     {
-       return $this->instrument() ? $this->instrument()->name : null;
+        return $this->instrument() ? $this->instrument()->name : null;
     }
 
     private function instrument()
@@ -92,17 +100,32 @@ class Payment extends Presenter
 
     public function paymentType()
     {
-        return trans('payment.'.$this->entity->type);
+        return trans('payment.' . $this->entity->type);
+    }
+
+    public function paymentTypeLabel()
+    {
+        return array_get($this->labels, $this->entity->type);
     }
 
     public function instrumentType()
     {
         if ($this->instrument())
-            return trans('instrument.'.$this->instrument()->type(true));
+            return trans('instrument.' . $this->instrument()->type(true));
     }
 
     public function isin()
     {
-        return $this->instrument() ? $this->instrument()->isin : null;
+        return optional($this->instrument())->isin;
+    }
+
+    public function wkn()
+    {
+        return optional($this->instrument())->wkn;
+    }
+
+    public function exchange()
+    {
+        return 'Frankfurt';
     }
 }

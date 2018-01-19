@@ -16,18 +16,27 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table table-hover u-table-v1">
             <thead class="thead-default">
             <tr>
-                <th>Nr</th>
-                <th>Datum</th>
-                <th>Transaktion</th>
-                <th>Typ</th>
-                <th>Position</th>
-                <th>ISIN</th>
-                <th class="text-center">Stück</th>
-                <th class="text-right">Preis</th>
-                <th class="text-right">Gesamt</th>
+                <th>
+                    <p class="g-ma-0">Transaktion</p>
+                    <p class="g-ma-0">Datum</p>
+                    <p class="g-ma-0 d-md-none">Stückzahl</p>
+                </th>
+                <th>
+                    <p class="g-ma-0">Name</p>
+                    <p class="g-ma-0">ISIN / WKN</p>
+                </th>
+                <th>
+                    <p class="g-ma-0">Handelsplatz</p>
+                    <p class="g-ma-0">Preis</p>
+                    <p class="g-ma-0 d-md-none">Gesamt</p>
+                </th>
+                <th class="d-none d-md-table-cell">
+                    <p class="g-ma-0">Stückzahl</p>
+                    <p class="g-ma-0">Total</p>
+                </th>
             </tr>
             </thead>
 
@@ -35,25 +44,37 @@
 
             @foreach($payments as $payment)
 
-                @php
-                    $isin = $payment->present()->isin;
-                    $instrument = $payment->asset;
-                @endphp
-
                 <tr class="">
-                    <td class="align-middle">{{ $loop->iteration }}</td>
-                    <td class="align-middle">{{ $payment->present()->date() }}</td>
-                    <td class="align-middle">{{ $payment->present()->paymentType() }}</td>
-                    <td class="align-middle">{{ $payment->present()->instrumentType() }}</td>
                     <td class="align-middle">
-                        <a href="{{ route('positions.show',[$portfolio, $instrument->type, $instrument->slug])  }}">
-                            {{ $payment->present()->name}}
-                        </a>
+                        <p class="g-ma-0">
+                            <span class="u-label {{$payment->present()->paymentTypeLabel }}">
+                                {{ $payment->present()->paymentType }}
+                            </span>
+                        </p>
+                        <p class="g-ma-0">{{ $payment->present()->date }}</p>
+                        <p class="g-ma-0 d-md-none">{{ $payment->present()->amount }}</p>
                     </td>
-                    <td>{{ $payment->present()->isin() }}</td>
-                    <td class="text-center">{{ $payment->present()->amount() }}</td>
-                    <td class="text-right">{{ $payment->present()->price() }}</td>
-                    <td class="text-right">{{ $payment->present()->total() }}</td>
+                    <td class="align-middle">
+                        <p class="g-ma-0">
+                            <a href="{{ route('positions.show',[$portfolio, $payment->asset->type, $payment->asset->slug])  }}">
+                                {{ $payment->present()->name}}
+                            </a>
+                        </p>
+                        <p class="g-ma-0">
+                            {{ $payment->present()->isin }}
+                            @if ($wkn = $payment->present()->wkn ) / {{ $wkn }} @endif
+                        </p>
+                    </td>
+                    <td class="align-middle">
+                        <p class="g-ma-0">{{ $payment->present()->exchange }}</p>
+                        <p class="g-ma-0">{{ $payment->present()->price }}</p>
+                        <p class="g-ma-0 d-md-none">{{ $payment->present()->total }}</p>
+
+                    </td>
+                    <td class="align-middle d-none d-md-table-cell">
+                        <p class="g-ma-0">{{ $payment->present()->amount }}</p>
+                        <p class="g-ma-0">{{ $payment->present()->total }}</p>
+                    </td>
                 </tr>
             @endforeach
             </tbody>
