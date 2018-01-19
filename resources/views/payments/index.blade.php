@@ -56,9 +56,14 @@
                     </td>
                     <td class="align-middle">
                         <p class="g-ma-0">
-                            <a href="{{ route('positions.show',[$portfolio, $payment->asset->type, $payment->asset->slug])  }}">
-                                {{ $payment->present()->name}}
-                            </a>
+                            @if ($name = $payment->present()->name)
+                                <a href="{{ route('positions.show',[$portfolio, $payment->asset->type, $payment->asset->slug])  }}">
+                                    {{ $payment->present()->name}}
+                                </a>
+                            @else
+                                {{ $payment->present()->description }}
+                            @endif
+
                         </p>
                         <p class="g-ma-0">
                             {{ $payment->present()->isin }}

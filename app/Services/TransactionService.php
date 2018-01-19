@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Entities\Exchange;
 use App\Entities\Position;
 use App\Entities\Asset;
 
@@ -46,11 +47,19 @@ class TransactionService
 
     private function payTrade($portfolio, $attributes, $position)
     {
-        $portfolio->payments()->create([
+        $payment = $portfolio->payments()->create([
             'type' => $attributes['transaction'],
             'amount' => -$attributes['price'] * $attributes['amount'],
             'executed_at' => $attributes['executed']
-        ])->position()->associate($position)->save();
+        ]);
+        $payment->position()->associate($position)->save();
+        $payment->exchange()->associate($this->getExchange($attributes))->save();
+    }
+
+
+    private function getExchange($attributes)
+    {
+        return Exchange::whereCode(array_get($attributes, 'exchange'))->first();
     }
 
 
@@ -75,4 +84,6 @@ class TransactionService
             'executed_at' => $attributes['executed']
         ]);
     }
+
+
 }

@@ -271,6 +271,7 @@
                     instrumentType: this.instrument.type,
                     currency: this.instrument.currency,
                     transaction: "buy",
+                    exchange: null,
                     price: null,
                     amount: null,
                     executed: null,
@@ -327,6 +328,7 @@
                 }
 
                 this.form.doReset = false;
+                this.form.exchange = this.exchange;
 
                 this.form.post(this.store)
                     .then(data => {

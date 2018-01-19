@@ -51,6 +51,11 @@ class Payment extends Model
         return $this->belongsTo(Position::class);
     }
 
+    public function exchange()
+    {
+        return $this->belongsTo(Exchange::class);
+    }
+
 
     /*
     |--------------------------------------------------------------------------

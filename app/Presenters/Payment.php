@@ -19,11 +19,17 @@ class Payment extends Presenter
     private $position;
 
     private $labels = [
-        'buy'       => 'g-bg-teal',
-        'sell'      => 'g-bg-red',
-        'deposit'   => 'g-bg-blue',
-        'withdraw'  => 'g-bg-orange',
-        'fees'      => 'g-bg-yellow'
+        'buy'           => 'g-bg-teal',
+        'sell'          => 'g-bg-red',
+        'deposit'       => 'g-bg-blue',
+        'withdrawal'    => 'g-bg-orange',
+        'fees'          => 'g-bg-yellow'
+    ];
+
+    private $describeType = [
+        'deposit'       => 'Bareinzahlung',
+        'withdrawal'    => 'Barauszahlung',
+        'fees'          => 'Gebühren'
     ];
 
     public function __construct($entity)
@@ -67,7 +73,6 @@ class Payment extends Presenter
         return $price->formatValue();
     }
 
-
     /**
      * @return Price
      */
@@ -79,7 +84,7 @@ class Payment extends Presenter
 
     public function amount()
     {
-        return $this->position ? $this->position->amount : null;
+        return optional($this->position)->amount;
     }
 
     public function date()
@@ -90,12 +95,17 @@ class Payment extends Presenter
 
     public function name()
     {
-        return $this->instrument() ? $this->instrument()->name : null;
+        return optional($this->instrument())->name;
     }
 
     private function instrument()
     {
         return $this->position ? $this->position->asset->positionable : null;
+    }
+
+    public function description()
+    {
+        return array_get($this->describeType, $this->entity->type);
     }
 
     public function paymentType()
@@ -126,6 +136,6 @@ class Payment extends Presenter
 
     public function exchange()
     {
-        return 'Frankfurt';
+        return optional($this->entity->exchange)->code;
     }
 }

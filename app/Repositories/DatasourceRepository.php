@@ -82,6 +82,7 @@ class DatasourceRepository
         return !is_null($this->find($provider, $database, $dataset));
     }
 
+
     public function withDataset($dataset)
     {
         $set = Dataset::whereCode($dataset)->first();
@@ -112,4 +113,5 @@ class DatasourceRepository
     {
         return Exchange::firstOrCreate(['code' => array_get($attributes, 'exchange')]);
     }
+
 }

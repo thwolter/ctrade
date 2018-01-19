@@ -7,11 +7,9 @@ use App\Classes\Output\Price;
 use App\Entities\Stock;
 use App\Facades\DataService;
 use App\Facades\RiskService\RiskService;
-use App\Facades\RscriptService\RscriptService;
+use App\Facades\Repositories\DatasourceRepository;
 use Carbon\Carbon;
 use MathPHP\Statistics\Circular;
-use MathPHP\Statistics\RandomVariable;
-use MathPHP\Probability\Distribution\Continuous;
 
 
 class StockMetricService extends MetricService
@@ -93,7 +91,7 @@ class StockMetricService extends MetricService
 
         return [
             'data' => $data->getClose(),
-            'currency' => $datasource->currency->code,
+            'currency' => $stock->currency->code,
             'exchange' => $exchange,
             'datasource_id' => $datasource->id
         ];

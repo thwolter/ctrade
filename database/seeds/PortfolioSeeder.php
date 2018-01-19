@@ -1,5 +1,6 @@
 <?php
 
+use App\Entities\Stock;
 use Illuminate\Database\Seeder;
 use App\Entities\User;
 use App\Facades\Repositories\PortfolioRepository;
@@ -44,22 +45,24 @@ class PortfolioSeeder extends Seeder
     private function createPositions($portfolio): void
     {
         TransactionService::trade($portfolio, [
-            'instrumentType' => \App\Entities\Stock::class,
+            'instrumentType' => Stock::class,
             'instrumentId' => 88,
             'transaction' => 'buy',
             'amount' => 100,
             'price' => '20',
             'fees' => 19.50,
+            'exchange' => 'Xetra',
             'executed' => '2017-12-05'
         ]);
 
         TransactionService::trade($portfolio, [
-            'instrumentType' => \App\Entities\Stock::class,
+            'instrumentType' => Stock::class,
             'instrumentId' => 91,
             'transaction' => 'buy',
             'amount' => 50,
             'price' => '66',
             'fees' => 0,
+            'exchange' => 'Stuttgart',
             'executed' => '2017-12-10'
         ]);
     }
