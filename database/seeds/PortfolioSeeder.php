@@ -20,12 +20,15 @@ class PortfolioSeeder extends Seeder
 
         $portfolio = $this->createPortfolio($user);
 
-        $this->createPositions($portfolio);
+        $this->createAsset1($portfolio);
+        $this->createAsset2($portfolio);
 
         $this->createLimits($portfolio);
     }
 
     /**
+     * Create and persist a Portfolio.
+     *
      * @param $user
      * @return mixed
      */
@@ -40,16 +43,18 @@ class PortfolioSeeder extends Seeder
     }
 
     /**
+     * Create and persist an asset.
+     *
      * @param $portfolio
      */
-    private function createPositions($portfolio): void
+    private function createAsset1($portfolio)
     {
         TransactionService::trade($portfolio, [
             'instrumentType' => Stock::class,
             'instrumentId' => 88,
             'transaction' => 'buy',
             'amount' => 100,
-            'price' => '20',
+            'price' => '60',
             'fees' => 19.50,
             'exchange' => 'Xetra',
             'executed' => '2017-12-05'
@@ -57,12 +62,42 @@ class PortfolioSeeder extends Seeder
 
         TransactionService::trade($portfolio, [
             'instrumentType' => Stock::class,
+            'instrumentId' => 88,
+            'transaction' => 'buy',
+            'amount' => 10,
+            'price' => '70',
+            'fees' => 19.50,
+            'exchange' => 'Xetra',
+            'executed' => '2017-12-15'
+        ]);
+
+        TransactionService::trade($portfolio, [
+            'instrumentType' => Stock::class,
+            'instrumentId' => 88,
+            'transaction' => 'sell',
+            'amount' => -10,
+            'price' => '65',
+            'fees' => 19.50,
+            'exchange' => 'Xetra',
+            'executed' => '2017-12-20'
+        ]);
+    }
+
+    /**
+     * Create and persist an asset.
+     *
+     * @param $portfolio
+     */
+    private function createAsset2($portfolio): void
+    {
+        TransactionService::trade($portfolio, [
+            'instrumentType' => Stock::class,
             'instrumentId' => 91,
             'transaction' => 'buy',
             'amount' => 50,
             'price' => '66',
             'fees' => 0,
-            'exchange' => 'Stuttgart',
+            'exchange' => 'Xetra',
             'executed' => '2017-12-10'
         ]);
     }

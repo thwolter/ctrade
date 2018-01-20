@@ -4,7 +4,6 @@ namespace App\Entities;
 
 use App\Presenters\AssetPresenter;
 use App\Presenters\Presentable;
-use App\Repositories\CurrencyRepository;
 use Carbon\Carbon;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -65,52 +64,6 @@ class Asset extends Model
     }
 
 
-  /*  public function value($date = null)
-    {
-        return $this->amount($date) * array_first($this->price($date));
-    }
-
-
-    public function price($date = null)
-    {
-        return $this->positionable->price($date);
-    }*/
-
-
-
-    public function amount($date = null)
-    {
-        return $this->positions()
-            ->where('executed_at', '<=', Carbon::parse($date)->endOfDay())
-            ->sum('amount');
-    }
-
-
-    public function price($date = null)
-    {
-        return $this->positionable->price($date);
-    }
-
-
-    public function currency()
-    {
-        return $this->positionable->currency;
-    }
-
-
-    public function convert($currencyCode = null)
-    {
-        if (!$currencyCode or $this->currency->code === $currencyCode) return 1;
-        return array_first((new CurrencyRepository($this->currency->code, $currencyCode))->price());
-    }
-
-
-    public function label()
-    {
-        return implode('.', [$this->positionable_type, $this->positionable_id]);
-    }
-
-
     public function toArray($date = null)
     {
         return [
@@ -123,16 +76,19 @@ class Asset extends Model
     }
 
 
-
     public function isType($type)
     {
-        return class_basename($this->positionable) === $type;
+        return ucfirst(class_basename($this->positionable)) === ucfirst($type);
     }
 
-    public function hasForeignCurrency()
+
+    public function amountAt($date)
     {
-        return $this->currency->code != $this->portfolio->currency->code;
+        return $this->positions()
+            ->where('executed_at', '<=', Carbon::parse($date)->endOfDay())
+            ->sum('amount');
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -170,7 +126,7 @@ class Asset extends Model
 
     public function getTypeAttribute()
     {
-        return strtolower(class_basename($this->positionable_type));
+        return ucfirst(class_basename($this->positionable_type));
     }
 
     public function getSlugAttribute()
@@ -191,6 +147,16 @@ class Asset extends Model
     public function getAmountAttribute()
     {
         return $this->positions()->sum('amount');
+    }
+
+    public function getLabelAttribute()
+    {
+        return implode('.', [$this->positionable_type, $this->positionable_id]);
+    }
+
+    public function getExchangeAttribute()
+    {
+        return $this->positions->last()->exchange;
     }
 
 

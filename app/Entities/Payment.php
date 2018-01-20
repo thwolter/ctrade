@@ -75,6 +75,7 @@ class Payment extends Model
         return $query->where($this->getTable().'.updated_at', '>=', $date);
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | ACCESORS

@@ -16,7 +16,7 @@ class StockRisk implements RiskInterface
 
     public function assetVaR(Asset $asset, $parameter)
     {
-        $delta = $this->delta($asset, $parameter);
+        $delta = $this->assetDelta($asset, $parameter);
         $volatility = $this->stockVolatility($asset->positionable, $parameter);
 
         return $this->scaleRisk($delta * $volatility, $parameter);
@@ -44,7 +44,7 @@ class StockRisk implements RiskInterface
     {
         $date = array_get($parameter, 'date', Carbon::now()->toDateString());
 
-        return $this->instrumentDelta($asset->positionable, $parameter) * $asset->amount($date);
+        return $this->instrumentDelta($asset->positionable, $parameter) * $asset->amountAt($date);
     }
 
 

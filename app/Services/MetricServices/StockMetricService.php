@@ -75,6 +75,15 @@ class StockMetricService extends MetricService
     }
 
 
+    public function periodDelta($stock, $exchange, $count)
+    {
+        $history = $this->dataService->history($stock, $exchange)->count($count + 1)->getClose();
+        $values = array_values($history);
+
+        return new Price(key($history), $values[0]-$values[1], $stock->currency->code);
+    }
+
+
     public function periodReturn($stock, $exchange, $count)
     {
         $value = $this->dataService->history($stock, $exchange)->count($count)->getClose();

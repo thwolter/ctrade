@@ -49,57 +49,80 @@
             Aktien
         @endslot
 
-        @php
-            $assets = $portfolio->assets()->ofType(\App\Entities\Stock::class)->get();
-        @endphp
+        <table class="table table-hover u-table-v1">
+            <thead class="thead-default">
+            <tr>
+                <th>
+                    <p class="g-ma-0">Name</p>
+                    <p class="g-ma-0">ISIN / WKN</p>
+                    <p class="g-ma-0">Gattung</p>
+                </th>
+                <th class="text-right">
+                    <p class="g-ma-0">Einstandskurs</p>
+                    <p class="g-ma-0">Investment</p>
+                    <p class="g-ma-0">Veränderung</p>
+                </th>
+                <th class="text-right">
+                    <p class="g-ma-0">Kurs</p>
+                    <p class="g-ma-0">Datum</p>
+                    <p class="g-ma-0">Handelsplatz</p>
+                </th>
+                <th class="text-right">
+                    <p class="g-ma-0">Gesamtwert</p>
+                    <p class="g-ma-0">Entwicklung abs.</p>
+                    <p class="g-ma-0">Entwicklung %</p>
+                </th>
+                <th class="text-right">
+                    <p class="g-ma-0">Stückzahl</p>
+                    <p class="g-ma-0">Risiko abs.</p>
+                    <p class="g-ma-0">Risiko %</p>
+                </th>
+            </tr>
+            </thead>
 
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="thead-default">
+            <tbody>
+            @foreach($portfolio->assets as $asset)
+
+                @php $stock = $asset->positionable @endphp
+
                 <tr>
-                    <th>Nr</th>
-                    <th>Position</th>
-                    <th>ISIN</th>
-                    <th>Updated</th>
-                    <th class="text-right">Preis</th>
-                    <th class="text-center">Stück</th>
-                    <th class="text-right">Gesamt</th>
-                    <th class="text-right">Risiko</th>
-                    <th class="text-right">Risiko (%)</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                @foreach($assets as $asset)
-
-                    @php $stock = $asset->positionable @endphp
-
-                    <tr>
-                        <td class="align-middle">{{ $loop->iteration }}</td>
-                        <td class="align-middle">
-                            <a href="{{ route('positions.show',
-                    [$portfolio->slug, $stock->type(), $stock->slug]) }}">
-                                {{ $stock->name }}
+                    <td class="align-middle">
+                        <p class="g-ma-0">
+                            <a href="{{ route('positions.show', [$portfolio->slug, $asset->type, $asset->slug]) }}">
+                                {{ $asset->present()->name }}
                             </a>
-                        </td>
-                        <td class="align-middle">{{ $stock->present()->isin }}</td>
-                        <td class="align-middle">{{ $stock->present()->priceDate() }}</td>
-                        <td class="align-middle text-right">{{ $stock->present()->price() }}</td>
-                        <td class="align-middle text-center">{{ $asset->present()->amount() }}</td>
-                        <td class="align-middle text-right">
-                            {{ $asset->present()->value() }}
-                            @if ($stock->currency->code != $portfolio->currency->code)
-                                <div>({{ $asset->present->value($portfolio->currency->code) }})</div>
-                            @endif
-                        </td>
-                        <td class="align-middle text-right">{{ $asset->present()->risk() }}</td>
-                        <td class="align-middle text-right">{{ $asset->present()->riskToValueRatio() }}</td>
-                    </tr>
+                        </p>
+                        <p class="g-ma-0">
+                            {{ $asset->present()->isin }}
+                            @if ($wkn = $asset->present()->wkn ) / {{ $wkn }} @endif
+                        </p>
+                        <p class="g-ma-0">{{ $asset->present()->type }}</p>
+                    </td>
+                    <td class="align-middle text-right">
+                        <p class="g-ma-0">{{ $asset->present()->cost }}</p>
+                        <p class="g-ma-0">{{ $asset->present()->investment }}</p>
+                        <p class="g-ma-0">{{ $asset->present()->deltaPosition }}</p>
+                    </td>
+                    <td class="align-middle text-right">
+                        <p class="g-ma-0">{{ $asset->present()->price }}</p>
+                        <p class="g-ma-0">{{ $asset->present()->priceDate }}</p>
+                        <p class="g-ma-0">{{ $asset->present()->exchange }}</p>
+                    </td>
+                    <td class="align-middle text-right">
+                        <p class="g-ma-0">{{ $asset->present()->value }}</p>
+                        <p class="g-ma-0">{{ $asset->present()->returnAbsolute }}</p>
+                        <p class="g-ma-0">{{ $asset->present()->returnPercent }}</p>
+                    </td>
+                    <td class="align-middle text-right">
+                        <p class="g-ma-0">{{ $asset->present()->amount }}</p>
+                        <p class="g-ma-0">{{ $asset->present()->risk() }}</p>
+                        <p class="g-ma-0">{{ $asset->present()->riskToValueRatio() }}</p>
+                    </td>
+                </tr>
 
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+            @endforeach
+            </tbody>
+        </table>
 
     @endcomponent
 

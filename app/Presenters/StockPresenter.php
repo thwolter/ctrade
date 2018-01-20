@@ -14,6 +14,10 @@ class StockPresenter extends Presenter
         return $this->entity->isin;
     }
 
+    public function wkn()
+    {
+        return $this->entity->isin;
+    }
 
     public function price($exchange = null)
     {
@@ -56,6 +60,12 @@ class StockPresenter extends Presenter
     }
 
 
+    public function periodDelta($exchange, $count)
+    {
+        return $this->metrics->periodDelta($this->entity, $exchange, $count)->formatValue();
+    }
+
+    //todo: this should be delivered as a percentatge value
     public function periodReturn($exchange, $count)
     {
         return $this->metrics->periodReturn($this->entity, $exchange, $count)->formatValue();
@@ -71,6 +81,7 @@ class StockPresenter extends Presenter
     {
         return $this->metrics->expectedReturnToPrice($this->entity, $exchange)->formatValue();
     }
+
 
    public function risk()
     {
