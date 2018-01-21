@@ -84,6 +84,10 @@
         </tbody>
     </table>
 
+    <div class="col-12">
+        {{ $payments->links('layouts.pagination.default-2') }}
+    </div>
+
 @endsection
 
 

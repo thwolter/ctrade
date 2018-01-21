@@ -157,10 +157,7 @@ class AssetMetricService extends MetricService
     /*
 
 
-   public function hasForeignCurrency()
-   {
-       return $this->currency->code != $this->portfolio->currency->code;
-   }
+
 
    public function convert($currencyCode = null)
    {

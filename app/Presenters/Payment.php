@@ -38,9 +38,6 @@ class Payment extends Presenter
         $this->position = $this->getPosition();
     }
 
-    /**
-     * @return mixed
-     */
     private function getPosition()
     {
         return in_array($this->entity->type, ['buy', 'sell']) ? $this->entity->position : null;
@@ -53,11 +50,7 @@ class Payment extends Presenter
      */
     public function total()
     {
-        $total = $this->position
-            ? AssetMetricService::value($this->position->asset)
-            : $this->payment();
-
-        return $total->formatValue();
+        return $this->payment()->formatValue();
     }
 
     /**
@@ -66,21 +59,13 @@ class Payment extends Presenter
      */
     public function price()
     {
-        $price = $this->position
-            ? AssetMetricService::price($this->position->asset)
-            : $this->payment();
-
-        return $price->formatValue();
+        return $this->payment()->formatValue();
     }
 
-    /**
-     * @return Price
-     */
     private function payment()
     {
         return new Price(null, $this->entity->amount, $this->entity->currency->code);
     }
-
 
     public function amount()
     {

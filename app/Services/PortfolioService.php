@@ -53,7 +53,7 @@ class PortfolioService
             $data = $history;
         }
 
-        return [$asset->label() => $data->fill('previous')->getClose()];
+        return [$asset->label => $data->fill('previous')->getClose()];
     }
 
 

@@ -3,7 +3,6 @@
 namespace App\Presenters;
 
 
-
 class AssetPresenter extends Presenter
 {
 
@@ -19,6 +18,11 @@ class AssetPresenter extends Presenter
     public function isin()
     {
         return $this->position()->isin;
+    }
+
+    private function position()
+    {
+        return $this->entity->positionable;
     }
 
     public function wkn()
@@ -61,11 +65,6 @@ class AssetPresenter extends Presenter
         return array_get($this->types, $this->entity->positionable->type());
     }
 
-    /**
-     * Return the asset's amount.
-     *
-     * @return mixed
-     */
     public function amount()
     {
         return $this->entity->amount;
@@ -75,7 +74,6 @@ class AssetPresenter extends Presenter
     {
         return $this->position()->present()->price();
     }
-
 
     public function priceDate()
     {
@@ -87,45 +85,18 @@ class AssetPresenter extends Presenter
         return 0;
     }
 
-
-    /**
-     * Return the formatted asset's value.
-     *
-     * @param string|null $currency
-     * @return string
-     */
     public function value($currency = null)
     {
         return $this->metrics->value($this->entity, $currency)->formatValue();
     }
 
-
-    /**
-     * Return the formatted asset's risk.
-     *
-     * @return string
-     */
     public function risk()
     {
         return $this->metrics->risk($this->entity)->formatValue();
     }
 
-
-    /**
-     * Return the formatted asset's risk to value ratio.
-     *
-     * @return string
-     */
     public function riskToValueRatio()
     {
         return $this->metrics->riskToValueRatio($this->entity)->formatValue();
-    }
-
-    /**
-     * @return mixed
-     */
-    private function position()
-    {
-        return $this->entity->positionable;
     }
 }

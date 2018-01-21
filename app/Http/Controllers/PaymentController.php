@@ -31,9 +31,11 @@ class PaymentController extends Controller
      */
     public function index(Portfolio $portfolio)
     {
-        return view('payments.index')
-            ->with('payments', $portfolio->payments->sortByDesc('executed_at'))
-            ->with('portfolio', $portfolio);
+        $payments = $portfolio->payments()
+            ->orderByDesc('executed_at')
+            ->paginate(10);
+
+        return view('payments.index', compact('portfolio', 'payments'));
     }
 
 

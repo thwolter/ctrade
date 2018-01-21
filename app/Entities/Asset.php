@@ -90,6 +90,11 @@ class Asset extends Model
     }
 
 
+    public function hasForeignCurrency()
+    {
+        return $this->currency->code != $this->portfolio->currency->code;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
