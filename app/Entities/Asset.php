@@ -156,7 +156,7 @@ class Asset extends Model
 
     public function getLabelAttribute()
     {
-        return implode('.', [$this->positionable_type, $this->positionable_id]);
+        return implode('.', [$this->positionable->type(), $this->positionable->id]);
     }
 
     public function getExchangeAttribute()

@@ -4,12 +4,11 @@ namespace App\Services\RiskService;
 
 use App\Entities\Asset;
 use App\Entities\Portfolio;
-use App\Exceptions\RiskServiceException;
+use App\Facades\PortfolioService;
 use Carbon\Carbon;
 use MathPHP\LinearAlgebra\Matrix;
 use MathPHP\LinearAlgebra\Vector;
 use MathPHP\Statistics\Correlation;
-use App\Facades\PortfolioService;
 
 
 class RiskService
@@ -66,7 +65,6 @@ class RiskService
     public function portfolioVaR($portfolio, $parameter = [])
     {
         $parameter = $this->parameterOrDefault($portfolio, $parameter);
-
         $returns = $this->getPortfolioLogReturns($portfolio, $parameter);
 
         $C = new Matrix($this->covarianceMatrix($returns));
@@ -75,6 +73,34 @@ class RiskService
         return $this->scaleRisk($this->multiplyVCV($V, $C), $parameter);
     }
 
+    /**
+     * Returns the parameter filled with default settings where required.
+     *
+     * @param Portfolio $portfolio
+     * @param array $parameter
+     * @return array
+     */
+    private function parameterOrDefault($portfolio, $parameter)
+    {
+        return array_merge($portfolio->settings()->only(['period', 'confidence']), $parameter);
+    }
+
+    /**
+     * Return the portfolios assets log returns as an array.
+     *
+     * @param Portfolio $portfolio
+     * @param $parameter
+     * @return array
+     */
+    private function getPortfolioLogReturns(Portfolio $portfolio, $parameter)
+    {
+        $histories = PortfolioService::assetHistories($portfolio, [
+            'date' => array_get($parameter, 'date', Carbon::now()->toDateString()),
+            'count' => $portfolio->settings('history')
+        ]);
+
+        return array_map([$this, 'logReturn'], $histories);
+    }
 
     /**
      * Return the Variance-Covariance-Matrix.
@@ -94,7 +120,6 @@ class RiskService
         return $corr;
     }
 
-
     /**
      * Return the delta vector for portfolio assets.
      *
@@ -112,7 +137,6 @@ class RiskService
         return $delta;
     }
 
-
     /**
      * Return the asset's delta.
      *
@@ -125,25 +149,6 @@ class RiskService
         return resolve($this->register[$type])->assetDelta($asset, $parameter);
     }
 
-
-    /**
-     * Return the portfolios assets log returns as an array.
-     *
-     * @param Portfolio $portfolio
-     * @param $parameter
-     * @return array
-     */
-    private function getPortfolioLogReturns(Portfolio $portfolio, $parameter)
-    {
-        $histories = PortfolioService::assetHistories($portfolio, [
-            'date' => array_get($parameter, 'date', Carbon::now()->toDateString()),
-            'count' => $portfolio->settings('history')
-        ]);
-
-        return array_map([$this, 'logReturn'], $histories);
-    }
-
-
     /**
      * Multiply V^t * C * V.
      *
@@ -151,21 +156,8 @@ class RiskService
      * @param $C
      * @return float
      */
-    private function multiplyVCV($V, $C): float
+    private function multiplyVCV($V, $C)
     {
         return sqrt($V->dotProduct($C->vectorMultiply($V)));
-    }
-
-
-    /**
-     * Returns the parameter filled with default settings where required.
-     *
-     * @param Portfolio $portfolio
-     * @param array $parameter
-     * @return array
-     */
-    private function parameterOrDefault($portfolio, $parameter)
-    {
-        return array_merge($portfolio->settings()->only(['period', 'confidence']), $parameter);
     }
 }

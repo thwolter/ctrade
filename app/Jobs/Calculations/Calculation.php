@@ -10,6 +10,8 @@ class Calculation
 {
     protected $object;
 
+    protected $portfolio;
+
 
     /**
      * Create a new job instance.
@@ -19,28 +21,23 @@ class Calculation
     public function __construct(CalculationObject $object)
     {
         $this->object = $object;
+        $this->portfolio = $this->object->getPortfolio();
     }
 
 
-    /**
-     * Run through the risk.data array and persist the keyfigures.
-     *
-     * @param Carbon $date
-     * @param array $risk
-     */
-    protected function storeKpis($date, $risk)
+
+
+    protected function persistContribution($key, $date, $value)
     {
-        foreach ($risk['data'] as $key => $value) {
+        foreach ($value as $subValue) {
+            $proxy = explode('.', key($value));
+            $instrument = $proxy[0]::find($proxy[1]);
 
-            if (substr($key, 0,12) === 'contribution') {
-                $this->persistContribution($key, $date, $value);
-
-            } else {
-                $this->persist($key, $date, $value);
-            }
+            $keyfigure = KeyfigureRepository::getComponentVaR($this->object->getPortfolio(), $key, $instrument);
+            $keyfigure->effective_at = $this->object->getEffectiveAt();
+            $keyfigure->set($date->toDateString(), $subValue);
         }
     }
-
 
     /**
      * Persist a keyfigures.
@@ -51,22 +48,8 @@ class Calculation
      */
     protected function persist($key, $date, $value)
     {
-        $keyfigure = KeyfigureRepository::getForPortfolio($this->object->getPortfolio(), $key);
-        $keyfigure->effective_at = $this->object->getEffectiveAt();
-        $keyfigure->set($date->toDateString(), $value);
-    }
-
-
-    protected function persistContribution($key, $date, $value)
-    {
-        foreach ($value as $subValue)
-        {
-            $proxy = explode('.', key($value));
-            $instrument = $proxy[0]::find($proxy[1]);
-
-            $keyfigure = KeyfigureRepository::getComponentVaR($this->object->getPortfolio(), $key, $instrument);
-            $keyfigure->effective_at = $this->object->getEffectiveAt();
-            $keyfigure->set($date->toDateString(), $subValue);
-        }
+        KeyfigureRepository::getForPortfolio($this->portfolio, $key)
+            ->setEffective($this->object->getEffectiveAt())
+            ->set($date->toDateString(), $value);
     }
 }

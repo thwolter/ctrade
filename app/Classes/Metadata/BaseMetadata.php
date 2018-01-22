@@ -8,9 +8,9 @@ use App\Entities\Datasource;
 use App\Events\MetadataUpdateHasCanceled;
 use App\Events\MetadataUpdateHasFinished;
 use App\Events\MetadataUpdateHasStarted;
+use App\Exceptions\MetadataException;
 use App\Facades\Repositories\DatasourceRepository;
 use App\Jobs\Metadata\RunBulkUpdate;
-use App\Exceptions\MetadataException;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
@@ -19,21 +19,18 @@ use Illuminate\Support\Facades\Log;
 abstract class BaseMetadata
 {
 
-    protected $chunk;
-
-    protected $client;
-
-    protected $queue = 'default';
-
-    protected $provider;
-
     public $database;
+    protected $chunk;
+    protected $client;
+    protected $queue = 'default';
+    protected $provider;
+    protected $keys = [];
 
-    protected $keys =[];
-
-    abstract function getFirstItems();
-
-    abstract function getNextItems();
+    public function __construct()
+    {
+        $this->client = app()->make(ucfirst($this->provider) . 'Client');
+        $this->chunk = config('quandl.per_page');
+    }
 
     abstract function update($item);
 
@@ -46,29 +43,11 @@ abstract class BaseMetadata
      */
     abstract function create($item);
 
-    abstract function dataset($item);
-
-
-    /**
-     * Get the DateTime when the item was refreshed on provider side.
-     *
-     * @param array $item
-     * @return Carbon
-     */
-    abstract function refreshed($item);
-
-
-    public function __construct()
-    {
-        $this->client = app()->make(ucfirst($this->provider).'Client');
-        $this->chunk = config('quandl.per_page');
-    }
-
     /**
      * Define a function for each key in $keys via a magical function and returns the parsed value.
      *
-     * @param $key, the function name
-     * @param $arguments, the $item
+     * @param $key , the function name
+     * @param $arguments , the $item
      * @return string
      * @throws MetadataException
      */
@@ -84,7 +63,6 @@ abstract class BaseMetadata
 
         return $match ? trim($matches[$parm[2]]) : null;
     }
-
 
     public function updateDatabase()
     {
@@ -107,7 +85,54 @@ abstract class BaseMetadata
         $this->notifyAboutFinished();
     }
 
+    private function notifyAboutStart()
+    {
+        Log::info(sprintf('Update started for %s/%s ...', $this->provider, $this->database));
+        event(new MetadataUpdateHasStarted($this->provider, $this->database));
+    }
 
+    private function fetchFirstItems()
+    {
+        if (App::isLocal()) {
+
+            $items = Cache::rememberForever($this->cacheKey('development'), function () {
+                return $this->getFirstItems();
+            });
+
+        } else {
+            $items = $this->getFirstItems();
+        }
+        return $items;
+    }
+
+    /**
+     * @return string
+     */
+    private function cacheKey($name)
+    {
+        return sprintf('%s/%s:$s', $this->provider, $this->database, $name);
+    }
+
+    abstract function getFirstItems();
+
+    private function notifyAboutCancellation()
+    {
+        Log::warning(sprintf('Update canceled for %s/%s.', $this->provider, $this->database));
+        event(new MetadataUpdateHasCanceled($this->provider, $this->database));
+    }
+
+    private function fetchNextItems()
+    {
+        return $this->getNextItems();
+    }
+
+    abstract function getNextItems();
+
+    private function notifyAboutFinished()
+    {
+        event(new MetadataUpdateHasFinished($this->provider, $this->database));
+        Log::info(sprintf('Update finished for %s/%s.', $this->provider, $this->database));
+    }
 
     /**
      * Returns true if the received item was updated on provider level.
@@ -123,7 +148,6 @@ abstract class BaseMetadata
         return $current < $updated;
     }
 
-
     /**
      * Provide the datasource for a given $item if available.
      *
@@ -135,54 +159,14 @@ abstract class BaseMetadata
         return DatasourceRepository::find($this->provider, $this->database, $this->dataset($item));
     }
 
-
-    private function notifyAboutStart()
-    {
-        Log::info(sprintf('Update started for %s/%s ...', $this->provider, $this->database));
-        event(new MetadataUpdateHasStarted($this->provider, $this->database));
-    }
-
-
-    private function notifyAboutCancellation()
-    {
-        Log::warning(sprintf('Update canceled for %s/%s.', $this->provider, $this->database));
-        event(new MetadataUpdateHasCanceled($this->provider, $this->database));
-    }
-
-
-    private function notifyAboutFinished()
-    {
-        event(new MetadataUpdateHasFinished($this->provider, $this->database));
-        Log::info(sprintf('Update finished for %s/%s.', $this->provider, $this->database));
-    }
-
-
-    private function fetchFirstItems()
-    {
-        if (App::isLocal()) {
-
-            $items = Cache::rememberForever($this->cacheKey('first_items'), function() {
-                return $this->getFirstItems();
-            });
-
-        } else {
-            $items = $this->getFirstItems();
-        }
-        return $items;
-    }
-
-
-    private function fetchNextItems()
-    {
-        return $this->getNextItems();
-    }
+    abstract function dataset($item);
 
     /**
-     * @return string
+     * Get the DateTime when the item was refreshed on provider side.
+     *
+     * @param array $item
+     * @return Carbon
      */
-    private function cacheKey($name)
-    {
-        return sprintf('%s/%s:$s', $this->provider, $this->database, $name);
-    }
+    abstract function refreshed($item);
 
 }

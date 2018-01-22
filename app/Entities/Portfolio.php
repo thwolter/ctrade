@@ -185,6 +185,16 @@ class Portfolio extends Model
     }
 
 
+    public function riskParameter($date = null)
+    {
+        $parameter = $this->settings()->only(['period', 'confidence', 'history']);
+
+        return array_add(
+            array_replace_key($parameter, 'history', 'count'), 'date', $date
+        );
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

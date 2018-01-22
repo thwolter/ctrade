@@ -73,18 +73,18 @@ class Keyfigure extends Model
     |--------------------------------------------------------------------------
     */
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function ($keyfigures) {
+            $keyfigures->values = [];
+        });
+    }
 
     public function keyfigureable()
     {
         return $this->morphTo();
     }
-
-
-    public function term()
-    {
-        return $this->belongsTo(Term::class);
-    }
-
 
 
     /*
@@ -93,11 +93,16 @@ class Keyfigure extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function term()
+    {
+        return $this->belongsTo(Term::class);
+    }
 
     public function get($key)
     {
         return array_get($this->values, $key);
     }
+
 
     public function set($key, $value)
     {
@@ -105,6 +110,14 @@ class Keyfigure extends Model
         $values[$key] = $value;
 
         $this->update(['values' => $values]);
+        return $this;
+    }
+
+
+    public function setEffective($date)
+    {
+        $this->effective_at = $date;
+        return $this;
     }
 
     public function timeseries()
@@ -112,18 +125,10 @@ class Keyfigure extends Model
         return new TimeSeries($this->values);
     }
 
+
     public function has($key)
     {
         return array_key_exists($key, $this->values);
-    }
-
-
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function ($keyfigures) {
-            $keyfigures->values = [];
-        });
     }
 
     /*

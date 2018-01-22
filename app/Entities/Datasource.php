@@ -103,6 +103,12 @@ class Datasource extends Model
             $this->provider->code, $this->database->code, $this->dataset->code);
     }
 
+    public function cacheKey($name)
+    {
+        return sprintf('%s/%s/%s:%s',
+            $this->provider->code, $this->database->code, $this->dataset->code, $name);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

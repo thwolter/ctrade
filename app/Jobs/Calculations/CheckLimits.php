@@ -4,6 +4,7 @@ namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
 use App\Events\Limits\LimitHasBreached;
+use App\Facades\MetricService\LimitMetricService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -37,7 +38,7 @@ class CheckLimits implements ShouldQueue
     {
         foreach ($this->portfolio->limits as $limit)
         {
-            if ($limit->calc()->utilisation() > 1) {
+            if (LimitMetricService::breached($limit)) {
                 event(new LimitHasBreached($limit));
             }
         }

@@ -12,6 +12,11 @@ class LimitMetricService extends MetricService
 {
     use LimitEnhancer;
 
+    public function breached($limit)
+    {
+        return $this->utilisation($limit)->getValue() > 1;
+    }
+
     /**
      * @param $limit
      * @return Price|Percent

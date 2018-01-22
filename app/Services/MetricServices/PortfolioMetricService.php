@@ -4,11 +4,11 @@ namespace App\Services\MetricServices;
 
 use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
+use App\Entities\Portfolio;
+use App\Facades\MetricService\AssetMetricService;
 use App\Facades\Repositories\KeyfigureRepository;
 use App\Facades\RiskService\RiskService;
 use Carbon\Carbon;
-use App\Entities\Portfolio;
-use App\Facades\MetricService\AssetMetricService;
 
 
 class PortfolioMetricService extends MetricService
@@ -46,6 +46,23 @@ class PortfolioMetricService extends MetricService
         return array($value, $date);
     }
 
+    /**
+     * Return the Portfolio's cash position at a given date.
+     *
+     * @param Portfolio $portfolio
+     * @param null $date
+     * @return Price
+     */
+    public function cash(Portfolio $portfolio, $date = null)
+    {
+        $date = $date ? Carbon::parse($date) : Carbon::now();
+
+        $cash = $portfolio->payments()
+            ->where('executed_at', '<=', $date->endOfDay())
+            ->sum('amount');
+
+        return new Price($date, $cash, $portfolio->currency->code);
+    }
 
     /**
      * Return the risk for the portfolio's confidence level.
@@ -56,33 +73,12 @@ class PortfolioMetricService extends MetricService
      */
     public function risk(Portfolio $portfolio)
     {
-        $risk = 0;
-
         if ($portfolio->assets->count()) {
-
-            $dailyRisk = $this->dailyRisk($portfolio);
-            $risk = $dailyRisk * sqrt($portfolio->settings('period'));
+            $risk = RiskService::portfolioVaR($portfolio, $portfolio->riskParameter());
         }
 
         return new Price(Carbon::now()->toDateString(), $risk, $portfolio->currency->code);
     }
-
-
-    /**
-     * Return the Portfolio's risk as latest value stored in the database.
-     *
-     * @param Portfolio $portfolio
-     * @return float
-     *
-     * @throws \Exception
-     */
-    private function dailyRisk(Portfolio $portfolio)
-    {
-        $parameter = $portfolio->settings()->only(['confidence', 'period']);
-
-        return RiskService::portfolioVaR($portfolio, $parameter);
-    }
-
 
     /**
      * Return the Portfolio's profit over a specified period.
@@ -104,33 +100,35 @@ class PortfolioMetricService extends MetricService
             : new Price(key($values), $this->deltaAbsolute($values), $portfolio->currency->code);
     }
 
-
     /**
-     * Return the Portfolio's cash position at a given date.
+     * Return the percentage delta for an array with two values.
      *
-     * @param Portfolio $portfolio
-     * @param null $date
-     * @return Price
+     * @param $values
+     * @param $days
+     * @return float|null
      */
-    public function cash(Portfolio $portfolio, $date = null)
+    private function deltaPercent($values)
     {
-        $date = $date ? Carbon::parse($date) : Carbon::now();
-
-        $cash = $portfolio->payments()
-            ->where('executed_at', '<=', $date->endOfDay())
-            ->sum('amount');
-
-        return new Price($date, $cash, $portfolio->currency->code);
+        return $this->deltaAbsolute($values) / array_first($values);
     }
 
-
+    /**
+     * Return the absolute delta for an array with two values.
+     *
+     * @param $values
+     * @param $days
+     * @return float|null
+     */
+    private function deltaAbsolute($values)
+    {
+        return array_last($values) - array_first($values);
+    }
 
     public function cashFlow(Portfolio $portfolio, $from, $to)
     {
         return $portfolio->payments()
             ->whereBetween('executed_at', [$from, $to])->sum('amount');
     }
-
 
     public function totalOfType(Portfolio $portfolio, $type)
     {
@@ -158,30 +156,17 @@ class PortfolioMetricService extends MetricService
         return sqrt(max(0, $period)) * $this->dailyRisk($portfolio);
     }
 
-
     /**
-     * Return the absolute delta for an array with two values.
+     * Return the Portfolio's risk as latest value stored in the database.
      *
-     * @param $values
-     * @param $days
-     * @return float|null
-     */
-    private function deltaAbsolute($values)
-    {
-        return array_last($values) - array_first($values);
-    }
-
-
-    /**
-     * Return the percentage delta for an array with two values.
+     * @param Portfolio $portfolio
+     * @return float
      *
-     * @param $values
-     * @param $days
-     * @return float|null
+     * @throws \Exception
      */
-    private function deltaPercent($values)
+    private function dailyRisk(Portfolio $portfolio)
     {
-        return $this->deltaAbsolute($values) / array_first($values);
+        return RiskService::portfolioVaR($portfolio, $portfolio->riskParameter());
     }
 
 }
