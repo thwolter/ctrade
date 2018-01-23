@@ -3,34 +3,30 @@
 namespace App\Presenters;
 
 
+use App\Classes\Output\Output;
 use App\Classes\Output\Price;
-use App\Entities\Limit;
 use App\Entities\Stock;
-use App\Facades\MetricService\LimitMetricService;
-use App\Facades\MetricService\PortfolioMetricService;
+use App\Facades\AccountService;
+use App\Facades\RiskService\RiskService;
+use App\Facades\ValueService\ValueService;
 use Carbon\Carbon;
-use Classes\Output\Output;
 use Illuminate\Support\HtmlString;
 
 class PortfolioPresenter extends Presenter
 {
 
-    private $limit;
-
     private $risk;
-
-    private $utilisation;
 
 
     public function value()
     {
-        return $this->metrics->value($this->entity)->formatValue();
+        return ValueService::valueTotal($this->entity)->formatValue();
     }
 
 
     public function cash()
     {
-        return $this->metrics->cash($this->entity)->formatValue();
+        return AccountService::balance($this->entity)->formatValue();
     }
 
 
@@ -70,16 +66,31 @@ class PortfolioPresenter extends Presenter
         ));
     }
 
+    /**
+     * @param int $digits
+     * @return string
+     * @throws \Throwable
+     */
     public function risk($digits = 2)
     {
-        if (!$this->risk)
-            $this->risk = $this->metrics->risk($this->entity);
-
-        return $this->risk->formatValue($digits);
+        return $this->getPortfolioVaR()->formatValue($digits);
     }
 
 
-   
+    private function getPortfolioVaR()
+    {
+        if (!$this->risk && $this->entity->assets->count()) {
+
+            $this->risk = new Price(
+                Carbon::now()->toDateString(),
+                RiskService::portfolioVaR($this->entity, $this->entity->riskParameter()),
+                $this->entity->currency->code
+            );
+        }
+        return $this->risk;
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | DATES
@@ -88,22 +99,22 @@ class PortfolioPresenter extends Presenter
 
     public function updatedRisk()
     {
-        return PortfolioMetricService::risk($this->entity)->formatDate();
-    }
-
-    public function updatedValue()
-    {
-        return PortfolioMetricService::value($this->entity)->formatDate();
+        return $this->getPortfolioVaR()->formatDate();
     }
 
     public function updatedToday()
     {
-        return (new \App\Classes\Output\Output(Carbon::now()->toDateString()))->formatDate();
+        return (new Output(Carbon::now()->toDateString()))->formatDate();
     }
 
     public function updatedReturn()
     {
         return $this->updatedValue();
+    }
+
+    public function updatedValue()
+    {
+        return ValueService::valueTotal($this->entity)->formatDate();
     }
 
 

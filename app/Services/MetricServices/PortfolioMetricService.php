@@ -14,19 +14,6 @@ use Carbon\Carbon;
 class PortfolioMetricService extends MetricService
 {
 
-    /**
-     * Calculates the Portfolio's value based on latest available price data.
-     *
-     * @param Portfolio $portfolio
-     * @return Price
-     */
-    public function value(Portfolio $portfolio)
-    {
-        list($value, $date) = $this->valueStocks($portfolio);
-        $total = $value + $this->cash($portfolio)->getValue();
-
-        return new Price($date, $total, $portfolio->currency->code);
-    }
 
     /**
      * @param Portfolio $portfolio
@@ -46,23 +33,6 @@ class PortfolioMetricService extends MetricService
         return array($value, $date);
     }
 
-    /**
-     * Return the Portfolio's cash position at a given date.
-     *
-     * @param Portfolio $portfolio
-     * @param null $date
-     * @return Price
-     */
-    public function cash(Portfolio $portfolio, $date = null)
-    {
-        $date = $date ? Carbon::parse($date) : Carbon::now();
-
-        $cash = $portfolio->payments()
-            ->where('executed_at', '<=', $date->endOfDay())
-            ->sum('amount');
-
-        return new Price($date, $cash, $portfolio->currency->code);
-    }
 
     /**
      * Return the risk for the portfolio's confidence level.
@@ -73,11 +43,7 @@ class PortfolioMetricService extends MetricService
      */
     public function risk(Portfolio $portfolio)
     {
-        if ($portfolio->assets->count()) {
-            $risk = RiskService::portfolioVaR($portfolio, $portfolio->riskParameter());
-        }
-
-        return new Price(Carbon::now()->toDateString(), $risk, $portfolio->currency->code);
+       throw new \Exception('depreciated, use RiskService::portfolioVaR');
     }
 
     /**
