@@ -28,6 +28,23 @@ class Output
     }
 
     /**
+     * @param $value
+     * @throws \Throwable
+     *
+     * @return mixed
+     */
+    protected function checkType($value)
+    {
+        $type = gettype($value);
+
+        throw_unless(
+            in_array($type, $this->allowed),
+            new AllowedTypeException("'value' must be numeric, is: $type"));
+
+        return $value;
+    }
+
+    /**
      * Get the price's date.
      *
      * @return Carbon
@@ -35,6 +52,12 @@ class Output
     public function getDate()
     {
         return $this->date;
+    }
+
+
+    public function getCurrency()
+    {
+        return $this->currency;
     }
 
     public function getDateString()
@@ -50,23 +73,6 @@ class Output
     public function getValue()
     {
         return $this->value;
-    }
-
-    /**
-     * @param $value
-     * @throws \Throwable
-     *
-     * @return mixed
-     */
-    protected function checkType($value)
-    {
-        $type = gettype($value);
-
-        throw_unless(
-            in_array($type, $this->allowed),
-            new AllowedTypeException("'value' must be numeric, is: $type"));
-
-        return $value;
     }
 
     /**

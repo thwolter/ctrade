@@ -64,14 +64,13 @@ class Asset extends Model
     }
 
 
-    public function toArray($date = null)
+    public function toArray()
     {
         return [
             'name' => $this->positionable->name,
             'type' => $this->positionable_type,
-            'symbol' => $this->label(),
+            'symbol' => $this->label,
             'currency' => $this->currency->code,
-            'amount' => $this->amount($date),
         ];
     }
 

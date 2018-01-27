@@ -41,10 +41,10 @@ class EventServiceProvider extends ServiceProvider
         /*
          * Limit events
          */
-        'App\Events\Limits\LimitHasChanged' => [
-            'App\Listeners\Limit\NotifyLimitHasChanged',
-            'App\Listeners\Limit\CheckLimit'
-        ],
+//        'App\Events\Limits\LimitHasChanged' => [
+//            'App\Listeners\Limit\NotifyLimitHasChanged',
+//            'App\Listeners\Limit\CheckLimit'
+//        ],
         'App\Events\Limits\LimitHasBreached' => [
             'App\Listeners\Limit\NotifyLimitHasBreached'
         ],

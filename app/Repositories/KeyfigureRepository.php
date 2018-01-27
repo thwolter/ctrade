@@ -5,7 +5,6 @@ namespace App\Repositories;
 
 use App\Entities\Portfolio;
 use App\Entities\Term;
-use App\Services\MetricServices\PortfolioMetricService;
 
 
 class KeyfigureRepository
@@ -14,14 +13,24 @@ class KeyfigureRepository
     protected $taxonomy = 'keyfigure';
 
 
-    public function getForPortfolio(Portfolio $portfolio, $code)
+    public function find(Portfolio $portfolio, $code)
     {
-        $term = Term::firstOrCreate([
+        return $portfolio->keyfigures()
+            ->firstOrCreate(['term_id' => $this->getTerm($code)->id]);
+    }
+
+
+    private function getTerm($code)
+    {
+        return Term::firstOrCreate([
             'code' => $code,
             'taxonomy' => $this->taxonomy
         ]);
+    }
 
-        return $portfolio->keyfigures()->firstOrCreate(['term_id' => $term->id]);
+    public function getForPortfolio(Portfolio $portfolio, $code)
+    {
+        return $this->find($portfolio, $code);
     }
 
 

@@ -70,4 +70,16 @@ class PortfolioService
         return [$currency->label() => $currency->history($days)];
     }
 
+
+    public function nextExecutedAt($portfolio, $date)
+    {
+        if (!$date) $date = $portfolio->created_at;
+
+        $transaction = collect(array_merge(
+            $portfolio->payments()->updatedAfter($date)->get()->all(),
+            $portfolio->positions()->updatedAfter($date)->get()->all()
+        ))->sortBy('executed_at')->first();
+
+        return optional($transaction)->executed_at;
+    }
 }

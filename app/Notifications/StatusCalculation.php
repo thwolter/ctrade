@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Jobs\Calculations\CalculationObject;
+use App\Jobs\Calculations\Joblet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
@@ -13,16 +14,19 @@ class StatusCalculation extends Notification
 {
     use Queueable;
 
-    protected $calculation;
+
+    private $joblet;
+    private $remainder;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(CalculationObject $calculation)
+    public function __construct(Joblet $joblet, $remainder)
     {
-        $this->calculation = $calculation;
+        $this->joblet = $joblet;
+        $this->remainder = $remainder;
     }
 
     /**
@@ -45,10 +49,10 @@ class StatusCalculation extends Notification
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'portfolio_id' => $this->calculation->getPortfolio()->id,
-            'metric' => $this->calculation->getType(),
-            'total' => $this->calculation->total(),
-            'remainder' => $this->calculation->remainder()
+            'portfolio_id' => $this->joblet->portfolio->id,
+            'metric' => $this->joblet->metric,
+            'total' => $this->joblet->total,
+            'remainder' => $this->remainder
         ]);
     }
 }

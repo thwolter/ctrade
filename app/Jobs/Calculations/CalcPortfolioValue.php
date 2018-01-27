@@ -3,21 +3,19 @@
 namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
-use App\Jobs\Traits\CalculationPeriod;
-use App\Models\Rscript;
-use Carbon\Carbon;
+use App\Jobs\Calculations\Traits\PeriodTrait;
+use App\Jobs\Calculations\Traits\StatusTrait;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Repositories\TradesRepository;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class CalcPortfolioValue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use PeriodTrait, StatusTrait;
 
-    protected $portfolio;
+    protected $joblet;
 
     /**
      * Create a new job instance.
@@ -26,7 +24,7 @@ class CalcPortfolioValue
      */
     public function __construct(Portfolio $portfolio)
     {
-        $this->portfolio = $portfolio;
+        $this->joblet = new Joblet($portfolio, 'Value');
     }
 
     /**
@@ -36,15 +34,16 @@ class CalcPortfolioValue
      */
     public function handle()
     {
-        $object = new CalculationObject($this->portfolio, 'value');
+        if ($dates = $this->dates($this->joblet)) {
 
-        if ($object->hasDates()) {
+            $this->joblet->setTotal($dates->count());
+            $this->remember($this->joblet->id, $dates);
 
-            foreach ($object->getDates()->chunk(config('calculation.chunk.value')) as $dates)
-            {
-                $object->setChunk($dates);
-                dispatch(new CalcPortfolioValueChunk($object));
+            foreach ($dates->chunk(config('calculation.chunk.value')) as $chunk) {
+                dispatch(new CalcPortfolioValueChunk($this->joblet, $chunk));
             }
         }
     }
+
+
 }

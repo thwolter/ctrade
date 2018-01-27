@@ -6,6 +6,7 @@ namespace App\Services\ValueService;
 use App\Classes\Output\Price;
 use App\Entities\Portfolio;
 use App\Facades\AccountService;
+use App\Facades\DataService;
 use App\Facades\MetricService\AssetMetricService;
 
 class ValueService
@@ -30,7 +31,11 @@ class ValueService
     {
         $value = 0;
         foreach ($portfolio->assets as $asset) {
-            $value += AssetMetricService::value($asset)->getValue();
+            $price = DataService::priceAt($asset->positionable, $date)->getValue();
+            $fxRate = 1;
+
+            $value = $price * $asset->amountAt($date) * $fxRate;
+            $value += $value;
         }
 
         return new Price($date, $value, $portfolio->currency->code);

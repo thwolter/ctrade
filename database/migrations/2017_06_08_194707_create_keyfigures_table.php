@@ -20,7 +20,7 @@ class CreateKeyfiguresTable extends Migration
             $table->integer('instrument_id')->nullable();
             $table->integer('term_id');
             $table->json('values')->nullable();
-            $table->dateTime('effective_at')->nullable();
+            $table->dateTime('calculated_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

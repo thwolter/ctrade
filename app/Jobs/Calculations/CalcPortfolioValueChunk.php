@@ -2,18 +2,30 @@
 
 namespace App\Jobs\Calculations;
 
-use App\Facades\RscriptService\RscriptService;
-use Carbon\Carbon;
+use App\Facades\ValueService\ValueService;
+use App\Jobs\Calculations\Traits\PersistTrait;
+use App\Jobs\Calculations\Traits\StatusTrait;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
-class CalcPortfolioValueChunk extends Calculation implements ShouldQueue
+class CalcPortfolioValueChunk implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use PersistTrait, StatusTrait;
 
+
+    private $joblet;
+    private $chunk;
+
+
+    public function __construct(Joblet $joblet, $chunk)
+    {
+        $this->joblet = $joblet;
+        $this->chunk = $chunk;
+    }
 
     /**
      * Execute the job.
@@ -22,23 +34,21 @@ class CalcPortfolioValueChunk extends Calculation implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->object->getChunk() as $date)
-        {
-            $this->storeKpis($date, $this->calculateValue($date));
+        foreach ($this->chunk as $date) {
+            $this->obtainAssetsValue($date);
+            $this->updateStatus($this->joblet, $date);
         }
     }
 
     /**
-     * Start R for calculating the portfolio's value.
-     *
-     * @param Carbon $date
-     * @return array
+     * @param $date
      */
-    private function calculateValue($date)
+    private function obtainAssetsValue($date)
     {
-        $portfolio = $this->object->getPortfolio();
-
-        return RscriptService::portfolioValue($portfolio, $date->toDateString());
-
+        $this->persist($this->joblet, $date,
+            ValueService::valueAssets($this->joblet->portfolio, $date->toDateString())
+        );
     }
+
+
 }

@@ -3,7 +3,6 @@
 namespace App\Classes\Output;
 
 
-
 class Price extends Output implements OutputInterface
 {
 
@@ -15,6 +14,10 @@ class Price extends Output implements OutputInterface
         parent::__construct($date, $value, $currency);
     }
 
+    public static function fromArray($array, $currency)
+    {
+        return new self(key($array), array_first($array), $currency);
+    }
 
     /**
      * Returns a formatted string of the value with currency.
@@ -28,7 +31,6 @@ class Price extends Output implements OutputInterface
         return $this->currencyFormatter($digits)->formatCurrency($this->value, $this->currency);
     }
 
-
     private function currencyFormatter($digits)
     {
         $fmt = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
@@ -36,6 +38,4 @@ class Price extends Output implements OutputInterface
 
         return $fmt;
     }
-
-
 }
