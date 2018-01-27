@@ -7,6 +7,7 @@ use App\Entities\Category;
 use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\User;
+use App\Facades\AccountService;
 use App\Facades\DataService;
 use App\Facades\MetricService\PortfolioMetricService;
 use Carbon\Carbon;
@@ -66,7 +67,7 @@ class PortfolioRepository
             'portfolio' => [
                 'name' => $portfolio->name,
                 'currency' => $portfolio->currency->code,
-                'cash' => PortfolioMetricService::cash($portfolio, $date)->getValue()
+                'cash' => AccountService::balance($portfolio, $date)->getValue()
             ],
             'assets' => $array
         ];

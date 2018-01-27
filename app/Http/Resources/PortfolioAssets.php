@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Facades\AccountService;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Facades\MetricService\PortfolioMetricService;
@@ -46,7 +47,7 @@ class PortfolioAssets extends Resource
         return [
             'name' => $this->name,
             'currency' => $this->currency->code,
-            'cash' => PortfolioMetricService::cash($this->resource, $date)->getValue()
+            'cash' => AccountService::balance($this->resource, $date)->getValue()
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Facades\AccountService;
 use App\Facades\MetricService\PortfolioMetricService;
 use App\Presenters\PortfolioPresenter;
 use App\Entities\Traits\UuidModel;
@@ -160,7 +161,7 @@ class Portfolio extends Model
             'id' => $this->id,
             'name' => $this->name,
             'currency' => $this->currency->code,
-            'cash' => PortfolioMetricService::cash($this)->getValue(),
+            'cash' => AccountService::balance($this)->getValue(),
             'lastTransactionDate' => $this->lastTransactionDateString()
         ];
     }

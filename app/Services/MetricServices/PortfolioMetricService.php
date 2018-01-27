@@ -8,7 +8,6 @@ use App\Entities\Portfolio;
 use App\Facades\MetricService\AssetMetricService;
 use App\Facades\Repositories\KeyfigureRepository;
 use App\Facades\RiskService\RiskService;
-use Carbon\Carbon;
 
 
 class PortfolioMetricService extends MetricService
@@ -35,18 +34,6 @@ class PortfolioMetricService extends MetricService
 
 
     /**
-     * Return the risk for the portfolio's confidence level.
-     *
-     * @param Portfolio $portfolio
-     * @return Price
-     * @throws \Exception
-     */
-    public function risk(Portfolio $portfolio)
-    {
-       throw new \Exception('depreciated, use RiskService::portfolioVaR');
-    }
-
-    /**
      * Return the Portfolio's profit over a specified period.
      *
      * @param Portfolio $portfolio
@@ -70,7 +57,6 @@ class PortfolioMetricService extends MetricService
      * Return the percentage delta for an array with two values.
      *
      * @param $values
-     * @param $days
      * @return float|null
      */
     private function deltaPercent($values)
@@ -82,7 +68,6 @@ class PortfolioMetricService extends MetricService
      * Return the absolute delta for an array with two values.
      *
      * @param $values
-     * @param $days
      * @return float|null
      */
     private function deltaAbsolute($values)

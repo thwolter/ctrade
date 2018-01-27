@@ -32,13 +32,6 @@ class CalculationObject
         $this->init();
     }
 
-    public function __destruct()
-    {
-        \Cache::forget($this->cacheTagTotal());
-        \Cache::forget($this->cacheTagRemainder());
-    }
-
-
     private function init()
     {
         $this->effective_at = Carbon::now();
@@ -56,122 +49,6 @@ class CalculationObject
             Log::info('Nothing to calculate; all values up-to-date.');
         }
     }
-
-
-    private function cacheTagRemainder()
-    {
-        return $this->cacheTag('remainder');
-    }
-
-
-    private function cacheTagTotal()
-    {
-        return $this->cacheTag('total');
-    }
-
-
-    private function cacheTag($attribute)
-    {
-        return implode('.', ['calculate', $this->term, $attribute, $this->portfolio->id]);
-    }
-
-
-    public function hasDates()
-    {
-        return count($this->dates) > 0;
-    }
-
-
-    public function getDates()
-    {
-        return $this->dates;
-    }
-
-
-    public function setChunk($chunk)
-    {
-        $this->chunk = $chunk;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getChunk()
-    {
-        return $this->chunk;
-    }
-
-
-    /**
-     * @return Portfolio
-     */
-    public function getPortfolio()
-    {
-        return $this->portfolio;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEffectiveAt()
-    {
-        return $this->effective_at;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRatio()
-    {
-        return $this->ratio;
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getType()
-    {
-        return $this->term;
-    }
-
-
-    public function getUserId()
-    {
-        return $this->portfolio->user_id;
-    }
-
-
-    public function total()
-    {
-        return intval(\Cache::get($this->cacheTagTotal()));
-    }
-
-
-    public function remainder()
-    {
-        return intval(\Cache::get($this->cacheTagRemainder()));
-    }
-
-
-    private function keyfigure()
-    {
-        return KeyfigureRepository::getForPortfolio($this->portfolio, $this->term);
-    }
-
-
-    public function notifyCompletion(Carbon $date)
-    {
-        \Cache::decrement($this->cacheTagRemainder());
-
-        $this->portfolio->user->notify(new StatusCalculation($this));
-
-        if ($this->remainder() === 0) {
-            event(new PortfolioWasCalculated($this->portfolio));
-            Log::info("Calculation of '{$this->typeRoot}' for portfolio {$this->portfolio->id} finished.");
-        }
-    }
-
 
     /**
      * @return \Illuminate\Support\Collection
@@ -205,23 +82,128 @@ class CalculationObject
         return $startDate ? $startDate : $this->portfolio->created_at;
     }
 
+    private function keyfigure()
+    {
+        return KeyfigureRepository::getForPortfolio($this->portfolio, $this->term);
+    }
 
+    private function cacheTagTotal()
+    {
+        return $this->cacheTag('total');
+    }
 
-    /* ---------------------------------------------------
-    // Static Function
-    // -------------------------------------------------*/
+    private function cacheTag($attribute)
+    {
+        return implode('.', ['calculate', $this->term, $attribute, $this->portfolio->id]);
+    }
 
+    private function cacheTagRemainder()
+    {
+        return $this->cacheTag('remainder');
+    }
 
     static public function getStatus(Portfolio $portfolio, array $terms)
     {
         $result = [];
-        foreach ($terms as $term)
-        {
+        foreach ($terms as $term) {
             $result[$term] = [
                 'total' => \Cache::get(implode('.', ['calculate', $term, 'total', $portfolio->id])),
                 'remainder' => \Cache::get(implode('.', ['calculate', $term, 'remainder', $portfolio->id]))
             ];
         }
         return json_encode($result);
+    }
+
+    public function __destruct()
+    {
+        \Cache::forget($this->cacheTagTotal());
+        \Cache::forget($this->cacheTagRemainder());
+    }
+
+    public function hasDates()
+    {
+        return count($this->dates) > 0;
+    }
+
+    public function getDates()
+    {
+        return $this->dates;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChunk()
+    {
+        return $this->chunk;
+    }
+
+    public function setChunk($chunk)
+    {
+        $this->chunk = $chunk;
+    }
+
+    /**
+     * @return Portfolio
+     */
+    public function getPortfolio()
+    {
+        return $this->portfolio;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEffectiveAt()
+    {
+        return $this->effective_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRatio()
+    {
+        return $this->ratio;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->term;
+    }
+
+    public function getUserId()
+    {
+        return $this->portfolio->user_id;
+    }
+
+    public function total()
+    {
+        return intval(\Cache::get($this->cacheTagTotal()));
+    }
+
+    public function notifyCompletion(Carbon $date)
+    {
+        \Cache::decrement($this->cacheTagRemainder());
+
+        $this->portfolio->user->notify(new StatusCalculation($this));
+
+        if ($this->remainder() === 0) {
+            event(new PortfolioWasCalculated($this->portfolio));
+            Log::info("Calculation of '{$this->typeRoot}' for portfolio {$this->portfolio->id} finished.");
+        }
+    }
+
+
+    /* ---------------------------------------------------
+    // Static Function
+    // -------------------------------------------------*/
+
+    public function remainder()
+    {
+        return intval(\Cache::get($this->cacheTagRemainder()));
     }
 }

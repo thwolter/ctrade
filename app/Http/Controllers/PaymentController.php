@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Entities\Portfolio;
 use App\Entities\Transaction;
+use App\Facades\AccountService;
 use App\Facades\MetricService\PortfolioMetricService;
 use App\Http\Requests\PayRequest;
 use App\Services\TransactionService;
@@ -65,6 +66,6 @@ class PaymentController extends Controller
             ? $this->transaction->deposit($portfolio, $request->all())
             : $this->transaction->withdraw($portfolio, $request->all());
 
-        return ['totalCash' => PortfolioMetricService::cash($portfolio)->getValue()];
+        return ['totalCash' => AccountService::balance($portfolio)->getValue()];
     }
 }

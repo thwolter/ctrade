@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\Asset;
+use App\Facades\AccountService;
 use App\Facades\MetricService\PortfolioMetricService;
 use App\Repositories\DatasourceRepository;
 use App\Repositories\SearchRepository;
@@ -36,7 +37,7 @@ class ApiAssetController extends ApiBaseController
             'portfolioId'       => $asset->portfolio->id,
             'prices'            => $this->repo->collectHistories($asset->positionable->datasources),
             'amount'            => $asset->amount(),
-            'cash'              => PortfolioMetricService::cash($asset->portfolio)->getValue(),
+            'cash'              => AccountService::balance($asset->portfolio)->getValue(),
         ];
     }
 }
