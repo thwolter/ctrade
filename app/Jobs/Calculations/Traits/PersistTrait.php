@@ -17,7 +17,7 @@ trait PersistTrait
      */
     protected function persist($joblet, $date, $value)
     {
-        KeyfigureRepository::find($joblet->portfolio, $joblet->metric)
+        KeyfigureRepository::getByPortfolio($joblet->portfolio, $joblet->metric)
             ->setCalculatedAt($joblet->calculated_at)
             ->set($date->toDateString(), $value);
     }
@@ -32,7 +32,7 @@ trait PersistTrait
      */
     protected function persistWithAsset($joblet, $date, $value)
     {
-        KeyfigureRepository::findWithAsset($joblet->asset, $joblet->metric)
+        KeyfigureRepository::getByAsset($joblet->asset, $joblet->metric)
             ->setCalculatedAt($joblet->calculated_at)
             ->set($date->toDateString(), $value);
     }

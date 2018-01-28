@@ -14,15 +14,26 @@ class KeyfigureRepository
     protected $taxonomy = 'keyfigure';
 
 
-    public function findWithAsset(Asset $asset, $code)
+    /**
+     * Find a keyfigure in the database or creates a new one if no available.
+     *
+     * @param Portfolio $portfolio
+     * @param $code
+     * @return mixed
+     */
+    public function getByPortfolio(Portfolio $portfolio, $code)
     {
-        return $keyfigure = $asset->portfolio->keyfigures()->firstOrCreate([
-            'term_id' => $this->getTerm($code)->id,
-            'instrument_id' => $asset->id,
-            'instrument_type' => get_class($asset)
+        return $portfolio->keyfigures()->firstOrCreate([
+            'term_id' => $this->getTerm($code)->id
         ]);
     }
 
+    /**
+     * Find or create a term item.
+     *
+     * @param $code
+     * @return mixed
+     */
     private function getTerm($code)
     {
         return Term::firstOrCreate([
@@ -31,28 +42,19 @@ class KeyfigureRepository
         ]);
     }
 
-    public function getForPortfolio(Portfolio $portfolio, $code)
+    /**
+     * Find a keyfigure in the database or creates a new one if no available.
+     *
+     * @param Asset $asset
+     * @param $code
+     * @return mixed
+     */
+    public function getByAsset(Asset $asset, $code)
     {
-        return $this->find($portfolio, $code);
-    }
-
-    public function find(Portfolio $portfolio, $code)
-    {
-        return $portfolio->keyfigures()
-            ->firstOrCreate(['term_id' => $this->getTerm($code)->id]);
-    }
-
-    public function getComponentVaR(Portfolio $portfolio, $code, $instrument)
-    {
-        $term = Term::firstOrCreate([
-            'code' => $code,
-            'taxonomy' => $this->taxonomy
-        ]);
-
-        return $portfolio->keyFigures()->firstOrCreate([
-            'term_id' => $term->id,
-            'instrument_type' => get_class($instrument),
-            'instrument_id' => $instrument->id
+        return $keyfigure = $asset->portfolio->keyfigures()->firstOrCreate([
+            'term_id' => $this->getTerm($code)->id,
+            'instrument_id' => $asset->id,
+            'instrument_type' => get_class($asset)
         ]);
     }
 }

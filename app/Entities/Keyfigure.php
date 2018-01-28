@@ -103,13 +103,6 @@ class Keyfigure extends Model
     }
 
 
-    public function obtain($instrument)
-    {
-        $this->update([
-            'instrument_id' => $instrument->id,
-            'instrument_type' => get_class($instrument)
-        ]);
-    }
 
     /*
     |--------------------------------------------------------------------------

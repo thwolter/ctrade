@@ -35,7 +35,7 @@ trait PeriodTrait
 
     protected function keyfigureDates($joblet)
     {
-        $keyfigure = KeyfigureRepository::find($joblet->portfolio, $joblet->metric);
+        $keyfigure = KeyfigureRepository::getByPortfolio($joblet->portfolio, $joblet->metric);
         return [$keyfigure->calculated_at, $keyfigure->date];
     }
 

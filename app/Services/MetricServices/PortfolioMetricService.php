@@ -43,7 +43,7 @@ class PortfolioMetricService extends MetricService
      */
     public function profit(Portfolio $portfolio, $count = null, $percent = false)
     {
-        $values = KeyfigureRepository::getForPortfolio($portfolio, 'value')->timeseries()
+        $values = KeyfigureRepository::getByPortfolio($portfolio, 'value')->timeseries()
             ->count(1 + ($count || $this->getPeriod($portfolio)))->get();
 
         if (count($values) != $count) return null;

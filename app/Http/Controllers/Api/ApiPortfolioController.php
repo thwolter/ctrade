@@ -44,7 +44,7 @@ class ApiPortfolioController extends ApiBaseController
         ]);
 
         $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
-        $keyfigure = KeyfigureRepository::getForPortfolio($portfolio, 'risk.'.$attributes['conf']);
+        $keyfigure = KeyfigureRepository::getByPortfolio($portfolio, 'risk.'.$attributes['conf']);
 
         return new TimeSeriesResource($keyfigure);
     }
@@ -64,7 +64,7 @@ class ApiPortfolioController extends ApiBaseController
         ]);
 
         $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
-        $keyfigure = KeyfigureRepository::getForPortfolio($portfolio, 'value');
+        $keyfigure = KeyfigureRepository::getByPortfolio($portfolio, 'value');
 
         return new TimeSeriesResource($keyfigure);
     }
@@ -83,7 +83,7 @@ class ApiPortfolioController extends ApiBaseController
         ]);
 
         $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
-        $keyfigure = KeyfigureRepository::getForPortfolio($portfolio, 'contribution.'.$attributes['conf']);
+        $keyfigure = KeyfigureRepository::getByPortfolio($portfolio, 'contribution.'.$attributes['conf']);
 
         return new TimeSeriesResource($keyfigure);
     }
