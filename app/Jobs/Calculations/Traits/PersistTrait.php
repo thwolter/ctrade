@@ -19,6 +19,21 @@ trait PersistTrait
     {
         KeyfigureRepository::find($joblet->portfolio, $joblet->metric)
             ->setCalculatedAt($joblet->calculated_at)
-            ->set($date->toDateString(), $value->getValue());
+            ->set($date->toDateString(), $value);
+    }
+
+
+    /**
+     * Persist a keyfigure with an associated instrument.
+     *
+     * @param $joblet
+     * @param $date
+     * @param $value
+     */
+    protected function persistWithAsset($joblet, $date, $value)
+    {
+        KeyfigureRepository::findWithAsset($joblet->asset, $joblet->metric)
+            ->setCalculatedAt($joblet->calculated_at)
+            ->set($date->toDateString(), $value);
     }
 }

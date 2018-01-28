@@ -102,6 +102,15 @@ class Keyfigure extends Model
         return array_key_exists($key, $this->values);
     }
 
+
+    public function obtain($instrument)
+    {
+        $this->update([
+            'instrument_id' => $instrument->id,
+            'instrument_type' => get_class($instrument)
+        ]);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -113,6 +122,14 @@ class Keyfigure extends Model
         return $query->whereHas('term', function ($query) use ($type) {
             $query->whereCode($type);
         });
+    }
+
+
+    public function scopeWhereInstrument($query, $instrument)
+    {
+        return $query
+            ->where('instrument_type', get_class($instrument))
+            ->where('instrument_id', $instrument->id);
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Services\RiskService;
 
+use App\Classes\Output\Price;
 use App\Exceptions\RiskServiceException;
 use MathPHP\Probability\Distribution\Continuous;
 use MathPHP\Statistics\Descriptive;

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Jobs\Calculations;
+namespace App\Jobs\Calculations\CalculateChunks;
 
 use App\Facades\RiskService\RiskService;
+use App\Jobs\Calculations\Joblet;
 use App\Jobs\Calculations\Traits\PersistTrait;
 use App\Jobs\Calculations\Traits\StatusTrait;
 use Illuminate\Bus\Queueable;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class CalcPortfolioRiskChunk implements ShouldQueue
+class PortfolioRiskChunk implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     use PersistTrait, StatusTrait;
@@ -50,7 +51,7 @@ class CalcPortfolioRiskChunk implements ShouldQueue
     {
         $portfolio = $this->joblet->portfolio;
 
-        $this->persist('VaR', $date,
+        $this->persist($this->joblet, $date,
             RiskService::portfolioVaR($portfolio, $portfolio->riskParameter($date))
         );
     }
@@ -72,8 +73,9 @@ class CalcPortfolioRiskChunk implements ShouldQueue
     private function obtainInstrumentVaR($asset, $date)
     {
         $portfolio = $this->joblet->portfolio;
+        $joblet = $this->joblet;
 
-        $this->persist('VaR.' . $asset->label, $date,
+        $this->persistWithAsset($joblet->setAsset($asset), $date,
             RiskService::instrumentVaR($asset->positionable, $portfolio->riskParameter($date))
         );
     }

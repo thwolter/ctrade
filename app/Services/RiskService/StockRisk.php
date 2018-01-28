@@ -2,6 +2,8 @@
 
 namespace App\Services\RiskService;
 
+use App\Classes\Output\Output;
+use App\Classes\Output\Price;
 use App\Entities\Asset;
 use App\Entities\Stock;
 use App\Facades\DataService;

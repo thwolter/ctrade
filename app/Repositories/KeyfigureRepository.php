@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 
+use App\Entities\Asset;
 use App\Entities\Portfolio;
 use App\Entities\Term;
 
@@ -13,12 +14,14 @@ class KeyfigureRepository
     protected $taxonomy = 'keyfigure';
 
 
-    public function find(Portfolio $portfolio, $code)
+    public function findWithAsset(Asset $asset, $code)
     {
-        return $portfolio->keyfigures()
-            ->firstOrCreate(['term_id' => $this->getTerm($code)->id]);
+        return $keyfigure = $asset->portfolio->keyfigures()->firstOrCreate([
+            'term_id' => $this->getTerm($code)->id,
+            'instrument_id' => $asset->id,
+            'instrument_type' => get_class($asset)
+        ]);
     }
-
 
     private function getTerm($code)
     {
@@ -33,6 +36,11 @@ class KeyfigureRepository
         return $this->find($portfolio, $code);
     }
 
+    public function find(Portfolio $portfolio, $code)
+    {
+        return $portfolio->keyfigures()
+            ->firstOrCreate(['term_id' => $this->getTerm($code)->id]);
+    }
 
     public function getComponentVaR(Portfolio $portfolio, $code, $instrument)
     {

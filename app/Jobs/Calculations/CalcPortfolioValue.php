@@ -3,6 +3,7 @@
 namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
+use App\Jobs\Calculations\CalculateChunks\PortfolioValueChunk;
 use App\Jobs\Calculations\Traits\PeriodTrait;
 use App\Jobs\Calculations\Traits\StatusTrait;
 use Illuminate\Bus\Queueable;
@@ -15,7 +16,10 @@ class CalcPortfolioValue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     use PeriodTrait, StatusTrait;
 
+
     protected $joblet;
+    protected $chunkSize;
+
 
     /**
      * Create a new job instance.
@@ -25,6 +29,8 @@ class CalcPortfolioValue
     public function __construct(Portfolio $portfolio)
     {
         $this->joblet = new Joblet($portfolio, 'value');
+        $this->chunkSize = config('calculation.chunk.value');
+
     }
 
     /**
@@ -39,8 +45,8 @@ class CalcPortfolioValue
             $this->joblet->setTotal($dates->count());
             $this->remember($this->joblet->id, $dates);
 
-            foreach ($dates->chunk(config('calculation.chunk.value')) as $chunk) {
-                dispatch(new CalcPortfolioValueChunk($this->joblet, $chunk));
+            foreach ($dates->chunk($this->chunkSize) as $chunk) {
+                dispatch(new PortfolioValueChunk($this->joblet, $chunk));
             }
         }
     }

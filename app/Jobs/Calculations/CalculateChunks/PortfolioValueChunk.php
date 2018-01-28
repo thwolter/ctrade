@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Jobs\Calculations;
+namespace App\Jobs\Calculations\CalculateChunks;
 
 use App\Facades\ValueService\ValueService;
+use App\Jobs\Calculations\Joblet;
 use App\Jobs\Calculations\Traits\PersistTrait;
 use App\Jobs\Calculations\Traits\StatusTrait;
 use Illuminate\Bus\Queueable;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class CalcPortfolioValueChunk implements ShouldQueue
+class PortfolioValueChunk implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     use PersistTrait, StatusTrait;
@@ -47,7 +48,7 @@ class CalcPortfolioValueChunk implements ShouldQueue
     private function obtainAssetsValue($date)
     {
         $this->persist($this->joblet, $date,
-            ValueService::valueAssets($this->joblet->portfolio, $date->toDateString())
+            ValueService::valueAssets($this->joblet->portfolio, $date->toDateString())->getValue()
         );
     }
 

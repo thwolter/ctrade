@@ -9,10 +9,13 @@ class Joblet
 {
 
     private $portfolio;
-    private $calculated_at;
     private $id;
+
+    private $calculated_at;
     private $metric;
     private $total;
+
+    private $asset;
 
 
     public function __construct($portfolio, $metric)
@@ -34,8 +37,17 @@ class Joblet
         return $this->$name;
     }
 
+
     public function setTotal($total)
     {
         $this->total = $total;
+        return $this;
+    }
+
+
+    public function setAsset($asset)
+    {
+        $this->asset = $asset;
+        return $this;
     }
 }

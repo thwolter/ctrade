@@ -3,12 +3,12 @@
 namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
+use App\Jobs\Calculations\CalculateChunks\PortfolioRiskChunk;
 use App\Jobs\Calculations\Traits\PeriodTrait;
 use App\Jobs\Calculations\Traits\StatusTrait;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 
@@ -17,7 +17,9 @@ class CalcPortfolioRisk
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     use PeriodTrait, StatusTrait;
 
+
     protected $joblet;
+    protected $chunkSize;
 
 
     /**
@@ -28,6 +30,8 @@ class CalcPortfolioRisk
     public function __construct(Portfolio $portfolio)
     {
         $this->joblet = new Joblet($portfolio, 'risk');
+        $this->chunkSize = config('calculation.chunk.risk');
+
     }
 
 
@@ -38,8 +42,8 @@ class CalcPortfolioRisk
             $this->joblet->setTotal($dates->count());
             $this->remember($this->joblet->id, $dates);
 
-            foreach ($dates->chunk(config('calculation.chunk.risk')) as $chunk) {
-                dispatch(new CalcPortfolioRiskChunk($this->joblet, $chunk));
+            foreach ($dates->chunk($this->chunkSize) as $chunk) {
+                dispatch(new PortfolioRiskChunk($this->joblet, $chunk));
             }
         }
     }

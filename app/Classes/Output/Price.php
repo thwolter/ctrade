@@ -38,4 +38,10 @@ class Price extends Output implements OutputInterface
 
         return $fmt;
     }
+
+
+    public static function make($date, $value, $currency)
+    {
+        return new Price($date, $value, $currency);
+    }
 }
