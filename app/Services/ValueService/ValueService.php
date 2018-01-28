@@ -31,11 +31,9 @@ class ValueService
     {
         $value = 0;
         foreach ($portfolio->assets as $asset) {
-            $price = DataService::priceAt($asset->positionable, $date)->getValue();
-            $fxRate = 1;
 
-            $value = $price * $asset->amountAt($date) * $fxRate;
-            $value += $value;
+            $fxRate = 1;
+            $value += AssetMetricService::valueAt($asset, $date)->getValue() * $fxRate;
         }
 
         return new Price($date, $value, $portfolio->currency->code);

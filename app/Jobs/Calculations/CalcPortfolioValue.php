@@ -24,7 +24,7 @@ class CalcPortfolioValue
      */
     public function __construct(Portfolio $portfolio)
     {
-        $this->joblet = new Joblet($portfolio, 'Value');
+        $this->joblet = new Joblet($portfolio, 'value');
     }
 
     /**
@@ -44,6 +44,4 @@ class CalcPortfolioValue
             }
         }
     }
-
-
 }

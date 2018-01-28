@@ -35,6 +35,7 @@ class CalcPortfolioValueChunk implements ShouldQueue
     public function handle()
     {
         foreach ($this->chunk as $date) {
+
             $this->obtainAssetsValue($date);
             $this->updateStatus($this->joblet, $date);
         }

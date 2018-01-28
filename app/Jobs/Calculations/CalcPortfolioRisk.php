@@ -3,28 +3,21 @@
 namespace App\Jobs\Calculations;
 
 use App\Entities\Portfolio;
-use App\Jobs\Traits\CalculationPeriod;
+use App\Jobs\Calculations\Traits\PeriodTrait;
+use App\Jobs\Calculations\Traits\StatusTrait;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-/**
- * Calculate the risk and risk distribution for a given portfolio based on the composition
- * at the time of calculation. It is expected to be started after change of the portfolio
- * and on a regular basis to build a time series of risk.
- *
- * To ensure a calculation based on daily period, a retrograde calculation is required if the
- * portfolio has changed after the due date (e.g. at midnight).
- *
- * @package App\Jobs
- */
+
 class CalcPortfolioRisk
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use PeriodTrait, StatusTrait;
 
-    protected $portfolio;
+    protected $joblet;
 
 
     /**
@@ -34,24 +27,19 @@ class CalcPortfolioRisk
      */
     public function __construct(Portfolio $portfolio)
     {
-        $this->portfolio = $portfolio;
+        $this->joblet = new Joblet($portfolio, 'risk');
     }
 
-    /**
-     * Call the rscript for risk calculation for each date between last calculation and today.
-     *
-     * @return void
-     */
+
     public function handle()
     {
-        $object = new CalculationObject($this->portfolio, 'risk.95');
+        if ($dates = $this->dates($this->joblet)) {
 
-        if ($object->hasDates()) {
+            $this->joblet->setTotal($dates->count());
+            $this->remember($this->joblet->id, $dates);
 
-            foreach ($object->getDates()->chunk(config('calculation.chunk.risk')) as $dates)
-            {
-                $object->setChunk($dates);
-                dispatch(new CalcPortfolioRiskChunk($object));
+            foreach ($dates->chunk(config('calculation.chunk.risk')) as $chunk) {
+                dispatch(new CalcPortfolioRiskChunk($this->joblet, $chunk));
             }
         }
     }
