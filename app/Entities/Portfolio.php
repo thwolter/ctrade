@@ -3,7 +3,6 @@
 namespace App\Entities;
 
 use App\Facades\AccountService;
-use App\Facades\MetricService\PortfolioMetricService;
 use App\Presenters\PortfolioPresenter;
 use App\Entities\Traits\UuidModel;
 use App\Presenters\Presentable;

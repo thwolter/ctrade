@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Entities\Asset;
 use App\Facades\AccountService;
-use App\Facades\MetricService\PortfolioMetricService;
+use App\Facades\PortfolioService;
 use App\Repositories\DatasourceRepository;
 use App\Repositories\SearchRepository;
 use Illuminate\Http\Request;

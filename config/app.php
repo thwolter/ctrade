@@ -239,7 +239,6 @@ return [
         App\Providers\QuandlServiceProvider::class,
         \App\Providers\LimitServiceProvider::class,
         \App\Providers\ViewServiceProvider::class,
-        \App\Providers\MetricServiceProvider::class,
         \App\Providers\RepositoryProvider::class,
         \App\Providers\RscriptServiceProvider::class,
         \App\Providers\RiskServiceProvider::class,

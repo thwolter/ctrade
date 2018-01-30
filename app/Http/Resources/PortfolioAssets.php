@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Facades\AccountService;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\Resource;
-use App\Facades\MetricService\PortfolioMetricService;
+use App\Facades\PortfolioService;
 
 
 class PortfolioAssets extends Resource

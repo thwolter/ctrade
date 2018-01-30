@@ -26,8 +26,6 @@ abstract class Presenter
     public function __construct($entity)
     {
         $this->entity = $entity;
-
-        $this->metrics = app('MetricService', [$entity]);
     }
 
 

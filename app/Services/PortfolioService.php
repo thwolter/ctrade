@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Classes\Output\Percent;
+use App\Classes\Output\Price;
 use App\Entities\Portfolio;
+use App\Facades\Repositories\KeyfigureRepository;
 use App\Repositories\CurrencyRepository;
 use App\Facades\DataService;
 
@@ -81,5 +84,82 @@ class PortfolioService
         ))->sortBy('executed_at')->first();
 
         return optional($transaction)->executed_at;
+    }
+
+    /**
+     * @param Portfolio $portfolio
+     * @return array
+     */
+    public function valueStocks(Portfolio $portfolio)
+    {
+        $value = 0;
+        $date = null;
+
+        foreach ($portfolio->assets as $asset) {
+            $assetValue = AssetService::value($asset);
+            $value += $assetValue->getValue();
+
+            $date = max($date, $assetValue->getDate());
+        }
+        return array($value, $date);
+    }
+
+
+    /**
+     * Return the Portfolio's profit over a specified period.
+     *
+     * @param Portfolio $portfolio
+     * @param null $count
+     * @param bool $percent
+     * @return Percent|Price
+     */
+    public function profit(Portfolio $portfolio, $count = null, $percent = false)
+    {
+        $values = KeyfigureRepository::getByPortfolio($portfolio, 'value')->timeseries()
+            ->count(1 + ($count || $this->getPeriod($portfolio)))->get();
+
+        if (count($values) != $count) return null;
+
+        return $percent
+            ? new Percent(key($values), $this->deltaPercent($values))
+            : new Price(key($values), $this->deltaAbsolute($values), $portfolio->currency->code);
+    }
+
+    private function getPeriod($entity)
+    {
+        return $entity->settings('period');
+    }
+
+    /**
+     * Return the percentage delta for an array with two values.
+     *
+     * @param $values
+     * @return float|null
+     */
+    private function deltaPercent($values)
+    {
+        return $this->deltaAbsolute($values) / array_first($values);
+    }
+
+    /**
+     * Return the absolute delta for an array with two values.
+     *
+     * @param $values
+     * @return float|null
+     */
+    private function deltaAbsolute($values)
+    {
+        return array_last($values) - array_first($values);
+    }
+
+
+
+    public function totalOfType(Portfolio $portfolio, $type)
+    {
+        $sum = 0;
+        foreach ($portfolio->assets()->ofType($type)->get() as $asset) {
+            $sum += $asset->value();
+        }
+        return $sum;
     }
 }

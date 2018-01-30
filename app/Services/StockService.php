@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\MetricServices;
+namespace App\Services;
 
 use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use MathPHP\Statistics\Circular;
 
 
-class StockMetricService extends MetricService
+class StockService
 {
 
     public function price($stock, $exchange = null)
@@ -26,7 +26,7 @@ class StockMetricService extends MetricService
         $exchange = array_get($parameter, 'exchange');
         $date = array_get($parameter, 'date');
 
-        $value = $this->dataService->history($stock, $exchange)->count(1)->to($date)->getClose();
+        $value = DataService::history($stock, $exchange)->count(1)->to($date)->getClose();
 
         return new Price(key($value), array_first($value), $stock->currency->code);
     }
@@ -34,7 +34,7 @@ class StockMetricService extends MetricService
 
     public function previousPrice($stock, $exchange = null)
     {
-        $value = $this->dataService->history($stock, $exchange)->count(2)->getClose();
+        $value = DataService::history($stock, $exchange)->count(2)->getClose();
 
         return new Price(key($value), array_first($value), $stock->currency->code);
     }
@@ -42,7 +42,7 @@ class StockMetricService extends MetricService
 
     public function lowPrice($stock, $exchange)
     {
-        $value = $this->dataService->history($stock, $exchange)->count(1)->getLow();
+        $value = DataService::history($stock, $exchange)->count(1)->getLow();
 
         return new Price(key($value), array_first($value), $stock->currency->code);
 
@@ -51,7 +51,7 @@ class StockMetricService extends MetricService
 
     public function highPrice($stock, $exchange)
     {
-        $value = $this->dataService->history($stock, $exchange)->count(1)->getHigh();
+        $value = DataService::history($stock, $exchange)->count(1)->getHigh();
 
         return new Price(key($value), array_first($value), $stock->currency->code);
     }
@@ -59,7 +59,7 @@ class StockMetricService extends MetricService
 
     public function periodHigh($stock, $exchange, $count)
     {
-        $value = max($this->dataService->history($stock, $exchange)->count($count)->getClose());
+        $value = max(DataService::history($stock, $exchange)->count($count)->getClose());
 
         return new Price(null, $value, $stock->currency->code);
 
@@ -68,7 +68,7 @@ class StockMetricService extends MetricService
 
     public function periodLow($stock, $exchange, $count)
     {
-        $value = min($this->dataService->history($stock, $exchange)->count($count)->getClose());
+        $value = min(DataService::history($stock, $exchange)->count($count)->getClose());
 
         return new Price(null, $value, $stock->currency->code);
 
@@ -77,7 +77,7 @@ class StockMetricService extends MetricService
 
     public function periodDelta($stock, $exchange, $count)
     {
-        $history = $this->dataService->history($stock, $exchange)->count($count + 1)->getClose();
+        $history = DataService::history($stock, $exchange)->count($count + 1)->getClose();
         $values = array_values($history);
 
         return new Price(key($history), $values[0]-$values[1], $stock->currency->code);
@@ -86,7 +86,7 @@ class StockMetricService extends MetricService
 
     public function periodReturn($stock, $exchange, $count)
     {
-        $value = $this->dataService->history($stock, $exchange)->count($count)->getClose();
+        $value = DataService::history($stock, $exchange)->count($count)->getClose();
 
         return new Price(key($value), array_first($value), $stock->currency->code);
     }
@@ -94,9 +94,9 @@ class StockMetricService extends MetricService
 
     public function dataHistory($stock, $exchange)
     {
-        $data = $this->dataService->history($stock, $exchange);
+        $data = DataService::history($stock, $exchange);
 
-        $datasource = $this->dataService->getDatasource($stock, $exchange);
+        $datasource = DataService::getDatasource($stock, $exchange);
 
         return [
             'data' => $data->getClose(),
@@ -122,7 +122,7 @@ class StockMetricService extends MetricService
 
             $prices[] = [
                 'exchange' => $exchange,
-                'data' => $this->dataService->history($stock, $exchange)->count($count)->getClose(),
+                'data' => DataService::history($stock, $exchange)->count($count)->getClose(),
                 'datasourceId' => $datasource->id];
         };
         return $prices;

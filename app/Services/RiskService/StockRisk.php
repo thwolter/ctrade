@@ -7,7 +7,7 @@ use App\Classes\Output\Price;
 use App\Entities\Asset;
 use App\Entities\Stock;
 use App\Facades\DataService;
-use App\Facades\MetricService\StockMetricService;
+use App\Facades\StockService;
 use Carbon\Carbon;
 
 
@@ -54,7 +54,7 @@ class StockRisk implements RiskInterface
     {
         $date = array_get($parameter, 'date', Carbon::now()->toDateString());
 
-        return StockMetricService::priceAtDate($entity, ['date' => $date])->getValue();
+        return StockService::priceAtDate($entity, ['date' => $date])->getValue();
     }
 
 

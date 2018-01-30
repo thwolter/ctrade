@@ -9,7 +9,7 @@ class ChartService
 
     protected $metrics;
 
-
+    //todo: chose the correct service-class
     private function metric($entity)
     {
         return app()->make('MetricService', [$entity]);

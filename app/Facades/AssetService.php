@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Facades\MetricService;
+namespace App\Facades;
 
 
 use Illuminate\Support\Facades\Facade;
 
 
-class StockMetricService extends Facade
+class AssetService extends Facade
 {
 
     protected static function getFacadeAccessor()
     {
-        return 'stockMetricService';
+        return 'assetService';
     }
 }

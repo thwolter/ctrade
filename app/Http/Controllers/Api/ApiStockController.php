@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Entities\Stock;
 use App\Services\DataService;
-use App\Services\MetricServices\StockMetricService;
+use App\Services\StockService;
 use Illuminate\Http\Request;
 
 class ApiStockController extends ApiBaseController
@@ -13,7 +13,7 @@ class ApiStockController extends ApiBaseController
     protected $metrics;
 
 
-    public function __construct(StockMetricService $metrics)
+    public function __construct(StockService $metrics)
     {
         $this->metrics = $metrics;
     }

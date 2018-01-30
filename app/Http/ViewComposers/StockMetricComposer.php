@@ -2,7 +2,7 @@
 
 namespace App\Http\ViewComposers;
 
-use App\Services\MetricServices\StockMetricService;
+use App\Services\StockService;
 use Illuminate\View\View;
 
 class StockMetricComposer {
@@ -10,7 +10,7 @@ class StockMetricComposer {
     protected $service;
 
 
-    public function __construct(StockMetricService $service)
+    public function __construct(StockService $service)
     {
         $this->service = $service;
     }

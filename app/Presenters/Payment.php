@@ -11,7 +11,7 @@ namespace App\Presenters;
 
 use App\Classes\Output\Output;
 use App\Classes\Output\Price;
-use App\Facades\MetricService\AssetMetricService;
+use App\Facades\AssetService;
 
 class Payment extends Presenter
 {

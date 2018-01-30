@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 
-use App\Facades\MetricService\AssetMetricService;
 use Illuminate\Http\Resources\Json\Resource;
 
 
@@ -21,8 +20,8 @@ class AssetResource extends Resource
 
         foreach ($this->assets as $asset) {
 
-            $price = AssetMetricService::price($asset);
-            $value = AssetMetricService::value($asset);
+            $price = AssetService::price($asset);
+            $value = AssetService::value($asset);
 
 
             array_push($items, array_merge($asset->toArray(), [

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\MetricServices;
+namespace App\Services;
 
 
 use App\Classes\Output\Percent;
@@ -11,7 +11,7 @@ use App\Facades\DataService;
 use App\Facades\RiskService\RiskService;
 use Carbon\Carbon;
 
-class AssetMetricService extends MetricService
+class AssetService
 {
 
     /**
@@ -155,14 +155,4 @@ class AssetMetricService extends MetricService
         return $this->price($asset)->getDate();
     }
 
-    /*
-
-
-
-   public function convert($currencyCode = null)
-   {
-       if (!$currencyCode or $this->currency->code === $currencyCode) return 1;
-       return array_first((new CurrencyRepository($this->currency->code, $currencyCode))->price());
-   }
-  */
 }

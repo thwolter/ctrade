@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Entities\Limit;
 use App\Classes\Limits\AbstractLimit;
+use App\Services\LimitService;
 use Illuminate\Support\ServiceProvider;
 
 class LimitServiceProvider extends ServiceProvider
@@ -37,6 +38,6 @@ class LimitServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('limitService', LimitService::class);
     }
 }

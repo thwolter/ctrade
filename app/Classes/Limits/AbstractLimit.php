@@ -6,7 +6,7 @@ namespace App\Classes\Limits;
 use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 use App\Entities\Limit;
-use App\Facades\MetricService\PortfolioMetricService;
+use App\Facades\PortfolioService;
 
 abstract class AbstractLimit
 {

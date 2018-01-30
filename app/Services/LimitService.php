@@ -1,14 +1,14 @@
 <?php
 
 
-namespace App\Services\MetricServices;
+namespace App\Services;
 
 use App\Classes\Limits\LimitEnhancer;
 use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 
 
-class LimitMetricService extends MetricService
+class LimitService
 {
     use LimitEnhancer;
 

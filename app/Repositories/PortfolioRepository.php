@@ -9,7 +9,7 @@ use App\Entities\Portfolio;
 use App\Entities\User;
 use App\Facades\AccountService;
 use App\Facades\DataService;
-use App\Facades\MetricService\PortfolioMetricService;
+use App\Facades\PortfolioService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 

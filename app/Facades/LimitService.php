@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Facades\MetricService;
+namespace App\Facades;
 
 
 use Illuminate\Support\Facades\Facade;
 
 
-class AssetMetricService extends Facade
+class LimitService extends Facade
 {
 
     protected static function getFacadeAccessor()
     {
-        return 'assetMetricService';
+        return 'limitService';
     }
 }
