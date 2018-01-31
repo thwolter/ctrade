@@ -82,7 +82,7 @@ trait RiskHelperTrait
     {
         throw_unless(array_has($parameter, $required),
             new RiskServiceException('Parameters missing. ' .
-                'Required: ' . implode(',', $required) .
-                '. Given: ' . implode(',', array_keys($parameter))));
+                'Required: ' . implode(', ', $required) .
+                '. Given: ' . implode(', ', array_keys($parameter))));
     }
 }

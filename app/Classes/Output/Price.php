@@ -44,4 +44,5 @@ class Price extends Output implements OutputInterface
     {
         return new Price($date, $value, $currency);
     }
+
 }

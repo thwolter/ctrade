@@ -3,6 +3,7 @@
 namespace App\Services\RiskService;
 
 use App\Classes\Output\Output;
+use App\Classes\Output\OutputHelper;
 use App\Classes\Output\Price;
 use App\Entities\Asset;
 use App\Entities\Stock;
@@ -14,6 +15,7 @@ use Carbon\Carbon;
 class StockRisk implements RiskInterface
 {
     use RiskHelperTrait;
+    use OutputHelper;
 
 
     public function assetVaR(Asset $asset, $parameter)
@@ -21,9 +23,8 @@ class StockRisk implements RiskInterface
         $delta = $this->assetDelta($asset, $parameter);
         $volatility = $this->stockVolatility($asset->positionable, $parameter);
 
-        return $this->scaleRisk($delta * $volatility, $parameter);
+        return $this->asPrice($asset, $parameter)->scaleRisk($delta * $volatility, $parameter);
     }
-
 
     public function instrumentVaR($entity, $parameter)
     {
