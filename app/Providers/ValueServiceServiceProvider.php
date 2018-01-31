@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
-use App\Services\StockService;
+use App\Services\ValueService\ValueService;
 use Illuminate\Support\ServiceProvider;
 
-class StockServiceProvider extends ServiceProvider
+
+class ValueServiceServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -24,7 +25,6 @@ class StockServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('stockService', StockService::class);
-
+        $this->app->bind('valueService', ValueService::class);
     }
 }

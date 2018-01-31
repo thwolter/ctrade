@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use App\Services\ValueService\ValueService;
+use App\Services\PortfolioService;
+use App\Services\RiskService;
 use Illuminate\Support\ServiceProvider;
+use App\Services\RscriptService\RscriptService;
 
 
-class ValueServiceProvider extends ServiceProvider
+class PortfolioServiceServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -25,6 +27,6 @@ class ValueServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('valueService', ValueService::class);
+        $this->app->bind('portfolioService', PortfolioService::class);
     }
 }

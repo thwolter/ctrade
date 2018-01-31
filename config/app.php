@@ -233,19 +233,21 @@ return [
         * Custom Service Providers...
         */
         App\Providers\DatasourceServiceProvider::class,
-        App\Providers\DataServiceProvider::class,
+        App\Providers\DataServiceServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
         \App\Providers\MetadataServiceProvider::class,
         App\Providers\QuandlServiceProvider::class,
-        \App\Providers\LimitServiceProvider::class,
+        \App\Providers\LimitServiceServiceProvider::class,
         \App\Providers\ViewServiceProvider::class,
         \App\Providers\RepositoryProvider::class,
         \App\Providers\RscriptServiceProvider::class,
-        \App\Providers\RiskServiceProvider::class,
-        \App\Providers\PortfolioServiceProvider::class,
-        \App\Providers\TransactionServiceProvider::class,
-        \App\Providers\ValueServiceProvider::class,
+        \App\Providers\RiskServiceServiceProvider::class,
+        \App\Providers\PortfolioServiceServiceProvider::class,
+        \App\Providers\TransactionServiceServiceProvider::class,
+        \App\Providers\ValueServiceServiceProvider::class,
         \App\Providers\AccountServiceProvider::class,
+        \App\Providers\AssetServiceServiceProvider::class,
+        \App\Providers\StockServiceServiceProvider::class,
 
 
     ],

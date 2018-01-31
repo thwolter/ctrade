@@ -2,13 +2,10 @@
 
 namespace App\Providers;
 
-use App\Services\PortfolioService;
-use App\Services\RiskService;
+use App\Services\StockService;
 use Illuminate\Support\ServiceProvider;
-use App\Services\RscriptService\RscriptService;
 
-
-class PortfolioServiceProvider extends ServiceProvider
+class StockServiceServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -27,6 +24,7 @@ class PortfolioServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('portfolioService', PortfolioService::class);
+        $this->app->bind('stockService', StockService::class);
+
     }
 }

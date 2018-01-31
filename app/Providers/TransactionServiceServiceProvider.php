@@ -6,7 +6,7 @@ use App\Services\TransactionService;
 use Illuminate\Support\ServiceProvider;
 
 
-class TransactionServiceProvider extends ServiceProvider
+class TransactionServiceServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.

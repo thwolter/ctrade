@@ -6,7 +6,7 @@ use App\Services\RiskService\RiskService;
 use Illuminate\Support\ServiceProvider;
 
 
-class RiskServiceProvider extends ServiceProvider
+class RiskServiceServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.

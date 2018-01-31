@@ -6,18 +6,14 @@ use App\Facades\AccountService;
 use App\Presenters\PortfolioPresenter;
 use App\Entities\Traits\UuidModel;
 use App\Presenters\Presentable;
-use App\Services\PortfolioService;
-use App\Services\Servicable;
 use App\Services\SettingServices\PortfolioSettings;
 use App\Services\SettingServices\Settingable;
-use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Http\UploadedFile;
 
 
 class Portfolio extends Model

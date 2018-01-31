@@ -12,7 +12,7 @@ use App\Facades\AssetService;
 class ValueService
 {
 
-    public function valueTotal(Portfolio $portfolio, $date = null)
+    public function portfolioValue(Portfolio $portfolio, $date = null)
     {
         $balance = AccountService::balance($portfolio, $date)->getValue();
         $valueAssets = $this->valueAssets($portfolio, $date)->getValue();
@@ -27,7 +27,7 @@ class ValueService
      *
      * @return Price
      */
-    public function valueAssets(Portfolio $portfolio, $date = null)
+    public function portfolioAssets(Portfolio $portfolio, $date = null)
     {
         $value = 0;
         foreach ($portfolio->assets as $asset) {

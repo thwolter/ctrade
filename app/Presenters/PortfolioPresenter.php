@@ -7,6 +7,7 @@ use App\Classes\Output\Output;
 use App\Classes\Output\Price;
 use App\Entities\Stock;
 use App\Facades\AccountService;
+use App\Facades\PortfolioService;
 use App\Facades\RiskService\RiskService;
 use App\Facades\ValueService\ValueService;
 use Carbon\Carbon;
@@ -20,7 +21,7 @@ class PortfolioPresenter extends Presenter
 
     public function value()
     {
-        return ValueService::valueTotal($this->entity)->formatValue();
+        return ValueService::portfolioValue($this->entity)->formatValue();
     }
 
 
@@ -30,25 +31,19 @@ class PortfolioPresenter extends Presenter
     }
 
 
-    public function stockTotal()
-    {
-        return $this->metrics->total($this->entity, Stock::class)->formatValue();
-    }
-
-
     public function profit($days = null)
     {
-        return $this->metrics->profit($this->entity, $days)->formatValue();
+        //return PortfolioService::profit($this->entity, $days)->formatValue();
     }
 
 
     public function htmlProfit($days)
     {
-        $profit = $this->metrics->profit($this->entity, $days);
+        $profit = PortfolioService::profit($this->entity, $days);
 
         if (!$profit) return null;
 
-        $percent = $this->metrics->profit($this->entity, $days, true)->getValue();
+        $percent = PortfolioService::profit($this->entity, $days, true)->getValue();
 
         if ($profit->getValue() > 0)
             $class = "fa fa-caret-up g-color-green";

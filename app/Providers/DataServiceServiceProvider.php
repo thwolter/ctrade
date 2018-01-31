@@ -9,7 +9,7 @@ use App\Exceptions\DataServiceException;
 use App\Services\DataService;
 use Illuminate\Support\ServiceProvider;
 
-class DataServiceProvider extends ServiceProvider
+class DataServiceServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -44,6 +44,5 @@ class DataServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('dataService', DataService::class);
-
     }
 }

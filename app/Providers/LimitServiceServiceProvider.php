@@ -7,7 +7,7 @@ use App\Classes\Limits\AbstractLimit;
 use App\Services\LimitService;
 use Illuminate\Support\ServiceProvider;
 
-class LimitServiceProvider extends ServiceProvider
+class LimitServiceServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.

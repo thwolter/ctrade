@@ -60,7 +60,7 @@
 
 <main id="wrapper">
 
-    @include('layouts.partials.calculation_running')
+    {{--@include('layouts.partials.calculation_running')--}}
 
     @section('breadcrumbs')
 

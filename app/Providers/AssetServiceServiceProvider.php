@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Services\AssetService;
 use Illuminate\Support\ServiceProvider;
 
-class AssetServiceProvider extends ServiceProvider
+class AssetServiceServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.

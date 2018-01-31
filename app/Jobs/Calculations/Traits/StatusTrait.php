@@ -48,4 +48,12 @@ trait StatusTrait
     {
         return intval(Cache::get($this->cacheKey($id, $this->tagRemainder)));
     }
+
+    public function getStatus($portfolio, $metric)
+    {
+        return [
+            'total' => 0,
+            'remainder' => 0
+        ];
+    }
 }

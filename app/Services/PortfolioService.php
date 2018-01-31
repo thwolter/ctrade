@@ -6,12 +6,17 @@ use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 use App\Entities\Portfolio;
 use App\Facades\Repositories\KeyfigureRepository;
+use App\Jobs\Calculations\Joblet;
+use App\Jobs\Calculations\Traits\StatusTrait;
 use App\Repositories\CurrencyRepository;
 use App\Facades\DataService;
 
 
 class PortfolioService
 {
+
+    use StatusTrait;
+
 
     /**
      * Return an array of all asset and related fx histories.
@@ -162,4 +167,6 @@ class PortfolioService
         }
         return $sum;
     }
+
+
 }
