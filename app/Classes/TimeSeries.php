@@ -67,9 +67,14 @@ class TimeSeries
      * Method is called to prepare and receive time series data as array.
      *
      * @return array|mixed
+     * @throws TimeSeriesException
      */
     public function get()
     {
+        if (!count($this->filter)) {
+            throw new TimeSeriesException('Filter must be set for multidimensional TimeSeries.');
+        }
+
         $data = $this->fillDates($this->data);
         $data = $this->sortByDates($data);
 
@@ -164,6 +169,12 @@ class TimeSeries
         return $this;
     }
 
+
+    public function asAssocArray()
+    {
+        array_set($this->filter, 'assoc', true);
+        return $this;
+    }
 
     /**
      * Filter by columns specified in the filter settings.
