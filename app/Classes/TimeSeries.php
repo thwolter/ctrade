@@ -134,17 +134,14 @@ class TimeSeries
         }
 
         $data = $this->fillDates($this->data);
-
         $data = $this->sortByDates($data);
         $data = $this->filterByDates($data);
 
+        $data = $this->filtercolumn($data);
+        $data = $this->toReverse($data);
+
         $data = $this->setToCount($data);
         $data = $this->reduceToLimit($data);
-
-        $data = $this->filtercolumn($data);
-
-        if (array_get($this->filter, 'reverse', false))
-            $data = array_reverse($data);
 
         $this->filter = [];
         return $data;
@@ -214,30 +211,6 @@ class TimeSeries
     }
 
     /**
-     * @param $data
-     * @return array
-     */
-    private function setToCount($data)
-    {
-        $count = (int)array_get($this->filter, 'count');
-
-        if ($count) {
-            $data = array_slice($data, 0, $count, true);
-            return count($data) === $count ? $data : [];
-
-        } else {
-            return $data;
-        }
-    }
-
-    private function reduceToLimit($data)
-    {
-        $limit = (int)array_get($this->filter, 'limit');
-
-        return $limit ? array_slice($data, 0, $limit) : $data;
-    }
-
-    /**
      * Filter by columns specified in the filter settings.
      *
      * @param $data
@@ -260,6 +233,41 @@ class TimeSeries
             );
         }
         return $filteredData;
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    private function toReverse($data)
+    {
+        $reverse = array_get($this->filter, 'reverse', false);
+
+        return $reverse ? array_reverse($data) : $data;
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    private function setToCount($data)
+    {
+        $count = (int)array_get($this->filter, 'count');
+
+        if ($count) {
+            $data = array_slice($data, 0, $count, true);
+            return count($data) === $count ? $data : [];
+
+        } else {
+            return $data;
+        }
+    }
+
+    private function reduceToLimit($data)
+    {
+        $limit = (int)array_get($this->filter, 'limit');
+
+        return $limit ? array_slice($data, 0, $limit) : $data;
     }
 
     /**
@@ -325,7 +333,6 @@ class TimeSeries
 
         throw new TimeSeriesException($message);
     }
-
 
     public function limit($limit)
     {

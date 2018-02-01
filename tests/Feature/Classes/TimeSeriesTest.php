@@ -29,15 +29,15 @@ class TimeSeriesTest extends TestCase
      */
     public function test_returns_available_columns()
     {
-        $this->assertArraySubset($this->getOpen($this->data), $this->timeseries->getOpen());
-        $this->assertArraySubset($this->getHigh($this->data), $this->timeseries->getHigh());
-        $this->assertArraySubset($this->getLow($this->data), $this->timeseries->getLow());
-        $this->assertArraySubset($this->getClose($this->data), $this->timeseries->getClose());
+        $this->assertEquals($this->getOpen($this->data), $this->timeseries->getOpen());
+        $this->assertEquals($this->getHigh($this->data), $this->timeseries->getHigh());
+        $this->assertEquals($this->getLow($this->data), $this->timeseries->getLow());
+        $this->assertEquals($this->getClose($this->data), $this->timeseries->getClose());
 
-        $this->assertArraySubset($this->getOpen($this->data), $this->timeseries->column('Open')->get());
-        $this->assertArraySubset($this->getHigh($this->data), $this->timeseries->column('High')->get());
-        $this->assertArraySubset($this->getLow($this->data), $this->timeseries->column('Low')->get());
-        $this->assertArraySubset($this->getClose($this->data), $this->timeseries->column('Close')->get());
+        $this->assertEquals($this->getOpen($this->data), $this->timeseries->column('Open')->get());
+        $this->assertEquals($this->getHigh($this->data), $this->timeseries->column('High')->get());
+        $this->assertEquals($this->getLow($this->data), $this->timeseries->column('Low')->get());
+        $this->assertEquals($this->getClose($this->data), $this->timeseries->column('Close')->get());
     }
 
 
@@ -53,7 +53,7 @@ class TimeSeriesTest extends TestCase
 
     public function test_fill_array_with_previous_day_values()
     {
-        $this->assertArraySubset($this->timeseries->fill('')->getClose(), $this->getAssocArray($this->dataFilled, 4));
+        $this->assertEquals($this->getClose($this->dataFilled), $this->timeseries->fill('')->getClose());
     }
 
 
@@ -61,58 +61,60 @@ class TimeSeriesTest extends TestCase
     {
         $timeseries = new TimeSeries($this->dataUnsorted, $this->columns);
 
-        $this->assertArraySubset($this->getClose($this->data), $timeseries->getClose());
+        $this->assertEquals($this->getClose($this->data), $timeseries->getClose());
     }
 
 
     public function test_return_data_in_reverse_order()
     {
-        $this->assertArraySubset($this->getClose($this->data), $this->timeseries->reverse()->getClose());
+        $this->assertEquals($this->getClose($this->data), $this->timeseries->reverse()->getClose());
     }
 
 
     public function test_returned_data_are_counted()
     {
         $close = array_slice($this->getClose($this->data), 0, 1);
-        $this->assertArraySubset($close, $this->timeseries->count(1)->getClose());
+        $this->assertEquals($close, $this->timeseries->count(1)->getClose());
 
         $close = array_slice($this->getClose($this->data), 0, 3);
-        $this->assertArraySubset($close, $this->timeseries->count(3)->getClose());
+        $this->assertEquals($close, $this->timeseries->count(3)->getClose());
 
         $close = array_slice($this->getClose($this->data), 0, 5);
-        $this->assertArraySubset($close, $this->timeseries->count(5)->getClose());
+        $this->assertEquals($close, $this->timeseries->count(5)->getClose());
 
     }
 
     public function test_return_an_empty_array_if_count_exceeds_available_data()
     {
-        $this->assertArraySubset([], $this->timeseries->count(100)->getClose());
+        $this->assertEquals([], $this->timeseries->count(100)->getClose());
     }
 
 
     public function test_returned_data_are_limited()
     {
         $close = array_slice($this->getClose($this->data), 0, 1);
-        $this->assertArraySubset($close, $this->timeseries->limit(1)->getClose());
+        $this->assertEquals($close, $this->timeseries->limit(1)->getClose());
 
         $close = array_slice($this->getClose($this->data), 0, 3);
-        $this->assertArraySubset($close, $this->timeseries->limit(3)->getClose());
+        $this->assertEquals($close, $this->timeseries->limit(3)->getClose());
     }
 
 
     public function test_return_array_even_if_limit_exceeds_available_data()
     {
-        $this->assertArraySubset($this->getClose($this->data), $this->timeseries->limit(100)->getClose());
+        $this->assertEquals($this->getClose($this->data), $this->timeseries->limit(100)->getClose());
     }
 
 
+    public function test_returns_the_reverse_ordered_data()
+    {
+        $this->assertEquals($this->getClose($this->dataReverseOrder), $this->timeseries->reverse()->getClose());
+    }
+
     public function test_returns_the_latest_and_oldest_value()
     {
-        $latest = array_slice($this->getClose($this->data), 0, 1);
-        $oldest = array_slice($this->getClose($this->dataReverseOrder), 0, 1);
-
-        $this->assertArraySubset($latest, $this->timeseries->getLatestClose());
-        $this->assertArraySubset($oldest, $this->timeseries->getOldestClose());
+        $this->assertEquals($this->getClose($this->dataLatest), $this->timeseries->getLatestClose());
+        $this->assertEquals($this->getClose($this->dataOldest), $this->timeseries->getOldestClose());
     }
 
 
@@ -127,6 +129,26 @@ class TimeSeriesTest extends TestCase
     {
         $this->expectException(TimeSeriesException::class);
         $this->timeseries->findNemo();
+    }
+
+    public function test_return_data_starting_from_a_specified_date()
+    {
+        //
+    }
+
+    public function test_return_data_ends_to_a_specified_date()
+    {
+        //
+    }
+
+    public function test_returns_only_weekdays()
+    {
+        //
+    }
+
+    public function test_returns_an_associative_array()
+    {
+        //
     }
 
 
