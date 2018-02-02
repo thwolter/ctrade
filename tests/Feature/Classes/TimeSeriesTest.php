@@ -172,31 +172,11 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     * @throws TimeSeriesException
+     */
     public function test_returns_an_associative_array()
     {
-        //
+        $this->assertEquals($this->dataAssocArray, $this->timeseries->asAssocArray()->get());
     }
-
-
-    /*  public function test_returns_an_assoc_array_with_all_data()
-      {
-          $timeseries = new TimeSeries($this->data, $this->columns);
-          $this->assertArraySubset($this->dataAssocArray, $timeseries->get());
-
-      }*/
-
-    private function getDataAsAssocArray()
-    {
-        $keys = array_column($this->data, 0);
-        $array = [];
-
-        foreach ($this->data as $row) {
-            $array[] = array_combine($this->columns, $row);
-        }
-
-        return array_combine($keys, $array);
-
-    }
-
-
 }

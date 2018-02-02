@@ -23,6 +23,6 @@ Route::get('/timeseries', function() {
 
     $timeseries = new TimeSeries($data, $columns);
 
-    return $timeseries->from('2017-12-26')->to('2017-12-29')->fill()->getClose();
+    return $timeseries->asAssocArray()->getClose();
 });
 

@@ -31,6 +31,12 @@ class TimeSeries
      */
     private $filter = [];
 
+    /**
+     * Temporary output variable used for storing result while processing filtering.
+     *
+     * @var array
+     */
+    private $output;
 
     /**
      * TimeSeries constructor.
@@ -60,6 +66,12 @@ class TimeSeries
         }
     }
 
+    /**
+     * Returns true, if the string can be converted to a date.
+     *
+     * @param $string
+     * @return bool
+     */
     private function isDate($string)
     {
         try {
@@ -107,7 +119,6 @@ class TimeSeries
         }
 
         $this->throwException($name, $field);
-
     }
 
     /**
@@ -133,33 +144,44 @@ class TimeSeries
             throw new TimeSeriesException('Filter must be set for multidimensional TimeSeries.');
         }
 
-        $data = $this->fillDates($this->data);
-        $data = $this->sortByDates($data);
+        $this->initiateOutput();
+        $this->fillDates();
+        $this->sortByDates();
 
-        $data = $this->filterDateFrom($data);
-        $data = $this->filterDateTo($data);
-        $data = $this->filterByDays($data);
+        $this->filterDateFrom();
+        $this->filterDateTo();
+        $this->filterByDays();
 
-        $data = $this->filtercolumn($data);
-        $data = $this->toReverse($data);
+        $this->toReverse();
 
-        $data = $this->setToCount($data);
-        $data = $this->reduceToLimit($data);
+        $this->setToCount();
+        $this->reduceToLimit();
+
+        $this->toAssocArray();
+        $this->filtercolumn();
 
         $this->resetFilter();
-        return $data;
+        return $this->output;
+    }
+
+    /**
+     * Delete the output variable.
+     */
+    private function initiateOutput()
+    {
+        $this->output = $this->data;
     }
 
     /**
      * Fill required dates with values from previous day.
      *
-     * @param $data
-     * @return TimeSeries
+     * @return void
      * @throws TimeSeriesException
      */
-    private function fillDates($data)
+    private function fillDates()
     {
-        if (!$this->checkShouldFill()) return $data;
+        $data = $this->output;
+        if (!$this->checkShouldFill()) return null;
 
         $current = $this->filter['from']->copy();
         while ($this->filter['to']->diffInDays($current, false) <= 0) {
@@ -175,9 +197,8 @@ class TimeSeries
             $current->addDay();
         }
 
-        return $data;
+        $this->output = $data;
     }
-
 
     /**
      * @return boolean
@@ -217,111 +238,132 @@ class TimeSeries
     /**
      * Sort data by dates.
      *
-     * @param $data
-     * @return mixed
+     * @return void
      */
-    private function sortByDates($data)
+    private function sortByDates()
     {
-        krsort($data);
-        return $data;
+        krsort($this->output);
     }
 
-    private function filterDateFrom($data)
+    /**
+     * Reduce output variable to dates starting from a given date.
+     *
+     * @return array
+     */
+    private function filterDateFrom()
     {
+        $data = $this->output;
+
         $from = array_get($this->filter, 'from');
         if (!$from) return $data;
 
-        return array_filter($data, function ($key) use ($from) {
+        $this->output = array_filter($data, function ($key) use ($from) {
             return Carbon::parse($key)->diffInDays($from, false) <= 0;
         }, ARRAY_FILTER_USE_KEY);
     }
 
-    private function filterDateTo($data)
+    /**
+     * @return void
+     */
+    private function filterDateTo()
     {
         $to = array_get($this->filter, 'to');
-        if (!$to) return $data;
 
-        return array_filter($data, function ($key) use ($to) {
-            return Carbon::parse($key)->diffInDays($to, false) >= 0;
-        }, ARRAY_FILTER_USE_KEY);
+        if ($to) {
+            $this->output = array_filter($this->output, function ($key) use ($to) {
+                return Carbon::parse($key)->diffInDays($to, false) >= 0;
+            }, ARRAY_FILTER_USE_KEY);
+        }
     }
 
     /**
      * Adopt the dates filter to limit the returned data.
-     * @param $data
-     * @return array
+     *
+     * @return void
      */
-    private function filterByDays($data)
+    private function filterByDays()
     {
         $days = array_get($this->filter, 'days');
-        if (!$days) return $data;
 
-        return array_filter($data, function ($key) use ($days) {
-            return Carbon::parse($key)->$days();
-        }, ARRAY_FILTER_USE_KEY);
+        if ($days) {
+            $this->output = array_filter($this->output, function ($key) use ($days) {
+                return Carbon::parse($key)->$days();
+            }, ARRAY_FILTER_USE_KEY);
+        }
     }
 
     /**
      * Filter by columns specified in the filter settings.
      *
-     * @param $data
-     * @return array
+     * @return void
      */
-    private function filterColumn($data)
+    private function filterColumn()
     {
-        $key = $this->getColumn(array_get($this->filter, 'column'));
+        if (!array_is_multidimensional($this->output)) return null;
 
-        if (!array_is_multidimensional($data)) {
-            $filteredData = $data;
-
-        } elseif ($key) {
-            $filteredData = array_column($data, $key, $this->getColumn('Date'));
+        if (array_get($this->filter, 'assoc')) {
+            $key = array_get($this->filter, 'column');
 
         } else {
-            $filteredData = array_combine(
-                array_keys($data),
-                array_fill(0, count($data), null)
-            );
+            $key = $this->getColumn(array_get($this->filter, 'column'));
         }
-        return $filteredData;
+
+        if ($key) {
+            if (array_get($this->filter, 'assoc')) {
+                $this->output = array_combine(array_keys($this->output), array_column($this->output, $key, $this->columns[$key]));
+
+            } else {
+                $this->output = array_column($this->output, $key, $this->getColumn('Date'));
+            }
+        }
     }
 
     /**
-     * @param $data
-     * @return array
+     * @return void
      */
-    private function toReverse($data)
+    private function toReverse()
     {
-        $reverse = array_get($this->filter, 'reverse', false);
-
-        return $reverse ? array_reverse($data) : $data;
+        if (array_get($this->filter, 'reverse')) {
+            $this->output = array_reverse($this->output);
+        }
     }
 
     /**
-     * @param $data
-     * @return array
+     * @return void
      */
-    private function setToCount($data)
+    private function setToCount()
     {
         $count = (int)array_get($this->filter, 'count');
 
         if ($count) {
-            $data = array_slice($data, 0, $count, true);
-            return count($data) === $count ? $data : [];
-
-        } else {
-            return $data;
+            $data = array_slice($this->output, 0, $count, true);
+            $this->output = count($data) === $count ? $data : [];
         }
     }
 
-    private function reduceToLimit($data)
+    private function reduceToLimit()
     {
         $limit = (int)array_get($this->filter, 'limit');
 
-        return $limit ? array_slice($data, 0, $limit) : $data;
+        if ($limit) {
+            $this->output = array_slice($this->output, 0, $limit);
+        }
     }
 
-    public function resetFilter(): void
+    /**
+     *
+     */
+    private function toAssocArray()
+    {
+        if (array_get($this->filter, 'assoc')) {
+
+            foreach ($this->output as $key => $row) {
+                $this->output[$key] = array_combine($this->columns, $row);
+            }
+        }
+    }
+
+    public function resetFilter()
     {
         $this->filter = [];
     }
