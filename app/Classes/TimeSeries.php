@@ -63,7 +63,7 @@ class TimeSeries
     private function isDate($string)
     {
         try {
-            $date = Carbon::createFromFormat('Y-m-d', $string);
+            $date = Carbon::parse($string);
 
         } catch (\Exception $exception) {
             return false;
@@ -135,7 +135,10 @@ class TimeSeries
 
         $data = $this->fillDates($this->data);
         $data = $this->sortByDates($data);
-        $data = $this->filterByDates($data);
+
+        $data = $this->filterDateFrom($data);
+        $data = $this->filterDateTo($data);
+        $data = $this->filterByDays($data);
 
         $data = $this->filtercolumn($data);
         $data = $this->toReverse($data);
@@ -143,7 +146,7 @@ class TimeSeries
         $data = $this->setToCount($data);
         $data = $this->reduceToLimit($data);
 
-        $this->filter = [];
+        $this->resetFilter();
         return $data;
     }
 
@@ -151,20 +154,64 @@ class TimeSeries
      * Fill required dates with values from previous day.
      *
      * @param $data
-     * @return array
+     * @return TimeSeries
+     * @throws TimeSeriesException
      */
     private function fillDates($data)
     {
-        if (array_has($this->filter, ['from', 'to', 'fill'])) {
+        if (!$this->checkShouldFill()) return $data;
 
-            $current = Carbon::parse($this->filter['from']);
-            while (Carbon::parse($this->filter['to'])->diffInDays($current, false) < 0) {
-                $yesterday = $current->copy()->subDay();
-                $data = array_add($data, $current->format('Y-m-d'), $data[$yesterday->format('Y-m-d')]);
-                $current->addDay();
+        $current = $this->filter['from']->copy();
+        while ($this->filter['to']->diffInDays($current, false) <= 0) {
+
+            $key = $current->toDateString();
+            if (!array_has($data, $key)) {
+
+                $previous = $data[$this->lastDateBefore($data, $current)];
+                $previous[$this->getColumn('Date')] = $key;
+
+                $data = array_add($data, $key, $previous);
             }
+            $current->addDay();
         }
-        return $this->sortByDates($data);
+
+        return $data;
+    }
+
+
+    /**
+     * @return boolean
+     * @throws TimeSeriesException
+     */
+    private function checkShouldFill()
+    {
+        if (!array_has($this->filter, 'fill')) return false;
+
+        if (!array_has($this->filter, ['from', 'to'])) {
+            throw new TimeSeriesException("'fill' requires dates 'from' and 'to'.");
+        }
+
+        return true;
+
+    }
+
+    /**
+     * @param $data
+     * @param $date
+     * @return string
+     * @throws TimeSeriesException
+     */
+    private function lastDateBefore($data, $date)
+    {
+        $result = array_first(array_filter(array_keys($data), function ($day) use ($date) {
+            return Carbon::parse($day)->diffInDays($date, false) > 0;
+        }));
+
+        if (!$result) {
+            throw new TimeSeriesException("No data available before $date");
+        }
+
+        return $result;
     }
 
     /**
@@ -179,35 +226,39 @@ class TimeSeries
         return $data;
     }
 
+    private function filterDateFrom($data)
+    {
+        $from = array_get($this->filter, 'from');
+        if (!$from) return $data;
+
+        return array_filter($data, function ($key) use ($from) {
+            return Carbon::parse($key)->diffInDays($from, false) <= 0;
+        }, ARRAY_FILTER_USE_KEY);
+    }
+
+    private function filterDateTo($data)
+    {
+        $to = array_get($this->filter, 'to');
+        if (!$to) return $data;
+
+        return array_filter($data, function ($key) use ($to) {
+            return Carbon::parse($key)->diffInDays($to, false) >= 0;
+        }, ARRAY_FILTER_USE_KEY);
+    }
+
     /**
      * Adopt the dates filter to limit the returned data.
      * @param $data
      * @return array
      */
-    private function filterByDates($data)
+    private function filterByDays($data)
     {
-        $filter = $this->filter;
         $days = array_get($this->filter, 'days');
+        if (!$days) return $data;
 
-        $output = array_filter($data, function ($key) use ($filter, $days) {
-
-            $check = [true];
-            $date = Carbon::parse($key);
-
-            if (array_has($filter, ['to']))
-                $check[] = $date->diffInDays(Carbon::parse(array_get($filter, 'to')), false) >= 0;
-
-            if (array_has($filter, ['from']))
-                $check[] = $date->diffInDays(Carbon::parse(array_get($filter, 'from')), false) <= 0;
-
-            if ($days)
-                $check[] = Carbon::parse($key)->$days();
-
-            return (count(array_unique($check)) === 1) ? current($check) : false;
-
+        return array_filter($data, function ($key) use ($days) {
+            return Carbon::parse($key)->$days();
         }, ARRAY_FILTER_USE_KEY);
-
-        return $output;
     }
 
     /**
@@ -268,6 +319,11 @@ class TimeSeries
         $limit = (int)array_get($this->filter, 'limit');
 
         return $limit ? array_slice($data, 0, $limit) : $data;
+    }
+
+    public function resetFilter(): void
+    {
+        $this->filter = [];
     }
 
     /**
@@ -348,7 +404,7 @@ class TimeSeries
      */
     public function from($date)
     {
-        array_set($this->filter, 'from', $date);
+        array_set($this->filter, 'from', Carbon::parse($date));
         return $this;
     }
 
@@ -360,7 +416,7 @@ class TimeSeries
      */
     public function to($date)
     {
-        array_set($this->filter, 'to', $date);
+        array_set($this->filter, 'to', Carbon::parse($date));
         return $this;
     }
 
@@ -382,7 +438,7 @@ class TimeSeries
      * @param $type
      * @return $this
      */
-    public function fill($type)
+    public function fill($type = '')
     {
         array_set($this->filter, 'fill', $type);
         return $this;
@@ -393,5 +449,4 @@ class TimeSeries
         array_set($this->filter, 'assoc', true);
         return $this;
     }
-
 }

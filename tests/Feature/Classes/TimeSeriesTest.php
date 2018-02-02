@@ -51,9 +51,28 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    public function test_throw_exception_when_fill_without_from_and_to()
+    {
+        $this->expectException(TimeSeriesException::class);
+        $this->timeseries->fill()->getClose();
+
+    }
+
     public function test_fill_array_with_previous_day_values()
     {
-        $this->assertEquals($this->getClose($this->dataFilled), $this->timeseries->fill('')->getClose());
+        $this->assertEquals($this->getClose($this->dataFilled),
+            $this->timeseries->from('2017-12-22')->to('2017-12-29')->fill()->getClose()
+        );
+
+         $this->assertEquals($this->getClose($this->dataFilledFrom26),
+            $this->timeseries->from('2017-12-26')->to('2017-12-29')->fill()->getClose()
+        );
+    }
+
+    public function test_fill_array_with_out_of_range_from_throws_exception()
+    {
+        $this->expectException(TimeSeriesException::class);
+        $this->timeseries->from('2017-11-26')->to('2017-12-29')->fill()->getClose();
     }
 
 
@@ -131,20 +150,27 @@ class TimeSeriesTest extends TestCase
         $this->timeseries->findNemo();
     }
 
+
     public function test_return_data_starting_from_a_specified_date()
     {
-        //
+        $this->assertEquals($this->getClose($this->dataFrom27),
+            $this->timeseries->from('2017-12-27')->getClose());
     }
+
 
     public function test_return_data_ends_to_a_specified_date()
     {
-        //
+        $this->assertEquals($this->getClose($this->dataTo27),
+            $this->timeseries->to('2017-12-27')->getClose());
     }
+
 
     public function test_returns_only_weekdays()
     {
-        //
+        $this->assertEquals($this->getClose($this->dataOnlyWeekdays),
+            $this->timeseries->weekdays()->getClose());
     }
+
 
     public function test_returns_an_associative_array()
     {
