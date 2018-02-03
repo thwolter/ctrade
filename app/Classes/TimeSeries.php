@@ -293,35 +293,6 @@ class TimeSeries
     }
 
     /**
-     * Filter by columns specified in the filter settings.
-     *
-     * @return void
-     */
-    private function filterColumn()
-    {
-        if (!array_is_multidimensional($this->output)) return null;
-
-        if (array_get($this->filter, 'assoc')) {
-            $key = array_get($this->filter, 'column');
-
-        } else {
-            $key = $this->getColumn(array_get($this->filter, 'column'));
-        }
-
-        if ($key) {
-            if (array_get($this->filter, 'assoc')) {
-
-                $this->output = array_map(function($value) use ($key) {
-                    return [$key => $value[$key]];
-                }, $this->output);
-
-            } else {
-                $this->output = array_column($this->output, $key, $this->getColumn('Date'));
-            }
-        }
-    }
-
-    /**
      * @return void
      */
     private function toReverse()
@@ -364,6 +335,40 @@ class TimeSeries
                 $this->output[$key] = array_combine($this->columns, $row);
             }
         }
+    }
+
+    /**
+     * Filter by columns specified in the filter settings.
+     *
+     * @return void
+     */
+    private function filterColumn()
+    {
+        if (!array_is_multidimensional($this->output)) return null;
+
+        if (array_get($this->filter, 'assoc')) {
+            $this->filterAssocArrayColumn();
+
+        } else {
+            $this->filterPlainArrayColumn();
+        }
+    }
+
+    private function filterAssocArrayColumn()
+    {
+        $key = array_get($this->filter, 'column');
+
+        if ($key) {
+            $this->output = array_map(function ($value) use ($key) {
+                return [$key => $value[$key]];
+            }, $this->output);
+        }
+    }
+
+    private function filterPlainArrayColumn()
+    {
+        $key = $this->getColumn(array_get($this->filter, 'column'));
+        $this->output = array_column($this->output, $key, $this->getColumn('Date'));
     }
 
     public function resetFilter()

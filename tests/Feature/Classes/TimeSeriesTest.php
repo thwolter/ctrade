@@ -178,5 +178,6 @@ class TimeSeriesTest extends TestCase
     public function test_returns_an_associative_array()
     {
         $this->assertEquals($this->dataAssocArray, $this->timeseries->asAssocArray()->get());
+        $this->assertEquals($this->dataAssocArrayClose, $this->timeseries->asAssocArray()->getClose());
     }
 }
