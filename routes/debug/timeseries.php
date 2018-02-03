@@ -23,6 +23,6 @@ Route::get('/timeseries', function() {
 
     $timeseries = new TimeSeries($data, $columns);
 
-    return $timeseries->asAssocArray()->getClose();
+    return $timeseries->asAssocArray()->get();
 });
 

@@ -310,7 +310,10 @@ class TimeSeries
 
         if ($key) {
             if (array_get($this->filter, 'assoc')) {
-                $this->output = array_combine(array_keys($this->output), array_column($this->output, $key, $this->columns[$key]));
+
+                $this->output = array_map(function($value) use ($key) {
+                    return [$key => $value[$key]];
+                }, $this->output);
 
             } else {
                 $this->output = array_column($this->output, $key, $this->getColumn('Date'));

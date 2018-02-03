@@ -65,11 +65,19 @@ trait FakeHistoryTrait
     ];
 
     protected $dataAssocArray = [
-        '2017-12-29' => ['Open' => null, 'High' => 70, 'Low' => 60, 'Close' => 70],
-        '2017-12-28' => ['Open' => null, 'High' => 69, 'Low' => 60, 'Close' => 65],
-        '2017-12-27' => ['Open' => null, 'High' => 68, 'Low' => 60, 'Close' => 68],
-        '2017-12-23' => ['Open' => null, 'High' => 67, 'Low' => 60, 'Close' => 63],
-        '2017-12-22' => ['Open' => null, 'High' => 66, 'Low' => 60, 'Close' => 60],
+        '2017-12-29' => ['Date' => '2017-12-29', 'Open' => null, 'High' => 70, 'Low' => 60, 'Close' => 70],
+        '2017-12-28' => ['Date' => '2017-12-28', 'Open' => null, 'High' => 69, 'Low' => 60, 'Close' => 65],
+        '2017-12-27' => ['Date' => '2017-12-27', 'Open' => null, 'High' => 68, 'Low' => 60, 'Close' => 68],
+        '2017-12-23' => ['Date' => '2017-12-23', 'Open' => null, 'High' => 67, 'Low' => 60, 'Close' => 63],
+        '2017-12-22' => ['Date' => '2017-12-22', 'Open' => null, 'High' => 66, 'Low' => 60, 'Close' => 60],
+    ];
+
+    protected $dataAssocArrayClose = [
+        '2017-12-29' => ['Close' => 70],
+        '2017-12-28' => ['Close' => 65],
+        '2017-12-27' => ['Close' => 68],
+        '2017-12-23' => ['Close' => 63],
+        '2017-12-22' => ['Close' => 60],
     ];
 
     protected $dataFilled = [
