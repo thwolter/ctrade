@@ -16,10 +16,14 @@ class QuandlECB extends QuandlMetadata implements MetadataInterface
     public $database = 'ECB';
     protected $origin = 'EUR';
 
-    protected $keys =[
+    protected $keys = [
         'symbol'    => ['dataset_code', '/.*/', 0],
     ];
 
+    public $columns = [
+        'Date'   => 'Date',
+        'Close'  => 'Value',
+    ];
 
     protected function exchange($item)
     {

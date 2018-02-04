@@ -248,6 +248,7 @@ return [
         \App\Providers\AccountServiceProvider::class,
         \App\Providers\AssetServiceServiceProvider::class,
         \App\Providers\StockServiceServiceProvider::class,
+        \App\Providers\CurrencyServiceServiceProvider::class,
 
 
     ],

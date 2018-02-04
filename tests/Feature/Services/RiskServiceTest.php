@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Service;
+namespace Tests\Feature\Services;
 
 use App\Classes\TimeSeries;
 use App\Entities\Stock;
@@ -11,39 +11,41 @@ use Tests\TestCase;
 class RiskServiceTest extends TestCase
 {
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testExample()
+    private $stock;
+    private $parameter;
+
+    public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
-        $this->assertTrue(true);
+        parent::__construct($name, $data, $dataName);
+
+        //$this->stock = Stock::find(1);
+        $this->parameter = ['period' => 20, 'confidence' => 0.95, 'count' => 20];
+
     }
 
     /**
      * @expectedException \App\Exceptions\RiskServiceException
      */
-    public function testInstrumentVaRThrowsError()
+    public function test_instrumentVaR_throws_error_when_missing_parameter()
     {
-        RiskService::instrumentVaR(Stock::find(1), []);
+        RiskService::instrumentVaR($this->stock, []);
     }
 
     public function testInstrumentVaR()
     {
-        $entity = Stock::find(1);
         $parameter = ['period' => 20, 'confidence' => 0.95, 'count' => 20];
 
         DataService::shouldReceive('history')
             ->once()
             ->withArgs([
-                'entity' => $entity,
+                'entity' => $this->stock,
                 'exchange' => null
             ])
             ->andReturn($this->fakeHistory());
 
-        $this->assertEquals(1, RiskService::instrumentVaR($entity, $parameter));
+        $this->assertEquals(1, RiskService::instrumentVaR($this->stock, $this->parameter));
     }
+
 
     private function fakeHistory()
     {

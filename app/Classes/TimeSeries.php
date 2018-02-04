@@ -404,10 +404,16 @@ class TimeSeries
      * @param $count
      * @return $this
      */
-    public function count($count)
+    public function count($count = null)
     {
-        array_set($this->filter, 'count', $count);
-        return $this;
+        if ($count) {
+            array_set($this->filter, 'count', $count);
+            return $this;
+
+        } else {
+            return count($this->data);
+        }
+
     }
 
     /**

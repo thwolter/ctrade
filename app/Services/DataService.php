@@ -105,6 +105,4 @@ class DataService
 
         return Price::fromArray($price, $entity->currency->code);
     }
-
-
 }

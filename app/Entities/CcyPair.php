@@ -2,11 +2,12 @@
 
 namespace App\Entities;
 
-use App\Repositories\Financable;
+use App\Entities\Traits\CacheDatasource;
 use Illuminate\Database\Eloquent\Model;
 
 class CcyPair extends Model
 {
+    use CacheDatasource;
 
     /*
     |--------------------------------------------------------------------------
@@ -49,6 +50,20 @@ class CcyPair extends Model
     }
 
 
+    public function exchangesToArray()
+    {
+        $array = [];
+        foreach ($this->cached_datasources as $datasource)
+        {
+            $array[] = [
+                'code' => $datasource->exchange->code,
+                'name' => $datasource->exchange->name
+            ];
+        }
+        return $array;
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -68,6 +83,10 @@ class CcyPair extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getCurrencyAttribute()
+    {
+        return Currency::whereCode($this->target)->first();
+    }
 
     /*
     |--------------------------------------------------------------------------

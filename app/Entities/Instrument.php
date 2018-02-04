@@ -4,6 +4,7 @@
 namespace App\Entities;
 
 
+use App\Entities\Traits\CacheDatasource;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Cache;
 
 abstract class Instrument extends Model
 {
-    
+    use CacheDatasource;
 
     /*
     |--------------------------------------------------------------------------
@@ -124,24 +125,6 @@ abstract class Instrument extends Model
     }
 
 
-    public function cacheKey($name)
-    {
-        return sprintf(
-            "%s/%s-%s",
-            $this->getTable(),
-            $this->getKey(),
-            $this->updated_at->timestamp
-        ).':'.$name;
-    }
-
-
-    public function getDatasource($exchange)
-    {
-        return Cache::remember($this->cacheKey('exchange_datasource'), 15, function () use ($exchange) {
-            return $this->datasources()->whereExchange($exchange)->first();
-        });
-    }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -170,13 +153,6 @@ abstract class Instrument extends Model
     public function getCurrencyCodeAttribute()
     {
         return $this->currency()->first()->code;
-    }
-
-    public function getCachedDatasourcesAttribute()
-    {
-        return Cache::remember($this->cacheKey('datasources'), 15, function () {
-            return $this->datasources;
-        });
     }
 
 

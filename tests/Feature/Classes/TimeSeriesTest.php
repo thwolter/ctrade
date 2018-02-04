@@ -180,4 +180,9 @@ class TimeSeriesTest extends TestCase
         $this->assertEquals($this->dataAssocArray, $this->timeseries->asAssocArray()->get());
         $this->assertEquals($this->dataAssocArrayClose, $this->timeseries->asAssocArray()->getClose());
     }
+
+    public function test_get_the_number_of_data_rows()
+    {
+        $this->assertEquals(count($this->data), $this->timeseries->count());
+    }
 }
