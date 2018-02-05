@@ -158,7 +158,9 @@ class TimeSeries
         $this->reduceToLimit();
 
         $this->toAssocArray();
-        $this->filtercolumn();
+        $this->filterColumn();
+
+        $this->toReciprocal();
 
         $this->resetFilter();
         return $this->output;
@@ -477,7 +479,7 @@ class TimeSeries
     }
 
     /**
-     * Defines wether only the weekday shall be returned.
+     * Defines whether only the weekday shall be returned.
      *
      * @return $this
      */
@@ -504,5 +506,39 @@ class TimeSeries
     {
         array_set($this->filter, 'assoc', true);
         return $this;
+    }
+
+    public function reciprocal()
+    {
+        array_set($this->filter, 'reciprocal', true);
+        return $this;
+    }
+
+    public function toReciprocal()
+    {
+        if (!array_get($this->filter, 'reciprocal')) return;
+
+        $output = [];
+        foreach ($this->output as $date => $row) {
+            $output[$date] = $this->reciprocalRow($row);
+        }
+        $this->output = $output;
+    }
+
+    /**
+     * @param $row
+     * @return float|int
+     */
+    private function reciprocalRow($row)
+    {
+        if (array_is_multidimensional($row)) {
+
+            return array_walk($row, function($item, $key) {
+                return $key === 'Date' ? $item : 1 / $item;
+            });
+
+        } else {
+            return 1 / $row;
+        }
     }
 }

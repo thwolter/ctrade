@@ -1,15 +1,10 @@
 <?php
 
 
-use App\Entities\CcyPair;
-use App\Entities\Stock;
-use App\Facades\DataService;
+use App\Facades\CurrencyService;
 
 Route::get('/ccypair', function() {
 
-    $ccyPair = CcyPair::find(1)->first();
-    $price = DataService::price($ccyPair);
-
-    return CcyPair::first(1)->exchangesToArray();
+    return CurrencyService::priceAt('EUR', 'USD', '2017-12-27');
 });
 

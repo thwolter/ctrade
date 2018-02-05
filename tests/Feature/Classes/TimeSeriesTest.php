@@ -185,4 +185,11 @@ class TimeSeriesTest extends TestCase
     {
         $this->assertEquals(count($this->data), $this->timeseries->count());
     }
+
+    public function test_can_return_reciprocal_values()
+    {
+        $this->assertEquals($this->getClose($this->dataReciprocal),
+            $this->timeseries->reciprocal()->getClose()
+        );
+    }
 }

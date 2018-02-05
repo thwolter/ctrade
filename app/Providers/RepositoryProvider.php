@@ -6,6 +6,7 @@ use App\Repositories\DatasourceRepository;
 use App\Repositories\KeyfigureRepository;
 use App\Repositories\LimitRepository;
 use App\Repositories\PortfolioRepository;
+use App\Services\CurrencyService;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryProvider extends ServiceProvider
@@ -34,5 +35,7 @@ class RepositoryProvider extends ServiceProvider
         $this->app->bind('limitRepository', LimitRepository::class);
 
         $this->app->bind('datasourceRepository', DatasourceRepository::class);
+
+        $this->app->bind('currencyRepository', CurrencyService::class);
     }
 }

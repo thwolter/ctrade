@@ -11,9 +11,12 @@ use App\Facades\DataService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\FakeHistoryTrait;
 
 class DataServiceTest extends TestCase
 {
+
+    use FakeHistoryTrait;
 
 
     public function test_receive_stock_datasource()
