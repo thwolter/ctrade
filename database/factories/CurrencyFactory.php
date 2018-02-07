@@ -22,6 +22,11 @@ $factory->state(Currency::class, 'EUR', [
 ]);
 
 
+$factory->state(Currency::class, 'CZK', [
+    'code' => 'CZK'
+]);
+
+
 $factory->state(Currency::class, 'eligible', [
     'eligible' => 1
 ]);

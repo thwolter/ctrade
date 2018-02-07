@@ -23,3 +23,10 @@ $factory->state(Portfolio::class, 'USD', function() {
         'currency_id' => Currency::firstOrCreate(['code' => 'USD'])->id
     ];
 });
+
+$factory->state(Portfolio::class, 'EUR', function() {
+
+    return [
+        'currency_id' => Currency::firstOrCreate(['code' => 'EUR'])->id
+    ];
+});

@@ -16,9 +16,19 @@ $factory->define(Stock::class, function (Faker $faker) {
     ];
 });
 
+
 $factory->state(Stock::class, 'USD', function (Faker $faker) {
 
     return [
         'currency_id' => Currency::firstOrCreate(['code' => 'USD'])->id
+    ];
+});
+
+
+
+$factory->state(Stock::class, 'EUR', function (Faker $faker) {
+
+    return [
+        'currency_id' => Currency::firstOrCreate(['code' => 'EUR'])->id
     ];
 });
