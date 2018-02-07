@@ -3,6 +3,8 @@
 namespace App\Classes\Output;
 
 
+use App\Exceptions\OutputException;
+
 class Price extends Output implements OutputInterface
 {
 
@@ -19,6 +21,20 @@ class Price extends Output implements OutputInterface
         return new self(key($array), array_first($array), $currency);
     }
 
+    public static function make($date, $value, $currency)
+    {
+        return new self($date, $value, $currency);
+    }
+
+    /**
+     * @return string
+     * @throws \Throwable
+     */
+    public function __toString()
+    {
+        return $this->formatValue();
+    }
+
     /**
      * Returns a formatted string of the value with currency.
      *
@@ -28,6 +44,10 @@ class Price extends Output implements OutputInterface
      */
     public function formatValue($digits = 2)
     {
+        throw_if($digits > 2,
+            new OutputException("Parameter digits must be <= 2; $digits given.")
+        );
+
         return $this->currencyFormatter($digits)->formatCurrency($this->value, $this->currency);
     }
 
@@ -37,12 +57,6 @@ class Price extends Output implements OutputInterface
         $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $digits);
 
         return $fmt;
-    }
-
-
-    public static function make($date, $value, $currency)
-    {
-        return new Price($date, $value, $currency);
     }
 
 }

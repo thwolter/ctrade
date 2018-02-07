@@ -39,7 +39,7 @@ return [
             'prefix' => '',
         ],
 
-        'sqlite_testing' => [
+        'testing' => [
             'driver' => 'sqlite',
             'database' => database_path('testing.sqlite'),
             'prefix' => '',
