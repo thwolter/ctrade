@@ -72,6 +72,7 @@ class DataService
         return $class === Datasource::class || $class === Collection::class;
     }
 
+
     private function exchange($entity, $exchange)
     {
         return $exchange ?? $entity->exchangesToArray()[0]['code'];
