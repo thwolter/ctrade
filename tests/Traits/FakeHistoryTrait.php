@@ -103,12 +103,22 @@ trait FakeHistoryTrait
 
 
     protected $dataReciprocal = [
-        ['2017-12-29', null, 1/70, 1/60, 1/70],
-        ['2017-12-28', null, 1/69, 1/60, 1/65],
-        ['2017-12-27', null, 1/68, 1/60, 1/68],
-        ['2017-12-23', null, 1/67, 1/60, 1/63],
-        ['2017-12-22', null, 1/66, 1/60, 1/60],
+        ['2017-12-29', null, 1 / 70, 1 / 60, 1 / 70],
+        ['2017-12-28', null, 1 / 69, 1 / 60, 1 / 65],
+        ['2017-12-27', null, 1 / 68, 1 / 60, 1 / 68],
+        ['2017-12-23', null, 1 / 67, 1 / 60, 1 / 63],
+        ['2017-12-22', null, 1 / 66, 1 / 60, 1 / 60],
     ];
+
+    protected function jsonData($data = null)
+    {
+        $data = $data ?? $this->data;
+
+        return json_encode(['dataset' => [
+            'data' => $data,
+            'column_names' => $this->columns
+        ]]);
+    }
 
     /**
      * @return array

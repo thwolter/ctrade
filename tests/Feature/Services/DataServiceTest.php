@@ -2,12 +2,13 @@
 
 namespace Tests\Feature\Services;
 
-use App\Classes\DataProvider\QuandlPriceData;
 use App\Classes\Output\Price;
 use App\Classes\TimeSeries;
 use App\Entities\CcyPair;
+use App\Entities\Datasource;
 use App\Entities\Stock;
 use App\Facades\DataService;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,13 +16,13 @@ use Tests\Traits\FakeHistoryTrait;
 
 class DataServiceTest extends TestCase
 {
-
+    use RefreshDatabase;
     use FakeHistoryTrait;
 
 
     public function test_receive_stock_datasource()
     {
-        $stock = Stock::find(1)->first();
+        $stock = $this->getFakeStock();
 
         $this->assertEquals($stock->datasources->first()->id,
             DataService::getDatasource($stock, null)->id
@@ -35,7 +36,7 @@ class DataServiceTest extends TestCase
 
     public function test_receive_the_ccyPair_datasource()
     {
-        $ccyPair = CcyPair::find(1)->first();
+        $ccyPair = $this->getFakeCcyPair();
 
         $this->assertEquals($ccyPair->datasources->first()->id,
             DataService::getDatasource($ccyPair, null)->id
@@ -49,7 +50,7 @@ class DataServiceTest extends TestCase
 
     public function test_history_returns_a_stock_timeseries()
     {
-        $history = DataService::history(Stock::find(1)->first());
+        $history = DataService::history($this->getFakeStock());
 
         $this->assertEquals(TimeSeries::class, get_class($history));
         $this->assertGreaterThan(1, $history->count());
@@ -80,5 +81,22 @@ class DataServiceTest extends TestCase
 
         $this->assertEquals(Price::class, get_class($price));
         $this->assertGreaterThan(0, $price->getValue());
+    }
+
+
+    private function getFakeStock()
+    {
+        $stock = factory(Stock::class)->create();
+        factory(Datasource::class)->states('Quandl')->create()->assign($stock);
+
+        return $stock;
+    }
+
+    private function getFakeCcyPair()
+    {
+        $ccyPair = factory(CcyPair::class)->create();
+        factory(Datasource::class)->create()->assign($ccyPair);
+
+        return $ccyPair;
     }
 }

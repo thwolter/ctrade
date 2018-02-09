@@ -24,12 +24,14 @@ class DataServiceServiceProvider extends ServiceProvider
             if (get_class($datasource) !== Datasource::class)
                 throw new DataServiceException('Given parameter must be a datasource.');
 
-            switch ($datasource->provider->code) {
+            $code = $datasource->provider->code;
+
+            switch ($code) {
                 case 'Quandl':
                     $service = new QuandlPriceData($datasource);
                     break;
                 default:
-                    throw new DataServiceException('Could not resolve datasource.');
+                    throw new DataServiceException("Could not resolve datasource for provider '$code''.");
             }
             return $service;
         });

@@ -3,8 +3,10 @@
 namespace Tests\Feature\Services\RisksService;
 
 use App\Classes\Output\Price;
+use App\Entities\Asset;
 use App\Entities\Currency;
 use App\Entities\Stock;
+use App\Exceptions\RiskServiceException;
 use App\Facades\CurrencyService;
 use App\Facades\DataService;
 use App\Services\RiskService\StockRisk;
@@ -29,15 +31,37 @@ class StockRiskTest extends TestCase
     }
 
 
-    public function test_instrumentDelta_returns_two_dimensional_array()
+    public function test_throws_exception_if_not_assigned_to_asset()
     {
         $parameter = ['date' => $this->date];
+        $stock = factory(Stock::class)->states('EUR')->create();
 
-        $currency = Currency::make(['code' => 'USD']);
+        DataService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn(new Price($this->date, 20, 'EUR'));
 
-        $stock = factory(Stock::class)->make()
-            ->currency()->associate($currency);
+        $this->expectException(RiskServiceException::class);
+        $this->stockRisk->instrumentDelta($stock, $parameter);
 
+    }
+
+    public function test_instrumentDelta_returns_EUR_delta_for_EUR_stock()
+    {
+        $parameter = ['date' => $this->date];
+        $asset = factory(Asset::class)->states('EUR')->create();
+
+        $expect = [
+            ['class' => Stock::class, 'id' => $asset->positionable->id, 'value' => 1],
+        ];
+
+        $this->assertEquals($expect, $this->stockRisk->instrumentDelta($asset, $parameter));
+    }
+
+
+    public function test_instrumentDelta_returns_EUR_delta_for_USD_stock()
+    {
+        $parameter = ['date' => $this->date];
+        $asset = factory(Asset::class)->states('USD')->create();
 
         DataService::shouldReceive('priceAt')
             ->once()
@@ -48,9 +72,9 @@ class StockRiskTest extends TestCase
             ->andReturn(new Price($this->date, 1.2, 'EUR'));
 
         $this->assertEquals([
-            ['class' => Stock::class, 'id' => $stock->id, 'value' => 1.2],
-            ['class' => Currency::class, 'id' => $currency->id, 'value' => 20],
-        ], $this->stockRisk->instrumentDelta($stock, $parameter));
+            ['class' => Stock::class, 'id' => $asset->positionable->id, 'value' => 1.2],
+            ['class' => Currency::class, 'id' => $asset->positionable->currency->id, 'value' => 20],
+        ], $this->stockRisk->instrumentDelta($asset->positionable, $parameter));
     }
 
 

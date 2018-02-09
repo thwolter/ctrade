@@ -32,5 +32,5 @@ Route::get('/update/stocks', function() {
 
 
 Route::get('test', function() {
-    return App\Entities\CcyPair::whereSymbol('EURUSD')->first()->price();
+    return \App\Facades\DataService::history(Stock::first())->count(5)->getClose();
 });

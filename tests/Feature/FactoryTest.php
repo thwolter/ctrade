@@ -5,9 +5,13 @@ namespace Tests\Feature;
 use App\Entities\Asset;
 use App\Entities\CcyPair;
 use App\Entities\Currency;
+use App\Entities\Database;
+use App\Entities\Dataset;
+use App\Entities\Datasource;
 use App\Entities\Exchange;
 use App\Entities\Portfolio;
 use App\Entities\Position;
+use App\Entities\Provider;
 use App\Entities\Stock;
 use App\Entities\User;
 use Tests\TestCase;
@@ -145,5 +149,51 @@ class FactoryTest extends TestCase
 
         $stock = factory(Stock::class)->states('EUR')->create();
         $this->assertEquals('EUR', $stock->currency->code);
+    }
+
+
+    public function test_can_create_dataset_model()
+    {
+        $dataset = factory(Dataset::class)->create();
+        $this->assertDatabaseHas('datasets', ['id' => $dataset->id]);
+
+        $dataset = factory(Dataset::class)->states('currency')->create();
+        $this->assertDatabaseHas('datasets', ['code' => $dataset->code]);
+
+        $dataset = factory(Dataset::class)->states('stock')->create();
+        $this->assertDatabaseHas('datasets', ['code' => $dataset->code]);
+    }
+
+
+    public function test_can_create_provider_model()
+    {
+        $provider = factory(Provider::class)->create();
+        $this->assertDatabaseHas('providers', ['id' => $provider->id]);
+    }
+
+
+    public function test_can_create_database_model()
+    {
+        $database = factory(Database::class)->create();
+        $this->assertDatabaseHas('databases', ['id' => $database->id]);
+    }
+
+
+    public function test_can_create_datasource_model()
+    {
+        $datasource = factory(Datasource::class)->create();
+        $this->assertDatabaseHas('datasources', ['id' => $datasource->id]);
+
+        $datasource = factory(Datasource::class)->states('USD')->create();
+        $this->assertDatabaseHas('datasources', ['id' => $datasource->id]);
+
+        $datasource = factory(Datasource::class)->states('CHF')->create();
+        $this->assertDatabaseHas('datasources', ['id' => $datasource->id]);
+
+        $datasource = factory(Datasource::class)->states('stock')->create();
+        $this->assertDatabaseHas('datasources', ['id' => $datasource->id]);
+
+        $datasource = factory(Datasource::class)->states('Quandl')->create();
+        $this->assertDatabaseHas('datasources', ['id' => $datasource->id]);
     }
 }

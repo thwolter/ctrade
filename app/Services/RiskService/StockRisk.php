@@ -6,6 +6,7 @@ use App\Classes\Output\OutputHelper;
 use App\Entities\Asset;
 use App\Entities\Currency;
 use App\Entities\Stock;
+use App\Exceptions\RiskServiceException;
 use App\Facades\CurrencyService;
 use App\Facades\DataService;
 use Carbon\Carbon;
@@ -17,7 +18,7 @@ class StockRisk implements RiskInterface
     use OutputHelper;
 
 
-    public function assetVaR($asset, $parameter)
+    public function assetVaR(Asset $asset, $parameter)
     {
         $delta = $this->assetDelta($asset, $parameter);
         $volatility = $this->stockVolatility($asset->positionable, $parameter);
@@ -32,8 +33,9 @@ class StockRisk implements RiskInterface
      * @param array $parameter
      *
      * @return mixed
+     * @throws \Throwable
      */
-    public function assetDelta($asset, $parameter)
+    public function assetDelta(Asset $asset, $parameter)
     {
         $date = $this->getDate($parameter);
 
@@ -50,68 +52,86 @@ class StockRisk implements RiskInterface
     }
 
     /**
-     * @param Stock $entity
+     * @param Asset $asset
      * @param array $parameter
      * @return array
+     * @throws \Throwable
      */
-    public function instrumentDelta($entity, $parameter)
+    public function instrumentDelta(Asset $asset, $parameter)
     {
-        return [
-            $this->stockDelta($entity, $parameter),
-            $this->fxDelta($entity, $parameter),
-        ];
+        $delta[] = $this->stockDelta($asset, $parameter);
+
+        if ($fxDelta = $this->fxDelta($asset, $parameter)) {
+            $delta [] = $fxDelta;
+        }
+
+        return $delta;
     }
 
     /**
-     * @param $entity
+     * @param $asset
      * @param $parameter
      * @return array
      */
-    private function stockDelta($entity, $parameter): array
+    private function stockDelta($asset, $parameter): array
     {
+        $value = $this->hasForeignCurrency($asset)
+            ? $this->getFxRate($asset->positionable, $parameter)->getValue()
+            : 1;
+
         return [
             'class' => Stock::class,
-            'id' => $entity->id,
-            'value' => $this->getStockPrice($entity, $parameter)->getValue(),
+            'id' => $asset->positionable->id,
+            'value' => $value
         ];
     }
 
     /**
-     * @param $entity
+     * @param Stock $stock
      * @param $parameter
      * @return mixed
      */
-    private function getStockPrice($entity, $parameter)
+    private function getStockPrice($stock, $parameter)
     {
-        return DataService::priceAt($entity, ['date' => $this->getDate($parameter)]);
+        return DataService::priceAt($stock, ['date' => $this->getDate($parameter)]);
     }
 
     /**
-     * @param $entity
-     * @param $parameter
+     * @param Asset $asset
+     * @param array $parameter
      * @return array
+     * @throws \Throwable
      */
-    private function fxDelta($entity, $parameter)
+    private function fxDelta($asset, $parameter)
     {
-        if ($entity->currency === $entity->portfolio->currency) return null;
+        if (!$this->hasForeignCurrency($asset)) return null;
 
         return [
             'class' => Currency::class,
-            'id' => $entity->currency->id,
-            'value' => $this->getFxRate($entity, $parameter)->getValue(),
+            'id' => $asset->positionable->currency->id,
+            'value' => $this->getStockPrice($asset->positionable, $parameter)->getValue()
         ];
     }
 
     /**
-     * @param $entity
+     * @param Asset $asset
+     * @return bool
+     */
+    private function hasForeignCurrency($asset)
+    {
+        return $asset->positionable->currency === $asset->portfolio->currency;
+    }
+
+    /**
+     * @param Asset $asset
      * @param $parameter
      * @return mixed
      */
-    private function getFxRate($entity, $parameter)
+    private function getFxRate($asset, $parameter)
     {
         $fxRate = CurrencyService::priceAt(
-            $entity->currency->code,
-            $entity->portfolio->currency->code,
+            $asset->positionable->currency->code,
+            $asset->portfolio->currency->code,
             ['date' => $this->getDate($parameter)]
         );
         return $fxRate;
@@ -132,13 +152,12 @@ class StockRisk implements RiskInterface
         return $this->standardDeviation($this->logReturn($history));
     }
 
-    public function instrumentVaR($entity, $parameter)
+
+    public function instrumentVaR(Asset $asset, $parameter)
     {
-        $delta = $this->instrumentDelta($entity, $parameter);
-        $volatility = $this->stockVolatility($entity, $parameter);
+        $delta = $this->instrumentDelta($asset, $parameter);
+        $volatility = $this->stockVolatility($asset->positionable, $parameter);
 
         return $this->scaleRisk($delta * $volatility, $parameter);
     }
-
-
 }
