@@ -7,25 +7,34 @@ use App\Exceptions\TimeSeriesException;
 use Tests\TestCase;
 use Tests\Traits\FakeHistoryTrait;
 
+/**
+ * Class TimeSeriesTest
+ * @package Tests\Feature\Classes
+ */
 class TimeSeriesTest extends TestCase
 {
     use FakeHistoryTrait;
 
+    /**
+     * @var TimeSeries
+     */
     private $timeseries;
 
 
-    public function __construct(?string $name = null, array $data = [], string $dataName = '')
+    public function setUp()
     {
-        parent::__construct($name, $data, $dataName);
+        parent::setUp();
 
         $this->timeseries = new TimeSeries($this->data, $this->columns);
     }
+
 
     /**
      * A basic test example.
      *
      * @return void
      * @throws TimeSeriesException
+     * @throws \Exception
      */
     public function test_returns_available_columns()
     {
@@ -51,6 +60,9 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     *
+     */
     public function test_throw_exception_when_fill_without_from_and_to()
     {
         $this->expectException(TimeSeriesException::class);
@@ -58,6 +70,9 @@ class TimeSeriesTest extends TestCase
 
     }
 
+    /**
+     * @throws \Exception
+     */
     public function test_fill_array_with_previous_day_values()
     {
         $this->assertEquals($this->getClose($this->dataFilled),
@@ -69,6 +84,9 @@ class TimeSeriesTest extends TestCase
         );
     }
 
+    /**
+     *
+     */
     public function test_fill_array_with_out_of_range_from_throws_exception()
     {
         $this->expectException(TimeSeriesException::class);
@@ -76,6 +94,9 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_returned_array_is_sorted()
     {
         $timeseries = new TimeSeries($this->dataUnsorted, $this->columns);
@@ -84,12 +105,18 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_return_data_in_reverse_order()
     {
         $this->assertEquals($this->getClose($this->data), $this->timeseries->reverse()->getClose());
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_returned_data_are_counted()
     {
         $close = array_slice($this->getClose($this->data), 0, 1);
@@ -103,12 +130,18 @@ class TimeSeriesTest extends TestCase
 
     }
 
+    /**
+     * @throws \Exception
+     */
     public function test_return_an_empty_array_if_count_exceeds_available_data()
     {
         $this->assertEquals([], $this->timeseries->count(100)->getClose());
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_returned_data_are_limited()
     {
         $close = array_slice($this->getClose($this->data), 0, 1);
@@ -119,17 +152,26 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_return_array_even_if_limit_exceeds_available_data()
     {
         $this->assertEquals($this->getClose($this->data), $this->timeseries->limit(100)->getClose());
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_returns_the_reverse_ordered_data()
     {
         $this->assertEquals($this->getClose($this->dataReverseOrder), $this->timeseries->reverse()->getClose());
     }
 
+    /**
+     * @throws \Exception
+     */
     public function test_returns_the_latest_and_oldest_value()
     {
         $this->assertEquals($this->getClose($this->dataLatest), $this->timeseries->getLatestClose());
@@ -137,6 +179,9 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     *
+     */
     public function test_throw_exception_if_not_available_column_requested()
     {
         $this->expectException(TimeSeriesException::class);
@@ -144,6 +189,9 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     *
+     */
     public function test_throw_exception_if_not_available_property_requested()
     {
         $this->expectException(TimeSeriesException::class);
@@ -151,6 +199,9 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_return_data_starting_from_a_specified_date()
     {
         $this->assertEquals($this->getClose($this->dataFrom27),
@@ -158,6 +209,9 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_return_data_ends_to_a_specified_date()
     {
         $this->assertEquals($this->getClose($this->dataTo27),
@@ -165,6 +219,9 @@ class TimeSeriesTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_returns_only_weekdays()
     {
         $this->assertEquals($this->getClose($this->dataOnlyWeekdays),
@@ -174,6 +231,7 @@ class TimeSeriesTest extends TestCase
 
     /**
      * @throws TimeSeriesException
+     * @throws \Exception
      */
     public function test_returns_an_associative_array()
     {
@@ -181,11 +239,17 @@ class TimeSeriesTest extends TestCase
         $this->assertEquals($this->dataAssocArrayClose, $this->timeseries->asAssocArray()->getClose());
     }
 
+    /**
+     * @throws \Exception
+     */
     public function test_get_the_number_of_data_rows()
     {
         $this->assertEquals(count($this->data), $this->timeseries->count());
     }
 
+    /**
+     * @throws \Exception
+     */
     public function test_can_return_reciprocal_values()
     {
         $this->assertEquals($this->getClose($this->dataReciprocal),

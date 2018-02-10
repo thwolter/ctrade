@@ -214,7 +214,6 @@ return [
         */
         HieuLe\Active\ActiveServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        PragmaRX\Countries\ServiceProvider::class,
         Khill\Lavacharts\Laravel\LavachartsServiceProvider::class,
         Clockwork\Support\Laravel\ClockworkServiceProvider::class,
         \Laravel\Scout\ScoutServiceProvider::class,
@@ -226,7 +225,6 @@ return [
         \Cviebrock\EloquentSluggable\ServiceProvider::class,
         Ipunkt\LaravelAnalytics\AnalyticsServiceProvider::class,
         \Corcel\Laravel\CorcelServiceProvider::class,
-        \Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
 
 
         /*

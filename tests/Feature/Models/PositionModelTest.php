@@ -1,0 +1,38 @@
+<?php
+
+namespace Tests\Feature\Models;
+
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\FakeAssetsTrait;
+
+class PositionModelTest extends TestCase
+{
+    use RefreshDatabase;
+    use FakeAssetsTrait;
+
+    private $trades = [
+        ['price' => 10, 'amount' => 1, 'executed_at' => '2017-12-01'],
+        ['price' => 20, 'amount' => 2, 'executed_at' => '2017-12-05'],
+        ['price' => 15, 'amount' => -1, 'executed_at' => '2017-12-10'],
+        ['price' => 18, 'amount' => -2, 'executed_at' => '2017-12-15'],
+    ];
+
+    /**
+     * @throws \Exception
+     */
+    public function test_can_receive_positions_executed_before_a_given_date()
+    {
+        $asset = $this->createAssetWithTrades($this->trades);
+
+        $this->assertEquals(0, $asset->positions()->until('2017-11-20')->count());
+        $this->assertEquals(1, $asset->positions()->until('2017-12-01')->count());
+        $this->assertEquals(4, $asset->positions()->until('2017-12-16')->count());
+
+        $positions = $asset->positions()->until('2017-12-05')->get();
+
+        $this->assertEquals(10, $positions->first()->price);
+        $this->assertEquals(20, $positions->last()->price);
+    }
+}

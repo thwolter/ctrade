@@ -4,17 +4,35 @@ namespace Tests\Feature\Models;
 
 use App\Entities\Asset;
 use App\Entities\Portfolio;
-use App\Entities\Position;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\FakeAssetsTrait;
 
+/**
+ * Class AssetModelTest
+ * @package Tests\Feature\Models
+ */
 class AssetModelTest extends TestCase
 {
     use RefreshDatabase;
+    use FakeAssetsTrait;
+
+    /**
+     * @var array
+     */
+    private  $trades = [
+        ['price' => 10, 'amount' => 1, 'executed_at' => '2017-12-01'],
+        ['price' => 20, 'amount' => 2, 'executed_at' => '2017-12-05'],
+        ['price' => 15, 'amount' => -1, 'executed_at' => '2017-12-10'],
+        ['price' => 18, 'amount' => -2, 'executed_at' => '2017-12-15'],
+    ];
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_can_obtain_positions()
     {
         $asset = factory(Asset::class)->create();
@@ -31,20 +49,12 @@ class AssetModelTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_it_returns_the_amount_at_given_date()
     {
-        $asset = factory(Asset::class)->states('EUR')->create();
-
-        $trades = [
-            ['price' => 10, 'amount' => 1, 'executed_at' => '2017-12-01'],
-            ['price' => 20, 'amount' => 2, 'executed_at' => '2017-12-05'],
-            ['price' => 15, 'amount' => -1, 'executed_at' => '2017-12-10'],
-            ['price' => 18, 'amount' => -2, 'executed_at' => '2017-12-15'],
-        ];
-
-        foreach ($trades as $trade) {
-            $asset->obtain($this->createPosition($trade));
-        }
+        $asset = $this->createAssetWithTrades($this->trades);
 
         $this->assertEquals(0, $asset->amountAt('2017-11-30'));
         $this->assertEquals(1, $asset->amountAt('2017-12-01'));
@@ -55,6 +65,22 @@ class AssetModelTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
+    public function test_it_has_property_amount_with_current_amount()
+    {
+        $trades = array_push($this->trades,
+            ['price' => 12, 'amount' => 5, 'executed_at' => '2017-12-20']
+        );
+
+        $asset = $this->createAssetWithTrades($this->trades);
+        $this->assertEquals(5, $asset->amount);
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function test_returns_true_for_foreign_currency()
     {
         $portfolio = factory(Portfolio::class)->states('USD')->create();
@@ -65,6 +91,9 @@ class AssetModelTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_returns_false_for_domestic_currency()
     {
         $portfolio = factory(Portfolio::class)->states('EUR')->create();
@@ -74,14 +103,4 @@ class AssetModelTest extends TestCase
         $this->assertFalse($asset->hasForeignCurrency());
     }
 
-    /**
-     * @return mixed
-     */
-    private function createPosition($array = [])
-    {
-        $position = factory(Position::class)->create();
-        $position->update($array);
-
-        return $position;
-    }
 }

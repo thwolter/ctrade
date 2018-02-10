@@ -30,9 +30,9 @@ class AssetPresenter extends Presenter
         return $this->position()->wkn;
     }
 
-    public function cost()
+    public function costValue()
     {
-        return $this->metrics->cost($this->entity)->formatValue();
+        return $this->metrics->costValue($this->entity)->formatValue();
     }
 
     public function investment()

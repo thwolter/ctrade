@@ -81,7 +81,11 @@ class Asset extends Model
     }
 
 
-    public function amountAt($date)
+    /**
+     * @param $date
+     * @return mixed
+     */
+    public function amountAt($date = null)
     {
         return $this->positions()
             ->where('executed_at', '<=', Carbon::parse($date)->endOfDay())
@@ -148,9 +152,10 @@ class Asset extends Model
         return $this->positionable->name;
     }
 
+
     public function getAmountAttribute()
     {
-        return $this->positions()->sum('amount');
+        return $this->amountAt();
     }
 
     public function getLabelAttribute()

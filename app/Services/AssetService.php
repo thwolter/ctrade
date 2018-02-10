@@ -7,8 +7,8 @@ namespace App\Services;
 use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 use App\Entities\Asset;
-use App\Facades\DataService;
 use App\Facades\CurrencyService;
+use App\Facades\DataService;
 use App\Facades\RiskService\RiskService;
 use Carbon\Carbon;
 
@@ -18,40 +18,39 @@ class AssetService
      * Return the cost value of the asset calculated based on buy/sell positions.
      *
      * @param Asset $asset
+     * @param null $date
      * @return Price
+     *
+     * @throws \Throwable
      */
-    public function cost(Asset $asset)
+    public function costValue(Asset $asset, $date = null)
     {
-        $cost = $this->investment($asset)->getValue() / $asset->amount;
-        return new Price($this->now(), $cost, $asset->currency->code);
+        if ($asset->amountAt($date) == 0) return null;
+        $cost = $this->invested($asset, $date)->value / $asset->amountAt($date);
+
+        return new Price($date, $cost, $asset->currency->code);
     }
+
 
     /**
      * Return the invested amount in an asset based on buy/sell orders.
      *
      * @param Asset $asset
-     * @return Price
+     * @param null $date
+     *
+     * @return Price|int
      */
-    public function investment(Asset $asset)
+    private function invested(Asset $asset, $date = null)
     {
         $investment = 0;
 
-        foreach ($asset->positions as $position) {
+        foreach ($asset->positions()->until($date)->get() as $position) {
             $investment += $position->price * $position->amount;
         }
 
-        return new Price($this->now(), $investment, $asset->currency->code);
+        return new Price($date, $investment, $asset->currency->code);
     }
 
-    /**
-     * Return the today's date.
-     *
-     * @return string
-     */
-    private function now()
-    {
-        return Carbon::now()->toDateString();
-    }
 
     /**
      * Return the asset's delta as a percentage.
@@ -62,10 +61,11 @@ class AssetService
     public function returnPercent(Asset $asset)
     {
         $delta = $this->returnAbsolute($asset);
-        $ratio = $delta->getValue() / $this->investment($asset)->getValue();
+        $ratio = $delta->getValue() / $this->invested($asset)->getValue();
 
         return new Percent($delta->getDate(), $ratio);
     }
+
 
     /**
      * Return the asset's delta between current value and invested amount.
@@ -75,9 +75,10 @@ class AssetService
      */
     public function returnAbsolute(Asset $asset)
     {
-        $delta = $this->value($asset)->getValue() - $this->investment($asset)->getValue();
+        $delta = $this->value($asset)->getValue() - $this->invested($asset)->getValue();
         return new Price($this->now(), $delta, $asset->currency->code);
     }
+
 
     /**
      * Calculates the Asset's value based on latest available price data.
@@ -107,6 +108,33 @@ class AssetService
         return $price->multiply($fxrate);
     }
 
+
+    /**
+     * @param Asset $asset
+     * @param $date
+     * @return int
+     */
+    private function getFxRate(Asset $asset, $date)
+    {
+        if ($asset->hasForeignCurrency()) {
+            $fxrate = CurrencyService::priceAt($asset->currency, $asset->portfolio->currency, $date);
+        }
+
+        return isset($fxrate) ? $fxrate->value : 1;
+    }
+
+
+    /**
+     * Return the today's date.
+     *
+     * @return string
+     */
+    private function now()
+    {
+        return Carbon::now()->toDateString();
+    }
+
+
     /**
      * Return the risk to value ratio.
      *
@@ -121,30 +149,6 @@ class AssetService
         return new Percent($risk->getDate(), $risk->getValue() / $value->getValue());
     }
 
-    /**
-     * Return the risk for the Asset's confidence level.
-     *
-     * @param Asset $asset
-     * @return Price
-     */
-    public function risk(Asset $asset)
-    {
-        $parameters = array_replace_key($asset->portfolio->settings()->all(), 'history', 'count');
-
-        $assetVaR = RiskService::assetVaR($asset, $parameters);
-        return new Price($this->priceDate($asset), $assetVaR, $asset->currency->code);
-    }
-
-    /**
-     * Return the date of the latest available price.
-     *
-     * @param Asset $asset
-     * @return Carbon
-     */
-    public function priceDate(Asset $asset)
-    {
-        return $this->price($asset)->getDate();
-    }
 
     /**
      * Return the Asset's price.
@@ -157,20 +161,6 @@ class AssetService
     public function price(Asset $asset, $exchange = null)
     {
         return $this->priceAt($asset->positionable, $this->now(), $exchange);
-    }
-
-    /**
-     * @param Asset $asset
-     * @param $date
-     * @return int
-     */
-    private function getFxRate(Asset $asset, $date)
-    {
-        if ($asset->hasForeignCurrency()) {
-            $fxrate = CurrencyService::priceAt($asset->currency, $asset->portfolio->currency, $date);
-        }
-
-        return isset($fxrate) ? $fxrate->value : 1;
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -68,6 +69,13 @@ class Position extends Model
     public function scopeUpdatedAfter($query, $date)
     {
         return $query->where($this->getTable().'.updated_at', '>=', $date);
+    }
+
+
+    public function scopeUntil($query, $date)
+    {
+        $date = Carbon::parse($date)->endOfDay();
+        return $query->where($this->getTable().'.executed_at', '<=', $date);
     }
 
     /*

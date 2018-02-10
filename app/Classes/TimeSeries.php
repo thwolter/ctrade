@@ -47,7 +47,7 @@ class TimeSeries
     public function __construct($data, $columns = null)
     {
         $this->columns = $columns ? $columns : ['Value'];
-        $this->data = array_is_multidimensional($data) ? $this->normalize($data) : $data;
+        $this->data = $this->isMultiDimensional($data) ? $this->normalize($data) : $data;
     }
 
     /**
@@ -346,7 +346,7 @@ class TimeSeries
      */
     private function filterColumn()
     {
-        if (!array_is_multidimensional($this->output)) return null;
+        if (!$this->isMultiDimensional($this->output)) return null;
 
         if (array_get($this->filter, 'assoc')) {
             $this->filterAssocArrayColumn();
@@ -531,7 +531,7 @@ class TimeSeries
      */
     private function reciprocalRow($row)
     {
-        if (array_is_multidimensional($row)) {
+        if ($this->isMultiDimensional($row)) {
 
             return array_walk($row, function($item, $key) {
                 return $key === 'Date' ? $item : 1 / $item;
@@ -540,5 +540,12 @@ class TimeSeries
         } else {
             return 1 / $row;
         }
+    }
+
+    private function isMultiDimensional($array)
+    {
+        if (!is_array($array)) return false;
+
+        return (count($array)) ? is_array(array_values($array)[0]) : false;
     }
 }
