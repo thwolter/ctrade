@@ -25,3 +25,4 @@ $factory->state(Asset::class, 'EUR', function() {
         'positionable_id' => factory(Stock::class)->states('EUR')->create()->id
     ];
 });
+

@@ -3,9 +3,8 @@
 
 namespace App\Presenters;
 
+use App\Exceptions\PresenterException;
 use Carbon\Carbon;
-use Prophecy\Exception\Doubler\MethodNotFoundException;
-use Symfony\Component\Debug\Exception\UndefinedMethodException;
 
 
 abstract class Presenter
@@ -45,7 +44,7 @@ abstract class Presenter
 
         } else {
             $class = get_class($this->entity);
-            throw new \Exception("Method '{$property}' not found in {$class}");
+            throw new PresenterException("Method '{$property}' not found in {$class}");
         }
     }
 

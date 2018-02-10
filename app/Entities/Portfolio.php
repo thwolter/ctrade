@@ -123,6 +123,17 @@ class Portfolio extends Model
     */
 
 
+    /**
+     * Obtain an asset.
+     *
+     * @param Asset $asset
+     */
+    public function obtain($asset)
+    {
+        $this->assets()->save($asset);
+    }
+
+
     public function firstTransactionEnteredAfter($date)
     {
         if (!$date) return null;

@@ -13,7 +13,6 @@ use Carbon\Carbon;
 
 class AssetService
 {
-
     /**
      * Return the cost value of the asset calculated based on buy/sell positions.
      *
@@ -98,18 +97,6 @@ class AssetService
         return $this->priceAt($asset, $date, $exchange)->multiply($asset->amountAt($date));
     }
 
-    /**
-     * Return the Asset's price.
-     *
-     * @param Asset $asset
-     * @param string|null $exchange
-     *
-     * @return Price
-     */
-    public function price(Asset $asset, $exchange = null)
-    {
-        return $this->priceAt($asset->positionable, $this->now(), $exchange);
-    }
 
     public function priceAt(Asset $asset, $date, $exchange = null)
     {
@@ -153,6 +140,19 @@ class AssetService
     public function priceDate(Asset $asset)
     {
         return $this->price($asset)->getDate();
+    }
+
+    /**
+     * Return the Asset's price.
+     *
+     * @param Asset $asset
+     * @param string|null $exchange
+     *
+     * @return Price
+     */
+    public function price(Asset $asset, $exchange = null)
+    {
+        return $this->priceAt($asset->positionable, $this->now(), $exchange);
     }
 
 }

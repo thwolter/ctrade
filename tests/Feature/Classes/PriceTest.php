@@ -53,4 +53,12 @@ class PriceTest extends TestCase
     {
         $this->assertEquals('20,00 €', (string)$this->price);
     }
+
+
+    public function test_return_dynamic_properties()
+    {
+        $this->assertEquals(20, $this->price->value);
+        $this->assertEquals('EUR', $this->price->currency);
+        $this->assertEquals('2017-12-22', $this->price->date);
+    }
 }

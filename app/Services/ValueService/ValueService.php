@@ -4,6 +4,7 @@ namespace App\Services\ValueService;
 
 
 use App\Classes\Output\Price;
+use App\Entities\Asset;
 use App\Entities\Portfolio;
 use App\Facades\AccountService;
 use App\Facades\DataService;
@@ -38,5 +39,7 @@ class ValueService
 
         return new Price($date, $value, $portfolio->currency->code);
     }
+
+
 
 }

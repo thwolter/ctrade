@@ -27,6 +27,13 @@ class Output
         $this->currency = $currency;
     }
 
+
+    public function __get($name)
+    {
+        return $name === 'date' ? $this->date->toDateString() : $this->$name;
+    }
+
+
     /**
      * @param $value
      * @throws \Throwable
