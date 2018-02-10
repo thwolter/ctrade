@@ -6,6 +6,7 @@ use App\Classes\Output\Price;
 use App\Entities\Asset;
 use App\Entities\Position;
 use App\Facades\AssetService;
+use App\Facades\CurrencyService;
 use App\Facades\DataService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -17,34 +18,69 @@ class AssetServiceTest extends TestCase
     use RefreshDatabase;
 
 
-    public function test_it_returns_the_price_at_given_date()
+    public function test_it_returns_the_price_for_asset_in_domestic_currency()
     {
-
-    }
-
-    public function test_it_returns_the_asset_value_in_domestic_currency()
-    {
-        $asset = factory(Asset::class)->states('EUR')->create();
-        $asset->obtain($this->createPosition(['price' => 15, 'amount' => 2]));
+        $asset = factory(Asset::class)->states('domestic')->create();
+        $date = '2017-12-01';
 
         DataService::shouldReceive('priceAt')
             ->once()
-            ->andReturn(new Price(null, 25, 'EUR'));
+            ->andReturn(new Price($date, 25, 'EUR'));
 
-        $this->assertEquals(50, AssetService::value($asset)->value);
+        $expect = new Price($date, 25, 'EUR');
+        $this->assertEquals($expect, AssetService::priceAt($asset, $date));
+    }
+
+
+    public function test_it_returns_the_price_for_asset_in_foreign_currency()
+    {
+        $asset = factory(Asset::class)->states('foreign')->create();
+        $date = '2017-12-12';
+
+        DataService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn(new Price($date, 25, 'EUR'));
+
+        CurrencyService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn(new Price($date, 1.2, 'EUR'));
+
+        $expect = new Price($date, 25*1.2, 'EUR');
+        $this->assertEquals($expect, AssetService::priceAt($asset, $date));
+    }
+
+
+    public function test_it_returns_the_asset_value_in_domestic_currency()
+    {
+        $asset = factory(Asset::class)->states('domestic')->create();
+        $asset->obtain($this->createPosition(['price' => 15, 'amount' => 2]));
+        $date = '2017-12-12';
+
+        DataService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn(new Price($date, 25, 'EUR'));
+
+        $expect = new Price($date, 2 * 25, 'EUR');
+        $this->assertEquals($expect, AssetService::value($asset));
     }
 
 
     public function test_it_returns_the_asset_value_in_foreign_currency()
     {
-        $asset = factory(Asset::class)->states('EUR')->create();
+        $asset = factory(Asset::class)->states('foreign')->create();
         $asset->obtain($this->createPosition(['price' => 15, 'amount' => 2]));
+        $date = '2017-12-12';
 
         DataService::shouldReceive('priceAt')
             ->once()
-            ->andReturn(new Price(null, 25, 'EUR'));
+            ->andReturn(new Price($date, 25, 'EUR'));
 
-        $this->assertEquals(50, AssetService::value($asset)->value);
+        CurrencyService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn(new Price($date, 1.2, 'EUR'));
+
+        $expect = new Price($date, 2 * 25 * 1.2, 'EUR');
+        $this->assertEquals($expect, AssetService::value($asset));
     }
 
 

@@ -8,6 +8,7 @@ use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 use App\Entities\Asset;
 use App\Facades\DataService;
+use App\Facades\CurrencyService;
 use App\Facades\RiskService\RiskService;
 use Carbon\Carbon;
 
@@ -100,7 +101,10 @@ class AssetService
 
     public function priceAt(Asset $asset, $date, $exchange = null)
     {
-        return DataService::priceAt($asset->positionable, $date, $exchange);
+        $price = DataService::priceAt($asset->positionable, $date, $exchange);
+        $fxrate = $this->getFxRate($asset, $date);
+
+        return $price->multiply($fxrate);
     }
 
     /**
@@ -153,6 +157,20 @@ class AssetService
     public function price(Asset $asset, $exchange = null)
     {
         return $this->priceAt($asset->positionable, $this->now(), $exchange);
+    }
+
+    /**
+     * @param Asset $asset
+     * @param $date
+     * @return int
+     */
+    private function getFxRate(Asset $asset, $date)
+    {
+        if ($asset->hasForeignCurrency()) {
+            $fxrate = CurrencyService::priceAt($asset->currency, $asset->portfolio->currency, $date);
+        }
+
+        return isset($fxrate) ? $fxrate->value : 1;
     }
 
 }

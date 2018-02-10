@@ -14,6 +14,7 @@ use App\Entities\Position;
 use App\Entities\Provider;
 use App\Entities\Stock;
 use App\Entities\User;
+use App\Services\AssetService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -195,5 +196,19 @@ class FactoryTest extends TestCase
 
         $datasource = factory(Datasource::class)->states('Quandl')->create();
         $this->assertDatabaseHas('datasources', ['id' => $datasource->id]);
+    }
+
+
+    public function test_can_create_asset_in_portfolio_currency()
+    {
+        $asset = factory(Asset::class)->states('domestic')->create();
+        $this->assertEquals($asset->currency, $asset->portfolio->currency);
+    }
+
+
+    public function test_can_create_asset_in_foreign_currency()
+    {
+        $asset = factory(Asset::class)->states('foreign')->create();
+        $this->assertNotEquals($asset->currency, $asset->portfolio->currency);
     }
 }
