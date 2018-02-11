@@ -199,6 +199,9 @@ class FactoryTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_can_create_asset_in_portfolio_currency()
     {
         $asset = factory(Asset::class)->states('domestic')->create();
@@ -206,6 +209,9 @@ class FactoryTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_can_create_asset_in_foreign_currency()
     {
         $asset = factory(Asset::class)->states('foreign')->create();

@@ -10,21 +10,28 @@ trait FakeAssetsTrait
 {
 
     /**
-     * @return mixed
+     * @param array $array
+     * @param string|null $currency
+     *
+     * @return Position
      */
-    protected function createPosition($array = [])
+    protected function createPosition($array = [], $currency = null)
     {
-        $position = factory(Position::class)->create();
+        $position = $currency
+            ? factory(Position::class)->states($currency)->create()
+            : factory(Position::class)->create();
+
         $position->update($array);
 
         return $position;
     }
 
-    protected function createAssetWithTrades($trades, $currency = 'EUR')
+    protected function domesticAssetWithTrades($trades)
     {
-        $asset = factory(Asset::class)->states($currency)->create();
+        $asset = factory(Asset::class)->states('domestic')->create();
 
         foreach ($trades as $trade) {
+            if (array_has($trade, 'fxrate')) $trade['fxrate'] = 1;
             $asset->obtain($this->createPosition($trade));
         }
 
@@ -32,4 +39,14 @@ trait FakeAssetsTrait
     }
 
 
+    protected function foreignAssetWithTrades($trades)
+    {
+        $asset = factory(Asset::class)->states('foreign')->create();
+
+        foreach ($trades as $trade) {
+            $asset->obtain($this->createPosition($trade));
+        }
+
+        return $asset;
+    }
 }

@@ -22,6 +22,7 @@ class Position extends Model
         'executed_at',
         'amount',
         'price',
+        'fxrate'
     ];
 
     protected $dates = [

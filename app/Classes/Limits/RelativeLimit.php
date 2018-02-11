@@ -23,4 +23,9 @@ class RelativeLimit extends AbstractLimit
     {
         return new Price($this->limit->date, $this->limit->value, $this->limit->portfolio->currency->code);
     }
+
+    public function title()
+    {
+        // TODO: Implement title() method.
+    }
 }

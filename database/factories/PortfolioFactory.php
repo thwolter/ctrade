@@ -1,11 +1,13 @@
 <?php
 
-
+use Faker\Generator as Faker;
+use App\Entities\Asset;
 use App\Entities\Portfolio;
+use App\Entities\Position;
 use App\Entities\User;
 use App\Entities\Currency;
 
-$factory->define(Portfolio::class, function(Faker\Generator $faker) {
+$factory->define(Portfolio::class, function(Faker $faker) {
 
     $currency = Currency::firstOrCreate(['code' => factory(Currency::class)->make()->code]);
 

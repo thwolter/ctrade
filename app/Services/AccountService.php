@@ -25,7 +25,7 @@ class AccountService
      */
     public function balance(Portfolio $portfolio, $date = null)
     {
-        $date = $date ? Carbon::parse($date) : Carbon::now();
+        $date = Carbon::parse($date);
 
         $cash = $portfolio->payments()
             ->where('executed_at', '<=', $date->endOfDay())

@@ -247,6 +247,7 @@ return [
         \App\Providers\AssetServiceServiceProvider::class,
         \App\Providers\StockServiceServiceProvider::class,
         \App\Providers\CurrencyServiceServiceProvider::class,
+        \App\Providers\PositionServiceServiceProvider::class,
 
 
     ],

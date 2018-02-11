@@ -25,6 +25,9 @@ class CurrencyServiceTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_history_returns_rate_for_EURUSD()
     {
         $this->mockDataService();
@@ -33,6 +36,9 @@ class CurrencyServiceTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_history_returns_reciprocal_rate_for_USDEUR()
     {
         $this->mockDataService();
@@ -41,12 +47,23 @@ class CurrencyServiceTest extends TestCase
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function test_priceAt_returns_fxrate_for_given_date()
     {
         $this->mockDataService();
 
+        CcyPair::firstOrCreate(['origin' => 'EUR', 'target' => 'USD']);
+
         $this->assertEquals($this->dataCloseAt27,
             CurrencyService::priceAt('EUR', 'USD', '2017-12-27')->getValue()
+        );
+
+        $this->mockDataService();
+
+        $this->assertEquals(1/ $this->dataCloseAt27,
+            CurrencyService::priceAt('USD', 'EUR', '2017-12-27')->getValue()
         );
     }
 

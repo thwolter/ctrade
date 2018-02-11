@@ -54,12 +54,14 @@ class AssetModelTest extends TestCase
      */
     public function test_it_returns_the_amount_at_given_date()
     {
-        $asset = $this->createAssetWithTrades($this->trades);
+        $asset = $this->domesticAssetWithTrades($this->trades);
 
         $this->assertEquals(0, $asset->amountAt('2017-11-30'));
         $this->assertEquals(1, $asset->amountAt('2017-12-01'));
         $this->assertEquals(3, $asset->amountAt('2017-12-06'));
+        $this->assertEquals(2, $asset->amountAt('2017-12-10'));
         $this->assertEquals(2, $asset->amountAt('2017-12-12'));
+
         $this->assertEquals(0, $asset->amountAt('2017-12-16'));
         $this->assertEquals(0, $asset->amountAt(Carbon::now()->toDateString()));
     }
@@ -74,7 +76,7 @@ class AssetModelTest extends TestCase
             ['price' => 12, 'amount' => 5, 'executed_at' => '2017-12-20']
         );
 
-        $asset = $this->createAssetWithTrades($this->trades);
+        $asset = $this->domesticAssetWithTrades($this->trades);
         $this->assertEquals(5, $asset->amount);
     }
 

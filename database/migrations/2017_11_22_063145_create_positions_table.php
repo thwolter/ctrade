@@ -19,6 +19,7 @@ class CreatePositionsTable extends Migration
             $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
             $table->float('amount');
             $table->float('price');
+            $table->float('fxrate')->default(1);
             $table->dateTime('executed_at');
             $table->softDeletes();
             $table->timestamps();

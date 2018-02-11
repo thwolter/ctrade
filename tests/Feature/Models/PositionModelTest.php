@@ -24,7 +24,7 @@ class PositionModelTest extends TestCase
      */
     public function test_can_receive_positions_executed_before_a_given_date()
     {
-        $asset = $this->createAssetWithTrades($this->trades);
+        $asset = $this->domesticAssetWithTrades($this->trades);
 
         $this->assertEquals(0, $asset->positions()->until('2017-11-20')->count());
         $this->assertEquals(1, $asset->positions()->until('2017-12-01')->count());

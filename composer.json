@@ -20,7 +20,7 @@
         "cviebrock/eloquent-sluggable": "^4.2",
         "dannyben/php-quandl": "^0.5.2",
         "dirkolbrich/yahoo-finance-query": "dev-master",
-        "doctrine/dbal": "^2.5",
+        "doctrine/dbal": "^2.6",
         "filp/whoops": "^2.1",
         "guzzlehttp/guzzle": "^6.3",
         "hieu-le/active": "^3.4",
@@ -86,7 +86,9 @@
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan clear-compiled",
             "php artisan ide-helper:generate",
-            "php artisan ide-helper:meta"
+            "php artisan ide-helper:meta",
+            "php artisan ide-helper:models --nowrite"
+
         ]
     },
     "config": {

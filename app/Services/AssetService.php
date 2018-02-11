@@ -9,7 +9,6 @@ use App\Classes\Output\Price;
 use App\Entities\Asset;
 use App\Facades\CurrencyService;
 use App\Facades\DataService;
-use App\Facades\RiskService\RiskService;
 use Carbon\Carbon;
 
 class AssetService
@@ -26,9 +25,8 @@ class AssetService
     public function costValue(Asset $asset, $date = null)
     {
         if ($asset->amountAt($date) == 0) return null;
-        $cost = $this->invested($asset, $date)->value / $asset->amountAt($date);
 
-        return new Price($date, $cost, $asset->currency->code);
+        return $this->invested($asset, $date)->multiply(1 / $asset->amountAt($date));
     }
 
 
@@ -45,10 +43,10 @@ class AssetService
         $investment = 0;
 
         foreach ($asset->positions()->until($date)->get() as $position) {
-            $investment += $position->price * $position->amount;
+            $investment += $position->price * $position->amount * $position->fxrate;
         }
 
-        return new Price($date, $investment, $asset->currency->code);
+        return new Price($date, $investment, $asset->portfolio->currency->code);
     }
 
 
@@ -71,10 +69,14 @@ class AssetService
      * Return the asset's delta between current value and invested amount.
      *
      * @param Asset $asset
+     * @param string $date
+     *
      * @return Price
      */
-    public function returnAbsolute(Asset $asset)
+    public function returnAbsolute(Asset $asset, $date = null)
     {
+        $date = Carbon::parse($date)->toDateString();
+
         $delta = $this->value($asset)->getValue() - $this->invested($asset)->getValue();
         return new Price($this->now(), $delta, $asset->currency->code);
     }
@@ -93,13 +95,30 @@ class AssetService
         return $this->valueAt($asset, $this->now(), $exchange);
     }
 
-
+    /**
+     * Calculates the Asset's value for a specified date.
+     *
+     * @param Asset $asset
+     * @param string $date
+     * @param string|null $exchange
+     *
+     * @return Price
+     */
     public function valueAt(Asset $asset, $date, $exchange = null)
     {
         return $this->priceAt($asset, $date, $exchange)->multiply($asset->amountAt($date));
     }
 
 
+    /**
+     * Return the asset's price at a specified date.
+     *
+     * @param Asset $asset
+     * @param string $date
+     * @param string|null $exchange
+     *
+     * @return Price
+     */
     public function priceAt(Asset $asset, $date, $exchange = null)
     {
         $price = DataService::priceAt($asset->positionable, $date, $exchange);
