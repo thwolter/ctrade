@@ -120,25 +120,30 @@ class AssetModelTest extends TestCase
         $this->assertEquals($payments->sum('amount'), $asset->payments->sum('amount'));
     }
 
+    /**
+     * @throws \Exception
+     */
     public function test_receive_settlement_amount()
     {
-        $asset = factory(Asset::class)->create();
-
         $position = factory(Position::class)->create();
 
-        $asset->obtain($position);
+        $position->obtain(factory(Payment::class)->create([
+            'amount' => 10, 'type' => 'settlement', 'executed_at' => '2017-12-12'
+        ]));
 
-        $position->payments()
-            ->create([
-                'amount' => 10,
-                'type' => 'settlement',
-                'price' => 15
-            ]);
+        $position->obtain(factory(Payment::class)->create([
+            'amount' => 15, 'type' => 'payment', 'executed_at' => '2017-12-13'
+        ]));
 
+        $position->obtain(factory(Payment::class)->create([
+            'amount' => 20, 'type' => 'settlement', 'executed_at' => '2017-12-14'
+        ]));
 
+        $this->assertEquals(0, $position->asset->settled('2017-12-11'));
+        $this->assertEquals(10, $position->asset->settled('2017-12-12'));
+        $this->assertEquals(10, $position->asset->settled('2017-12-13'));
+        $this->assertEquals(30, $position->asset->settled('2017-12-14'));
+        $this->assertEquals(30, $position->asset->settled('2017-12-15'));
 
-
-
-        $this->assertEquals(0, $asset->settled('2017-12-24'));
     }
 }

@@ -63,7 +63,7 @@ class Asset extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function obtain($position)
+    public function obtain(Position $position)
     {
         return $this->positions()->save($position);
     }
@@ -101,6 +101,11 @@ class Asset extends Model
     public function hasForeignCurrency()
     {
         return $this->currency->code != $this->portfolio->currency->code;
+    }
+
+    public function settled($date = '')
+    {
+        return $this->payments()->until($date)->ofType('settlement')->get()->sum('amount');
     }
 
     /*

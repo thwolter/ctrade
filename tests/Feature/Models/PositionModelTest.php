@@ -46,7 +46,7 @@ class PositionModelTest extends TestCase
         $position = factory(Position::class)->create();
         $payment = factory(Payment::class)->make();
 
-        $this->assertTrue($position->obtain($payment, 'Xetra'));
+        $this->assertIsClass(Payment::class, $position->obtain($payment, 'Xetra'));
         $this->assertDatabaseHas('payments', ['amount' => $payment->amount]);
         $this->assertEquals('Xetra', $position->payments->first()->exchange->code);
     }

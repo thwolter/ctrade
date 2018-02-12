@@ -70,7 +70,7 @@ class Position extends Model
                 ->save();
         }
 
-        return true;
+        return $payment;
     }
 
     /*
