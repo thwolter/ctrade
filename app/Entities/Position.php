@@ -59,7 +59,19 @@ class Position extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function obtain(Payment $payment, $exchange = '')
+    {
+        $this->asset->portfolio->payments()->save($payment);
+        $payment->position()->associate($this)->save();
 
+        if ($exchange) {
+            $payment->exchange()
+                ->associate(Exchange::firstOrCreate(['code' => $exchange])->first())
+                ->save();
+        }
+
+        return true;
+    }
 
     /*
     |--------------------------------------------------------------------------

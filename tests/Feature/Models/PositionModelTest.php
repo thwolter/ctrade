@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Models;
 
+use App\Entities\Payment;
+use App\Entities\Position;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,5 +36,18 @@ class PositionModelTest extends TestCase
 
         $this->assertEquals(10, $positions->first()->price);
         $this->assertEquals(20, $positions->last()->price);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function test_can_obtain_a_payment()
+    {
+        $position = factory(Position::class)->create();
+        $payment = factory(Payment::class)->make();
+
+        $this->assertTrue($position->obtain($payment, 'Xetra'));
+        $this->assertDatabaseHas('payments', ['amount' => $payment->amount]);
+        $this->assertEquals('Xetra', $position->payments->first()->exchange->code);
     }
 }

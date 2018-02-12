@@ -3,7 +3,9 @@
 namespace Tests\Feature\Models;
 
 use App\Entities\Asset;
+use App\Entities\Payment;
 use App\Entities\Portfolio;
+use App\Entities\Position;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -105,4 +107,38 @@ class AssetModelTest extends TestCase
         $this->assertFalse($asset->hasForeignCurrency());
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function test_return_payments_through_positions()
+    {
+        $payments = factory(Payment::class, 3)->create([
+            'position_id' => factory(Position::class)->create()
+        ]);
+
+        $asset = $payments->first()->position->asset;
+        $this->assertEquals($payments->sum('amount'), $asset->payments->sum('amount'));
+    }
+
+    public function test_receive_settlement_amount()
+    {
+        $asset = factory(Asset::class)->create();
+
+        $position = factory(Position::class)->create();
+
+        $asset->obtain($position);
+
+        $position->payments()
+            ->create([
+                'amount' => 10,
+                'type' => 'settlement',
+                'price' => 15
+            ]);
+
+
+
+
+
+        $this->assertEquals(0, $asset->settled('2017-12-24'));
+    }
 }

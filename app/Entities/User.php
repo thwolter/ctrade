@@ -118,7 +118,7 @@ class User extends Authenticatable
 
     public function obtain(Portfolio $portfolio)
     {
-        $this->portfolios()->save($portfolio);
+        return $this->portfolios()->save($portfolio);
     }
 
 

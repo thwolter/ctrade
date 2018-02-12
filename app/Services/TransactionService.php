@@ -38,7 +38,7 @@ class TransactionService
     public function withdraw($portfolio, $attributes)
     {
         $portfolio->payments()->create([
-            'type' => 'withdrawal',
+            'type' => 'payment',
             'amount' => -$attributes['amount'],
             'executed_at' => $attributes['date']
         ]);
@@ -65,11 +65,11 @@ class TransactionService
 
     public function payFees($portfolio, $attributes, $position = null)
     {
-        if ($attributes['fees'] != 0) {
+        if ($attributes['fee'] != 0) {
 
             $portfolio->payments()->create([
-                'type' => 'fees',
-                'amount' => -$attributes['fees'],
+                'type' => 'fee',
+                'amount' => -$attributes['fee'],
                 'executed_at' => $attributes['executed']
             ])->position()->associate($position)->save();
         }

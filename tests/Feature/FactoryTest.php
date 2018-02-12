@@ -9,6 +9,7 @@ use App\Entities\Database;
 use App\Entities\Dataset;
 use App\Entities\Datasource;
 use App\Entities\Exchange;
+use App\Entities\Payment;
 use App\Entities\Portfolio;
 use App\Entities\Position;
 use App\Entities\Provider;
@@ -216,5 +217,12 @@ class FactoryTest extends TestCase
     {
         $asset = factory(Asset::class)->states('foreign')->create();
         $this->assertNotEquals($asset->currency, $asset->portfolio->currency);
+    }
+
+
+    public function test_can_create_payments()
+    {
+        $payment = factory(Payment::class)->create();
+        $this->assertDatabaseHas('payments', ['id' => $payment->id]);
     }
 }

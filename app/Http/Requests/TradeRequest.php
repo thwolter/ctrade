@@ -37,7 +37,7 @@ class TradeRequest extends FormRequest
             'currency'          => 'required|string',
             'amount'            => 'required|numeric',
             'price'             => 'required|numeric|min:0',
-            'fees'              => 'required|nullable|numeric|min:0',
+            'fee'              => 'required|nullable|numeric|min:0',
             'executed'          => [
                 'required',
                 new AfterPortfolioCreation(Portfolio:: find($this->portfolioId)),

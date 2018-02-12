@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use App\Classes\Output\Price;
+use App\Entities\Asset;
 use App\Entities\Portfolio;
 use Carbon\Carbon;
 
@@ -23,14 +24,21 @@ class AccountService
      * @param string|null $date
      * @return Price
      */
-    public function balance(Portfolio $portfolio, $date = null)
+    public function portfolioBalance(Portfolio $portfolio, $date = null)
     {
         $date = Carbon::parse($date);
 
-        $cash = $portfolio->payments()
-            ->where('executed_at', '<=', $date->endOfDay())
+        $balance = $portfolio->payments()
+            ->until($date)
             ->sum('amount');
 
-        return new Price($date, $cash, $portfolio->currency->code);
+        return new Price($date, (float)$balance, $portfolio->currency->code);
+    }
+
+    public function assetBalance(Asset $asset, $date = null)
+    {
+        $date = Carbon::parse($date);
+
+        return $asset->payments()->until($date)->sum('amount');
     }
 }

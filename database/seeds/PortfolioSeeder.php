@@ -52,10 +52,10 @@ class PortfolioSeeder extends Seeder
         TransactionService::trade($portfolio, [
             'instrumentType' => Stock::class,
             'instrumentId' => 88,
-            'transaction' => 'buy',
+            'transaction' => 'settlement',
             'amount' => 100,
             'price' => '60',
-            'fees' => 19.50,
+            'fee' => 19.50,
             'exchange' => 'Xetra',
             'executed' => '2017-12-05'
         ]);
@@ -63,10 +63,10 @@ class PortfolioSeeder extends Seeder
         TransactionService::trade($portfolio, [
             'instrumentType' => Stock::class,
             'instrumentId' => 88,
-            'transaction' => 'buy',
+            'transaction' => 'settlement',
             'amount' => 10,
             'price' => '70',
-            'fees' => 19.50,
+            'fee' => 19.50,
             'exchange' => 'Xetra',
             'executed' => '2017-12-15'
         ]);
@@ -74,10 +74,10 @@ class PortfolioSeeder extends Seeder
         TransactionService::trade($portfolio, [
             'instrumentType' => Stock::class,
             'instrumentId' => 88,
-            'transaction' => 'sell',
+            'transaction' => 'settlement',
             'amount' => -10,
             'price' => '65',
-            'fees' => 19.50,
+            'fee' => 19.50,
             'exchange' => 'Xetra',
             'executed' => '2017-12-20'
         ]);
@@ -93,10 +93,10 @@ class PortfolioSeeder extends Seeder
         TransactionService::trade($portfolio, [
             'instrumentType' => Stock::class,
             'instrumentId' => 91,
-            'transaction' => 'buy',
+            'transaction' => 'settlement',
             'amount' => 50,
             'price' => '66',
-            'fees' => 0,
+            'fee' => 0,
             'exchange' => 'Xetra',
             'executed' => '2017-12-10'
         ]);

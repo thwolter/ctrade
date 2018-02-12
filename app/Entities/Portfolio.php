@@ -130,7 +130,7 @@ class Portfolio extends Model
      */
     public function obtain($asset)
     {
-        $this->assets()->save($asset);
+        return $this->assets()->save($asset);
     }
 
 

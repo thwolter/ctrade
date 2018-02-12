@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Presenters\Presentable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -23,7 +24,7 @@ class Payment extends Model
     protected $fillable = [
         'amount',
         'type',
-        'fees',
+        'fee',
         'executed_at'
     ];
 
@@ -75,6 +76,16 @@ class Payment extends Model
         return $query->where($this->getTable().'.updated_at', '>=', $date);
     }
 
+    public function scopeUntil($query, $date)
+    {
+        $date = Carbon::parse($date)->endOfDay();
+        return $query->where($this->getTable(). '.executed_at', '<=', $date);
+    }
+
+    public function scopeOfType($query, $types)
+    {
+        return $query->whereIn('type', array_wrap($types));
+    }
 
     /*
     |--------------------------------------------------------------------------

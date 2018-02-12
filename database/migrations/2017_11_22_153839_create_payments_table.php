@@ -20,9 +20,9 @@ class CreatePaymentsTable extends Migration
             $table->integer('position_id')->nullable()->unsigned();
             $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
             $table->integer('payment_id')->nullable();
-            $table->enum('type',['fees', 'deposit', 'withdrawal', 'buy', 'sell']);
+            $table->enum('type',['fee', 'payment', 'settlement']);
             $table->integer('exchange_id')->nullable();
-            $table->float('amount');
+            $table->float('amount', 24, 2);
             $table->dateTime('executed_at');
             $table->softDeletes();
             $table->timestamps();

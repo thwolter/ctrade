@@ -19,17 +19,17 @@ class Payment extends Presenter
     private $position;
 
     private $labels = [
-        'buy'           => 'g-bg-teal',
-        'sell'          => 'g-bg-red',
+        'settlement'           => 'g-bg-teal',
+        'settlement'          => 'g-bg-red',
         'deposit'       => 'g-bg-blue',
-        'withdrawal'    => 'g-bg-orange',
-        'fees'          => 'g-bg-yellow'
+        'payment'    => 'g-bg-orange',
+        'fee'          => 'g-bg-yellow'
     ];
 
     private $describeType = [
         'deposit'       => 'Bareinzahlung',
-        'withdrawal'    => 'Barauszahlung',
-        'fees'          => 'Gebühren'
+        'payment'    => 'Barauszahlung',
+        'fee'          => 'Gebühren'
     ];
 
     public function __construct($entity)
@@ -40,7 +40,7 @@ class Payment extends Presenter
 
     private function getPosition()
     {
-        return in_array($this->entity->type, ['buy', 'sell']) ? $this->entity->position : null;
+        return in_array($this->entity->type, ['settlement']) ? $this->entity->position : null;
     }
 
 

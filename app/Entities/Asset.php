@@ -51,6 +51,12 @@ class Asset extends Model
         return $this->hasMany(Position::class);
     }
 
+
+    public function payments()
+    {
+        return $this->hasManyThrough(Payment::class, Position::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -59,8 +65,7 @@ class Asset extends Model
 
     public function obtain($position)
     {
-        $this->positions()->save($position);
-        return $this;
+        return $this->positions()->save($position);
     }
 
 

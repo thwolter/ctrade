@@ -29,7 +29,7 @@ return [
     'transaction'   => [
         'overview'      => 'Überblick',
         'deposit'       => 'Einzahlung',
-        'withdrawal'    => 'Auszahlung'
+        'payment'    => 'Auszahlung'
     ]
 
 
