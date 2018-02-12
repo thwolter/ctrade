@@ -127,10 +127,17 @@ class Portfolio extends Model
      * Obtain an asset.
      *
      * @param Asset $asset
+     * @return false|Model
      */
-    public function obtain($asset)
+    public function obtain(Asset $asset)
     {
         return $this->assets()->save($asset);
+    }
+
+
+    public function balance($date = '')
+    {
+        return $this->payments()->until($date)->sum('amount');
     }
 
 

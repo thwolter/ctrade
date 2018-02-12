@@ -15,7 +15,7 @@ class ValueService
 
     public function portfolioValue(Portfolio $portfolio, $date = null)
     {
-        $balance = AccountService::balance($portfolio, $date)->getValue();
+        $balance = $portfolio->balance($date);
         $valueAssets = $this->portfolioAssets($portfolio, $date)->getValue();
 
         return new Price($date, $valueAssets + $balance, $portfolio->currency->code);

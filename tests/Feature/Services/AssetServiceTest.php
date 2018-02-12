@@ -117,39 +117,6 @@ class AssetServiceTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function test_returns_the_assets_cost_value_for_domestic_asset()
-    {
-        $asset = $this->domesticAssetWithTrades($this->trades);
-
-        $currency = $asset->portfolio->currency->code;
-        $date = '2017-12-06';
-
-        $expect = new Price($date, 50/3, $currency);
-        $this->assertEquals($expect, AssetService::costValue($asset, $date));
-
-        $this->assertEquals(17.5, AssetService::costValue($asset, '2017-12-10')->value);
-    }
-
-
-    /**
-     * @throws \Exception
-     */
-    public function test_returns_the_assets_cost_value_for_foreign_asset()
-    {
-        $asset = $this->foreignAssetWithTrades($this->trades);
-
-        $currency = $asset->portfolio->currency->code;
-        $date = '2017-12-06';
-
-        $expect = new Price($date, 24, $currency);
-        $this->assertEquals($expect, AssetService::costValue($asset, $date));
-
-        $this->assertEquals(27.75, AssetService::costValue($asset, '2017-12-11')->value);
-    }
-
-    /**
-     * @throws \Exception
-     */
     public function test_cost_value_is_null_when_asset_has_no_positions()
     {
         $asset = $this->domesticAssetWithTrades($this->trades);

@@ -13,41 +13,6 @@ use Carbon\Carbon;
 
 class AssetService
 {
-    /**
-     * Return the cost value of the asset calculated based on buy/sell positions.
-     *
-     * @param Asset $asset
-     * @param null $date
-     * @return Price
-     *
-     * @throws \Throwable
-     */
-    public function costValue(Asset $asset, $date = null)
-    {
-        if ($asset->amountAt($date) == 0) return null;
-
-        return $this->invested($asset, $date)->multiply(1 / $asset->amountAt($date));
-    }
-
-
-    /**
-     * Return the invested amount in an asset based on buy/sell orders.
-     *
-     * @param Asset $asset
-     * @param null $date
-     *
-     * @return Price|int
-     */
-    private function invested(Asset $asset, $date = null)
-    {
-        $investment = 0;
-
-        foreach ($asset->positions()->until($date)->get() as $position) {
-            $investment += $position->price * $position->amount * $position->fxrate;
-        }
-
-        return new Price($date, $investment, $asset->portfolio->currency->code);
-    }
 
 
     /**
@@ -59,7 +24,7 @@ class AssetService
     public function returnPercent(Asset $asset)
     {
         $delta = $this->returnAbsolute($asset);
-        $ratio = $delta->getValue() / $this->invested($asset)->getValue();
+        $ratio = $delta->getValue() / $asset->settled();
 
         return new Percent($delta->getDate(), $ratio);
     }
@@ -77,7 +42,7 @@ class AssetService
     {
         $date = Carbon::parse($date)->toDateString();
 
-        $delta = $this->value($asset)->getValue() - $this->invested($asset)->getValue();
+        $delta = $this->value($asset)->getValue() - $asset->settled($date);
         return new Price($this->now(), $delta, $asset->currency->code);
     }
 

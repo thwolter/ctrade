@@ -103,6 +103,12 @@ class Asset extends Model
         return $this->currency->code != $this->portfolio->currency->code;
     }
 
+    public function costValue($date = '')
+    {
+        return $this->settled($date) / $this->amountAt($date);
+    }
+
+
     public function settled($date = '')
     {
         return $this->payments()->until($date)->ofType('settlement')->get()->sum('amount');

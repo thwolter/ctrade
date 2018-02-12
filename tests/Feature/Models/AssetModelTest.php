@@ -144,6 +144,17 @@ class AssetModelTest extends TestCase
         $this->assertEquals(10, $position->asset->settled('2017-12-13'));
         $this->assertEquals(30, $position->asset->settled('2017-12-14'));
         $this->assertEquals(30, $position->asset->settled('2017-12-15'));
+    }
 
+
+    /**
+     * @throws \Exception
+     */
+    public function test_receive_cost_value()
+    {
+        $asset = $this->assetWithTradesAndPayments($this->trades);
+
+        $this->assertEquals(50/3, $asset->costValue('2017-12-06'));
+        $this->assertEquals(17.5, $asset->costValue('2017-12-10'));
     }
 }

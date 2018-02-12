@@ -27,7 +27,7 @@ class PortfolioPresenter extends Presenter
 
     public function cash()
     {
-        return AccountService::balance($this->entity)->formatValue();
+        return Price::make(Carbon::now()->toDateString(), $this->entity->balance(), $this->entity->currency->code);
     }
 
 

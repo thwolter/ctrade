@@ -11,18 +11,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class PortfolioPresenterTest extends TestCase
 {
 
-    private $presenter;
+    private $portfolio;
 
     public function setUp()
     {
         parent::setUp();
 
-        $portfolio = factory(Portfolio::class)->create();
-        $this->presenter = new PortfolioPresenter($portfolio);
+        $this->portfolio = factory(Portfolio::class)->create();
     }
+
 
     public function test_it_returns_portfolio_value()
     {
-        $this->assertIsString($this->presenter->value());
+        $this->assertIsString($this->portfolio->present()->value());
     }
 }
