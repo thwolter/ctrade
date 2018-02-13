@@ -10,10 +10,15 @@ use App\Entities\Position;
 trait FakeAssetsTrait
 {
 
-    protected function domesticAssetWithTrades($trades)
+
+    protected function createAsset($trades, $domestic = true)
     {
-        $asset = factory(Asset::class)->states('domestic')->create();
-        $trades = $this->toDomestic($trades);
+        $state = $domestic ? 'domestic' : 'foreign';
+        $asset = factory(Asset::class)->states($state)->create();
+
+        if ($domestic) $trades = $this->toDomestic($trades);
+
+        $trades = $this->addAmount($trades);
 
         foreach ($trades as $trade) {
             $asset->obtain($this->createPosition($trade));
@@ -35,28 +40,6 @@ trait FakeAssetsTrait
         return $trades;
     }
 
-    protected function createAsset($trades, $domestic = true)
-    {
-        if ($domestic) {
-            $asset = factory(Asset::class)->states('domestic')->create();
-            $trades = $this->toDomestic($trades);
-
-        } else {
-            $asset = factory(Asset::class)->states('foreign')->create();
-        }
-
-        $trades = $this->addAmount($trades);
-
-        foreach ($trades as $trade) {
-
-            $position = $this->createPosition($trade);
-
-            $asset->obtain($position);
-        }
-
-        return $asset;
-    }
-
     /**
      * @param $trades
      * @return mixed
@@ -76,7 +59,7 @@ trait FakeAssetsTrait
      * @param $trade
      * @return Position
      */
-    protected function createPosition($trade)
+    protected function createPosition($trade = [])
     {
         if ($currency = array_get($trade, 'currency')) {
             $position = factory(Position::class)->states($currency)->create();
@@ -119,5 +102,17 @@ trait FakeAssetsTrait
         $position->update($array);
 
         return $position;
+    }
+
+    protected function domesticAssetWithTrades($trades)
+    {
+        $asset = factory(Asset::class)->states('domestic')->create();
+        $trades = $this->toDomestic($trades);
+
+        foreach ($trades as $trade) {
+            $asset->obtain($this->createPosition($trade));
+        }
+
+        return $asset;
     }
 }
