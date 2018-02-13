@@ -35,7 +35,7 @@ class TradeRequest extends FormRequest
             'instrumentType'    => 'required|string',
             'instrumentId'      => 'required|numeric',
             'currency'          => 'required|string',
-            'amount'            => 'required|numeric',
+            'number'            => 'required|numeric',
             'price'             => 'required|numeric|min:0',
             'fee'              => 'required|nullable|numeric|min:0',
             'executed'          => [

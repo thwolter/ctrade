@@ -79,7 +79,7 @@ class TransactionService
     private function makePosition($attributes)
     {
         return Position::make([
-            'amount' => $attributes['amount'],
+            'number' => $attributes['number'],
             'price' => $attributes['price'],
             'executed_at' => $attributes['executed']
         ]);

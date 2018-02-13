@@ -12,7 +12,7 @@ $factory->define(Position::class, function (Faker $faker) {
 
     return [
         'asset_id' => $asset->id,
-        'amount' => $faker->randomDigitNotNull,
+        'number' => $faker->randomDigitNotNull,
         'price' => $faker->randomFloat(2, 0, 200),
         'fxrate' => $faker->randomFloat(4, 0, 70),
         'executed_at' => $faker->dateTimeBetween($asset->portfolio->opened_at)

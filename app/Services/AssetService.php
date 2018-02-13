@@ -14,7 +14,6 @@ use Carbon\Carbon;
 class AssetService
 {
 
-
     /**
      * Return the asset's delta as a percentage.
      *
@@ -40,10 +39,8 @@ class AssetService
      */
     public function returnAbsolute(Asset $asset, $date = null)
     {
-        $date = Carbon::parse($date)->toDateString();
-
         $delta = $this->value($asset)->getValue() - $asset->settled($date);
-        return new Price($this->now(), $delta, $asset->currency->code);
+        return new Price($date, $delta, $asset->currency->code);
     }
 
 
@@ -71,7 +68,7 @@ class AssetService
      */
     public function valueAt(Asset $asset, $date, $exchange = null)
     {
-        return $this->priceAt($asset, $date, $exchange)->multiply($asset->amountAt($date));
+        return $this->priceAt($asset, $date, $exchange)->multiply($asset->numberAt($date));
     }
 
 
@@ -105,17 +102,6 @@ class AssetService
         }
 
         return isset($fxrate) ? $fxrate->value : 1;
-    }
-
-
-    /**
-     * Return the today's date.
-     *
-     * @return string
-     */
-    private function now()
-    {
-        return Carbon::now()->toDateString();
     }
 
 

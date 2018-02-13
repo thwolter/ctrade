@@ -45,9 +45,9 @@ class TestingDatabaseSeeder extends Seeder
     }
 
 
-    private function assignPosition($portfolio, $instrument, $amount)
+    private function assignPosition($portfolio, $instrument, $number)
     {
-        $position = new Position(['amount' => $amount]);
+        $position = new Position(['number' => $number]);
 
         $position->portfolio()->associate($portfolio);
         $position->positionable()->associate($instrument);

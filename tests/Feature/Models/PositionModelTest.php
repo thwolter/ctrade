@@ -15,10 +15,10 @@ class PositionModelTest extends TestCase
     use FakeAssetsTrait;
 
     private $trades = [
-        ['price' => 10, 'amount' => 1, 'executed_at' => '2017-12-01'],
-        ['price' => 20, 'amount' => 2, 'executed_at' => '2017-12-05'],
-        ['price' => 15, 'amount' => -1, 'executed_at' => '2017-12-10'],
-        ['price' => 18, 'amount' => -2, 'executed_at' => '2017-12-15'],
+        ['price' => 10, 'number' => 1, 'executed_at' => '2017-12-01'],
+        ['price' => 20, 'number' => 2, 'executed_at' => '2017-12-05'],
+        ['price' => 15, 'number' => -1, 'executed_at' => '2017-12-10'],
+        ['price' => 18, 'number' => -2, 'executed_at' => '2017-12-15'],
     ];
 
     /**

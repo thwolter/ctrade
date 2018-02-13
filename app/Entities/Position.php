@@ -20,7 +20,7 @@ class Position extends Model
 
     protected $fillable = [
         'executed_at',
-        'amount',
+        'number',
         'price',
         'fxrate'
     ];

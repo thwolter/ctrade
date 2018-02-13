@@ -25,10 +25,10 @@ class AssetModelTest extends TestCase
      * @var array
      */
     private  $trades = [
-        ['price' => 10, 'amount' => 1, 'executed_at' => '2017-12-01'],
-        ['price' => 20, 'amount' => 2, 'executed_at' => '2017-12-05'],
-        ['price' => 15, 'amount' => -1, 'executed_at' => '2017-12-10'],
-        ['price' => 18, 'amount' => -2, 'executed_at' => '2017-12-15'],
+        ['price' => 10, 'number' => 1, 'fxrate' => 1, 'type' => 'settlement', 'executed_at' => '2017-12-01'],
+        ['price' => 20, 'number' => 2, 'fxrate' => 1, 'type' => 'settlement', 'executed_at' => '2017-12-05'],
+        ['price' => 15, 'number' => -1, 'fxrate' => 1, 'type' => 'settlement', 'executed_at' => '2017-12-10'],
+        ['price' => 18, 'number' => -2, 'fxrate' => 1, 'type' => 'settlement', 'executed_at' => '2017-12-15'],
     ];
 
 
@@ -38,14 +38,14 @@ class AssetModelTest extends TestCase
     public function test_can_obtain_positions()
     {
         $asset = factory(Asset::class)->create();
-        $position = $this->createPosition();
+        $position = $this->createPlainPosition();
 
         $asset->obtain($position);
         $this->assertEquals(1, $asset->positions->count());
         $this->assertEquals($position->id, $asset->positions->first()->id);
 
 
-        $asset->obtain($this->createPosition());
+        $asset->obtain($this->createPlainPosition());
         $asset->refresh();
         $this->assertEquals(2, $asset->positions->count());
     }
@@ -54,32 +54,32 @@ class AssetModelTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function test_it_returns_the_amount_at_given_date()
+    public function test_it_returns_the_number_at_given_date()
     {
-        $asset = $this->domesticAssetWithTrades($this->trades);
+        $asset = $this->createAsset($this->trades);
 
-        $this->assertEquals(0, $asset->amountAt('2017-11-30'));
-        $this->assertEquals(1, $asset->amountAt('2017-12-01'));
-        $this->assertEquals(3, $asset->amountAt('2017-12-06'));
-        $this->assertEquals(2, $asset->amountAt('2017-12-10'));
-        $this->assertEquals(2, $asset->amountAt('2017-12-12'));
+        $this->assertEquals(0, $asset->numberAt('2017-11-30'));
+        $this->assertEquals(1, $asset->numberAt('2017-12-01'));
+        $this->assertEquals(3, $asset->numberAt('2017-12-06'));
+        $this->assertEquals(2, $asset->numberAt('2017-12-10'));
+        $this->assertEquals(2, $asset->numberAt('2017-12-12'));
 
-        $this->assertEquals(0, $asset->amountAt('2017-12-16'));
-        $this->assertEquals(0, $asset->amountAt(Carbon::now()->toDateString()));
+        $this->assertEquals(0, $asset->numberAt('2017-12-16'));
+        $this->assertEquals(0, $asset->numberAt(Carbon::now()->toDateString()));
     }
 
 
     /**
      * @throws \Exception
      */
-    public function test_it_has_property_amount_with_current_amount()
+    public function test_it_has_property_number_with_current_number()
     {
         $trades = array_push($this->trades,
-            ['price' => 12, 'amount' => 5, 'executed_at' => '2017-12-20']
+            ['price' => 12, 'number' => 5, 'executed_at' => '2017-12-20']
         );
 
-        $asset = $this->domesticAssetWithTrades($this->trades);
-        $this->assertEquals(5, $asset->amount);
+        $asset = $this->createAsset($this->trades);
+        $this->assertEquals(5, $asset->number);
     }
 
     /**
@@ -152,7 +152,7 @@ class AssetModelTest extends TestCase
      */
     public function test_receive_cost_value()
     {
-        $asset = $this->assetWithTradesAndPayments($this->trades);
+        $asset = $this->createAsset($this->trades);
 
         $this->assertEquals(50/3, $asset->costValue('2017-12-06'));
         $this->assertEquals(17.5, $asset->costValue('2017-12-10'));

@@ -40,14 +40,14 @@ class PortfolioModelTest extends TestCase
         factory(Payment::class, 3)->create([
             'portfolio_id' => $this->portfolio->id,
             'type' => 'settlement',
-            'amount' => 10.1,
+            'number' => 10.1,
             'executed_at' => '2017-12-20'
         ]);
 
         factory(Payment::class, 2)->create([
             'portfolio_id' => $this->portfolio->id,
             'type' => 'settlement',
-            'amount' => -5.2,
+            'number' => -5.2,
             'executed_at' => '2017-12-22'
         ]);
 

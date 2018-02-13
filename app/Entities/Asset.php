@@ -90,11 +90,11 @@ class Asset extends Model
      * @param $date
      * @return mixed
      */
-    public function amountAt($date = null)
+    public function numberAt($date = null)
     {
         return $this->positions()
             ->where('executed_at', '<=', Carbon::parse($date)->endOfDay())
-            ->sum('amount');
+            ->sum('number');
     }
 
 
@@ -105,7 +105,7 @@ class Asset extends Model
 
     public function costValue($date = '')
     {
-        return $this->settled($date) / $this->amountAt($date);
+        return $this->settled($date) / $this->numberAt($date);
     }
 
 
@@ -169,9 +169,9 @@ class Asset extends Model
     }
 
 
-    public function getAmountAttribute()
+    public function getNumberAttribute()
     {
-        return $this->amountAt();
+        return $this->numberAt();
     }
 
     public function getLabelAttribute()

@@ -39,7 +39,7 @@ class StockRisk implements RiskInterface
     {
         $date = $this->getDate($parameter);
 
-        return $this->instrumentDelta($asset->positionable, $parameter) * $asset->amountAt($date);
+        return $this->instrumentDelta($asset->positionable, $parameter) * $asset->numberAt($date);
     }
 
     /**

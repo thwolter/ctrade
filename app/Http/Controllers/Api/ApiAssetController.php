@@ -36,7 +36,7 @@ class ApiAssetController extends ApiBaseController
             'instrument'        => $asset->positionable->toArray(),
             'portfolioId'       => $asset->portfolio->id,
             'prices'            => $this->repo->collectHistories($asset->positionable->datasources),
-            'amount'            => $asset->amount(),
+            'number'            => $asset->number(),
             'cash'              => AccountService::balance($asset->portfolio)->getValue(),
         ];
     }
