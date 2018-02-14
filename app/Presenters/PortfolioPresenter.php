@@ -21,13 +21,17 @@ class PortfolioPresenter extends Presenter
 
     public function value()
     {
-        return ValueService::portfolioValue($this->entity)->formatValue();
+        return ValueService::portfolioValue($this->entity);
     }
-
 
     public function cash()
     {
-        return Price::make(Carbon::now()->toDateString(), $this->entity->balance(), $this->entity->currency->code);
+        return PortfolioService::cash($this->entity);
+    }
+
+    public function balance()
+    {
+        return PortfolioService::balance($this->entity);
     }
 
 

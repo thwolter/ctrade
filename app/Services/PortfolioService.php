@@ -18,6 +18,17 @@ class PortfolioService
     use StatusTrait;
 
 
+    public function balance(Portfolio $portfolio, $date = null)
+    {
+        return new Price(null, $portfolio->balance($date), $portfolio->currency->code);
+    }
+
+
+    public function cash(Portfolio $portfolio, $date = null)
+    {
+
+    }
+
     /**
      * Return an array of all asset and related fx histories.
      *

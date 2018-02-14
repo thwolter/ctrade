@@ -2,7 +2,10 @@
 
 namespace Tests\Feature\Presenters;
 
+use App\Classes\Output\Price;
 use App\Entities\Portfolio;
+use App\Facades\PortfolioService;
+use App\Facades\ValueService\ValueService;
 use App\Presenters\PortfolioPresenter;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -13,16 +16,45 @@ class PortfolioPresenterTest extends TestCase
 
     private $portfolio;
 
+    private $price;
+
+
     public function setUp()
     {
         parent::setUp();
 
         $this->portfolio = factory(Portfolio::class)->create();
+        $this->price = new Price(null, 123, $this->portfolio->currency->code);
     }
 
 
-    public function test_it_returns_portfolio_value()
+    /**
+     * @throws \Exception
+     */
+    public function test_methods_returns_value()
     {
-        $this->assertIsString($this->portfolio->present()->value());
+        ValueService::shouldReceive('portfolioValue')->once()->andReturn($this->price);
+
+        $this->assertEquals($this->price, $this->portfolio->present()->value());
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_methods_returns_cash()
+    {
+        PortfolioService::shouldReceive('cash')->once()->andReturn($this->price);
+        $this->assertEquals($this->price, $this->portfolio->present()->cash());
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_methods_returns_balance()
+    {
+        PortfolioService::shouldReceive('balance')->once()->andReturn($this->price);
+        $this->assertEquals($this->price, $this->portfolio->present()->balance());
     }
 }
