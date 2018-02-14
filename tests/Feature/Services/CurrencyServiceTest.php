@@ -4,6 +4,7 @@ namespace Tests\Feature\Services;
 
 use App\Classes\TimeSeries;
 use App\Entities\CcyPair;
+use App\Entities\Currency;
 use App\Facades\CurrencyService;
 use App\Facades\DataService;
 use Tests\TestCase;
@@ -31,8 +32,13 @@ class CurrencyServiceTest extends TestCase
     public function test_history_returns_rate_for_EURUSD()
     {
         $this->mockDataService();
-
         $this->assertEquals($this->timeSeries, CurrencyService::history('EUR', 'USD'));
+
+        $this->mockDataService();
+        $eur = Currency::whereCode('EUR')->first();
+        $usd = Currency::whereCode('USD')->first();
+        $this->assertEquals($this->timeSeries, CurrencyService::history($eur, $usd));
+
     }
 
 

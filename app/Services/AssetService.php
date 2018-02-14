@@ -23,9 +23,9 @@ class AssetService
     public function returnPercent(Asset $asset)
     {
         $delta = $this->returnAbsolute($asset);
-        $ratio = $delta->getValue() / $asset->settled();
+        $ratio = $delta->value / $asset->settled();
 
-        return new Percent($delta->getDate(), $ratio);
+        return new Percent($delta->date, $ratio);
     }
 
 
@@ -39,8 +39,8 @@ class AssetService
      */
     public function returnAbsolute(Asset $asset, $date = null)
     {
-        $delta = $this->value($asset)->getValue() - $asset->settled($date);
-        return new Price($date, $delta, $asset->currency->code);
+        $delta = $this->valueAt($asset, $date)->value - $asset->settled($date);
+        return new Price($date, $delta, $asset->currency);
     }
 
 
@@ -54,7 +54,7 @@ class AssetService
      */
     public function value(Asset $asset, $exchange = null)
     {
-        return $this->valueAt($asset, $this->now(), $exchange);
+        return $this->valueAt($asset, now(), $exchange);
     }
 
     /**
@@ -84,9 +84,8 @@ class AssetService
     public function priceAt(Asset $asset, $date, $exchange = null)
     {
         $price = DataService::priceAt($asset->positionable, $date, $exchange);
-        $fxrate = $this->getFxRate($asset, $date);
 
-        return $price->multiply($fxrate);
+        return $price->multiply($this->getFxRate($asset, $date));
     }
 
 
@@ -97,11 +96,9 @@ class AssetService
      */
     private function getFxRate(Asset $asset, $date)
     {
-        if ($asset->hasForeignCurrency()) {
-            $fxrate = CurrencyService::priceAt($asset->currency, $asset->portfolio->currency, $date);
-        }
-
-        return isset($fxrate) ? $fxrate->value : 1;
+        return $asset->hasForeignCurrency()
+            ? CurrencyService::priceAt($asset->currency, $asset->portfolio->currency, $date)->value
+            : 1;
     }
 
 
@@ -116,7 +113,7 @@ class AssetService
         $risk = $this->risk($asset);
         $value = $this->value($asset);
 
-        return new Percent($risk->getDate(), $risk->getValue() / $value->getValue());
+        return new Percent($risk->date, $risk->value / $value->value);
     }
 
 
@@ -130,7 +127,7 @@ class AssetService
      */
     public function price(Asset $asset, $exchange = null)
     {
-        return $this->priceAt($asset->positionable, $this->now(), $exchange);
+        return $this->priceAt($asset->positionable, now(), $exchange);
     }
 
 }

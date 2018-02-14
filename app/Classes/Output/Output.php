@@ -3,7 +3,9 @@
 namespace App\Classes\Output;
 
 
+use App\Entities\Currency;
 use App\Exceptions\AllowedTypeException;
+use App\Facades\Datasource;
 use Carbon\Carbon;
 
 class Output
@@ -20,11 +22,18 @@ class Output
     protected $formats = [];
 
 
+    /**
+     * Output constructor.
+     * @param $date
+     * @param float $value
+     * @param string|Currency $currency
+     * @throws \Throwable
+     */
     public function __construct($date, $value = null, $currency = null)
     {
         $this->date = Carbon::parse($date);
         $this->value = $this->checkType($value);
-        $this->currency = $currency;
+        $this->currency = is_string($currency) ? $currency : $currency->code;
     }
 
 

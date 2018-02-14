@@ -135,6 +135,10 @@ class Portfolio extends Model
     }
 
 
+    /**
+     * @param string $date
+     * @return float
+     */
     public function balance($date = '')
     {
         return $this->payments()->until($date)->sum('amount');

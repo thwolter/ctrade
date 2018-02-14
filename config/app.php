@@ -305,7 +305,6 @@ return [
         'Active' => HieuLe\Active\Facades\Active::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Countries'=> PragmaRX\Countries\Facade::class,
         'Lava' => Khill\Lavacharts\Laravel\LavachartsFacade::class,
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
@@ -316,7 +315,15 @@ return [
          * Custom Classes
          */
         'Datasource' => App\Facades\Datasource::class,
+        'AssetService' => \App\Facades\AssetService::class,
+        'CurrencyService' => \App\Facades\CurrencyService::class,
+        'DataService' => \App\Facades\DataService::class,
+        'LimitService' => \App\Facades\LimitService::class,
+        'PortfolioService' => \App\Facades\PortfolioService::class,
+        'PositionService' => \App\Facades\PositionService::class,
+        'StockService' => \App\Facades\StockService::class,
+        'TransactionService' => \App\Facades\TransactionService::class,
+        'RiskService' => \App\Facades\RiskService\RiskService::class
 
     ],
-
 ];

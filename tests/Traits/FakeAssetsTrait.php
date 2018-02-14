@@ -70,7 +70,7 @@ trait FakeAssetsTrait
         $position->update($trade);
 
         $payment = factory(Payment::class)
-            ->make(array_only($trade, ['type', 'amount', 'executed_at']));
+            ->make(array_add(array_only($trade, ['type', 'amount', 'executed_at']), 'type', 'settlement'));
 
         $position->obtain($payment);
         return $position;

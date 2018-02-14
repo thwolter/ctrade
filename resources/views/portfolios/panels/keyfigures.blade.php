@@ -40,15 +40,15 @@
                 <div class="g-font-size-35 g-font-weight-300 g-mb-7">
                     {{ $portfolio->present()->value() }}
                 </div>
-                <p> {{ $portfolio->present()->updatedValue() }}</p>
+                <p> {{ $portfolio->present()->value()->date }}</p>
             </div>
 
             <div class="col-lg-3 col-sm-6 g-mb-50">
                 <span class="u-label g-bg-bluegray g-mr-10 g-mb-15">Barbestand</span>
                 <div class="js-counter g-font-size-35 g-font-weight-300 g-mb-7">
-                    {{ $portfolio->present()->cash() }}
+                    {{ $portfolio->present()->balance() }}
                 </div>
-                <p>{{ $portfolio->present()->updatedToday() }}</p>
+                <p>{{ $portfolio->present()->balance()->date }}</p>
             </div>
 
             <div class="col-lg-3 col-sm-6 g-mb-50">
@@ -56,7 +56,7 @@
                 <div class="js-counter g-font-size-35 g-font-weight-300 g-mb-7">
                     {{  $portfolio->present()->profit() }}
                 </div>
-                <p>{{ $portfolio->present()->updatedValue() }}</p>
+                <p>{{ $portfolio->present()->profit()->date }}</p>
 
             </div>
 
@@ -65,7 +65,7 @@
                 <div class="js-counter g-font-size-35 g-font-weight-300 g-mb-7">
                     {{ $portfolio->present()->risk() }}
                 </div>
-                <p>{{ $portfolio->present()->updatedRisk() }}</p>
+                <p>{{ $portfolio->present()->risk()->date }}</p>
             </div>
         </div>
         <p>Gemäß deiner Einstellungen wird die Rendite auf Basis der Historie von

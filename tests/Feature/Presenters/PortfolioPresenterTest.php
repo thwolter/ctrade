@@ -6,7 +6,6 @@ use App\Classes\Output\Price;
 use App\Entities\Portfolio;
 use App\Facades\PortfolioService;
 use App\Facades\ValueService\ValueService;
-use App\Presenters\PortfolioPresenter;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,19 +41,10 @@ class PortfolioPresenterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function test_methods_returns_cash()
-    {
-        PortfolioService::shouldReceive('cash')->once()->andReturn($this->price);
-        $this->assertEquals($this->price, $this->portfolio->present()->cash());
-    }
-
-
-    /**
-     * @throws \Exception
-     */
     public function test_methods_returns_balance()
     {
         PortfolioService::shouldReceive('balance')->once()->andReturn($this->price);
+
         $this->assertEquals($this->price, $this->portfolio->present()->balance());
     }
 }

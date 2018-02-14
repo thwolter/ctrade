@@ -31,7 +31,7 @@
                 <tr class="">
                     <td class="align-middle">1</td>
                     <td class="align-middle">Cash</td>
-                    <td class="text-right">{{ $portfolio->present()->cash() }}</td>
+                    <td class="text-right">{{ $portfolio->present()->balance() }}</td>
                     <td></td>
                 </tr>
                 </tbody>

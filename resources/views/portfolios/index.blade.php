@@ -77,7 +77,7 @@
                                                 <span class="g-color-gray-light-v1">Wert</span>
                                             </div>
                                             <div class="col-4">
-                                                <h3 class="font-weight-light d-flex justify-content-center g-mb-minus-2">{{ $portfolio->present()->cash() }}</h3>
+                                                <h3 class="font-weight-light d-flex justify-content-center g-mb-minus-2">{{ $portfolio->present()->balance() }}</h3>
                                                 <span class="d-flex justify-content-center g-color-gray-light-v1">Cash</span>
                                             </div>
                                             <div class="col-4">

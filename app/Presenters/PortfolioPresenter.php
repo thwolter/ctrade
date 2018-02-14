@@ -24,10 +24,6 @@ class PortfolioPresenter extends Presenter
         return ValueService::portfolioValue($this->entity);
     }
 
-    public function cash()
-    {
-        return PortfolioService::cash($this->entity);
-    }
 
     public function balance()
     {
@@ -89,39 +85,6 @@ class PortfolioPresenter extends Presenter
         return $this->risk;
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | DATES
-    |--------------------------------------------------------------------------
-    */
-
-    public function updatedRisk()
-    {
-        return $this->getPortfolioVaR()->formatDate();
-    }
-
-    public function updatedToday()
-    {
-        return (new Output(Carbon::now()->toDateString()))->formatDate();
-    }
-
-    public function updatedReturn()
-    {
-        return $this->updatedValue();
-    }
-
-    public function updatedValue()
-    {
-        return ValueService::valueTotal($this->entity)->formatDate();
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | OTHERS
-    |--------------------------------------------------------------------------
-    */
 
     public function image()
     {

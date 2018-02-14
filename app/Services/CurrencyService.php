@@ -4,7 +4,9 @@ namespace App\Services;
 
 
 use App\Classes\Output\Price;
+use App\Classes\TimeSeries;
 use App\Entities\CcyPair;
+use App\Entities\Currency;
 use App\Facades\DataService;
 
 class CurrencyService
@@ -19,6 +21,12 @@ class CurrencyService
     }
 
 
+    /**
+     * @param string|Currency $origin
+     * @param string|Currency $target
+     *
+     * @return TimeSeries
+     */
     public function history($origin, $target)
     {
         $ccyPair = $this->getCcyPair($origin, $target);

@@ -5,11 +5,11 @@ namespace App\Services;
 use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 use App\Entities\Portfolio;
-use App\Facades\Repositories\KeyfigureRepository;
-use App\Jobs\Calculations\Joblet;
-use App\Jobs\Calculations\Traits\StatusTrait;
-use App\Repositories\CurrencyRepository;
+use App\Facades\AssetService;
+use App\Facades\CurrencyService;
 use App\Facades\DataService;
+use App\Facades\Repositories\KeyfigureRepository;
+use App\Jobs\Calculations\Traits\StatusTrait;
 
 
 class PortfolioService
@@ -18,15 +18,37 @@ class PortfolioService
     use StatusTrait;
 
 
+    /**
+     * Return the portfolio's account balance (that is, without value of positions).
+     *
+     * @param Portfolio $portfolio
+     * @param string $date
+     *
+     * @return Price
+     */
     public function balance(Portfolio $portfolio, $date = null)
     {
-        return new Price(null, $portfolio->balance($date), $portfolio->currency->code);
+        return new Price($date, (float)$portfolio->balance($date), $portfolio->currency);
     }
 
 
-    public function cash(Portfolio $portfolio, $date = null)
+    /**
+     * Return the value of portfolio's positions (without account balance).
+     *
+     * @param Portfolio $portfolio
+     * @param string $date
+     *
+     * @return Price
+     */
+    public function value(Portfolio $portfolio, $date = null)
     {
+        $value = 0;
 
+        foreach ($portfolio->assets as $asset) {
+            $value += AssetService::valueAt($asset, $date);
+        }
+
+        return new Price($date, $value, $portfolio->currency);
     }
 
     /**
@@ -54,8 +76,8 @@ class PortfolioService
     /**
      * Returns the history of an asset.
      *
-     * @param $asset
-     * @param $days
+     * @param Asset $asset
+     * @param array $attributes
      * @return array
      */
     private function assetHistory($asset, $attributes)
@@ -85,8 +107,10 @@ class PortfolioService
      */
     private function currencyHistory($asset, $days)
     {
-        $currency = new CurrencyRepository($this->currency->code, $asset->currency->code);
-        return [$currency->label() => $currency->history($days)];
+        $label = ?;
+        $history = CurrencyService::history($asset->currency, $asset->portfolio->currency);
+
+        return [$label => $history];
     }
 
 
@@ -167,7 +191,6 @@ class PortfolioService
     {
         return array_last($values) - array_first($values);
     }
-
 
 
     public function totalOfType(Portfolio $portfolio, $type)
