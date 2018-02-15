@@ -256,4 +256,22 @@ class TimeSeriesTest extends TestCase
             $this->timeseries->reciprocal()->getClose()
         );
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function test_assign_attributes_by_array()
+    {
+        $this->assertEquals(4, count($this->timeseries->attributes([
+            'count' => 4
+        ])->getClose()));
+
+        $this->assertEquals(3, count($this->timeseries->attributes([
+            'from' => '2017-12-22', 'to' => '2017-12-27'
+        ])->getClose()));
+
+        $this->assertEquals(6, count($this->timeseries->attributes([
+            'from' => '2017-12-22', 'to' => '2017-12-27', 'fill' => true
+        ])->getClose()));
+    }
 }

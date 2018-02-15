@@ -118,7 +118,7 @@ class TimeSeries
             return $this->column($field)->reverse()->count(1)->get();
         }
 
-        $this->throwException($name, $field);
+        $this->throwException($name);
     }
 
     /**
@@ -436,14 +436,13 @@ class TimeSeries
 
     /**
      * @param $name
-     * @param $field
      * @throws TimeSeriesException
      */
-    private function throwException($name, $field): void
+    private function throwException($name)
     {
         $message = substr($name, 0, 3) === 'get'
-            ? "Column $field not known."
-            : "No property $name available.";
+            ? "Cannot resolve '$name'."
+            : "No property '$name'' available.";
 
         throw new TimeSeriesException($message);
     }
@@ -547,5 +546,19 @@ class TimeSeries
         if (!is_array($array)) return false;
 
         return (count($array)) ? is_array(array_values($array)[0]) : false;
+    }
+
+
+    /**
+     * @param $attributes
+     * @return TimeSeries
+     */
+    public function attributes($attributes)
+    {
+        $copy = $this;
+        foreach ($attributes as $key => $value) {
+            $copy = $copy->$key($value);
+        }
+        return $copy;
     }
 }

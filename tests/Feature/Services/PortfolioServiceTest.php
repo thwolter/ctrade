@@ -2,18 +2,23 @@
 
 namespace Tests\Feature\Services;
 
+use App\Classes\TimeSeries;
 use App\Entities\Asset;
 use App\Entities\Payment;
 use App\Entities\Portfolio;
 use App\Facades\AssetService;
+use App\Facades\DataService;
 use App\Facades\PortfolioService;
+use App\Facades\CurrencyService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\FakeHistoryTrait;
 
 class PortfolioServiceTest extends TestCase
 {
 
+    use FakeHistoryTrait;
 
     /**
      * @throws \Exception
@@ -37,5 +42,40 @@ class PortfolioServiceTest extends TestCase
        $asset = factory(Asset::class)->create();
        AssetService::shouldReceive('valueAt')->once()->andReturn(123);
        $this->assertEquals(123, PortfolioService::value($asset->portfolio)->value);
+   }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_returns_the_portfolios_price_history()
+   {
+       $portfolio = factory(Portfolio::class)->create();
+       $dAsset = factory(Asset::class)->states('domestic')->create(['portfolio_id' => $portfolio->id]);
+       $fAsset = factory(Asset::class)->states('foreign')->create(['portfolio_id' => $portfolio->id]);
+
+       DataService::shouldReceive('history')
+           ->twice()->andReturn(new TimeSeries($this->data, $this->columns));
+
+       CurrencyService::shouldReceive('history')
+           ->once()->andReturn(new TimeSeries($this->dataReciprocal, $this->columns));
+
+       $assetTs = (new TimeSeries($this->data, $this->columns))
+           ->weekdays()->fill()->from('2017-12-22')->to('2017-12-29')->getClose();
+
+       $currencyTs = (new TimeSeries($this->dataReciprocal, $this->columns))
+           ->weekdays()->fill()->from('2017-12-22')->to('2017-12-29')->getClose();
+
+       $expect = [
+           $dAsset->label => $assetTs,
+           $fAsset->label => $assetTs,
+           $fAsset->positionable->currency->code => $currencyTs
+       ];
+
+       $this->assertEquals($expect, PortfolioService::priceHistory($portfolio, [
+           'from' => '2017-12-22', 'to' => '2017-12-29'
+       ]));
+
+
    }
 }

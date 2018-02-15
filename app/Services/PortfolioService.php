@@ -59,15 +59,16 @@ class PortfolioService
      *
      * @return array
      */
-    public function assetHistories(Portfolio $portfolio, $attributes)
+    public function priceHistory(Portfolio $portfolio, $attributes)
     {
+        $attributes = array_merge($attributes, ['weekdays' => true, 'fill' => true]);
         $assetHistory = [];
         foreach ($portfolio->assets as $asset) {
 
             $assetHistory += $this->assetHistory($asset, $attributes);
 
             if ($asset->hasForeignCurrency())
-                $assetHistory += $this->currencyHistory($asset, array_keys($assetHistory));
+                $assetHistory += $this->currencyHistory($asset, $attributes);
         }
         return $assetHistory;
     }
@@ -82,19 +83,9 @@ class PortfolioService
      */
     private function assetHistory($asset, $attributes)
     {
-        $history = DataService::history($asset->positionable)->weekdays();
+        $history = DataService::history($asset->positionable)->attributes($attributes);
 
-        if (array_has($attributes, ['count', 'date'])) {
-            $data = $history->count($attributes['count'])->to($attributes['date']);
-
-        } elseif (array_has($attributes, ['from', 'to'])) {
-            $data = $history->from($attributes['from'])->to($attributes['to']);
-
-        } else {
-            $data = $history;
-        }
-
-        return [$asset->label => $data->fill('previous')->getClose()];
+        return [$asset->label => $history->getClose()];
     }
 
 
@@ -105,12 +96,11 @@ class PortfolioService
      * @param $days
      * @return null|mixed
      */
-    private function currencyHistory($asset, $days)
+    private function currencyHistory($asset, $attributes)
     {
-        $label = ?;
         $history = CurrencyService::history($asset->currency, $asset->portfolio->currency);
 
-        return [$label => $history];
+        return [$asset->currency->code => $history->attributes($attributes)->getClose()];
     }
 
 

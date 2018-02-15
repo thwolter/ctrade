@@ -94,7 +94,7 @@ class RiskService
      */
     private function getPortfolioLogReturns(Portfolio $portfolio, $parameter)
     {
-        $histories = PortfolioService::assetHistories($portfolio, [
+        $histories = PortfolioService::priceHistory($portfolio, [
             'date' => array_get($parameter, 'date', Carbon::now()->toDateString()),
             'count' => $portfolio->settings('history')
         ]);
