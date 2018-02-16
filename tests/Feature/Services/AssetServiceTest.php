@@ -147,4 +147,20 @@ class AssetServiceTest extends TestCase
 
         $this->assertEquals(2, AssetService::returnAbsolute($asset, $date)->value);
     }
+    
+    
+    
+    public function test_can_calculate_absolute_return_for_a_day()
+    {
+        $asset = $this->createAsset($this->trades);
+        
+        $currency = $asset->portfolio->currency;
+        $date = now();
+         
+        DataService::shouldReceive('priceAt')
+            ->twice()
+            ->andReturn(new Price($date, 12, $currency));
+            
+        $this->assertEquals(0, AssetService::returnAbsolute($asset, null, 2)->value);
+    }
 }

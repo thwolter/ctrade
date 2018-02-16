@@ -34,13 +34,23 @@ class AssetService
      *
      * @param Asset $asset
      * @param string $date
+     * @param int $count
      *
      * @return Price
      */
-    public function returnAbsolute(Asset $asset, $date = null)
+    public function returnAbsolute(Asset $asset, $date = null, $count = null)
     {
-        $delta = $this->valueAt($asset, $date)->value - $asset->settled($date);
-        return new Price($date, $delta, $asset->currency);
+        $return = $this->valueAt($asset, $date)->value - $asset->settled($date);
+        
+        if ($count) {
+            
+            $compareDate = Carbon::parse($date)->subDays($count)->toDateString();
+            $compare = $this->valueAt($asset, $compareDate)->value - $asset->settled($compareDate);
+            
+            $return = $return - $compare;
+        }
+        
+        return new Price($date, $return, $asset->currency);
     }
 
 
@@ -70,6 +80,21 @@ class AssetService
     {
         return $this->priceAt($asset, $date, $exchange)->multiply($asset->numberAt($date));
     }
+
+
+    /**
+     * Return the Asset's price.
+     *
+     * @param Asset $asset
+     * @param string|null $exchange
+     *
+     * @return Price
+     */
+    public function price(Asset $asset, $exchange = null)
+    {
+        return $this->priceAt($asset->positionable, now(), $exchange);
+    }
+
 
 
     /**
@@ -115,19 +140,4 @@ class AssetService
 
         return new Percent($risk->date, $risk->value / $value->value);
     }
-
-
-    /**
-     * Return the Asset's price.
-     *
-     * @param Asset $asset
-     * @param string|null $exchange
-     *
-     * @return Price
-     */
-    public function price(Asset $asset, $exchange = null)
-    {
-        return $this->priceAt($asset->positionable, now(), $exchange);
-    }
-
 }
