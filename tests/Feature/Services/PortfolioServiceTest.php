@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Services;
 
+use App\Classes\Output\Price;
 use App\Classes\TimeSeries;
 use App\Entities\Asset;
 use App\Entities\Payment;
@@ -50,7 +51,7 @@ class PortfolioServiceTest extends TestCase
      */
     public function test_returns_the_portfolios_price_history()
    {
-       $portfolio = factory(Portfolio::class)->create();
+       $portfolio = factory(Portfolio::class)->states('EUR')->create();
        $dAsset = factory(Asset::class)->states('domestic')->create(['portfolio_id' => $portfolio->id]);
        $fAsset = factory(Asset::class)->states('foreign')->create(['portfolio_id' => $portfolio->id]);
 
@@ -75,7 +76,42 @@ class PortfolioServiceTest extends TestCase
        $this->assertEquals($expect, PortfolioService::priceHistory($portfolio, [
            'from' => '2017-12-22', 'to' => '2017-12-29'
        ]));
-
-
    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_returns_the_portfolio_absoluteReturn_for_domestic_assets()
+   {
+       $portfolio = factory(Portfolio::class)->states('EUR')->create();
+       factory(Asset::class)->states('domestic')->create(['portfolio_id' => $portfolio->id]);
+       factory(Asset::class)->states('domestic')->create(['portfolio_id' => $portfolio->id]);
+
+       AssetService::shouldReceive('returnAbsolute')
+           ->twice()->andReturn(new Price(now(), 10, 'EUR'));
+
+       $expect = new Price(now(), 20, 'EUR');
+
+       $this->assertEquals($expect, PortfolioService::absoluteReturn($portfolio));
+   }
+
+    /**
+     * @throws \Exception
+     */
+    public function test_returns_the_portfolio_absoluteReturn_for_foreign_assets()
+    {
+        $this->markTestSkipped('foreign asset return to be implemented');
+
+        $portfolio = factory(Portfolio::class)->states('EUR')->create();
+        factory(Asset::class)->states('domestic')->create(['portfolio_id' => $portfolio->id]);
+        factory(Asset::class)->states('foreign')->create(['portfolio_id' => $portfolio->id]);
+
+        AssetService::shouldReceive('returnAbsolute')
+            ->twice()->andReturn(new Price(now(), 10, 'EUR'));
+
+        $expect = new Price(now(), 20, 'EUR');
+
+        $this->assertEquals($expect, PortfolioService::absoluteReturn($portfolio));
+    }
 }

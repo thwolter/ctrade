@@ -54,9 +54,9 @@
             <div class="col-lg-3 col-sm-6 g-mb-50">
                 <span class="u-label g-bg-bluegray g-mr-10 g-mb-15">Gewinn/Verlust</span>
                 <div class="js-counter g-font-size-35 g-font-weight-300 g-mb-7">
-                    {{  $portfolio->present()->profit() }}
+                    {{  $portfolio->present()->absoluteReturn() }}
                 </div>
-                <p>{{ $portfolio->present()->profit()->date }}</p>
+                <p>{{ $portfolio->present()->absoluteReturn()->date }}</p>
 
             </div>
 

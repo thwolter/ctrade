@@ -20,23 +20,23 @@ class AssetService
      * @param Asset $asset
      * @return Percent
      */
-    public function returnPercent(Asset $asset)
+    public function returnPercent(Asset $asset, $date = null)
     {
-        $delta = $this->returnAbsolute($asset);
-        $ratio = $delta->value / $asset->settled();
+        $delta = $this->returnAbsolute($asset, $date);
 
-        return new Percent($delta->date, $ratio);
+        return new Percent($date, $delta->value / $asset->settled($date));
     }
 
 
     /**
-     * Return the asset's delta between current value and invested amount.
+     * Return the asset's delta between current value and invested amount in portfolio currency.
      *
      * @param Asset $asset
      * @param string $date
      *
      * @return Price
      */
+    //todo: shoulc receive $count to calculate return for some days
     public function returnAbsolute(Asset $asset, $date = null)
     {
         $delta = $this->valueAt($asset, $date)->value - $asset->settled($date);

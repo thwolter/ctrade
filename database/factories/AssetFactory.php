@@ -29,11 +29,9 @@ $factory->state(Asset::class, 'EUR', function() {
 
 $factory->state(Asset::class, 'domestic', function(Faker $faker) {
 
-    $currency = $faker->randomElement(['EUR', 'USD']);
-
     return [
-        'portfolio_id' => factory(Portfolio::class)->states($currency)->create()->id,
-        'positionable_id' => factory(Stock::class)->states($currency)->create()->id
+        'portfolio_id' => factory(Portfolio::class)->states('EUR')->create()->id,
+        'positionable_id' => factory(Stock::class)->states('EUR')->create()->id
     ];
 });
 

@@ -14,24 +14,23 @@ use App\Entities\Currency;
 use App\Entities\Portfolio;
 use App\Entities\User;
 
-use App\Facades\Repositories\LimitRepository;
 use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\UpdatePortfolio;
 
-use App\Repositories\PortfolioRepository;
+use App\Repositories\PortfolioRepository as Repository;
 use Illuminate\Http\Request;
 
 
 class PortfoliosController extends Controller
 {
 
-    protected $repo;
+    protected $repository;
 
 
-    public function __construct(PortfolioRepository $repo)
+    public function __construct(Repository $repository)
     {
         $this->middleware('auth');
-        $this->repo = $repo;
+        $this->repository = $repository;
     }
 
     /**
@@ -41,10 +40,11 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        $portfolios = User::findOrFail(auth()->id())->portfolios;
+        $portfolios = $this->repository->getUserPortfolio(auth()->user());
 
         return view('portfolios.index', compact('portfolios'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -58,6 +58,7 @@ class PortfoliosController extends Controller
         return view('portfolios.create', compact('currencies'));
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -66,7 +67,7 @@ class PortfoliosController extends Controller
      */
     public function store(CreatePortfolio $request)
     {
-        $portfolio = $this->repo->createPortfolio(auth()->user(), $request->all());
+        $portfolio = $this->repository->createPortfolio(auth()->user(), $request->all());
 
         return redirect()->route('portfolios.show', [$portfolio->slug]);
     }
@@ -75,13 +76,14 @@ class PortfoliosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param $slug
+     * @param Portfolio $portfolio
      * @return \Illuminate\Http\Response
      */
     public function show(Portfolio $portfolio)
     {
         return view('portfolios.show', compact('portfolio'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -96,6 +98,7 @@ class PortfoliosController extends Controller
 
         return view('portfolios.edit', compact('portfolio'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -154,6 +157,5 @@ class PortfoliosController extends Controller
             $portfolio->updateImage($file);
 
     }
-
 }
 

@@ -31,19 +31,19 @@ class PortfolioPresenter extends Presenter
     }
 
 
-    public function profit($days = null)
+    public function absoluteReturn($date)
     {
-        //return PortfolioService::profit($this->entity, $days)->formatValue();
+        return PortfolioService::absoluteReturn($this->entity, $date);
     }
 
 
     public function htmlProfit($days)
     {
-        $profit = PortfolioService::profit($this->entity, $days);
+        $profit = PortfolioService::absoluteReturn($this->entity, $days);
 
         if (!$profit) return null;
 
-        $percent = PortfolioService::profit($this->entity, $days, true)->getValue();
+        $percent = PortfolioService::absoluteReturn($this->entity, $days, true)->getValue();
 
         if ($profit->getValue() > 0)
             $class = "fa fa-caret-up g-color-green";
@@ -72,6 +72,10 @@ class PortfolioPresenter extends Presenter
     }
 
 
+    /**
+     * @return Price
+     * @throws \Exception
+     */
     private function getPortfolioVaR()
     {
         if (!$this->risk && $this->entity->assets->count()) {

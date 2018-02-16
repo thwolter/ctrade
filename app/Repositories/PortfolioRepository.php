@@ -23,6 +23,17 @@ class PortfolioRepository
         return Portfolio::where('id', $id)->first();
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function getUserPortfolio($user)
+    {
+        return User::findOrFail($user->id)->portfolios;
+    }
+
+
+
     /**
      * Create a portfolio with attributes which may be received from a request and persist
      * the portfolio with an assigned user.
