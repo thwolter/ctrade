@@ -17,7 +17,6 @@ class CurrencyService
         $price = $this->history($origin, $target)->to($date)->getLatestClose();
 
         return Price::fromArray($price, $target);
-
     }
 
 
@@ -39,6 +38,7 @@ class CurrencyService
             return DataService::history($ccyPair)->reciprocal();
         }
     }
+
 
     /**
      * @param $origin
