@@ -25,9 +25,9 @@ class AssetModelTest extends TestCase
      * @var array
      */
     private  $trades = [
-        ['price' => 10, 'number' => 1, 'fxrate' => 1, 'type' => 'settlement', 'executed_at' => '2017-12-01'],
-        ['price' => 20, 'number' => 2, 'fxrate' => 1, 'type' => 'settlement', 'executed_at' => '2017-12-05'],
-        ['price' => 15, 'number' => -1, 'fxrate' => 1, 'type' => 'settlement', 'executed_at' => '2017-12-10'],
+        ['price' => 10, 'number' => 1, 'fxrate' => 1.5, 'type' => 'settlement', 'executed_at' => '2017-12-01'],
+        ['price' => 20, 'number' => 2, 'fxrate' => 2, 'type' => 'settlement', 'executed_at' => '2017-12-05'],
+        ['price' => 15, 'number' => -1, 'fxrate' => 2, 'type' => 'settlement', 'executed_at' => '2017-12-10'],
         ['price' => 18, 'number' => -2, 'fxrate' => 1, 'type' => 'settlement', 'executed_at' => '2017-12-15'],
     ];
 
@@ -82,7 +82,7 @@ class AssetModelTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function test_returns_true_for_foreign_currency()
+    public function test_hasForeignCurrency_returns_true_for_foreign_currency()
     {
         $portfolio = factory(Portfolio::class)->states('USD')->create();
         $asset = factory(Asset::class)->states('EUR')->create();
@@ -95,7 +95,7 @@ class AssetModelTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function test_returns_false_for_domestic_currency()
+    public function test_hasForeignCurrency_returns_false_for_domestic_currency()
     {
         $portfolio = factory(Portfolio::class)->states('EUR')->create();
         $asset = factory(Asset::class)->states('EUR')->create();
@@ -124,13 +124,28 @@ class AssetModelTest extends TestCase
      */
     public function test_receive_settlement_amount()
     {
-        $asset = $this->createAsset($this->trades);
+        $asset = $this->createAsset($this->trades, false);
 
-        $this->assertEquals(10, $asset->settled('2017-12-01'));
-        $this->assertEquals(50, $asset->settled('2017-12-05'));
-        $this->assertEquals(35, $asset->settled('2017-12-10'));
-        $this->assertEquals(-1, $asset->settled('2017-12-15'));
-        $this->assertEquals(-1, $asset->settled());
+        $this->assertEquals(10, $asset->settlement('2017-12-01'));
+        $this->assertEquals(50, $asset->settlement('2017-12-05'));
+        $this->assertEquals(35, $asset->settlement('2017-12-10'));
+        $this->assertEquals(-1, $asset->settlement('2017-12-15'));
+        $this->assertEquals(-1, $asset->settlement());
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_receive_converted_settlement_amount()
+    {
+        $asset = $this->createAsset($this->trades, false);
+
+        $this->assertEquals(15, $asset->convertedSettlement('2017-12-01'));
+        $this->assertEquals(95, $asset->convertedSettlement('2017-12-05'));
+        $this->assertEquals(65, $asset->convertedSettlement('2017-12-10'));
+        $this->assertEquals(29, $asset->convertedSettlement('2017-12-15'));
+        $this->assertEquals(29, $asset->convertedSettlement());
     }
 
 

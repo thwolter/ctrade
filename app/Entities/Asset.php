@@ -105,13 +105,19 @@ class Asset extends Model
 
     public function costValue($date = '')
     {
-        return $this->settled($date) / $this->numberAt($date);
+        return $this->settlement($date) / $this->numberAt($date);
     }
 
 
-    public function settled($date = '')
+    public function settlement($date = '')
     {
-        return $this->payments()->until($date)->ofType('settlement')->get()->sum('amount');
+        return $this->positions()->until($date)->get()->sum('total');
+    }
+
+
+    public function convertedSettlement($date = null)
+    {
+        return $this->positions()->until($date)->get()->sum('convertedTotal');
     }
 
     /*

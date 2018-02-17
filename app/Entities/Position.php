@@ -73,6 +73,7 @@ class Position extends Model
         return $payment;
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -100,6 +101,18 @@ class Position extends Model
     public function getExchangeAttribute()
     {
         return $this->payments()->has('exchange')->first()->exchange->code;
+    }
+
+
+    public function getTotalAttribute()
+    {
+        return $this->price * $this->number;
+    }
+
+
+    public function getConvertedTotalAttribute()
+    {
+        return $this->total * $this->fxrate;
     }
 
     /*

@@ -44,7 +44,7 @@ class PortfolioService
         $value = 0;
 
         foreach ($portfolio->assets as $asset) {
-            $value += AssetService::valueAt($asset, $date);
+            $value += AssetService::convertedValueAt($asset, $date);
         }
 
         return new Price($date, $value, $portfolio->currency);
@@ -117,7 +117,7 @@ class PortfolioService
         $value = 0;
 
         foreach ($portfolio->assets as $asset) {
-            $value += AssetService::returnAbsolute($asset, $count)->value;
+            $value += AssetService::convertedYield($asset, $count)->value;
         }
 
         return new Price(now(), $value, $asset->currency);

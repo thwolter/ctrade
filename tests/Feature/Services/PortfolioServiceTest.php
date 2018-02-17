@@ -88,7 +88,7 @@ class PortfolioServiceTest extends TestCase
        factory(Asset::class)->states('domestic')->create(['portfolio_id' => $portfolio->id]);
        factory(Asset::class)->states('domestic')->create(['portfolio_id' => $portfolio->id]);
 
-       AssetService::shouldReceive('returnAbsolute')
+       AssetService::shouldReceive('convertedYield')
            ->twice()->andReturn(new Price(now(), 10, 'EUR'));
 
        $expect = new Price(now(), 20, 'EUR');
@@ -107,7 +107,7 @@ class PortfolioServiceTest extends TestCase
         factory(Asset::class)->states('domestic')->create(['portfolio_id' => $portfolio->id]);
         factory(Asset::class)->states('foreign')->create(['portfolio_id' => $portfolio->id]);
 
-        AssetService::shouldReceive('returnAbsolute')
+        AssetService::shouldReceive('convertedYield')
             ->twice()->andReturn(new Price(now(), 10, 'EUR'));
 
         $expect = new Price(now(), 20, 'EUR');

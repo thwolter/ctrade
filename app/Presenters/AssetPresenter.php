@@ -55,9 +55,9 @@ class AssetPresenter extends Presenter
         return $this->metrics->returnAbsolute($this->entity)->formatValue();
     }
 
-    public function returnPercent()
+    public function convertedYieldPercent()
     {
-        return $this->metrics->returnPercent($this->entity)->formatValue();
+        return $this->metrics->convertedYieldPercent($this->entity)->formatValue();
     }
 
     public function type()

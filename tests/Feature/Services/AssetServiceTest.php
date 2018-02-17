@@ -33,7 +33,7 @@ class AssetServiceTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function test_it_returns_the_asset_price_in_for_domestic_asset()
+    public function test_it_returns_the_asset_price_for_domestic_asset()
     {
         $asset = factory(Asset::class)->states('domestic')->create();
 
@@ -45,7 +45,7 @@ class AssetServiceTest extends TestCase
             ->andReturn(new Price($date, 25, $currency));
 
         $expect = new Price($date, 25, $currency);
-        $this->assertEquals($expect, AssetService::priceAt($asset, $date));
+        $this->assertEquals($expect, AssetService::convertedPriceAt($asset, $date));
     }
 
 
@@ -59,6 +59,21 @@ class AssetServiceTest extends TestCase
         $currency = $asset->portfolio->currency;
         $date = '2017-12-12';
 
+        $price = new Price($date, 123, $currency);
+        DataService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn($price);
+
+        $this->assertEquals($price, AssetService::priceAt($asset, $date));
+    }
+
+
+    public function test_return_the_converted_asset_price_for_foreign_asset()
+    {
+        $asset = factory(Asset::class)->states('foreign')->create();
+        $currency = $asset->portfolio->currency;
+        $date = '2017-12-12';
+
         DataService::shouldReceive('priceAt')
             ->once()
             ->andReturn(new Price($date, 123, $currency));
@@ -68,7 +83,23 @@ class AssetServiceTest extends TestCase
             ->andReturn(new Price($date, 1.2, $currency));
 
         $expect = new Price($date, 123 * 1.2, $currency);
-        $this->assertEquals($expect, AssetService::priceAt($asset, $date));
+
+        $this->assertEquals($expect, AssetService::convertedPriceAt($asset, $date));
+    }
+
+
+    public function test_return_the_converted_asset_price_for_domestic_asset()
+    {
+        $asset = factory(Asset::class)->states('domestic')->create();
+        $currency = $asset->portfolio->currency;
+        $date = '2017-12-12';
+
+        $price = new Price($date, 123, $currency);
+        DataService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn($price);
+
+        $this->assertEquals($price, AssetService::convertedPriceAt($asset, $date));
     }
 
 
@@ -77,7 +108,7 @@ class AssetServiceTest extends TestCase
      */
     public function test_it_returns_the_asset_value_for_domestic_asset()
     {
-        $asset = $this->domesticAssetWithTrades($this->trades);
+        $asset = $this->createAsset($this->trades, true);
 
         $currency = $asset->portfolio->currency;
         $date = '2017-12-06';
@@ -94,9 +125,9 @@ class AssetServiceTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function test_it_returns_the_asset_value_in_foreign_currency()
+    public function test_it_returns_the_asset_value_for_foreign_asset()
     {
-        $asset = $this->foreignAssetWithTrades($this->trades);
+        $asset = $this->createAsset($this->trades, false);
 
         $currency = $asset->portfolio->currency->code;
         $date = '2017-12-06';
@@ -110,16 +141,58 @@ class AssetServiceTest extends TestCase
             ->andReturn(new Price($date, 1.2, $currency));
 
         $expect = new Price($date, 3 * 25 * 1.2, $currency);
-        $this->assertEquals($expect, AssetService::valueAt($asset, $date));
+        $this->assertEquals($expect, AssetService::convertedValueAt($asset, $date));
     }
 
 
     /**
      * @throws \Exception
      */
-    public function test_absolute_return_is_trading_price_difference_at_trading_date()
+    public function test_it_returns_the_converted_asset_value_for_foreign_asset()
     {
-        $asset = $this->createAsset($this->trades);
+        $asset = $this->createAsset($this->trades, false);
+
+        $currency = $asset->portfolio->currency->code;
+        $date = '2017-12-06';
+
+        DataService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn(new Price($date, 25, $currency));
+
+        CurrencyService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn(new Price($date, 1.2, $currency));
+
+        $expect = new Price($date, 3 * 25 * 1.2, $currency);
+        $this->assertEquals($expect, AssetService::convertedValueAt($asset, $date));
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_it_returns_the_converted_asset_value_for_domestic_asset()
+    {
+        $asset = $this->createAsset($this->trades, true);
+
+        $currency = $asset->portfolio->currency->code;
+        $date = '2017-12-06';
+
+        $price = new Price($date, 25, $currency);
+        DataService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn($price);
+
+        $this->assertEquals($price, AssetService::convertedValueAt($asset, $date));
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_yield_is_trading_price_difference_at_trading_date_for_foreign_asset()
+    {
+        $asset = $this->createAsset($this->trades, false);
 
         $currency = $asset->portfolio->currency;
         $date = '2017-12-01';
@@ -128,15 +201,38 @@ class AssetServiceTest extends TestCase
             ->once()
             ->andReturn(new Price($date, 11, $currency));
 
-        $this->assertEquals(1, AssetService::returnAbsolute($asset, $date)->value);
+        CurrencyService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn(new Price($date, 1.2, $currency));
+
+        $this->assertEquals(1.2, AssetService::convertedYield($asset, $date)->value, '', 0.001);
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_yield_is_trading_price_difference_at_trading_date_for_domestic_asset()
+    {
+        $asset = $this->createAsset($this->trades, true);
+
+        $currency = $asset->portfolio->currency;
+        $date = '2017-12-01';
+
+        DataService::shouldReceive('priceAt')
+            ->twice()
+            ->andReturn(new Price($date, 11, $currency));
+
+        $this->assertEquals(1, AssetService::convertedYield($asset, $date)->value, '', 0.001);
+        $this->assertEquals(1, AssetService::yield($asset, $date)->value, '', 0.001);
     }
 
     /**
      * @throws \Exception
      */
-    public function test_absolute_return_is_value_difference_after_trading_date()
+    public function test_yield_is_value_difference_after_trading_date_for_foreign_asset()
     {
-        $asset = $this->createAsset($this->trades);
+        $asset = $this->createAsset($this->trades, false);
 
         $currency = $asset->portfolio->currency;
         $date = '2017-12-02';
@@ -145,14 +241,39 @@ class AssetServiceTest extends TestCase
             ->once()
             ->andReturn(new Price($date, 12, $currency));
 
-        $this->assertEquals(2, AssetService::returnAbsolute($asset, $date)->value);
+        CurrencyService::shouldReceive('priceAt')
+            ->once()
+            ->andReturn(new Price($date, 1.2, $currency));
+
+        $this->assertEquals(2.4, AssetService::convertedYield($asset, $date)->value, '', 0.001);
     }
-    
-    
-    
-    public function test_can_calculate_absolute_return_for_a_day()
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_yield_is_value_difference_after_trading_date_for_domestic_asset()
     {
-        $asset = $this->createAsset($this->trades);
+        $asset = $this->createAsset($this->trades, true);
+
+        $currency = $asset->portfolio->currency;
+        $date = '2017-12-02';
+
+        DataService::shouldReceive('priceAt')
+            ->twice()
+            ->andReturn(new Price($date, 12, $currency));
+
+        $this->assertEquals(2, AssetService::convertedYield($asset, $date)->value, '', 0.001);
+        $this->assertEquals(2, AssetService::yield($asset, $date)->value, '', 0.001);
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_get_yield_for_a_day_for_foreign_asset()
+    {
+        $asset = $this->createAsset($this->trades, false);
         
         $currency = $asset->portfolio->currency;
         $date = now();
@@ -160,7 +281,32 @@ class AssetServiceTest extends TestCase
         DataService::shouldReceive('priceAt')
             ->twice()
             ->andReturn(new Price($date, 12, $currency));
+
+        CurrencyService::shouldReceive('priceAt')
+            ->twice()
+            ->andReturn(new Price($date, 1.2, $currency));
             
-        $this->assertEquals(0, AssetService::returnAbsolute($asset, null, 2)->value);
+        $this->assertEquals(0, AssetService::convertedYieldPeriod($asset, 1)->value);
     }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function test_get_yield_for_a_day_for_domestic_asset()
+    {
+        $asset = $this->createAsset($this->trades, true);
+
+        $currency = $asset->portfolio->currency;
+        $date = now();
+
+        DataService::shouldReceive('priceAt')
+            ->times(4)
+            ->andReturn(new Price($date, 12, $currency));
+
+        $this->assertEquals(0, AssetService::convertedYieldPeriod($asset, 1)->value);
+        $this->assertEquals(0, AssetService::yieldPeriod($asset, 1)->value);
+    }
+
+    //todo: implement tests for yieldPercent both for converted and for periods
 }

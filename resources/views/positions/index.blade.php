@@ -111,7 +111,7 @@
                     <td class="align-middle text-right">
                         <p class="g-ma-0">{{ $asset->present()->value }}</p>
                         <p class="g-ma-0">{{ $asset->present()->returnAbsolute }}</p>
-                        <p class="g-ma-0">{{ $asset->present()->returnPercent }}</p>
+                        <p class="g-ma-0">{{ $asset->present()->convertedYieldPercent }}</p>
                     </td>
                     <td class="align-middle text-right">
                         <p class="g-ma-0">{{ $asset->present()->amount }}</p>
