@@ -4,6 +4,7 @@ namespace Tests\Feature\Services;
 
 use App\Classes\Output\Price;
 use App\Entities\Asset;
+use App\Exceptions\AssetServiceException;
 use App\Facades\AssetService;
 use App\Facades\CurrencyService;
 use App\Facades\DataService;

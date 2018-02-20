@@ -5,7 +5,6 @@ namespace Tests\Feature\Presenters;
 use App\Classes\Output\Price;
 use App\Entities\Portfolio;
 use App\Facades\PortfolioService;
-use App\Facades\ValueService\ValueService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,7 +31,7 @@ class PortfolioPresenterTest extends TestCase
      */
     public function test_methods_returns_value()
     {
-        ValueService::shouldReceive('portfolioValue')->once()->andReturn($this->price);
+        PortfolioService::shouldReceive('value')->once()->andReturn($this->price);
 
         $this->assertEquals($this->price, $this->portfolio->present()->value());
     }

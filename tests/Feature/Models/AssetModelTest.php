@@ -159,4 +159,13 @@ class AssetModelTest extends TestCase
         $this->assertEquals(50/3, $asset->costValue('2017-12-06'));
         $this->assertEquals(17.5, $asset->costValue('2017-12-10'));
     }
+
+
+    public function test_throw_exceptions_if_positionable_not_available()
+    {
+        $asset = factory(Asset::class)->create(['positionable_id' => 999999]);
+
+        $this->expectException(\Exception::class);
+        $asset->positionable;
+    }
 }

@@ -242,7 +242,6 @@ return [
         \App\Providers\RiskServiceServiceProvider::class,
         \App\Providers\PortfolioServiceServiceProvider::class,
         \App\Providers\TransactionServiceServiceProvider::class,
-        \App\Providers\ValueServiceServiceProvider::class,
         \App\Providers\AssetServiceServiceProvider::class,
         \App\Providers\StockServiceServiceProvider::class,
         \App\Providers\CurrencyServiceServiceProvider::class,

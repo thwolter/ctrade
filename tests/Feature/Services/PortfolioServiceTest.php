@@ -41,7 +41,7 @@ class PortfolioServiceTest extends TestCase
        $this->assertEquals(0, PortfolioService::value($portfolio)->value);
 
        $asset = factory(Asset::class)->create();
-       AssetService::shouldReceive('valueAt')->once()->andReturn(123);
+       AssetService::shouldReceive('convertedValueAt')->once()->andReturn(123);
        $this->assertEquals(123, PortfolioService::value($asset->portfolio)->value);
    }
 

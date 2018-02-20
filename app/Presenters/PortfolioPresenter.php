@@ -5,11 +5,9 @@ namespace App\Presenters;
 
 use App\Classes\Output\Output;
 use App\Classes\Output\Price;
-use App\Entities\Stock;
 use App\Facades\AccountService;
 use App\Facades\PortfolioService;
 use App\Facades\RiskService\RiskService;
-use App\Facades\ValueService\ValueService;
 use Carbon\Carbon;
 use Illuminate\Support\HtmlString;
 
@@ -21,7 +19,7 @@ class PortfolioPresenter extends Presenter
 
     public function value()
     {
-        return ValueService::portfolioValue($this->entity);
+        return PortfolioService::value($this->entity);
     }
 
 

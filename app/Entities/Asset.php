@@ -190,6 +190,20 @@ class Asset extends Model
         return $this->positions->last()->exchange;
     }
 
+    /**
+     * @return Model|null|object|static
+     * @throws \Exception
+     */
+    public function getPositionableAttribute()
+    {
+        $positionable = $this->positionable()->first();
+
+        if (!$positionable) {
+           throw new \Exception("$this->positionable_type $this->positionable_id not available.");
+        }
+
+        return $positionable;
+    }
 
     /*
     |--------------------------------------------------------------------------

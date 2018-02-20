@@ -1,18 +1,10 @@
 <?php
 
-/**
- * @purpose
- *
- * Provides CRUD for
- * portfolio with name and currency
- *
- */
 
 namespace App\Http\Controllers;
 
 use App\Entities\Currency;
 use App\Entities\Portfolio;
-use App\Entities\User;
 
 use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\UpdatePortfolio;

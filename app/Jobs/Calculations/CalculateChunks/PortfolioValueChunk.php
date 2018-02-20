@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Calculations\CalculateChunks;
 
-use App\Facades\ValueService\ValueService;
+use App\Facades\AssetService;
 use App\Jobs\Calculations\Joblet;
 use App\Jobs\Calculations\Traits\PersistTrait;
 use App\Jobs\Calculations\Traits\StatusTrait;
@@ -48,7 +48,7 @@ class PortfolioValueChunk implements ShouldQueue
     private function obtainAssetsValue($date)
     {
         $this->persist($this->joblet, $date,
-            ValueService::valueAssets($this->joblet->portfolio, $date->toDateString())->getValue()
+            AssetService::valueAt($this->joblet->portfolio, $date)->value
         );
     }
 

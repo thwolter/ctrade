@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Classes\Output\Percent;
 use App\Classes\Output\Price;
 use App\Entities\Asset;
+use App\Exceptions\AssetServiceException;
 use App\Facades\CurrencyService;
 use App\Facades\DataService;
 use Carbon\Carbon;
@@ -117,6 +118,7 @@ class AssetService
      * @param Asset $asset
      * @param Carbon|string $date
      * @param string|null $exchange
+     *
      * @return \App\Services\Price
      */
     public function priceAt(Asset $asset, $date, $exchange = null)
