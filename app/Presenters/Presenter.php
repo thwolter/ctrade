@@ -4,6 +4,7 @@
 namespace App\Presenters;
 
 use App\Exceptions\PresenterException;
+use App\Services\AssetService;
 use Carbon\Carbon;
 
 
@@ -17,6 +18,8 @@ abstract class Presenter
     protected $metricService;
 
     protected $replace = '/[^0-9,"."]/';
+
+    protected $serviceInstance;
 
     private $priceFormat;
 
@@ -83,5 +86,13 @@ abstract class Presenter
         }
 
         return $this->priceFormat;
+    }
+
+    protected function service()
+    {
+        if (!isset($serviceInstance)) {
+            $this->serviceInstance = new $this->service;
+        }
+        return $this->serviceInstance;
     }
 }

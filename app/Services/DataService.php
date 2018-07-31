@@ -98,12 +98,10 @@ class DataService
      * @param $date
      * @param string|null $exchange
      *
-     * @return Price
+     * @return float
      */
     public function priceAt($entity, $date, $exchange = null)
     {
-        $price = $this->history($entity, $exchange)->to($date)->count(1)->getClose();
-
-        return Price::fromArray($price, $entity->currency->code);
+        return array_first($this->history($entity, $exchange)->to($date)->count(1)->getClose());
     }
 }

@@ -55,6 +55,7 @@
 
     @includeWhen(Auth::guest(), 'layouts.header.guest')
     @includeWhen(Auth::check(), 'layouts.header.auth-floating')
+
 @show
 
 

@@ -3,6 +3,10 @@
 namespace App\Presenters;
 
 
+use App\Classes\Output\Percent;
+use App\Classes\Output\Price;
+use App\Facades\AssetService;
+
 class AssetPresenter extends Presenter
 {
 
@@ -10,35 +14,67 @@ class AssetPresenter extends Presenter
         'Stock' => 'Aktie'
     ];
 
+
     public function name()
     {
         return $this->entity->name;
     }
+
 
     public function isin()
     {
         return $this->position()->isin;
     }
 
+
     private function position()
     {
         return $this->entity->positionable;
     }
+
 
     public function wkn()
     {
         return $this->position()->wkn;
     }
 
+
+    public function convertedYieldPercent()
+    {
+        return new Percent(now(), AssetService::convertedYieldPercent($this->entity, now()));
+    }
+
+
+    public function yieldPercent()
+    {
+        return new Percent(now(), AssetService::yieldPercent($this->entity, now()));
+
+    }
+
+
+    public function convertedYieldPeriodPercent()
+    {
+
+    }
+
+
+    public function yieldPeriodPercent()
+    {
+
+    }
+
+
     public function costValue()
     {
-        return $this->metrics->costValue($this->entity)->formatValue();
+        return new Price(null, $this->entity->settlement, $this->entity->currency);
     }
+
 
     public function investment()
     {
         return $this->metrics->investment($this->entity)->formatValue();
     }
+
 
     public function deltaPosition($count = 1)
     {
@@ -55,10 +91,6 @@ class AssetPresenter extends Presenter
         return $this->metrics->returnAbsolute($this->entity)->formatValue();
     }
 
-    public function convertedYieldPercent()
-    {
-        return $this->metrics->convertedYieldPercent($this->entity)->formatValue();
-    }
 
     public function type()
     {

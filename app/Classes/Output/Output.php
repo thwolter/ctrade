@@ -33,7 +33,10 @@ class Output
     {
         $this->date = Carbon::parse($date);
         $this->value = $this->checkType($value);
-        $this->currency = is_string($currency) ? $currency : $currency->code;
+
+        if ($currency) {
+            $this->currency = is_string($currency) ? $currency : $currency->code;
+        }
     }
 
 

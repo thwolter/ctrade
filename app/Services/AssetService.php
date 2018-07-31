@@ -19,13 +19,13 @@ class AssetService
      * Return the asset's delta as a percentage.
      *
      * @param Asset $asset
-     * @return Percent
+     * @param null $date
+     *
+     * @return float|int
      */
     public function convertedYieldPercent(Asset $asset, $date = null)
     {
-        $yieldRatio = $this->convertedYield($asset, $date)->value / $asset->convertedSettlement($date);
-
-        return new Percent($date, $yieldRatio);
+        return $this->convertedYield($asset, $date) / $asset->convertedSettlement($date);
     }
 
 
@@ -33,13 +33,13 @@ class AssetService
      * Return the asset's delta as a percentage.
      *
      * @param Asset $asset
-     * @return Percent
+     * @param null $date
+     *
+     * @return float|int
      */
     public function yieldPercent(Asset $asset, $date = null)
     {
-        $yieldRatio = $this->convertedYield($asset, $date)->value / $asset->settlement($date);
-
-        return new Percent($date, $yieldRatio);
+        return $this->convertedYield($asset, $date) / $asset->settlement($date);
     }
 
 
@@ -47,13 +47,13 @@ class AssetService
      * Return the asset's delta as a percentage.
      *
      * @param Asset $asset
-     * @return Percent
+     * @param int $count
+     *
+     * @return float|int
      */
     public function convertedYieldPeriodPercent(Asset $asset, $count = 1)
     {
-        $yieldRatio = $this->convertedYield($asset, $count)->value / $asset->convertedSettlement();
-
-        return new Percent(now(), $yieldRatio);
+        return $this->convertedYield($asset, $count) / $asset->convertedSettlement();
     }
 
 
@@ -61,13 +61,13 @@ class AssetService
      * Return the asset's delta as a percentage.
      *
      * @param Asset $asset
-     * @return Percent
+     * @param int $count
+     *
+     * @return float|int
      */
     public function yieldPeriodPercent(Asset $asset, $count = 1)
     {
-        $yieldRatio = $this->convertedYield($asset, $count)->value / $asset->settlement();
-
-        return new Percent(now(), $yieldRatio);
+        return $this->convertedYield($asset, $count) / $asset->settlement();
     }
 
 
@@ -76,14 +76,11 @@ class AssetService
      *
      * @param Asset $asset
      * @param string $date
-     * @return Price
+     * @return float
      */
     public function convertedYield(Asset $asset, $date = null)
     {
-        $yield = $this->convertedValueAt($asset, $date)->value
-            - $asset->convertedSettlement($date);
-
-        return new Price($date, $yield, $asset->portfolio->currency);
+        return $this->convertedValueAt($asset, $date) - $asset->convertedSettlement($date);
     }
 
     /**
@@ -93,11 +90,11 @@ class AssetService
      * @param string $date
      * @param string|null $exchange
      *
-     * @return Price
+     * @return float|int
      */
     public function convertedValueAt(Asset $asset, $date, $exchange = null)
     {
-        return $this->valueAt($asset, $date, $exchange)->multiply($this->getFxRate($asset, $date));
+        return $this->valueAt($asset, $date, $exchange) * $this->getFxRate($asset, $date);
     }
 
     /**
@@ -107,11 +104,11 @@ class AssetService
      * @param string $date
      * @param string|null $exchange
      *
-     * @return Price
+     * @return float
      */
     public function valueAt(Asset $asset, $date, $exchange = null)
     {
-        return $this->priceAt($asset, $date, $exchange)->multiply($asset->numberAt($date));
+        return $this->priceAt($asset, $date, $exchange) * $asset->numberAt($date);
     }
 
     /**
@@ -119,7 +116,7 @@ class AssetService
      * @param Carbon|string $date
      * @param string|null $exchange
      *
-     * @return \App\Services\Price
+     * @return float
      */
     public function priceAt(Asset $asset, $date, $exchange = null)
     {
@@ -134,7 +131,7 @@ class AssetService
     private function getFxRate(Asset $asset, $date = null)
     {
         return $asset->hasForeignCurrency()
-            ? CurrencyService::priceAt($asset->currency, $asset->portfolio->currency, $date)->value
+            ? CurrencyService::priceAt($asset->currency, $asset->portfolio->currency, $date)
             : 1;
     }
 
@@ -144,16 +141,13 @@ class AssetService
      * @param Asset $asset
      * @param int $count
      *
-     * @return Price
+     * @return float
      */
     public function convertedYieldPeriod(Asset $asset, $count = 1)
     {
         $compareDate = Carbon::now()->subDays($count)->toDateString();
 
-        $yield = $this->convertedYield($asset)->value
-            - $this->convertedYield($asset, $compareDate)->value;
-
-        return new Price(now(), $yield, $asset->currency);
+        return $this->convertedYield($asset) - $this->convertedYield($asset, $compareDate);
     }
 
     /**
@@ -162,16 +156,13 @@ class AssetService
      * @param Asset $asset
      * @param int $count
      *
-     * @return Price
+     * @return float
      */
     public function yieldPeriod(Asset $asset, $count = 1)
     {
         $compareDate = Carbon::now()->subDays($count)->toDateString();
 
-        $yield = $this->yield($asset)->value
-            - $this->yield($asset, $compareDate)->value;
-
-        return new Price(now(), $yield, $asset->currency);
+        return $this->yield($asset) - $this->yield($asset, $compareDate);
     }
 
     /**
@@ -179,14 +170,11 @@ class AssetService
      *
      * @param Asset $asset
      * @param string $date
-     * @return Price
+     * @return float
      */
     public function yield(Asset $asset, $date = null)
     {
-        $yield = $this->valueAt($asset, $date)->value
-            - $asset->settlement($date);
-
-        return new Price($date, $yield, $asset->currency);
+        return $this->valueAt($asset, $date) - $asset->settlement($date);
     }
 
     /**
@@ -195,7 +183,7 @@ class AssetService
      * @param Asset $asset
      * @param string|null $exchange
      *
-     * @return Price
+     * @return float
      */
     public function convertedPrice(Asset $asset, $exchange = null)
     {
@@ -209,27 +197,22 @@ class AssetService
      * @param string $date
      * @param string|null $exchange
      *
-     * @return Price
+     * @return float
      */
     public function convertedPriceAt(Asset $asset, $date, $exchange = null)
     {
-        return $this
-            ->priceAt($asset, $date, $exchange)
-            ->multiply($this->getFxRate($asset, $date));
+        return $this->priceAt($asset, $date, $exchange) * $this->getFxRate($asset, $date);
     }
 
     /**
      * Return the risk to value ratio.
      *
      * @param Asset $asset
-     * @return Percent
+     * @return float
      */
     public function riskToValueRatio(Asset $asset)
     {
-        $risk = $this->risk($asset);
-        $value = $this->value($asset);
-
-        return new Percent($risk->date, $risk->value / $value->value);
+        return $this->risk($asset) / $value = $this->value($asset);
     }
 
     /**
@@ -251,11 +234,11 @@ class AssetService
      * @param Asset $asset
      * @param string|null $exchange
      *
-     * @return Price
+     * @return float
      */
     public function convertedValue(Asset $asset, $exchange = null)
     {
-        return $this->valueAt($asset, now(), $exchange)->multiply($this->getFxRate($asset));
+        return $this->valueAt($asset, now(), $exchange) * $this->getFxRate($asset);
     }
 
 }
