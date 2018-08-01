@@ -27,7 +27,6 @@
 
                 @include('layouts.navigation.partials.home')
                 @include('layouts.navigation.partials.main')
-                @include('layouts.navigation.partials.auth')
 
             </ul>
         </div>

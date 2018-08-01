@@ -51,13 +51,7 @@
 <body>
 
 <!-- Header -->
-@section('header')
-
-    @includeWhen(Auth::guest(), 'layouts.header.guest')
-    @includeWhen(Auth::check(), 'layouts.header.auth-floating')
-
-@show
-
+@include('layouts.header.header')
 
 <main id="wrapper">
 
