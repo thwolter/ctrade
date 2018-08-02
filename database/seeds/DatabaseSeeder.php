@@ -14,10 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CurrencySeeder::class);
         $this->call(SettingsTableSeeder::class);
         $this->call(RolesSeeder::class);
-        $this->call(ExchangeSeeder::class);
         $this->call(LanguageTableSeeder::class);
 
         $this->dev();
@@ -27,7 +25,6 @@ class DatabaseSeeder extends Seeder
     {
         if (! App::environment('production')) {
             $this->call(UserSeeder::class);
-            $this->call(PortfolioSeeder::class);
         }
     }
 }

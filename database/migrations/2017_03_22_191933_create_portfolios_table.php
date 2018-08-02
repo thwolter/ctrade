@@ -15,17 +15,10 @@ class CreatePortfoliosTable extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->increments('id');
-            $table->uuid('uuid')->unique();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
             $table->string('slug');
-            $table->integer('currency_id');
-            $table->string('description')->nullable();
-            $table->json('settings')->nullable();
-            $table->boolean('public')->default(false);
-            $table->datetime('opened_at');
-            $table->softDeletes();
             $table->timestamps();
         });
     }

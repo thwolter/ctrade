@@ -32,7 +32,7 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        $portfolios = $this->repository->getUserPortfolio(auth()->user());
+        $portfolios = $this->repository->getUserPortfolios(auth()->user());
 
         return view('portfolios.index', compact('portfolios'));
     }
@@ -45,9 +45,9 @@ class PortfoliosController extends Controller
      */
     public function create()
     {
-        $currencies = Currency::getEnumValuesAsAssociativeArray('code');
+        $this->repository->createPortfolio(auth()->user(), []);
 
-        return view('portfolios.create', compact('currencies'));
+        return redirect()->route('portfolios.index');
     }
 
 

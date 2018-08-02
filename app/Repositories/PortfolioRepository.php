@@ -27,11 +27,10 @@ class PortfolioRepository
     /**
      * @return mixed
      */
-    public function getUserPortfolio($user)
+    public function getUserPortfolios($user)
     {
         return User::findOrFail($user->id)->portfolios;
     }
-
 
 
     /**
@@ -42,45 +41,13 @@ class PortfolioRepository
      * @param array $attributes
      * @return Portfolio
      */
-    public function createPortfolio($user, $attributes)
+    public function createPortfolio($user, $attributes = [])
     {
-        $portfolio = new Portfolio([
-            'name' => array_get($attributes,'name'),
-            'opened_at' => Carbon::parse(array_get($attributes, 'date')),
-            'description' => array_get($attributes,'description')
-        ]);
-        $portfolio->currency()
-            ->associate(Currency::find(array_get($attributes,'currency')));
+        $portfolio = new Portfolio;
+        $portfolio->name = 'Portfolio ' . max(1, $this->getUserPortfolios($user)->count()) ;
 
         $user->obtain($portfolio);
 
         return $portfolio;
-    }
-
-
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request
-     * @return array
-     */
-    public function getPortfolioResource($portfolio, $date)
-    {
-        $date = Carbon::parse($date)->endOfDay();
-
-        $array = [];
-        foreach ($portfolio->assets()->get() as $asset) {
-            $array[$asset->id] = $asset->toArray($date);
-        }
-
-
-        return [
-            'portfolio' => [
-                'name' => $portfolio->name,
-                'currency' => $portfolio->currency->code,
-                'cash' => AccountService::balance($portfolio, $date)->getValue()
-            ],
-            'assets' => $array
-        ];
     }
 }
