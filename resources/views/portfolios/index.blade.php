@@ -16,69 +16,78 @@
 
 
 @section('content')
-    <section id="offers-section" class="">
-        <div class="container g-pt-100 g-pb-130">
+    <div class="container g-pt-100 g-pb-50">
+        <div id="accordion" class="u-accordion u-accordion-bg-primary u-accordion-color-white" role="tablist" aria-multiselectable="true">
 
-            <div class="row no-gutters">
+            @foreach($portfolios as $portfolio)
 
+                <!-- Card -->
+                <div class="card g-brd-none rounded-0 g-mb-15">
+                    <div id="accordion-heading-{{$portfolio->id}}" class="u-accordion__header g-pa-0" role="tab">
+                        <h5 class="mb-0">
+                            <a class="collapsed d-flex g-color-main g-text-underline--none--hover g-brd-around g-brd-gray-light-v4 g-rounded-5 g-pa-10-15"
+                               href="#accordion-body-{{$portfolio->id}}"
+                               aria-expanded="true"
+                               aria-controls="accordion-body-{{$portfolio->id}}"
+                               data-toggle="collapse"
+                               data-parent="#accordion">
 
-                <div class="col-12">
+                                <span class="u-accordion__control-icon g-mr-10">
+                                    <i class="fa fa-angle-down"></i>
+                                    <i class="fa fa-angle-up"></i>
+                                </span>
 
-                    @foreach($portfolios as $portfolio)
+                                {{ $portfolio->name }}
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="accordion-body-{{$portfolio->id}}"
+                         class="collapse" role="tabpanel"
+                         aria-labelledby="accordion-heading-{{$portfolio->id}}"
+                         data-parent="#accordion">
 
-                        <div class="card g-mb-40 rounded-0">
+                        <div class="u-accordion__body g-color-gray-dark-v5">
 
-                            <!-- Card Header -->
-                            <div class="card-header g-height-50 g-bg-primary-opacity-0_2 g-color-black-opacity-0_5 rounded-0 g-brd-primary-bottom">
-                                <div class="row align-items-center d-flex">
-                                    <h3 class="h5 col-8 col-10-md g-mb-0 font-weight-bold">
-                                        <i class="fa fa-tasks g-font-size-default g-mr-5"></i>
-                                        <span class="mb-0">{{ $portfolio->name }}</span>
-                                    </h3>
-                                    <div class="col">
-                                        <a href="{{ route('portfolios.show', $portfolio->slug) }}"
-                                           class="btn btn-sm u-btn-outline-primary float-right">
-                                            Öffnen
-                                        </a>
-                                    </div>
+                            <div class="row">
+                                <div class="col-7">
+                                   @include('portfolios.partials.coinlist')
+                                   @include('portfolios.partials.addcoin')
+                                </div>
+
+                                <div class="col-5">
+                                   @include('portfolios.partials.analysis')
                                 </div>
                             </div>
 
-                            <!-- Card Body -->
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12 col-sm-12 col-md-4">
-                                        <p class="font-weight-bold">Positionen: </p>
-
-                                    </div>
-                                    <div class="col">
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Create New Portfolio -->
-            <a href="{{ route('portfolios.create') }}"
-               class="g-mb-30 btn btn-block g-bg-gray-light-v5 g-brd-around
-                        g-brd-gray-light-v4 g-bg-gray-light-v4--hover g-color-gray-light-v1 g-color-gray-dark-v4--hover">
-                <div class="align-items-stretch text-center mx-0">
-                    <div class="g-px-30 g-py-70">
-                        <i class="fa fa-plus-circle"></i>
-                        Neues Portfolio anlegen
                     </div>
                 </div>
-            </a>
+                <!-- End Card -->
+
+            @endforeach
 
         </div>
-    </section>
+    </div>
+
+    <!-- Create New Portfolio -->
+    <a href="{{ route('portfolios.create') }}"
+       class="g-mb-30 btn btn-block g-bg-gray-light-v5 g-brd-around
+                        g-brd-gray-light-v4 g-bg-gray-light-v4--hover g-color-gray-light-v1 g-color-gray-dark-v4--hover">
+        <div class="align-items-stretch text-center mx-0">
+            <div class="g-px-30 g-py-70">
+                <i class="fa fa-plus-circle"></i>
+                Neues Portfolio anlegen
+            </div>
+        </div>
+    </a>
 
 @endsection
 
 
 @section('link.header')
+
+    <link  rel="stylesheet" href="{{ asset('assets/vendor/animate.css') }}">
+    <link  rel="stylesheet" href="{{ asset('assets/vendor/custombox/custombox.min.css') }}">
 
 @endsection
 
@@ -87,15 +96,24 @@
 
     <!-- JS Implementing Plugins -->
     <script src="{{ asset('assets/vendor/popper.min.js') }}"></script>
+    <script  src="{{ asset('assets/vendor/custombox/custombox.min.js') }}"></script>
 
+    <!-- JS Unify -->
+    <script  src="{{ asset('assets/js/components/hs.modal-window.js') }}"></script>
+
+    <!-- JS Plugins Init. -->
     <script>
         $(document).on('ready', function () {
 
             // initialization of popovers
             $('[data-toggle="popover"]').popover();
 
+            // initialization of popups
+            $.HSCore.components.HSModalWindow.init('[data-modal-target]');
+
         });
     </script>
+
 @endsection
 
 

@@ -2,6 +2,11 @@
  * vue components
  */
 
+
+/* Coins */
+Vue.component('search-coins', require('./components/SearchCoins.vue'));
+
+
 /* Cash */
 Vue.component('cash-trade', require('./components/cash/CashTrade.vue'));
 
