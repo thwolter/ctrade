@@ -6,11 +6,10 @@
     <button type="button" class="close" onclick="Custombox.modal.close();">
         <i class="hs-icon hs-icon-close"></i>
     </button>
-    <h4 class="g-mb-20">Modal title</h4>
+    <h4 class="g-mb-20">Add coin</h4>
 
-    <search-instrument
-            :portfolio="{{ $portfolio }}"
-            route="{{ route('positions.show', [$portfolio->slug, '%entity%', '%instrument%'], false) }}">
-    </search-instrument>
+    <search-coins
+            :portfolio="{{ $portfolio }}">
+    </search-coins>
 
 </div>

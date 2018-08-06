@@ -101,6 +101,7 @@
     <!-- JS Unify -->
     <script  src="{{ asset('assets/js/components/hs.modal-window.js') }}"></script>
 
+
     <!-- JS Plugins Init. -->
     <script>
         $(document).on('ready', function () {

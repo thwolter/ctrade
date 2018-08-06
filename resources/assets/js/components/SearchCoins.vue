@@ -1,45 +1,49 @@
 <template>
     <div class="d-flex justify-content-center">
         <div class="g-width-600">
-            <form class="mx-auto w-100 g-pa-20">
-                <div class="form-group g-mb-20 g-max-width-570">
+            <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30">
+                <div class="row justify-content-center g-mb-30">
 
-                    <!-- Query Input -->
-                    <div class="input-group u-shadow-v25 rounded">
-                        <input v-model="query"
-                               class="form-control form-control-md g-brd-white g-font-size-16 border-right-0 pr-0 g-py-15"
-                               type="text"
-                               placeholder="Welche Aktie möchtest du hinzufügen?"
-                               @keyup="onKeyup">
-
-                        <div class="input-group-addon d-flex align-items-center g-bg-white g-brd-white g-color-gray-light-v1 g-pa-2">
-                            <div class="g-font-size-16 g-py-15 g-px-20">
-                                <i class="icon-magnifier g-pos-rel g-top-1"></i>
-                            </div>
+                    <!-- Input -->
+                    <div class="col-8">
+                        <!-- Query Input -->
+                        <label class="g-mb-10" for="inputGroup1_1">Add coin</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <input v-model="query"
+                                   class="form-control form-control-md rounded-0 pr-0"
+                                   type="text"
+                                   placeholder="Search ..."
+                                   @keyup="onKeyup">
                         </div>
-                    </div>
 
-                    <!-- Search Results -->
-                    <div v-if="hasResult"
-                         class="g-bg-white sticky-top u-shadow-v25 g-bg-lightblue-opacity-0_1 g-px-20 g-pt-10">
-
-                        <table class="table table-hover table-responsive u-table--v1">
-                            <tbody>
+                        <!-- Search Results -->
+                        <div v-if="hasResult" class="g-brd-none g-color-black g-py-12">
+                            <table class="table table-hover u-table--v1">
+                                <tbody>
                                 <tr v-for="(item, index) in results"
                                     @click.prevent="onClick(item.base, item.slug)"
                                     style="cursor: pointer"
                                     class="g-bg-primary-opacity-0_2--hover">
-                                    <td class="font-weight-bold border-0">{{ item.name }}</td>
-                                    <td class="g-color-orange border-0">{{ item.industry }}</td>
-                                    <td class="g-color-orange border-0">{{ item.isin }}</td>
+                                    <td class="border-0">{{ item.name }}</td>
                                 </tr>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+
+                    <!-- Amount -->
+                    <div class="col-4">
+                        <label class="g-mb-10" for="inputGroup1_1">Amount</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <input v-model="query"
+                                   class="form-control form-control-md rounded-0 pr-0"
+                                   type="text"
+                                   placeholder="787"
+                                   @keyup="onKeyup">
+                        </div>
+                    </div>
+
                 </div>
-
-                <p>Suche Aktien der Börsen XETRA und Suttgart.</p>
-
             </form>
         </div>
     </div>
@@ -54,6 +58,10 @@
                 type: Object,
                 required: true
             },
+            coinlist: {
+                type: Object,
+                required: true
+            },
             route: {
                 type: String,
                 required: true
@@ -63,7 +71,6 @@
 
         data() {
             return {
-                searchRoute: '/api/search',
 
                 query: null,
                 timeout: null,
@@ -111,11 +118,6 @@
             reset() {
                 this.results = [];
             },
-
-            join(industry, sector) {
-                let sep = (industry && sector) ? ' | ' : '';
-                return _.join([industry, sector], sep);
-            }
         },
 
         computed: {

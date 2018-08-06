@@ -9,8 +9,6 @@ import Colors from './core/Colors';
 import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
 
-
-
 window.Vue = Vue;
 window.Form = Form;
 window.Colors = new Colors;
