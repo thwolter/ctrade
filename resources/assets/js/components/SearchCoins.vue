@@ -1,8 +1,8 @@
 <template>
     <div class="d-flex justify-content-center">
         <div class="g-width-600">
-            <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30">
-                <div class="row justify-content-center g-mb-30">
+            <form @submit.prevent="onSubmit" class="">
+                <div class="row justify-content-center g-height-300 g-mb-30">
 
                     <!-- Input -->
                     <div class="col-8">
@@ -20,11 +20,14 @@
                         <div v-if="hasResult" class="g-brd-none g-color-black g-py-12">
                             <table class="table table-hover u-table--v1">
                                 <tbody>
-                                <tr v-for="(item, index) in results"
-                                    @click.prevent="onClick(item.base, item.slug)"
+                                <tr v-for="(item) in results.slice(0, maxResults)"
+                                    @click.prevent="onClick(item.Symbol, item.FullName)"
                                     style="cursor: pointer"
                                     class="g-bg-primary-opacity-0_2--hover">
-                                    <td class="border-0">{{ item.name }}</td>
+                                    <td class="border-0">{{ item.FullName }}</td>
+                                </tr>
+                                <tr>
+                                    <td v-if="exceedMax" class="border-0">...</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -35,15 +38,20 @@
                     <div class="col-4">
                         <label class="g-mb-10" for="inputGroup1_1">Amount</label>
                         <div class="input-group g-brd-primary--focus">
-                            <input v-model="query"
+                            <input v-model="form.amount"
                                    class="form-control form-control-md rounded-0 pr-0"
                                    type="text"
                                    placeholder="787"
                                    @keyup="onKeyup">
                         </div>
                     </div>
-
                 </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn u-btn-black pull-right" :disabled="!validCoin">
+                    Save
+                </button>
+
             </form>
         </div>
     </div>
@@ -64,7 +72,17 @@
             },
             route: {
                 type: String,
-                required: true
+                rquired: true
+            },
+            maxResults: {
+                type: Number,
+                required: false,
+                default: 5
+            },
+            delay: {
+                type: Number,
+                required: false,
+                default: 300
             }
         },
 
@@ -72,14 +90,17 @@
         data() {
             return {
 
-                query: null,
+                query: '',
                 timeout: null,
+                submitting: false,
 
-                results: [],
+                results: {},
 
                 form: new Form({
-                    instrumentType: this.instrumentType,
-                    instrumentId: null,
+                    symbol: '',
+                    amount: 0,
+                    user: this.portfolio.user_id,
+                    portfolio: this.portfolio.slug
                 })
             }
         },
@@ -95,34 +116,59 @@
                     } else {
                         self.reset();
                     }
-                }, 500);
+                }, this.delay);
             },
 
             search(query) {
-                axios.get(this.searchRoute, {
-                        params: {
-                            query: this.query
-                        }
-                    })
-                    .then(data => {
-                        this.results = data.data;
-                    });
+                query = _.toLower(query);
+
+                let filtered = _.filter(this.coinlist, function(coin) {
+                    return _.includes(_.toLower(coin.FullName), query);
+                });
+
+                if (_.size(filtered) > 0 ) {
+                    this.results = filtered;
+                }
+
+                if (_.size(filtered) === 1 && query === filtered[0].FullName) {
+                    this.reset();
+                }
             },
 
-            onClick(type, slug) {
-                window.location = this.route
-                    .replace('%entity%', type)
-                    .replace('%instrument%', slug);
+            onClick(symbol, fullName) {
+                this.query = fullName;
+                this.form.symbol = symbol;
+                this.reset();
             },
 
             reset() {
-                this.results = [];
+                this.results = {};
+            },
+
+            onSubmit() {
+                this.submitting = true;
+
+                this.form.post(this.route)
+                    .then(data => {
+                        window.location = data.redirect;
+                    })
+                    .catch(data => {
+                        alert(data);
+                    })
             },
         },
 
         computed: {
             hasResult() {
                 return this.results.length;
+            },
+
+            exceedMax() {
+                return _.size(this.results) > this.maxResults;
+            },
+
+            validCoin() {
+                return _.toArray(_.filter(this.coinlist, {FullName: this.query})).length === 1;
             }
         }
     }

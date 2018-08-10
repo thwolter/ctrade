@@ -20,4 +20,6 @@ mix.js('resources/assets/js/app.js', 'public/assets/js')
         processCssUrls: false
     });
 
+mix.browserSync('ctrade.test');
+
 // mix.copyDirectory('resources/vendor/unity/html/assets/figures', 'public/assets/figures')

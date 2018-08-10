@@ -64,7 +64,7 @@ class PositionsController extends Controller
      * @param TradeRequest|Request $request
      * @return array
      */
-    public function store(TradeRequest $request)
+    public function store(Request $request)
     {
         $portfolio = Portfolio::find($request->portfolioId);
         $this->transaction->trade($portfolio, $request->all());

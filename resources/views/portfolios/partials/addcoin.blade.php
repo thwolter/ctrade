@@ -9,7 +9,8 @@
     <h4 class="g-mb-20">Add coin</h4>
 
     <search-coins
-            :portfolio="{{ $portfolio }}">
+            :portfolio="{{ $portfolio }}"
+            :coinlist="{{ $coinlist }}"
+            route="{{ route('positions.store') }}">
     </search-coins>
-
 </div>

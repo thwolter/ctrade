@@ -40,7 +40,7 @@ class CryptoCompare
     }
 
 
-    public function filterCoindata($string)
+    public function filterCoinData($string)
     {
         return array_filter($this->getCoindata(), function($item) use ($string) {
             return stripos($item['FullName'], $string) !== false;
@@ -48,7 +48,7 @@ class CryptoCompare
     }
 
     
-    public function getCoindata()
+    public function getCoinList()
     {
         return $this->coinlist['Data'];
     }

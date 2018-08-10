@@ -3,9 +3,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Currency;
 use App\Entities\Portfolio;
 
+use App\Facades\DataService;
 use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\UpdatePortfolio;
 
@@ -33,8 +33,9 @@ class PortfoliosController extends Controller
     public function index()
     {
         $portfolios = $this->repository->getUserPortfolios(auth()->user());
+        $coinlist = collect(DataService::coinlist());
 
-        return view('portfolios.index', compact('portfolios'));
+        return view('portfolios.index', compact('portfolios', 'coinlist'));
     }
 
 

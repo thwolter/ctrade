@@ -7,7 +7,12 @@ Route::get('test', function() {
 
     echo $crypto->getBaseImageUrl('ETH');
 
-    dd($crypto->filterCoindata('Eth'));
+    dd($crypto->filterCoinData('Eth'));
 
 });
 
+
+Route::get('php', function() {
+    $a = 1;
+    echo phpversion();
+});
