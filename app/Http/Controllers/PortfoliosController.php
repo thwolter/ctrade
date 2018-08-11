@@ -4,11 +4,8 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Portfolio;
-
-use App\Facades\DataService;
 use App\Http\Requests\CreatePortfolio;
 use App\Http\Requests\UpdatePortfolio;
-
 use App\Repositories\PortfolioRepository as Repository;
 use Illuminate\Http\Request;
 
@@ -25,6 +22,7 @@ class PortfoliosController extends Controller
         $this->repository = $repository;
     }
 
+
     /**
      * Display a listing of the resource.
      *
@@ -32,10 +30,9 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        $portfolios = $this->repository->getUserPortfolios(auth()->user());
-        $coinlist = collect(DataService::coinlist());
+        $portfolios = $this->repository->getUserPortfolios();
 
-        return view('portfolios.index', compact('portfolios', 'coinlist'));
+        return view('portfolios.index', compact('portfolios'));
     }
 
 
@@ -46,21 +43,7 @@ class PortfoliosController extends Controller
      */
     public function create()
     {
-        $this->repository->createPortfolio(auth()->user(), []);
-
-        return redirect()->route('portfolios.index');
-    }
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CreatePortfolio $request
-     * @return array
-     */
-    public function store(CreatePortfolio $request)
-    {
-        $portfolio = $this->repository->createPortfolio(auth()->user(), $request->all());
+        $portfolio = $this->repository->createPortfolio();
 
         return redirect()->route('portfolios.show', [$portfolio->slug]);
     }
@@ -74,7 +57,10 @@ class PortfoliosController extends Controller
      */
     public function show(Portfolio $portfolio)
     {
-        return view('portfolios.show', compact('portfolio'));
+        $id = $portfolio->id;
+        $portfolios = $this->repository->getUserPortfolios();
+
+        return view('portfolios.index', compact('portfolios', 'id'));
     }
 
 
@@ -87,9 +73,7 @@ class PortfoliosController extends Controller
      */
     public function edit(Request $request, Portfolio $portfolio)
     {
-        setActiveTab($request, 'portfolio');
-
-        return view('portfolios.edit', compact('portfolio'));
+       //
     }
 
 
@@ -102,13 +86,7 @@ class PortfoliosController extends Controller
      */
     public function update(UpdatePortfolio $request, Portfolio $portfolio)
     {
-        $portfolio->update($request->only('name', 'description'));
-
-        $portfolio->settings()->merge($request->all());
-
-        return redirect(route('portfolios.edit', $portfolio->slug))
-            ->with('success', trans('portfolio.setup.changed'))
-            ->with('active_tab', $request->get('active_tab'));
+       //
     }
 
 
@@ -121,34 +99,7 @@ class PortfoliosController extends Controller
      */
     public function destroy(Request $request, $slug)
     {
-        if (!$request->confirmed) {
-            return redirect(route('portfolios.edit', $slug))
-                ->with('delete', 'confirm')
-                ->with('danger', 'Bitte bestätigen, dass das Portfolio unwiderruflich gelöscht werden soll.')
-                ->with('active_tab', 'portfolio');
-        }
-        else {
-            $portfolio = auth()->user()->portfolios()->whereSlug($slug)->first();
-            $portfolio->delete($portfolio->id);
-            return redirect(route('portfolios.index'));
-        }
-    }
-
-    public function addImage(Request $request, $id)
-    {
-        $this->validate($request, [
-            'file' => 'required|mimes:jpg,jpeg,png,bmp'
-        ]);
-
-        $file = $request->file('file');
-        $portfolio = Portfolio::find($id);
-
-        if (is_null($portfolio->image))
-            $portfolio->addImage($file);
-
-        else
-            $portfolio->updateImage($file);
-
+       //
     }
 }
 

@@ -1,13 +1,6 @@
 <?php
 
-//Route::resource('/portfolios', 'PortfoliosController');
-
-Route::prefix('portfolio')->middleware('auth')->group(function() {
-
-    Route::post('store', [
-        'as' => 'portfolios.store',
-        'uses' => 'PortfoliosController@store'
-    ]);
+Route::prefix('')->middleware('auth')->group(function() {
 
     Route::get('', [
         'as' => 'portfolios.index',

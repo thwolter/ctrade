@@ -27,27 +27,45 @@ class PortfolioRepository
     /**
      * @return mixed
      */
-    public function getUserPortfolios($user)
+    public function getUserPortfolios()
     {
-        return User::findOrFail($user->id)->portfolios;
+        return User::findOrFail($this->getUser()->id)->portfolios;
     }
 
 
     /**
-     * Create a portfolio with attributes which may be received from a request and persist
-     * the portfolio with an assigned user.
+     * Create a portfolio and persist it to assigned user.
      *
-     * @param $user
-     * @param array $attributes
      * @return Portfolio
      */
-    public function createPortfolio($user, $attributes = [])
+    public function createPortfolio()
     {
-        $portfolio = new Portfolio;
-        $portfolio->name = 'Portfolio ' . max(1, $this->getUserPortfolios($user)->count()) ;
+        $portfolio = new Portfolio([
+            'name' => 'Portfolio ' . max(1, $this->countUserPortfolios() + 1)
+        ]);
 
-        $user->obtain($portfolio);
+        $this->getUser()->obtain($portfolio);
 
         return $portfolio;
+    }
+
+    /**
+     * Count the user's portfolios.
+     *
+     * @return mixed
+     */
+    public function countUserPortfolios()
+    {
+        return $this->getUserPortfolios()->count();
+    }
+
+    /**
+     * Get the authenticated user.
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    public function getUser()
+    {
+        return auth()->user();
     }
 }

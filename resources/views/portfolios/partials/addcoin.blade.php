@@ -1,3 +1,5 @@
+@inject('data', 'App\Services\DataService)
+
 <a class="btn u-btn-primary" href="#addcoin" data-modal-target="#addcoin" data-modal-effect="fadein">
     Add Coin
 </a>
@@ -10,7 +12,7 @@
 
     <search-coins
             :portfolio="{{ $portfolio }}"
-            :coinlist="{{ $coinlist }}"
-            route="{{ route('positions.store') }}">
+            :coinlist="{{ collect($data->coinList()) }}"
+            route="{{ route('asset.store') }}">
     </search-coins>
 </div>

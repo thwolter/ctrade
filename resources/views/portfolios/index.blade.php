@@ -25,9 +25,9 @@
                 <div class="card g-brd-none rounded-0 g-mb-15">
                     <div id="accordion-heading-{{$portfolio->id}}" class="u-accordion__header g-pa-0" role="tab">
                         <h5 class="mb-0">
-                            <a class="collapsed d-flex g-color-main g-text-underline--none--hover g-brd-around g-brd-gray-light-v4 g-rounded-5 g-pa-10-15"
+                            <a class="{{ (isset($id) && $portfolio->id === $id) ? '' : 'collapsed' }} d-flex g-color-main g-text-underline--none--hover g-brd-around g-brd-gray-light-v4 g-rounded-5 g-pa-10-15"
                                href="#accordion-body-{{$portfolio->id}}"
-                               aria-expanded="true"
+                               aria-expanded="{{ (isset($id) && $portfolio->id === $id) ? 'true' : 'false' }}"
                                aria-controls="accordion-body-{{$portfolio->id}}"
                                data-toggle="collapse"
                                data-parent="#accordion">
@@ -42,7 +42,8 @@
                         </h5>
                     </div>
                     <div id="accordion-body-{{$portfolio->id}}"
-                         class="collapse" role="tabpanel"
+                         class="{{ (isset($id) && $portfolio->id === $id) ? 'collapse show' : 'collapse' }}"
+                         role="tabpanel"
                          aria-labelledby="accordion-heading-{{$portfolio->id}}"
                          data-parent="#accordion">
 
