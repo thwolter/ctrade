@@ -2,10 +2,10 @@
     <div class="d-flex justify-content-center">
         <div class="g-width-600">
             <form @submit.prevent="onSubmit" class="">
-                <div class="row justify-content-center g-height-300 g-mb-30">
+                <div class="justify-content-center g-height-200 g-mb-30">
 
                     <!-- Input -->
-                    <div class="col-8">
+                    <div class="">
                         <!-- Query Input -->
                         <label class="g-mb-10" for="inputGroup1_1">Add coin</label>
                         <div class="input-group g-brd-primary--focus">
@@ -17,33 +17,36 @@
                         </div>
 
                         <!-- Search Results -->
-                        <div v-if="hasResult" class="g-brd-none g-color-black g-py-12">
+                        <div v-if="hasResult"
+                             class="g-bg-white g-brd-none g-color-black g-py-12 g-width-250 position-absolute u-select-v2 u-shadow-v15"
+                            style="z-index: 10">
                             <table class="table table-hover u-table--v1">
                                 <tbody>
-                                <tr v-for="(item) in results.slice(0, maxResults)"
+                                <tr v-for="(item) in results"
                                     @click.prevent="onClick(item.Symbol, item.FullName)"
                                     style="cursor: pointer"
                                     class="g-bg-primary-opacity-0_2--hover">
                                     <td class="border-0">{{ item.FullName }}</td>
-                                </tr>
-                                <tr>
-                                    <td v-if="exceedMax" class="border-0">...</td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- Amount -->
-                    <div class="col-4">
-                        <label class="g-mb-10" for="inputGroup1_1">Amount</label>
-                        <div class="input-group g-brd-primary--focus">
-                            <input v-model="form.amount"
-                                   class="form-control form-control-md rounded-0 pr-0"
-                                   type="text"
-                                   placeholder="787"
-                                   @keyup="onKeyup">
+                    <div class="justify-content-center g-mt-20">
+
+                        <!-- Amount -->
+                        <div>
+                            <label class="g-mb-10" for="inputGroup1_1">Amount</label>
+                            <div class="input-group g-brd-primary--focus">
+                                <input v-model="form.amount"
+                                       class="form-control form-control-md rounded-0 pr-0"
+                                       type="text"
+                                       placeholder="0"
+                                       @keyup="onKeyup">
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -73,11 +76,6 @@
             route: {
                 type: String,
                 rquired: true
-            },
-            maxResults: {
-                type: Number,
-                required: false,
-                default: 5
             },
             delay: {
                 type: Number,
@@ -161,10 +159,6 @@
         computed: {
             hasResult() {
                 return this.results.length;
-            },
-
-            exceedMax() {
-                return _.size(this.results) > this.maxResults;
             },
 
             validCoin() {
