@@ -3,22 +3,16 @@
 
 namespace App\Repositories;
 
-use App\Entities\Category;
-use App\Entities\Currency;
+use App\Entities\Asset;
 use App\Entities\Portfolio;
 use App\Entities\User;
-use App\Facades\AccountService;
-use App\Facades\DataService;
-use App\Facades\PortfolioService;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 
 
 class PortfolioRepository
 {
 
 
-    public function getPortfolioById($id)
+    public function findPortfolioById($id)
     {
         return Portfolio::where('id', $id)->first();
     }
@@ -67,5 +61,12 @@ class PortfolioRepository
     public function getUser()
     {
         return auth()->user();
+    }
+
+
+    public function addCoin($attributes)
+    {
+        return $this->findPortfolioById($attributes['portfolio'])
+            ->obtain(new Asset($attributes));
     }
 }

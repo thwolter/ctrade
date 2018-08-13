@@ -2,10 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Portfolio;
+use App\Repositories\PortfolioRepository as Repository;
 use Illuminate\Http\Request;
 
 class AssetController extends Controller
 {
+    protected $repository;
+
+
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,12 +30,15 @@ class AssetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request $request
+     * @return array
      */
     public function store(Request $request)
     {
-        $a=1;
+        $this->repository->addCoin($request->all());
+        $portfolio = $this->repository->findPortfolioById($request->get('portfolio'));
+
+        return ['redirect' => route('portfolios.show', [$portfolio->slug])];
     }
 
     /**

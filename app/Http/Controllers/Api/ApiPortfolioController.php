@@ -24,7 +24,7 @@ class ApiPortfolioController extends ApiBaseController
             'id' => 'required|exists:portfolios,id'
         ]);
 
-        $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
+        $portfolio = PortfolioRepository::findPortfolioById($attributes['id']);
 
         return new AssetResource($portfolio);
     }
@@ -43,7 +43,7 @@ class ApiPortfolioController extends ApiBaseController
             'conf' => 'required|numeric'
         ]);
 
-        $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
+        $portfolio = PortfolioRepository::findPortfolioById($attributes['id']);
         $keyfigure = KeyfigureRepository::getByPortfolio($portfolio, 'risk.'.$attributes['conf']);
 
         return new TimeSeriesResource($keyfigure);
@@ -63,7 +63,7 @@ class ApiPortfolioController extends ApiBaseController
             'conf' => 'required|numeric'
         ]);
 
-        $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
+        $portfolio = PortfolioRepository::findPortfolioById($attributes['id']);
         $keyfigure = KeyfigureRepository::getByPortfolio($portfolio, 'value');
 
         return new TimeSeriesResource($keyfigure);
@@ -82,7 +82,7 @@ class ApiPortfolioController extends ApiBaseController
             'conf' => 'required|numeric'
         ]);
 
-        $portfolio = PortfolioRepository::getPortfolioById($attributes['id']);
+        $portfolio = PortfolioRepository::findPortfolioById($attributes['id']);
         $keyfigure = KeyfigureRepository::getByPortfolio($portfolio, 'contribution.'.$attributes['conf']);
 
         return new TimeSeriesResource($keyfigure);

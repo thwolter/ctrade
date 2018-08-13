@@ -20,7 +20,7 @@
                         <div v-if="hasResult"
                              class="g-bg-white g-brd-none g-color-black g-py-12 g-width-250 position-absolute u-select-v2 u-shadow-v15"
                             style="z-index: 10">
-                            <table class="table table-hover u-table--v1">
+                            <table class="table table-hover u-table--v1 js-custom-scroll">
                                 <tbody>
                                 <tr v-for="(item) in results"
                                     @click.prevent="onClick(item.Symbol, item.FullName)"
@@ -39,11 +39,13 @@
                         <div>
                             <label class="g-mb-10" for="inputGroup1_1">Amount</label>
                             <div class="input-group g-brd-primary--focus">
-                                <input v-model="form.amount"
-                                       class="form-control form-control-md rounded-0 pr-0"
-                                       type="text"
-                                       placeholder="0"
-                                       @keyup="onKeyup">
+                                <cleave id="amount"
+                                        v-model="form.amount"
+                                        placeholder="0.0000"
+                                        :options="cleave"
+                                        :class="['form-control form-control-md rounded-0 pr-0']"
+                                        @input="form.errors.clear('amount')">
+                                </cleave>
                             </div>
                         </div>
 
@@ -51,8 +53,9 @@
                 </div>
 
                 <!-- Submit -->
-                <button type="submit" class="btn u-btn-black pull-right" :disabled="!validCoin">
-                    Save
+                <button type="submit" class="btn u-btn-primary pull-right"
+                        :disabled="!validCoin || !validAmount">
+                    Add coin
                 </button>
 
             </form>
@@ -94,11 +97,18 @@
 
                 results: {},
 
+                cleave: {
+                    numeral: true,
+                    numeralDecimalMark: '.',
+                    delimiter: ' ',
+                    numeralPositiveOnly: true
+                },
+
                 form: new Form({
                     symbol: '',
-                    amount: 0,
+                    amount: '',
                     user: this.portfolio.user_id,
-                    portfolio: this.portfolio.slug
+                    portfolio: this.portfolio.id
                 })
             }
         },
@@ -163,6 +173,10 @@
 
             validCoin() {
                 return _.toArray(_.filter(this.coinlist, {FullName: this.query})).length === 1;
+            },
+
+            validAmount() {
+                return this.form.amount > 0;
             }
         }
     }

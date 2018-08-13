@@ -17,8 +17,8 @@ class CreateAssetsTable extends Migration
             $table->increments('id');
             $table->integer('portfolio_id')->unsigned();
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');
-            $table->string('coin');
-            $table->decimal('amount', 8, 8);
+            $table->string('symbol');
+            $table->decimal('amount', 16, 8);
             $table->timestamps();
         });
     }

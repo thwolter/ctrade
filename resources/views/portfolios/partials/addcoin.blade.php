@@ -9,6 +9,7 @@
         <i class="hs-icon hs-icon-close"></i>
     </button>
     <h4 class="g-mb-20">Add coin</h4>
+    <hr>
 
     <search-coins
             :portfolio="{{ $portfolio }}"

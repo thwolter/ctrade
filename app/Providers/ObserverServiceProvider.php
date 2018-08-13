@@ -26,12 +26,7 @@ class ObserverServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Limit::observe(LimitObserver::class);
-        Datasource::observe(DatasourceObserver::class);
         User::observe(UserObserver::class);
-        Taker::observe(TakerObserver::class);
-        Stock::observe(StockObserver::class);
-        CcyPair::observe(CcyPairObserver::class);
     }
 
     /**

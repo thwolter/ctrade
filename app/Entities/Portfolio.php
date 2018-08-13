@@ -80,6 +80,10 @@ class Portfolio extends Model
         return 'slug';
     }
 
+    public function toArray()
+    {
+        return array_add(parent::toArray(), 'id', $this->id);
+    }
 
     /*
     |--------------------------------------------------------------------------
